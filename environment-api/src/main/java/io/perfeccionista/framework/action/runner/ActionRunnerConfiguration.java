@@ -1,0 +1,23 @@
+package io.perfeccionista.framework.action.runner;
+
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Конфигурация позволяет соотносить класс враппера с используемой внутри реализацией обработчик повторяющихся действий
+ * Пользователь может написать свой враппер и сопоставить его класс с используемой имплементацией.
+ */
+public interface ActionRunnerConfiguration {
+
+    /**
+     * Этот метод не должен возвращать null
+     * Для всех тестов используется дефолтная пустая обертка, которая возвращается этим методом.
+     * Эта обертка используется для оборачивания вызова всего тела метода через интерфейс InvocationInterceptor
+     *
+     * if (actionWrapper == MyClass.class) {
+     *     return MyClassActionRunner.class;
+     * }
+     * return EmptyActionRunner.class;
+     */
+    @NotNull Class<? extends ActionRunner> getActionRunnerImplementation(@NotNull Class<?> actionWrapper);
+
+}

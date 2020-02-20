@@ -1,0 +1,7 @@
+version: '3'
+services:
+  demo-app:
+    image: perfeccionista/demo-app
+    ports:
+      - 8084:80
+
