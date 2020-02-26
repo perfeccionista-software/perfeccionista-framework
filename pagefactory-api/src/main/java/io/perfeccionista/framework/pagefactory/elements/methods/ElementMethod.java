@@ -20,6 +20,6 @@ public @interface ElementMethod {
 
     String type();
 
-    Class<? extends ElementMethodImplementation<?>> implementation();
+    Class<? extends ElementMethodImplementation<?, ?>> implementation();
 
 }

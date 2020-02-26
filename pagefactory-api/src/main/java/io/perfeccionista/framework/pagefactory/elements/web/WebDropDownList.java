@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.web;
 
 import io.perfeccionista.framework.pagefactory.elements.DropDownList;
+import io.perfeccionista.framework.pagefactory.itemfilter.js.JsBlockFilter;
 
-public class WebDropDownList extends WebUnorderedList implements DropDownList {
+public interface WebDropDownList extends DropDownList<JsBlockFilter>, WebUnorderedList, WebChildElement {
 }

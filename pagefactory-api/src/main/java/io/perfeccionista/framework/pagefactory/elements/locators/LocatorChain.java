@@ -21,6 +21,9 @@ public class LocatorChain {
     }
 
 
+    public LocatorHolder getLastLocator() {
+        return locatorSequence.getLast();
+    }
 
     public Deque<LocatorHolder> getLocatorChain() {
         return new ArrayDeque<>();

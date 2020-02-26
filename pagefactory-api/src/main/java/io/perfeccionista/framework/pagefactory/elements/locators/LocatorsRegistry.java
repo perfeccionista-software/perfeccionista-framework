@@ -24,14 +24,27 @@ public class LocatorsRegistry {
         return new LocatorsRegistry(locators);
     }
 
+    /**
+     * Во многих сценариях нам необходимо будет модифицировать заданный ранее локатор (добавить индекс),
+     * поэтому необходимо возвращать его клон, а не оригинальный инстанс
+     * @param locatorName
+     * @return
+     */
     public Optional<LocatorHolder> getOptionalLocator(String locatorName) {
-        return Optional.ofNullable(locators.get(locatorName));
+        LocatorHolder locatorHolder = locators.get(locatorName);
+        if (null == locatorHolder) {
+            return Optional.empty();
+        }
+        return Optional.of(locatorHolder.clone());
     }
 
     public LocatorHolder getLocator(String locatorName) {
-        return Optional.ofNullable(locators.get(locatorName))
-                .orElseThrow(() -> new LocatorNotDeclaredException(LOCATOR_NOT_DECLARED.getMessage(locatorName))
-                        .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", this.toString()))));
+        LocatorHolder locatorHolder = locators.get(locatorName);
+        if (null == locatorHolder) {
+            throw new LocatorNotDeclaredException(LOCATOR_NOT_DECLARED.getMessage(locatorName))
+                    .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", this.toString())));
+        }
+        return locatorHolder.clone();
     }
 
     public Stream<Entry<String, LocatorHolder>> stream() {

@@ -1,17 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.base.ChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.itemextractor.IndexedItems;
-import io.perfeccionista.framework.pagefactory.itemfilter.MultipleBlockSimpleFilter;
+import io.perfeccionista.framework.pagefactory.itemfilter.Filter;
+import io.perfeccionista.framework.pagefactory.itemfilter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
-public interface SimpleUnorderedList extends ChildElement,
-        SizeAvailable, ScrollToElementAvailable {
+public interface SimpleUnorderedList<F extends Filter<?, ?>> extends SizeAvailable, ScrollToElementAvailable<F> {
 
-    OperationResult<IndexedItems<String>> getValues();
+    OperationResult<MultipleResult<String>> getValues();
 
-    OperationResult<IndexedItems<String>> getValues(MultipleBlockSimpleFilter filter);
+    OperationResult<MultipleResult<String>> getValues(F filter);
 
 }

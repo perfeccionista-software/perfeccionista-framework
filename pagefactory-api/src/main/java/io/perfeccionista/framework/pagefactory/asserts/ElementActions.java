@@ -21,7 +21,7 @@ public class ElementActions {
     }
 
     public ElementActions click(String elementsChain) {
-
+        return null;
     }
 
 

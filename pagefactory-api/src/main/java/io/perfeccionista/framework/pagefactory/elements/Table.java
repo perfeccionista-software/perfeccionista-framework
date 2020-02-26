@@ -1,22 +1,21 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.base.ChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.itemextractor.IndexedItems;
-import io.perfeccionista.framework.pagefactory.itemextractor.TableRowValueExtractor;
-import io.perfeccionista.framework.pagefactory.itemfilter.MultipleTableRowFilter;
+import io.perfeccionista.framework.pagefactory.itemextractor.JsWebTableRowValueExtractor;
+import io.perfeccionista.framework.pagefactory.itemfilter.Filter;
+import io.perfeccionista.framework.pagefactory.itemfilter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
-public interface Table extends ChildElement,
-        SizeAvailable, ScrollToElementAvailable {
+public interface Table<F extends Filter<?, ?>> extends SizeAvailable, ScrollToElementAvailable<F> {
 
-    <V> OperationResult<V> getHeaderValue(TableRowValueExtractor<V> extractor);
+    // TODO: Параметризовать экстракторы
+    <V> OperationResult<V> getHeaderValue(JsWebTableRowValueExtractor<V> extractor);
 
-    <V> OperationResult<IndexedItems<V>> getValues(TableRowValueExtractor<V> extractor);
+    <V> OperationResult<MultipleResult<V>> getValues(JsWebTableRowValueExtractor<V> extractor);
 
-    <V> OperationResult<IndexedItems<V>> getValues(TableRowValueExtractor<V> extractor, MultipleTableRowFilter filter);
+    <V> OperationResult<MultipleResult<V>> getValues(JsWebTableRowValueExtractor<V> extractor, F filter);
 
-    <V> OperationResult<V> getFooterValue(TableRowValueExtractor<V> extractor);
+    <V> OperationResult<V> getFooterValue(JsWebTableRowValueExtractor<V> extractor);
 
 }

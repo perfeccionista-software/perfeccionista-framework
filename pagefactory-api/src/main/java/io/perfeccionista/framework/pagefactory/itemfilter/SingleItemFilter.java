@@ -1,4 +1,8 @@
 package io.perfeccionista.framework.pagefactory.itemfilter;
 
-public interface SingleItemFilter<T> {
+@Deprecated
+public interface SingleItemFilter<C, R> {
+
+    R getBlockIndex(C conditions);
+
 }

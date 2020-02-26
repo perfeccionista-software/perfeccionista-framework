@@ -5,6 +5,6 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
 public interface SendKeysAvailable extends ElementMethodAvailable {
 
-    OperationResult<Boolean> sendKeys(CharSequence... keys);
+    OperationResult<Void> sendKeys(CharSequence... keys);
 
 }

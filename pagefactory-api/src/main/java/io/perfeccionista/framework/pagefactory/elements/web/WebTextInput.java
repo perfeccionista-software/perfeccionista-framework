@@ -1,4 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.web;
 
-public class WebTextInput {
+import io.perfeccionista.framework.pagefactory.elements.TextInput;
+
+public interface WebTextInput extends TextInput, WebChildElement {
 }

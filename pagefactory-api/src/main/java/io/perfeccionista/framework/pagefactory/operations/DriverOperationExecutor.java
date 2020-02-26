@@ -8,6 +8,6 @@ public interface DriverOperationExecutor {
      * @param <T>
      * @return
      */
-    <T> OperationResult<T> executeOperation(DriverJsOperation<T> operation);
+    <T> T executeOperation(JsOperation<T> operation);
 
 }

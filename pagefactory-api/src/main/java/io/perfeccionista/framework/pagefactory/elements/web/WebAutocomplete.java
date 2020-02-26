@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.web;
 
 import io.perfeccionista.framework.pagefactory.elements.Autocomplete;
+import io.perfeccionista.framework.pagefactory.itemfilter.js.JsBlockFilter;
 
-public class WebAutocomplete extends WebDropDownList implements Autocomplete {
+public interface WebAutocomplete extends Autocomplete<JsBlockFilter>, WebDropDownList, WebChildElement {
 }

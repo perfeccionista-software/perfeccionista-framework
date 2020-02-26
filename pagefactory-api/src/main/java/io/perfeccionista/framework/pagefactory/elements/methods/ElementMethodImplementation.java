@@ -6,8 +6,8 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 /**
  * TODO JavaDoc
  */
-public interface ElementMethodImplementation<T> {
+public interface ElementMethodImplementation<E extends ChildElement, T> {
 
-    OperationResult<T> execute(ChildElement element, Object... args);
+    OperationResult<T> execute(E element, Object... args);
 
 }

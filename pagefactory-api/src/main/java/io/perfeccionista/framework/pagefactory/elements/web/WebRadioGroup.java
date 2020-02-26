@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.web;
 
-// Сделать реализацию через массив блоков в которых один радио-баттон и индекс хранить в нем
-public class WebRadioGroup {
+import io.perfeccionista.framework.pagefactory.elements.RadioGroup;
+import io.perfeccionista.framework.pagefactory.itemfilter.js.JsRadioButtonFilter;
+
+public interface WebRadioGroup extends RadioGroup<JsRadioButtonFilter>, WebChildElement {
 }

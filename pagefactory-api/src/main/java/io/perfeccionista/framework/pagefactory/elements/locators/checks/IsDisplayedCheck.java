@@ -5,8 +5,13 @@ import io.perfeccionista.framework.pagefactory.elements.locators.NodeCheck;
 public class IsDisplayedCheck implements NodeCheck {
 
     @Override
-    public String getName() {
-        return "isElementDisplayed";
+    public Void convert(Void result) {
+        return null;
+    }
+
+    @Override
+    public Class<Void> getResultType() {
+        return null;
     }
 
 }

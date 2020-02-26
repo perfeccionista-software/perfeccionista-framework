@@ -15,13 +15,13 @@ import java.util.function.Supplier;
  * @param <T> тип возвращаемого операцией значения
  * @see Optional
  */
-public final class OperationResult<T> {
+public class OperationResult<T> {
 
-    private final boolean success;
-    private final T result;
-    private final PerfeccionistaException exception;
+    protected final boolean success;
+    protected final T result;
+    protected final PerfeccionistaException exception;
 
-    private OperationResult(boolean success, T result, PerfeccionistaException exception) {
+    protected OperationResult(boolean success, T result, PerfeccionistaException exception) {
         this.success = success;
         this.result = result;
         this.exception = exception;
@@ -38,11 +38,17 @@ public final class OperationResult<T> {
         throw exception;
     }
 
+    public void throwIfNotSuccess() {
+        if (!success && null != exception) {
+            throw exception;
+        }
+    }
+
     public Optional<T> getResult() {
         return Optional.ofNullable(result);
     }
 
-    public Optional<Throwable> getException() {
+    public Optional<PerfeccionistaException> getException() {
         return Optional.ofNullable(exception);
     }
 

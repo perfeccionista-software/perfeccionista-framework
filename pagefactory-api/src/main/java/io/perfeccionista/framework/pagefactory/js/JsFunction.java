@@ -1,10 +1,10 @@
 package io.perfeccionista.framework.pagefactory.js;
 
-public interface JsFunction<R, T> {
+public interface JsFunction<I, R> {
 
-    Class<T> getResultType();
+    Class<R> getResultType();
 
-    T convert(R result);
+    R convert(I result);
 
     @Override
     String toString();

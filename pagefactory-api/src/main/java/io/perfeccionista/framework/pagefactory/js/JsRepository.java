@@ -16,7 +16,7 @@ public class JsRepository {
     public void loadIfNotLoaded(DriverInstance driverInstance, String... jsFunctionNames) {
         Arrays.stream(jsFunctionNames).forEach(jsFunctionName -> {
             if (!loadedJsFunctions.contains(jsFunctionName)) {
-                driverInstance.getDriverOperationExecutor().executeOperation(.................);
+//                driverInstance.getDriverOperationExecutor().executeOperation(.................);
                 loadedJsFunctions.add(jsFunctionName);
             }
         });

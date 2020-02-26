@@ -1,20 +1,23 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.base.ChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.properties.ElementPropertyHolder;
-import io.perfeccionista.framework.pagefactory.operations.DriverJsOperation;
+import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
+import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
+import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
-public class JsGetPropertyValue implements ElementMethodImplementation<String> {
+public class JsGetPropertyValue implements ElementMethodImplementation<WebChildElement, String> {
 
     @Override
-    public OperationResult<String> execute(ChildElement element, Object... args) {
+    public OperationResult<String> execute(WebChildElement element, Object... args) {
         ElementPropertyHolder elementPropertyHolder = (ElementPropertyHolder) args[0];
-        LocatorChain locatorChain = element.getLocatorChain().addLocator(elementPropertyHolder.getLocatorHolder());
-        DriverJsOperation<String> operation = DriverJsOperation.of(locatorChain, elementPropertyHolder.getJsFunctionClass());
-        return element.getDriverInstance().getDriverOperationExecutor().executeOperation(operation);
+        return OperationResult.execute(() -> {
+            LocatorChain locatorChain = element.getLocatorChain().addLocator(elementPropertyHolder.getLocatorHolder());
+            JsOperation<SingleResult<String>> operation = JsOperation.single(locatorChain, elementPropertyHolder.getJsFunctionClass());
+            return element.getDriverInstance().getDriverOperationExecutor().executeOperation(operation).getItem();
+        });
     }
 
 }

@@ -1,11 +1,12 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
 import io.perfeccionista.framework.exceptions.mapper.SeleniumExceptionMapper;
-import io.perfeccionista.framework.pagefactory.elements.base.ChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
+import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
+import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetWebElement;
-import io.perfeccionista.framework.pagefactory.operations.DriverJsOperation;
+import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,16 +14,15 @@ import org.openqa.selenium.interactions.Actions;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.HOVER;
 
-public class SeleniumHoverTo implements ElementMethodImplementation<Void> {
+public class SeleniumHoverTo implements ElementMethodImplementation<WebChildElement, Void> {
 
     @Override
-    public OperationResult<Void> execute(ChildElement element, Object... args) {
+    public OperationResult<Void> execute(WebChildElement element, Object... args) {
         boolean withOutOfBounds = (Boolean) args[0];
-        DriverJsOperation<WebElement> operation = DriverJsOperation.of(element.getLocatorChainTo(HOVER), GetWebElement.class);
         return OperationResult.execute(() -> {
-            WebDriver webDriver = (WebDriver) element.getDriverInstance().getDriver();
-            WebElement webElement = element.getDriverInstance().getDriverOperationExecutor().executeOperation(operation)
-                    .getResultOrThrow();
+            JsOperation<SingleResult<WebElement>> operation = JsOperation.single(element.getLocatorChainTo(HOVER), GetWebElement.class);
+            WebDriver webDriver = element.getDriverInstance().getDriver();
+            WebElement webElement = element.getDriverInstance().getDriverOperationExecutor().executeOperation(operation).getItem();
             if (withOutOfBounds) {
                 Bounds bounds = element.getBounds().getResultOrThrow();
 

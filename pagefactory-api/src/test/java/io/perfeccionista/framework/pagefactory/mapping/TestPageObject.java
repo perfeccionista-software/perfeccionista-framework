@@ -3,48 +3,49 @@ package io.perfeccionista.framework.pagefactory.mapping;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.ElementsConfiguration;
 import io.perfeccionista.framework.pagefactory.elements.Block;
-import io.perfeccionista.framework.pagefactory.elements.Button;
 import io.perfeccionista.framework.pagefactory.elements.Page;
-import io.perfeccionista.framework.pagefactory.elements.Table;
 import io.perfeccionista.framework.pagefactory.elements.TextBlock;
-import io.perfeccionista.framework.pagefactory.elements.UnorderedList;
 import io.perfeccionista.framework.pagefactory.elements.locators.Locator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.ColumnMapper;
 import io.perfeccionista.framework.pagefactory.elements.mapping.MappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.mapping.MappedTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.MappedTableColumns;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UsePageFactoryElementsConfiguration;
-import io.perfeccionista.framework.pagefactory.elements.web.WebLink;
+import io.perfeccionista.framework.pagefactory.elements.web.WebButton;
+import io.perfeccionista.framework.pagefactory.elements.web.WebPage;
+import io.perfeccionista.framework.pagefactory.elements.web.WebTable;
+import io.perfeccionista.framework.pagefactory.elements.web.WebUnorderedList;
+import io.perfeccionista.framework.pagefactory.elements.web.impl.WebLinkImpl;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
-import static io.perfeccionista.framework.pagefactory.elements.locators.Components.BODY;
-import static io.perfeccionista.framework.pagefactory.elements.locators.Components.HEADER;
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.LI;
+import static io.perfeccionista.framework.pagefactory.elements.locators.Components.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.locators.Components.THEAD_ROW;
 
 @Name("Payments")
 @UsePageFactoryElementsConfiguration(ElementsConfiguration.class)
-public interface TestPageObject extends Page {
+public interface TestPageObject extends WebPage {
 
     // Return implementation
     @Name("Send")
     @Locator(id = "send--link")
-    WebLink sendLink();
+    WebLinkImpl sendLink();
 
     // Return interface
     @Name("Ok")
     @Locator(id = "ok--button")
-    Button okButton();
+    WebButton okButton();
 
     @Name("Numbers list")
     @Locator(id = "number--List")
     @Locator(component = LI, xpath = ".//LI")
     @MappedBlock(SimpleStringBlock.class)
-    UnorderedList myList();
+    WebUnorderedList myList();
 
     @Name("Payments table")
     @Locator(id = "payments-table")
-    @Locator(component = HEADER, xpath = ".//TH")
-    @Locator(component = BODY, xpath = ".//TR")
+    @Locator(component = THEAD_ROW, xpath = ".//TH")
+    @Locator(component = TBODY_ROW, xpath = ".//TR")
     @MappedTableColumns({
             @MappedTableColumn(name = "Checkbox", mapper = SimpleColumn.class),
             @MappedTableColumn(name = "Payment number", mapper = SimpleColumn.class),
@@ -55,7 +56,7 @@ public interface TestPageObject extends Page {
             @MappedTableColumn(name = "Bank", mapper = SimpleColumn.class),
             @MappedTableColumn(name = "State", mapper = SimpleColumn.class)
     })
-    Table myTable();
+    WebTable myTable();
 
     // При создании экземпляра, логика метода должна браться из интерфейса
     @Override
