@@ -6,6 +6,8 @@ import io.perfeccionista.framework.exceptions.ElementPropertyNotDeclaredExceptio
 import io.perfeccionista.framework.exceptions.ElementStateNotDeclaredException;
 import io.perfeccionista.framework.pagefactory.driver.DriverInstance;
 import io.perfeccionista.framework.pagefactory.elements.AbstractChildElement;
+import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.locators.LocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodsRegistry;
@@ -24,6 +26,9 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_PROPERTY_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_STATE_NOT_DECLARED;
@@ -57,6 +62,20 @@ public abstract class AbstractWebChildElement extends AbstractChildElement<WebPa
     @Override
     public <T> WebElementMethodImplementation<T> getMethodImplementation(String methodType, Class<T> returnType) {
         return elementMethodsRegistry.getElementMethod(methodType, returnType);
+    }
+
+    @Override
+    public LocatorChain getLocatorChainTo(String locatorName) {
+        Optional<LocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
+        if (optionalLocator.isPresent()) {
+            return getLocatorChain().addLocator(optionalLocator.get());
+        }
+        return getLocatorChain();
+    }
+
+    @Override
+    public LocatorChain getLocatorChain() {
+        return getParent().getLocatorChain().addLocator(getLocator(ROOT));
     }
 
     public OperationResult<WebElement> getWebElement() {
@@ -106,11 +125,37 @@ public abstract class AbstractWebChildElement extends AbstractChildElement<WebPa
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(super.toString());
+        StringBuilder sb = new StringBuilder();
+
+        /**
+         * TODO: Добавлять цепочку полей и классов в чейн билдер или проходить рекурсивно тут?
+         *  Нужен путь к пейджобжекту в виде:
+         *      PageClass:
+         *          FieldClass: fieldName
+         *              ElementClass: elementFieldName
+         */
+
+        sb.append("\nNames:");
+        this.namesRegistry.forEach(name ->
+                sb.append("\n    ").append(name));
+        sb.append("\nRequired: ").append(required);
+        sb.append("\nClass: ").append(this.getClass().getCanonicalName());
+        sb.append("\nLocatorChain:");
+        sb.append("\n    ").append(getLocatorChain().getLocatorChain().stream()
+                .map(LocatorHolder::getShortDescription)
+                .collect(Collectors.joining(" -> ")));
+        sb.append("\nLocators:");
+        this.locatorRegistry.forEach((key, value) ->
+                sb.append("\n    Locator: ").append(key).append(" = ").append(value.toString()));
         sb.append("\nElementMethods:");
         this.elementMethodsRegistry.forEach((key, value) ->
                 sb.append("\n    ElementMethod: ").append(key).append(" = ").append(value.getClass().getCanonicalName()));
-        sb.append("\n");
+        sb.append("\nElementProperties:");
+        this.elementPropertiesRegistry.forEach((key, value) ->
+                sb.append("\n    ElementProperty: ").append(key).append(" = ").append(value.toString()));
+        sb.append("\nElementStates:");
+        this.elementStatesRegistry.forEach((key, value) ->
+                sb.append("\n    ElementState: ").append(key).append(" = ").append(value.toString()));
         return sb.toString();
     }
 

@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.driver.DriverInstance;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorsRegistry;
-import io.perfeccionista.framework.pagefactory.elements.registry.WebElementsRegistry;
+import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.web.WebPage;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
@@ -20,7 +20,7 @@ public class WebPageImpl implements WebPage {
     protected final DriverInstance<RemoteWebDriver> driverInstance;
     protected final ElementsConfiguration configuration;
 
-    protected WebElementsRegistry elementsRegistry;
+    protected WebElementRegistry elementsRegistry;
     protected LocatorsRegistry locatorRegistry;
     protected NamesRegistry namesRegistry;
 
@@ -30,13 +30,13 @@ public class WebPageImpl implements WebPage {
     }
 
     @Override
-    public DriverInstance<RemoteWebDriver> getDriverInstance() {
-        return driverInstance;
+    public ElementsConfiguration getElementsConfiguration() {
+        return configuration;
     }
 
     @Override
-    public ElementsConfiguration getElementsConfiguration() {
-        return configuration;
+    public DriverInstance<RemoteWebDriver> getDriverInstance() {
+        return driverInstance;
     }
 
     @Override

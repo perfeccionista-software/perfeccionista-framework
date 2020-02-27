@@ -2,18 +2,17 @@ package io.perfeccionista.framework.pagefactory.mapping;
 
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.ElementsConfiguration;
-import io.perfeccionista.framework.pagefactory.elements.Block;
-import io.perfeccionista.framework.pagefactory.elements.Page;
-import io.perfeccionista.framework.pagefactory.elements.TextBlock;
 import io.perfeccionista.framework.pagefactory.elements.locators.Locator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.ColumnMapper;
-import io.perfeccionista.framework.pagefactory.elements.mapping.MappedBlock;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebColumnMapper;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.mapping.MappedTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.MappedTableColumns;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UsePageFactoryElementsConfiguration;
+import io.perfeccionista.framework.pagefactory.elements.web.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.web.WebButton;
 import io.perfeccionista.framework.pagefactory.elements.web.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.web.WebTable;
+import io.perfeccionista.framework.pagefactory.elements.web.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.web.WebUnorderedList;
 import io.perfeccionista.framework.pagefactory.elements.web.impl.WebLinkImpl;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
@@ -39,7 +38,7 @@ public interface TestPageObject extends WebPage {
     @Name("Numbers list")
     @Locator(id = "number--List")
     @Locator(component = LI, xpath = ".//LI")
-    @MappedBlock(SimpleStringBlock.class)
+    @WebMappedBlock(SimpleStringBlock.class)
     WebUnorderedList myList();
 
     @Name("Payments table")
@@ -47,14 +46,14 @@ public interface TestPageObject extends WebPage {
     @Locator(component = THEAD_ROW, xpath = ".//TH")
     @Locator(component = TBODY_ROW, xpath = ".//TR")
     @MappedTableColumns({
-            @MappedTableColumn(name = "Checkbox", mapper = SimpleColumn.class),
-            @MappedTableColumn(name = "Payment number", mapper = SimpleColumn.class),
-            @MappedTableColumn(name = "Payment date", mapper = SimpleColumn.class),
-            @MappedTableColumn(name = "Payment sum", mapper = SimpleColumn.class),
-            @MappedTableColumn(name = "Payer", mapper = SimpleColumn.class),
-            @MappedTableColumn(name = "Recipient", mapper = SimpleColumn.class),
-            @MappedTableColumn(name = "Bank", mapper = SimpleColumn.class),
-            @MappedTableColumn(name = "State", mapper = SimpleColumn.class)
+            @MappedTableColumn(name = "Checkbox", mapper = SimpleWebColumn.class),
+            @MappedTableColumn(name = "Payment number", mapper = SimpleWebColumn.class),
+            @MappedTableColumn(name = "Payment date", mapper = SimpleWebColumn.class),
+            @MappedTableColumn(name = "Payment sum", mapper = SimpleWebColumn.class),
+            @MappedTableColumn(name = "Payer", mapper = SimpleWebColumn.class),
+            @MappedTableColumn(name = "Recipient", mapper = SimpleWebColumn.class),
+            @MappedTableColumn(name = "Bank", mapper = SimpleWebColumn.class),
+            @MappedTableColumn(name = "State", mapper = SimpleWebColumn.class)
     })
     WebTable myTable();
 
@@ -67,33 +66,33 @@ public interface TestPageObject extends WebPage {
 
 
 
-    class SimpleColumn implements ColumnMapper {
+    class SimpleWebColumn implements WebColumnMapper {
 
         @Override
         @Locator(xpath = ".//*[@test-id='simpleHeaderId']")
-        public Class<? extends Block> getHeader() {
+        public Class<? extends WebBlock> getHeader() {
             return SimpleStringBlock.class;
         }
 
         @Override
         @Locator(xpath = ".//*[@test-id='simpleBodyId']")
-        public Class<? extends Block> getBody() {
+        public Class<? extends WebBlock> getBody() {
             return SimpleStringBlock.class;
         }
 
         // Not used without return type and locator
         @Override
-        public Class<? extends Block> getFooter() {
+        public Class<? extends WebBlock> getFooter() {
             return null;
         }
 
     }
 
-    interface SimpleStringBlock extends Block {
+    interface SimpleStringBlock extends WebBlock {
 
         @Name("Text")
         @Locator(xpath = ".//span")
-        TextBlock text();
+        WebTextBlock text();
 
     }
 

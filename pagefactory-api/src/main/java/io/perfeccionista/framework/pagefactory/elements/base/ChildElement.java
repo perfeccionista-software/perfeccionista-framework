@@ -10,7 +10,7 @@ import io.perfeccionista.framework.pagefactory.elements.states.ElementStateAvail
 
 public interface ChildElement<T extends ParentElement<?>> extends Element,
         ElementPropertyAvailable, ElementStateAvailable, IsDisplayedAvailable,
-        HoverToAvailable, ScrollToAvailable, GetBoundsAvailable, GetScreenshotAvailable {
+        GetBoundsAvailable, GetScreenshotAvailable {
 
     T getParent();
 

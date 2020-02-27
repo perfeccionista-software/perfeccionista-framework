@@ -1,13 +1,12 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetSize;
 import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
-public class JsSize implements ElementMethodImplementation<WebChildElement, Integer> {
+public class JsSize implements WebElementMethodImplementation<Integer> {
 
     @Override
     public OperationResult<Integer> execute(WebChildElement element, Object... args) {

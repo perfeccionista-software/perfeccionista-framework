@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.web.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.web.WebUnorderedList;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsScrollToBlockElement;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsSize;
-import io.perfeccionista.framework.pagefactory.itemextractor.JsWebBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.itemextractor.js.JsBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.itemfilter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.itemfilter.js.JsBlockFilter;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
@@ -26,12 +26,12 @@ public class WebUnorderedListImpl extends AbstractWebChildElement implements Web
     protected Class<? extends WebBlock> blockMapper;
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsWebBlockValueExtractor<V> extractor) {
+    public <V> OperationResult<MultipleResult<V>> getValues(JsBlockValueExtractor<V> extractor) {
         return OperationResult.execute(() -> extractor.extractMultipleValues(this, Set.of()));
     }
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsWebBlockValueExtractor<V> extractor, JsBlockFilter filter) {
+    public <V> OperationResult<MultipleResult<V>> getValues(JsBlockValueExtractor<V> extractor, JsBlockFilter filter) {
         return OperationResult.execute(() -> {
             MultipleResult<Integer> result = filter.multipleResult(this);
             return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result.getItems().keySet());

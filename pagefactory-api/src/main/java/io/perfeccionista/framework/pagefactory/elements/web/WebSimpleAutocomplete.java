@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements.web;
 
-import io.perfeccionista.framework.pagefactory.elements.SimpleAutocomplete;
-import io.perfeccionista.framework.pagefactory.itemfilter.js.JsStringBlockFilter;
+import io.perfeccionista.framework.pagefactory.elements.methods.availability.ClearAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.availability.SendKeysAvailable;
 
-public interface WebSimpleAutocomplete extends SimpleAutocomplete<JsStringBlockFilter>, WebChildElement {
+public interface WebSimpleAutocomplete extends WebSimpleDropDownList,
+        SendKeysAvailable, ClearAvailable {
 }

@@ -1,13 +1,13 @@
 package io.perfeccionista.framework.pagefactory.elements.web.impl;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.Locator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.ColumnMapper;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebColumnMapper;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.web.AbstractWebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.web.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsScrollToTableRowElement;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsSize;
-import io.perfeccionista.framework.pagefactory.itemextractor.JsWebTableRowValueExtractor;
+import io.perfeccionista.framework.pagefactory.itemextractor.js.JsTableRowValueExtractor;
 import io.perfeccionista.framework.pagefactory.itemfilter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.itemfilter.js.JsTableRowFilter;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
@@ -29,15 +29,15 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = SIZE_METHOD, implementation = JsSize.class)
 public class WebTableImpl extends AbstractWebChildElement implements WebTable {
 
-    protected Map<String, ColumnMapper> columnMappers;
+    protected Map<String, WebColumnMapper> columnMappers;
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsWebTableRowValueExtractor<V> extractor) {
+    public <V> OperationResult<MultipleResult<V>> getValues(JsTableRowValueExtractor<V> extractor) {
         return OperationResult.execute(() -> extractor.extractMultipleValues(this, Set.of()));
     }
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsWebTableRowValueExtractor<V> extractor, JsTableRowFilter filter) {
+    public <V> OperationResult<MultipleResult<V>> getValues(JsTableRowValueExtractor<V> extractor, JsTableRowFilter filter) {
         return OperationResult.execute(() -> {
             MultipleResult<Integer> result = filter.multipleResult(this);
             return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result.getItems().keySet());
@@ -45,12 +45,12 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
     }
 
     @Override
-    public <V> OperationResult<V> getHeaderValue(JsWebTableRowValueExtractor<V> extractor) {
+    public <V> OperationResult<V> getHeaderValue(JsTableRowValueExtractor<V> extractor) {
         return OperationResult.execute(() -> extractor.extractSingleHeaderValue(this).getItem());
     }
 
     @Override
-    public <V> OperationResult<V> getFooterValue(JsWebTableRowValueExtractor<V> extractor) {
+    public <V> OperationResult<V> getFooterValue(JsTableRowValueExtractor<V> extractor) {
         return OperationResult.execute(() -> extractor.extractSingleFooterValue(this).getItem());
     }
 
@@ -65,7 +65,7 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
     }
 
     @Override
-    public Optional<ColumnMapper> getColumnMapper(String columnName) {
+    public Optional<WebColumnMapper> getColumnMapper(String columnName) {
         return Optional.ofNullable(columnMappers.get(columnName));
     }
 

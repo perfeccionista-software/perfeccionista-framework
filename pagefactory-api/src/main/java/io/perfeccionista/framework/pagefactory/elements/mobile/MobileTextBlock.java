@@ -1,4 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.mobile;
 
-public class MobileTextBlock {
+import io.perfeccionista.framework.pagefactory.elements.methods.availability.GetTextAvailable;
+
+public interface MobileTextBlock extends MobileChildElement,
+        GetTextAvailable {
 }

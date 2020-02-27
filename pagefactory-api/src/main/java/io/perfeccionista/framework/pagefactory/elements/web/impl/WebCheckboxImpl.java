@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements.web.impl;
 
-import io.perfeccionista.framework.pagefactory.elements.Checkbox;
 import io.perfeccionista.framework.pagefactory.elements.locators.Locator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.web.AbstractWebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.web.WebCheckbox;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsGetLabel;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.SeleniumClick;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.SeleniumIsEnabled;
@@ -21,7 +21,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = GET_LABEL_METHOD, implementation = JsGetLabel.class)
 @ElementMethod(type = IS_ENABLED_METHOD, implementation = SeleniumIsEnabled.class)
 @ElementMethod(type = IS_SELECTED_METHOD, implementation = SeleniumIsSelected.class)
-public class WebCheckboxImpl extends AbstractWebChildElement implements Checkbox {
+public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheckbox {
 
     @Override
     public OperationResult<Void> click() {

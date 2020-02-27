@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.web.impl;
 
-import io.perfeccionista.framework.pagefactory.elements.registry.WebElementsRegistry;
+import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 import io.perfeccionista.framework.pagefactory.elements.web.AbstractWebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.web.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
@@ -11,7 +11,7 @@ public class WebBlockImpl extends AbstractWebChildElement implements WebBlock {
 
     protected int index = -1;
 
-    protected WebElementsRegistry elementsRegistry;
+    protected WebElementRegistry elementsRegistry;
 
     @Override
     public int getIndex() {
@@ -19,7 +19,7 @@ public class WebBlockImpl extends AbstractWebChildElement implements WebBlock {
     }
 
     @Override
-    public WebElementsRegistry getWebElementRegistry() {
+    public WebElementRegistry getWebElementRegistry() {
         return this.elementsRegistry;
     }
 

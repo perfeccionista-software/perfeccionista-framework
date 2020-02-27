@@ -1,10 +1,11 @@
 package io.perfeccionista.framework.pagefactory.elements.web;
 
-import io.perfeccionista.framework.pagefactory.elements.Block;
-import io.perfeccionista.framework.pagefactory.elements.registry.WebElementsRegistry;
+import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 
-public interface WebBlock extends Block, WebParentElement, WebChildElement {
+public interface WebBlock extends WebChildElement, WebParentElement {
 
-    WebElementsRegistry getWebElementRegistry();
+    WebElementRegistry getWebElementRegistry();
+
+    int getIndex();
 
 }

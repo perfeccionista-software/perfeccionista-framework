@@ -5,11 +5,10 @@ import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetText;
 import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.TEXT;
 
-public class JsGetText implements ElementMethodImplementation<WebChildElement, String> {
+public class JsGetText implements WebElementMethodImplementation<String> {
 
     @Override
     public OperationResult<String> execute(WebChildElement element, Object... args) {

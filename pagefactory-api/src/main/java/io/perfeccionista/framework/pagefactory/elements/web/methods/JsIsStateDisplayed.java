@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.states.ElementStateHolder;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
@@ -9,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.js.IsDisplayed;
 import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
-public class JsIsStateDisplayed implements ElementMethodImplementation<WebChildElement, Boolean> {
+public class JsIsStateDisplayed implements WebElementMethodImplementation<Boolean> {
 
     @Override
     public OperationResult<Boolean> execute(WebChildElement element, Object... args) {

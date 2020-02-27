@@ -1,14 +1,13 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.properties.ElementPropertyHolder;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
-public class JsGetPropertyValue implements ElementMethodImplementation<WebChildElement, String> {
+public class JsGetPropertyValue implements WebElementMethodImplementation<String> {
 
     @Override
     public OperationResult<String> execute(WebChildElement element, Object... args) {

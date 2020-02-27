@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.web.AbstractWebChildElem
 import io.perfeccionista.framework.pagefactory.elements.web.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsScrollToBlockElement;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsSize;
-import io.perfeccionista.framework.pagefactory.itemextractor.JsWebRadioButtonValueExtractor;
+import io.perfeccionista.framework.pagefactory.itemextractor.js.JsWebRadioButtonValueExtractor;
 import io.perfeccionista.framework.pagefactory.itemfilter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.itemfilter.js.JsRadioButtonFilter;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;

@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetWebElement;
@@ -10,7 +9,7 @@ import org.openqa.selenium.WebElement;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.ROOT;
 
-public class JsGetWebElement implements ElementMethodImplementation<WebChildElement, WebElement> {
+public class JsGetWebElement implements WebElementMethodImplementation<WebElement> {
 
     @Override
     public OperationResult<WebElement> execute(WebChildElement element, Object... args) {

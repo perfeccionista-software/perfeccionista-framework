@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
 import io.perfeccionista.framework.exceptions.mapper.SeleniumExceptionMapper;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetWebElement;
@@ -11,7 +10,7 @@ import org.openqa.selenium.WebElement;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.SELECTED;
 
-public class SeleniumIsSelected implements ElementMethodImplementation<WebChildElement, Boolean> {
+public class SeleniumIsSelected implements WebElementMethodImplementation<Boolean> {
 
     public OperationResult<Boolean> execute(WebChildElement element, Object... args) {
         return OperationResult.execute(() -> {

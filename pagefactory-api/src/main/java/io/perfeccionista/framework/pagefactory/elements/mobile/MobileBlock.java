@@ -1,4 +1,11 @@
 package io.perfeccionista.framework.pagefactory.elements.mobile;
 
-public class MobileBlock {
+import io.perfeccionista.framework.pagefactory.elements.registry.MobileElementRegistry;
+
+public interface MobileBlock extends MobileChildElement, MobileParentElement {
+
+    MobileElementRegistry getMobileElementRegistry();
+
+    int getIndex();
+
 }

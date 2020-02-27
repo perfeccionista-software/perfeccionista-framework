@@ -1,13 +1,7 @@
 package io.perfeccionista.framework.pagefactory;
 
 import io.perfeccionista.framework.pagefactory.elements.AbstractChildElement;
-import io.perfeccionista.framework.pagefactory.elements.Button;
-import io.perfeccionista.framework.pagefactory.elements.Checkbox;
 import io.perfeccionista.framework.pagefactory.elements.base.Element;
-import io.perfeccionista.framework.pagefactory.elements.web.WebButton;
-import io.perfeccionista.framework.pagefactory.elements.web.WebCheckbox;
-import io.perfeccionista.framework.pagefactory.elements.web.impl.WebButtonImpl;
-import io.perfeccionista.framework.pagefactory.elements.web.impl.WebCheckboxImpl;
 import io.perfeccionista.framework.pagefactory.js.JsFunction;
 
 import java.util.AbstractMap.SimpleEntry;

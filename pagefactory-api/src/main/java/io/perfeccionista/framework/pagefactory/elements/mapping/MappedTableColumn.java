@@ -17,6 +17,6 @@ public @interface MappedTableColumn {
 
     String name();
 
-    Class<? extends ColumnMapper> mapper();
+    Class<? extends WebColumnMapper> mapper();
 
 }

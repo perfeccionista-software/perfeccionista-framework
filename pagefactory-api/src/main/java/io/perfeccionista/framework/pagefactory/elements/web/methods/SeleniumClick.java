@@ -6,12 +6,11 @@ import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetWebElement;
 import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import org.openqa.selenium.WebElement;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.CLICK;
 
-public class SeleniumClick implements ElementMethodImplementation<WebChildElement, Void> {
+public class SeleniumClick implements WebElementMethodImplementation<Void> {
 
     public OperationResult<Void> execute(WebChildElement element, Object... args) {
         return OperationResult.execute(() -> {

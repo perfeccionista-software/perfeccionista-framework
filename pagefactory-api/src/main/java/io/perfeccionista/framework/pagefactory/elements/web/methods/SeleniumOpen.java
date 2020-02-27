@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
 import io.perfeccionista.framework.exceptions.mapper.SeleniumExceptionMapper;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.web.WebDropDownList;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
@@ -12,7 +11,7 @@ import org.openqa.selenium.WebElement;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.OPEN;
 
-public class SeleniumOpen implements ElementMethodImplementation<WebChildElement, Void> {
+public class SeleniumOpen implements WebElementMethodImplementation<Void> {
 
     public OperationResult<Void> execute(WebChildElement element, Object... args) {
         WebDropDownList dropDownList = (WebDropDownList) element;

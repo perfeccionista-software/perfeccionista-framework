@@ -1,13 +1,13 @@
 package io.perfeccionista.framework.pagefactory.elements.web.impl;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.Locator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.ColumnMapper;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebColumnMapper;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.web.AbstractWebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.web.WebSimpleTable;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsScrollToStringTableRowElement;
 import io.perfeccionista.framework.pagefactory.elements.web.methods.JsSize;
-import io.perfeccionista.framework.pagefactory.itemextractor.WebSimpleTableRowValueExtractor;
+import io.perfeccionista.framework.pagefactory.itemextractor.js.WebSimpleTableRowValueExtractor;
 import io.perfeccionista.framework.pagefactory.itemfilter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.itemfilter.js.JsStringTableRowFilter;
 import io.perfeccionista.framework.pagefactory.operations.OperationResult;
@@ -29,7 +29,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = SIZE_METHOD, implementation = JsSize.class)
 public class WebSimpleTableImpl extends AbstractWebChildElement implements WebSimpleTable {
 
-    protected Map<String, ColumnMapper> columnMappers;
+    protected Map<String, WebColumnMapper> columnMappers;
 
     @Override
     public OperationResult<String> getHeaderValue(String columnName) {
@@ -64,7 +64,7 @@ public class WebSimpleTableImpl extends AbstractWebChildElement implements WebSi
     }
 
     @Override
-    public Optional<ColumnMapper> getColumnMapper(String columnName) {
+    public Optional<WebColumnMapper> getColumnMapper(String columnName) {
         return Optional.ofNullable(columnMappers.get(columnName));
     }
 

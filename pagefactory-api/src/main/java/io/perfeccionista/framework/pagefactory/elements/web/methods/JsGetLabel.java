@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetText;
@@ -9,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.LABEL;
 
-public class JsGetLabel implements ElementMethodImplementation<WebChildElement, String> {
+public class JsGetLabel implements WebElementMethodImplementation<String> {
 
     @Override
     public OperationResult<String> execute(WebChildElement element, Object... args) {

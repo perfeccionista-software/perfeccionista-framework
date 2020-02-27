@@ -2,7 +2,6 @@ package io.perfeccionista.framework.pagefactory.elements.web.methods;
 
 import io.perfeccionista.framework.exceptions.mapper.SeleniumExceptionMapper;
 import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodImplementation;
 import io.perfeccionista.framework.pagefactory.elements.web.WebChildElement;
 import io.perfeccionista.framework.pagefactory.itemfilter.SingleResult;
 import io.perfeccionista.framework.pagefactory.js.GetWebElement;
@@ -14,7 +13,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.HOVER;
 
-public class SeleniumHoverTo implements ElementMethodImplementation<WebChildElement, Void> {
+public class SeleniumHoverTo implements WebElementMethodImplementation<Void> {
 
     @Override
     public OperationResult<Void> execute(WebChildElement element, Object... args) {
