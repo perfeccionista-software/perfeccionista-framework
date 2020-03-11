@@ -24,6 +24,7 @@ public class Components {
     public static final String OPEN = "OPEN";
     public static final String SELECTED = "SELECTED";
     public static final String TEXT = "TEXT";
+    public static final String TAP = "TAP";
 
 
 }

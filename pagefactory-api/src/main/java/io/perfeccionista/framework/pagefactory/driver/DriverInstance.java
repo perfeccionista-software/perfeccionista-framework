@@ -1,8 +1,6 @@
 package io.perfeccionista.framework.pagefactory.driver;
 
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
-import io.perfeccionista.framework.pagefactory.js.JsRepository;
-import io.perfeccionista.framework.pagefactory.operations.DriverOperationExecutor;
 
 /**
  * На основе конфигурации создает/закрывает и конфигурирует экземпляр браузера
@@ -14,10 +12,6 @@ import io.perfeccionista.framework.pagefactory.operations.DriverOperationExecuto
 public interface DriverInstance<T> {
 
     T getDriver();
-
-    JsRepository getJsRepository();
-
-    DriverOperationExecutor getDriverOperationExecutor();
 
     ExceptionMapper getExceptionMapper(Class<? extends ExceptionMapper> exceptionMapperClass);
 

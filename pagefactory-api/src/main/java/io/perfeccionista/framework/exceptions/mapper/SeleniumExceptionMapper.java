@@ -5,12 +5,12 @@ import java.util.function.Supplier;
 public class SeleniumExceptionMapper implements ExceptionMapper {
 
     @Override
-    public <T> T execute(Supplier<T> supplier) {
+    public <T> T map(Supplier<T> supplier) {
         return null;
     }
 
     @Override
-    public void execute(Runnable runnable) {
+    public void map(Runnable runnable) {
 
     }
 

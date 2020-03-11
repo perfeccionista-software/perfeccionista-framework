@@ -11,6 +11,7 @@ public class AvailableMethod {
     public static final String GET_SCREENSHOT_METHOD = "GetScreenshot";
     public static final String GET_TEXT_METHOD = "GetText";
     public static final String GET_WEB_ELEMENT_METHOD = "GetWebElement";
+    public static final String GET_MOBILE_ELEMENT_METHOD = "GetMobileElement";
     public static final String HOVER_TO_METHOD = "HoverTo";
     public static final String IS_DISPLAYED_METHOD = "IsDisplayed";
     public static final String IS_ENABLED_METHOD = "IsEnabled";
@@ -20,9 +21,11 @@ public class AvailableMethod {
     public static final String SCROLL_TO_METHOD = "ScrollTo";
     public static final String SWIPE_TO_METHOD = "SwipeTo";
     public static final String SCROLL_TO_ELEMENT_METHOD = "ScrollToElement";
+    public static final String SWIPE_TO_ELEMENT_METHOD = "SwipeToElement";
     public static final String SEND_KEYS_METHOD = "SendKeys";
     public static final String SIZE_METHOD = "Size";
     public static final String SUBMIT_METHOD = "Submit";
+    public static final String TAP_METHOD = "Tap";
 
 
 }

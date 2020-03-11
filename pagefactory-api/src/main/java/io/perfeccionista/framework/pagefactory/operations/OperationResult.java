@@ -52,7 +52,7 @@ public class OperationResult<T> {
         return Optional.ofNullable(exception);
     }
 
-    public static <T> OperationResult<T> execute(@NotNull Supplier<T> supplier) {
+    public static <T> OperationResult<T> of(@NotNull Supplier<T> supplier) {
         try {
             return success(supplier.get());
         } catch (PerfeccionistaException e) {
@@ -60,7 +60,7 @@ public class OperationResult<T> {
         }
     }
 
-    public static OperationResult<Void> execute(@NotNull Runnable runnable) {
+    public static OperationResult<Void> of(@NotNull Runnable runnable) {
         try {
             runnable.run();
             return success(null);

@@ -1,5 +1,6 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.utils.ReflectionUtils.Order;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
@@ -188,9 +189,9 @@ public class Environment {
         EnvironmentLogger environmentLogger = EnvironmentLogger.of(environmentConfiguration);
         Map<Annotation, Integer> servicesMap = new HashMap<>();
 
-        ReflectionUtils.getClassesWithInheritance(environmentConfiguration.getClass(), EnvironmentConfiguration.class)
+        ReflectionUtils.getClassInheritors(EnvironmentConfiguration.class, environmentConfiguration.getClass(), Order.DESC)
                 .forEach(configurationClass -> findRepeatableAnnotations(configurationClass, UseService.class)
-                        .forEach(annotation -> servicesMap.put(annotation, annotation.order())));
+                        .forEach(annotation -> servicesMap.putIfAbsent(annotation, annotation.order())));
 
         servicesMap.entrySet().stream()
                 .sorted(Comparator.comparingInt(Entry::getValue))

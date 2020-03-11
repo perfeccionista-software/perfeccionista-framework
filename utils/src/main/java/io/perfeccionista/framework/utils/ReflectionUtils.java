@@ -6,7 +6,6 @@ import io.perfeccionista.framework.exceptions.ConstructorNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CONSTRUCTOR_NOT_FOUND;
 
@@ -27,24 +26,6 @@ public final class ReflectionUtils {
     }
 
     /**
-     * Возвращает список {@link List<Class>} классов, который представляет собой
-     * иерархию их наследования от исходного класса до {@link Object}.<br/>
-     * @param targetClass   класс {@link Class} для обработки
-     * @param ancestorClass класс {@link Class} до которого будет обработана иерархия.
-     * @return              классы иерархии
-     */
-    public static <T> Deque<Class<? extends T>> getClassesWithInheritance(@NotNull Class<? extends T> targetClass, @NotNull Class<T> ancestorClass) {
-        Deque<Class<? extends T>> classesWithInheritance = new ArrayDeque<>();
-        Class<? extends T> processedClass = targetClass;
-        while (ancestorClass.isAssignableFrom(processedClass)) {
-            classesWithInheritance.addFirst(processedClass);
-            //noinspection unchecked
-            processedClass = (Class<T>) processedClass.getSuperclass();
-        }
-        return classesWithInheritance;
-    }
-
-    /**
      * Проверяет что переданный экземпляр {@param originalInstance} является наследником класса {@param comparedClass}
      * @param originalInstance экземпляр для проверки
      * @param comparedClass    класс, по отношению к которому проводится проверка принадлежности
@@ -62,6 +43,48 @@ public final class ReflectionUtils {
      */
     public static boolean isSubtypeOf(@NotNull Class<?> originalClass, @NotNull Class<?> comparedClass) {
         return comparedClass.isAssignableFrom(originalClass);
+    }
+
+    /**
+     * Метод возвращает цепочку классов, которые являются предками заданного класса {@code inheritorClass}
+     * до ограничивающего класса {@code baseClass}.<br/>
+     * Например, у нас есть цепочка классов:<br/>
+     * {@code Object -> AbstractCustomizableElement -> Button -> MyButton -> MyTunedButton}<br/>
+     * <br/>
+     * При вызове метода {@code getClassChain(Button.class, MyTunedButton.class, Order.DESC)}<br/>
+     * Мы получим результат {MyTunedButton.class, MyButton.class, Button.class}<br/>
+     * <br/>
+     * При вызове метода {@code getClassChain(Button.class, MyTunedButton.class, Order.ASC)}<br/>
+     * Мы получим результат {Button.class, MyButton.class, MyTunedButton.class}<br/>
+     *
+     * @param baseClass   класс-ограничитель цепочки наследования (класс-предок)
+     * @param inheritorClass класс который нам необходимо исследовать (класс-потомок)
+     * @param order     порядок возвращаемых значений
+     * @param <T>       тип класса-ограничителя
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Deque<Class<T>> getClassInheritors(@NotNull Class<T> baseClass,
+                                                         @NotNull Class<? extends T> inheritorClass,
+                                                         @NotNull Order order) {
+        Deque<Class<T>> classChain = new ArrayDeque<>();
+        Class<?> processedClass = inheritorClass;
+        while (baseClass.isAssignableFrom(processedClass)) {
+            if (order == Order.ASC) {
+                classChain.addFirst((Class<T>) processedClass);
+            }
+            if (order == Order.DESC) {
+                classChain.addLast((Class<T>) processedClass);
+            }
+            processedClass = processedClass.getSuperclass();
+        }
+        return classChain;
+    }
+
+    /**
+     *
+     */
+    public enum Order {
+        ASC, DESC
     }
 
 }

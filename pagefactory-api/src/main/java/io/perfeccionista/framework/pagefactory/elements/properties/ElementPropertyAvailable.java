@@ -7,10 +7,10 @@ import java.util.Optional;
 /**
  * TODO JavaDoc
  */
-public interface ElementPropertyAvailable {
+public interface ElementPropertyAvailable<T extends ElementPropertyHolder> {
 
     OperationResult<String> getPropertyValue(String propertyName);
 
-    Optional<ElementPropertyHolder> getProperty(String propertyName);
+    Optional<T> getProperty(String propertyName);
 
 }

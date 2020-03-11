@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.base;
 
+import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorHolder;
 
 import java.util.Set;
@@ -11,6 +12,10 @@ import java.util.Set;
 public interface Element {
 
     LocatorHolder getLocator(String locatorName);
+
+    LocatorChain getLocatorChainTo(String locatorName);
+
+    LocatorChain getLocatorChain();
 
     Set<String> getNames();
 

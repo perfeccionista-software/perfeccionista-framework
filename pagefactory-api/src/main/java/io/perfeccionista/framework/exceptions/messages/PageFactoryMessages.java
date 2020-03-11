@@ -9,6 +9,7 @@ public enum PageFactoryMessages implements Messages {
     INCORRECT_PARENT_ELEMENT("Incorrect parent element type. %s can't have child elements"),
     LOCATOR_NOT_DECLARED("Locator %s is not declared for element"),
     METHOD_NOT_DECLARED("Method with name %s is not declared for element"),
+    PAGE_NAME_DUPLICATE("Page name %s used for classes %s and %s"),
     REQUESTED_NODE_HASH_NOT_CALCULATED("Requested node hash not calculated"),
     ;
 
