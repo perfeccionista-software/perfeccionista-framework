@@ -9,11 +9,11 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.GET_TEXT_METHOD;
 
 @ElementMethod(type = GET_TEXT_METHOD, implementation = AppiumGetText.class)
-public class MobileTextBlockImpl extends AbstractMobileChildElement implements MobileTextBlock {
-
-    @Override
-    public OperationResult<String> getText() {
-        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
-    }
+public abstract class MobileTextBlockImpl extends AbstractMobileChildElement implements MobileTextBlock {
+//
+//    @Override
+//    public OperationResult<String> getText() {
+//        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
+//    }
 
 }

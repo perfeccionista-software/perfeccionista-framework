@@ -13,11 +13,15 @@ public class WebPageInitializer {
         Optional<ElementsConfiguration> overriddenConfiguration = handleUseElementsConfiguration(pageClass);
         ElementsConfiguration configuration = overriddenConfiguration.orElse(parentConfiguration);
 
+//        configuration.getElementImplementations().get(WebPage.class)
 
 
         return null;
     }
 
+    private WebPage createPageInstance(Class<? extends WebPage> pageClass, Class<? extends WebPage> pageImplementationClass) {
+        return null;
+    }
 
 
 }

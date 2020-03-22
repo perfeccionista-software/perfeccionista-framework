@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface ElementStateAvailable {
 
-    OperationResult<Boolean> isStateDisplayed(String stateName);
+    boolean isStateDisplayed(String stateName);
 
     Optional<LocatorHolder> getState(String stateName);
 

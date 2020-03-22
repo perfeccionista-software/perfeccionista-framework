@@ -8,9 +8,9 @@ import io.perfeccionista.framework.pagefactory.filter.SingleResult;
  * В экстрактор может передаваться фильтр, который отфильтрует блоки из которых будут извлечены значения
  * @param <V> - тип возвращаемого значения
  */
-public interface ValueExtractor<T, I, V> {
+public interface ValueExtractor<T, S, M, V> {
 
-    SingleResult<V> extractSingleValue(T element);
+    SingleResult<V> extractSingleValue(T element, S filterResult);
 
     /**
      * Если индексы пустые, то ищем по всем
@@ -18,6 +18,6 @@ public interface ValueExtractor<T, I, V> {
      * @param filterResult
      * @return
      */
-    MultipleResult<V> extractMultipleValues(T element, I filterResult);
+    MultipleResult<V> extractMultipleValues(T element, M filterResult);
 
 }

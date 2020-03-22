@@ -77,7 +77,7 @@ public abstract class AbstractWebChildElement extends AbstractChildElement<WebPa
         return getParent().getLocatorChain().addLocator(getLocator(ROOT));
     }
 
-    public OperationResult<WebElement> getWebElement() {
+    public WebElement getWebElement() {
         return getMethodImplementation(GET_WEB_ELEMENT_METHOD, WebElement.class).execute(this);
     }
 
@@ -87,7 +87,7 @@ public abstract class AbstractWebChildElement extends AbstractChildElement<WebPa
     }
 
     @Override
-    public OperationResult<String> getPropertyValue(String propertyName) {
+    public String getPropertyValue(String propertyName) {
         WebElementPropertyHolder elementPropertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName))
                         .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", toString()))));
@@ -95,7 +95,7 @@ public abstract class AbstractWebChildElement extends AbstractChildElement<WebPa
     }
 
     @Override
-    public OperationResult<Boolean> isStateDisplayed(String stateName) {
+    public boolean isStateDisplayed(String stateName) {
         LocatorHolder elementStateLocator = getState(stateName)
                 .orElseThrow(() -> new ElementStateNotDeclaredException(ELEMENT_STATE_NOT_DECLARED.getMessage(stateName))
                         .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", toString()))));
@@ -103,27 +103,27 @@ public abstract class AbstractWebChildElement extends AbstractChildElement<WebPa
     }
 
     @Override
-    public OperationResult<Boolean> isDisplayed() {
+    public boolean isDisplayed() {
         return getMethodImplementation(IS_DISPLAYED_METHOD, Boolean.class).execute(this);
     }
 
     @Override
-    public OperationResult<Void> hoverTo(boolean withOutOfBounds) {
-        return getMethodImplementation(HOVER_TO_METHOD, Void.class).execute(this, withOutOfBounds);
+    public void hoverTo(boolean withOutOfBounds) {
+        getMethodImplementation(HOVER_TO_METHOD, Void.class).execute(this, withOutOfBounds);
     }
 
     @Override
-    public OperationResult<Void> scrollTo() {
-        return getMethodImplementation(SCROLL_TO_METHOD, Void.class).execute(this);
+    public void scrollTo() {
+        getMethodImplementation(SCROLL_TO_METHOD, Void.class).execute(this);
     }
 
     @Override
-    public OperationResult<Bounds> getBounds() {
+    public Bounds getBounds() {
         return getMethodImplementation(GET_BOUNDS_METHOD, Bounds.class).execute(this);
     }
 
     @Override
-    public OperationResult<Screenshot> getScreenshot() {
+    public Screenshot getScreenshot() {
         return getMethodImplementation(GET_SCREENSHOT_METHOD, Screenshot.class).execute(this);
     }
 

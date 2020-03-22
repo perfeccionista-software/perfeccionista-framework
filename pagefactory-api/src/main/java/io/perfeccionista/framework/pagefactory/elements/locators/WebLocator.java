@@ -33,6 +33,6 @@ public @interface WebLocator {
     boolean single() default true;
     boolean strictSearch() default true;
     boolean onlyWithinParent() default true;
-    Class<ElementCheck>[] elementChecks() default {};
+    Class<? extends ElementCheck>[] elementChecks() default {};
 
 }

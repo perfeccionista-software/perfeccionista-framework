@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.MobileMappedBlock;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.ROOT;
 
-public class MobileMappedBlockImpl extends MobileBlockImpl implements MobileMappedBlock {
+public abstract class MobileMappedBlockImpl extends MobileBlockImpl implements MobileMappedBlock {
 
     protected ParentInfo parentInfo;
 

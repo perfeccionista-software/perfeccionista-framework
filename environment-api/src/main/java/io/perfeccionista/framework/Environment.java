@@ -1,5 +1,6 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.exceptions.ServiceNotFoundException;
 import io.perfeccionista.framework.utils.ReflectionUtils.Order;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.logging.Logger;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_NOT_FOUND;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
@@ -104,15 +106,15 @@ public class Environment {
      * был зарегистрирован.
      * @param serviceClass класс, по которому {@link Service} зарегистрирован
      * @param <T>          тип возвращаемого {@link Service}
-     * @return {@link Optional} в случае, когда экземпляр был зарегистрирован
-     * по указанному классу или {@link Optional#empty()} если по указанному классу
+     * @return Экземпляр сервиса, который был зарегистрирован
+     * по указанному классу или ServiceNotFoundException, если по указанному классу
      * не зарегистрировано экземпляров {@link Service}.
      */
-    public <T extends Service> Optional<T> getService(@NotNull Class<T> serviceClass) {
+    public <T extends Service> T getService(@NotNull Class<T> serviceClass) {
         if (services.containsKey(serviceClass)) {
-            return Optional.of(serviceClass.cast(services.get(serviceClass)));
+            return serviceClass.cast(services.get(serviceClass));
         }
-        return Optional.empty();
+        throw new ServiceNotFoundException(SERVICE_NOT_FOUND.getMessage(serviceClass.getCanonicalName()));
     }
 
     /**

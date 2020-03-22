@@ -223,8 +223,7 @@ public class ValueExpressionProcessor {
 
     private Object resolveDataSourceExpression(String stringContent, Object objectContent) {
         DataSourceDeclaration dataSourceDeclaration = extractDataSourceDeclaration(stringContent);
-        NamedDataSourceService dataSourceService = environment.getService(NamedDataSourceService.class)
-                .orElseThrow(() -> new ServiceNotFoundException(SERVICE_NOT_FOUND.getMessage(NamedDataSourceService.class.getCanonicalName())));
+        NamedDataSourceService dataSourceService = environment.getService(NamedDataSourceService.class);
         DataSource<?, ?> dataSource;
         String stringKey;
         if (dataSourceDeclaration.getName().isPresent()) {
@@ -282,8 +281,7 @@ public class ValueExpressionProcessor {
 
     private Object resolveDataConverterExpression(String stringContent, Object objectContent) {
         DataConverterDeclaration dataConverterDeclaration = extractDataConverterDeclaration(stringContent);
-        NamedDataConverterService dataConverterService = environment.getService(NamedDataConverterService.class)
-                .orElseThrow(() -> new ServiceNotFoundException(SERVICE_NOT_FOUND.getMessage(NamedDataConverterService.class.getCanonicalName())));
+        NamedDataConverterService dataConverterService = environment.getService(NamedDataConverterService.class);
         DataConverter<?, ?> dataConverter = dataConverterService.get(dataConverterDeclaration.getName());
         String stringKey = stringContent.replace(dataConverterDeclaration.getDeclaration(), "").trim();
         if (null != objectContent && StringUtils.isNotBlank(stringKey)) {

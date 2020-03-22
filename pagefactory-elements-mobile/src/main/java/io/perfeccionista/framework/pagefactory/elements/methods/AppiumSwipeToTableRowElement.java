@@ -12,17 +12,18 @@ import java.util.HashMap;
 public class AppiumSwipeToTableRowElement implements MobileElementMethodImplementation<Void> {
 
     @Override
-    public OperationResult<Void> execute(MobileChildElement element, Object... args) {
+    public Void execute(MobileChildElement element, Object... args) {
         MobileTable table = (MobileTable) element;
         AppiumTableRowFilter filter = (AppiumTableRowFilter) args[0];
-        return OperationResult.of(() -> {
+
             SingleResult<MobileElement> result = filter.singleResult(table);
 
             HashMap<String, String> scrollParams = new HashMap<>();
             scrollParams.put("direction", "down");
-            scrollParams.put("element", result.getItem().getId());
+            scrollParams.put("element", result.get().getId());
             element.getDriverInstance().getDriver().executeScript("mobile: swipe", scrollParams);
-        });
+
+            return null;
     }
 
 }

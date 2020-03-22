@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
+import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.name.NamesRegistry;
 import io.perfeccionista.framework.pagefactory.elements.base.ChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.ParentElement;
@@ -12,6 +13,9 @@ import java.util.Set;
 
 // TODO: Добавить Actions and Interactions
 public abstract class AbstractChildElement<T extends ParentElement<?>> implements ChildElement<T> {
+
+    // Нужна для оборачивания методов врапперами и для работы с Value
+    protected Environment environment;
 
     protected LocatorRegistry locatorRegistry;
     protected NamesRegistry namesRegistry;

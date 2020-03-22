@@ -14,8 +14,12 @@ import io.perfeccionista.framework.value.number.integer.checker.IntegerNotEquals
 
 public class RuIntegerValue extends AbstractNumberValue<Integer> {
 
-    public RuIntegerValue(Environment environment, String expected) {
+    private RuIntegerValue(Environment environment, String expected) {
         super(environment, expected);
+    }
+
+    public static RuIntegerValue of(@NotNull Environment environment, @NotNull String rawExpected) {
+        return new RuIntegerValue(environment, rawExpected);
     }
 
     @Override

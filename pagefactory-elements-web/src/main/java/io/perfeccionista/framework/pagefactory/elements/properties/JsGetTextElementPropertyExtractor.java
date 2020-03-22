@@ -15,7 +15,7 @@ public class JsGetTextElementPropertyExtractor implements ElementPropertyExtract
         LocatorChain locatorChain = element.getLocatorChain().addLocator(locatorHolder);
         GetText getTextFunction = ReflectionUtils.newInstance(GetText.class);
         JsOperation<SingleResult<String>> operation = JsOperation.single(locatorChain, getTextFunction);
-        return element.getDriverInstance().getDriverOperationExecutor().executeOperation(operation).getItem();
+        return element.getDriverInstance().getDriverOperationExecutor().executeOperation(operation).get();
     }
 
 }

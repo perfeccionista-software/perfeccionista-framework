@@ -12,17 +12,17 @@ import java.util.HashMap;
 public class AppiumSwipeToBlockElement implements MobileElementMethodImplementation<Void> {
 
     @Override
-    public OperationResult<Void> execute(MobileChildElement element, Object... args) {
+    public Void execute(MobileChildElement element, Object... args) {
         MobileUnorderedList unorderedList = (MobileUnorderedList) element;
         AppiumBlockFilter filter = (AppiumBlockFilter) args[0];
-        return OperationResult.of(() -> {
+
             SingleResult<MobileElement> result = filter.singleResult(unorderedList);
 
             HashMap<String, String> scrollParams = new HashMap<>();
             scrollParams.put("direction", "down");
-            scrollParams.put("element", result.getItem().getId());
+            scrollParams.put("element", result.get().getId());
             element.getDriverInstance().getDriver().executeScript("mobile: swipe", scrollParams);
-        });
+            return null;
     }
 
 }

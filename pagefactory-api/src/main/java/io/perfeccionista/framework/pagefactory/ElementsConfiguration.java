@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface ElementsConfiguration {
 
-    <T extends Element, I extends AbstractChildElement<?>> Map<Class<T>, Class<I>> elementImplementations();
+    <T extends Element, I extends AbstractChildElement<?>> Map<Class<T>, Class<I>> getElementImplementations();
 
 }

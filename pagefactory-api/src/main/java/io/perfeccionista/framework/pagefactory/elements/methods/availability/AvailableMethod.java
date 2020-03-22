@@ -19,6 +19,7 @@ public class AvailableMethod {
     public static final String IS_STATE_DISPLAYED_METHOD = "IsStateDisplayed";
     public static final String OPEN_METHOD = "Open";
     public static final String SCROLL_TO_METHOD = "ScrollTo";
+    public static final String SELECT_METHOD = "Select";
     public static final String SWIPE_TO_METHOD = "SwipeTo";
     public static final String SCROLL_TO_ELEMENT_METHOD = "ScrollToElement";
     public static final String SWIPE_TO_ELEMENT_METHOD = "SwipeToElement";

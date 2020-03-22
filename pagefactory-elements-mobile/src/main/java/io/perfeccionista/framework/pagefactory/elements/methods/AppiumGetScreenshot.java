@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 public class AppiumGetScreenshot implements MobileElementMethodImplementation<Screenshot> {
 
     @Override
-    public OperationResult<Screenshot> execute(MobileChildElement element, Object... args) {
+    public Screenshot execute(MobileChildElement element, Object... args) {
         // TODO: Implement
         return null;
     }

@@ -31,13 +31,13 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @IosLocator(component = TFOOT_ROW, xpath = ".//tfoot//tr")
 @ElementMethod(type = SWIPE_TO_ELEMENT_METHOD, implementation = AppiumSwipeToStringTableRowElement.class)
 @ElementMethod(type = SIZE_METHOD, implementation = AppiumSize.class)
-public class MobileSimpleTableImpl extends AbstractMobileChildElement implements MobileSimpleTable {
+public abstract class MobileSimpleTableImpl extends AbstractMobileChildElement implements MobileSimpleTable {
 
     protected Map<String, MobileColumnMapper> columnMappers;
 
     @Override
     public OperationResult<String> getHeaderValue(String columnName) {
-        return OperationResult.of(() -> new AppiumSimpleTableRowValueExtractor(columnName).extractSingleHeaderValue(this).getItem());
+        return OperationResult.of(() -> new AppiumSimpleTableRowValueExtractor(columnName).extractSingleHeaderValue(this).get());
     }
 
     @Override
@@ -54,18 +54,18 @@ public class MobileSimpleTableImpl extends AbstractMobileChildElement implements
 
     @Override
     public OperationResult<String> getFooterValue(String columnName) {
-        return OperationResult.of(() -> new AppiumSimpleTableRowValueExtractor(columnName).extractSingleFooterValue(this).getItem());
+        return OperationResult.of(() -> new AppiumSimpleTableRowValueExtractor(columnName).extractSingleFooterValue(this).get());
     }
 
-    @Override
-    public OperationResult<Void> swipeToElement(AppiumStringTableRowFilter filter) {
-        return getMethodImplementation(SWIPE_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
-    }
-
-    @Override
-    public OperationResult<Integer> size() {
-        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, TBODY_ROW);
-    }
+//    @Override
+//    public OperationResult<Void> swipeToElement(AppiumStringTableRowFilter filter) {
+//        return getMethodImplementation(SWIPE_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+//    }
+//
+//    @Override
+//    public OperationResult<Integer> size() {
+//        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, TBODY_ROW);
+//    }
 
     @Override
     public Optional<MobileColumnMapper> getColumnMapper(String columnName) {

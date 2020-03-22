@@ -91,50 +91,50 @@ public abstract class AbstractMobileChildElement extends AbstractChildElement<Mo
         return elementMethodsRegistry.getElementMethod(methodType, returnType);
     }
 
-    public OperationResult<WebElement> getWebElement() {
-        return getMethodImplementation(GET_WEB_ELEMENT_METHOD, WebElement.class).execute(this);
-    }
+//    public OperationResult<WebElement> getWebElement() {
+//        return getMethodImplementation(GET_WEB_ELEMENT_METHOD, WebElement.class).execute(this);
+//    }
 
     @Override
     public Optional<MobileElementPropertyHolder> getProperty(String propertyName) {
         return elementPropertiesRegistry.getElementProperty(propertyName);
     }
 
-    @Override
-    public OperationResult<String> getPropertyValue(String propertyName) {
-        MobileElementPropertyHolder elementPropertyHolder = getProperty(propertyName)
-                .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName))
-                        .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", toString()))));
-        return getMethodImplementation(GET_PROPERTY_VALUE_METHOD, String.class).execute(this, elementPropertyHolder);
-    }
-
-    @Override
-    public OperationResult<Boolean> isStateDisplayed(String stateName) {
-        LocatorHolder elementStateLocator = getState(stateName)
-                .orElseThrow(() -> new ElementStateNotDeclaredException(ELEMENT_STATE_NOT_DECLARED.getMessage(stateName))
-                        .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", toString()))));
-        return getMethodImplementation(IS_STATE_DISPLAYED_METHOD, Boolean.class).execute(this, elementStateLocator);
-    }
-
-    @Override
-    public OperationResult<Boolean> isDisplayed() {
-        return getMethodImplementation(IS_DISPLAYED_METHOD, Boolean.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> swipeTo() {
-        return getMethodImplementation(SWIPE_TO_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Bounds> getBounds() {
-        return getMethodImplementation(GET_BOUNDS_METHOD, Bounds.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Screenshot> getScreenshot() {
-        return getMethodImplementation(GET_SCREENSHOT_METHOD, Screenshot.class).execute(this);
-    }
+//    @Override
+//    public OperationResult<String> getPropertyValue(String propertyName) {
+//        MobileElementPropertyHolder elementPropertyHolder = getProperty(propertyName)
+//                .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName))
+//                        .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", toString()))));
+//        return getMethodImplementation(GET_PROPERTY_VALUE_METHOD, String.class).execute(this, elementPropertyHolder);
+//    }
+//
+//    @Override
+//    public OperationResult<Boolean> isStateDisplayed(String stateName) {
+//        LocatorHolder elementStateLocator = getState(stateName)
+//                .orElseThrow(() -> new ElementStateNotDeclaredException(ELEMENT_STATE_NOT_DECLARED.getMessage(stateName))
+//                        .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", toString()))));
+//        return getMethodImplementation(IS_STATE_DISPLAYED_METHOD, Boolean.class).execute(this, elementStateLocator);
+//    }
+//
+//    @Override
+//    public OperationResult<Boolean> isDisplayed() {
+//        return getMethodImplementation(IS_DISPLAYED_METHOD, Boolean.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> swipeTo() {
+//        return getMethodImplementation(SWIPE_TO_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Bounds> getBounds() {
+//        return getMethodImplementation(GET_BOUNDS_METHOD, Bounds.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Screenshot> getScreenshot() {
+//        return getMethodImplementation(GET_SCREENSHOT_METHOD, Screenshot.class).execute(this);
+//    }
 
     @Override
     public String toString() {

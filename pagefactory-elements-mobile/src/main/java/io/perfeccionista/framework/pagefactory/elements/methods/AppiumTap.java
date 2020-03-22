@@ -10,12 +10,13 @@ import static io.perfeccionista.framework.pagefactory.elements.locators.Componen
 
 public class AppiumTap implements MobileElementMethodImplementation<Void> {
 
-    public OperationResult<Void> execute(MobileChildElement element, Object... args) {
-        return OperationResult.of(() -> element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class).map(() -> {
-            MobileElement tapElement = element.findElement(element.getLocatorChainTo(TAP)).getItem();
+    public Void execute(MobileChildElement element, Object... args) {
+        element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class).map(() -> {
+            MobileElement tapElement = element.findElement(element.getLocatorChainTo(TAP)).get();
             TouchActions action = new TouchActions(element.getDriverInstance().getDriver()).singleTap(tapElement);
             action.perform();
-        }));
+        });
+        return null;
     }
 
 }

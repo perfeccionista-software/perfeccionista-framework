@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 public class AppiumIsDisplayed implements MobileElementMethodImplementation<Boolean> {
 
     @Override
-    public OperationResult<Boolean> execute(MobileChildElement element, Object... args) {
+    public Boolean execute(MobileChildElement element, Object... args) {
         return null;
     }
 

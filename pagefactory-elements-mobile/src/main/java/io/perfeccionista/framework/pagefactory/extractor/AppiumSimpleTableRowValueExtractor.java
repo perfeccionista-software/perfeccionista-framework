@@ -37,8 +37,7 @@ public class AppiumSimpleTableRowValueExtractor implements AppiumValueExtractor<
     }
 
     @Override
-    public SingleResult<String> extractSingleValue(MobileSimpleTable element) {
-        Optional<MobileColumnMapper> columnMapper = element.getColumnMapper(columnName);
+    public SingleResult<String> extractSingleValue(MobileSimpleTable element, SingleResult<MobileElement> filterResult) {
         return null;
     }
 

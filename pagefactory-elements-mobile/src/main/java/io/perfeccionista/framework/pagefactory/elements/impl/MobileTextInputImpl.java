@@ -21,31 +21,31 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = GET_TEXT_METHOD, implementation = AppiumGetText.class)
 @ElementMethod(type = SEND_KEYS_METHOD, implementation = AppiumSendKeys.class)
 @ElementMethod(type = TAP_METHOD, implementation = AppiumTap.class)
-public class MobileTextInputImpl extends AbstractMobileChildElement implements MobileTextInput {
-
-    @Override
-    public OperationResult<Void> clear() {
-        return getMethodImplementation(CLEAR_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> tap() {
-        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<String> getLabel() {
-        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<String> getText() {
-        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> sendKeys(CharSequence... keys) {
-        return getMethodImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys);
-    }
+public abstract class MobileTextInputImpl extends AbstractMobileChildElement implements MobileTextInput {
+//
+//    @Override
+//    public OperationResult<Void> clear() {
+//        return getMethodImplementation(CLEAR_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> tap() {
+//        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<String> getLabel() {
+//        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<String> getText() {
+//        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> sendKeys(CharSequence... keys) {
+//        return getMethodImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys);
+//    }
 
 }

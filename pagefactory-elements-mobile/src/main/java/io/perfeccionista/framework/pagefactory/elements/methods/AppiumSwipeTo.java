@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 public class AppiumSwipeTo implements MobileElementMethodImplementation<Void> {
 
     @Override
-    public OperationResult<Void> execute(MobileChildElement element, Object... args) {
+    public Void execute(MobileChildElement element, Object... args) {
         return null;
     }
 

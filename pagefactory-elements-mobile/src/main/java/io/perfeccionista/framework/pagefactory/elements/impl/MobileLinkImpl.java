@@ -12,16 +12,16 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 
 @ElementMethod(type = TAP_METHOD, implementation = AppiumTap.class)
 @ElementMethod(type = GET_TEXT_METHOD, implementation = AppiumGetText.class)
-public class MobileLinkImpl extends AbstractMobileChildElement implements MobileLink {
+public abstract class MobileLinkImpl extends AbstractMobileChildElement implements MobileLink {
 
-    @Override
-    public OperationResult<String> getText() {
-        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> tap() {
-        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
-    }
+//    @Override
+//    public OperationResult<String> getText() {
+//        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> tap() {
+//        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
+//    }
 
 }

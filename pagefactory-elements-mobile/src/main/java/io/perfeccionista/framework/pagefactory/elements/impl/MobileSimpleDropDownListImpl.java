@@ -29,36 +29,36 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = TAP_METHOD, implementation = AppiumTap.class)
 @ElementMethod(type = OPEN_METHOD, implementation = AppiumOpen.class)
 @ElementMethod(type = CLOSE_METHOD, implementation = AppiumClose.class)
-public class MobileSimpleDropDownListImpl extends MobileSimpleUnorderedListImpl implements MobileSimpleDropDownList {
+public abstract class MobileSimpleDropDownListImpl extends MobileSimpleUnorderedListImpl implements MobileSimpleDropDownList {
 
-    @Override
-    public OperationResult<String> getLabel() {
-        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<String> getText() {
-        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> tap() {
-        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Boolean> isOpen() {
-        return getMethodImplementation(IS_DISPLAYED_METHOD, Boolean.class).execute(this, UL);
-    }
-
-    @Override
-    public OperationResult<Void> open() {
-        return getMethodImplementation(OPEN_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> close() {
-        return getMethodImplementation(CLOSE_METHOD, Void.class).execute(this);
-    }
+//    @Override
+//    public OperationResult<String> getLabel() {
+//        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<String> getText() {
+//        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> tap() {
+//        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Boolean> isOpen() {
+//        return getMethodImplementation(IS_DISPLAYED_METHOD, Boolean.class).execute(this, UL);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> open() {
+//        return getMethodImplementation(OPEN_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> close() {
+//        return getMethodImplementation(CLOSE_METHOD, Void.class).execute(this);
+//    }
 
 }

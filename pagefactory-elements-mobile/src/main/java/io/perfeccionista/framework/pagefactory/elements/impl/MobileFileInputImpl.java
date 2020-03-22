@@ -29,36 +29,36 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = IS_ENABLED_METHOD, implementation = AppiumIsEnabled.class)
 @ElementMethod(type = SEND_KEYS_METHOD, implementation = AppiumSendKeys.class)
 @ElementMethod(type = SUBMIT_METHOD, implementation = AppiumSubmit.class)
-public class MobileFileInputImpl extends AbstractMobileChildElement implements MobileFileInput {
+public abstract class MobileFileInputImpl extends AbstractMobileChildElement implements MobileFileInput {
 
-    @Override
-    public OperationResult<Void> clear() {
-        return getMethodImplementation(CLEAR_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<String> getLabel() {
-        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<String> getText() {
-        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Boolean> isEnabled() {
-        return getMethodImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> sendKeys(CharSequence... keys) {
-        return getMethodImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys);
-    }
-
-    @Override
-    public OperationResult<Void> submit() {
-        return getMethodImplementation(SUBMIT_METHOD, Void.class).execute(this);
-    }
+//    @Override
+//    public OperationResult<Void> clear() {
+//        return getMethodImplementation(CLEAR_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<String> getLabel() {
+//        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<String> getText() {
+//        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Boolean> isEnabled() {
+//        return getMethodImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> sendKeys(CharSequence... keys) {
+//        return getMethodImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> submit() {
+//        return getMethodImplementation(SUBMIT_METHOD, Void.class).execute(this);
+//    }
 
 }

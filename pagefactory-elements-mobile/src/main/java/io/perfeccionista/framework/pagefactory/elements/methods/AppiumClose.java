@@ -12,17 +12,18 @@ import static io.perfeccionista.framework.pagefactory.elements.locators.Componen
 public class AppiumClose implements MobileElementMethodImplementation<Void> {
 
     @Override
-    public OperationResult<Void> execute(MobileChildElement element, Object... args) {
+    public Void execute(MobileChildElement element, Object... args) {
         MobileDropDownList dropDownList = (MobileDropDownList) element;
-        return OperationResult.of(() -> element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
+        element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
                 .map(() -> {
-                    boolean isOpenResult = dropDownList.isOpen().getResultOrThrow();
+                    boolean isOpenResult = dropDownList.isOpen();
                     if (isOpenResult) {
-                        MobileElement tapElement = element.findElement(element.getLocatorChainTo(CLOSE)).getItem();
+                        MobileElement tapElement = element.findElement(element.getLocatorChainTo(CLOSE)).get();
                         TouchActions action = new TouchActions(element.getDriverInstance().getDriver()).singleTap(tapElement);
                         action.perform();
                     }
-                }));
+                });
+        return null;
     }
 
 }

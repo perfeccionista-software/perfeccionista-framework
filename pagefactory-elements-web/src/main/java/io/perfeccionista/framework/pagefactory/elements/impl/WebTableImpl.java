@@ -1,65 +1,54 @@
 package io.perfeccionista.framework.pagefactory.elements.impl;
 
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebColumnMapper;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.AbstractWebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.elements.methods.JsScrollToTableRowElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.JsSize;
-import io.perfeccionista.framework.pagefactory.extractor.JsTableRowValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.WebTableRowValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.JsTableRowFilter;
-import io.perfeccionista.framework.pagefactory.operations.OperationResult;
+import io.perfeccionista.framework.pagefactory.filter.WebTableRowFilter;
 
 import java.util.Map;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.locators.Components.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.locators.Components.THEAD_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.SCROLL_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.SIZE_METHOD;
 
-@WebLocator(component = THEAD_ROW, xpath = ".//thead//tr")
-@WebLocator(component = TBODY_ROW, xpath = ".//tbody//tr", single = false)
-@WebLocator(component = TFOOT_ROW, xpath = ".//tfoot//tr")
-@ElementMethod(type = SCROLL_TO_ELEMENT_METHOD, implementation = JsScrollToTableRowElement.class)
-@ElementMethod(type = SIZE_METHOD, implementation = JsSize.class)
-public class WebTableImpl extends AbstractWebChildElement implements WebTable {
+
+public abstract class WebTableImpl extends AbstractWebChildElement implements WebTable {
 
     protected Map<String, WebColumnMapper> columnMappers;
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsTableRowValueExtractor<V> extractor) {
-        return OperationResult.of(() -> extractor.extractMultipleValues(this, MultipleResult.empty()));
+    public <V> V getHeaderValue(WebTableRowValueExtractor<V> extractor) {
+        return extractor.extractSingleHeaderValue(this).get();
     }
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsTableRowValueExtractor<V> extractor, JsTableRowFilter filter) {
-        return OperationResult.of(() -> {
-            MultipleResult<Integer> result = filter.multipleResult(this);
-            return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result);
-        });
+    public <V> MultipleResult<V> getValues(WebTableRowValueExtractor<V> extractor) {
+        return extractor.extractMultipleValues(this, MultipleResult.empty());
     }
 
     @Override
-    public <V> OperationResult<V> getHeaderValue(JsTableRowValueExtractor<V> extractor) {
-        return OperationResult.of(() -> extractor.extractSingleHeaderValue(this).getItem());
+    public <V> MultipleResult<V> getValues(WebTableRowValueExtractor<V> extractor, WebTableRowFilter filter) {
+        MultipleResult<Integer> result = filter.multipleResult(this);
+        return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result);
     }
 
     @Override
-    public <V> OperationResult<V> getFooterValue(JsTableRowValueExtractor<V> extractor) {
-        return OperationResult.of(() -> extractor.extractSingleFooterValue(this).getItem());
+    public <V> V getFooterValue(WebTableRowValueExtractor<V> extractor) {
+        return extractor.extractSingleFooterValue(this).get();
     }
 
-    @Override
-    public OperationResult<Void> scrollToElement(JsTableRowFilter filter) {
-        return getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
-    }
 
     @Override
-    public OperationResult<Integer> size() {
+    public void scrollToElement(WebTableRowFilter filter) {
+        getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+    }
+
+
+    @Override
+    public int size() {
         return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, TBODY_ROW);
     }
 

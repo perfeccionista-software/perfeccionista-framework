@@ -9,9 +9,10 @@ import static io.perfeccionista.framework.pagefactory.elements.locators.Componen
 public class AppiumClear implements MobileElementMethodImplementation<Void> {
 
     @Override
-    public OperationResult<Void> execute(MobileChildElement element, Object... args) {
-        return OperationResult.of(() -> element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
-                .map(() -> element.findElement(element.getLocatorChainTo(INPUT)).getItem().clear()));
+    public Void execute(MobileChildElement element, Object... args) {
+        element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
+                .map(() -> element.findElement(element.getLocatorChainTo(INPUT)).get().clear());
+        return null;
     }
 
 }

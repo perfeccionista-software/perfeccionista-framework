@@ -11,16 +11,16 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 
 @ElementMethod(type = CLEAR_METHOD, implementation = AppiumClear.class)
 @ElementMethod(type = SEND_KEYS_METHOD, implementation = AppiumSendKeys.class)
-public class MobileSimpleAutocompleteImpl extends MobileSimpleDropDownListImpl implements MobileSimpleAutocomplete {
+public abstract class MobileSimpleAutocompleteImpl extends MobileSimpleDropDownListImpl implements MobileSimpleAutocomplete {
 
-    @Override
-    public OperationResult<Void> clear() {
-        return getMethodImplementation(CLEAR_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> sendKeys(CharSequence... keys) {
-        return getMethodImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys);
-    }
+//    @Override
+//    public OperationResult<Void> clear() {
+//        return getMethodImplementation(CLEAR_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> sendKeys(CharSequence... keys) {
+//        return getMethodImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys);
+//    }
 
 }

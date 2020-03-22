@@ -8,9 +8,9 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 public class AppiumGetMobileElement implements MobileElementMethodImplementation<MobileElement> {
 
     @Override
-    public OperationResult<MobileElement> execute(MobileChildElement element, Object... args) {
-        return OperationResult.of(() -> element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
-                .map(() -> element.findElement(element.getLocatorChain()).getItem()));
+    public MobileElement execute(MobileChildElement element, Object... args) {
+        return element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
+                .map(() -> element.findElement(element.getLocatorChain()).get());
     }
 
 }

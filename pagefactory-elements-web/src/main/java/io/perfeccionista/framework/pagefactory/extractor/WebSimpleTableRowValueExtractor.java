@@ -36,8 +36,7 @@ public class WebSimpleTableRowValueExtractor implements WebValueExtractor<WebSim
     }
 
     @Override
-    public SingleResult<String> extractSingleValue(WebSimpleTable element) {
-        Optional<WebColumnMapper> columnMapper = element.getColumnMapper(columnName);
+    public SingleResult<String> extractSingleValue(WebSimpleTable element, SingleResult<Integer> filterResult) {
         return null;
     }
 

@@ -9,11 +9,11 @@ import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.TAP_METHOD;
 
 @ElementMethod(type = TAP_METHOD, implementation = AppiumTap.class)
-public class MobileImageImpl extends AbstractMobileChildElement implements MobileImage {
+public abstract class MobileImageImpl extends AbstractMobileChildElement implements MobileImage {
 
-    @Override
-    public OperationResult<Void> tap() {
-        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
-    }
+//    @Override
+//    public OperationResult<Void> tap() {
+//        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
+//    }
 
 }

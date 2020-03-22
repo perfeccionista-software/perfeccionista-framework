@@ -22,7 +22,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @IosLocator(component = LI, xpath = ".//li", single = false)
 @ElementMethod(type = SWIPE_TO_ELEMENT_METHOD, implementation = AppiumSwipeToBlockElement.class)
 @ElementMethod(type = SIZE_METHOD, implementation = AppiumSize.class)
-public class MobileUnorderedListImpl extends AbstractMobileChildElement implements MobileUnorderedList {
+public abstract class MobileUnorderedListImpl extends AbstractMobileChildElement implements MobileUnorderedList {
 
     protected Class<? extends MobileBlock> blockMapper;
 
@@ -39,15 +39,15 @@ public class MobileUnorderedListImpl extends AbstractMobileChildElement implemen
         });
     }
 
-    @Override
-    public OperationResult<Void> swipeToElement(AppiumBlockFilter filter) {
-        return getMethodImplementation(SWIPE_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
-    }
-
-    @Override
-    public OperationResult<Integer> size() {
-        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, LI);
-    }
+//    @Override
+//    public OperationResult<Void> swipeToElement(AppiumBlockFilter filter) {
+//        return getMethodImplementation(SWIPE_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+//    }
+//
+//    @Override
+//    public OperationResult<Integer> size() {
+//        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, LI);
+//    }
 
     protected Class<? extends MobileBlock> getBlockMapper() {
         return blockMapper;

@@ -6,9 +6,9 @@ public interface SingleResult<T> {
      * -1 если элемент всего один или индекса быть не может
      * @return
      */
-    int getItemIndex();
+    int getIndex();
 
-    T getItem();
+    T get();
 
     String getElementHash();
 

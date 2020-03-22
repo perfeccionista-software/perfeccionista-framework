@@ -23,7 +23,7 @@ public @interface WebElementProperty {
 
     String name();
 
-    WebLocator uiLocator();
+    WebLocator uiLocator() default @WebLocator; // локатор по умолчанию указывает на родительский элемент
 
     Class<? extends ElementPropertyExtractor<WebChildElement>> extractor();
 

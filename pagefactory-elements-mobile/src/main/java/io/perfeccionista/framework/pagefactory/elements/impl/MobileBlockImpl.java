@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.registry.MobileElementRe
 
 import java.util.Optional;
 
-public class MobileBlockImpl extends AbstractMobileChildElement implements MobileBlock {
+public abstract class MobileBlockImpl extends AbstractMobileChildElement implements MobileBlock {
 
     protected MobileElementRegistry elementsRegistry;
 

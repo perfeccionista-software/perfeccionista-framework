@@ -1,52 +1,51 @@
 package io.perfeccionista.framework.pagefactory.elements.impl;
 
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.AbstractWebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebUnorderedList;
-import io.perfeccionista.framework.pagefactory.elements.methods.JsScrollToBlockElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.JsSize;
-import io.perfeccionista.framework.pagefactory.extractor.JsBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.WebBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.JsBlockFilter;
-import io.perfeccionista.framework.pagefactory.operations.OperationResult;
+import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.WebBlockFilter;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.LI;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.SCROLL_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.SIZE_METHOD;
 
-@WebLocator(component = LI, xpath = ".//li", single = false)
-@ElementMethod(type = SCROLL_TO_ELEMENT_METHOD, implementation = JsScrollToBlockElement.class)
-@ElementMethod(type = SIZE_METHOD, implementation = JsSize.class)
-public class WebUnorderedListImpl extends AbstractWebChildElement implements WebUnorderedList {
+
+public abstract class WebUnorderedListImpl extends AbstractWebChildElement implements WebUnorderedList {
 
     protected Class<? extends WebBlock> blockMapper;
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsBlockValueExtractor<V> extractor) {
-        return OperationResult.of(() -> extractor.extractMultipleValues(this, MultipleResult.empty()));
+    public <V> SingleResult<V> getValue(WebBlockValueExtractor<V> extractor, WebBlockFilter filter) {
+        SingleResult<Integer> result = filter.singleResult(this);
+        return extractor.extractSingleValue(this, result);
     }
 
     @Override
-    public <V> OperationResult<MultipleResult<V>> getValues(JsBlockValueExtractor<V> extractor, JsBlockFilter filter) {
-        return OperationResult.of(() -> {
-            MultipleResult<Integer> result = filter.multipleResult(this);
-            return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result);
-        });
+    public <V> MultipleResult<V> getValues(WebBlockValueExtractor<V> extractor) {
+        return extractor.extractMultipleValues(this, MultipleResult.empty());
     }
 
     @Override
-    public OperationResult<Void> scrollToElement(JsBlockFilter filter) {
-        return getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+    public <V> MultipleResult<V> getValues(WebBlockValueExtractor<V> extractor, WebBlockFilter filter) {
+        MultipleResult<Integer> result = filter.multipleResult(this);
+        return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result);
     }
 
     @Override
-    public OperationResult<Integer> size() {
+    public void scrollToElement(WebBlockFilter filter) {
+        getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+    }
+
+    @Override
+    public int size() {
         return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, LI);
     }
 
-    protected Class<? extends WebBlock> getBlockMapper() {
+    @Override
+    public Class<? extends WebBlock> getBlockMapper() {
         return blockMapper;
     }
 

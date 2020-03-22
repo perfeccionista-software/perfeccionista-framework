@@ -23,30 +23,30 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @IosLocator(component = LI, xpath = ".//li", single = false)
 @ElementMethod(type = SWIPE_TO_ELEMENT_METHOD, implementation = AppiumSwipeToStringBlockElement.class)
 @ElementMethod(type = SIZE_METHOD, implementation = AppiumSize.class)
-public class MobileSimpleUnorderedListImpl extends AbstractMobileChildElement implements MobileSimpleUnorderedList {
+public abstract class MobileSimpleUnorderedListImpl extends AbstractMobileChildElement implements MobileSimpleUnorderedList {
 
     @Override
     public OperationResult<MultipleResult<String>> getValues() {
         return OperationResult.of(() -> getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class).map(() ->
-                MultipleResult.of(findElements(getLocatorChainTo(LI)).getItems().entrySet().stream()
+                MultipleResult.of(findElements(getLocatorChainTo(LI)).get().entrySet().stream()
                         .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().getText())))));
     }
 
     @Override
     public OperationResult<MultipleResult<String>> getValues(AppiumStringBlockFilter filter) {
         return OperationResult.of(() -> getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class).map(() ->
-                MultipleResult.of(filter.multipleResult(this).getItems().entrySet().stream()
+                MultipleResult.of(filter.multipleResult(this).get().entrySet().stream()
                         .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().getText())))));
     }
 
-    @Override
-    public OperationResult<Void> swipeToElement(AppiumStringBlockFilter filter) {
-        return getMethodImplementation(SWIPE_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
-    }
-
-    @Override
-    public OperationResult<Integer> size() {
-        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, LI);
-    }
+//    @Override
+//    public OperationResult<Void> swipeToElement(AppiumStringBlockFilter filter) {
+//        return getMethodImplementation(SWIPE_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+//    }
+//
+//    @Override
+//    public OperationResult<Integer> size() {
+//        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, LI);
+//    }
 
 }

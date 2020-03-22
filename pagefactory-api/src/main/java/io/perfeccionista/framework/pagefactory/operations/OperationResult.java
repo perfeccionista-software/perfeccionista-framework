@@ -31,7 +31,7 @@ public class OperationResult<T> {
         return success;
     }
 
-    public T getResultOrThrow() {
+    public T getOrThrow() {
         if (success) {
             return result;
         }

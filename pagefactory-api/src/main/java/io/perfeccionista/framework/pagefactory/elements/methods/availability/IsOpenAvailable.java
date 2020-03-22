@@ -1,10 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements.methods.availability;
 
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethodAvailable;
-import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
 public interface IsOpenAvailable extends ElementMethodAvailable {
 
-    OperationResult<Boolean> isOpen();
+    boolean isOpen();
 
 }

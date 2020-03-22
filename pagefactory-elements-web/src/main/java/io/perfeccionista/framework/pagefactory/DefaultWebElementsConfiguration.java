@@ -9,7 +9,7 @@ import java.util.Map;
 public class DefaultWebElementsConfiguration implements WebElementsConfiguration {
 
     @Override
-    public <T extends Element, I extends AbstractChildElement<?>> Map<Class<T>, Class<I>> elementImplementations() {
+    public <T extends Element, I extends AbstractChildElement<?>> Map<Class<T>, Class<I>> getElementImplementations() {
         return null;
     }
 

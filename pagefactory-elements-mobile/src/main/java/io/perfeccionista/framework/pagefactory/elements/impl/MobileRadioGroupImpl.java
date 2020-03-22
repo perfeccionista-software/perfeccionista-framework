@@ -22,7 +22,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @IosLocator(component = RADIO, xpath = ".//input", single = false)
 @ElementMethod(type = SWIPE_TO_ELEMENT_METHOD, implementation = AppiumSwipeToBlockElement.class)
 @ElementMethod(type = SIZE_METHOD, implementation = AppiumSize.class)
-public class MobileRadioGroupImpl extends AbstractMobileChildElement implements MobileRadioGroup {
+public abstract class MobileRadioGroupImpl extends AbstractMobileChildElement implements MobileRadioGroup {
 
     @Override
     public <V> OperationResult<MultipleResult<V>> getValues(AppiumRadioButtonValueExtractor<V> extractor) {
@@ -36,15 +36,15 @@ public class MobileRadioGroupImpl extends AbstractMobileChildElement implements 
             return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result);
         });
     }
-
-    @Override
-    public OperationResult<Void> swipeToElement(AppiumRadioButtonFilter filter) {
-        return getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
-    }
-
-    @Override
-    public OperationResult<Integer> size() {
-        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, RADIO);
-    }
+//
+//    @Override
+//    public OperationResult<Void> swipeToElement(AppiumRadioButtonFilter filter) {
+//        return getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+//    }
+//
+//    @Override
+//    public OperationResult<Integer> size() {
+//        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, RADIO);
+//    }
 
 }

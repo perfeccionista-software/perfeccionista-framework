@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface MultipleResult<T> {
 
-    Map<Integer, T> getItems();
+    Map<Integer, T> get();
 
     String getElementHash();
 

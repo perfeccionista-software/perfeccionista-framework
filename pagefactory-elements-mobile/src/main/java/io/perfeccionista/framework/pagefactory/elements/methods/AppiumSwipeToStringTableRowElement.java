@@ -13,16 +13,17 @@ import java.util.HashMap;
 public class AppiumSwipeToStringTableRowElement implements MobileElementMethodImplementation<Void> {
 
     @Override
-    public OperationResult<Void> execute(MobileChildElement element, Object... args) {
+    public Void execute(MobileChildElement element, Object... args) {
         MobileSimpleTable unorderedList = (MobileSimpleTable) element;
         AppiumStringTableRowFilter filter = (AppiumStringTableRowFilter) args[0];
-        return OperationResult.of(() -> element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class).map(() -> {
+        element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class).map(() -> {
             SingleResult<MobileElement> result = filter.singleResult(unorderedList);
             HashMap<String, String> scrollParams = new HashMap<>();
             scrollParams.put("direction", "down");
-            scrollParams.put("element", result.getItem().getId());
+            scrollParams.put("element", result.get().getId());
             element.getDriverInstance().getDriver().executeScript("mobile: swipe", scrollParams);
-        }));
+        });
+        return null;
     }
 
 }

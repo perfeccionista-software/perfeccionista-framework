@@ -23,27 +23,27 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = IS_ENABLED_METHOD, implementation = AppiumIsEnabled.class)
 @ElementMethod(type = IS_SELECTED_METHOD, implementation = AppiumIsSelected.class)
 @ElementMethod(type = TAP_METHOD, implementation = AppiumTap.class)
-public class MobileCheckboxImpl extends AbstractMobileChildElement implements MobileCheckbox {
+public abstract class MobileCheckboxImpl extends AbstractMobileChildElement implements MobileCheckbox {
 
-    @Override
-    public OperationResult<String> getLabel() {
-        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Boolean> isEnabled() {
-        return getMethodImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Boolean> isSelected() {
-        return getMethodImplementation(IS_SELECTED_METHOD, Boolean.class).execute(this);
-    }
-
-    @Override
-    public OperationResult<Void> tap() {
-        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
-    }
+//    @Override
+//    public OperationResult<String> getLabel() {
+//        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Boolean> isEnabled() {
+//        return getMethodImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Boolean> isSelected() {
+//        return getMethodImplementation(IS_SELECTED_METHOD, Boolean.class).execute(this);
+//    }
+//
+//    @Override
+//    public OperationResult<Void> tap() {
+//        return getMethodImplementation(TAP_METHOD, Void.class).execute(this);
+//    }
 
 }
 

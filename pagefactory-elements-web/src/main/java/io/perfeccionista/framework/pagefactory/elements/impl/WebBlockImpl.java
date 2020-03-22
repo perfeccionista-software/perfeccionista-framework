@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 
 import java.util.Optional;
 
-public class WebBlockImpl extends AbstractWebChildElement implements WebBlock {
+public abstract class WebBlockImpl extends AbstractWebChildElement implements WebBlock {
 
     protected WebElementRegistry elementsRegistry;
 
