@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.datasource;
 
+import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.DataSourceNotFoundException;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
@@ -22,7 +23,7 @@ public class DataSourceService implements Service {
     protected Map<Class<? extends DataSource>, DataSource<?, ?>> dataSourcesByClass = new HashMap<>();
 
     @Override
-    public void init(@NotNull ServiceConfiguration serviceConfiguration) {
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration serviceConfiguration) {
         validatedConfiguration = validate(serviceConfiguration);
         validatedConfiguration.getDataSources().forEach(dataSource -> {
             Class<? extends DataSource> dataSourceClass = dataSource.getClass();

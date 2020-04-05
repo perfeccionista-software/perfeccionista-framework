@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsGetLabel;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsGetText;
@@ -14,6 +15,8 @@ import io.perfeccionista.framework.pagefactory.elements.methods.availability.Get
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.IsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.SendKeysAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.SubmitAvailable;
+import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
+import io.perfeccionista.framework.value.string.StringValue;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.CLEAR_METHOD;
@@ -32,4 +35,50 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = SUBMIT_METHOD, implementation = SeleniumSubmit.class)
 public interface WebFileInput extends WebChildElement,
         GetTextAvailable, SendKeysAvailable, ClearAvailable, SubmitAvailable, IsEnabledAvailable, GetLabelAvailable {
+
+    @Override
+    WebFileInput clear();
+
+    @Override
+    WebFileInput hoverTo(boolean withOutOfBounds);
+
+    @Override
+    WebFileInput scrollTo();
+
+    @Override
+    WebFileInput sendKeys(CharSequence... keys);
+
+    @Override
+    WebFileInput shouldBeDisabled();
+
+    @Override
+    WebFileInput shouldBeDisplayed();
+
+    @Override
+    WebFileInput shouldNotBeDisplayed();
+
+    @Override
+    WebFileInput shouldBeEnabled();
+
+    @Override
+    WebFileInput shouldHaveBounds(Bounds bounds);
+
+    @Override
+    WebFileInput shouldHaveLabel(StringValue stringValue);
+
+    @Override
+    WebFileInput shouldHavePropertyValue(String propertyValue, StringValue stringValue);
+
+    @Override
+    WebFileInput shouldHaveText(StringValue stringValue);
+
+    @Override
+    WebFileInput shouldLooksLike(Screenshot screenshot);
+
+    @Override
+    WebFileInput stateShouldBeDisplayed(String stateName);
+
+    @Override
+    WebFileInput submit();
+
 }

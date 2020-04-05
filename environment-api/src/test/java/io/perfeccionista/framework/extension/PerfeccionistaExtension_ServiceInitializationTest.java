@@ -20,9 +20,9 @@ public class PerfeccionistaExtension_ServiceInitializationTest {
     @Test
     void serviceInitializationOrderTest(Environment environment) {
         assertEquals(3, environment.getServices().count());
-        long service1InitializationTime = environment.getService(TestService1.class).get().getInitializationTime();
-        long service2InitializationTime = environment.getService(TestService2.class).get().getInitializationTime();
-        long service3InitializationTime = environment.getService(TestService3.class).get().getInitializationTime();
+        long service1InitializationTime = environment.getService(TestService1.class).getInitializationTime();
+        long service2InitializationTime = environment.getService(TestService2.class).getInitializationTime();
+        long service3InitializationTime = environment.getService(TestService3.class).getInitializationTime();
         assertTrue(service1InitializationTime < service2InitializationTime);
         assertTrue(service2InitializationTime < service3InitializationTime);
     }

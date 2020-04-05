@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonCondition;
 
@@ -12,30 +11,25 @@ public class WebRadioButtonFilter implements Filter<WebRadioGroup, Integer> {
     private final Deque<JsRadioButtonConditionHolder> conditions = new ArrayDeque<>();
 
     public WebRadioButtonFilter() {
-        // TODO: пустое условие, которое возвращает все элементы
     }
 
-    public WebRadioButtonFilter(WebRadioButtonCondition stringCondition) {
-        this.conditions.addLast(new JsRadioButtonConditionHolder(ConditionUsage.ADD, stringCondition));
-    }
-
-    public WebRadioButtonFilter add(WebRadioButtonCondition stringCondition) {
-        this.conditions.addLast(new JsRadioButtonConditionHolder(ConditionUsage.ADD, stringCondition));
+    public WebRadioButtonFilter add(WebRadioButtonCondition condition) {
+        this.conditions.addLast(new JsRadioButtonConditionHolder(ConditionUsage.ADD, condition));
         return this;
     }
 
-    public WebRadioButtonFilter substract(WebRadioButtonCondition stringCondition) {
-        this.conditions.addLast(new JsRadioButtonConditionHolder(ConditionUsage.SUBTRACT, stringCondition));
+    public WebRadioButtonFilter subtract(WebRadioButtonCondition condition) {
+        this.conditions.addLast(new JsRadioButtonConditionHolder(ConditionUsage.SUBTRACT, condition));
         return this;
     }
 
     @Override
-    public SingleResult<Integer> singleResult(WebRadioGroup inputData) throws PerfeccionistaException {
+    public SingleResult<Integer> singleResult(WebRadioGroup inputData) {
         return null;
     }
 
     @Override
-    public MultipleResult<Integer> multipleResult(WebRadioGroup inputData) throws PerfeccionistaException {
+    public MultipleResult<Integer> multipleResult(WebRadioGroup inputData) {
         return null;
     }
 

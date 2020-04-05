@@ -1,10 +1,15 @@
 package io.perfeccionista.framework.value.string;
 
-import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.value.Value;
+
+import java.util.function.UnaryOperator;
 
 public interface StringValue extends Value<String> {
 
-    void setStringTransformers(@Nullable StringTransformer... stringTransformers);
+    StringValue transformExpected(UnaryOperator<String> transformFunction);
+
+    StringValue transformActual(UnaryOperator<String> transformFunction);
+
+    StringValue withoutProcessing();
 
 }

@@ -11,24 +11,24 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 
 public abstract class WebCheckboxImpl extends AbstractWebChildElement implements WebCheckbox {
 
-    @Override
-    public void click() {
-        getMethodImplementation(CLICK_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public String getLabel() {
-        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return getMethodImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this);
-    }
-
-    @Override
-    public boolean isSelected() {
-        return getMethodImplementation(IS_SELECTED_METHOD, Boolean.class).execute(this);
-    }
+//    @Override
+//    public void click() {
+//        getMethodImplementation(CLICK_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public String getLabel() {
+//        return getMethodImplementation(GET_LABEL_METHOD, String.class).execute(this);
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return getMethodImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this);
+//    }
+//
+//    @Override
+//    public boolean isSelected() {
+//        return getMethodImplementation(IS_SELECTED_METHOD, Boolean.class).execute(this);
+//    }
 
 }

@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.fixture;
 
+import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
 import io.perfeccionista.framework.service.Service;
@@ -17,7 +18,7 @@ public class FixtureService implements Service {
     protected Deque<Fixture<?>> executedFixtures = new ArrayDeque<>();
 
     @Override
-    public void init(@NotNull ServiceConfiguration serviceConfiguration) {
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration serviceConfiguration) {
         configuration = validate(serviceConfiguration);
     }
 

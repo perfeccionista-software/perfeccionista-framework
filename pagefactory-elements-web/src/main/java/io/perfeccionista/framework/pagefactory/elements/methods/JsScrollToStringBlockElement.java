@@ -3,9 +3,9 @@ package io.perfeccionista.framework.pagefactory.elements.methods;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.WebSimpleUnorderedList;
+import io.perfeccionista.framework.pagefactory.elements.WebStringList;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
-import io.perfeccionista.framework.pagefactory.filter.WebStringBlockFilter;
+import io.perfeccionista.framework.pagefactory.filter.WebStringListFilter;
 import io.perfeccionista.framework.pagefactory.js.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import org.junit.platform.commons.util.ReflectionUtils;
@@ -16,8 +16,8 @@ public class JsScrollToStringBlockElement implements WebElementMethodImplementat
 
     @Override
     public Void execute(WebChildElement element, Object... args) {
-        WebSimpleUnorderedList unorderedList = (WebSimpleUnorderedList) element;
-        WebStringBlockFilter filter = (WebStringBlockFilter) args[0];
+        WebStringList unorderedList = (WebStringList) element;
+        WebStringListFilter filter = (WebStringListFilter) args[0];
         SingleResult<String> result = filter.singleResult(unorderedList);
 
         // Create locator chain instance for scrolling with hash check

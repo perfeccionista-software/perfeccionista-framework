@@ -9,14 +9,14 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 
 public abstract class WebLinkImpl extends AbstractWebChildElement implements WebLink {
 
-    @Override
-    public void click() {
-        getMethodImplementation(CLICK_METHOD, Void.class).execute(this);
-    }
-
-    @Override
-    public String getText() {
-        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
-    }
+//    @Override
+//    public void click() {
+//        getMethodImplementation(CLICK_METHOD, Void.class).execute(this);
+//    }
+//
+//    @Override
+//    public String getText() {
+//        return getMethodImplementation(GET_TEXT_METHOD, String.class).execute(this);
+//    }
 
 }

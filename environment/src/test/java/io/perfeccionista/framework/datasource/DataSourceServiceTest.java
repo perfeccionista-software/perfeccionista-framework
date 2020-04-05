@@ -24,17 +24,15 @@ public class DataSourceServiceTest {
 
     @Test
     void dataSourceServiceInitializationTest(Environment environment) {
-        Optional<DataSourceService> optionalDataSourceService = environment.getService(DataSourceService.class);
-        assertTrue(optionalDataSourceService.isPresent());
-        DataSourceService dataSourceService = optionalDataSourceService.get();
+        DataSourceService dataSourceService = environment.getService(DataSourceService.class);
+        assertNotNull(dataSourceService);
         assertEquals(2, dataSourceService.stream().count());
     }
 
     @Test
     void dataSourceTest(Environment environment) {
-        Optional<DataSourceService> optionalDataSourceService = environment.getService(DataSourceService.class);
-        assertTrue(optionalDataSourceService.isPresent());
-        DataSourceService dataSourceService = optionalDataSourceService.get();
+        DataSourceService dataSourceService = environment.getService(DataSourceService.class);
+        assertNotNull(dataSourceService);
         SimpleDataSource simpleDataSource = dataSourceService.get(SimpleDataSource.class);
         assertNotNull(simpleDataSource);
         User user = simpleDataSource.get("Jack");
@@ -46,9 +44,8 @@ public class DataSourceServiceTest {
 
     @Test
     void dataConverterTest(Environment environment) {
-        Optional<DataSourceService> optionalDataSourceService = environment.getService(DataSourceService.class);
-        assertTrue(optionalDataSourceService.isPresent());
-        DataSourceService dataSourceService = optionalDataSourceService.get();
+        DataSourceService dataSourceService = environment.getService(DataSourceService.class);
+        assertNotNull(dataSourceService);
         SimpleDataStorage simpleDataStorage = dataSourceService.get(SimpleDataStorage.class);
         assertNotNull(simpleDataStorage);
     }

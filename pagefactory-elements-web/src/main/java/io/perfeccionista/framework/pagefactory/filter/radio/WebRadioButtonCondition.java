@@ -1,6 +1,8 @@
 package io.perfeccionista.framework.pagefactory.filter.radio;
 
-public interface WebRadioButtonCondition {
+import io.perfeccionista.framework.pagefactory.filter.Condition;
+
+public interface WebRadioButtonCondition extends Condition {
 
     WebRadioButtonCondition and(WebRadioButtonCondition condition);
 

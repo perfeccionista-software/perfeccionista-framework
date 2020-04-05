@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.datasource;
 
+import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.DataConverterNotFoundException;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
@@ -21,7 +22,7 @@ public class DataConverterService implements Service {
     protected Map<Class<? extends DataConverter>, DataConverter<?, ?>> dataConvertersByClass = new HashMap<>();
 
     @Override
-    public void init(@NotNull ServiceConfiguration serviceConfiguration) {
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration serviceConfiguration) {
         DataConverterServiceConfiguration validatedConfiguration = validate(serviceConfiguration);
         validatedConfiguration.getDataConverters().forEach(dataConverter -> {
             Class<? extends DataConverter> dataConverterClass = dataConverter.getClass();

@@ -3,9 +3,9 @@ package io.perfeccionista.framework.pagefactory.elements.methods;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.LocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.WebSimpleTable;
+import io.perfeccionista.framework.pagefactory.elements.WebStringTable;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
-import io.perfeccionista.framework.pagefactory.filter.WebStringTableRowFilter;
+import io.perfeccionista.framework.pagefactory.filter.WebStringTableFilter;
 import io.perfeccionista.framework.pagefactory.js.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operations.JsOperation;
 import org.junit.platform.commons.util.ReflectionUtils;
@@ -16,8 +16,8 @@ public class JsScrollToStringTableRowElement implements WebElementMethodImplemen
 
     @Override
     public Void execute(WebChildElement element, Object... args) {
-        WebSimpleTable table = (WebSimpleTable) element;
-        WebStringTableRowFilter filter = (WebStringTableRowFilter) args[0];
+        WebStringTable table = (WebStringTable) element;
+        WebStringTableFilter filter = (WebStringTableFilter) args[0];
         SingleResult<Integer> result = filter.singleResult(table);
 
         // Create locator chain instance for scrolling with hash check

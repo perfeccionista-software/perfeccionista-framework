@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.driver;
 
+import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
 import io.perfeccionista.framework.pagefactory.driver.registry.WebDriverInstanceRegistry;
 import io.perfeccionista.framework.service.Service;
@@ -14,7 +15,7 @@ public class WebDriverService implements Service {
     private WebDriverInstanceRegistry webDriverInstanceRegistry;
 
     @Override
-    public void init(@NotNull ServiceConfiguration configuration) {
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
         this.configuration = validate(configuration);
         webDriverInstanceRegistry = new WebDriverInstanceRegistry(this.configuration.getWebDriverInstanceConfigurations());
         webDriverInstanceRegistry.init();
@@ -23,7 +24,7 @@ public class WebDriverService implements Service {
     @Override
     public void afterTest() {
         if (configuration.isCloseBrowsersAfterTest()) {
-            // закрываем все экземпляры браузеров
+            closeAll();
         }
     }
     // ????

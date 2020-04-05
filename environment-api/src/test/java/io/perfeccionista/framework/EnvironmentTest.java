@@ -56,8 +56,8 @@ final class EnvironmentTest extends SimpleParallelTest {
         environment.register(TestAdditionProvider1.class, firstProvider);
         environment.register(TestAdditionProvider2.class, secondProvider);
         // проверяем получение провайдера по классу, по которому он зарегистрирован
-        assertEquals(Optional.of(firstProvider), environment.getService(TestAdditionProvider1.class));
-        assertEquals(Optional.of(secondProvider), environment.getService(TestAdditionProvider2.class));
+        assertEquals(firstProvider, environment.getService(TestAdditionProvider1.class));
+        assertEquals(secondProvider, environment.getService(TestAdditionProvider2.class));
         // проверяем наличие всех классов по которым зарегистрированы инстансы провайдеров
         assertNotNull(environment.getServiceClasses());
         assertEquals(2, environment.getServiceClasses().size());

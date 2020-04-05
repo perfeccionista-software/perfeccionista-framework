@@ -1,11 +1,14 @@
 package io.perfeccionista.framework.asserts;
 
-import io.perfeccionista.framework.value.string.StringValue;
+import java.time.Duration;
 
 public class FileAsserts {
 
-    public static void assertFileExists(StringValue filePath) {
+    public static void assertFileExists(String filePath) {
 
     }
 
+    public static void assertFileExists(String filePath, Duration duration) {
+
+    }
 }

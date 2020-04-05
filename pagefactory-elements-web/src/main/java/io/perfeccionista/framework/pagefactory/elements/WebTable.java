@@ -1,18 +1,20 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebColumnMapper;
+import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsScrollToTableRowElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsSize;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.extractor.WebTableRowValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.WebTableCellValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.WebTableRowFilter;
+import io.perfeccionista.framework.pagefactory.filter.WebTableFilter;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
-
-import java.util.Optional;
+import io.perfeccionista.framework.pagefactory.filter.WebTableFilterResult;
+import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
+import io.perfeccionista.framework.value.number.NumberValue;
+import io.perfeccionista.framework.value.string.StringValue;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.TBODY_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.TFOOT_ROW;
@@ -26,18 +28,43 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = SCROLL_TO_ELEMENT_METHOD, implementation = JsScrollToTableRowElement.class)
 @ElementMethod(type = SIZE_METHOD, implementation = JsSize.class)
 public interface WebTable extends WebChildElement,
-        ScrollToElementAvailable<WebTableRowFilter>, SizeAvailable {
+        ScrollToElementAvailable<WebTableFilter>, SizeAvailable {
 
-    Optional<WebColumnMapper> getColumnMapper(String columnName);
+    <V> SingleResult<V> extractHeader(WebTableCellValueExtractor<V> extractor);
 
-    <V> V getHeaderValue(WebTableRowValueExtractor<V> extractor);
+    WebTableFilterResult filter(WebTableFilter filter);
 
-    <V> SingleResult<V> getValue(WebTableRowValueExtractor<V> extractor, WebTableRowFilter filter);
+    <V> MultipleResult<V> extractAll(WebTableCellValueExtractor<V> extractor);
 
-    <V> MultipleResult<V> getValues(WebTableRowValueExtractor<V> extractor);
+    <V> SingleResult<V> extractFooter(WebTableCellValueExtractor<V> extractor);
 
-    <V> MultipleResult<V> getValues(WebTableRowValueExtractor<V> extractor, WebTableRowFilter filter);
+    @Override
+    WebTable hoverTo(boolean withOutOfBounds);
 
-    <V> V getFooterValue(WebTableRowValueExtractor<V> extractor);
+    @Override
+    WebTable scrollTo();
 
+    @Override
+    WebTable scrollToElement(WebTableFilter filter);
+
+    @Override
+    WebTable shouldBeDisplayed();
+
+    @Override
+    WebTable shouldNotBeDisplayed();
+
+    @Override
+    WebTable shouldHaveBounds(Bounds bounds);
+
+    @Override
+    WebTable shouldHavePropertyValue(String propertyValue, StringValue stringValue);
+
+    @Override
+    WebTable shouldHaveSize(NumberValue<Integer> integerValue);
+
+    @Override
+    WebTable shouldLooksLike(Screenshot screenshot);
+
+    @Override
+    WebTable stateShouldBeDisplayed(String stateName);
 }

@@ -1,11 +1,24 @@
 package io.perfeccionista.framework.pagefactory.driver.context;
 
 import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.base.Element;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.IsDisplayedAvailable;
 
-public class WebSearchContext {
+import java.util.function.Consumer;
+
+public class WebSearchContext<T extends WebParentElement> {
+
+
+
+    public void forOne(Consumer<? super T> action) {
+
+    }
+
+
+
+
 
     public WebChildElement element(String elementPath) {
 

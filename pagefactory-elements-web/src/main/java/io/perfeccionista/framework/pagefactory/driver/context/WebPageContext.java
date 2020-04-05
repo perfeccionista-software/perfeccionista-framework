@@ -1,8 +1,10 @@
 package io.perfeccionista.framework.pagefactory.driver.context;
 
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
+import io.perfeccionista.framework.pagefactory.elements.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.context.WebSearchContextLimiter;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class WebPageContext {
@@ -11,6 +13,23 @@ public class WebPageContext {
 //    public WebPageContext setHighlighter(Highlighter highlighter) {
 //
 //    };
+
+
+    public <T extends WebParentElement> WebSearchContext<T> useSearchContext(WebSearchContextLimiter<T> limiter) {
+
+        return null;
+    }
+
+    public <T extends WebParentElement> Stream<T> useSearchContexts(WebSearchContextLimiter<T> limiter) {
+
+        return null;
+    }
+
+
+
+
+
+
 
     public WebPageContext setSingleSearchLimiter(WebSearchContextLimiter limiter) {
 

@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory;
 
+import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
 import io.perfeccionista.framework.pagefactory.registry.WebPageRegistry;
 import io.perfeccionista.framework.service.Service;
@@ -17,7 +18,7 @@ public class WebPageService implements Service {
     private WebPageRegistry pageRegistry;
 
     @Override
-    public void init(@NotNull ServiceConfiguration configuration) {
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
         this.configuration = validate(configuration);
         pageRegistry = new WebPageRegistry(this.configuration.getElementsConfiguration());
         pageRegistry.init(this.configuration.getPagePackages());

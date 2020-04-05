@@ -2,12 +2,21 @@ package io.perfeccionista.framework.value;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+import java.util.function.UnaryOperator;
+
 public interface Checker<T> {
 
-    boolean check(@NotNull T expected, @NotNull T actual);
+    T getExpected();
 
-    default boolean isProcessExpectedStatement() {
-        return true;
-    }
+    T getProcessedExpected();
+
+    boolean check(@NotNull T actual);
+
+    boolean isProcessExpectedStatement();
+
+    void setProcessExpectedStatement(boolean processExpectedStatement);
+
+    void setTransformers(Collection<UnaryOperator<T>> transformers);
 
 }

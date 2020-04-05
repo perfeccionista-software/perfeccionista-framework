@@ -26,7 +26,7 @@ public class PerfeccionistaExtension_BeforeAndAfterHooksTest {
     @Test
     void environmentInjectionTest(Environment environment) {
         Assertions.assertNotNull(environment);
-        Assertions.assertTrue(environment.getService(BeforeMethodService.class).isPresent());
+        Assertions.assertNotNull(environment.getService(BeforeMethodService.class));
         Service testMethodService = mock(TestMethodService.class);
         environment.register(TestMethodService.class, testMethodService);
     }
@@ -34,8 +34,8 @@ public class PerfeccionistaExtension_BeforeAndAfterHooksTest {
     @AfterEach
     void tearDown(Environment environment) {
         Assertions.assertNotNull(environment);
-        Assertions.assertTrue(environment.getService(BeforeMethodService.class).isPresent());
-        Assertions.assertTrue(environment.getService(TestMethodService.class).isPresent());
+        Assertions.assertNotNull(environment.getService(BeforeMethodService.class));
+        Assertions.assertNotNull(environment.getService(TestMethodService.class));
     }
 
     private abstract static class BeforeMethodService implements Service {}

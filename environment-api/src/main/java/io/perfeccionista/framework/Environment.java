@@ -217,7 +217,7 @@ public class Environment {
         // TODO: Проверить соответствие провайдера и конфигурации и привести их к <T>
         Class<? extends Service> serviceImplementation = customImplementation.orElse(serviceClass);
         Service serviceInstance = newInstance(serviceImplementation);
-        serviceInstance.init(serviceConfiguration);
+        serviceInstance.init(this, serviceConfiguration);
         register(serviceClass, serviceInstance);
     }
 

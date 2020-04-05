@@ -11,8 +11,10 @@ import java.util.Optional;
  */
 public interface ElementStateAvailable {
 
+    Optional<LocatorHolder> getState(String stateName);
+
     boolean isStateDisplayed(String stateName);
 
-    Optional<LocatorHolder> getState(String stateName);
+    ElementStateAvailable stateShouldBeDisplayed(String stateName);
 
 }

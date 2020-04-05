@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsGetLabel;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsGetText;
@@ -14,7 +15,10 @@ import io.perfeccionista.framework.pagefactory.elements.methods.availability.Get
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.IsOpenAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.OpenAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebBlockFilter;
+import io.perfeccionista.framework.pagefactory.filter.WebListFilter;
+import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
+import io.perfeccionista.framework.value.number.NumberValue;
+import io.perfeccionista.framework.value.string.StringValue;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.UL;
@@ -33,9 +37,60 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = OPEN_METHOD, implementation = SeleniumOpen.class)
 @ElementMethod(type = CLOSE_METHOD, implementation = SeleniumClose.class)
 @ElementMethod(type = SELECT_METHOD, implementation = JsSelectWebBlock.class)
-public interface WebDropDownList extends WebUnorderedList,
+public interface WebDropDownList extends WebList,
         ClickAvailable, GetTextAvailable, GetLabelAvailable, IsOpenAvailable, OpenAvailable, CloseAvailable {
 
-    void select(WebBlockFilter filter);
+    WebDropDownList select(WebListFilter filter);
+
+    @Override
+    WebDropDownList click();
+
+    @Override
+    WebDropDownList close();
+
+    @Override
+    WebDropDownList hoverTo(boolean withOutOfBounds);
+
+    @Override
+    WebDropDownList open();
+
+    @Override
+    WebDropDownList scrollTo();
+
+    @Override
+    WebDropDownList scrollToElement(WebListFilter filter);
+
+    @Override
+    WebDropDownList shouldBeOpen();
+
+    @Override
+    WebDropDownList shouldBeClosed();
+
+    @Override
+    WebDropDownList shouldBeDisplayed();
+
+    @Override
+    WebDropDownList shouldNotBeDisplayed();
+
+    @Override
+    WebDropDownList shouldHaveBounds(Bounds bounds);
+
+    @Override
+    WebDropDownList shouldHaveLabel(StringValue stringValue);
+
+    @Override
+    WebDropDownList shouldHavePropertyValue(String propertyValue, StringValue stringValue);
+
+    @Override
+    WebDropDownList shouldHaveSize(NumberValue<Integer> integerValue);
+
+    @Override
+    WebDropDownList shouldHaveText(StringValue stringValue);
+
+    @Override
+    WebDropDownList shouldLooksLike(Screenshot screenshot);
+
+    @Override
+    WebDropDownList stateShouldBeDisplayed(String stateName);
 
 }

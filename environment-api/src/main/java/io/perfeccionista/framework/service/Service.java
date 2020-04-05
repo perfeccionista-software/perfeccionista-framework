@@ -1,12 +1,13 @@
 package io.perfeccionista.framework.service;
 
+import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
 
 public interface Service {
 
     /**
      */
-    void init(@NotNull ServiceConfiguration configuration);
+    void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration);
 
     /**
      * TODO: JavaDoc

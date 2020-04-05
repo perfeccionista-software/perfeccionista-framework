@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsScrollToBlockElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsSize;
@@ -9,7 +10,8 @@ import io.perfeccionista.framework.pagefactory.elements.methods.availability.Siz
 import io.perfeccionista.framework.pagefactory.extractor.WebRadioButtonValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebRadioButtonFilter;
-import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.WebRadioButtonFilterResult;
+import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
@@ -28,12 +30,40 @@ public interface WebRadioGroup extends WebChildElement,
 
     WebRadioButton getByLabel(StringValue label);
 
-    WebRadioButton getByNumber(NumberValue<Integer> number);
+    WebRadioButton getByIndex(NumberValue<Integer> number);
 
-    <V> SingleResult<V> getValue(WebRadioButtonValueExtractor<V> extractor, WebRadioButtonFilter filter);
+    WebRadioButtonFilterResult filter(WebRadioButtonFilter filter);
 
-    <V> MultipleResult<V> getValues(WebRadioButtonValueExtractor<V> extractor);
+    <V> MultipleResult<V> extractAll(WebRadioButtonValueExtractor<V> extractor);
 
-    <V> MultipleResult<V> getValues(WebRadioButtonValueExtractor<V> extractor, WebRadioButtonFilter filter);
+    @Override
+    WebRadioGroup hoverTo(boolean withOutOfBounds);
+
+    @Override
+    WebRadioGroup scrollTo();
+
+    @Override
+    WebRadioGroup scrollToElement(WebRadioButtonFilter filter);
+
+    @Override
+    WebRadioGroup shouldBeDisplayed();
+
+    @Override
+    WebRadioGroup shouldNotBeDisplayed();
+
+    @Override
+    WebRadioGroup shouldHaveBounds(Bounds bounds);
+
+    @Override
+    WebRadioGroup shouldHavePropertyValue(String propertyValue, StringValue stringValue);
+
+    @Override
+    WebRadioGroup shouldHaveSize(NumberValue<Integer> integerValue);
+
+    @Override
+    WebRadioGroup shouldLooksLike(Screenshot screenshot);
+
+    @Override
+    WebRadioGroup stateShouldBeDisplayed(String stateName);
 
 }

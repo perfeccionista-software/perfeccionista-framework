@@ -1,13 +1,28 @@
 package io.perfeccionista.framework.value.string.checker;
 
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.value.string.StringChecker;
 
-public class StringLengthChecker implements StringChecker {
+public class StringLengthChecker extends AbstractStringChecker {
+
+    private int expectedValue;
+
+    public StringLengthChecker(int expectedValue) {
+        this.expectedValue = expectedValue;
+    }
 
     @Override
-    public boolean check(@NotNull String expected, @NotNull String actual) {
-        return Integer.parseInt(expected) == actual.length();
+    public String getExpected() {
+        return String.valueOf(expectedValue);
+    }
+
+    @Override
+    public String getProcessedExpected() {
+        return getExpected();
+    }
+
+    @Override
+    public boolean check(@NotNull String actual) {
+        return expectedValue == actual.length();
     }
 
 }

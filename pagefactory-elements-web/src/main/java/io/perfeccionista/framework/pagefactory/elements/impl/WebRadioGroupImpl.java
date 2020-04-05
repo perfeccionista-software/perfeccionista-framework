@@ -19,26 +19,26 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 
 public abstract class WebRadioGroupImpl extends AbstractWebChildElement implements WebRadioGroup {
 
-
-    @Override
-    public <V> MultipleResult<V> getValues(WebRadioButtonValueExtractor<V> extractor) {
-        return extractor.extractMultipleValues(this, MultipleResult.empty());
-    }
-
-    @Override
-    public <V> MultipleResult<V> getValues(WebRadioButtonValueExtractor<V> extractor, WebRadioButtonFilter filter) {
-        MultipleResult<Integer> result = filter.multipleResult(this);
-        return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result);
-    }
-
-    @Override
-    public void scrollToElement(WebRadioButtonFilter filter) {
-        getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
-    }
-
-    @Override
-    public int size() {
-        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, RADIO);
-    }
+//
+//    @Override
+//    public <V> MultipleResult<V> getValues(WebRadioButtonValueExtractor<V> extractor) {
+//        return extractor.extractMultipleValues(this, MultipleResult.empty());
+//    }
+//
+//    @Override
+//    public <V> MultipleResult<V> getValues(WebRadioButtonValueExtractor<V> extractor, WebRadioButtonFilter filter) {
+//        MultipleResult<Integer> result = filter.multipleResult(this);
+//        return extractor.setHash(result.getElementHash()).extractMultipleValues(this, result);
+//    }
+//
+//    @Override
+//    public void scrollToElement(WebRadioButtonFilter filter) {
+//        getMethodImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter);
+//    }
+//
+//    @Override
+//    public int size() {
+//        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, RADIO);
+//    }
 
 }

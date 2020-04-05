@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementMethod;
 import io.perfeccionista.framework.pagefactory.elements.methods.JsGetLabel;
 import io.perfeccionista.framework.pagefactory.elements.methods.SeleniumClick;
@@ -10,6 +11,8 @@ import io.perfeccionista.framework.pagefactory.elements.methods.availability.Cli
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.IsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.availability.IsSelectedAvailable;
+import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
+import io.perfeccionista.framework.value.string.StringValue;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.Components.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.methods.availability.AvailableMethod.CLICK_METHOD;
@@ -24,4 +27,47 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.availabil
 @ElementMethod(type = IS_SELECTED_METHOD, implementation = SeleniumIsSelected.class)
 public interface WebCheckbox extends WebChildElement,
         ClickAvailable, IsSelectedAvailable, IsEnabledAvailable, GetLabelAvailable {
+
+    @Override
+    WebCheckbox click();
+
+    @Override
+    WebCheckbox hoverTo(boolean withOutOfBounds);
+
+    @Override
+    WebCheckbox scrollTo();
+
+    @Override
+    WebCheckbox shouldBeDisabled();
+
+    @Override
+    WebCheckbox shouldNotBeDisplayed();
+
+    @Override
+    WebCheckbox shouldBeDisplayed();
+
+    @Override
+    WebCheckbox shouldBeEnabled();
+
+    @Override
+    WebCheckbox shouldBeSelected();
+
+    @Override
+    WebCheckbox shouldNotBeSelected();
+
+    @Override
+    WebCheckbox shouldHaveBounds(Bounds bounds);
+
+    @Override
+    WebCheckbox shouldHaveLabel(StringValue stringValue);
+
+    @Override
+    WebCheckbox shouldHavePropertyValue(String propertyValue, StringValue stringValue);
+
+    @Override
+    WebCheckbox shouldLooksLike(Screenshot screenshot);
+
+    @Override
+    WebCheckbox stateShouldBeDisplayed(String stateName);
+
 }
