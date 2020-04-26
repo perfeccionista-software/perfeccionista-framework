@@ -138,6 +138,18 @@ public class ValueExpressionProcessor {
                     StringAttachmentEntry.of("Token", expressionContext.getFirst().toString())));
         }
 
+        if (escaped) {
+            tokenContent.append('\\');
+        }
+
+        if (dataSource) {
+            tokenContent.append('$');
+        }
+
+        if (dataConverter) {
+            tokenContent.append('@');
+        }
+
         if (tokenContent.length() > 0) {
             tokens.addLast(Token.of(VALUE, tokenContent.toString(), tokenContentStartPosition));
         }

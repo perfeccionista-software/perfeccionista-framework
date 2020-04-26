@@ -63,6 +63,21 @@ public class ValueExpressionProcessorTokenizeTest extends SimpleParallelTest {
         assertNotNull(tokenizedExpression5);
         assertEquals(1, tokenizedExpression5.size());
         assertEquals(Token.of(TokenType.VALUE, "escaped @{DataConverter expression}", 0), tokenizedExpression5.getFirst());
+
+        Deque<Token> tokenizedExpression6 = expressionProcessor.tokenize("escaped \\@{DataConverter expression}$");
+        assertNotNull(tokenizedExpression6);
+        assertEquals(1, tokenizedExpression6.size());
+        assertEquals(Token.of(TokenType.VALUE, "escaped @{DataConverter expression}$", 0), tokenizedExpression6.getFirst());
+
+        Deque<Token> tokenizedExpression7 = expressionProcessor.tokenize("escaped \\@{DataConverter expression}@");
+        assertNotNull(tokenizedExpression7);
+        assertEquals(1, tokenizedExpression7.size());
+        assertEquals(Token.of(TokenType.VALUE, "escaped @{DataConverter expression}@", 0), tokenizedExpression7.getFirst());
+
+        Deque<Token> tokenizedExpression8 = expressionProcessor.tokenize("escaped \\@{DataConverter expression}\\");
+        assertNotNull(tokenizedExpression8);
+        assertEquals(1, tokenizedExpression8.size());
+        assertEquals(Token.of(TokenType.VALUE, "escaped @{DataConverter expression}\\", 0), tokenizedExpression8.getFirst());
     }
 
     @Test

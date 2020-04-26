@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.datasource;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import io.perfeccionista.framework.Environment;
@@ -12,11 +11,8 @@ import io.perfeccionista.framework.datasource.implementations.entities.Professio
 import io.perfeccionista.framework.datasource.implementations.entities.User;
 import io.perfeccionista.framework.extension.PerfeccionistaExtension;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(DataSourceLocalEnvironmentConfiguration.class)
@@ -39,7 +35,7 @@ public class DataSourceServiceTest {
         assertEquals(new User("Jack", "Black"), user);
         Professional professionalUser = simpleDataSource.get("Professional John", Professional.class);
         assertEquals(new Professional("Professional John", "White"), professionalUser);
-        Assertions.assertEquals("User {name = Jack, surname = Black}", simpleDataSource.getString("Jack"));
+        assertEquals("User {name = Jack, surname = Black}", simpleDataSource.getString("Jack"));
     }
 
     @Test

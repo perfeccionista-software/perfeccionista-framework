@@ -44,6 +44,12 @@ public class OperationResult<T> {
         }
     }
 
+    public void throwIfNotFailure(@NotNull PerfeccionistaException exception) {
+        if (success) {
+            throw exception;
+        }
+    }
+
     public Optional<T> getResult() {
         return Optional.ofNullable(result);
     }

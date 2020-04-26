@@ -22,12 +22,15 @@ public interface MultipleResult<T> {
     // TODO: Подумать как тут можно проверять сразу группу индексов
     //  shouldHaveIndexes(intValues.containsAll(1, 2, 3, 4, 5));
     //  Сделать MultipleValue<T> с методом checkAll(Collection<T> values)?
+    SingleResult<T> singleResult();
+
     MultipleResult<T> shouldHaveIndex(Value<Integer> indexValue);
 
     MultipleResult<T> shouldHaveResult(Value<T> value);
 
     MultipleResult<T> shouldHaveSize(Value<Integer> integerValue);
 
+    // TODO: Для дебаг-режима выводим все полученные значения в консоль
     MultipleResult<T> shouldBeSorted(Comparator<T> comparator);
 
 }

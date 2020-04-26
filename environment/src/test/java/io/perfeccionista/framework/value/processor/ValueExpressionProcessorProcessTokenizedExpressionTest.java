@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.value.processor;
 
 import io.perfeccionista.framework.SimpleParallelTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import io.perfeccionista.framework.Environment;
@@ -80,7 +81,7 @@ public class ValueExpressionProcessorProcessTokenizedExpressionTest extends Simp
         Object result1 = expressionProcessor.processExpression("${[user] John}");
         assertNotNull(result1);
         assertEquals(User.class, result1.getClass());
-        assertEquals(new User("John", "Smith"), result1);
+        Assertions.assertEquals(new User("John", "Smith"), result1);
 
         Object result2 = expressionProcessor.processExpression("${[user] John} activated");
         assertNotNull(result2);
@@ -100,12 +101,12 @@ public class ValueExpressionProcessorProcessTokenizedExpressionTest extends Simp
         Object result1 = expressionProcessor.processExpression("@{[user name to user]John Smith}");
         assertNotNull(result1);
         assertEquals(User.class, result1.getClass());
-        assertEquals(new User("John", "Smith"), result1);
+        Assertions.assertEquals(new User("John", "Smith"), result1);
 
         Object result2 = expressionProcessor.processExpression("@{[user name to user] John Smith}");
         assertNotNull(result2);
         assertEquals(User.class, result2.getClass());
-        assertEquals(new User("John", "Smith"), result2);
+        Assertions.assertEquals(new User("John", "Smith"), result2);
 
         Object result3 = expressionProcessor.processExpression("@{[user name to user] John Smith} activated");
         assertNotNull(result3);

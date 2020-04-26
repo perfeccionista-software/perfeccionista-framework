@@ -1,16 +1,16 @@
 rootProject.name = "perfeccionista-framework"
 
 include("utils")
-include("environment-api")
+include("demo-app")
+include("bdd-engine")
 include("environment")
 include("pagefactory-api")
-include("pagefactory-elements-web")
-include("pagefactory-elements-mobile")
-include("pagefactory-asserts")
-include("pagefactory-bdd-api")
-include("pagefactory-bdd")
-include("pagefactory-bdd-engine")
-include("demo-app")
+include("pagefactory-mobile-api")
+include("pagefactory-mobile-appium")
+include("pagefactory-mobile-appium-bdd")
+include("pagefactory-web-api")
+include("pagefactory-web-selenium")
+include("pagefactory-web-selenium-bdd")
 
 val jVersion = JavaVersion.current()
 require (jVersion.isJava8Compatible) {

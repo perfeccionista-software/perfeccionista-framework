@@ -34,8 +34,8 @@ public abstract class AbstractChildElement<T extends ParentElement<?>> implement
     }
 
     @Override
-    public Optional<LocatorHolder> getState(String stateName) {
-        return locatorRegistry.getOptionalLocator(stateName);
+    public Optional<LocatorHolder> getComponent(String componentName) {
+        return locatorRegistry.getOptionalLocator(componentName);
     }
 
     @Override

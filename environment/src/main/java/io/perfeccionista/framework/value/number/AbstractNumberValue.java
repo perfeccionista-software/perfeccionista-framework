@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.value.number;
 
+import io.perfeccionista.framework.value.checker.NumberChecker;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;

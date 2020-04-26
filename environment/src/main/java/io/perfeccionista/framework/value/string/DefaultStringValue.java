@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.value.string;
 
+import io.perfeccionista.framework.value.checker.StringChecker;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
@@ -14,6 +15,7 @@ public class DefaultStringValue implements StringValue {
 
     protected String rawActual;
     protected String processedActual;
+    protected boolean inverse = false;
 
     public DefaultStringValue(StringChecker stringChecker) {
         this.stringChecker = stringChecker;
@@ -39,6 +41,12 @@ public class DefaultStringValue implements StringValue {
     }
 
     @Override
+    public StringValue inverse() {
+        inverse = true;
+        return this;
+    }
+
+    @Override
     public @NotNull String get() {
         return stringChecker.getProcessedExpected();
     }
@@ -50,15 +58,18 @@ public class DefaultStringValue implements StringValue {
         for (UnaryOperator<String> transformer : actualValueTransformers) {
             processedActual = transformer.apply(processedActual);
         }
+        if (inverse) {
+            return !stringChecker.check(processedActual);
+        }
         return stringChecker.check(processedActual);
     }
 
     @Override
     public String toString() {
-        return String.format("String value: {checker = %s; rawExpected = '%s'; rawActual = '%s'}\n"
+        return String.format("String value: {checker = %s; inverse = %s; rawExpected = '%s'; rawActual = '%s'}\n"
                         + "    processedExpected = '%s'\n"
                         + "      processedActual = '%s'",
-                stringChecker.getClass().getCanonicalName(), stringChecker.getExpected(), rawActual,
+                stringChecker.getClass().getCanonicalName(), inverse, stringChecker.getExpected(), rawActual,
                 stringChecker.getProcessedExpected(),
                 processedActual);
     }

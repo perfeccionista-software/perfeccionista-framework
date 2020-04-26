@@ -1,11 +1,9 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
+import io.perfeccionista.framework.pagefactory.elements.base.Element;
 
-public interface Filter<I, R> {
+public interface Filter<I extends Element, R extends FilterResult> {
 
-    SingleResult<R> singleResult(I inputData) throws PerfeccionistaException;
-
-    MultipleResult<R> multipleResult(I inputData) throws PerfeccionistaException;
+    R filter(I element);
 
 }

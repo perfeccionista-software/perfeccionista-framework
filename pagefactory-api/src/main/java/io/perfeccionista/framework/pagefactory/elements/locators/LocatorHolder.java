@@ -11,20 +11,12 @@ public class LocatorHolder {
     private final String locatorStrategy;
     private final String locatorValue;
 
-
-
-
     public LocatorHolder(LocatorType locatorType, String locatorStrategy, String locatorValue) {
         this.locatorType = locatorType;
         this.locatorStrategy = locatorStrategy;
         this.locatorValue = locatorValue;
         this.id = UUID.randomUUID().toString();
     }
-
-
-
-
-
 
     public LocatorHolder calculateHash(boolean calculateHash) {
         return this;

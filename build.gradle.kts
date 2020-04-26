@@ -1,6 +1,7 @@
 import io.qameta.allure.gradle.task.AllureReport
 
 repositories {
+    mavenLocal()
     google()
     maven("https://plugins.gradle.org/m2/")
 }

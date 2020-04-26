@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.value.number;
 
+import io.perfeccionista.framework.value.checker.NumberChecker;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;

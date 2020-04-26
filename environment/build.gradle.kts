@@ -1,5 +1,5 @@
 dependencies {
-    compile(project(":environment-api")) {
-        because("environment-api module contains api for current module")
+    compile(project(":utils")) {
+        because("utils module contains tools for current module")
     }
 }

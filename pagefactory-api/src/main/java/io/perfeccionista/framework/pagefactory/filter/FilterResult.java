@@ -2,8 +2,8 @@ package io.perfeccionista.framework.pagefactory.filter;
 
 import io.perfeccionista.framework.value.number.NumberValue;
 
-public interface FilterResult<T extends Filter<?, ?>>  {
+public interface FilterResult  {
 
-    FilterResult<T> shouldHaveSize(NumberValue<Integer> integerValue);
+    FilterResult shouldHaveSize(NumberValue<Integer> integerValue);
 
 }
