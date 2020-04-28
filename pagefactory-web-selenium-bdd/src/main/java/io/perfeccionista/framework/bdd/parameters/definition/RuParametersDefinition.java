@@ -11,6 +11,8 @@ import io.perfeccionista.framework.bdd.parameters.ColorParameter;
 import io.perfeccionista.framework.bdd.parameters.ColorParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.DataStorageParameter;
 import io.perfeccionista.framework.bdd.parameters.DataStorageParameterImpl;
+import io.perfeccionista.framework.bdd.parameters.DateTimeFormatParameter;
+import io.perfeccionista.framework.bdd.parameters.DateTimeFormatParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.DurationParameter;
 import io.perfeccionista.framework.bdd.parameters.DurationParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.FixtureParameter;
@@ -71,6 +73,9 @@ public class RuParametersDefinition implements EnvironmentAvailable {
     private static final String BRACKETS_PATTERN = IGNORE_OUTER_GROUP + "\\(([^(\\\\]*(?:\\\\.[^)\\\\]*)*)\\)";
 
     @Language("RegExp")
+    private static final String SQUARE_BRACKETS_PATTERN = IGNORE_OUTER_GROUP + "\\[(.+)]";
+
+    @Language("RegExp")
     private static final String DOUBLE_QUOTE_STRING_PATTERN = IGNORE_OUTER_GROUP + "\"([^\"\\\\]*(?:\\\\.[^\"\\\\]*)*)\"";
 
     // TODO support single quoted arguments
@@ -124,6 +129,16 @@ public class RuParametersDefinition implements EnvironmentAvailable {
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public <K, V> DataStorageParameter<K, V> dataStorage(String value) {
         return new DataStorageParameterImpl<>(environment, value);
+    }
+
+    /**
+     *
+     * @param value
+     * @return
+     */
+    @ParameterType(SQUARE_BRACKETS_PATTERN)
+    public DateTimeFormatParameter dateTimeFormat(String value) {
+        return new DateTimeFormatParameterImpl(value);
     }
 
     /**

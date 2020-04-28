@@ -4,6 +4,6 @@ import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValue
 
 public interface WebTableValueExtractorParameter extends BddStepParameter {
 
-    WebTableCellValueExtractor<String> findForElement(String webTableColumnName, String webCellElementName);
+    WebTableCellValueExtractor<String> createExtractorFor(String webTableColumnName, String webCellElementName);
 
 }

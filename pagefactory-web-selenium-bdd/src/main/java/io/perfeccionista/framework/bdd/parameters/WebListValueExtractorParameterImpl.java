@@ -14,7 +14,10 @@ public class WebListValueExtractorParameterImpl implements WebListValueExtractor
     }
 
     @Override
-    public WebListBlockValueExtractor<String> findForElement(String webBlockElementName) {
+    public WebListBlockValueExtractor<String> createExtractorFor(String blockElementName) {
+        // TODO: Тут мы откуда-то получаем распорсенный по тексту rawInput соответствующий велью экстрактор холдер и создаем из него велью экстрактор
+        // WebListBlockValueExtractorHolder holder = bddEngineService.getByName(rawInput);
+        // return holder.getForElement(blockElementName);
         return null;
     }
 

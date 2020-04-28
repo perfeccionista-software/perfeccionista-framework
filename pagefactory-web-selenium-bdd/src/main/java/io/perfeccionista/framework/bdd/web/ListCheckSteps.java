@@ -93,7 +93,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
     /**
      *
      * @param elementFinder -
-     * @param valueExtractor -
+     * @param extractorFinder -
      * @param blockElementFinder -
      * @param comparatorType -
      * @param sortDirection -
@@ -101,14 +101,14 @@ public class ListCheckSteps implements EnvironmentAvailable {
     @Given("in the {webElement} {webListValueExtractor} from {webBlockElement} in {comparatorType} format sorted {sortDirection}")
     @Given("в {webElement} {webListValueExtractor} из {webBlockElement} в формате {comparatorType} отсортированы {sortDirection}")
     public void listSorted(WebElementParameter<WebList> elementFinder,
-                           WebListValueExtractorParameter valueExtractor,
+                           WebListValueExtractorParameter extractorFinder,
                            @SourceParameterRef("elementFinder") WebBlockElementParameter<WebChildElement> blockElementFinder,
                            StringComparatorTypeParameter comparatorType,
                            SortDirectionParameter sortDirection) {
         elementFinder.find()
                 .forEachOrdered(element -> element
-                        .extractAll(valueExtractor.findForElement(blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .extractAll(extractorFinder.createExtractorFor(blockElementFinder.getRaw()))
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
     /**
@@ -125,7 +125,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .extractAll()
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
     /**
@@ -148,8 +148,8 @@ public class ListCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
-                        .extractAll(valueExtractor.findForElement(blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .extractAll(valueExtractor.createExtractorFor(blockElementFinder.getRaw()))
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
     /**
@@ -169,7 +169,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
                         .extractAll()
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
 }

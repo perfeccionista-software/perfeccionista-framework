@@ -1,9 +1,8 @@
 package io.perfeccionista.framework.bdd.parameters;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.bdd.comparators.BddValueComparator;
 import io.perfeccionista.framework.bdd.comparators.SortDirection;
-
-import java.util.Comparator;
 
 public class StringComparatorTypeParameterImpl implements StringComparatorTypeParameter {
 
@@ -16,7 +15,7 @@ public class StringComparatorTypeParameterImpl implements StringComparatorTypePa
     }
 
     @Override
-    public Comparator<String> findForDirection(SortDirection sortDirection) {
+    public BddValueComparator findComparatorForDirection(SortDirection sortDirection) {
         return null;
     }
 

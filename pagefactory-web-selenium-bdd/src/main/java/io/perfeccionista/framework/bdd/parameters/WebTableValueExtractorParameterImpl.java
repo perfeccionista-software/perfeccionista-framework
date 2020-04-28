@@ -14,13 +14,16 @@ public class WebTableValueExtractorParameterImpl implements WebTableValueExtract
     }
 
     @Override
-    public WebTableCellValueExtractor<String> findForElement(String webTableColumnName, String webCellElementName) {
+    public WebTableCellValueExtractor<String> createExtractorFor(String webTableColumnName, String webCellElementName) {
+        // TODO: Тут мы откуда-то получаем распорсенный по тексту rawInput соответствующий велью экстрактор холдер и создаем из него велью экстрактор
+        // WebListBlockValueExtractorHolder holder = bddEngineService.getByName(rawInput);
+        // return holder.getForElement(blockElementName);
         return null;
     }
 
     @Override
     public String getRaw() {
-        return null;
+        return rawInput;
     }
 
 }

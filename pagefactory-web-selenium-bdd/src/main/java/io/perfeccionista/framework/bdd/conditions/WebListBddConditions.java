@@ -28,7 +28,7 @@ import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockIndexCond
 
 // TODO: Реализации этих методов по хорошему тоже нужно куда-то вынести.
 //  Или просто для каждого модуля элементов иметь отдельную реализацию BDD
-public class WebListConditions {
+public class WebListBddConditions {
 
     /**
      *

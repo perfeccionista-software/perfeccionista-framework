@@ -88,8 +88,8 @@ public class TableCheckSteps implements EnvironmentAvailable {
                             SortDirectionParameter sortDirection) {
         elementFinder.find()
                 .forEachOrdered(element -> element
-                        .extractAllRows(valueExtractor.findForElement(webTableColumn.getRaw(), blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .extractAllRows(valueExtractor.createExtractorFor(webTableColumn.getRaw(), blockElementFinder.getRaw()))
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
     /**
@@ -108,7 +108,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .extractAllRows(webTableColumn.getRaw())
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
     /**
@@ -132,8 +132,8 @@ public class TableCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
-                        .extractAllRows(valueExtractor.findForElement(webTableColumn.getRaw(), blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .extractAllRows(valueExtractor.createExtractorFor(webTableColumn.getRaw(), blockElementFinder.getRaw()))
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
     /**
@@ -154,7 +154,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
                         .extractAllRows(webTableColumn.getRaw())
-                        .shouldBeSorted(comparatorType.findForDirection(sortDirection.getDirection())));
+                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
     }
 
 }

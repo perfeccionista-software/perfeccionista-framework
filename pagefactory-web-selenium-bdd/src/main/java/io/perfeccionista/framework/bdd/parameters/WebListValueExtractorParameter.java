@@ -4,6 +4,6 @@ import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueE
 
 public interface WebListValueExtractorParameter extends BddStepParameter {
 
-    WebListBlockValueExtractor<String> findForElement(String webBlockElementName);
+    WebListBlockValueExtractor<String> createExtractorFor(String blockElementName);
 
 }

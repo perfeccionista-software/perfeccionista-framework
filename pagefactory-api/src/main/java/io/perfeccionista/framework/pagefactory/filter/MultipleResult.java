@@ -4,6 +4,7 @@ import io.perfeccionista.framework.value.Value;
 
 import java.util.Comparator;
 import java.util.Map;
+import java.util.function.Function;
 
 public interface MultipleResult<T> {
 
@@ -23,6 +24,8 @@ public interface MultipleResult<T> {
     //  shouldHaveIndexes(intValues.containsAll(1, 2, 3, 4, 5));
     //  Сделать MultipleValue<T> с методом checkAll(Collection<T> values)?
     SingleResult<T> singleResult();
+
+    <R> MultipleResult<R> convert(Function<T, R> converter);
 
     MultipleResult<T> shouldHaveIndex(Value<Integer> indexValue);
 
