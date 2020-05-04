@@ -7,6 +7,7 @@ import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
 // TODO: Сделать встроенную проверку того, что это изображение (по тегу src)
+// TODO: Добавить метод saveToFile(Path file); который сохранит изображение в указанный файл.
 public interface WebImage extends WebChildElement,
         ClickAvailable {
 

@@ -24,7 +24,7 @@ public class AvailableElementMethods {
     public static final String IS_COMPONENT_DISPLAYED_METHOD = "IsComponentDisplayed";
     public static final String IS_COMPONENT_PRESENT_METHOD = "IsComponentPresent";
     public static final String OPEN_METHOD = "Open";
-    public static final String SELECT_METHOD = "Select";
+    public static final String CLICK_TO_ELEMENT_METHOD = "ClickToElement";
     public static final String SHOULD_BE_DISPLAYED_METHOD = "ShouldBeDisplayed";
     public static final String SHOULD_BE_ENABLED_METHOD = "ShouldBeEnabled";
     public static final String SHOULD_BE_CLOSED_METHOD = "ShouldBeClosed";

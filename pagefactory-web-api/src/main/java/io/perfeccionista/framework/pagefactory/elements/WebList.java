@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
+import io.perfeccionista.framework.pagefactory.elements.methods.ClickToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
@@ -14,7 +15,7 @@ import io.perfeccionista.framework.value.string.StringValue;
 
 
 public interface WebList extends WebChildElement,
-        ScrollToElementAvailable<WebListFilter>, SizeAvailable {
+        ScrollToElementAvailable<WebListFilter>, ClickToElementAvailable<WebListFilter>, SizeAvailable {
 
     default WebListFilterResult filter(WebListFilter filter) {
         return filter.filter(this);
@@ -28,6 +29,9 @@ public interface WebList extends WebChildElement,
     @Override
     WebList executeInteraction(String name, WebChildElement other, Object... args);
 
+
+    @Override
+    WebList clickToElement(WebListFilter filter); // Тут нужно еще скроллить к элементу
 
     @Override
     WebList hoverTo(boolean withOutOfBounds);

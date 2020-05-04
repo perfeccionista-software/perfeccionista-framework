@@ -2,5 +2,6 @@
 /.idea
 /.gradle
 **/out
+**/dist
 **/build
 **/node_modules

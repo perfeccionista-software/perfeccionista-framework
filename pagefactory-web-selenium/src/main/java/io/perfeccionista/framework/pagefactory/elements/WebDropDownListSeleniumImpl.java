@@ -15,7 +15,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.Available
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_LABEL_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_TEXT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SELECT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.CLICK_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableWebMethods.CLICK_METHOD;
 
 @WebLocator(component = UL, xpath = ".//ul")
@@ -25,7 +25,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.Available
 @ElementAction(name = GET_TEXT_METHOD, implementation = JsGetText.class)
 @ElementAction(name = OPEN_METHOD, implementation = SeleniumOpen.class)
 @ElementAction(name = CLOSE_METHOD, implementation = SeleniumClose.class)
-@ElementAction(name = SELECT_METHOD, implementation = JsSelectWebBlock.class)
+@ElementAction(name = CLICK_TO_ELEMENT_METHOD, implementation = JsSelectWebBlock.class)
 public abstract class WebDropDownListSeleniumImpl extends WebListSeleniumImpl implements WebDropDownList {
 //
 //    @Override

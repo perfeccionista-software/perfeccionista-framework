@@ -12,7 +12,7 @@ import io.perfeccionista.framework.value.Value;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
-
+// TODO: Добавить TextBlockExtractor/LinkExtractor
 public interface WebTextTable extends WebChildElement,
         ScrollToElementAvailable<WebTextTableFilter>, SizeAvailable {
 

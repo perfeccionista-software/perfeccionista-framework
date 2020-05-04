@@ -7,7 +7,6 @@ import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailabl
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SelectAvailable;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.Value;
@@ -15,7 +14,7 @@ import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
 public interface WebDropDownList extends WebList,
-        ClickAvailable, GetTextAvailable, GetLabelAvailable, IsOpenAvailable, OpenAvailable, CloseAvailable, SelectAvailable<WebListFilter> {
+        ClickAvailable, GetTextAvailable, GetLabelAvailable, IsOpenAvailable, OpenAvailable, CloseAvailable {
 
     @Override
     WebDropDownList executeAction(String name, Object... args);
@@ -26,6 +25,9 @@ public interface WebDropDownList extends WebList,
 
     @Override
     WebDropDownList click();
+
+    @Override
+    WebDropDownList clickToElement(WebListFilter filter); // Тут нужно еще скроллить к элементу
 
     @Override
     WebDropDownList open();
@@ -41,9 +43,6 @@ public interface WebDropDownList extends WebList,
 
     @Override
     WebDropDownList scrollToElement(WebListFilter filter);
-
-    @Override
-    WebDropDownList select(WebListFilter filter); // Тут нужно еще скроллить к элементу
 
 
     @Override

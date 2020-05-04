@@ -1,0 +1,40 @@
+#app a {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.header {
+    margin: 5px 0;
+    padding: 25px 0 0 35px;
+    height: 100px;
+    background: linear-gradient(180deg, #56BCFE, #2577DC);
+    border-radius: 4px;
+}
+
+.header h2 {
+    color: aliceblue;
+    font-family: "Brush Script MT", serif;
+    font-size: 2.5em;
+}
+
+.page-title {
+    color: #2577DC;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.dropdown-popup .dropdown-menu {
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 0 15px dimgrey; /* Параметры тени */
+}
+
+.IZ-select__item.IZ-select__item--selected {
+    background-color: rgba(200, 200, 200, 0.24);
+    color: #2577DC !important
+    /*color: #ff5252 !important*/
+}

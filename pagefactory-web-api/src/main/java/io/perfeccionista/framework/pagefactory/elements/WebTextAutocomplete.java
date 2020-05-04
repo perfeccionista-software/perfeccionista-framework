@@ -27,6 +27,9 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     WebTextAutocomplete click();
 
     @Override
+    WebTextAutocomplete clickToElement(WebTextListFilter filter); // Тут нужно еще скроллить к элементу
+
+    @Override
     WebTextAutocomplete open();
 
     @Override
@@ -40,9 +43,6 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
 
     @Override
     WebTextAutocomplete scrollToElement(WebTextListFilter filter);
-
-    @Override
-    WebTextAutocomplete select(WebTextListFilter filter); // Тут нужно еще скроллить к элементу
 
     @Override
     WebTextAutocomplete sendKeys(CharSequence... keys);

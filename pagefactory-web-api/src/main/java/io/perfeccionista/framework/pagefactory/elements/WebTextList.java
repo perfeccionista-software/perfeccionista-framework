@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
+import io.perfeccionista.framework.pagefactory.elements.methods.ClickToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
@@ -11,9 +12,9 @@ import io.perfeccionista.framework.value.Value;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
-
+// TODO: Добавить TextBlockExtractor/LinkExtractor
 public interface WebTextList extends WebChildElement,
-        ScrollToElementAvailable<WebTextListFilter>, SizeAvailable {
+        ScrollToElementAvailable<WebTextListFilter>, ClickToElementAvailable<WebTextListFilter>, SizeAvailable {
 
     default WebTextListFilterResult filter(WebTextListFilter filter) {
         return filter.filter(this);
@@ -27,6 +28,9 @@ public interface WebTextList extends WebChildElement,
     @Override
     WebTextList executeInteraction(String name, WebChildElement other, Object... args);
 
+
+    @Override
+    WebTextList clickToElement(WebTextListFilter filter); // Тут нужно еще скроллить к элементу
 
     @Override
     WebTextList hoverTo(boolean withOutOfBounds);

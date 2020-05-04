@@ -238,13 +238,13 @@ public class ListElementsTest extends AbstractElementTest {
         // Case: Выбрать в выпадающем списке элемент со значением 'Haiti' и проверить выбранное значение
         ulElementsPage.dropDownList()
                 .open()
-                .select(with(containsText(blockMock(CountryNameBlock.class).shortName(), value.stringEquals("Haiti"))))
+                .clickToElement(with(containsText(blockMock(CountryNameBlock.class).shortName(), value.stringEquals("Haiti"))))
                 .close()
                 .shouldHaveText(value.stringEquals("Haiti"));
         // Case: Выбрать в выпадающем списке элемент с индексом '10' и проверить выбранное значение
         ulElementsPage.dropDownList()
                 .open()
-                .select(with(containsText(blockMock(CountryNameBlock.class).number(), value.intEquals(10))))
+                .clickToElement(with(containsText(blockMock(CountryNameBlock.class).number(), value.intEquals(10))))
                 .close()
                 .shouldHaveText(value.stringEquals("Andorra"));
     }
@@ -288,14 +288,14 @@ public class ListElementsTest extends AbstractElementTest {
                 .sendKeys("I")
                 .shouldBeOpen()
                 .shouldHaveSize(value.intEquals(8))
-                .select(with(containsText(blockMock(CountryNameBlock.class).shortName(), value.stringEquals("Italy"))))
+                .clickToElement(with(containsText(blockMock(CountryNameBlock.class).shortName(), value.stringEquals("Italy"))))
                 .shouldBeClosed()
                 .shouldHaveText(value.stringEquals("Italy"))
                 .clear()
                 .shouldHaveText(value.stringEmpty())
                 .sendKeys("G")
                 .shouldBeOpen()
-                .select(with(containsText(blockMock(CountryNameBlock.class).number(), value.intEquals(1))))
+                .clickToElement(with(containsText(blockMock(CountryNameBlock.class).number(), value.intEquals(1))))
                 .shouldBeClosed()
                 .shouldHaveText(value.stringEquals("Gabon"));
     }

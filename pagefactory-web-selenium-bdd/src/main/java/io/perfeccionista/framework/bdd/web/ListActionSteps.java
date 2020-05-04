@@ -76,7 +76,7 @@ public class ListActionSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .open()
-                        .select(itemFilter)
+                        .clickToElement(itemFilter)
                         .close());
     }
 
@@ -92,7 +92,7 @@ public class ListActionSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .open()
-                        .select(itemFilter)
+                        .clickToElement(itemFilter)
                         .close());
     }
 

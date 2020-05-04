@@ -15,13 +15,13 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.Available
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_LABEL_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_TEXT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SELECT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.CLICK_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableWebMethods.CLICK_METHOD;
 
 @WebLocator(component = UL, xpath = ".//ul")
 @WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
 @ElementAction(name = CLICK_METHOD, implementation = SeleniumClick.class)
-@ElementAction(name = SELECT_METHOD, implementation = SeleniumSelectForWebTextList.class)
+@ElementAction(name = CLICK_TO_ELEMENT_METHOD, implementation = SeleniumSelectForWebTextList.class)
 @ElementAction(name = GET_LABEL_METHOD, implementation = JsGetLabel.class)
 @ElementAction(name = GET_TEXT_METHOD, implementation = JsGetText.class)
 @ElementAction(name = OPEN_METHOD, implementation = SeleniumOpen.class)

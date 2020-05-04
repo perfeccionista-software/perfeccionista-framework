@@ -141,13 +141,13 @@ public class TextListElementsTest extends AbstractElementTest {
         // Case: Выбрать в выпадающем списке элемент со значением 'Haiti' и проверить выбранное значение
         ulElementsPage.simpleDropDownList()
                 .open()
-                .select(with(WebConditions.containsTextBlock(value.stringEquals("Haiti"))))
+                .clickToElement(with(WebConditions.containsTextBlock(value.stringEquals("Haiti"))))
                 .close()
                 .shouldHaveText(value.stringEquals("Haiti"));
         // Case: Выбрать в выпадающем списке элемент с индексом '10' и проверить выбранное значение
         ulElementsPage.simpleDropDownList()
                 .open()
-                .select(with(textBlockIndex(value.intEquals(10))))
+                .clickToElement(with(textBlockIndex(value.intEquals(10))))
                 .close()
                 .shouldHaveText(value.stringEquals("Andorra"));
     }
@@ -190,7 +190,7 @@ public class TextListElementsTest extends AbstractElementTest {
                 .sendKeys("I")
                 .shouldBeOpen()
                 .shouldHaveSize(value.intEquals(8))
-                .select(with(WebConditions.containsTextBlock(value.stringEquals("Italy"))))
+                .clickToElement(with(WebConditions.containsTextBlock(value.stringEquals("Italy"))))
                 .shouldBeClosed()
                 .shouldHaveText(value.stringEquals("Italy"))
                 .clear()
@@ -198,7 +198,7 @@ public class TextListElementsTest extends AbstractElementTest {
         ulElementsPage.simpleAutocomplete()
                 .sendKeys("G")
                 .shouldBeOpen()
-                .select(with(textBlockIndex(value.intEquals(1))))
+                .clickToElement(with(textBlockIndex(value.intEquals(1))))
                 .shouldBeClosed()
                 .shouldHaveText(value.stringEquals("Gabon"));
     }
