@@ -13,7 +13,7 @@
     "ajv": "^6.9.1",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.13.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.5.0",
     "popper.js": "^1.12.9",
     "vue": "^2.6.11",
     "vue-cool-select": "^3.5.2",
