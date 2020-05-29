@@ -1,62 +1,46 @@
 package io.perfeccionista.framework.pagefactory.browser;
 
+import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
-import io.perfeccionista.framework.pagefactory.js.JsRepository;
-import io.perfeccionista.framework.pagefactory.operations.DriverOperationExecutor;
-import io.perfeccionista.framework.value.Value;
+import io.perfeccionista.framework.pagefactory.browser.cookies.CookiesDispatcher;
+import io.perfeccionista.framework.pagefactory.browser.executor.OperationExecutor;
+import io.perfeccionista.framework.pagefactory.browser.logs.LogsDispatcher;
+import io.perfeccionista.framework.pagefactory.browser.tabs.TabsDispatcher;
+import io.perfeccionista.framework.pagefactory.browser.window.WindowDispatcher;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 
 //TODO: Сюда нужно будет передавать экземпляр сервиса WebPageService
-public interface WebBrowserDispatcher extends DriverInstance {
+public interface WebBrowserDispatcher {
 
-    WebPageContext getPageContext();
-
-    // Browser
+    @API(status = Status.STABLE)
     WebBrowserDispatcher launch();
 
+    @API(status = Status.STABLE)
     WebBrowserDispatcher close();
 
-    WebBrowserDispatcher setWindowSize(int width, int height);
+    @API(status = Status.EXPERIMENTAL)
+    ExceptionMapper getExceptionMapper();
 
-    // Tabs
-    WebBrowserDispatcher newTab();
+    @API(status = Status.STABLE)
+    WebPageContext getPageContext();
 
-    WebBrowserDispatcher newTab(String url);
+    @API(status = Status.STABLE)
+    OperationExecutor executor();
 
-    WebBrowserDispatcher refresh();
+    @API(status = Status.STABLE)
+    CookiesDispatcher cookies();
 
-    WebBrowserDispatcher back();
+    @API(status = Status.STABLE)
+    WindowDispatcher window();
 
-    WebBrowserDispatcher openUrl(String url);
+    @API(status = Status.STABLE)
+    TabsDispatcher tabs();
 
-    WebBrowserDispatcher closeActiveTab();
+    @API(status = Status.STABLE)
+    LogsDispatcher logs();
 
-    WebBrowserDispatcher closeTabWithTitle(Value<String> tabTitle);
-
-    WebBrowserDispatcher closeTabWithUrl(Value<String> tabUrl);
-
-    WebBrowserDispatcher switchToTabWithTitle(Value<String> tabTitle);
-
-    WebBrowserDispatcher switchToTabWithUrl(Value<String> tabUrl);
-
-    WebBrowserDispatcher activeTabShouldHaveTitle(Value<String> tabTitle);
-
-    WebBrowserDispatcher activeTabShouldNotHaveTitle(Value<String> tabTitle);
-
-    WebBrowserDispatcher activeTabShouldHaveUrl(Value<String> tabUrl);
-
-    WebBrowserDispatcher activeTabShouldNotHaveUrl(Value<String> tabUrl);
-
-    WebBrowserDispatcher shouldHaveTabWithTitle(Value<String> tabTitle);
-
-    WebBrowserDispatcher shouldNotHaveTabWithTitle(Value<String> tabTitle);
-
-    WebBrowserDispatcher shouldHaveTabWithUrl(Value<String> tabUrl);
-
-    WebBrowserDispatcher shouldNotHaveTabWithUrl(Value<String> tabUrl);
-
-    // Engine
-    DriverOperationExecutor getDriverOperationExecutor();
-
-    JsRepository getJsRepository();
+    @API(status = Status.INTERNAL)
+    <T> T getInstance(Class<T> browserInstanceClass);
 
 }

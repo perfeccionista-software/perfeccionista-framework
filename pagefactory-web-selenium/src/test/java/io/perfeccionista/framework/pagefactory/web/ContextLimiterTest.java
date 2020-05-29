@@ -31,7 +31,6 @@ import static io.perfeccionista.framework.pagefactory.filter.WebConditions.rowIn
 import static io.perfeccionista.framework.pagefactory.filter.WebConditions.containsText;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 
-@ExtendWith(PerfeccionistaExtension.class)
 public class ContextLimiterTest extends AbstractElementTest {
 
     @Test

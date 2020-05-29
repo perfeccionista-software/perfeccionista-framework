@@ -8,6 +8,8 @@ import io.perfeccionista.framework.value.number.NumberValue;
 
 public interface WebTextTableFilterResult extends FilterResult {
 
+    String getHash();
+
     SingleResult<String> extractHeader(String columnName);
 
     SingleResult<String> extractOneRow(String columnName);

@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -73,10 +74,16 @@ public interface WebImage extends WebChildElement,
     WebImage componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebImage componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebImage componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebImage componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebImage componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebImage componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebImage componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebImage componentShouldLooksLike(String componentName, Screenshot screenshot);

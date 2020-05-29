@@ -31,6 +31,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userClicksRefreshButton() {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .refresh();
     }
 
@@ -42,6 +43,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userClicksBackButton() {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .back();
     }
 
@@ -54,6 +56,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userOpenUrl(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .openUrl(tabUrl.getProcessedValue());
     }
 
@@ -65,6 +68,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userOpensNewTab() {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .newTab();
     }
 
@@ -77,6 +81,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userOpensNewTabWithUrl(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .newTab(tabUrl.getProcessedValue());
     }
 
@@ -89,6 +94,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void activeTabContainTitle(ValueStringParameter tabTitle) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .activeTabShouldHaveTitle(tabTitle.getValue());
     }
 
@@ -101,6 +107,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void activeTabDoesNotContainTitle(ValueStringParameter tabTitle) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .activeTabShouldNotHaveTitle(tabTitle.getValue());
     }
 
@@ -113,6 +120,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void activeTabContainUrl(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .activeTabShouldHaveUrl(tabUrl.getValue());
     }
 
@@ -125,6 +133,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void activeTabDoesNotContainUrl(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .activeTabShouldNotHaveUrl(tabUrl.getValue());
     }
 
@@ -137,6 +146,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void tabWithTitleExists(ValueStringParameter tabTitle) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .shouldHaveTabWithTitle(tabTitle.getValue());
     }
 
@@ -149,6 +159,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void tabWithTitleAbsent(ValueStringParameter tabTitle) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .shouldNotHaveTabWithTitle(tabTitle.getValue());
     }
 
@@ -161,6 +172,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void tabWithUrlExists(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .shouldHaveTabWithUrl(tabUrl.getValue());
     }
 
@@ -173,6 +185,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void tabWithUrlAbsent(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .shouldNotHaveTabWithUrl(tabUrl.getValue());
     }
 
@@ -185,6 +198,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userSetTabByTitle(ValueStringParameter tabTitle) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .switchToTabWithTitle(tabTitle.getValue());
     }
 
@@ -197,6 +211,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userSetTabByUrl(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .switchToTabWithUrl(tabUrl.getValue());
     }
 
@@ -208,6 +223,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userCloseActiveTab() {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .closeActiveTab();
     }
 
@@ -220,6 +236,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userCloseTabWithTitle(ValueStringParameter tabTitle) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .closeTabWithTitle(tabTitle.getValue());
     }
 
@@ -232,6 +249,7 @@ public class PageSteps implements EnvironmentAvailable {
     public void userCloseTabWithUrl(ValueStringParameter tabUrl) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .tabs()
                 .closeTabWithUrl(tabUrl.getValue());
     }
 

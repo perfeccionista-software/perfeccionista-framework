@@ -11,42 +11,41 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
-import io.perfeccionista.framework.pagefactory.js.checks.IsDisplayedAction;
-import io.perfeccionista.framework.pagefactory.web.pageobjects.extractors.HrefAttributeElementPropertyExtractor;
+import io.perfeccionista.framework.pagefactory.web.pageobjects.extractors.HrefAttributeWebElementPropertyExtractor;
 
 public interface ListElementsPage extends AbstractWebPage {
 
     @UseWebMappedBlock(CountryNameBlock.class)
-    @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebDropDownList dropDownList();
 
     @UseWebMappedBlock(CountryNameBlock.class)
-    @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebAutocomplete autocomplete();
 
     @Name("list of countries")
     @UseWebMappedBlock(CountryNameBlock.class)
-    @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebList webList();
 
     interface CountryNameBlock extends WebMappedBlock {
 
         @Name("Checkbox")
-        @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
         WebCheckbox checkbox();
 
         @Name("Number")
-        @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
         WebTextBlock number();
 
         @Name("Short name")
-        @WebLocator(executeOnCall = {IsDisplayedAction.class})
-        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeElementPropertyExtractor.class)
+//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeWebElementPropertyExtractor.class)
         WebLink shortName();
 
         @Name("Full name")
         @WebLocator(component = "SNG", css = ".sng-country")
-        @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
         WebTextBlock fullName();
 
     }

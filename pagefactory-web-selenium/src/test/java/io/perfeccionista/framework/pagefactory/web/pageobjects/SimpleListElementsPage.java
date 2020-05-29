@@ -4,17 +4,16 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextAutocomplete;
 import io.perfeccionista.framework.pagefactory.elements.WebTextDropDownList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.js.checks.IsDisplayedAction;
 
 public interface SimpleListElementsPage extends AbstractWebPage {
 
-    @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebTextDropDownList simpleDropDownList();
 
-    @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebTextAutocomplete simpleAutocomplete();
 
-    @WebLocator(executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebTextList simpleUnorderedList();
 
     /** Список стран для тестирования списков + ДОЛЖНЫ БЫТЬ 2 ПУСТЫХ БЛОКА ДЛЯ ПРОВЕРКИ DISPLAYED_CONDITION

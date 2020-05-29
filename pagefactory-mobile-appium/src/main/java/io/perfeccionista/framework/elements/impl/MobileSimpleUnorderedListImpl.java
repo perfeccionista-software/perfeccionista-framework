@@ -1,18 +1,7 @@
 package io.perfeccionista.framework.elements.impl;
 
-import io.perfeccionista.framework.exceptions.mapper.AppiumExceptionMapper;
-import io.perfeccionista.framework.pagefactory.elements.locators.AndroidLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.IosLocator;
-import io.perfeccionista.framework.pagefactory.elements.actions.ElementAction;
 import io.perfeccionista.framework.elements.AbstractMobileChildElement;
 import io.perfeccionista.framework.pagefactory.elements.MobileSimpleUnorderedList;
-
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.operations.OperationResult;
-
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
 
 
 //@AndroidLocator(component = LI, xpath = ".//li", single = false)

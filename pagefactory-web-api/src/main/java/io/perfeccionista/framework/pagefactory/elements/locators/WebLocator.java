@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.locators;
 
+import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 
 import java.lang.annotation.Documented;
@@ -26,15 +27,15 @@ public @interface WebLocator {
     String id() default "";
     String css() default "";
     String xpath() default "";
-    String name() default "";
     String className() default "";
     String tagName() default "";
-    String linkText() default "";
-    String partialLinkText() default "";
+    String name() default "";
+    String text() default "";
+    String partialText() default "";
 
     boolean single() default true;
     boolean strictSearch() default true;
     boolean onlyWithinParent() default true;
-    Class<? extends JsElementAction>[] executeOnCall() default {};
+    Class<? extends JsFunction<Void>>[] invokeOnCall() default {};
 
 }

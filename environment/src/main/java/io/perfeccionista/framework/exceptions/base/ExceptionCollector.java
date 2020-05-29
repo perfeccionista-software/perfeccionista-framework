@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.String.format;
 
@@ -41,7 +43,14 @@ public class ExceptionCollector {
      * @return
      */
     @NotNull
-    public PerfeccionistaExceptionSequence getExceptionSequence() {
+    public PerfeccionistaException getException() {
+        Set<String> uniqueExceptionKeys = new HashSet<>();
+        for (PerfeccionistaException exception : exceptions) {
+            uniqueExceptionKeys.add(exception.getClass().getCanonicalName() + ": " + exception.getLocalizedMessage());
+        }
+        if (uniqueExceptionKeys.size() == 1) {
+            return exceptions.getLast();
+        }
         return new PerfeccionistaExceptionSequence(exceptions, generateExceptionSequenceMessage(exceptions));
     }
 

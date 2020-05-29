@@ -1,11 +1,12 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.CloseAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
@@ -123,10 +124,16 @@ public interface WebDropDownList extends WebList,
     WebDropDownList componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebDropDownList componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebDropDownList componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebDropDownList componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebDropDownList componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebDropDownList componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebDropDownList componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebDropDownList componentShouldLooksLike(String componentName, Screenshot screenshot);

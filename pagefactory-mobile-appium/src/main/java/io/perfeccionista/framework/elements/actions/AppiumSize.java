@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.elements.actions;
 
 import io.perfeccionista.framework.pagefactory.elements.actions.MobileElementActionImplementation;
-import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.MobileChildElement;
 
 public class AppiumSize implements MobileElementActionImplementation<Integer> {

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.actions.ElementAction;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetBounds;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetDimensions;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetPropertyValue;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetScreenshot;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetWebElement;
@@ -10,11 +10,9 @@ import io.perfeccionista.framework.pagefactory.elements.actions.JsIsDisplayed;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsScrollTo;
 import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumHoverTo;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.js.checks.IsDisplayedAction;
-import io.perfeccionista.framework.pagefactory.js.checks.ScrollToAction;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.HOVER;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_BOUNDS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_DIMENSIONS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_PROPERTY_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_SCREENSHOT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.IS_COMPONENT_DISPLAYED_METHOD;
@@ -23,8 +21,11 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.Available
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableWebMethods.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableWebSeleniumMethods.GET_WEB_ELEMENT_METHOD;
 
+// TODO: В конфигурации сделать возможность устанавливать настройки элемента параметром
+//  config.put(WebButton.class, new WebButtonImpl().withElementAction(SCROLL_TO_METHOD, JsScrollToWithDelay.class)
+
 @ElementAction(name = GET_WEB_ELEMENT_METHOD, implementation = JsGetWebElement.class)
-@ElementAction(name = GET_BOUNDS_METHOD, implementation = JsGetBounds.class)
+@ElementAction(name = GET_DIMENSIONS_METHOD, implementation = JsGetDimensions.class)
 @ElementAction(name = GET_SCREENSHOT_METHOD, implementation = JsGetScreenshot.class)
 @ElementAction(name = GET_PROPERTY_VALUE_METHOD, implementation = JsGetPropertyValue.class)
 @ElementAction(name = HOVER_TO_METHOD, implementation = SeleniumHoverTo.class)
@@ -32,7 +33,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.Available
 @ElementAction(name = IS_COMPONENT_DISPLAYED_METHOD, implementation = JsIsComponentDisplayed.class)
 @ElementAction(name = SCROLL_TO_METHOD, implementation = JsScrollTo.class)
 // TODO: Сделать базовые заготовки для остальных компонентов с указанием executeOnCall
-@WebLocator(component = HOVER, executeOnCall = {ScrollToAction.class, IsDisplayedAction.class})
+//@WebLocator(component = HOVER, invokeOnCall = {ScrollToFunctionInvoke.class, IsDisplayedFunctionInvoke.class})
 public abstract class AbstractWebChildElementSeleniumImpl extends AbstractChildElement<WebParentElement> implements WebChildElement {
 
 //    protected ElementPropertiesRegistry<WebElementPropertyHolder> elementPropertiesRegistry;

@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
@@ -126,10 +127,16 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     WebTextAutocomplete componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebTextAutocomplete componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebTextAutocomplete componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebTextAutocomplete componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebTextAutocomplete componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebTextAutocomplete componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebTextAutocomplete componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebTextAutocomplete componentShouldLooksLike(String componentName, Screenshot screenshot);

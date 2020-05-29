@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickToElementAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
@@ -91,10 +92,16 @@ public interface WebList extends WebChildElement,
     WebList componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebList componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebList componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebList componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebList componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebList componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebList componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebList componentShouldLooksLike(String componentName, Screenshot screenshot);

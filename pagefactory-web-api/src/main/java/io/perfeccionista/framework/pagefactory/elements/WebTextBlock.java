@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -80,10 +81,16 @@ public interface WebTextBlock extends WebChildElement,
     WebTextBlock componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebTextBlock componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebTextBlock componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebTextBlock componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebTextBlock componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebTextBlock componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebTextBlock componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebTextBlock componentShouldLooksLike(String componentName, Screenshot screenshot);

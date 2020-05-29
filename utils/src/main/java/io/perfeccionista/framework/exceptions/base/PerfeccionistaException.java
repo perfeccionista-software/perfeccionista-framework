@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.exceptions.base;
 
+import io.perfeccionista.framework.attachment.AttachmentEntry;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +31,8 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 public class PerfeccionistaException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
+
+    protected static final String ATTACHMENT_SPLITTER = "----------------------------------------------------------------------------------------------------\n";
 
     private final LocalDateTime exceptionTimestamp;
 
@@ -85,6 +88,14 @@ public class PerfeccionistaException extends RuntimeException {
         return this;
     }
 
+    public PerfeccionistaException addAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
+        if (getAttachment().isEmpty()) {
+            this.attachment = Attachment.of();
+        }
+        this.attachment.addAttachmentEntry(attachmentEntry);
+        return this;
+    }
+
     public final LocalDateTime getExceptionTimestamp() {
         return exceptionTimestamp;
     }
@@ -93,8 +104,11 @@ public class PerfeccionistaException extends RuntimeException {
         if (null == attachment) {
             return "Exception has no attachment";
         }
-        return attachment.getAttachmentEntries()
-                .map(attachmentEntry -> attachmentEntry.getName() + ":\n" + attachmentEntry.getDescription() + "\n")
+        return "\n\nException attachments:\n\n" + attachment.getAttachmentEntries()
+                .map(attachmentEntry -> ATTACHMENT_SPLITTER
+                        + attachmentEntry.getName() + "\n"
+                        + ATTACHMENT_SPLITTER
+                        + attachmentEntry.getDescription() + "\n")
                 .collect(Collectors.joining("\n"));
     }
 

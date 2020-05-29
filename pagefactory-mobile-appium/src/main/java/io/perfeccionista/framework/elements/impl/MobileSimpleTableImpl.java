@@ -1,15 +1,8 @@
 package io.perfeccionista.framework.elements.impl;
 
-import io.appium.java_client.MobileElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.AndroidLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.IosLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.MobileColumnMapper;
-import io.perfeccionista.framework.pagefactory.elements.actions.ElementAction;
 import io.perfeccionista.framework.elements.AbstractMobileChildElement;
 import io.perfeccionista.framework.pagefactory.elements.MobileSimpleTable;
-
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
 import java.util.Map;
 import java.util.Optional;

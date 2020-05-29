@@ -2,19 +2,29 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.ChildElement;
+import io.perfeccionista.framework.pagefactory.elements.components.WebElementComponentAvailable;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.methods.HoverToAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsInFocusAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToAvailable;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
-import io.perfeccionista.framework.pagefactory.elements.properties.ElementPropertyAvailable;
+import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyAvailable;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
 
 public interface WebChildElement extends ChildElement<WebParentElement>,
-        ElementPropertyAvailable<WebElementPropertyHolder>, HoverToAvailable, ScrollToAvailable, IsInFocusAvailable {
+        WebElementComponentAvailable, WebElementPropertyAvailable<WebElementPropertyHolder>,
+        HoverToAvailable, ScrollToAvailable, IsInFocusAvailable {
 
-    <T> WebElementActionImplementation<T> getMethodImplementation(String methodType, Class<T> returnType);
+    <R> WebElementActionImplementation<R> getMethodImplementation(String methodType, Class<R> returnType);
 
     WebBrowserDispatcher getWebBrowserDispatcher();
+
+    WebLocatorHolder getLocator(String locatorName);
+
+    WebLocatorChain getLocatorChainTo(String locatorName);
+
+    WebLocatorChain getLocatorChain();
 
     WebChildElement executeAction(String name, Object... args);
 

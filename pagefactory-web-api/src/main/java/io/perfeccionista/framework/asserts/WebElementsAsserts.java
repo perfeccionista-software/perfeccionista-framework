@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailab
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.elements.properties.ElementPropertyAvailable;
+import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyAvailable;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
@@ -83,7 +83,7 @@ public class WebElementsAsserts {
 //        throw new ElementValueException();
     }
 
-    public static void assertElementProperty(String propertyName, StringValue value, ElementPropertyAvailable<?> element) {
+    public static void assertElementProperty(String propertyName, StringValue value, WebElementPropertyAvailable<?> element) {
 //        if (value.check(element.getText())) {
 //            return;
 //        }

@@ -8,6 +8,8 @@ import io.perfeccionista.framework.value.number.NumberValue;
 
 public interface WebListFilterResult extends FilterResult {
 
+    String getHash();
+
     <T> SingleResult<T> extractOne(WebListBlockValueExtractor<T> extractor);
 
     <T> MultipleResult<T> extractAll(WebListBlockValueExtractor<T> extractor);

@@ -11,6 +11,8 @@ public enum PageFactoryMessages implements Messages {
     METHOD_NOT_DECLARED("Method with name %s is not declared for element"),
     PAGE_NAME_DUPLICATE("Page name %s used for classes %s and %s"),
     REQUESTED_NODE_HASH_NOT_CALCULATED("Requested node hash not calculated"),
+    SCREENSHOT_MIME_TYPE_NOT_SUPPORTED("Screenshot mime type %s is not supported"),
+    MULTIPLE_RESULT_HAS_MORE_THAN_ONE_VALUE("MultipleResult has more than one value and can't be converted to SingleResult")
     ;
 
     private String key;

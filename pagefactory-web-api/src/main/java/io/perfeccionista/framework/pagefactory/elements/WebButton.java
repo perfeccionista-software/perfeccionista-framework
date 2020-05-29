@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -81,10 +82,16 @@ public interface WebButton extends WebLink {
     WebButton componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebButton componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebButton componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebButton componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebButton componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebButton componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebButton componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebButton componentShouldLooksLike(String componentName, Screenshot screenshot);

@@ -11,8 +11,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumns;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
-import io.perfeccionista.framework.pagefactory.js.checks.IsDisplayedAction;
-import io.perfeccionista.framework.pagefactory.web.pageobjects.extractors.HrefAttributeElementPropertyExtractor;
+import io.perfeccionista.framework.pagefactory.web.pageobjects.extractors.HrefAttributeWebElementPropertyExtractor;
 
 public interface TablePage extends AbstractWebPage {
 
@@ -22,7 +21,7 @@ public interface TablePage extends AbstractWebPage {
     String FULL_NAME = "Full name";
 
     @Name("table of countries")
-    @WebLocator(css = ".table", executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(css = ".table", invokeOnCall = {IsDisplayedFunctionInvoke.class})
     @UseWebMappedTableColumns({
             @UseWebMappedTableColumn(name = CHECKBOX,
                     headerClass = CheckboxWebMappedBlock.class, headerLocator = @WebLocator(xpath = ".//thead//th[1]"),
@@ -84,7 +83,7 @@ public interface TablePage extends AbstractWebPage {
 
         @Name("link Short name")
         @WebLocator(css = ".short-name-link")
-        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeElementPropertyExtractor.class)
+        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeWebElementPropertyExtractor.class)
         WebLink shortName();
 
     }

@@ -15,7 +15,7 @@ public class SeleniumSelectForWebTextList implements WebElementActionImplementat
         // Check this type
         WebTextListFilter filter = (WebTextListFilter) args[0];
         WebElement webElement = filter.filter((WebTextList) element).extractOne(new WebTextListBlockWebElementExtractor()).get();
-        element.getWebBrowserDispatcher().getExceptionMapper(SeleniumExceptionMapper.class).map(webElement::click);
+        element.getWebBrowserDispatcher().getExceptionMapper().map(webElement::click);
         return null;
     }
 

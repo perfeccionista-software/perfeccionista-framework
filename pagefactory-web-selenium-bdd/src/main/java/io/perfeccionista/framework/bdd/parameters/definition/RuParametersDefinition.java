@@ -3,8 +3,8 @@ package io.perfeccionista.framework.bdd.parameters.definition;
 import io.cucumber.java.ParameterType;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.bdd.EnvironmentAvailable;
-import io.perfeccionista.framework.bdd.parameters.BoundsParameter;
-import io.perfeccionista.framework.bdd.parameters.BoundsParameterImpl;
+import io.perfeccionista.framework.bdd.parameters.DimensionsParameter;
+import io.perfeccionista.framework.bdd.parameters.DimensionsParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.CallParameter;
 import io.perfeccionista.framework.bdd.parameters.CallParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.ColorParameter;
@@ -105,8 +105,8 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      * @return
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
-    public BoundsParameter bounds(String value) {
-        return new BoundsParameterImpl(value);
+    public DimensionsParameter dimensions(String value) {
+        return new DimensionsParameterImpl(value);
     }
 
     /**

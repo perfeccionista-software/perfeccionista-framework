@@ -1,11 +1,12 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.CloseAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
@@ -124,10 +125,16 @@ public interface WebTextDropDownList extends WebTextList,
     WebTextDropDownList componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebTextDropDownList componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebTextDropDownList componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebTextDropDownList componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebTextDropDownList componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebTextDropDownList componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebTextDropDownList componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebTextDropDownList componentShouldLooksLike(String componentName, Screenshot screenshot);

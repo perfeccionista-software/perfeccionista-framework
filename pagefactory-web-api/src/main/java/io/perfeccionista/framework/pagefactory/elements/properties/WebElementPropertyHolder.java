@@ -1,25 +1,25 @@
 package io.perfeccionista.framework.pagefactory.elements.properties;
 
 import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.LocatorHolder;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 
-public class WebElementPropertyHolder implements ElementPropertyHolder {
+public class WebElementPropertyHolder {
 
     private final String name;
-    private final LocatorHolder locatorHolder;
-    private final Class<? extends ElementPropertyExtractor<WebChildElement>> propertyExtractor;
+    private final WebLocatorHolder locatorHolder;
+    private final Class<? extends WebElementPropertyExtractor<WebChildElement>> propertyExtractor;
 
     private WebElementPropertyHolder(String name,
-                                        LocatorHolder locatorHolder,
-                                        Class<? extends ElementPropertyExtractor<WebChildElement>> propertyExtractor) {
+                                        WebLocatorHolder locatorHolder,
+                                        Class<? extends WebElementPropertyExtractor<WebChildElement>> propertyExtractor) {
         this.name = name;
         this.locatorHolder = locatorHolder;
         this.propertyExtractor = propertyExtractor;
     }
 
     public static WebElementPropertyHolder of(String name,
-                                             LocatorHolder locatorHolder,
-                                             Class<? extends ElementPropertyExtractor<WebChildElement>> jsFunction) {
+                                             WebLocatorHolder locatorHolder,
+                                             Class<? extends WebElementPropertyExtractor<WebChildElement>> jsFunction) {
         return new WebElementPropertyHolder(name, locatorHolder, jsFunction);
     }
 
@@ -27,11 +27,11 @@ public class WebElementPropertyHolder implements ElementPropertyHolder {
         return name;
     }
 
-    public LocatorHolder getLocatorHolder() {
+    public WebLocatorHolder getLocatorHolder() {
         return locatorHolder;
     }
 
-    public Class<? extends ElementPropertyExtractor<WebChildElement>> getPropertyExtractor() {
+    public Class<? extends WebElementPropertyExtractor<WebChildElement>> getPropertyExtractor() {
         return propertyExtractor;
     }
 

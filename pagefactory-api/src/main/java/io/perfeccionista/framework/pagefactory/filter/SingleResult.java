@@ -1,22 +1,21 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
 import io.perfeccionista.framework.value.Value;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Function;
 
 public interface SingleResult<T> {
 
-    /**
-     * -1 если элемент всего один или индекса быть не может
-     * @return
-     */
     int getIndex();
 
     T get();
 
-    String getElementHash();
+    <R> SingleResult<R> convert(@NotNull Function<T, R> converter);
 
-    SingleResult<T> shouldHaveIndex(Value<Integer> integerValue);
+    SingleResult<T> shouldHaveIndex(@NotNull Value<Integer> integerValue);
 
-    SingleResult<T> shouldHaveResult(Value<T> value);
+    SingleResult<T> shouldHaveResult(@NotNull Value<T> value);
 
     SingleResult<T> shouldHaveNull();
 

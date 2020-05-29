@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.web;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.extension.PerfeccionistaExtension;
-import io.perfeccionista.framework.pagefactory.WebPageService;
+import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.value.ValueService;
@@ -17,10 +17,13 @@ public class AbstractElementTest {
         String browserName = value.stringProcess("${[props] browser}");
         String startUrl = value.stringProcess("${[props] startPageUrl}");
         // Создаем окружение для выполнения теста (браузер, начальный УРЛ, контекст страницы)
-        return env.getService(WebBrowserService.class)
+        WebBrowserDispatcher webBrowserDispatcher = env.getService(WebBrowserService.class)
                 .createDispatcher(browserName)                      // создаем диспетчер для вебдрайвера
-                .launch()                                           // запускаем браузер
-                .openUrl(startUrl)                                  // открываем ссылку
+                .launch();                                          // запускаем браузер
+        webBrowserDispatcher
+                .tabs()
+                .openUrl(startUrl);                                 // открываем ссылку
+        return webBrowserDispatcher
                 .getPageContext();                                  // Возвращаем контекст страницы для активного браузера
     }
 

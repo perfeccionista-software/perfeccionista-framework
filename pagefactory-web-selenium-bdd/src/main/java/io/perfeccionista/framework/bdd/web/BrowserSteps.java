@@ -78,6 +78,7 @@ public class BrowserSteps implements EnvironmentAvailable {
                                                ValueIntegerParameter height) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
+                .window()
                 .setWindowSize(width.getProcessedValue(), height.getProcessedValue());
     }
 

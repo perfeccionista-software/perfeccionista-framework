@@ -2,9 +2,6 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.mapping.MobileColumnMapper;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SwipeToElementAvailable;
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.operations.OperationResult;
 
 import java.util.Optional;
 

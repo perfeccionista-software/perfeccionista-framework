@@ -1,11 +1,12 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -113,10 +114,16 @@ public interface WebTextInput extends WebChildElement,
     WebTextInput componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebTextInput componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebTextInput componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebTextInput componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebTextInput componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebTextInput componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebTextInput componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebTextInput componentShouldLooksLike(String componentName, Screenshot screenshot);

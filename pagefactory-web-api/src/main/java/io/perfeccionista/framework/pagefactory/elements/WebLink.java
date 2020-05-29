@@ -1,8 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -85,10 +86,16 @@ public interface WebLink extends WebChildElement,
     WebLink componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebLink componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebLink componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebLink componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebLink componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebLink componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebLink componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebLink componentShouldLooksLike(String componentName, Screenshot screenshot);

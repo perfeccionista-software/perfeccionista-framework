@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
@@ -99,10 +100,16 @@ public interface WebTable extends WebChildElement,
     WebTable componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebTable componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebTable componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebTable componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebTable componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebTable componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebTable componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebTable componentShouldLooksLike(String componentName, Screenshot screenshot);

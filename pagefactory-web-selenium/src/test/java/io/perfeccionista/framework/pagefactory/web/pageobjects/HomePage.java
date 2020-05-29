@@ -5,35 +5,34 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.js.checks.IsDisplayedAction;
 
 @Name("Домашняя страница")
 public interface HomePage extends AbstractWebPage {
 
     @Name("текст Заголовок")
-    @WebLocator(css = ".title", executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(css = ".title", invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebTextBlock contentTitle();
 
     @Name("блок с Флагами")
     FlagsBlock flags();
 
     @Name("текст Описание")
-    @WebLocator(css = ".content", executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(css = ".content", invokeOnCall = {IsDisplayedFunctionInvoke.class})
     WebTextBlock content();
 
-    @WebLocator(css = ".flagBlocks", executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(css = ".flagBlocks", invokeOnCall = {IsDisplayedFunctionInvoke.class})
     interface FlagsBlock extends WebBlock {
 
         @Name("русский флаг")
-        @WebLocator(css = ".russian", executeOnCall = {IsDisplayedAction.class})
+//        @WebLocator(css = ".russian", invokeOnCall = {IsDisplayedFunctionInvoke.class})
         WebImage russianFlag();
 
         @Name("итальянский флаг")
-        @WebLocator(css = ".italian", executeOnCall = {IsDisplayedAction.class})
+//        @WebLocator(css = ".italian", invokeOnCall = {IsDisplayedFunctionInvoke.class})
         WebImage italyFlag();
 
         @Name("испанский флаг")
-        @WebLocator(css = ".spain", executeOnCall = {IsDisplayedAction.class})
+//        @WebLocator(css = ".spain", invokeOnCall = {IsDisplayedFunctionInvoke.class})
         WebImage spainFlag();
 
     }

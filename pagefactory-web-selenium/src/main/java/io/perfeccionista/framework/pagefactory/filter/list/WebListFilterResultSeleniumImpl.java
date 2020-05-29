@@ -11,10 +11,16 @@ public class WebListFilterResultSeleniumImpl implements WebListFilterResult {
 
     private final WebList element;
     private final WebListFilter filter;
+    private String listHash = null;
 
     public WebListFilterResultSeleniumImpl(WebList element, WebListFilter filter) {
         this.element = element;
         this.filter = filter;
+    }
+
+    @Override
+    public String getHash() {
+        return listHash;
     }
 
     public <T> SingleResult<T> extractOne(WebListBlockValueExtractor<T> extractor) {

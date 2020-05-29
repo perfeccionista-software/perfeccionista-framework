@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 /**
  * TODO: JavaDoc
  * TODO: Api version
+ * TODO: Для документации и тестов создать репит-раннер
  */
 @FunctionalInterface
 public interface ActionRunner {

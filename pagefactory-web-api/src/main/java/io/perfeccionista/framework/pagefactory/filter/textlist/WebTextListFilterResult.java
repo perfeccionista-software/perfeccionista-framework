@@ -13,6 +13,9 @@ import static org.apiguardian.api.API.Status.STABLE;
 public interface WebTextListFilterResult extends FilterResult {
 
     @API(status = STABLE)
+    String getHash();
+
+    @API(status = STABLE)
     SingleResult<String> extractOne();
 
     @API(status = STABLE)

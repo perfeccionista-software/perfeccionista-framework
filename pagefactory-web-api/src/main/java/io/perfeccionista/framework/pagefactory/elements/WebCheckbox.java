@@ -1,10 +1,11 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -98,10 +99,16 @@ public interface WebCheckbox extends WebChildElement,
     WebCheckbox componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebCheckbox componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebCheckbox componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebCheckbox componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebCheckbox componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebCheckbox componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebCheckbox componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebCheckbox componentShouldLooksLike(String componentName, Screenshot screenshot);

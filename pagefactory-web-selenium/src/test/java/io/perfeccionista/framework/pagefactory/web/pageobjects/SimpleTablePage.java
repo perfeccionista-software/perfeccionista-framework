@@ -5,7 +5,6 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumns;
-import io.perfeccionista.framework.pagefactory.js.checks.IsDisplayedAction;
 
 public interface SimpleTablePage extends AbstractWebPage {
     String NUMBER = "Number";
@@ -13,7 +12,7 @@ public interface SimpleTablePage extends AbstractWebPage {
     String FULL_NAME = "Full name";
 
     @Name("таблица Стран")
-    @WebLocator(css = ".simple-table", executeOnCall = {IsDisplayedAction.class})
+//    @WebLocator(css = ".simple-table", invokeOnCall = {IsDisplayedFunctionInvoke.class})
     @UseWebMappedTableColumns({
             @UseWebMappedTableColumn(name = NUMBER,
                     headerLocator = @WebLocator(xpath = ".//thead//th[1]"),

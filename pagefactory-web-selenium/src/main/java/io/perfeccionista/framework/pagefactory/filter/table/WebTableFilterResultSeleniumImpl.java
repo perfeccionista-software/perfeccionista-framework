@@ -11,10 +11,16 @@ public class WebTableFilterResultSeleniumImpl implements WebTableFilterResult {
 
     private final WebTable element;
     private final WebTableFilter filter;
+    private String tableHash = null;
 
     public WebTableFilterResultSeleniumImpl(WebTable element, WebTableFilter filter) {
         this.element = element;
         this.filter = filter;
+    }
+
+    @Override
+    public String getHash() {
+        return tableHash;
     }
 
     public <T> SingleResult<T> extractHeader(WebTableCellValueExtractor<T> extractor) {

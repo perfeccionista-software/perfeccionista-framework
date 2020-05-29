@@ -16,10 +16,16 @@ public class WebTextListFilterResultSeleniumImpl implements WebTextListFilterRes
 
     private final WebTextList element;
     private final WebTextListFilter filter;
+    private String textListHash = null;
 
     public WebTextListFilterResultSeleniumImpl(WebTextList element, WebTextListFilter filter) {
         this.element = element;
         this.filter = filter;
+    }
+
+    @Override
+    public String getHash() {
+        return this.textListHash;
     }
 
     @API(status = STABLE)

@@ -12,10 +12,16 @@ public class WebTextTableFilterResultSeleniumImpl implements WebTextTableFilterR
 
     private final WebTextTable element;
     private final WebTextTableFilter filter;
+    private String textTableHash = null;
 
     public WebTextTableFilterResultSeleniumImpl(WebTextTable element, WebTextTableFilter filter) {
         this.element = element;
         this.filter = filter;
+    }
+
+    @Override
+    public String getHash() {
+        return textTableHash;
     }
 
     public SingleResult<String> extractHeader(String columnName) {

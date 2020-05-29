@@ -4,8 +4,6 @@ import io.perfeccionista.framework.pagefactory.elements.actions.ElementAction;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetText;
 import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumClick;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.js.checks.IsDisplayedAction;
-import io.perfeccionista.framework.pagefactory.js.checks.ScrollToAction;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
@@ -15,8 +13,8 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.Available
 @ElementAction(name = CLICK_METHOD, implementation = SeleniumClick.class)
 @ElementAction(name = GET_TEXT_METHOD, implementation = JsGetText.class)
 // TODO: Сделать для всех элементов
-@WebLocator(component = CLICK, executeOnCall = {ScrollToAction.class, IsDisplayedAction.class})
-@WebLocator(component = TEXT, executeOnCall = {ScrollToAction.class, IsDisplayedAction.class})
+//@WebLocator(component = CLICK, invokeOnCall = {ScrollToFunctionInvoke.class, IsDisplayedFunctionInvoke.class})
+//@WebLocator(component = TEXT, invokeOnCall = {ScrollToFunctionInvoke.class, IsDisplayedFunctionInvoke.class})
 public abstract class WebLinkSeleniumImpl extends AbstractWebChildElementSeleniumImpl implements WebLink {
 
 //    @Override

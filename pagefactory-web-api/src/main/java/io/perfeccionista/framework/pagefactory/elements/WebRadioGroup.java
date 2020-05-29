@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
@@ -93,10 +94,16 @@ public interface WebRadioGroup extends WebChildElement,
     WebRadioGroup componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebRadioGroup componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebRadioGroup componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebRadioGroup componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebRadioGroup componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebRadioGroup componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebRadioGroup componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebRadioGroup componentShouldLooksLike(String componentName, Screenshot screenshot);

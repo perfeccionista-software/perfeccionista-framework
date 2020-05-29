@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.extension;
 
 import io.perfeccionista.framework.DefaultEnvironmentConfiguration;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -8,10 +9,13 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.junit.jupiter.api.extension.TestWatcher;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.TestExecutionResult;
 import io.perfeccionista.framework.Environment;
@@ -51,8 +55,11 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_CLASS_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_METHOD_NOT_FOUND;
 
+// TODO: Сделать возможным использование аннотаций @UseService() над тестовым классом или тестом
+// TODO: Сделать возможным пробрасывать любой зарегистрированный в Enviroment сервис отдельным аргументом
 public class PerfeccionistaExtension implements ParameterResolver, TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback,
-        TestTemplateInvocationContextProvider, TestWatcher {
+        TestTemplateInvocationContextProvider, TestExecutionExceptionHandler, TestWatcher {
+    private static final Logger log = LoggerFactory.getLogger(PerfeccionistaExtension.class);
 
     protected ThreadLocal<Environment> activeEnvironment = new ThreadLocal<>();
     protected ThreadLocal<Map<Method, Deque<TestExecutionResult>>> threadLocalTestResults = new ThreadLocal<>();
@@ -207,6 +214,14 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         Method testMethod = context.getTestMethod().orElseThrow(() ->
                 new TestMethodNotFoundException(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
         getThreadLocalTestResults(testMethod).addLast(TestExecutionResult.failed(cause));
+    }
+
+    @Override
+    public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
+        if (throwable instanceof PerfeccionistaException) {
+            log.error(((PerfeccionistaException) throwable)::getAttachmentDescription);
+        }
+        throw throwable;
     }
 
     // Методы необходимые для конфигурирования Environment

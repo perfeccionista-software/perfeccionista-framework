@@ -31,7 +31,7 @@ final class ExceptionCollectorTest extends SimpleParallelTest {
     void initializationFromMessageSuccessTest() {
         PerfeccionistaException initialException = new PerfeccionistaException("Initial message");
         ExceptionCollector exceptionCollector = new ExceptionCollector(initialException);
-        String exceptionCollectorMessage = exceptionCollector.getExceptionSequence().getMessage();
+        String exceptionCollectorMessage = exceptionCollector.getException().getMessage();
         assertNotNull(exceptionCollectorMessage);
         assertTrue(exceptionCollectorMessage.contains("Initial message"));
     }
@@ -40,7 +40,7 @@ final class ExceptionCollectorTest extends SimpleParallelTest {
     void initializationFromMessageAndFormatSuccessTest() {
         PerfeccionistaException initialException = new PerfeccionistaException("Initial message");
         ExceptionCollector exceptionCollector = new ExceptionCollector(initialException, DateTimeFormatter.ISO_TIME);
-        String exceptionCollectorMessage = exceptionCollector.getExceptionSequence().getMessage();
+        String exceptionCollectorMessage = exceptionCollector.getException().getMessage();
         assertNotNull(exceptionCollectorMessage);
         assertTrue(exceptionCollectorMessage.contains("Initial message"));
     }
@@ -63,7 +63,7 @@ final class ExceptionCollectorTest extends SimpleParallelTest {
         // 5-я строка
         exceptionCollector.processException(new FirstTypeException("Another message"));
 
-        String[] exceptionMessageRows = exceptionCollector.getExceptionSequence().getMessage().split("\n");
+        String[] exceptionMessageRows = exceptionCollector.getException().getMessage().split("\n");
         assertTrue(exceptionMessageRows[1].contains("PerfeccionistaException: Initial message"));
         assertTrue(exceptionMessageRows[2].contains("FirstTypeException: message"));
         assertTrue(exceptionMessageRows[3].contains("SecondTypeException: message"));

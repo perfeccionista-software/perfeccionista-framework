@@ -2,7 +2,7 @@ package io.perfeccionista.framework.bdd.web;
 
 import io.cucumber.java.en.Given;
 import io.perfeccionista.framework.bdd.EnvironmentAvailable;
-import io.perfeccionista.framework.bdd.parameters.BoundsParameter;
+import io.perfeccionista.framework.bdd.parameters.DimensionsParameter;
 import io.perfeccionista.framework.bdd.parameters.ColorParameter;
 import io.perfeccionista.framework.bdd.parameters.ScreenshotParameter;
 import io.perfeccionista.framework.bdd.parameters.ValueNumberParameter;
@@ -11,7 +11,7 @@ import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementPropertyParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementComponentParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetBoundsAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.GetDimensionsAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetColorAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetScreenshotAvailable;
@@ -322,30 +322,30 @@ public class ElementCheckSteps implements EnvironmentAvailable {
      *
      * @param elementComponent -
      * @param elementFinder -
-     * @param expectedBounds -
+     * @param expectedDimensions -
      */
-    @Given("component {webElementComponent} of the {webElement} has bounds {bounds}")
-    @Given("компонент {webElementComponent} элемента {webElement} имеет размеры {bounds}")
+    @Given("component {webElementComponent} of the {webElement} has dimensions {dimensions}")
+    @Given("компонент {webElementComponent} элемента {webElement} имеет размеры {dimensions}")
     public void elementComponentHasBounds(WebElementComponentParameter elementComponent,
-                                          WebElementParameter<GetBoundsAvailable> elementFinder,
-                                          BoundsParameter expectedBounds) {
+                                          WebElementParameter<GetDimensionsAvailable> elementFinder,
+                                          DimensionsParameter expectedDimensions) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldHaveBounds(elementComponent.getRaw(), expectedBounds.getBounds()));
+                .forEachOrdered(element -> element.componentShouldHaveDimensions(elementComponent.getRaw(), expectedDimensions.getDimensions()));
     }
 
     /**
      *
      * @param elementComponent -
      * @param elementFinder -
-     * @param expectedBounds -
+     * @param expectedDimensions -
      */
-    @Given("component {webElementComponent} of the {webElement} does not have bounds {bounds}")
-    @Given("компонент {webElementComponent} элемента {webElement} не имеет размеры {bounds}")
+    @Given("component {webElementComponent} of the {webElement} does not have dimensions {dimensions}")
+    @Given("компонент {webElementComponent} элемента {webElement} не имеет размеры {dimensions}")
     public void elementComponentDoesNotHaveBounds(WebElementComponentParameter elementComponent,
-                                                  WebElementParameter<GetBoundsAvailable> elementFinder,
-                                                  BoundsParameter expectedBounds) {
+                                                  WebElementParameter<GetDimensionsAvailable> elementFinder,
+                                                  DimensionsParameter expectedDimensions) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldNotHaveBounds(elementComponent.getRaw(), expectedBounds.getBounds()));
+                .forEachOrdered(element -> element.componentShouldNotHaveDimensions(elementComponent.getRaw(), expectedDimensions.getDimensions()));
     }
 
     /**

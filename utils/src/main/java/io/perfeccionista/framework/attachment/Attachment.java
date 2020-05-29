@@ -37,14 +37,17 @@ public class Attachment {
         return entries.stream();
     }
 
-    public Stream<AttachmentEntry<?>> getAttachmentEntriesByType(@NotNull Class<? extends AttachmentEntry> entryType) {
-        return entries.stream().filter(entry -> entry.getClass().equals(entryType));
+    @SuppressWarnings("unchecked")
+    public <T extends AttachmentEntry<?>> Stream<T> getAttachmentEntriesByType(@NotNull Class<T> entryType) {
+        return entries.stream().filter(entry -> entry.getClass().equals(entryType)).map(entry -> (T) entry);
     }
 
-    public Optional<AttachmentEntry<?>> getAttachmentEntry(@NotNull Class<? extends AttachmentEntry> entryType, @NotNull String entryName) {
+    @SuppressWarnings("unchecked")
+    public <T extends AttachmentEntry<?>> Optional<T> getAttachmentEntry(@NotNull Class<T> entryType, @NotNull String entryName) {
         return entries.stream()
                 .filter(entry -> entry.getClass().equals(entryType))
                 .filter(entry -> entry.getName().equals(entryName))
+                .map(entry -> (T) entry)
                 .findFirst();
     }
 

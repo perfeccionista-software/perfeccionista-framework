@@ -5,8 +5,14 @@ import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.value.number.NumberValue;
+import org.apiguardian.api.API;
+
+import static org.apiguardian.api.API.Status.STABLE;
 
 public interface WebTableFilterResult extends FilterResult {
+
+    @API(status = STABLE)
+    String getHash();
 
     <T> SingleResult<T> extractHeader(WebTableCellValueExtractor<T> extractor);
 

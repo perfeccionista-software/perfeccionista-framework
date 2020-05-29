@@ -1,10 +1,11 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Bounds;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SubmitAvailable;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
@@ -112,10 +113,16 @@ public interface WebFileInput extends WebChildElement,
     WebFileInput componentShouldNotBeDisplayed(String componentName);
 
     @Override
-    WebFileInput componentShouldHaveBounds(String componentName, Bounds bounds);
+    WebFileInput componentShouldHaveDimensions(String componentName, Dimensions dimensions);
 
     @Override
-    WebFileInput componentShouldNotHaveBounds(String componentName, Bounds bounds);
+    WebFileInput componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+
+    @Override
+    WebFileInput componentShouldHaveLocation(String componentName, Location location);
+
+    @Override
+    WebFileInput componentShouldNotHaveLocation(String componentName, Location location);
 
     @Override
     WebFileInput componentShouldLooksLike(String componentName, Screenshot screenshot);

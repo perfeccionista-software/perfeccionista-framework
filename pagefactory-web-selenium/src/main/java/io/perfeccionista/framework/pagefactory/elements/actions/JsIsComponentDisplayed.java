@@ -1,22 +1,23 @@
 package io.perfeccionista.framework.pagefactory.elements.actions;
 
 import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.LocatorChain;
-import io.perfeccionista.framework.pagefactory.elements.locators.LocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.SingleResult;
-import io.perfeccionista.framework.pagefactory.js.IsDisplayed;
-import io.perfeccionista.framework.pagefactory.operations.JsOperation;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
+import io.perfeccionista.framework.pagefactory.jsfunction.GetIsDisplayed;
+import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import org.junit.platform.commons.util.ReflectionUtils;
 
 public class JsIsComponentDisplayed implements WebElementActionImplementation<Boolean> {
 
     @Override
     public Boolean execute(WebChildElement element, Object... args) {
-        LocatorHolder elementComponentLocator = (LocatorHolder) args[0];
-        LocatorChain locatorChain = element.getLocatorChain().addLocator(elementComponentLocator);
-        IsDisplayed isDisplayedFunction = ReflectionUtils.newInstance(IsDisplayed.class);
-        JsOperation<SingleResult<Boolean>> operation = JsOperation.single(locatorChain, isDisplayedFunction);
-        return element.getWebBrowserDispatcher().getDriverOperationExecutor().executeOperation(operation).get();
+        WebLocatorHolder elementComponentLocator = (WebLocatorHolder) args[0];
+        WebLocatorChain locatorChain = element.getLocatorChain().addLocator(elementComponentLocator);
+        GetIsDisplayed isDisplayedFunction = ReflectionUtils.newInstance(GetIsDisplayed.class);
+        JsOperation<Boolean> operation = JsOperation.of(locatorChain, isDisplayedFunction);
+        return element.getWebBrowserDispatcher().executor().executeOperation(operation)
+                .singleResult()
+                .get();
     }
 
 }
