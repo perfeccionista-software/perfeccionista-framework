@@ -11,6 +11,6 @@ public interface Color {
 
     int getB();
 
-    int getAlpha();
+    double getAlpha();
 
 }

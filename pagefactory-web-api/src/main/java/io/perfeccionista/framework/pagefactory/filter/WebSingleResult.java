@@ -52,7 +52,8 @@ public class WebSingleResult<T> implements SingleResult<T> {
 
     @Override
     public SingleResult<T> shouldHaveNotNull() {
-        return null;
+        // TODO: Implement
+        return this;
     }
 
     @Override

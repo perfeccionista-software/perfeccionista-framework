@@ -7,7 +7,7 @@ import io.perfeccionista.framework.bdd.parameters.ValueStringParameter;
 
 import java.nio.file.Path;
 
-import static io.perfeccionista.framework.action.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.utils.FileUtils.*;
 import static io.perfeccionista.framework.utils.FileUtils.deleteIgnoreExceptions;
 

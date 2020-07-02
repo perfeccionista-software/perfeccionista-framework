@@ -1,15 +1,23 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.ElementsConfiguration;
-import io.perfeccionista.framework.pagefactory.elements.context.WebSearchLimiterRegistry;
-import io.perfeccionista.framework.pagefactory.operation.OperationResult;
+import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.name.WebPageIdentifier;
+import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 
 public interface WebPage extends WebParentElement {
 
-    WebSearchLimiterRegistry getSearchLimiterRegistry();
+    WebPage setWebBrowserDispatcher(WebBrowserDispatcher webBrowserDispatcher);
 
-    ElementsConfiguration getElementsConfiguration();
+    WebPage setEnvironment(Environment environment);
 
-    OperationResult<Boolean> isPageOpen();
+    WebPageIdentifier getPageIdentifier();
+
+    /**
+     * Если необходимо, то переопределяем и делаем необходимую проверку на
+     * факт открытия страницы.
+     * Если страница не открылась, то нужно кидать processed exception
+     */
+    default void validatePageOpen() {}
 
 }

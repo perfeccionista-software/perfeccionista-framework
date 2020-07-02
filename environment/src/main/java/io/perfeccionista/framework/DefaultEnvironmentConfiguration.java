@@ -1,9 +1,9 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.action.runner.ActionRunnerConfiguration;
-import io.perfeccionista.framework.action.runner.DefaultActionRunnerConfiguration;
-import io.perfeccionista.framework.action.timeouts.DefaultTimeouts;
-import io.perfeccionista.framework.action.timeouts.Timeouts;
+import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.runner.DefaultInvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.timeouts.DefaultTimeouts;
+import io.perfeccionista.framework.invocation.timeouts.Timeouts;
 import io.perfeccionista.framework.repeater.NoRepeatPolicy;
 import io.perfeccionista.framework.repeater.RepeatPolicy;
 import io.perfeccionista.framework.service.UseService;
@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
 
     @Override
-    public @NotNull ActionRunnerConfiguration getActionRunnerConfiguration() {
-        return new DefaultActionRunnerConfiguration();
+    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+        return new DefaultInvocationRunnerConfiguration();
     }
 
     @Override

@@ -42,11 +42,11 @@ public class WebLocatorsTest {
         WebLocatorHolder blockLocator = WebLocatorHolder.of("ROOT", "className", "container")
 //                .setCalculateHash(true)
 //                .setExpectedHash("40147a539d7214a432b4c3f71978e82b")
-                .addInvokedOnCallFunctions(new ScrollTo());
+                .addInvokedOnCallFunction(new ScrollTo());
         WebLocatorHolder textLocator = WebLocatorHolder.of("ROOT", "className", "row")
                 .setIndex(0)
-                .addInvokedOnCallFunctions(new ScrollTo());
-        WebLocatorChain webLocatorChain = WebLocatorChain.of()
+                .addInvokedOnCallFunction(new ScrollTo());
+        WebLocatorChain webLocatorChain = WebLocatorChain.empty()
                 .addLocator(blockLocator)
                 .addLocator(textLocator);
         JsOperation<String> operation = JsOperation.of(webLocatorChain, new GetInnerText());

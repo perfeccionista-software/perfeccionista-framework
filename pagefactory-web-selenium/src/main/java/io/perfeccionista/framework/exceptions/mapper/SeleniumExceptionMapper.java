@@ -14,12 +14,14 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
 
     @Override
     public <T> T map(Supplier<T> supplier) {
-        return null;
+        // TODO: Implement
+        return supplier.get();
     }
 
     @Override
     public void map(Runnable runnable) {
-
+        // TODO: Implement
+        runnable.run();
     }
 
     @Override

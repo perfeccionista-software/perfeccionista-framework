@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.bdd.parameters;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
-public class WebBlockElementParameterImpl<T extends Element> implements WebBlockElementParameter<T> {
+public class WebBlockElementParameterImpl<T extends WebChildElement> implements WebBlockElementParameter<T> {
 
     private final Environment environment;
     private final String rawInput;
@@ -19,7 +19,7 @@ public class WebBlockElementParameterImpl<T extends Element> implements WebBlock
     }
 
     @Override
-    public <R extends Element> R find(Class<R> element) {
+    public <R extends WebChildElement> R find(Class<R> element) {
         return null;
     }
 

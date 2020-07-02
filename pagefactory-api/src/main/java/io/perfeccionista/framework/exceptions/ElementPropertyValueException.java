@@ -1,0 +1,18 @@
+package io.perfeccionista.framework.exceptions;
+
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
+
+public class ElementPropertyValueException  extends PerfeccionistaException {
+
+    private static final long serialVersionUID = 1L;
+
+    public ElementPropertyValueException(String message) {
+        super(message);
+    }
+
+    public ElementPropertyValueException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+}
+

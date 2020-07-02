@@ -96,6 +96,11 @@ public class PerfeccionistaException extends RuntimeException {
         return this;
     }
 
+    public PerfeccionistaException addSuppressedException(Throwable throwable) {
+        this.addSuppressed(throwable);
+        return this;
+    }
+
     public final LocalDateTime getExceptionTimestamp() {
         return exceptionTimestamp;
     }

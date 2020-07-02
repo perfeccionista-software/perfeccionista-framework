@@ -2,6 +2,7 @@ package io.perfeccionista.framework.value.number.bigdecimalvalue;
 
 import io.perfeccionista.framework.value.number.AbstractNumberValue;
 import io.perfeccionista.framework.value.checker.NumberChecker;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,12 @@ public class RuBigDecimalValue extends AbstractNumberValue<BigDecimal> {
 
     public RuBigDecimalValue(NumberChecker<BigDecimal> numberChecker) {
         super(numberChecker);
+    }
+
+    @Override
+    public boolean checkString(@NotNull String actual) {
+        // TODO: Implement
+        return false;
     }
 
     //    public RuBigDecimalValue(Environment environment, String expected) {

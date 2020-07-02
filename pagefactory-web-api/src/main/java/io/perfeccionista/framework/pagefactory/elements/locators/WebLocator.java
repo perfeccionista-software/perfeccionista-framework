@@ -31,7 +31,7 @@ public @interface WebLocator {
     String tagName() default "";
     String name() default "";
     String text() default "";
-    String partialText() default "";
+    String containsText() default "";
 
     boolean single() default true;
     boolean strictSearch() default true;

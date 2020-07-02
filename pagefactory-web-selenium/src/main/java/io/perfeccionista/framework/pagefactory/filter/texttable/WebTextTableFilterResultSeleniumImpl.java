@@ -32,14 +32,14 @@ public class WebTextTableFilterResultSeleniumImpl implements WebTextTableFilterR
 
     public SingleResult<String> extractOneRow(String columnName) {
         return new WebTextTableCellStringExtractor(columnName)
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .singleResult();
     }
 
     @Override
     public <T> SingleResult<T> extractOneRow(WebTextTableCellValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .singleResult();
     }
 
@@ -47,13 +47,13 @@ public class WebTextTableFilterResultSeleniumImpl implements WebTextTableFilterR
 
     public MultipleResult<String> extractAllRows(String columnName) {
         return new WebTextTableCellStringExtractor(columnName)
-                .extractValues(element, filter);
+                .extractValues(element, filter.filter(element));
     }
 
     @Override
     public <T> MultipleResult<T> extractAllRows(WebTextTableCellValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter);
+                .extractValues(element, filter.filter(element));
     }
 
     // TODO: Implement: public Map<String, MultipleResult<String>> extractAll(Set<String> columnNames)
@@ -66,7 +66,7 @@ public class WebTextTableFilterResultSeleniumImpl implements WebTextTableFilterR
 
     public WebTextTableFilterResult shouldHaveSize(NumberValue<Integer> integerValue) {
         new WebTextTableRowIndexExtractor()
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .shouldHaveSize(integerValue);
         return this;
     }

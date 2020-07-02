@@ -1,17 +1,7 @@
 package io.perfeccionista.framework.elements;
 
-import io.perfeccionista.framework.pagefactory.browser.MobileDriverDispatcher;
-import io.perfeccionista.framework.pagefactory.elements.AbstractChildElement;
 import io.perfeccionista.framework.pagefactory.elements.MobileChildElement;
 import io.perfeccionista.framework.pagefactory.elements.MobileParentElement;
-import io.perfeccionista.framework.pagefactory.elements.actions.ElementActionsRegistry;
-import io.perfeccionista.framework.pagefactory.elements.actions.MobileElementActionImplementation;
-import io.perfeccionista.framework.pagefactory.elements.properties.MobileElementPropertyHolder;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static io.perfeccionista.framework.pagefactory.elements.components.MobileComponents.ROOT;
 
 //@ElementAction(name = GET_WEB_ELEMENT_METHOD, implementation = AppiumGetMobileElement.class)
 //@ElementAction(name = GET_BOUNDS_METHOD, implementation = AppiumGetBounds.class)
@@ -20,7 +10,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.Mobile
 //@ElementAction(name = IS_DISPLAYED_METHOD, implementation = AppiumIsDisplayed.class)
 //@ElementAction(name = IS_COMPONENT_DISPLAYED_METHOD, implementation = AppiumIsComponentDisplayed.class)
 //@ElementAction(name = SWIPE_TO_METHOD, implementation = AppiumSwipeTo.class)
-public abstract class AbstractMobileChildElement extends AbstractChildElement<MobileParentElement> implements MobileChildElement {
+public abstract class AbstractMobileChildElement
+//        extends AbstractChildElement<MobileParentElement>
+        implements MobileChildElement {
 
 //    protected ElementPropertiesRegistry<MobileElementPropertyHolder> elementPropertiesRegistry;
 //    protected ElementActionsRegistry<MobileElementActionImplementation<?>> elementMethodsRegistry;

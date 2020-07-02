@@ -1,3 +1,12 @@
+// noinspection BadExpressionStatementJS
+(async (element, options) => {
+
+    debugger;
+
+    return isDisplayed(element);
+
+});
+
 /*
  The MIT License
 
@@ -22,11 +31,7 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  IN THE SOFTWARE.
  */
-// noinspection BadExpressionStatementJS
-(async (element, options) => {
-
-    debugger;
-
+function isDisplayed(element) {
     return function(){var k=this;function l(a){return void 0!==a}function m(a){return"string"==typeof a}function aa(a,b){a=a.split(".");var c=k;a[0]in c||!c.execScript||c.execScript("var "+a[0]);for(var d;a.length&&(d=a.shift());)!a.length&&l(b)?c[d]=b:c[d]&&c[d]!==Object.prototype[d]?c=c[d]:c=c[d]={}}
         function ba(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";
         else if("function"==b&&"undefined"==typeof a.call)return"object";return b}function ca(a,b,c){return a.call.apply(a.bind,arguments)}function da(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}}
@@ -105,4 +110,4 @@
             return b}function Jc(a){var b=K(a,"MAP");if(!b&&!K(a,"AREA"))return null;var c=b?a:K(a.parentNode,"MAP")?a.parentNode:null,d=null,e=null;c&&c.name&&(d=Cc('/descendant::*[@usemap = "#'+c.name+'"]',G(c)))&&(e=Hc(d),b||"default"==a.shape.toLowerCase()||(a=Mc(a),b=Math.min(Math.max(a.a,0),e.width),c=Math.min(Math.max(a.b,0),e.height),e=new F(b+e.a,c+e.b,Math.min(a.width,e.width-b),Math.min(a.height,e.height-c))));return{B:d,rect:e||new F(0,0,0,0)}}
         function Mc(a){var b=a.shape.toLowerCase();a=a.coords.split(",");if("rect"==b&&4==a.length){b=a[0];var c=a[1];return new F(b,c,a[2]-b,a[3]-c)}if("circle"==b&&3==a.length)return b=a[2],new F(a[0]-b,a[1]-b,2*b,2*b);if("poly"==b&&2<a.length){b=a[0];c=a[1];for(var d=b,e=c,f=2;f+1<a.length;f+=2)b=Math.min(b,a[f]),d=Math.max(d,a[f]),c=Math.min(c,a[f+1]),e=Math.max(e,a[f+1]);return new F(b,c,d-b,e-c)}return new F(0,0,0,0)}function Lc(a){a=Hc(a);return new db(a.b,a.a+a.width,a.b+a.height,a.a)}
         function Kc(a){if(qb){if("relative"==Y(a,"position"))return 1;a=Y(a,"filter");return(a=a.match(/^alpha\(opacity=(\d*)\)/)||a.match(/^progid:DXImageTransform.Microsoft.Alpha\(Opacity=(\d*)\)/))?Number(a[1])/100:1}return Nc(a)}function Nc(a){var b=1,c=Y(a,"opacity");c&&(b=Number(c));(a=Ec(a))&&(b*=Nc(a));return b};aa("_",function(a,b){function c(a){if(K(a)&&"none"==Y(a,"display"))return!1;var b;(b=a.parentNode)&&b.shadowRoot&&void 0!==a.assignedSlot?b=a.assignedSlot?a.assignedSlot.parentNode:null:a.getDestinationInsertionPoints&&(a=a.getDestinationInsertionPoints(),0<a.length&&(b=a[a.length-1]));if(Dc&&b instanceof ShadowRoot){if(b.host.shadowRoot!==b)return!1;b=b.host}return!b||9!=b.nodeType&&11!=b.nodeType?b&&c(b):!0}return Gc(a,!!b,c)});; return this._.apply(null,arguments);}.apply({navigator:typeof window!='undefined'?window.navigator:null,document:typeof window!='undefined'?window.document:null}, [element]);
-});
+}

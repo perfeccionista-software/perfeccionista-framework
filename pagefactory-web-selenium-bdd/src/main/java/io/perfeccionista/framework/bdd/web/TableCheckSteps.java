@@ -10,7 +10,7 @@ import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.bdd.parameters.WebTableColumnParameter;
 import io.perfeccionista.framework.bdd.parameters.WebTableValueExtractorParameter;
 import io.perfeccionista.framework.bdd.parameters.ref.SourceParameterRef;
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;

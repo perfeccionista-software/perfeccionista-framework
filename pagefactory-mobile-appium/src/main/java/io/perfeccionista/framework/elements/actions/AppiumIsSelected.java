@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.actions.MobileElementAct
 
 public class AppiumIsSelected implements MobileElementActionImplementation<Boolean> {
 
-    @Override
+//    @Override
     public Boolean execute(MobileChildElement element, Object... args) {
         return null;
     }

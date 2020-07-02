@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.context;
 
 import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebParentElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 

@@ -3,8 +3,8 @@ package io.perfeccionista.framework.extension.configurations;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.action.runner.ActionRunnerConfiguration;
-import io.perfeccionista.framework.action.timeouts.Timeouts;
+import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.timeouts.Timeouts;
 import io.perfeccionista.framework.extension.services.TestService1;
 import io.perfeccionista.framework.extension.services.TestService2;
 import io.perfeccionista.framework.extension.services.TestService3;
@@ -25,8 +25,8 @@ import static org.mockito.Mockito.mock;
 public class TestClassLocalEnvironmentConfiguration implements EnvironmentConfiguration {
 
     @Override
-    public @NotNull ActionRunnerConfiguration getActionRunnerConfiguration() {
-        return mock(ActionRunnerConfiguration.class);
+    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+        return mock(InvocationRunnerConfiguration.class);
     }
 
     @Override

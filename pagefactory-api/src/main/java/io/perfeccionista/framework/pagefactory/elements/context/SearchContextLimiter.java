@@ -1,10 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements.context;
 
-import io.perfeccionista.framework.pagefactory.elements.base.ParentElement;
-
 import java.util.stream.Stream;
 
-public interface SearchContextLimiter<T extends ParentElement<?>> {
+public interface SearchContextLimiter<T> {
 
     Stream<T> getContexts();
 

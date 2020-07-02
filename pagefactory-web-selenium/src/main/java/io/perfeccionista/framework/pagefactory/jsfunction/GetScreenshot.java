@@ -13,6 +13,7 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessage
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 /**
+ * TODO: Почему-то сразу после скролла отрисовка скриншота происходит некорректно
  * // TODO: Переписать форматирование на таблицу
  * | Name | Default | Description |<br/>
  * | allowTaint | false | Whether to allow cross-origin images to taint the canvas |<br/>

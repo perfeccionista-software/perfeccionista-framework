@@ -2,11 +2,18 @@ package io.perfeccionista.framework.value.number.integervalue;
 
 import io.perfeccionista.framework.value.number.AbstractNumberValue;
 import io.perfeccionista.framework.value.checker.NumberChecker;
+import org.jetbrains.annotations.NotNull;
 
 public class RuIntegerValue extends AbstractNumberValue<Integer> {
 
     public RuIntegerValue(NumberChecker<Integer> numberChecker) {
         super(numberChecker);
+    }
+
+    @Override
+    public boolean checkString(@NotNull String actual) {
+        // TODO: Implement
+        return false;
     }
 
     //    private RuIntegerValue(Environment environment, String expected) {

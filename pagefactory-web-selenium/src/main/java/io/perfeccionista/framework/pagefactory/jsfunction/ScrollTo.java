@@ -7,6 +7,7 @@ import java.util.function.Function;
 
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
+// TODO: Добавить возможность задавать отступы не только в пикселях, но и в процентах
 public class ScrollTo implements JsFunction<Void> {
 
     private final String scrollRoot;

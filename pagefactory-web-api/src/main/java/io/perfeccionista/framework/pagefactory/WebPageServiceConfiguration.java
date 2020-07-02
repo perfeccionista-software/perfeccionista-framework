@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public interface WebPageServiceConfiguration extends ServiceConfiguration {
 
-    Set<String> getPagePackages();
+    Set<String> getPageObjectPackages();
 
     WebElementsConfiguration getElementsConfiguration();
 

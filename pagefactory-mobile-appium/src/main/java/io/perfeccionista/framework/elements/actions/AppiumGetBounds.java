@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 
 public class AppiumGetBounds implements MobileElementActionImplementation<Dimensions> {
 
-    @Override
+//    @Override
     public Dimensions execute(MobileChildElement element, Object... args) {
         // TODO: Implement
         return null;

@@ -19,18 +19,18 @@ public class WebRadioButtonFilterResultSeleniumImpl implements WebRadioButtonFil
 
     public <T> SingleResult<T> extractOne(WebRadioButtonValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .singleResult();
     }
 
     public <T> MultipleResult<T> extractAll(WebRadioButtonValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter);
+                .extractValues(element, filter.filter(element));
     }
 
     public WebRadioButtonFilterResult shouldHaveSize(NumberValue<Integer> integerValue) {
         new WebRadioButtonIndexExtractor()
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .shouldHaveSize(integerValue);
         return this;
     }

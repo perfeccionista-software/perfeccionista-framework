@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class AppiumSwipeToBlockElement implements MobileElementActionImplementation<Void> {
 
-    @Override
+//    @Override
     public Void execute(MobileChildElement element, Object... args) {
 //        MobileUnorderedList unorderedList = (MobileUnorderedList) element;
 //        AppiumBlockFilter filter = (AppiumBlockFilter) args[0];

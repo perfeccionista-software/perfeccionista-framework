@@ -1,11 +1,13 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.pagefactory.elements.mapping.MobileColumnMapper;
-import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
+//import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 
 import java.util.Optional;
 
-public interface MobileTable extends MobileChildElement, SizeAvailable {
+public interface MobileTable extends MobileChildElement
+//        , SizeAvailable
+{
 
     Optional<MobileColumnMapper> getColumnMapper(String columnName);
 

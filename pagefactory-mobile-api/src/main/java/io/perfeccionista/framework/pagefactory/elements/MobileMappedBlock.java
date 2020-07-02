@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.base.ParentInfo;
+import io.perfeccionista.framework.pagefactory.elements.base.WebParentInfo;
 
 public interface MobileMappedBlock {
 
-    ParentInfo getParentInfo();
+    WebParentInfo getParentInfo();
 
 }

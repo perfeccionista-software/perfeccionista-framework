@@ -14,7 +14,8 @@
     FunctionCallError.prototype.constructor = FunctionCallError;
 
     // EnvironmentBlock
-    let traceSearch = operation.traceSearch !== undefined;
+    let withLogs = operation.withLogs !== undefined;
+    let withOuterHtml = operation.withOuterHtml !== undefined;
     let dateTimeFormatter = new Intl.DateTimeFormat('ru', {
         day: 'numeric',
         month: '2-digit',
@@ -42,13 +43,6 @@
             message: e.message,
             stackTrace: e.stack,
             attachments: errorAttachments
-        }
-        if (traceSearch) {
-            error.attachments.push({
-                name: 'OuterHTML',
-                type: 'text/html',
-                content: document.documentElement.outerHTML
-            });
         }
         addLogEntry('INFO', 'Operation finished with error');
     }
@@ -292,8 +286,8 @@
                 let textXpathValue = './/*[text()="' + locator.locatorValue + '"]';
                 foundElements = findElementsByXpath(parentElement, textXpathValue);
                 break;
-            case 'partialText':
-                let partialTextXpathValue = './/*[contains(text(), "' + locator.locatorValue + '"])';
+            case 'containsText':
+                let partialTextXpathValue = './/*[contains(text(), "' + locator.locatorValue + '")]';
                 foundElements = findElementsByXpath(parentElement, partialTextXpathValue);
                 break;
             default:
@@ -480,8 +474,11 @@
         if (error !== undefined && error !== null) {
             result.error = JSON.stringify(error);
         }
-        if (traceSearch) {
+        if (withLogs) {
             result.logs = JSON.stringify(logs);
+        }
+        if (withOuterHtml) {
+            result.outerHtml = document.documentElement.outerHTML;
         }
         return result;
     }
@@ -589,7 +586,7 @@
      * @param message
      */
     function addLogEntry(level, message) {
-        if (traceSearch) {
+        if (withLogs) {
             let now = new Date();
             logs.push({
                 timestamp : dateTimeFormatter.format(now) + '.' + now.getMilliseconds(),

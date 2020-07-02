@@ -31,7 +31,7 @@ public class WebTableFilterResultSeleniumImpl implements WebTableFilterResult {
 
     public <T> SingleResult<T> extractOneRow(WebTableCellValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .singleResult();
     }
 
@@ -39,7 +39,7 @@ public class WebTableFilterResultSeleniumImpl implements WebTableFilterResult {
 
     public <T> MultipleResult<T> extractAllRows(WebTableCellValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter);
+                .extractValues(element, filter.filter(element));
     }
 
     // TODO: Implement: public Map<String, MultipleResult<T>> extractAllRows(Map<String, WebTableCellValueExtractor<T>> columnExtractors)

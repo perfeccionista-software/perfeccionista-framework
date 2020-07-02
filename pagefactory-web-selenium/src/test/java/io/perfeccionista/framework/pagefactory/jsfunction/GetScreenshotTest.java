@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Set;
 
-import static io.perfeccionista.framework.action.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.utils.FileUtils.deleteIgnoreExceptions;
 
 @ExtendWith(PerfeccionistaExtension.class)
@@ -35,7 +35,7 @@ public class GetScreenshotTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
@@ -43,9 +43,9 @@ public class GetScreenshotTest {
         });
         deleteIgnoreExceptions(Path.of(getHome() + "/Downloads/images/simple-button.png"));
         Screenshot screenshot = runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "simple-button")
-                            .addInvokedOnCallFunctions(new ScrollTo()
+                            .addInvokedOnCallFunction(new ScrollTo()
                                     // Без задержки скриншот снимается до того, как браузер успеет отрисовать элемент
                                     .setDelay(Duration.ofSeconds(1))));
             JsOperation<Screenshot> getScreenshotOperation = JsOperation.of(scrollToLocatorChain, new GetScreenshot("image/png"));
@@ -65,7 +65,7 @@ public class GetScreenshotTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
@@ -76,7 +76,7 @@ public class GetScreenshotTest {
             deleteIgnoreExceptions(Path.of(getHome() + "/Downloads/images/" + index + "-list-item.jpg"));
         });
         MultipleResult<Screenshot> screenshots = runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "text-list"))
                     .addLocator(WebLocatorHolder.of("LI", "className", "list-group-item")
                             .setIndexes(indexes));

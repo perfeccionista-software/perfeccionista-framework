@@ -4,6 +4,9 @@ public enum UtilsMessages implements Messages {
 
     CONSTRUCTOR_NOT_FOUND("Constructor for class %s with parameters %s not found"),
     CLIPBOARD_VALUE_NOT_AVAILABLE("Clipboard value not available"),
+    FIELD_NOT_FOUND("Class %s does not contain field with name %s"),
+    FIELD_READING_ERROR("Can't read field with name %s"),
+    FIELD_WRITING_ERROR("Can't write field with name %s"),
     FILE_EXISTS("File '%s' exists"),
     FILE_NOT_EXISTS("File '%s' not exists"),
     JSON_OBJECT_PARSE_ERROR("Json object parse error"),

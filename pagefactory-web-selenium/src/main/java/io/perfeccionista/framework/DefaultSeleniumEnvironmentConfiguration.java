@@ -1,9 +1,9 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.action.runner.ActionRunnerConfiguration;
-import io.perfeccionista.framework.action.runner.SeleniumActionRunnerConfiguration;
-import io.perfeccionista.framework.action.timeouts.DefaultPageFactoryTimeouts;
-import io.perfeccionista.framework.action.timeouts.Timeouts;
+import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.runner.SeleniumInvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.timeouts.DefaultPageFactoryTimeouts;
+import io.perfeccionista.framework.invocation.timeouts.Timeouts;
 import io.perfeccionista.framework.pagefactory.browser.DefaultSeleniumWebBrowserServiceConfiguration;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
 import io.perfeccionista.framework.service.UseService;
@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 public class DefaultSeleniumEnvironmentConfiguration extends DefaultEnvironmentConfiguration {
 
     @Override
-    public @NotNull ActionRunnerConfiguration getActionRunnerConfiguration() {
-        return new SeleniumActionRunnerConfiguration();
+    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+        return new SeleniumInvocationRunnerConfiguration();
     }
 
     @Override

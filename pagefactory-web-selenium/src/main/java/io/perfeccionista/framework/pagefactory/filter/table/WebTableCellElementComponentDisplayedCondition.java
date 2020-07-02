@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter.table;
 
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
 public class WebTableCellElementComponentDisplayedCondition implements WebTableCellCondition {
 

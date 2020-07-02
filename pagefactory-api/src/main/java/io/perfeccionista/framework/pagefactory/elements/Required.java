@@ -7,6 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Аналог IsDisplayed invokeOnCall функции
+ */
 @Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

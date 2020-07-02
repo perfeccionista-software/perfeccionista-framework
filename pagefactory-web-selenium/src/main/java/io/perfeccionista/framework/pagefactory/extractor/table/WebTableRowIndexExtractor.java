@@ -3,6 +3,7 @@ package io.perfeccionista.framework.pagefactory.extractor.table;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
 
 public class WebTableRowIndexExtractor implements WebTableCellValueExtractor<Integer> {
 
@@ -14,7 +15,7 @@ public class WebTableRowIndexExtractor implements WebTableCellValueExtractor<Int
     }
 
     @Override
-    public MultipleResult<Integer> extractValues(WebTable element, WebTableFilter filter) {
+    public MultipleResult<Integer> extractValues(WebTable element, WebTableFilterResult filter) {
         // Вся логика извлечения и фильтрации здесь
 
         return null;

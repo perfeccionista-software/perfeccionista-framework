@@ -1,11 +1,11 @@
 package io.perfeccionista.framework.pagefactory.extractor.texttable;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.extractor.ValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.WebValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterResult;
 
-public interface WebTextTableCellValueExtractor<T> extends ValueExtractor<WebTextTable, WebTextTableFilter, T> {
+public interface WebTextTableCellValueExtractor<T> extends WebValueExtractor<WebTextTable, WebTextTableFilterResult, T> {
 
     MultipleResult<T> extractHeaderValues(WebTextTable element);
 

@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.browser.context;
 
 import io.perfeccionista.framework.exceptions.SearchContextException;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
-import io.perfeccionista.framework.pagefactory.elements.WebParentElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.context.WebSearchContextLimiter;
 
 import java.util.stream.Stream;
@@ -11,6 +11,8 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiM
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.CONTEXT_LIMITER_RETURN_NO_ONE_SEARCH_CONTEXT;
 
 // TODO: Сделать именованные контексты и возможность переключаться между ними
+// TODO: Здесь должен быть WebSearchLimiterRegistry.
+//  Соответственно, если контекст ограничен, то берем отсюда, а если нет, то со страницы
 public interface WebPageContext {
 
     <T extends WebParentElement> Stream<T> getSearchContexts(Class<T> contextBlockClass);

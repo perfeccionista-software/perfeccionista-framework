@@ -11,6 +11,7 @@ import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPro
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
+@Deprecated
 public class WebElementsAsserts {
 
     public static void assertDisplayed(IsDisplayedAvailable element) {

@@ -1,17 +1,17 @@
 package io.perfeccionista.framework.bdd.parameters;
 
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
 import java.util.stream.Stream;
 
-public interface WebElementParameter<T extends Element> extends BddStepParameter {
+public interface WebElementParameter<T> extends BddStepParameter {
 
     T findSingle();
 
-    <R extends Element> R findSingle(Class<R> elementClass);
+    <R extends WebChildElement> R findSingle(Class<R> elementClass);
 
     Stream<T> find();
 
-    <R extends Element> Stream<R> find(Class<R> elementClass);
+    <R extends WebChildElement> Stream<R> find(Class<R> elementClass);
 
 }

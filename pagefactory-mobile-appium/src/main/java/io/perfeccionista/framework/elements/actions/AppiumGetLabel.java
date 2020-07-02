@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.actions.MobileElementAct
 
 public class AppiumGetLabel implements MobileElementActionImplementation<String> {
 
-    @Override
+//    @Override
     public String execute(MobileChildElement element, Object... args) {
 //        return element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
 //                .map(() -> {

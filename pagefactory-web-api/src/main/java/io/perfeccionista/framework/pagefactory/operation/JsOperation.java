@@ -13,7 +13,8 @@ public class JsOperation<R> {
 
     private final WebLocatorChain locatorChain;
     private final JsFunction<R> endpointJsFunction;
-    private boolean traceSearch = false;
+    private boolean withLogs = false;
+    private boolean withOuterHtml = false;
 
     public JsOperation(WebLocatorChain locatorChain, JsFunction<R> endpointJsFunction) {
         this.locatorChain = locatorChain;
@@ -28,8 +29,13 @@ public class JsOperation<R> {
         return endpointJsFunction;
     }
 
-    public JsOperation<R> setTraceSearch(boolean traceSearch) {
-        this.traceSearch = traceSearch;
+    public JsOperation<R> withLogs() {
+        this.withLogs = true;
+        return this;
+    }
+
+    public JsOperation<R> withOuterHtml() {
+        this.withOuterHtml = true;
         return this;
     }
 
@@ -44,8 +50,11 @@ public class JsOperation<R> {
         ObjectNode rootNode = createObjectNode();
         rootNode.set("locatorChain", this.locatorChain.toJson());
         rootNode.set("endpointFunction", this.endpointJsFunction.getJsFunctionInvocation());
-        if (traceSearch) {
-            rootNode.put("traceSearch", true);
+        if (withLogs) {
+            rootNode.put("withLogs", true);
+        }
+        if (withOuterHtml) {
+            rootNode.put("withOuterHtml", true);
         }
         return rootNode;
     }

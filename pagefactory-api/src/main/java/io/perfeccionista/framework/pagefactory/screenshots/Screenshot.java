@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
+// TODO: В реализациях в методе equals() реализовать механизм сравнения скриншотов
 public interface Screenshot {
 
     LocalDateTime getCreated();

@@ -1,16 +1,6 @@
 package io.perfeccionista.framework.elements.impl;
 
-import io.perfeccionista.framework.name.NamesRegistry;
-import io.perfeccionista.framework.pagefactory.ElementsConfiguration;
-import io.perfeccionista.framework.pagefactory.browser.MobileDriverDispatcher;
-import io.perfeccionista.framework.pagefactory.elements.context.MobileSearchLimiterRegistry;
-
 import io.perfeccionista.framework.pagefactory.elements.MobilePage;
-import io.perfeccionista.framework.pagefactory.elements.registry.MobileElementRegistry;
-import io.perfeccionista.framework.pagefactory.operation.OperationResult;
-
-import java.util.Optional;
-import java.util.Set;
 
 public abstract class MobilePageImpl implements MobilePage {
 

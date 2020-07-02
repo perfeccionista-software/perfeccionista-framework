@@ -2,6 +2,7 @@ package io.perfeccionista.framework.value.number.doublevalue;
 
 import io.perfeccionista.framework.value.number.AbstractNumberValue;
 import io.perfeccionista.framework.value.checker.NumberChecker;
+import org.jetbrains.annotations.NotNull;
 
 public class RuDoubleValue extends AbstractNumberValue<Double> {
 
@@ -9,4 +10,9 @@ public class RuDoubleValue extends AbstractNumberValue<Double> {
         super(numberChecker);
     }
 
+    @Override
+    public boolean checkString(@NotNull String actual) {
+        // TODO: Implement
+        return false;
+    }
 }

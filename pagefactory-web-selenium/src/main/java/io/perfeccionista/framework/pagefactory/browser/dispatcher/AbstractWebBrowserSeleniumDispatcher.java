@@ -103,7 +103,7 @@ public abstract class AbstractWebBrowserSeleniumDispatcher<T extends RemoteWebDr
     public WebPageContext getPageContext() {
         checkWebDriverInstance();
         return Optional.ofNullable(this.context).orElseGet(() -> {
-            this.context = new SeleniumWebPageContext(environment, instance, exceptionMapper);
+            this.context = new SeleniumWebPageContext(environment, this, exceptionMapper);
             return this.context;
         });
     }
@@ -112,7 +112,11 @@ public abstract class AbstractWebBrowserSeleniumDispatcher<T extends RemoteWebDr
     public OperationExecutor executor() {
         checkWebDriverInstance();
         return Optional.ofNullable(this.executor).orElseGet(() -> {
-            this.executor = new SeleniumOperationExecutor(environment, instance, exceptionMapper).setTraceSearch(this.traceSearch);
+            if (traceSearch) {
+                this.executor = new SeleniumOperationExecutor(environment, instance, exceptionMapper).withJsLogs();
+            } else {
+                this.executor = new SeleniumOperationExecutor(environment, instance, exceptionMapper);
+            }
             return this.executor;
         });
     }

@@ -23,6 +23,9 @@ public enum EnvironmentMessages implements Messages {
     DEFAULT_DATA_SOURCE_NOT_DECLARED("Default DataSource is not configured for DataSourceService"),
     ENVIRONMENT_NOT_DECLARED("Environment is not configured for test class and test method"),
 
+    NUMBER_VALUE_TO_BIG_DECIMAL_PARSING_FAILED("String '%s' parsing to BigDecimal failed"),
+    NUMBER_VALUE_TO_DOUBLE_PARSING_FAILED("String '%s' parsing to Double failed"),
+    NUMBER_VALUE_TO_INTEGER_PARSING_FAILED("String '%s' parsing to Integer failed"),
     STRING_VALUE_DATA_CONVERTER_NAME_NOT_FOUND("StringValue '%s' processing failed. DataConverter name not found"),
     STRING_VALUE_DATA_CONVERTER_INCORRECT_KEY_TYPE("StringValue '%s' processing failed. Incorrect key type for DataConverter"),
     STRING_VALUE_DATA_SOURCE_INCORRECT_KEY_TYPE("StringValue '%s' processing failed. Incorrect key type for DataSource"),

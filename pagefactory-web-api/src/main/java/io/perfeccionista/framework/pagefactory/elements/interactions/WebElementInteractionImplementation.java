@@ -1,6 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements.interactions;
 
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
-public interface WebElementInteractionImplementation<T> extends ElementInteractionImplementation<WebChildElement, WebChildElement, T> {
+public interface WebElementInteractionImplementation {
+
+    WebChildElement execute(WebChildElement sourceElement, WebChildElement targetElement, Object... args);
+
 }

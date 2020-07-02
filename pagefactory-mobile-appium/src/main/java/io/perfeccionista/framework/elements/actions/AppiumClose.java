@@ -8,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.elements.actions.MobileElementAct
 
 public class AppiumClose implements MobileElementActionImplementation<Void> {
 
-    @Override
+//    @Override
     public Void execute(MobileChildElement element, Object... args) {
 //        MobileDropDownList dropDownList = (MobileDropDownList) element;
 //        element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)

@@ -1,8 +1,18 @@
 package io.perfeccionista.framework.pagefactory.filter.list;
 
+import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter.WebListBlockConditionHolder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class WebListBlockElementEnabledCondition implements WebListBlockCondition {
+
+    private final Deque<WebListBlockConditionHolder> childConditions = new ArrayDeque<>();
 
     private final IsEnabledAvailable elementMock;
     private final String elementName;
@@ -28,6 +38,17 @@ public class WebListBlockElementEnabledCondition implements WebListBlockConditio
 
     @Override
     public WebListBlockCondition or(WebListBlockCondition condition) {
+        return null;
+    }
+
+    @Override
+    public Deque<WebListBlockConditionHolder> getChildConditions() {
+        return childConditions;
+    }
+
+    @Override
+    public WebConditionProcessingResult process(@NotNull WebList element, @Nullable String hash) {
+        // TODO: Implement
         return null;
     }
 }

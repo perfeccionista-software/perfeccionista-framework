@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.actions;
 
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import org.junit.platform.commons.util.ReflectionUtils;

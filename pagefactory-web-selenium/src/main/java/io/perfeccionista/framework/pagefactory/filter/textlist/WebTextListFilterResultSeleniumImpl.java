@@ -31,34 +31,34 @@ public class WebTextListFilterResultSeleniumImpl implements WebTextListFilterRes
     @API(status = STABLE)
     public SingleResult<String> extractOne() {
         return new WebTextListBlockStringExtractor()
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .singleResult();
     }
 
     @API(status = STABLE)
     public MultipleResult<String> extractAll() {
         return new WebTextListBlockStringExtractor()
-                .extractValues(element, filter);
+                .extractValues(element, filter.filter(element));
     }
 
     @API(status = INTERNAL)
     public <T> SingleResult<T> extractOne(WebTextListBlockValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .singleResult();
     }
 
     @API(status = INTERNAL)
     public <T> MultipleResult<T> extractAll(WebTextListBlockValueExtractor<T> extractor) {
         return extractor
-                .extractValues(element, filter);
+                .extractValues(element, filter.filter(element));
     }
 
     @Override
     @API(status = STABLE)
     public WebTextListFilterResult shouldHaveSize(NumberValue<Integer> integerValue) {
         new WebTextListBlockIndexExtractor()
-                .extractValues(element, filter)
+                .extractValues(element, filter.filter(element))
                 .shouldHaveSize(integerValue);
         return this;
     }

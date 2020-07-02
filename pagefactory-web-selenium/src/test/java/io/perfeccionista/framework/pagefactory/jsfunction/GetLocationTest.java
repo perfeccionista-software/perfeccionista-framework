@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.Duration;
 
-import static io.perfeccionista.framework.action.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
@@ -31,17 +31,17 @@ public class GetLocationTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         Location location = runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "text-list"))
                     .addLocator(WebLocatorHolder.of("LI", "text", "Индия")
-                            .addInvokedOnCallFunctions(new ScrollTo()
+                            .addInvokedOnCallFunction(new ScrollTo()
                                     .setDelay(Duration.ofSeconds(5))));
             JsOperation<Location> getLocationOperation = JsOperation.of(scrollToLocatorChain, new GetLocation());
             return chrome.executor()

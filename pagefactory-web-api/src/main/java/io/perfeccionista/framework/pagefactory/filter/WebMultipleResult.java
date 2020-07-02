@@ -27,11 +27,6 @@ public class WebMultipleResult<T> implements MultipleResult<T> {
     }
 
     @Override
-    public Map<Integer, T> getValues() {
-        return Map.copyOf(values);
-    }
-
-    @Override
     public SingleResult<T> singleResult() {
         if (values.size() > 1) {
             throw new SingleResultConvertingException(MULTIPLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -42,6 +37,16 @@ public class WebMultipleResult<T> implements MultipleResult<T> {
                 .findFirst()
                 .map(entry -> new WebSingleResult<>(entry.getKey(), entry.getValue()))
                 .orElseGet(WebSingleResult::new);
+    }
+
+    @Override
+    public Map<Integer, T> getValues() {
+        return Map.copyOf(values);
+    }
+
+    @Override
+    public int getSize() {
+        return values.size();
     }
 
     @Override

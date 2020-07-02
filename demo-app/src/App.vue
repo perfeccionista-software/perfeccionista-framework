@@ -10,7 +10,7 @@
             </b-row>
             <b-row>
                 <b-col cols="3">
-                    <b-list-group>
+                    <b-list-group id="main-menu">
                         <b-list-group-item><router-link to="/">Home</router-link></b-list-group-item>
                         <b-list-group-item><router-link to="/elements">Elements</router-link></b-list-group-item>
                         <b-list-group-item><router-link to="/list-elements">List Elements</router-link></b-list-group-item>

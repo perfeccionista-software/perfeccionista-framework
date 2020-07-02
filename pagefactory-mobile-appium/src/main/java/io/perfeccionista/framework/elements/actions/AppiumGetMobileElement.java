@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.actions.MobileElementAct
 
 public class AppiumGetMobileElement implements MobileElementActionImplementation<MobileElement> {
 
-    @Override
+//    @Override
     public MobileElement execute(MobileChildElement element, Object... args) {
 //        return element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
 //                .map(() -> element.findElement(element.getLocatorChain()).get());

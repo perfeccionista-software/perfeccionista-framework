@@ -1,8 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
-
-public interface MobileSimpleUnorderedList extends MobileChildElement, SizeAvailable {
+public interface MobileSimpleUnorderedList extends MobileChildElement {
 
 //    OperationResult<MultipleResult<String>> getValues();
 //

@@ -3,14 +3,16 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 import io.perfeccionista.framework.attachment.Attachment;
 import io.perfeccionista.framework.attachment.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.LocatorNotDeclaredException;
+import io.perfeccionista.framework.pagefactory.elements.WebPage;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.LOCATOR_NOT_DECLARED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
 
 public class WebLocatorRegistry {
 
@@ -21,7 +23,19 @@ public class WebLocatorRegistry {
         this.locators = locators;
     }
 
+    public static WebLocatorRegistry empty() {
+        return new WebLocatorRegistry(new HashMap<>());
+    }
+
     public static WebLocatorRegistry of(Map<String, WebLocatorHolder> locators) {
+        return new WebLocatorRegistry(locators);
+    }
+
+    public static WebLocatorRegistry of(Class<? extends WebPage> pageClass) {
+        Map<String, WebLocatorHolder> locators = new HashMap<>();
+
+        // TODO: Implement this
+
         return new WebLocatorRegistry(locators);
     }
 
@@ -42,7 +56,7 @@ public class WebLocatorRegistry {
     public WebLocatorHolder getLocator(String locatorName) {
         WebLocatorHolder locatorHolder = locators.get(locatorName);
         if (null == locatorHolder) {
-            throw new LocatorNotDeclaredException(LOCATOR_NOT_DECLARED.getMessage(locatorName))
+            throw new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(locatorName))
                     .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", this.toString())));
         }
         return locatorHolder.clone();

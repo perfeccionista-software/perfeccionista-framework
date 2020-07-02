@@ -2,22 +2,23 @@ package io.perfeccionista.framework.pagefactory.browser.context;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
+import io.perfeccionista.framework.pagefactory.WebPageService;
+import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
-import io.perfeccionista.framework.pagefactory.elements.WebParentElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.context.WebSearchContextLimiter;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.stream.Stream;
 
 public class SeleniumWebPageContext implements WebPageContext {
 
     protected final Environment environment;
-    protected final RemoteWebDriver instance;
+    protected final WebBrowserDispatcher dispatcher;
     protected final ExceptionMapper exceptionMapper;
 
-    public SeleniumWebPageContext(Environment environment, RemoteWebDriver instance, ExceptionMapper exceptionMapper) {
+    public SeleniumWebPageContext(Environment environment, WebBrowserDispatcher dispatcher, ExceptionMapper exceptionMapper) {
         this.environment = environment;
-        this.instance = instance;
+        this.dispatcher = dispatcher;
         this.exceptionMapper = exceptionMapper;
     }
 
@@ -58,7 +59,9 @@ public class SeleniumWebPageContext implements WebPageContext {
 
     @Override
     public <T extends WebPage> T getPage(Class<T> pageClass) {
-        return null;
+        T pageInstance = environment.getService(WebPageService.class).getByClass(pageClass);
+        pageInstance.setWebBrowserDispatcher(dispatcher);
+        return pageInstance;
     }
 
     @Override

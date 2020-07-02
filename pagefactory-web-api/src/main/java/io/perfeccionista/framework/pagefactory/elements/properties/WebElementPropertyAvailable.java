@@ -1,23 +1,24 @@
 package io.perfeccionista.framework.pagefactory.elements.properties;
 
 import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvailable;
 import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
 import java.util.Optional;
 
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.GET_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_HAVE_PROPERTY_NUMBER_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_HAVE_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_NUMBER_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD;
 
 /**
  * TODO JavaDoc
  */
-public interface WebElementPropertyAvailable<T extends WebElementPropertyHolder> extends Element {
+public interface WebElementPropertyAvailable<T extends WebElementPropertyHolder> extends WebLocatorChainAvailable {
 
     Optional<T> getProperty(String propertyName);
 
@@ -26,18 +27,18 @@ public interface WebElementPropertyAvailable<T extends WebElementPropertyHolder>
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_PROPERTY_VALUE_METHOD)
-    WebElementPropertyAvailable<T> shouldHavePropertyValue(String propertyName, StringValue stringValue);
+    WebChildElement shouldHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_PROPERTY_NUMBER_METHOD)
-    WebElementPropertyAvailable<T> shouldHavePropertyValue(String propertyName, NumberValue<?> numberValue);
+    WebChildElement shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD)
-    WebElementPropertyAvailable<T> shouldNotHavePropertyValue(String propertyName, StringValue stringValue);
+    WebChildElement shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD)
-    WebElementPropertyAvailable<T> shouldNotHavePropertyValue(String propertyName, NumberValue<?> numberValue);
+    WebChildElement shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
 }

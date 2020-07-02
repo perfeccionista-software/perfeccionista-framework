@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
-import static io.perfeccionista.framework.action.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
@@ -31,14 +31,14 @@ public class GetAttributeTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         String placeholderValue = runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "simple-input"));
             JsOperation<String> getAttributeOperation = JsOperation.of(scrollToLocatorChain, new GetAttribute("placeholder"));
             return chrome.executor()

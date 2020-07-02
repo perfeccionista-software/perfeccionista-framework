@@ -56,6 +56,7 @@ import io.perfeccionista.framework.bdd.parameters.WebTableColumnParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.WebTableValueExtractorParameter;
 import io.perfeccionista.framework.bdd.parameters.WebTableValueExtractorParameterImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.Element;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.intellij.lang.annotations.Language;
 
 public class RuParametersDefinition implements EnvironmentAvailable {
@@ -243,7 +244,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      * @param <T> - тип искомого элемента
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
-    public <T extends Element> WebBlockElementParameter<T> webBlockElement(String value) {
+    public <T extends WebChildElement> WebBlockElementParameter<T> webBlockElement(String value) {
         return new WebBlockElementParameterImpl<>(environment, value);
     }
 

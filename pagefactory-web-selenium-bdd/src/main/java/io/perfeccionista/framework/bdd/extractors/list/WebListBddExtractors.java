@@ -22,7 +22,7 @@ public class WebListBddExtractors {
         return new WebListBlockElementPresentMarkToStringExtractorHolder();
     }
 
-    @Given("isDisplayed marks")
+    @Given("checkIsDisplayed marks")
     @Given("признаки отображения")
     public WebListBlockValueExtractorHolder displayedMarks() {
         return new WebListBlockElementDisplayedMarkToStringExtractorHolder();

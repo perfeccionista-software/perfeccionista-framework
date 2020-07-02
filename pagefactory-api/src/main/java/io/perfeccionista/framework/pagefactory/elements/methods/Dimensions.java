@@ -1,5 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements.methods;
 
+// TODO: Сделать в конструкторе допустимую погрешность в размерах,
+//  которая будет учитываться при сравнении с другими размерами
+// TODO: Здесь или в Dimensions добавить запрос точки центра элемента
 public class Dimensions {
 
     private final double width;

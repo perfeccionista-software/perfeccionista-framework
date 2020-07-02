@@ -8,4 +8,7 @@ public interface Value<T> {
 
     boolean check(@NotNull T actual);
 
+    // TODO: Implement
+//    String shortDescription();
+
 }

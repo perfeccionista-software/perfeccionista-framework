@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class AppiumSwipeToStringTableRowElement implements MobileElementActionImplementation<Void> {
 
-    @Override
+//    @Override
     public Void execute(MobileChildElement element, Object... args) {
 //        MobileSimpleTable unorderedList = (MobileSimpleTable) element;
 //        AppiumStringTableRowFilter filter = (AppiumStringTableRowFilter) args[0];

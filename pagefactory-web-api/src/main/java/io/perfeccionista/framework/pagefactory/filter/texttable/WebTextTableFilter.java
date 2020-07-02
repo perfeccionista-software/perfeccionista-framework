@@ -2,11 +2,11 @@ package io.perfeccionista.framework.pagefactory.filter.texttable;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.filter.ConditionUsage;
-import io.perfeccionista.framework.pagefactory.filter.Filter;
+import io.perfeccionista.framework.pagefactory.filter.WebFilter;
 
 import java.util.Deque;
 
-public interface WebTextTableFilter extends Filter<WebTextTable, WebTextTableFilterResult> {
+public interface WebTextTableFilter extends WebFilter<WebTextTable, WebTextTableFilterResult> {
 
     WebTextTableFilter add(WebTextTableCellCondition condition);
 

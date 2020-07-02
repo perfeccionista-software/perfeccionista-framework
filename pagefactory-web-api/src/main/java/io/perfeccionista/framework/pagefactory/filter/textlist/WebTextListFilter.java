@@ -2,11 +2,11 @@ package io.perfeccionista.framework.pagefactory.filter.textlist;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.filter.ConditionUsage;
-import io.perfeccionista.framework.pagefactory.filter.Filter;
+import io.perfeccionista.framework.pagefactory.filter.WebFilter;
 
 import java.util.Deque;
 
-public interface WebTextListFilter extends Filter<WebTextList, WebTextListFilterResult> {
+public interface WebTextListFilter extends WebFilter<WebTextList, WebTextListFilterResult> {
 
     WebTextListFilter add(WebTextListBlockCondition condition);
 

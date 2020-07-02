@@ -2,11 +2,11 @@ package io.perfeccionista.framework.pagefactory.filter.table;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.filter.ConditionUsage;
-import io.perfeccionista.framework.pagefactory.filter.Filter;
+import io.perfeccionista.framework.pagefactory.filter.WebFilter;
 
 import java.util.Deque;
 
-public interface WebTableFilter extends Filter<WebTable, WebTableFilterResult> {
+public interface WebTableFilter extends WebFilter<WebTable, WebTableFilterResult> {
 
     WebTableFilter add(WebTableCellCondition condition);
 

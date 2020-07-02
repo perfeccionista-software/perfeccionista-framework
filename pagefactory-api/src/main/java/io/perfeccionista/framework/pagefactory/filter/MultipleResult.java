@@ -11,11 +11,14 @@ import java.util.function.Function;
 //  shouldHaveIndexes(intValues.containsAll(1, 2, 3, 4, 5));
 //  Сделать MultipleValue<T> с методом checkAll(Collection<T> values)?
 // TODO: Добавить методы entryStream(), stream(), forEach() и т.п.
+// TODO: Возможно, тут нужны еще методы с передачей туда кастомного сообщения об ошибке
 public interface MultipleResult<T> {
+
+    SingleResult<T> singleResult();
 
     Map<Integer, T> getValues();
 
-    SingleResult<T> singleResult();
+    int getSize();
 
     <R> MultipleResult<R> convert(@NotNull Function<T, R> converter);
 

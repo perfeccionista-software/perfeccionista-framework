@@ -1,11 +1,9 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.service.UseService;
-import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.action.runner.ActionRunner;
-import io.perfeccionista.framework.action.runner.ActionRunnerConfiguration;
-import io.perfeccionista.framework.action.timeouts.Timeouts;
+import io.perfeccionista.framework.invocation.runner.InvocationRunner;
+import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.timeouts.Timeouts;
 import io.perfeccionista.framework.repeater.RepeatPolicy;
 import io.perfeccionista.framework.repeater.TestRepeatedOnCondition;
 
@@ -75,12 +73,12 @@ public interface EnvironmentConfiguration {
     }
 
     /**
-     * @return конфигурацию для используемых в проекте {@link ActionRunner}.
+     * @return конфигурацию для используемых в проекте {@link InvocationRunner}.
      * Она НЕ должна быть null.
-     * @see ActionRunnerConfiguration
-     * @see ActionRunner
+     * @see InvocationRunnerConfiguration
+     * @see InvocationRunner
      */
-    @NotNull ActionRunnerConfiguration getActionRunnerConfiguration();
+    @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration();
 
     /**
      * @return используемую политику перезапусков тестов,

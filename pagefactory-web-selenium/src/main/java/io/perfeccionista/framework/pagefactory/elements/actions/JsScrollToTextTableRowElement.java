@@ -1,6 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements.actions;
 
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
+import io.perfeccionista.framework.exceptions.LocatorNotDeclaredException;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
@@ -10,8 +12,9 @@ import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilt
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import org.junit.platform.commons.util.ReflectionUtils;
+import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
 
 public class JsScrollToTextTableRowElement implements WebElementActionImplementation<Void> {
@@ -26,6 +29,7 @@ public class JsScrollToTextTableRowElement implements WebElementActionImplementa
 
         // Create locator chain instance for scrolling with hash check
         WebLocatorHolder liLocatorHolderForScroll = table.getLocator(TBODY_ROW)
+                .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(TBODY_ROW)))
                 .setSingle(true)
                 .setIndex(foundIndex.getIndex());
         WebLocatorChain locatorChainForScroll = table.getLocatorChain()
@@ -33,11 +37,13 @@ public class JsScrollToTextTableRowElement implements WebElementActionImplementa
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation
-        ScrollTo scrollToFunction = ReflectionUtils.newInstance(ScrollTo.class);
+        ScrollTo scrollToFunction = new ScrollTo();
         JsOperation<Void> operation = JsOperation.of(locatorChainForScroll, scrollToFunction);
-        return element.getWebBrowserDispatcher().executor()
-                .executeOperation(operation)
-                .singleResult().get();
+        JsOperationResult<Void> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
+        operationResult.ifException(exception -> {
+            throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+        });
+        return operationResult.singleResult().get();
     }
 
 }

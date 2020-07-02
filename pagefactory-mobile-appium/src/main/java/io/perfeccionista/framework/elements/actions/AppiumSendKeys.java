@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.actions.MobileElementAct
 
 public class AppiumSendKeys implements MobileElementActionImplementation<Void> {
 
-    @Override
+//    @Override
     public Void execute(MobileChildElement element, Object... args) {
 //        CharSequence[] keysToSend = (CharSequence[]) args[0];
 //        element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class).map(() -> {

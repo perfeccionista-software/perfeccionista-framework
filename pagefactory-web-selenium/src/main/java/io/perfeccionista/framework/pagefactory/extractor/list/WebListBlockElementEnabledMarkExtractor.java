@@ -3,7 +3,7 @@ package io.perfeccionista.framework.pagefactory.extractor.list;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
 
 public class WebListBlockElementEnabledMarkExtractor implements WebListBlockValueExtractor<Boolean> {
 
@@ -21,7 +21,7 @@ public class WebListBlockElementEnabledMarkExtractor implements WebListBlockValu
     }
 
     @Override
-    public MultipleResult<Boolean> extractValues(WebList element, WebListFilter filter) {
+    public MultipleResult<Boolean> extractValues(WebList element, WebListFilterResult filterResult) {
         // Вся логика извлечения и фильтрации здесь
 
         return null;

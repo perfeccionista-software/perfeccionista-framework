@@ -2,8 +2,10 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
@@ -12,7 +14,7 @@ public class WebLocatorChain {
 
     private Deque<WebLocatorHolder> locatorSequence = new ArrayDeque<>();
 
-    public static WebLocatorChain of() {
+    public static WebLocatorChain empty() {
         return new WebLocatorChain();
     }
 
@@ -26,8 +28,13 @@ public class WebLocatorChain {
         return this;
     }
 
-    public WebLocatorChain addLocator(WebLocatorHolder locator) {
+    public WebLocatorChain addLocator(@NotNull WebLocatorHolder locator) {
         locatorSequence.addLast(locator);
+        return this;
+    }
+
+    public WebLocatorChain addLocators(@NotNull Collection<WebLocatorHolder> locators) {
+        locatorSequence.addAll(locators);
         return this;
     }
 

@@ -1,18 +1,31 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
+import io.perfeccionista.framework.asserts.WebAssertCondition;
+import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.value.Value;
+import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
+@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text'] | self::node()")
+@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text'] | self::node()")
+@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text'] | self::node()")
 public interface WebTextAutocomplete extends WebTextDropDownList,
         SendKeysAvailable, ClearAvailable {
+
+    // Actions
 
     @Override
     WebTextAutocomplete executeAction(String name, Object... args);
@@ -20,40 +33,100 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     @Override
     WebTextAutocomplete executeInteraction(String name, WebChildElement other, Object... args);
 
+    // Asserts
+
+    @Override
+    WebTextAutocomplete should(WebAssertCondition assertCondition);
+
+    @Override
+    WebTextAutocomplete should(WebAssertCondition assertCondition, InvocationName invocationName);
+
+    // Clear
 
     @Override
     WebTextAutocomplete clear();
 
+    // Click
+
     @Override
     WebTextAutocomplete click();
 
-    @Override
-    WebTextAutocomplete clickToElement(WebTextListFilter filter); // Тут нужно еще скроллить к элементу
+    // ClickToElement
 
     @Override
-    WebTextAutocomplete open();
+    WebTextAutocomplete clickToElement(WebTextListFilter filter);
+
+    // Close
 
     @Override
     WebTextAutocomplete close();
 
+    // Get Color
+
+    @Override
+    WebTextAutocomplete componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    @Override
+    WebTextAutocomplete componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    // Get Dimensions
+
+    @Override
+    WebTextAutocomplete componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    @Override
+    WebTextAutocomplete componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    // Get Label
+
+    @Override
+    WebTextAutocomplete shouldHaveLabel(StringValue expectedValue);
+
+    @Override
+    WebTextAutocomplete shouldHaveLabel(NumberValue<?> expectedValue);
+
+    @Override
+    WebTextAutocomplete shouldNotHaveLabel(StringValue expectedValue);
+
+    @Override
+    WebTextAutocomplete shouldNotHaveLabel(NumberValue<?> expectedValue);
+
+    // Get Location
+
+    @Override
+    WebTextAutocomplete componentShouldHaveLocation(String componentName, Location expectedLocation);
+
+    @Override
+    WebTextAutocomplete componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+
+    // Get Screenshot
+
+    @Override
+    WebTextAutocomplete componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    @Override
+    WebTextAutocomplete componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    // Get Text
+
+    @Override
+    WebTextAutocomplete shouldHaveText(StringValue expectedValue);
+
+    @Override
+    WebTextAutocomplete shouldHaveText(NumberValue<?> expectedValue);
+
+    @Override
+    WebTextAutocomplete shouldNotHaveText(StringValue expectedValue);
+
+    @Override
+    WebTextAutocomplete shouldNotHaveText(NumberValue<?> expectedValue);
+
+    // HoverTo
+
     @Override
     WebTextAutocomplete hoverTo(boolean withOutOfBounds);
 
-    @Override
-    WebTextAutocomplete scrollTo();
-
-    @Override
-    WebTextAutocomplete scrollToElement(WebTextListFilter filter);
-
-    @Override
-    WebTextAutocomplete sendKeys(CharSequence... keys);
-
-
-    @Override
-    WebTextAutocomplete shouldBePresent();
-
-    @Override
-    WebTextAutocomplete shouldNotBePresent();
+    // IsDisplayed
 
     @Override
     WebTextAutocomplete shouldBeDisplayed();
@@ -61,11 +134,15 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     @Override
     WebTextAutocomplete shouldNotBeDisplayed();
 
+    // IsInFocus
+
     @Override
     WebTextAutocomplete shouldBeInFocus();
 
     @Override
     WebTextAutocomplete shouldNotBeInFocus();
+
+    // IsOpen
 
     @Override
     WebTextAutocomplete shouldBeOpen();
@@ -73,46 +150,40 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     @Override
     WebTextAutocomplete shouldBeClosed();
 
+    // IsPresent
 
     @Override
-    WebTextAutocomplete shouldHaveSize(Value<Integer> integerValue);
+    WebTextAutocomplete shouldBePresent();
 
     @Override
-    WebTextAutocomplete shouldHaveText(StringValue stringValue);
+    WebTextAutocomplete shouldNotBePresent();
+
+    // Open
 
     @Override
-    WebTextAutocomplete shouldHaveText(NumberValue<?> numberValue);
+    WebTextAutocomplete open();
+
+    // ScrollTo
 
     @Override
-    WebTextAutocomplete shouldNotHaveText(StringValue stringValue);
+    WebTextAutocomplete scrollTo();
+
+    // ScrollToElement
 
     @Override
-    WebTextAutocomplete shouldNotHaveText(NumberValue<?> numberValue);
+    WebTextAutocomplete scrollToElement(WebTextListFilter filter);
+
+    // SendKeys
 
     @Override
-    WebTextAutocomplete shouldHaveLabel(StringValue stringValue);
+    WebTextAutocomplete sendKeys(CharSequence... keys);
+
+    // Size
 
     @Override
-    WebTextAutocomplete shouldHaveLabel(NumberValue<?> numberValue);
+    WebTextAutocomplete shouldHaveSize(NumberValue<Integer> expectedSize);
 
-    @Override
-    WebTextAutocomplete shouldNotHaveLabel(StringValue stringValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHaveLabel(NumberValue<?> numberValue);
-
-    @Override
-    WebTextAutocomplete shouldHavePropertyValue(String propertyName, StringValue stringValue);
-
-    @Override
-    WebTextAutocomplete shouldHavePropertyValue(String propertyName, NumberValue<?> numberValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHavePropertyValue(String propertyName, StringValue stringValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHavePropertyValue(String propertyName, NumberValue<?> numberValue);
-
+    // WebComponent
 
     @Override
     WebTextAutocomplete componentShouldBePresent(String componentName);
@@ -126,21 +197,17 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     @Override
     WebTextAutocomplete componentShouldNotBeDisplayed(String componentName);
 
-    @Override
-    WebTextAutocomplete componentShouldHaveDimensions(String componentName, Dimensions dimensions);
+    // WebProperties
 
     @Override
-    WebTextAutocomplete componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+    WebTextAutocomplete shouldHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebTextAutocomplete componentShouldHaveLocation(String componentName, Location location);
+    WebTextAutocomplete shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
     @Override
-    WebTextAutocomplete componentShouldNotHaveLocation(String componentName, Location location);
+    WebTextAutocomplete shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebTextAutocomplete componentShouldLooksLike(String componentName, Screenshot screenshot);
-
-    @Override
-    WebTextAutocomplete componentShouldNotLooksLike(String componentName, Screenshot screenshot);
+    WebTextAutocomplete shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 }

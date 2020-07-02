@@ -1,5 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
+import io.perfeccionista.framework.asserts.WebAssertCondition;
+import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
@@ -10,19 +14,21 @@ import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.value.Value;
+import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
 
+@WebLocator(component = LI, xpath = ".//li", single = false)
 public interface WebList extends WebChildElement,
         ScrollToElementAvailable<WebListFilter>, ClickToElementAvailable<WebListFilter>, SizeAvailable {
 
-    default WebListFilterResult filter(WebListFilter filter) {
-        return filter.filter(this);
-    }
+    WebListFilterResult filter(WebListFilter filter);
 
     <V> MultipleResult<V> extractAll(WebListBlockValueExtractor<V> extractor);
+
+    // Actions
 
     @Override
     WebList executeAction(String name, Object... args);
@@ -30,25 +36,57 @@ public interface WebList extends WebChildElement,
     @Override
     WebList executeInteraction(String name, WebChildElement other, Object... args);
 
+    // Asserts
+
+    @Override
+    WebList should(WebAssertCondition assertCondition);
+
+    @Override
+    WebList should(WebAssertCondition assertCondition, InvocationName invocationName);
+
+    // ClickToElement
 
     @Override
     WebList clickToElement(WebListFilter filter); // Тут нужно еще скроллить к элементу
 
+    // Get Color
+
+    @Override
+    WebList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    @Override
+    WebList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    // Get Dimensions
+
+    @Override
+    WebList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    @Override
+    WebList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    // Get Location
+
+    @Override
+    WebList componentShouldHaveLocation(String componentName, Location expectedLocation);
+
+    @Override
+    WebList componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+
+    // Get Screenshot
+
+    @Override
+    WebList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    @Override
+    WebList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    // HoverTo
+
     @Override
     WebList hoverTo(boolean withOutOfBounds);
 
-    @Override
-    WebList scrollTo();
-
-    @Override
-    WebList scrollToElement(WebListFilter filter);
-
-
-    @Override
-    WebList shouldBePresent();
-
-    @Override
-    WebList shouldNotBePresent();
+    // IsDisplayed
 
     @Override
     WebList shouldBeDisplayed();
@@ -56,28 +94,38 @@ public interface WebList extends WebChildElement,
     @Override
     WebList shouldNotBeDisplayed();
 
+    // IsInFocus
+
     @Override
     WebList shouldBeInFocus();
 
     @Override
     WebList shouldNotBeInFocus();
 
+    // IsPresent
 
     @Override
-    WebList shouldHaveSize(Value<Integer> integerValue);
+    WebList shouldBePresent();
 
     @Override
-    WebList shouldHavePropertyValue(String propertyName, StringValue stringValue);
+    WebList shouldNotBePresent();
+
+    // ScrollTo
 
     @Override
-    WebList shouldHavePropertyValue(String propertyName, NumberValue<?> numberValue);
+    WebList scrollTo();
+
+    // ScrollToElement
 
     @Override
-    WebList shouldNotHavePropertyValue(String propertyName, StringValue stringValue);
+    WebList scrollToElement(WebListFilter filter);
+
+    // Size
 
     @Override
-    WebList shouldNotHavePropertyValue(String propertyName, NumberValue<?> numberValue);
+    WebList shouldHaveSize(NumberValue<Integer> expectedSize);
 
+    // WebComponents
 
     @Override
     WebList componentShouldBePresent(String componentName);
@@ -91,21 +139,18 @@ public interface WebList extends WebChildElement,
     @Override
     WebList componentShouldNotBeDisplayed(String componentName);
 
-    @Override
-    WebList componentShouldHaveDimensions(String componentName, Dimensions dimensions);
+    // WebProperties
 
     @Override
-    WebList componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+    WebList shouldHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebList componentShouldHaveLocation(String componentName, Location location);
+    WebList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
     @Override
-    WebList componentShouldNotHaveLocation(String componentName, Location location);
+    WebList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebList componentShouldLooksLike(String componentName, Screenshot screenshot);
+    WebList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
-    @Override
-    WebList componentShouldNotLooksLike(String componentName, Screenshot screenshot);
 }

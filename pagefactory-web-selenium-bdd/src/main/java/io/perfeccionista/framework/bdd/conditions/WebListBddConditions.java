@@ -7,7 +7,7 @@ import io.perfeccionista.framework.bdd.parameters.ValueStringParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementComponentParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementPropertyParameter;
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsDisplayedAvailable;

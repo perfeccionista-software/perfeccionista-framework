@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class AppiumSwipeToTableRowElement implements MobileElementActionImplementation<Void> {
 
-    @Override
+//    @Override
     public Void execute(MobileChildElement element, Object... args) {
 //        MobileTable table = (MobileTable) element;
 //        AppiumTableRowFilter filter = (AppiumTableRowFilter) args[0];

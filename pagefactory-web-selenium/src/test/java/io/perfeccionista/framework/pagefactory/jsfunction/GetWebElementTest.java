@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebElement;
 
-import static io.perfeccionista.framework.action.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
@@ -29,7 +29,7 @@ public class GetWebElementTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Text List Elements"));
             JsOperation<WebElement> getLinkWebElementOperation = JsOperation.of(linkLocatorChain, new GetWebElement());
             chrome.executor()
@@ -38,10 +38,10 @@ public class GetWebElementTest {
                     .click();
         });
         String text = runCheck(env, () -> {
-            WebLocatorChain listElementLocatorChain = WebLocatorChain.of()
+            WebLocatorChain listElementLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "text-list"))
                     .addLocator(WebLocatorHolder.of("LI", "text", "Ливан")
-                            .addInvokedOnCallFunctions(new ScrollTo()));
+                            .addInvokedOnCallFunction(new ScrollTo()));
             JsOperation<WebElement> getListWebElementOperation = JsOperation.of(listElementLocatorChain, new GetWebElement());
             return chrome.executor()
                     .executeOperation(getListWebElementOperation)

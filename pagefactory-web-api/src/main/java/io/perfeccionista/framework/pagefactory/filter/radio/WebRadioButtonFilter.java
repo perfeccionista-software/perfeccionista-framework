@@ -2,11 +2,11 @@ package io.perfeccionista.framework.pagefactory.filter.radio;
 
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.filter.ConditionUsage;
-import io.perfeccionista.framework.pagefactory.filter.Filter;
+import io.perfeccionista.framework.pagefactory.filter.WebFilter;
 
 import java.util.Deque;
 
-public interface WebRadioButtonFilter extends Filter<WebRadioGroup, WebRadioButtonFilterResult> {
+public interface WebRadioButtonFilter extends WebFilter<WebRadioGroup, WebRadioButtonFilterResult> {
 
     WebRadioButtonFilter add(WebRadioButtonCondition condition);
 

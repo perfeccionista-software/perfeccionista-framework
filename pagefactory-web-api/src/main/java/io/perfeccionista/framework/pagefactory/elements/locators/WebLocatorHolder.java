@@ -87,7 +87,7 @@ public class WebLocatorHolder {
         return this;
     }
 
-    public WebLocatorHolder addInvokedOnCallFunctions(JsFunction<Void> invokeOnCallFunction) {
+    public WebLocatorHolder addInvokedOnCallFunction(JsFunction<Void> invokeOnCallFunction) {
         this.invokeOnCallFunctions.add(invokeOnCallFunction);
         return this;
     }

@@ -16,8 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.time.Duration;
 import java.util.Set;
 
-import static io.perfeccionista.framework.action.wrappers.CheckActionWrapper.runCheck;
-import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
+import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
@@ -32,7 +31,7 @@ public class ScrollToTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
@@ -40,7 +39,7 @@ public class ScrollToTest {
 
         });
         runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "text-list"))
                     .addLocator(WebLocatorHolder.of("LI", "text", "Ливан"));
             JsOperation<Void> scrollToOperation = JsOperation.of(scrollToLocatorChain, new ScrollTo()
@@ -60,14 +59,14 @@ public class ScrollToTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "text-list"))
                     .addLocator(WebLocatorHolder.of("LI", "className", "list-group-item")
                             .setSingle(false));
@@ -87,14 +86,14 @@ public class ScrollToTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "text-list"))
                     .addLocator(WebLocatorHolder.of("LI", "className", "list-group-item")
                             .setSingle(false).setIndexes(Set.of(4, 65, 78, 170)));

@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.elements.impl;
 
-import io.perfeccionista.framework.pagefactory.elements.actions.ElementAction;
 import io.perfeccionista.framework.pagefactory.elements.MobileSimpleAutocomplete;
 
 

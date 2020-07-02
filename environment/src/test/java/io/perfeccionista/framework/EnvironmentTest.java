@@ -5,8 +5,8 @@ import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import io.perfeccionista.framework.action.runner.ActionRunnerConfiguration;
-import io.perfeccionista.framework.action.timeouts.Timeouts;
+import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.timeouts.Timeouts;
 import io.perfeccionista.framework.exceptions.RegisterDuplicateException;
 import io.perfeccionista.framework.repeater.RepeatPolicy;
 import io.perfeccionista.framework.service.Service;
@@ -104,8 +104,8 @@ final class EnvironmentTest extends SimpleParallelTest {
     static class TestEnvironmentConfiguration implements EnvironmentConfiguration {
 
         @Override
-        public @NotNull ActionRunnerConfiguration getActionRunnerConfiguration() {
-            return mock(ActionRunnerConfiguration.class);
+        public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+            return mock(InvocationRunnerConfiguration.class);
         }
 
         @Override

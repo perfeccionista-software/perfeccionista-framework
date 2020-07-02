@@ -126,7 +126,7 @@
                     <span id="file-input-file-name">{{ fileSelected ? fileSelected.name : '' }}</span>
                 </b-col>
                 <b-col cols="3">
-                    <b-link id="file-download" href="../static/LICENSE.txt">Download File</b-link>
+                    <b-link id="file-download" href="src/static/LICENSE.txt">Download File</b-link>
                 </b-col>
             </b-row>
             <!-- Drag&Drop test -->

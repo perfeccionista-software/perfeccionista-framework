@@ -2,7 +2,12 @@ package io.perfeccionista.framework.pagefactory.filter;
 
 public enum ConditionUsage {
 
+    // For TopLevel conditions
     ADD,
-    SUBTRACT
+    SUBTRACT,
+
+    // For Child conditionns
+    AND,
+    OR
 
 }

@@ -1,8 +1,5 @@
 package io.perfeccionista.framework.elements.impl;
 
-import io.perfeccionista.framework.pagefactory.elements.locators.AndroidLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.IosLocator;
-import io.perfeccionista.framework.pagefactory.elements.actions.ElementAction;
 import io.perfeccionista.framework.pagefactory.elements.MobileDropDownList;
 
 

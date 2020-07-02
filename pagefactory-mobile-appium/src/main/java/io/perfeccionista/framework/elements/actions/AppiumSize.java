@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.MobileChildElement;
 
 public class AppiumSize implements MobileElementActionImplementation<Integer> {
 
-    @Override
+//    @Override
     public Integer execute(MobileChildElement element, Object... args) {
 //        String component = (String) args[0];
 //

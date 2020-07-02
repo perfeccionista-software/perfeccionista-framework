@@ -22,7 +22,7 @@ public class WebTableBddExtractors {
         return new WebTableCellElementPresentMarkToStringExtractorHolder();
     }
 
-    @Given("isDisplayed marks")
+    @Given("checkIsDisplayed marks")
     @Given("признаки отображения")
     public WebTableCellElementValueExtractorHolder displayedMarks() {
         return new WebTableCellElementDisplayedMarkToStringExtractorHolder();

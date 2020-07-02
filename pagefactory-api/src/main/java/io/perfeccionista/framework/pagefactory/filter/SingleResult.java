@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+// TODO: Возможно, тут нужны еще методы с передачей туда кастомного сообщения об ошибке
 public interface SingleResult<T> {
 
     int getIndex();

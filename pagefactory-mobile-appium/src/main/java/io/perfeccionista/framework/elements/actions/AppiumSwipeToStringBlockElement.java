@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class AppiumSwipeToStringBlockElement implements MobileElementActionImplementation<Void> {
 
-    @Override
+//    @Override
     public Void execute(MobileChildElement element, Object... args) {
 //        MobileSimpleUnorderedList unorderedList = (MobileSimpleUnorderedList) element;
 //        AppiumStringBlockFilter filter = (AppiumStringBlockFilter) args[0];

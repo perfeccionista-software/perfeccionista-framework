@@ -1,5 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
+import io.perfeccionista.framework.asserts.WebAssertCondition;
+import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
@@ -9,19 +13,22 @@ import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterResult;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.value.Value;
+import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+
 // TODO: Добавить TextBlockExtractor/LinkExtractor
+@WebLocator(component = LI, xpath = ".//li", single = false)
 public interface WebTextList extends WebChildElement,
         ScrollToElementAvailable<WebTextListFilter>, ClickToElementAvailable<WebTextListFilter>, SizeAvailable {
 
-    default WebTextListFilterResult filter(WebTextListFilter filter) {
-        return filter.filter(this);
-    }
+    WebTextListFilterResult filter(WebTextListFilter filter);
 
     MultipleResult<String> extractAll();
+
+    // Actions
 
     @Override
     WebTextList executeAction(String name, Object... args);
@@ -29,25 +36,57 @@ public interface WebTextList extends WebChildElement,
     @Override
     WebTextList executeInteraction(String name, WebChildElement other, Object... args);
 
+    // Asserts
 
     @Override
-    WebTextList clickToElement(WebTextListFilter filter); // Тут нужно еще скроллить к элементу
+    WebTextList should(WebAssertCondition assertCondition);
+
+    @Override
+    WebTextList should(WebAssertCondition assertCondition, InvocationName invocationName);
+
+    // ClickToElement
+
+    @Override
+    WebTextList clickToElement(WebTextListFilter filter);
+
+    // Get Color
+
+    @Override
+    WebTextList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    @Override
+    WebTextList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    // Get Dimensions
+
+    @Override
+    WebTextList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    @Override
+    WebTextList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    // Get Location
+
+    @Override
+    WebTextList componentShouldHaveLocation(String componentName, Location expectedLocation);
+
+    @Override
+    WebTextList componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+
+    // Get Screenshot
+
+    @Override
+    WebTextList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    @Override
+    WebTextList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    // HoverTo
 
     @Override
     WebTextList hoverTo(boolean withOutOfBounds);
 
-    @Override
-    WebTextList scrollTo();
-
-    @Override
-    WebTextList scrollToElement(WebTextListFilter filter);
-
-
-    @Override
-    WebTextList shouldBePresent();
-
-    @Override
-    WebTextList shouldNotBePresent();
+    // IsDisplayed
 
     @Override
     WebTextList shouldBeDisplayed();
@@ -55,28 +94,38 @@ public interface WebTextList extends WebChildElement,
     @Override
     WebTextList shouldNotBeDisplayed();
 
+    // IsInFocus
+
     @Override
     WebTextList shouldBeInFocus();
 
     @Override
     WebTextList shouldNotBeInFocus();
 
+    // IsPresent
 
     @Override
-    WebTextList shouldHaveSize(Value<Integer> integerValue);
+    WebTextList shouldBePresent();
 
     @Override
-    WebTextList shouldHavePropertyValue(String propertyName, StringValue stringValue);
+    WebTextList shouldNotBePresent();
+
+    // ScrollTo
 
     @Override
-    WebTextList shouldHavePropertyValue(String propertyName, NumberValue<?> numberValue);
+    WebTextList scrollTo();
+
+    // ScrollToElement
 
     @Override
-    WebTextList shouldNotHavePropertyValue(String propertyName, StringValue stringValue);
+    WebTextList scrollToElement(WebTextListFilter filter);
+
+    // Size
 
     @Override
-    WebTextList shouldNotHavePropertyValue(String propertyName, NumberValue<?> numberValue);
+    WebTextList shouldHaveSize(NumberValue<Integer> expectedSize);
 
+    // WebComponent
 
     @Override
     WebTextList componentShouldBePresent(String componentName);
@@ -90,21 +139,18 @@ public interface WebTextList extends WebChildElement,
     @Override
     WebTextList componentShouldNotBeDisplayed(String componentName);
 
-    @Override
-    WebTextList componentShouldHaveDimensions(String componentName, Dimensions dimensions);
+    // WebProperties
 
     @Override
-    WebTextList componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+    WebTextList shouldHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebTextList componentShouldHaveLocation(String componentName, Location location);
+    WebTextList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
     @Override
-    WebTextList componentShouldNotHaveLocation(String componentName, Location location);
+    WebTextList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebTextList componentShouldLooksLike(String componentName, Screenshot screenshot);
+    WebTextList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
-    @Override
-    WebTextList componentShouldNotLooksLike(String componentName, Screenshot screenshot);
 }

@@ -8,7 +8,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.Mobile
 
 public class AppiumClear implements MobileElementActionImplementation<Void> {
 
-    @Override
+//    @Override
     public Void execute(MobileChildElement element, Object... args) {
 //        element.getDriverInstance().getExceptionMapper(AppiumExceptionMapper.class)
 //                .map(() -> element.findElement(element.getLocatorChainTo(INPUT)).get().clear());

@@ -13,7 +13,7 @@ import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static io.perfeccionista.framework.action.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
@@ -28,14 +28,14 @@ public class GetInnerTextTest {
                 .openUrl(val.stringProcess("${[props]base_url}"));
 
         runCheck(env, () -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.of()
+            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "text", "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         String innerText = runCheck(env, () -> {
-            WebLocatorChain scrollToLocatorChain = WebLocatorChain.of()
+            WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLocator(WebLocatorHolder.of("ROOT", "id", "simple-link"));
             JsOperation<String> getInnerTextOperation = JsOperation.of(scrollToLocatorChain, new GetInnerText());
             return chrome.executor()

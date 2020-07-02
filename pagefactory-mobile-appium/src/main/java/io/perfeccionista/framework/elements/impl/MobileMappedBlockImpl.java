@@ -1,17 +1,15 @@
 package io.perfeccionista.framework.elements.impl;
 
-import io.perfeccionista.framework.pagefactory.elements.base.ParentInfo;
+import io.perfeccionista.framework.pagefactory.elements.base.WebParentInfo;
 
 import io.perfeccionista.framework.pagefactory.elements.MobileMappedBlock;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.MobileComponents.ROOT;
-
 public abstract class MobileMappedBlockImpl extends MobileBlockImpl implements MobileMappedBlock {
 
-    protected ParentInfo parentInfo;
+    protected WebParentInfo parentInfo;
 
     @Override
-    public ParentInfo getParentInfo() {
+    public WebParentInfo getParentInfo() {
         return parentInfo;
     }
 

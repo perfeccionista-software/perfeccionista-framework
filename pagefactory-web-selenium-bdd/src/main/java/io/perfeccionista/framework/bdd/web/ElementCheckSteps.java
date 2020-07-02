@@ -10,7 +10,7 @@ import io.perfeccionista.framework.bdd.parameters.ValueStringParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementPropertyParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementComponentParameter;
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetDimensionsAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetColorAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
@@ -288,35 +288,37 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                 .forEachOrdered(element -> element.componentShouldNotBeDisplayed(elementComponent.getRaw()));
     }
 
-    /**
-     *
-     * @param elementComponent -
-     * @param elementFinder -
-     * @param expectedColor -
-     */
-    @Given("component {webElementComponent} of the {webElement} has color {color}")
-    @Given("компонент {webElementComponent} элемента {webElement} имеет цвет {color}")
-    public void elementComponentHasColor(WebElementComponentParameter elementComponent,
-                                         WebElementParameter<GetColorAvailable> elementFinder,
-                                         ColorParameter expectedColor) {
-        elementFinder.find()
-                .forEachOrdered(element -> element.shouldHaveColor(elementComponent.getRaw(), expectedColor.getColor()));
-    }
 
-    /**
-     *
-     * @param elementComponent -
-     * @param elementFinder -
-     * @param expectedColor -
-     */
-    @Given("component {webElementComponent} of the {webElement} does not have color {color}")
-    @Given("компонент {webElementComponent} элемента {webElement} не имеет цвет {color}")
-    public void elementComponentDoesNotHaveColor(WebElementComponentParameter elementComponent,
-                                                 WebElementParameter<GetColorAvailable> elementFinder,
-                                                 ColorParameter expectedColor) {
-        elementFinder.find()
-                .forEachOrdered(element -> element.shouldNotHaveColor(elementComponent.getRaw(), expectedColor.getColor()));
-    }
+    // TODO: Добавить параметр cssProperty и поменять формулировку
+//    /**
+//     *
+//     * @param elementComponent -
+//     * @param elementFinder -
+//     * @param expectedColor -
+//     */
+//    @Given("component {webElementComponent} of the {webElement} has color {color}")
+//    @Given("компонент {webElementComponent} элемента {webElement} имеет цвет {color}")
+//    public void elementComponentHasColor(WebElementComponentParameter elementComponent,
+//                                         WebElementParameter<GetColorAvailable> elementFinder,
+//                                         ColorParameter expectedColor) {
+//        elementFinder.find()
+//                .forEachOrdered(element -> element.componentShouldHaveColor(elementComponent.getRaw(), expectedColor.getColor()));
+//    }
+//
+//    /**
+//     *
+//     * @param elementComponent -
+//     * @param elementFinder -
+//     * @param expectedColor -
+//     */
+//    @Given("component {webElementComponent} of the {webElement} does not have color {color}")
+//    @Given("компонент {webElementComponent} элемента {webElement} не имеет цвет {color}")
+//    public void elementComponentDoesNotHaveColor(WebElementComponentParameter elementComponent,
+//                                                 WebElementParameter<GetColorAvailable> elementFinder,
+//                                                 ColorParameter expectedColor) {
+//        elementFinder.find()
+//                .forEachOrdered(element -> element.componentShouldNotHaveColor(elementComponent.getRaw(), expectedColor.getColor()));
+//    }
 
     /**
      *

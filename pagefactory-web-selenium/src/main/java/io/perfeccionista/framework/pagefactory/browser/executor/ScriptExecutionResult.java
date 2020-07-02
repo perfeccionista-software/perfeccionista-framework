@@ -26,6 +26,7 @@ class ScriptExecutionResult<T> {
 
     private JsonNode errorNode = null;
     private JsonNode logsNode = null;
+    private String outerHtml = "empty";
 
     private ScriptExecutionResult(Object result, Function<Object, T> converter) {
         this.converter = converter;
@@ -36,6 +37,9 @@ class ScriptExecutionResult<T> {
         }
         if (resultMap.containsKey("logs")) {
             this.logsNode = parseJsonNode(resultMap.get("logs").toString());
+        }
+        if (resultMap.containsKey("outerHtml")) {
+            this.outerHtml = resultMap.get("outerHtml").toString();
         }
         this.values = extractValues(resultMap.get("values"));
     }
@@ -64,8 +68,16 @@ class ScriptExecutionResult<T> {
         return buildException(exceptionMapper);
     }
 
-    public JsOperationResult<T> getOperationResult() {
-        return JsOperationResult.of(extractSearchHistory(searchHistoryNode), values);
+    public JsOperationResult<T> getSuccessfulOperationResult() {
+        return JsOperationResult.of(extractSearchHistory(searchHistoryNode), values, outerHtml);
+    }
+
+    public JsOperationResult<T> getUnsuccessfulOperationResult(ExceptionMapper exceptionMapper) {
+        PerfeccionistaException exception = getException(exceptionMapper);
+        if (withLogs()) {
+            exception.addAttachmentEntry(JsonAttachmentEntry.of("JavaScript logs", getLogsNode()));
+        }
+        return JsOperationResult.of(extractSearchHistory(searchHistoryNode), exception, outerHtml);
     }
 
     protected Map<String, Map<Integer, JsWebLocatorProcessingResult>> extractSearchHistory(JsonNode searchHistoryNode) {

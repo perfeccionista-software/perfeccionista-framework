@@ -3,8 +3,8 @@ package io.perfeccionista.framework;
 import io.perfeccionista.framework.Environment.EnvironmentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
-import io.perfeccionista.framework.action.runner.ActionRunnerConfiguration;
-import io.perfeccionista.framework.action.timeouts.Timeouts;
+import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
+import io.perfeccionista.framework.invocation.timeouts.Timeouts;
 import io.perfeccionista.framework.repeater.RepeatPolicy;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
@@ -46,8 +46,8 @@ final class EnvironmentLoggerTest extends SimpleParallelTest {
     static class TestEnvironmentConfiguration implements EnvironmentConfiguration {
 
         @Override
-        public @NotNull ActionRunnerConfiguration getActionRunnerConfiguration() {
-            return mock(ActionRunnerConfiguration.class);
+        public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+            return mock(InvocationRunnerConfiguration.class);
         }
 
         @Override

@@ -1,5 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
+import io.perfeccionista.framework.asserts.WebAssertCondition;
+import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.CloseAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
@@ -10,12 +14,19 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.value.Value;
+import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.UL;
+
+@WebLocator(component = UL, xpath = ".//ul")
+@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
 public interface WebDropDownList extends WebList,
         ClickAvailable, GetTextAvailable, GetLabelAvailable, IsOpenAvailable, OpenAvailable, CloseAvailable {
+
+    // Actions
 
     @Override
     WebDropDownList executeAction(String name, Object... args);
@@ -23,34 +34,95 @@ public interface WebDropDownList extends WebList,
     @Override
     WebDropDownList executeInteraction(String name, WebChildElement other, Object... args);
 
+    // Asserts
+
+    @Override
+    WebDropDownList should(WebAssertCondition assertCondition);
+
+    @Override
+    WebDropDownList should(WebAssertCondition assertCondition, InvocationName invocationName);
+
+    // Click
 
     @Override
     WebDropDownList click();
 
+    // ClickToElement
+
     @Override
     WebDropDownList clickToElement(WebListFilter filter); // Тут нужно еще скроллить к элементу
 
-    @Override
-    WebDropDownList open();
+    // Close
 
     @Override
     WebDropDownList close();
 
+    // Get Color
+
+    @Override
+    WebDropDownList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    @Override
+    WebDropDownList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+
+    // Get Dimensions
+
+    @Override
+    WebDropDownList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    @Override
+    WebDropDownList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+
+    // Get Label
+
+    @Override
+    WebDropDownList shouldHaveLabel(StringValue expectedValue);
+
+    @Override
+    WebDropDownList shouldHaveLabel(NumberValue<?> expectedValue);
+
+    @Override
+    WebDropDownList shouldNotHaveLabel(StringValue expectedValue);
+
+    @Override
+    WebDropDownList shouldNotHaveLabel(NumberValue<?> expectedValue);
+
+    // Get Location
+
+    @Override
+    WebDropDownList componentShouldHaveLocation(String componentName, Location expectedLocation);
+
+    @Override
+    WebDropDownList componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+
+    // Get Screenshot
+
+    @Override
+    WebDropDownList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    @Override
+    WebDropDownList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+
+    // Get Text
+
+    @Override
+    WebDropDownList shouldHaveText(StringValue expectedValue);
+
+    @Override
+    WebDropDownList shouldHaveText(NumberValue<?> expectedValue);
+
+    @Override
+    WebDropDownList shouldNotHaveText(StringValue expectedValue);
+
+    @Override
+    WebDropDownList shouldNotHaveText(NumberValue<?> expectedValue);
+
+    // HoverTo
+
     @Override
     WebDropDownList hoverTo(boolean withOutOfBounds);
 
-    @Override
-    WebDropDownList scrollTo();
-
-    @Override
-    WebDropDownList scrollToElement(WebListFilter filter);
-
-
-    @Override
-    WebDropDownList shouldBePresent();
-
-    @Override
-    WebDropDownList shouldNotBePresent();
+    // IsDisplayed
 
     @Override
     WebDropDownList shouldBeDisplayed();
@@ -58,11 +130,15 @@ public interface WebDropDownList extends WebList,
     @Override
     WebDropDownList shouldNotBeDisplayed();
 
+    // IsInFocus
+
     @Override
     WebDropDownList shouldBeInFocus();
 
     @Override
     WebDropDownList shouldNotBeInFocus();
+
+    // IsOpen
 
     @Override
     WebDropDownList shouldBeOpen();
@@ -70,46 +146,35 @@ public interface WebDropDownList extends WebList,
     @Override
     WebDropDownList shouldBeClosed();
 
+    // IsPresent
 
     @Override
-    WebDropDownList shouldHaveSize(Value<Integer> integerValue);
+    WebDropDownList shouldBePresent();
 
     @Override
-    WebDropDownList shouldHaveText(StringValue stringValue);
+    WebDropDownList shouldNotBePresent();
+
+    // Open
 
     @Override
-    WebDropDownList shouldHaveText(NumberValue<?> numberValue);
+    WebDropDownList open();
+
+    // ScrollTo
 
     @Override
-    WebDropDownList shouldNotHaveText(StringValue stringValue);
+    WebDropDownList scrollTo();
+
+    // ScrollToElement
 
     @Override
-    WebDropDownList shouldNotHaveText(NumberValue<?> numberValue);
+    WebDropDownList scrollToElement(WebListFilter filter);
+
+    // Size
 
     @Override
-    WebDropDownList shouldHaveLabel(StringValue stringValue);
+    WebDropDownList shouldHaveSize(NumberValue<Integer> expectedSize);
 
-    @Override
-    WebDropDownList shouldHaveLabel(NumberValue<?> numberValue);
-
-    @Override
-    WebDropDownList shouldNotHaveLabel(StringValue stringValue);
-
-    @Override
-    WebDropDownList shouldNotHaveLabel(NumberValue<?> numberValue);
-
-    @Override
-    WebDropDownList shouldHavePropertyValue(String propertyName, StringValue stringValue);
-
-    @Override
-    WebDropDownList shouldHavePropertyValue(String propertyName, NumberValue<?> numberValue);
-
-    @Override
-    WebDropDownList shouldNotHavePropertyValue(String propertyName, StringValue stringValue);
-
-    @Override
-    WebDropDownList shouldNotHavePropertyValue(String propertyName, NumberValue<?> numberValue);
-
+    // WebComponents
 
     @Override
     WebDropDownList componentShouldBePresent(String componentName);
@@ -123,21 +188,18 @@ public interface WebDropDownList extends WebList,
     @Override
     WebDropDownList componentShouldNotBeDisplayed(String componentName);
 
-    @Override
-    WebDropDownList componentShouldHaveDimensions(String componentName, Dimensions dimensions);
+    // WebProperties
 
     @Override
-    WebDropDownList componentShouldNotHaveDimensions(String componentName, Dimensions dimensions);
+    WebDropDownList shouldHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebDropDownList componentShouldHaveLocation(String componentName, Location location);
+    WebDropDownList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
     @Override
-    WebDropDownList componentShouldNotHaveLocation(String componentName, Location location);
+    WebDropDownList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
 
     @Override
-    WebDropDownList componentShouldLooksLike(String componentName, Screenshot screenshot);
+    WebDropDownList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
 
-    @Override
-    WebDropDownList componentShouldNotLooksLike(String componentName, Screenshot screenshot);
 }

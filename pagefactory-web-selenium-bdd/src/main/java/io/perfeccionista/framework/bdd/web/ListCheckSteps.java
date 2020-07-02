@@ -9,7 +9,7 @@ import io.perfeccionista.framework.bdd.parameters.WebBlockElementParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.bdd.parameters.WebListValueExtractorParameter;
 import io.perfeccionista.framework.bdd.parameters.ref.SourceParameterRef;
-import io.perfeccionista.framework.pagefactory.elements.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;

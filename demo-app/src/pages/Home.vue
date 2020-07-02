@@ -13,7 +13,7 @@
                     и постоянными наблюдателями Генеральной Ассамблеи ООН, не являясь членами ООН.
                 </b-col>
             </b-row>
-            <b-row class="p-4" align-h="center" align-v="center">
+            <b-row test-id="flags-first-group" class="p-4" align-h="center" align-v="center">
                 <b-col cols="2">
                     <b-img alt="Ватикан" thumbnail
                            src="src/static/flags/07_Flag_of_the_Vatican_City.svg.png"></b-img>
@@ -36,7 +36,7 @@
                     входящих в организацию).
                 </b-col>
             </b-row>
-            <b-row class="p-4" align-h="center" align-v="center">
+            <b-row test-id="flags-second-group" class="p-4" align-h="center" align-v="center">
                 <b-col cols="2">
                     <b-img alt="Абхазия" thumbnail
                            src="src/static/flags/01_Flag_of_the_Republic_of_Abkhazia.svg.png"></b-img>

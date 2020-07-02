@@ -7,7 +7,7 @@ import org.junit.platform.commons.util.ReflectionUtils;
 
 public class AppiumGetPropertyValue implements MobileElementActionImplementation<String> {
 
-    @Override
+//    @Override
     public String execute(MobileChildElement element, Object... args) {
 //        MobileElementPropertyHolder elementPropertyHolder = (MobileElementPropertyHolder) args[0];
 //
