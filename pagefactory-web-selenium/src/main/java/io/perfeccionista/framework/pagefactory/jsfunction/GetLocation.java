@@ -15,7 +15,7 @@ public class GetLocation implements JsFunction<Location> {
     public Function<Object, Location> getConverter() {
         return object -> {
             JsonNode locationNode = parseJsonNode(object.toString());
-            return new Location(
+            return Location.of(
                     locationNode.get("pageX").asDouble(),
                     locationNode.get("pageY").asDouble(),
                     locationNode.get("absolutePageX").asDouble(),

@@ -13,6 +13,9 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_PRESENT;
 
+/**
+ * Аргументом в массиве передается имя компонента для которого вычисляется признак наличия в DOM
+ */
 public class JsAssertShouldBePresent implements WebElementActionImplementation<Void> {
 
     @Override

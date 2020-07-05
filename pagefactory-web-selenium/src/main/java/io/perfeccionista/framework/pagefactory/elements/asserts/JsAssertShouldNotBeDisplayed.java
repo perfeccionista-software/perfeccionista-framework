@@ -23,12 +23,16 @@ public class JsAssertShouldNotBeDisplayed implements WebElementActionImplementat
         JsOperation<Boolean> operation = JsOperation.of(locatorChainToElement, isDisplayedFunction)
                 .withOuterHtml();
         JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
-        operationResult.ifSuccess(result -> {
+        operationResult.ifException(exception -> {
+            throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+        });
+        boolean displayed = operationResult.singleResult().get();
+        if (displayed) {
             throw new ElementIsDisplayedException(ELEMENT_IS_DISPLAYED.getMessage(element.getElementIdentifier().getLastUsedName()))
                     .setType(ExceptionType.ASSERT)
                     .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
                     .addAttachmentEntry(HtmlAttachmentEntry.of("OuterHtml", operationResult.getOuterHtml()));
-        });
+        }
         return null;
     }
 

@@ -8,10 +8,12 @@ public class ElementLocationException extends PerfeccionistaException {
 
     public ElementLocationException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementLocationException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

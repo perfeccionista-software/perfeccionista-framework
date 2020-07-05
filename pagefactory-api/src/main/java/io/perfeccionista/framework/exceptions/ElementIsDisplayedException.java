@@ -8,10 +8,12 @@ public class ElementIsDisplayedException extends PerfeccionistaException {
 
     public ElementIsDisplayedException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementIsDisplayedException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

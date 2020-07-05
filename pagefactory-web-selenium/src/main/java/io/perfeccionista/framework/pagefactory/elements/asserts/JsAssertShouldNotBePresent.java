@@ -23,12 +23,16 @@ public class JsAssertShouldNotBePresent implements WebElementActionImplementatio
         JsOperation<Boolean> operation = JsOperation.of(locatorChainToElement, getIsPresentFunction)
                 .withOuterHtml();
         JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
-        operationResult.ifSuccess(result -> {
+        operationResult.ifException(exception -> {
+            throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+        });
+        boolean present = operationResult.singleResult().get();
+        if (present) {
             throw new ElementIsPresentException(ELEMENT_IS_PRESENT.getMessage(element.getElementIdentifier().getLastUsedName()))
                     .setType(ExceptionType.ASSERT)
                     .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
                     .addAttachmentEntry(HtmlAttachmentEntry.of("OuterHtml", operationResult.getOuterHtml()));
-        });
+        }
         return null;
     }
 

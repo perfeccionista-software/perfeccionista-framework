@@ -8,10 +8,12 @@ public class ElementIsPresentException extends PerfeccionistaException {
 
     public ElementIsPresentException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementIsPresentException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

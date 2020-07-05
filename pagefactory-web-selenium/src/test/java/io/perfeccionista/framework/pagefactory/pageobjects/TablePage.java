@@ -11,7 +11,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumns;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
-import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeWebElementPropertyExtractor;
+import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeExtractor;
 
 public interface TablePage extends AbstractWebPage {
 
@@ -83,7 +83,7 @@ public interface TablePage extends AbstractWebPage {
 
         @Name("link Short name")
         @WebLocator(css = ".short-name-link")
-        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeWebElementPropertyExtractor.class)
+        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeExtractor.class)
         WebLink shortName();
 
     }

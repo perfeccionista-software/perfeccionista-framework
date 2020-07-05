@@ -12,14 +12,17 @@ import org.jetbrains.annotations.NotNull;
 @UseService(service = WebBrowserService.class, configuration = DefaultSeleniumWebBrowserServiceConfiguration.class)
 public class DefaultSeleniumEnvironmentConfiguration extends DefaultEnvironmentConfiguration {
 
+    protected Timeouts timeouts = new DefaultPageFactoryTimeouts();
+    protected InvocationRunnerConfiguration actionRunnerConfiguration = new SeleniumInvocationRunnerConfiguration();
+
     @Override
     public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
-        return new SeleniumInvocationRunnerConfiguration();
+        return actionRunnerConfiguration;
     }
 
     @Override
     public @NotNull Timeouts getTimeouts() {
-        return new DefaultPageFactoryTimeouts();
+        return timeouts;
     }
 
 }

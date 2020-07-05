@@ -8,10 +8,12 @@ public class ElementColorException extends PerfeccionistaException {
 
     public ElementColorException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementColorException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

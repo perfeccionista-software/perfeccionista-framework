@@ -7,7 +7,7 @@
             <!-- Images test -->
             <b-row class="mb-3 text-center" align-h="center" align-v="center">
                 <b-col cols="3">
-                    <b-img alt="Палестина" thumbnail src="src/static/world_map.jpeg"></b-img>
+                    <b-img id="simple-image" alt="World map picture" thumbnail src="src/static/world_map.jpeg"></b-img>
                 </b-col>
                 <b-col cols="9"></b-col>
             </b-row>

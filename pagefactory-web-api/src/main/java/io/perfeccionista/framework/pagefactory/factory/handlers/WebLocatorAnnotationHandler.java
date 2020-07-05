@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_LOCATOR_STRATEGY_VALIDATION_FAILED;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
@@ -65,6 +66,22 @@ public class WebLocatorAnnotationHandler {
     }
 
     public static WebLocatorHolder createWebLocatorHolder(WebLocator webLocator) {
+        Optional<WebLocatorHolder> optionalWebLocatorHolder = createOptionalWebLocatorHolder(webLocator);
+        if (optionalWebLocatorHolder.isPresent()) {
+            WebLocatorHolder webLocatorHolder = optionalWebLocatorHolder.get();
+            webLocatorHolder.setSingle(webLocator.single());
+            webLocatorHolder.setStrictSearch(webLocator.strictSearch());
+            webLocatorHolder.setOnlyWithinParent(webLocator.onlyWithinParent());
+            for (Class<? extends JsFunction<Void>> jsFunctionClass : webLocator.invokeOnCall()) {
+                webLocatorHolder.addInvokedOnCallFunction(newInstance(jsFunctionClass));
+            }
+            return webLocatorHolder;
+        }
+        throw new WebLocatorProcessingException(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
+                .addAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
+    }
+
+    public static Optional<WebLocatorHolder> createOptionalWebLocatorHolder(WebLocator webLocator) {
         WebLocatorHolder webLocatorHolder = null;
         if (isNotBlank(webLocator.id())) {
             webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "id", webLocator.id());
@@ -97,17 +114,7 @@ public class WebLocatorAnnotationHandler {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
             webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "containsText", webLocator.containsText());
         }
-        if (webLocatorHolder == null) {
-            throw new WebLocatorProcessingException(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
-                    .addAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
-        }
-        webLocatorHolder.setSingle(webLocator.single());
-        webLocatorHolder.setStrictSearch(webLocator.strictSearch());
-        webLocatorHolder.setOnlyWithinParent(webLocator.onlyWithinParent());
-        for (Class<? extends JsFunction<Void>> jsFunctionClass : webLocator.invokeOnCall()) {
-            webLocatorHolder.addInvokedOnCallFunction(newInstance(jsFunctionClass));
-        }
-        return webLocatorHolder;
+        return Optional.ofNullable(webLocatorHolder);
     }
 
     private static void checkWebLocatorStrategyIsEmpty(@Nullable WebLocatorHolder webLocatorHolder, WebLocator webLocator) {

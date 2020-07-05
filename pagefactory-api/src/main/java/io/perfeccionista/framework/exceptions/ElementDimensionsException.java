@@ -8,10 +8,12 @@ public class ElementDimensionsException extends PerfeccionistaException {
 
     public ElementDimensionsException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementDimensionsException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

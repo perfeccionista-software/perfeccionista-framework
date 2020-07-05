@@ -1,10 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements.properties;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
+
+import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebElementPropertyRegistry {
 
@@ -34,5 +39,17 @@ public class WebElementPropertyRegistry {
         properties.forEach(consumer);
     }
 
+    public JsonNode toJson() {
+        ObjectNode rootNode = createObjectNode();
+        this.properties.entrySet().stream()
+                .sorted(Entry.comparingByKey())
+                .forEachOrdered(entry -> rootNode.set(entry.getKey(), entry.getValue().toJson()));
+        return rootNode;
+    }
+
+    @Override
+    public String toString() {
+        return toJson().toPrettyString();
+    }
 }
 

@@ -22,7 +22,7 @@ public class GetColor implements JsFunction<Color> {
     public Function<Object, Color> getConverter() {
         return object -> {
             JsonNode colorNode = parseJsonNode(object.toString());
-            return new WebElementColor(
+            return WebElementColor.of(
                     colorNode.get("r").asInt(),
                     colorNode.get("g").asInt(),
                     colorNode.get("b").asInt(),

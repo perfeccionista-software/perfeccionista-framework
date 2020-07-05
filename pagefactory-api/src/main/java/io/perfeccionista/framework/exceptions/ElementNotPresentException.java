@@ -8,10 +8,12 @@ public class ElementNotPresentException extends PerfeccionistaException {
 
     public ElementNotPresentException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementNotPresentException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

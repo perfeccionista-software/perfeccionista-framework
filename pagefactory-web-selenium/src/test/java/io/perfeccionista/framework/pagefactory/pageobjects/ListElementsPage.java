@@ -11,7 +11,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
-import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeWebElementPropertyExtractor;
+import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeExtractor;
 
 public interface ListElementsPage extends AbstractWebPage {
 
@@ -40,7 +40,7 @@ public interface ListElementsPage extends AbstractWebPage {
 
         @Name("Short name")
 //        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
-        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeWebElementPropertyExtractor.class)
+        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeExtractor.class)
         WebLink shortName();
 
         @Name("Full name")

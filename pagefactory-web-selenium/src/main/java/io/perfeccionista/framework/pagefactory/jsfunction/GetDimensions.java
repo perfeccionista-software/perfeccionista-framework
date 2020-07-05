@@ -15,7 +15,7 @@ public class GetDimensions implements JsFunction<Dimensions> {
     public Function<Object, Dimensions> getConverter() {
         return object -> {
             JsonNode dimensionsNode = parseJsonNode(object.toString());
-            return new Dimensions(dimensionsNode.get("width").asDouble(), dimensionsNode.get("height").asDouble());
+            return Dimensions.of(dimensionsNode.get("width").asDouble(), dimensionsNode.get("height").asDouble());
         };
     }
 

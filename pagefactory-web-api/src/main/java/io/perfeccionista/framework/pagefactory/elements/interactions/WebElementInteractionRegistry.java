@@ -1,10 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements.interactions;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
+
+import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebElementInteractionRegistry {
 
@@ -32,6 +37,18 @@ public class WebElementInteractionRegistry {
 
     public void forEach(BiConsumer<String, WebElementInteractionImplementation> consumer) {
         interactions.forEach(consumer);
+    }
+
+    public JsonNode toJson() {
+        ObjectNode rootNode = createObjectNode();
+        this.interactions.entrySet().stream()
+                .sorted(Entry.comparingByKey())
+                .forEachOrdered(entry -> rootNode.put(entry.getKey(), entry.getValue().getClass().getCanonicalName()));
+        return rootNode;
+    }
+
+    public String toString() {
+        return toJson().toPrettyString();
     }
 
 }

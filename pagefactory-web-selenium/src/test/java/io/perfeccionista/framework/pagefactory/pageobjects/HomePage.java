@@ -15,16 +15,22 @@ import io.perfeccionista.framework.pagefactory.pageobjects.extractors.AltAttribu
 
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_TEXT_METHOD;
 
-@Name("Главная страница")
+@Name("Main page")
 public interface HomePage extends AbstractWebPage {
 
-    @Name("Заголовок")
+    @Name("Title")
     @WebLocator(css = ".page-title", invokeOnCall = {CheckIsDisplayed.class})
     WebTextBlock contentTitle();
 
-    @Name("первый Текстовый блок")
+    @Name("first Text block")
     @WebLocator(containsText = "На данный момент в состав Организации Объединённых Наций")
     WebTextBlock firstTextBlock();
+
+
+
+
+
+
 
     @Name("первый Блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-first-group']")

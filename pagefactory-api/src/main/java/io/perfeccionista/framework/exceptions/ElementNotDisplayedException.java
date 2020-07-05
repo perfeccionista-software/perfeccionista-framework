@@ -8,10 +8,12 @@ public class ElementNotDisplayedException extends PerfeccionistaException {
 
     public ElementNotDisplayedException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementNotDisplayedException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

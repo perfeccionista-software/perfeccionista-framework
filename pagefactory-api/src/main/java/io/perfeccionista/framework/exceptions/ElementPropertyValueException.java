@@ -8,10 +8,12 @@ public class ElementPropertyValueException  extends PerfeccionistaException {
 
     public ElementPropertyValueException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementPropertyValueException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

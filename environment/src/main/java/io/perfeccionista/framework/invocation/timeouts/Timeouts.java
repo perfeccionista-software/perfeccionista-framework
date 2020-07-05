@@ -14,6 +14,8 @@ public interface Timeouts {
     /**
      * Этот метод не должен возвращать null
      */
-    @NotNull Duration getTimeout(@NotNull Class<? extends TimeoutsType> type);
+    @NotNull Duration getTimeout(@NotNull Class<? extends TimeoutsType> timeoutType);
+
+    @NotNull Timeouts setTimeout(@NotNull Class<? extends TimeoutsType> timeoutType, @NotNull Duration duration);
 
 }

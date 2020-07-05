@@ -11,9 +11,11 @@ import java.util.Optional;
 
 import static io.perfeccionista.framework.utils.ReflectionUtils.getClassInheritors;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
-import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
 
 public class AnnotationUtils {
+
+    private AnnotationUtils() {
+    }
 
     public static <A extends Annotation, T> Optional<A> findFirstAnnotationInHierarchy(@NotNull Class<A> annotationClass,
                                                                                        @NotNull Class<T> ancestorClass,

@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.factory.handlers;
 
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyRegistry;
@@ -8,8 +9,9 @@ import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPro
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createWebLocatorHolder;
+import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createOptionalWebLocatorHolder;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
 import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
 import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
@@ -34,9 +36,10 @@ public class WebElementPropertyAnnotationHandler {
     }
 
     protected static WebElementPropertyHolder createWebElementPropertyHolder(WebElementProperty webElementProperty) {
+        Optional<WebLocatorHolder> optionalWebLocatorHolder = createOptionalWebLocatorHolder(webElementProperty.webLocator());
         return WebElementPropertyHolder.of(
                 webElementProperty.name(),
-                createWebLocatorHolder(webElementProperty.webLocator()),
+                optionalWebLocatorHolder.orElse(null),
                 newInstance(webElementProperty.extractor())
         );
     }

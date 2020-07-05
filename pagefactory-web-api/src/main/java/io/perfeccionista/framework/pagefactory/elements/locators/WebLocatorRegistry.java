@@ -1,10 +1,12 @@
 package io.perfeccionista.framework.pagefactory.elements.locators;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.attachment.Attachment;
 import io.perfeccionista.framework.attachment.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.LocatorNotDeclaredException;
-import io.perfeccionista.framework.pagefactory.elements.WebPage;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,6 +15,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
+import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebLocatorRegistry {
 
@@ -28,14 +31,6 @@ public class WebLocatorRegistry {
     }
 
     public static WebLocatorRegistry of(Map<String, WebLocatorHolder> locators) {
-        return new WebLocatorRegistry(locators);
-    }
-
-    public static WebLocatorRegistry of(Class<? extends WebPage> pageClass) {
-        Map<String, WebLocatorHolder> locators = new HashMap<>();
-
-        // TODO: Implement this
-
         return new WebLocatorRegistry(locators);
     }
 
@@ -68,6 +63,19 @@ public class WebLocatorRegistry {
 
     public void forEach(BiConsumer<String, WebLocatorHolder> consumer) {
         locators.forEach(consumer);
+    }
+
+    public JsonNode toJson() {
+        ObjectNode rootNode = createObjectNode();
+        this.locators.entrySet().stream()
+                .sorted(Entry.comparingByKey())
+                .forEachOrdered(entry -> rootNode.set(entry.getKey(), entry.getValue().toJson()));
+        return rootNode;
+    }
+
+    @Override
+    public String toString() {
+        return toJson().toPrettyString();
     }
 
 }

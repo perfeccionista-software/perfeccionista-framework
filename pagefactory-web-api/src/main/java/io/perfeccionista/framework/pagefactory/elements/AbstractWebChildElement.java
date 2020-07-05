@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.exceptions.ElementActionNotDeclaredException;
 import io.perfeccionista.framework.exceptions.ElementInteractionNotDeclaredException;
@@ -28,6 +29,7 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessage
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_PROPERTY_NOT_DECLARED;
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.DISPLAYED;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.PRESENTED;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_PRESENT_METHOD;
@@ -71,6 +73,12 @@ import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 //  config.put(WebButton.class, new WebButtonImpl().withElementAction(SCROLL_TO_METHOD, JsScrollToWithDelay.class)
 // TODO: Привести во всех имплементациях элементов и методов component -> componentName
 // TODO: Привести к WebChildElement возвращаемые типы и учесть это в обработчике прокси.
+
+
+
+
+
+
 public class AbstractWebChildElement extends AbstractBasicWebElement implements WebChildElement {
 
     protected WebElementInteractionRegistry interactionRegistry;
@@ -263,20 +271,20 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     @Override
     public boolean isInFocus() {
         return runCheck(getEnvironment(), InvocationName.of(IS_IN_FOCUS_METHOD, this),
-                () -> getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class).execute(this));
+                () -> getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class).execute(this, FOCUS));
     }
 
     @Override
     public WebChildElement shouldBeInFocus() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_BE_IN_FOCUS_METHOD, this),
-                () -> getActionImplementation(SHOULD_BE_IN_FOCUS_METHOD, Void.class).execute(this));
+                () -> getActionImplementation(SHOULD_BE_IN_FOCUS_METHOD, Void.class).execute(this, FOCUS));
         return this;
     }
 
     @Override
     public WebChildElement shouldNotBeInFocus() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_BE_IN_FOCUS_METHOD, this),
-                () -> getActionImplementation(SHOULD_NOT_BE_IN_FOCUS_METHOD, Void.class).execute(this));
+                () -> getActionImplementation(SHOULD_NOT_BE_IN_FOCUS_METHOD, Void.class).execute(this, FOCUS));
         return this;
     }
 
@@ -400,9 +408,17 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    // TODO: Implement method
     public JsonNode toJson() {
-        return createObjectNode();
+        ObjectNode rootNode = createObjectNode();
+        rootNode.set("elementIdentifier", this.elementIdentifier.toJson());
+        rootNode.put("elementClass", this.getClass().getCanonicalName())
+                .put("parent", this.elementIdentifier.getElementMethod().getDeclaringClass().getCanonicalName())
+                .put("required", this.required);
+        rootNode.set("locators", this.locatorRegistry.toJson());
+        rootNode.set("properties", this.propertyRegistry.toJson());
+        rootNode.set("actions", this.actionRegistry.toJson());
+        rootNode.set("interactions", this.interactionRegistry.toJson());
+        return rootNode;
     }
 
     @Override

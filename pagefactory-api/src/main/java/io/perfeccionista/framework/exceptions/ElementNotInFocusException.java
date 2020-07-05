@@ -8,10 +8,12 @@ public class ElementNotInFocusException extends PerfeccionistaException {
 
     public ElementNotInFocusException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementNotInFocusException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }
