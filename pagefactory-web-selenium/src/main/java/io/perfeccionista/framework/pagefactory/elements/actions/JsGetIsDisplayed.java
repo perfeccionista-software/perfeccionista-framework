@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.actions;
 
 import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
+import io.perfeccionista.framework.exceptions.js.ElementSearchJsException;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsDisplayed;
@@ -17,10 +18,23 @@ public class JsGetIsDisplayed implements WebElementActionImplementation<Boolean>
         GetIsDisplayed isDisplayedFunction = new GetIsDisplayed();
         JsOperation<Boolean> operation = JsOperation.of(locatorChainToElement, isDisplayedFunction);
         JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
+        if (operationResult.isSuccess()) {
+            int resultSize = operationResult.multipleResult().getSize();
+            if (resultSize == 0) {
+                // Мы не нашли ни одного элемента. Ошибки нет из-за того, что операция поиска не строгая
+                return false;
+            }
+            return operationResult.singleResult().get();
+        }
         operationResult.ifException(exception -> {
-            throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+            // Мы можем получить эксепшн при поиске родительского элемента, если для проверки отображения задан отдельный локатор.
+            // В этом случае мы также не должны падать по ошибке
+            if (!ElementSearchJsException.class.equals(exception.getClass())) {
+                throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+            }
         });
-        return operationResult.singleResult().get();
+        // Мы упали по ошибке ElementSearchJsException, то есть не нашли ни одного элемента. Возвращаем false
+        return false;
     }
 
 }

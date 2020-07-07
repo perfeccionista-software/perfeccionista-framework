@@ -38,19 +38,14 @@ import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNo
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveText;
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotLooksLike;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
-import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_PRESENT_METHOD;

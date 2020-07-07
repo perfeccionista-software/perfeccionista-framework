@@ -16,7 +16,6 @@ import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegis
 
 import java.lang.reflect.Method;
 
-import static io.perfeccionista.framework.pagefactory.factory.handlers.RequiredAnnotationHandler.getRequired;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseWebMappedBlockAnnotationHandler.getMappedBlock;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseWebMappedTableColumnAnnotationHandler.createMappedTableColumnHolders;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
@@ -70,7 +69,6 @@ public class WebElementDecorator {
                                                            WebChildElement webChildElement,
                                                            Method webChildElementMethod) {
         writeField("parent", webChildElement, parent);
-        writeField("required", webChildElement, getRequired(webChildElement, webChildElementMethod));
         writeField("actionRegistry", webChildElement, createWebElementActionRegistryFor(webChildElement, webChildElementMethod));
         writeField("locatorRegistry", webChildElement, createWebLocatorRegistryFor(webChildElement, webChildElementMethod));
         writeField("propertyRegistry", webChildElement, createWebElementPropertyRegistryFor(webChildElement, webChildElementMethod));

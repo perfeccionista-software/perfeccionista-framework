@@ -4,6 +4,7 @@ import io.perfeccionista.framework.attachment.HtmlAttachmentEntry;
 import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementIsPresentException;
 import io.perfeccionista.framework.exceptions.base.ExceptionType;
+import io.perfeccionista.framework.exceptions.js.ElementSearchJsException;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
@@ -23,16 +24,21 @@ public class JsAssertShouldNotBePresent implements WebElementActionImplementatio
         JsOperation<Boolean> operation = JsOperation.of(locatorChainToElement, getIsPresentFunction)
                 .withOuterHtml();
         JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
-        operationResult.ifException(exception -> {
-            throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+        operationResult.ifSuccess(operationMultipleResult -> {
+            boolean present = operationMultipleResult.singleResult().get();
+            if (present) {
+                throw new ElementIsPresentException(ELEMENT_IS_PRESENT.getMessage(element.getElementIdentifier().getLastUsedName()))
+                        .setType(ExceptionType.ASSERT)
+                        .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
+                        .addAttachmentEntry(HtmlAttachmentEntry.of("OuterHtml", operationResult.getOuterHtml()));
+            }
         });
-        boolean present = operationResult.singleResult().get();
-        if (present) {
-            throw new ElementIsPresentException(ELEMENT_IS_PRESENT.getMessage(element.getElementIdentifier().getLastUsedName()))
-                    .setType(ExceptionType.ASSERT)
-                    .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addAttachmentEntry(HtmlAttachmentEntry.of("OuterHtml", operationResult.getOuterHtml()));
-        }
+        operationResult.ifException(exception -> {
+            if (!ElementSearchJsException.class.equals(exception.getClass())) {
+                throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+            }
+        });
+        // Сюда мы попадаем если упали по ElementSearchJsException - для текущей проверки это нормальная ситуация
         return null;
     }
 

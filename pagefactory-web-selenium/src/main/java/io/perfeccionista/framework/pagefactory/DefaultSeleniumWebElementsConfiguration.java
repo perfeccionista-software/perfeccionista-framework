@@ -4,6 +4,8 @@ import io.perfeccionista.framework.pagefactory.elements.AbstractWebBlock;
 import io.perfeccionista.framework.pagefactory.elements.AbstractWebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.AbstractWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.AbstractWebPage;
+import io.perfeccionista.framework.pagefactory.elements.WebButton;
+import io.perfeccionista.framework.pagefactory.elements.WebButtonSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebImageSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
@@ -38,10 +40,12 @@ public class DefaultSeleniumWebElementsConfiguration implements WebElementsConfi
     public Map<Class<? extends WebChildElement>, Class<? extends AbstractWebChildElement>> getElementImplementations() {
         Map<Class<? extends WebChildElement>, Class<? extends AbstractWebChildElement>> elementsConfiguration = new HashMap<>();
 
-        elementsConfiguration.put(WebTextBlock.class, WebTextBlockSeleniumImpl.class);
-        elementsConfiguration.put(WebList.class, WebListSeleniumImpl.class);
+        elementsConfiguration.put(WebButton.class, WebButtonSeleniumImpl.class);
         elementsConfiguration.put(WebImage.class, WebImageSeleniumImpl.class);
+
         elementsConfiguration.put(WebLink.class, WebLinkSeleniumImpl.class);
+        elementsConfiguration.put(WebList.class, WebListSeleniumImpl.class);
+        elementsConfiguration.put(WebTextBlock.class, WebTextBlockSeleniumImpl.class);
 
         return elementsConfiguration;
     }

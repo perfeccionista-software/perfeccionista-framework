@@ -56,7 +56,7 @@ public class JsOperationResult<T> {
     }
 
     public void ifSuccess(Consumer<MultipleResult<T>> action) {
-        if (exception != null) {
+        if (exception == null) {
             action.accept(multipleResult());
         }
     }

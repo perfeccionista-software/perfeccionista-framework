@@ -13,11 +13,12 @@ import io.perfeccionista.framework.exceptions.ElementPropertyValueException;
 import io.perfeccionista.framework.invocation.timeouts.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.pagefactory.DefaultSeleniumWebElementsConfiguration;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
-import io.perfeccionista.framework.pagefactory.browser.dispatcher.WdmWebBrowserSeleniumDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
@@ -72,26 +73,26 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
-public class WebImageElementTest extends AbstractUiTest {
+class WebImageElementTest extends AbstractUiTest {
 
     @Test
-    void webImageInitializationTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("Elements"));
-        ElementsPage elementsPage = context.getPage(ElementsPage.class);
+    void webImageInitializationTest(Environment env) {
+        WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebElementsConfiguration());
+        ElementsPage elementsPage = (ElementsPage) pageFactory.createWebPage(ElementsPage.class);
+        elementsPage.setEnvironment(env);
+        elementsPage.setWebBrowserDispatcher(mock(WebBrowserDispatcher.class));
         WebImage worldMap = elementsPage.worldMap();
-        assertFalse(worldMap.isRequired());
         assertNotNull(worldMap.getEnvironment());
         assertNotNull(worldMap.getLocator(ROOT));
         assertNotNull(worldMap.getLocatorChain());
         assertEquals(elementsPage, worldMap.getParent());
         WebBrowserDispatcher webBrowserDispatcher = worldMap.getWebBrowserDispatcher();
         assertNotNull(webBrowserDispatcher);
-        assertEquals(WdmWebBrowserSeleniumDispatcher.class, webBrowserDispatcher.getClass());
+        // WebImage
         assertNotNull(worldMap.getActionImplementation(CLICK_METHOD, Void.class));
+        // WebChildElement
         assertNotNull(worldMap.getActionImplementation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, Void.class));
         assertNotNull(worldMap.getActionImplementation(COMPONENT_SHOULD_BE_PRESENT_METHOD, Void.class));
         assertNotNull(worldMap.getActionImplementation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, Void.class));
@@ -126,6 +127,7 @@ public class WebImageElementTest extends AbstractUiTest {
         assertNotNull(worldMap.getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, Void.class));
         assertNotNull(worldMap.getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, Void.class));
         assertNotNull(worldMap.getActionImplementation(SHOULD_NOT_LOOKS_LIKE_METHOD, Void.class));
+        // Identifier
         WebElementIdentifier elementIdentifier = worldMap.getElementIdentifier();
         assertEquals("worldMap", elementIdentifier.getElementMethod().getName());
         assertEquals("worldMap", elementIdentifier.getLastUsedName());
@@ -181,9 +183,9 @@ public class WebImageElementTest extends AbstractUiTest {
         assertFalse(worldMap.isInFocus());
         assertTrue(worldMap.isComponentPresent("Image border"));
         assertTrue(worldMap.isComponentDisplayed("Image border"));
-        assertEquals(WebElementColor.of(222, 226, 230, 1.0d), worldMap.getColor(ROOT, "border-color"));
         assertEquals(Dimensions.of(176.3d, 125.4d).setInaccuracy(0.2d), worldMap.getDimensions(ROOT));
         assertEquals(Location.of(345d, 173d, 345d, 173d).setInaccuracy(0.2d), worldMap.getLocation(ROOT));
+        assertEquals(WebElementColor.of(222, 226, 230, 1.0d), worldMap.getColor(ROOT, "border-color"));
         Screenshot screenshot = worldMap.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(10000).check(screenshot.getRaw().length));

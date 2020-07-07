@@ -2,8 +2,10 @@ package io.perfeccionista.framework.pagefactory.elements.asserts;
 
 import io.perfeccionista.framework.attachment.Attachment;
 import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
+import io.perfeccionista.framework.attachment.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementNotPresentException;
 import io.perfeccionista.framework.exceptions.base.ExceptionType;
+import io.perfeccionista.framework.exceptions.js.ElementSearchJsException;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
@@ -23,14 +25,19 @@ public class JsAssertShouldBePresent implements WebElementActionImplementation<V
         String component = (String) args[0];
         WebLocatorChain locatorChainToElement = (null == component) ? element.getLocatorChain() : element.getLocatorChainTo(component);
         GetIsPresent getIsPresentFunction = new GetIsPresent();
-        JsOperation<Boolean> operation = JsOperation.of(locatorChainToElement, getIsPresentFunction);
+        JsOperation<Boolean> operation = JsOperation.of(locatorChainToElement, getIsPresentFunction)
+                .withOuterHtml();
         JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
         operationResult.ifException(exception -> {
-            throw new ElementNotPresentException(ELEMENT_NOT_PRESENT.getMessage(element.getElementIdentifier().getLastUsedName()))
-                    .addSuppressedException(exception)
-                    .setType(ExceptionType.ASSERT)
-                    .setAttachment(exception.getAttachment().orElse(Attachment.of()))
-                    .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+            if (ElementSearchJsException.class.equals(exception.getClass())) {
+                throw new ElementNotPresentException(ELEMENT_NOT_PRESENT.getMessage(element.getElementIdentifier().getLastUsedName()))
+                        .addSuppressedException(exception)
+                        .setType(ExceptionType.ASSERT)
+                        .setAttachment(exception.getAttachment().orElse(Attachment.of()))
+                        .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
+                        .addAttachmentEntry(StringAttachmentEntry.of("OuterHtml", operationResult.getOuterHtml()));
+            }
+            throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return null;
     }

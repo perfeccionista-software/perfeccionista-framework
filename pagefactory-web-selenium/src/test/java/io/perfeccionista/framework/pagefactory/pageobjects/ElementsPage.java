@@ -2,17 +2,12 @@ package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebButton;
-import io.perfeccionista.framework.pagefactory.elements.WebCheckbox;
-import io.perfeccionista.framework.pagefactory.elements.WebFileInput;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
-import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.AltAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.SrcAttributeExtractor;
 
 @Name("Elements page")
@@ -26,7 +21,48 @@ public interface ElementsPage extends AbstractWebPage {
     WebImage worldMap();
 
 
+    @Name("Simple button")
+    @WebLocator(id = "simple-button")
+    WebButton simpleButton();
 
+    @Name("Simple button text")
+    @WebLocator(id = "simple-button-text")
+    WebTextBlock simpleButtonText();
+
+
+    @Name("Button for hover")
+    @WebLocator(id = "button-for-hover")
+    WebButton buttonForHover();
+
+    @Name("Visible link")
+    @WebLocator(id = "visible-link")
+    WebLink visibleLink();
+
+    @Name("Visible link text")
+    @WebLocator(id = "visible-link-text")
+    WebTextBlock visibleLinkText();
+
+
+    @Name("Button with spinner")
+    @WebLocator(id = "button-with-spinner")
+    WebButton buttonWithSpinner();
+
+    @Name("Spinner")
+    @WebLocator(id = "spinner")
+    WebImage spinner();
+
+    @Name("Visible link text")
+    @WebLocator(id = "button-with-spinner-text")
+    WebTextBlock buttonWithSpinnerText();
+
+
+    @Name("Simple link")
+    @WebLocator(id = "simple-link")
+    WebLink simpleLink();
+
+    @Name("Simple link text")
+    @WebLocator(id = "simple-link-text")
+    WebTextBlock simpleLinkText();
 
 
 //

@@ -43,6 +43,4 @@ public interface WebChildElement extends ElementBase, WebLocatorChainAvailable,
 
     WebParentElement getParent();
 
-    boolean isRequired();
-
 }

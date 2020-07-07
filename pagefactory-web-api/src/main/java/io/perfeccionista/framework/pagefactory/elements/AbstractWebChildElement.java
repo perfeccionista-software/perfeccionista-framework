@@ -13,6 +13,8 @@ import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.interactions.WebElementInteractionImplementation;
 import io.perfeccionista.framework.pagefactory.elements.interactions.WebElementInteractionRegistry;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
@@ -31,6 +33,7 @@ import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.DISPLAYED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.PRESENTED;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD;
@@ -85,11 +88,17 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     protected WebElementPropertyRegistry propertyRegistry;
     protected WebElementActionRegistry actionRegistry;
     protected WebElementIdentifier elementIdentifier;
-    protected boolean required;
 
-    @Override
-    public boolean isRequired() {
-        return required;
+    public WebLocatorChain getLocatorChainTo(String locatorName) {
+        Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
+        if (optionalLocator.isPresent()) {
+            return getLocatorChain().addLocator(optionalLocator.get());
+        }
+        return getLocatorChain();
+    }
+
+    public WebLocatorChain getLocatorChain() {
+        return parent.getLocatorChain().addLocator(locatorRegistry.getLocator(ROOT));
     }
 
     @Override
@@ -412,8 +421,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
         ObjectNode rootNode = createObjectNode();
         rootNode.set("elementIdentifier", this.elementIdentifier.toJson());
         rootNode.put("elementClass", this.getClass().getCanonicalName())
-                .put("parent", this.elementIdentifier.getElementMethod().getDeclaringClass().getCanonicalName())
-                .put("required", this.required);
+                .put("parent", this.elementIdentifier.getElementMethod().getDeclaringClass().getCanonicalName());
         rootNode.set("locators", this.locatorRegistry.toJson());
         rootNode.set("properties", this.propertyRegistry.toJson());
         rootNode.set("actions", this.actionRegistry.toJson());

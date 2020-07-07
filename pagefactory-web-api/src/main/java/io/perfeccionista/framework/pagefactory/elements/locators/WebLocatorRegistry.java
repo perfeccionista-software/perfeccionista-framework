@@ -6,7 +6,6 @@ import io.perfeccionista.framework.attachment.Attachment;
 import io.perfeccionista.framework.attachment.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.LocatorNotDeclaredException;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
