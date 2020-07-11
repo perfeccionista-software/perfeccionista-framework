@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.Set;
 
 public class DefaultValueService implements ValueService {
 
@@ -78,12 +78,12 @@ public class DefaultValueService implements ValueService {
         return new DefaultStringValue(new StringContainsIgnoreCaseChecker(environment, expected));
     }
 
-    public StringValue stringContainsAll(@NotNull Collection<String> expectedValues) {
-        return new DefaultStringValue(new StringContainsAllChecker(environment, expectedValues));
+    public StringValue stringContainsAll(@NotNull String... expectedValues) {
+        return new DefaultStringValue(new StringContainsAllChecker(environment, Set.of(expectedValues)));
     }
 
-    public StringValue stringContainsAny(@NotNull Collection<String> expectedValues) {
-        return new DefaultStringValue(new StringContainsAnyChecker(environment, expectedValues));
+    public StringValue stringContainsAny(@NotNull String... expectedValues) {
+        return new DefaultStringValue(new StringContainsAnyChecker(environment, Set.of(expectedValues)));
     }
 
     public StringValue stringStartsWith(@NotNull String expected) {

@@ -9,11 +9,11 @@ import io.perfeccionista.framework.pagefactory.pageobjects.elements.LeftMenu;
 
 public interface AbstractWebPage extends WebPage {
 
-    @Name("Логотип")
+    @Name("Logo")
     @WebLocator(text = "Perfeccionista")
     WebTextBlock logo();
 
-    @Name("Основное меню")
+    @Name("Left menu")
     @WebLocator(id = "main-menu", invokeOnCall = CheckIsDisplayed.class)
     LeftMenu leftMenu();
 

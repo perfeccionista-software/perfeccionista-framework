@@ -3,8 +3,8 @@ package io.perfeccionista.framework.attachment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,14 +18,14 @@ import java.util.stream.Stream;
  */
 public class Attachment {
 
-    private final Set<AttachmentEntry<?>> entries;
+    private final List<AttachmentEntry<?>> entries;
 
-    private Attachment(Set<AttachmentEntry<?>> entries) {
+    private Attachment(List<AttachmentEntry<?>> entries) {
         this.entries = entries;
     }
 
     public static Attachment of(@NotNull AttachmentEntry<?>... entries) {
-        return new Attachment(Arrays.stream(entries).collect(Collectors.toSet()));
+        return new Attachment(Arrays.stream(entries).collect(Collectors.toList()));
     }
 
     public Attachment addAttachmentEntry(@NotNull AttachmentEntry<?> entry) {

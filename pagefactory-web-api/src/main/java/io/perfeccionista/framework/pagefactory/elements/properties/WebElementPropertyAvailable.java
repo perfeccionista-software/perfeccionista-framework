@@ -6,6 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvai
 import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public interface WebElementPropertyAvailable<T extends WebElementPropertyHolder>
     Optional<T> getProperty(String propertyName);
 
     @MappedElementAction(GET_PROPERTY_VALUE_METHOD)
-    String getPropertyValue(String propertyName);
+    @Nullable String getPropertyValue(String propertyName);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_PROPERTY_VALUE_METHOD)

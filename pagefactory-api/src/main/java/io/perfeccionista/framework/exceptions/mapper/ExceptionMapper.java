@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 
 public interface ExceptionMapper {
 
-    <T> T map(Supplier<T> supplier);
+    <T> ExceptionMapperResult<T> map(Supplier<T> supplier, String... exceptionMessageOptionalArgs);
 
-    void map(Runnable runnable);
+    ExceptionMapperResult<Void> map(Runnable runnable, String... exceptionMessageOptionalArgs);
 
     PerfeccionistaException createByName(@NotNull String name, @NotNull String message);
 

@@ -8,6 +8,7 @@ import io.perfeccionista.framework.exceptions.ElementInFocusException;
 import io.perfeccionista.framework.exceptions.ElementIsDisplayedException;
 import io.perfeccionista.framework.exceptions.ElementIsPresentException;
 import io.perfeccionista.framework.exceptions.ElementLocationException;
+import io.perfeccionista.framework.exceptions.ElementNotDeclaredException;
 import io.perfeccionista.framework.exceptions.ElementNotDisplayedException;
 import io.perfeccionista.framework.exceptions.ElementNotInFocusException;
 import io.perfeccionista.framework.exceptions.ElementTextValueException;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 import static io.perfeccionista.framework.exceptions.base.ExceptionType.ASSERT;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
@@ -143,6 +145,10 @@ class WebLinkElementTest extends AbstractUiTest {
         assertTrue(elementIdentifier.containsName("Simple link"));
         assertFalse(elementIdentifier.isNameDeprecated("Simple link"));
         assertEquals(1, elementIdentifier.names().size());
+        WebLink simpleLinkElement = elementsPage.getElementRegistry().getElementByPath("Simple link", WebLink.class)
+                .orElseThrow(() -> new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage("Simple link")));
+        assertNotNull(simpleLinkElement);
+        assertEquals("Simple link", elementIdentifier.getLastUsedName());
         assertNotNull(simpleLink.toString());
         // Смотрим описание элемента
         System.out.println( simpleLink.toString() );
@@ -169,7 +175,7 @@ class WebLinkElementTest extends AbstractUiTest {
                 .shouldNotBeInFocus()
                 .scrollTo()
                 .componentShouldHaveDimensions(ROOT, Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d))
-                .componentShouldHaveLocation(ROOT, Location.of(392.2d, 478.4d, 392.2d, 478.4d).setInaccuracy(0.2d))
+                .componentShouldHaveLocation(ROOT, Location.relative(392.2d, 478.4d).setInaccuracy(0.2d))
                 .componentShouldHaveColor(ROOT, "color", WebElementColor.of(0, 123, 255, 1.0d))
                 .hoverTo(true)
                 .componentShouldHaveColor(ROOT, "color", WebElementColor.of(0, 86, 179, 1.0d))
@@ -188,7 +194,7 @@ class WebLinkElementTest extends AbstractUiTest {
         assertTrue(simpleLink.isDisplayed());
         assertFalse(simpleLink.isInFocus());
         assertEquals(Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d), simpleLink.getDimensions(ROOT));
-        assertEquals(Location.of(392.2d, 478.4d, 392.2d, 478.4d).setInaccuracy(0.2d), simpleLink.getLocation(ROOT));
+        assertEquals(Location.absolute(392.2d, 478.4d).setInaccuracy(0.2d), simpleLink.getLocation(ROOT));
         assertEquals(WebElementColor.of(0, 86, 179, 1.0d), simpleLink.getColor(ROOT, "color"));
         Screenshot screenshot = simpleLink.getScreenshot(ROOT);
         assertNotNull(screenshot);
@@ -226,6 +232,7 @@ class WebLinkElementTest extends AbstractUiTest {
         Dimensions elementDimensions = Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> simpleLink.componentShouldNotHaveDimensions(ROOT, elementDimensions));
         Location elementLocation = Location.of(392.2d, 478.4d, 392.2d, 478.4d).setInaccuracy(0.2d);
+        assertThrows(ElementLocationException.class, () -> simpleLink.componentShouldHaveLocation(ROOT, elementLocation.offset(54d, -4d)));
         assertThrows(ElementLocationException.class, () -> simpleLink.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(0, 123, 255, 1.0d);
         assertThrows(ElementColorException.class, () -> simpleLink.componentShouldNotHaveColor(ROOT, "color", elementColor));

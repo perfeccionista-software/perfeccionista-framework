@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.actions;
 
+import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
@@ -33,8 +34,11 @@ public class SeleniumHoverTo implements WebElementActionImplementation<Void> {
                     new Actions(webDriver).moveToElement(webElement, (int) xShift, (int) yShift).build().perform());
 
         }
-        element.getWebBrowserDispatcher().getExceptionMapper().map(() ->
-                new Actions(webDriver).moveToElement(webElement).build().perform());
+        element.getWebBrowserDispatcher().getExceptionMapper()
+                .map(() -> new Actions(webDriver).moveToElement(webElement).build().perform(), element.getElementIdentifier().getLastUsedName())
+                .ifException(exception -> {
+                    throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+                });
         return null;
     }
 

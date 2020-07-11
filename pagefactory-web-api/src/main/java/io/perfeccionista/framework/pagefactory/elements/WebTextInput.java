@@ -24,11 +24,11 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
 
-@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
-@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'text'] | self::node()")
+@WebLocator(component = LABEL, xpath = "self::node()//label")
+@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text']")
+@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text']")
+@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text']")
+@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'text']")
 public interface WebTextInput extends WebChildElement,
         GetTextAvailable, GetLabelAvailable, ClickAvailable, SendKeysAvailable, ClearAvailable, IsEnabledAvailable {
 

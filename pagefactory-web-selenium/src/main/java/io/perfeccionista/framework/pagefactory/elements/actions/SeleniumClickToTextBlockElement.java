@@ -47,7 +47,11 @@ public class SeleniumClickToTextBlockElement implements WebElementActionImplemen
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         WebElement elementToClick = operationResult.singleResult().get();
-        element.getWebBrowserDispatcher().getExceptionMapper().map(elementToClick::click);
+        element.getWebBrowserDispatcher().getExceptionMapper()
+                .map(elementToClick::click, element.getElementIdentifier().getLastUsedName())
+                .ifException(exception -> {
+                    throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+                });
         return null;
     }
 

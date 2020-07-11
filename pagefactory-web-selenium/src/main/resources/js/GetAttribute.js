@@ -9,7 +9,7 @@
         IncorrectSearchQueryError.prototype.constructor = IncorrectSearchQueryError;
         throw new IncorrectSearchQueryError('Attribute for extracting is not declared');
     }
-    return element.getAttribute(attributeName);
+    return element[attributeName];
 
 });
 

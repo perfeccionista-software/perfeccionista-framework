@@ -20,9 +20,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.SELECTED;
 
-@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
-@WebLocator(component = SELECTED, xpath = "self::node()//input[@type = 'radio'] | self::node()")
-@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'radio'] | self::node()")
+@WebLocator(component = LABEL, xpath = "self::node()//label")
+@WebLocator(component = SELECTED, xpath = "self::node()//input[@type = 'radio']")
+@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'radio']")
 public interface WebRadioButton extends WebChildElement, ParentInfoAvailable,
         ClickAvailable, IsSelectedAvailable, IsEnabledAvailable, GetLabelAvailable {
 

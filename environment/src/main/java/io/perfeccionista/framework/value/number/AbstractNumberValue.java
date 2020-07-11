@@ -2,6 +2,7 @@ package io.perfeccionista.framework.value.number;
 
 import io.perfeccionista.framework.value.checker.NumberChecker;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -45,8 +46,11 @@ public abstract class AbstractNumberValue<T extends Number> implements NumberVal
     }
 
     @Override
-    public boolean check(@NotNull T actual) {
+    public boolean check(@Nullable T actual) {
         rawActual = actual;
+        if (actual == null) {
+            return false;
+        }
         processedActual = actual;
         for (UnaryOperator<T> transformer : actualValueTransformers) {
             processedActual = transformer.apply(processedActual);

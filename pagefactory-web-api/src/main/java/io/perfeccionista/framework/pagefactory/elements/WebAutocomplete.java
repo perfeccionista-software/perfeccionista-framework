@@ -18,9 +18,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
-@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text'] | self::node()")
+@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text']")
+@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text']")
+@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text']")
 public interface WebAutocomplete extends WebDropDownList,
         SendKeysAvailable, ClearAvailable {
 

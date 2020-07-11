@@ -5,6 +5,10 @@ public class WebComponents {
     public static final String ROOT = "ROOT";
     public static final String DISPLAYED = "DISPLAYED";
     public static final String PRESENTED = "PRESENTED";
+
+    /**
+     * Компонент должен указывать на тег {@code <input>}
+     */
     public static final String SELECTED = "SELECTED";
     public static final String ENABLED = "ENABLED";
 

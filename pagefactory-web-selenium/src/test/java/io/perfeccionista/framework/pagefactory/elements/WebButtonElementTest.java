@@ -8,6 +8,7 @@ import io.perfeccionista.framework.exceptions.ElementInFocusException;
 import io.perfeccionista.framework.exceptions.ElementIsDisplayedException;
 import io.perfeccionista.framework.exceptions.ElementIsPresentException;
 import io.perfeccionista.framework.exceptions.ElementLocationException;
+import io.perfeccionista.framework.exceptions.ElementNotDeclaredException;
 import io.perfeccionista.framework.exceptions.ElementNotDisplayedException;
 import io.perfeccionista.framework.exceptions.ElementNotInFocusException;
 import io.perfeccionista.framework.exceptions.ElementNotPresentException;
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 import static io.perfeccionista.framework.exceptions.base.ExceptionType.ASSERT;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
@@ -144,6 +146,10 @@ class WebButtonElementTest extends AbstractUiTest {
         assertTrue(elementIdentifier.containsName("Simple button"));
         assertFalse(elementIdentifier.isNameDeprecated("Simple button"));
         assertEquals(1, elementIdentifier.names().size());
+        WebButton simpleButtonElement = elementsPage.getElementRegistry().getElementByPath("Simple button", WebButton.class)
+                .orElseThrow(() -> new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage("Simple button")));
+        assertNotNull(simpleButtonElement);
+        assertEquals("Simple button", elementIdentifier.getLastUsedName());
         assertNotNull(simpleButton.toString());
         // Смотрим описание элемента
         System.out.println( simpleButton.toString() );
@@ -170,7 +176,7 @@ class WebButtonElementTest extends AbstractUiTest {
                 .shouldNotBeInFocus()
                 .scrollTo()
                 .componentShouldHaveDimensions(ROOT, Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d))
-                .componentShouldHaveLocation(ROOT, Location.of(369.3d, 314.3d, 369.3d, 314.3d).setInaccuracy(0.2d))
+                .componentShouldHaveLocation(ROOT, Location.relative(369.3d, 314.3d).setInaccuracy(0.2d))
                 .componentShouldHaveColor(ROOT, "background-color", WebElementColor.of(0, 123, 255, 1.0d))
                 .hoverTo(true)
                 .componentShouldHaveColor(ROOT, "background-color", WebElementColor.of(0, 105, 217, 1.0d))
@@ -189,7 +195,7 @@ class WebButtonElementTest extends AbstractUiTest {
         assertTrue(simpleButton.isDisplayed());
         assertFalse(simpleButton.isInFocus());
         assertEquals(Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d), simpleButton.getDimensions(ROOT));
-        assertEquals(Location.of(369.3d, 314.3d, 369.3d, 314.3d).setInaccuracy(0.2d), simpleButton.getLocation(ROOT));
+        assertEquals(Location.absolute(369.3d, 314.3d).setInaccuracy(0.2d), simpleButton.getLocation(ROOT));
         assertEquals(WebElementColor.of(0, 105, 217, 1.0d), simpleButton.getColor(ROOT, "background-color"));
         Screenshot screenshot = simpleButton.getScreenshot(ROOT);
         assertNotNull(screenshot);
@@ -227,6 +233,7 @@ class WebButtonElementTest extends AbstractUiTest {
         Dimensions elementDimensions = Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> simpleButton.componentShouldNotHaveDimensions(ROOT, elementDimensions));
         Location elementLocation = Location.of(369.3d, 314.3d, 369.3d, 314.3d).setInaccuracy(0.2d);
+        assertThrows(ElementLocationException.class, () -> simpleButton.componentShouldHaveLocation(ROOT, elementLocation.offset(12d, 10d)));
         assertThrows(ElementLocationException.class, () -> simpleButton.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(0, 123, 255, 1.0d);
         assertThrows(ElementColorException.class, () -> simpleButton.componentShouldNotHaveColor(ROOT, "background-color", elementColor));

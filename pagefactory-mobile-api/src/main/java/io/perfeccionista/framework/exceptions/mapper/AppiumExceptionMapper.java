@@ -8,13 +8,15 @@ import java.util.function.Supplier;
 public class AppiumExceptionMapper implements ExceptionMapper {
 
     @Override
-    public <T> T map(Supplier<T> supplier) {
-        return null;
+    public <T> ExceptionMapperResult<T> map(Supplier<T> supplier, String... exceptionMessageOptionalArgs) {
+        // TODO: Implement
+        return ExceptionMapperResult.empty();
     }
 
     @Override
-    public void map(Runnable runnable) {
-
+    public ExceptionMapperResult<Void> map(Runnable runnable, String... exceptionMessageOptionalArgs) {
+        // TODO: Implement
+        return ExceptionMapperResult.empty();
     }
 
     @Override

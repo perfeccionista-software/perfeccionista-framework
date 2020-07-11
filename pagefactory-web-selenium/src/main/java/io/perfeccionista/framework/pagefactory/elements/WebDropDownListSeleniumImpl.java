@@ -10,15 +10,15 @@ import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumClose;
 import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumOpen;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBeDisplayed;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveLabelNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveLabelText;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveLabelNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveLabelText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveText;
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBeDisplayed;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveLabelNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveLabelText;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveLabelNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveLabelText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveText;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
@@ -56,14 +56,14 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 @WebElementAction(name = OPEN_METHOD, implementation = SeleniumOpen.class)
 @WebElementAction(name = SHOULD_BE_CLOSED_METHOD, implementation = JsAssertShouldNotBeDisplayed.class)
 @WebElementAction(name = SHOULD_BE_OPEN_METHOD, implementation = JsAssertShouldBeDisplayed.class)
-@WebElementAction(name = SHOULD_HAVE_NUMBER_LABEL_METHOD, implementation = JsAssertShouldHaveLabelNumber.class)
-@WebElementAction(name = SHOULD_HAVE_NUMBER_METHOD, implementation = JsAssertShouldHaveNumber.class)
-@WebElementAction(name = SHOULD_HAVE_TEXT_LABEL_METHOD, implementation = JsAssertShouldHaveLabelText.class)
-@WebElementAction(name = SHOULD_HAVE_TEXT_METHOD, implementation = JsAssertShouldHaveText.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, implementation = JsAssertShouldNotHaveLabelNumber.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_NUMBER_METHOD, implementation = JsAssertShouldNotHaveNumber.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, implementation = JsAssertShouldNotHaveLabelText.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_TEXT_METHOD, implementation = JsAssertShouldNotHaveText.class)
+@WebElementAction(name = SHOULD_HAVE_NUMBER_LABEL_METHOD, implementation = AssertShouldHaveLabelNumber.class)
+@WebElementAction(name = SHOULD_HAVE_NUMBER_METHOD, implementation = AssertShouldHaveNumber.class)
+@WebElementAction(name = SHOULD_HAVE_TEXT_LABEL_METHOD, implementation = AssertShouldHaveLabelText.class)
+@WebElementAction(name = SHOULD_HAVE_TEXT_METHOD, implementation = AssertShouldHaveText.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, implementation = AssertShouldNotHaveLabelNumber.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_NUMBER_METHOD, implementation = AssertShouldNotHaveNumber.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, implementation = AssertShouldNotHaveLabelText.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_TEXT_METHOD, implementation = AssertShouldNotHaveText.class)
 public class WebDropDownListSeleniumImpl extends WebListSeleniumImpl implements WebDropDownList {
 
     // Actions
@@ -160,28 +160,48 @@ public class WebDropDownListSeleniumImpl extends WebListSeleniumImpl implements 
     @Override
     public WebDropDownList shouldHaveLabel(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_TEXT_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_TEXT_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebDropDownList shouldHaveLabel(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_NUMBER_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_NUMBER_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebDropDownList shouldNotHaveLabel(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebDropDownList shouldNotHaveLabel(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
@@ -224,28 +244,48 @@ public class WebDropDownListSeleniumImpl extends WebListSeleniumImpl implements 
     @Override
     public WebDropDownList shouldHaveText(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_TEXT_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_TEXT_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebDropDownList shouldHaveText(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_NUMBER_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_NUMBER_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebDropDownList shouldNotHaveText(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_TEXT_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_TEXT_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebDropDownList shouldNotHaveText(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_NUMBER_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_NUMBER_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 

@@ -2,6 +2,47 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetColor;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetDimensions;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsDisplayed;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsInFocus;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsPresent;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetLabel;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetLocation;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetPropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetScreenshot;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsScrollTo;
+import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumClick;
+import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumHoverTo;
+import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumIsEnabled;
+import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumIsSelected;
+import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBeDisplayed;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldBeInFocus;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBePresent;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveColor;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveDimensions;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveLabelNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveLabelText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveLocation;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHavePropertyNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHavePropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldLooksLike;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBeDisplayed;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotBeInFocus;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBePresent;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveColor;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveDimensions;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveLabelNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveLabelText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveLocation;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHavePropertyNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHavePropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotLooksLike;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldBeDisabled;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldBeEnabled;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldBeSelected;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotBeSelected;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
@@ -15,15 +56,97 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.Available
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_NOT_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_DIMENSIONS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_LOCATION_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_SCREENSHOT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.HOVER_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_COMPONENT_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_COMPONENT_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_ENABLED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_DISABLED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_ENABLED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_DIMENSIONS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_LOCATION_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_NUMBER_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_NUMBER_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_TEXT_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_LOOKS_LIKE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_DIMENSIONS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_LOCATION_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_TEXT_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_LOOKS_LIKE_METHOD;
 
+// WebCheckbox
+@WebElementAction(name = CLICK_METHOD, implementation = SeleniumClick.class)
+@WebElementAction(name = IS_SELECTED_METHOD, implementation = SeleniumIsSelected.class)
+@WebElementAction(name = SHOULD_BE_SELECTED_METHOD, implementation = AssertShouldBeSelected.class)
+@WebElementAction(name = SHOULD_NOT_BE_SELECTED_METHOD, implementation = AssertShouldNotBeSelected.class)
+@WebElementAction(name = IS_ENABLED_METHOD, implementation = SeleniumIsEnabled.class)
+@WebElementAction(name = SHOULD_BE_ENABLED_METHOD, implementation = AssertShouldBeEnabled.class)
+@WebElementAction(name = SHOULD_BE_DISABLED_METHOD, implementation = AssertShouldBeDisabled.class)
+@WebElementAction(name = GET_LABEL_METHOD, implementation = JsGetLabel.class)
+@WebElementAction(name = SHOULD_HAVE_TEXT_LABEL_METHOD, implementation = AssertShouldHaveLabelText.class)
+@WebElementAction(name = SHOULD_HAVE_NUMBER_LABEL_METHOD, implementation = AssertShouldHaveLabelNumber.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, implementation = AssertShouldNotHaveLabelText.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, implementation = AssertShouldNotHaveLabelNumber.class)
+// WebChildElement
+@WebElementAction(name = COMPONENT_SHOULD_BE_DISPLAYED_METHOD, implementation = JsAssertShouldBeDisplayed.class)
+@WebElementAction(name = COMPONENT_SHOULD_BE_PRESENT_METHOD, implementation = JsAssertShouldBePresent.class)
+@WebElementAction(name = COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, implementation = JsAssertShouldNotBeDisplayed.class)
+@WebElementAction(name = COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, implementation = JsAssertShouldNotBePresent.class)
+@WebElementAction(name = GET_COLOR_METHOD, implementation = JsGetColor.class)
+@WebElementAction(name = GET_DIMENSIONS_METHOD, implementation = JsGetDimensions.class)
+@WebElementAction(name = GET_LOCATION_METHOD, implementation = JsGetLocation.class)
+@WebElementAction(name = GET_PROPERTY_VALUE_METHOD, implementation = JsGetPropertyValue.class)
+@WebElementAction(name = GET_SCREENSHOT_METHOD, implementation = JsGetScreenshot.class)
+@WebElementAction(name = HOVER_TO_METHOD, implementation = SeleniumHoverTo.class)
+@WebElementAction(name = IS_COMPONENT_DISPLAYED_METHOD, implementation = JsGetIsDisplayed.class)
+@WebElementAction(name = IS_COMPONENT_PRESENT_METHOD, implementation = JsGetIsPresent.class)
+@WebElementAction(name = IS_DISPLAYED_METHOD, implementation = JsGetIsDisplayed.class)
+@WebElementAction(name = IS_IN_FOCUS_METHOD, implementation = JsGetIsInFocus.class)
+@WebElementAction(name = IS_PRESENT_METHOD, implementation = JsGetIsPresent.class)
+@WebElementAction(name = SCROLL_TO_METHOD, implementation = JsScrollTo.class)
+@WebElementAction(name = SHOULD_BE_DISPLAYED_METHOD, implementation = JsAssertShouldBeDisplayed.class)
+@WebElementAction(name = SHOULD_BE_IN_FOCUS_METHOD, implementation = AssertShouldBeInFocus.class)
+@WebElementAction(name = SHOULD_BE_PRESENT_METHOD, implementation = JsAssertShouldBePresent.class)
+@WebElementAction(name = SHOULD_HAVE_COLOR_METHOD, implementation = AssertShouldHaveColor.class)
+@WebElementAction(name = SHOULD_HAVE_DIMENSIONS_METHOD, implementation = AssertShouldHaveDimensions.class)
+@WebElementAction(name = SHOULD_HAVE_LOCATION_METHOD, implementation = AssertShouldHaveLocation.class)
+@WebElementAction(name = SHOULD_HAVE_PROPERTY_NUMBER_METHOD, implementation = AssertShouldHavePropertyNumber.class)
+@WebElementAction(name = SHOULD_HAVE_PROPERTY_VALUE_METHOD, implementation = AssertShouldHavePropertyValue.class)
+@WebElementAction(name = SHOULD_LOOKS_LIKE_METHOD, implementation = AssertShouldLooksLike.class)
+@WebElementAction(name = SHOULD_NOT_BE_DISPLAYED_METHOD, implementation = JsAssertShouldNotBeDisplayed.class)
+@WebElementAction(name = SHOULD_NOT_BE_IN_FOCUS_METHOD, implementation = AssertShouldNotBeInFocus.class)
+@WebElementAction(name = SHOULD_NOT_BE_PRESENT_METHOD, implementation = JsAssertShouldNotBePresent.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_COLOR_METHOD, implementation = AssertShouldNotHaveColor.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_DIMENSIONS_METHOD, implementation = AssertShouldNotHaveDimensions.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_LOCATION_METHOD, implementation = AssertShouldNotHaveLocation.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, implementation = AssertShouldNotHavePropertyNumber.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, implementation = AssertShouldNotHavePropertyValue.class)
+@WebElementAction(name = SHOULD_NOT_LOOKS_LIKE_METHOD, implementation = AssertShouldNotLooksLike.class)
 public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements WebCheckbox {
 
     // Actions
@@ -103,28 +226,48 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     @Override
     public WebCheckbox shouldHaveLabel(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_TEXT_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_TEXT_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebCheckbox shouldHaveLabel(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_NUMBER_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_NUMBER_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebCheckbox shouldNotHaveLabel(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebCheckbox shouldNotHaveLabel(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
@@ -189,14 +332,24 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     @Override
     public WebCheckbox shouldBeEnabled() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_BE_ENABLED_METHOD, this),
-                () -> getActionImplementation(SHOULD_BE_ENABLED_METHOD, Void.class).execute(this));
+                () -> {
+                    boolean enabled = getActionImplementation(IS_ENABLED_METHOD, Boolean.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_BE_ENABLED_METHOD, Void.class)
+                            .execute(this, enabled);
+                });
         return this;
     }
 
     @Override
     public WebCheckbox shouldBeDisabled() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_BE_DISABLED_METHOD, this),
-                () -> getActionImplementation(SHOULD_BE_DISABLED_METHOD, Void.class).execute(this));
+                () -> {
+                    boolean enabled = getActionImplementation(IS_ENABLED_METHOD, Boolean.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_BE_DISABLED_METHOD, Void.class)
+                            .execute(this, enabled);
+                });
         return this;
     }
 
@@ -239,14 +392,24 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     @Override
     public WebCheckbox shouldBeSelected() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_BE_SELECTED_METHOD, this),
-                () -> getActionImplementation(SHOULD_BE_SELECTED_METHOD, Void.class).execute(this));
+                () -> {
+                    boolean selected = getActionImplementation(IS_SELECTED_METHOD, Boolean.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_BE_SELECTED_METHOD, Void.class)
+                            .execute(this, selected);
+                });
         return this;
     }
 
     @Override
     public WebCheckbox shouldNotBeSelected() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_BE_SELECTED_METHOD, this),
-                () -> getActionImplementation(SHOULD_NOT_BE_SELECTED_METHOD, Void.class).execute(this));
+                () -> {
+                    boolean selected = getActionImplementation(IS_SELECTED_METHOD, Boolean.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_BE_SELECTED_METHOD, Void.class)
+                            .execute(this, selected);
+                });
         return this;
     }
 

@@ -16,27 +16,27 @@ import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumClick;
 import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumHoverTo;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBeDisplayed;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBeInFocus;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldBeInFocus;
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBePresent;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveColor;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveDimensions;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveLocation;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHavePropertyNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHavePropertyValue;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldHaveText;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldLooksLike;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveColor;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveDimensions;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveLocation;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHavePropertyNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHavePropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldLooksLike;
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBeDisplayed;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBeInFocus;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotBeInFocus;
 import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBePresent;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveColor;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveDimensions;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveLocation;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHavePropertyNumber;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHavePropertyValue;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotHaveText;
-import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotLooksLike;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveColor;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveDimensions;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveLocation;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHavePropertyNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHavePropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveText;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotLooksLike;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
@@ -90,10 +90,10 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 // WebButton
 @WebElementAction(name = CLICK_METHOD, implementation = SeleniumClick.class)
 @WebElementAction(name = GET_TEXT_METHOD, implementation = JsGetText.class)
-@WebElementAction(name = SHOULD_HAVE_TEXT_METHOD, implementation = JsAssertShouldHaveText.class)
-@WebElementAction(name = SHOULD_HAVE_NUMBER_METHOD, implementation = JsAssertShouldHaveNumber.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_TEXT_METHOD, implementation = JsAssertShouldNotHaveText.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_NUMBER_METHOD, implementation = JsAssertShouldNotHaveNumber.class)
+@WebElementAction(name = SHOULD_HAVE_TEXT_METHOD, implementation = AssertShouldHaveText.class)
+@WebElementAction(name = SHOULD_HAVE_NUMBER_METHOD, implementation = AssertShouldHaveNumber.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_TEXT_METHOD, implementation = AssertShouldNotHaveText.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_NUMBER_METHOD, implementation = AssertShouldNotHaveNumber.class)
 // WebChildElement
 @WebElementAction(name = COMPONENT_SHOULD_BE_DISPLAYED_METHOD, implementation = JsAssertShouldBeDisplayed.class)
 @WebElementAction(name = COMPONENT_SHOULD_BE_PRESENT_METHOD, implementation = JsAssertShouldBePresent.class)
@@ -112,23 +112,23 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 @WebElementAction(name = IS_PRESENT_METHOD, implementation = JsGetIsPresent.class)
 @WebElementAction(name = SCROLL_TO_METHOD, implementation = JsScrollTo.class)
 @WebElementAction(name = SHOULD_BE_DISPLAYED_METHOD, implementation = JsAssertShouldBeDisplayed.class)
-@WebElementAction(name = SHOULD_BE_IN_FOCUS_METHOD, implementation = JsAssertShouldBeInFocus.class)
+@WebElementAction(name = SHOULD_BE_IN_FOCUS_METHOD, implementation = AssertShouldBeInFocus.class)
 @WebElementAction(name = SHOULD_BE_PRESENT_METHOD, implementation = JsAssertShouldBePresent.class)
-@WebElementAction(name = SHOULD_HAVE_COLOR_METHOD, implementation = JsAssertShouldHaveColor.class)
-@WebElementAction(name = SHOULD_HAVE_DIMENSIONS_METHOD, implementation = JsAssertShouldHaveDimensions.class)
-@WebElementAction(name = SHOULD_HAVE_LOCATION_METHOD, implementation = JsAssertShouldHaveLocation.class)
-@WebElementAction(name = SHOULD_HAVE_PROPERTY_NUMBER_METHOD, implementation = JsAssertShouldHavePropertyNumber.class)
-@WebElementAction(name = SHOULD_HAVE_PROPERTY_VALUE_METHOD, implementation = JsAssertShouldHavePropertyValue.class)
-@WebElementAction(name = SHOULD_LOOKS_LIKE_METHOD, implementation = JsAssertShouldLooksLike.class)
+@WebElementAction(name = SHOULD_HAVE_COLOR_METHOD, implementation = AssertShouldHaveColor.class)
+@WebElementAction(name = SHOULD_HAVE_DIMENSIONS_METHOD, implementation = AssertShouldHaveDimensions.class)
+@WebElementAction(name = SHOULD_HAVE_LOCATION_METHOD, implementation = AssertShouldHaveLocation.class)
+@WebElementAction(name = SHOULD_HAVE_PROPERTY_NUMBER_METHOD, implementation = AssertShouldHavePropertyNumber.class)
+@WebElementAction(name = SHOULD_HAVE_PROPERTY_VALUE_METHOD, implementation = AssertShouldHavePropertyValue.class)
+@WebElementAction(name = SHOULD_LOOKS_LIKE_METHOD, implementation = AssertShouldLooksLike.class)
 @WebElementAction(name = SHOULD_NOT_BE_DISPLAYED_METHOD, implementation = JsAssertShouldNotBeDisplayed.class)
-@WebElementAction(name = SHOULD_NOT_BE_IN_FOCUS_METHOD, implementation = JsAssertShouldNotBeInFocus.class)
+@WebElementAction(name = SHOULD_NOT_BE_IN_FOCUS_METHOD, implementation = AssertShouldNotBeInFocus.class)
 @WebElementAction(name = SHOULD_NOT_BE_PRESENT_METHOD, implementation = JsAssertShouldNotBePresent.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_COLOR_METHOD, implementation = JsAssertShouldNotHaveColor.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_DIMENSIONS_METHOD, implementation = JsAssertShouldNotHaveDimensions.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_LOCATION_METHOD, implementation = JsAssertShouldNotHaveLocation.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, implementation = JsAssertShouldNotHavePropertyNumber.class)
-@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, implementation = JsAssertShouldNotHavePropertyValue.class)
-@WebElementAction(name = SHOULD_NOT_LOOKS_LIKE_METHOD, implementation = JsAssertShouldNotLooksLike.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_COLOR_METHOD, implementation = AssertShouldNotHaveColor.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_DIMENSIONS_METHOD, implementation = AssertShouldNotHaveDimensions.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_LOCATION_METHOD, implementation = AssertShouldNotHaveLocation.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, implementation = AssertShouldNotHavePropertyNumber.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, implementation = AssertShouldNotHavePropertyValue.class)
+@WebElementAction(name = SHOULD_NOT_LOOKS_LIKE_METHOD, implementation = AssertShouldNotLooksLike.class)
 public class WebButtonSeleniumImpl extends AbstractWebChildElement implements WebButton {
 
     // Actions
@@ -235,28 +235,48 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     @Override
     public WebButton shouldHaveText(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_TEXT_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_TEXT_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebButton shouldHaveText(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_NUMBER_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_NUMBER_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebButton shouldNotHaveText(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_TEXT_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_TEXT_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebButton shouldNotHaveText(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_NUMBER_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_NUMBER_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 

@@ -15,8 +15,13 @@ public enum PageFactoryMessages implements Messages {
     ELEMENT_IS_DISABLED("Element %s is disabled"),
     ELEMENT_IS_ENABLED("Element %s is enabled"),
     ELEMENT_IS_DISPLAYED("Element %s is displayed"),
+    ELEMENT_IS_SELECTED("Element %s is selected"),
     ELEMENT_NOT_DISPLAYED("Element %s is not displayed"),
+    ELEMENT_NOT_SELECTED("Element %s is not selected"),
     // TODO: Добавить в ошибки имя элемента
+
+    ELEMENT_PROPERTY_VALUE_IS_NULL("Element property '%s' for element '%s' is null"),
+
     ELEMENT_PROPERTY_DOES_NOT_CONTAIN_EXPECTED_VALUE("Element property %s doesn't contain expected value"),
     ELEMENT_PROPERTY_CONTAINS_EXPECTED_VALUE("Element property %s contains expected value but should not"),
 

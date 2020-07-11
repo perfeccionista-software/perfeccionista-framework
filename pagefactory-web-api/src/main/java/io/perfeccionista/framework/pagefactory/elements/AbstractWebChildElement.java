@@ -167,14 +167,24 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     @Override
     public WebChildElement componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_COLOR_METHOD, this, componentName, cssProperty, expectedColor),
-                () -> getActionImplementation(SHOULD_HAVE_COLOR_METHOD, Void.class).execute(this, componentName, cssProperty, expectedColor));
+                () -> {
+                    Color actualColor = getActionImplementation(GET_COLOR_METHOD, Color.class)
+                            .execute(this, componentName, cssProperty);
+                    getActionImplementation(SHOULD_HAVE_COLOR_METHOD, Void.class)
+                            .execute(this, actualColor, expectedColor, componentName);
+                });
         return this;
     }
 
     @Override
     public WebChildElement componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_COLOR_METHOD, this, componentName, cssProperty, expectedColor),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_COLOR_METHOD, Void.class).execute(this, componentName, cssProperty, expectedColor));
+                () -> {
+                    Color actualColor = getActionImplementation(GET_COLOR_METHOD, Color.class)
+                            .execute(this, componentName, cssProperty);
+                    getActionImplementation(SHOULD_NOT_HAVE_COLOR_METHOD, Void.class)
+                            .execute(this, actualColor, expectedColor, componentName);
+                });
         return this;
     }
 
@@ -189,14 +199,24 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     @Override
     public WebChildElement componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_DIMENSIONS_METHOD, this, componentName, expectedDimensions),
-                () -> getActionImplementation(SHOULD_HAVE_DIMENSIONS_METHOD, Void.class).execute(this, componentName, expectedDimensions));
+                () -> {
+                    Dimensions actualDimensions = getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)
+                            .execute(this, componentName);
+                    getActionImplementation(SHOULD_HAVE_DIMENSIONS_METHOD, Void.class)
+                            .execute(this, actualDimensions, expectedDimensions, componentName);
+                });
         return this;
     }
 
     @Override
     public WebChildElement componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, this, componentName, expectedDimensions),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, Void.class).execute(this, componentName, expectedDimensions));
+                () -> {
+                    Dimensions actualDimensions = getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)
+                            .execute(this, componentName);
+                    getActionImplementation(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, Void.class)
+                            .execute(this, actualDimensions, expectedDimensions, componentName);
+                });
         return this;
     }
 
@@ -211,14 +231,24 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     @Override
     public WebChildElement componentShouldHaveLocation(String componentName, Location expectedLocation) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_LOCATION_METHOD, this, componentName, expectedLocation),
-                () -> getActionImplementation(SHOULD_HAVE_LOCATION_METHOD, Void.class).execute(this, componentName, expectedLocation));
+                () -> {
+                    Location actualLocation = getActionImplementation(GET_LOCATION_METHOD, Location.class)
+                            .execute(this, componentName);
+                    getActionImplementation(SHOULD_HAVE_LOCATION_METHOD, Void.class)
+                            .execute(this, actualLocation, expectedLocation, componentName);
+                });
         return this;
     }
 
     @Override
     public WebChildElement componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_LOCATION_METHOD, this, componentName, expectedLocation),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_LOCATION_METHOD, Void.class).execute(this, componentName, expectedLocation));
+                () -> {
+                    Location actualLocation = getActionImplementation(GET_LOCATION_METHOD, Location.class)
+                            .execute(this, componentName);
+                    getActionImplementation(SHOULD_NOT_HAVE_LOCATION_METHOD, Void.class)
+                            .execute(this, actualLocation, expectedLocation, componentName);
+                });
         return this;
     }
 
@@ -233,14 +263,24 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     @Override
     public WebChildElement componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_LOOKS_LIKE_METHOD, this, componentName, expectedScreenshot),
-                () -> getActionImplementation(SHOULD_LOOKS_LIKE_METHOD, Void.class).execute(this, componentName, expectedScreenshot));
+                () -> {
+                    Screenshot actualScreenshot = getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)
+                            .execute(this, componentName);
+                    getActionImplementation(SHOULD_LOOKS_LIKE_METHOD, Void.class)
+                            .execute(this, actualScreenshot, expectedScreenshot, componentName);
+                });
         return this;
     }
 
     @Override
     public WebChildElement componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_LOOKS_LIKE_METHOD, this, componentName, expectedScreenshot),
-                () -> getActionImplementation(SHOULD_NOT_LOOKS_LIKE_METHOD, Void.class).execute(this, componentName, expectedScreenshot));
+                () -> {
+                    Screenshot actualScreenshot = getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)
+                            .execute(this, componentName);
+                    getActionImplementation(SHOULD_NOT_LOOKS_LIKE_METHOD, Void.class)
+                            .execute(this, actualScreenshot, expectedScreenshot, componentName);
+                });
         return this;
     }
 
@@ -280,20 +320,30 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     @Override
     public boolean isInFocus() {
         return runCheck(getEnvironment(), InvocationName.of(IS_IN_FOCUS_METHOD, this),
-                () -> getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class).execute(this, FOCUS));
+                () -> getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class).execute(this));
     }
 
     @Override
     public WebChildElement shouldBeInFocus() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_BE_IN_FOCUS_METHOD, this),
-                () -> getActionImplementation(SHOULD_BE_IN_FOCUS_METHOD, Void.class).execute(this, FOCUS));
+                () -> {
+                    boolean inFocus = getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_BE_IN_FOCUS_METHOD, Void.class)
+                            .execute(this, inFocus);
+                });
         return this;
     }
 
     @Override
     public WebChildElement shouldNotBeInFocus() {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_BE_IN_FOCUS_METHOD, this),
-                () -> getActionImplementation(SHOULD_NOT_BE_IN_FOCUS_METHOD, Void.class).execute(this, FOCUS));
+                () -> {
+                    boolean inFocus = getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_BE_IN_FOCUS_METHOD, Void.class)
+                            .execute(this, inFocus);
+                });
         return this;
     }
 
@@ -385,7 +435,12 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_PROPERTY_VALUE_METHOD, this, propertyName, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_PROPERTY_VALUE_METHOD, Void.class).execute(this, propertyHolder, expectedValue));
+                () -> {
+                    String actualPropertyValue = getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)
+                            .execute(this, propertyHolder);
+                    getActionImplementation(SHOULD_HAVE_PROPERTY_VALUE_METHOD, Void.class)
+                            .execute(this, actualPropertyValue, expectedValue, propertyName);
+                });
         return this;
     }
 
@@ -394,7 +449,12 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, Void.class).execute(this, propertyHolder, expectedValue));
+                () -> {
+                    String actualPropertyValue = getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)
+                            .execute(this, propertyHolder);
+                    getActionImplementation(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, Void.class)
+                            .execute(this, actualPropertyValue, expectedValue, propertyName);
+                });
         return this;
     }
 
@@ -403,7 +463,12 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, this, propertyName, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, Void.class).execute(this, propertyHolder, expectedValue));
+                () -> {
+                    String actualPropertyValue = getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)
+                            .execute(this, propertyHolder);
+                    getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, Void.class)
+                            .execute(this, actualPropertyValue, expectedValue, propertyName);
+                });
         return this;
     }
 
@@ -412,7 +477,12 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, Void.class).execute(this, propertyHolder, expectedValue));
+                () -> {
+                    String actualPropertyValue = getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)
+                            .execute(this, propertyHolder);
+                    getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, Void.class)
+                            .execute(this, actualPropertyValue, expectedValue, propertyName);
+                });
         return this;
     }
 

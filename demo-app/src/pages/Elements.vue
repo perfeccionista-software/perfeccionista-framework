@@ -109,7 +109,7 @@
                 </b-col>
             </b-row>
             <!-- RadioGroup test -->
-            <b-row class="mb-3 text-center" align-v="center">
+            <b-row id="radio-group" class="mb-3 text-center" align-v="center">
                 <b-col cols="3"><b-radio id="radio-one" name="RadioButton 1"  value="Label 1" v-model="radioButtonSelected">Label 1</b-radio></b-col>
                 <b-col cols="3"><b-radio id="radio-two" name="RadioButton 2" value="Label 2" v-model="radioButtonSelected">Label 2</b-radio></b-col>
                 <b-col cols="3"><b-radio id="radio-three" name="RadioButton 3" value="Label 3" v-model="radioButtonSelected" disabled>Label 3</b-radio></b-col>
@@ -126,7 +126,7 @@
                     <span id="file-input-file-name">{{ fileSelected ? fileSelected.name : '' }}</span>
                 </b-col>
                 <b-col cols="3">
-                    <b-link id="file-download" href="src/static/LICENSE.txt">Download File</b-link>
+                    <b-link id="file-download" href="src/static/LICENSE.txt" download>Download File</b-link>
                 </b-col>
             </b-row>
             <!-- Drag&Drop test -->

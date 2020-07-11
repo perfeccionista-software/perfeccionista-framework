@@ -2,13 +2,24 @@ package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebButton;
+import io.perfeccionista.framework.pagefactory.elements.WebCheckbox;
+import io.perfeccionista.framework.pagefactory.elements.WebFileInput;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
+import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.AltAttributeExtractor;
+import io.perfeccionista.framework.pagefactory.pageobjects.extractors.NameAttributeExtractor;
+import io.perfeccionista.framework.pagefactory.pageobjects.extractors.PlaceholderAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.SrcAttributeExtractor;
+
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
 
 @Name("Elements page")
 public interface ElementsPage extends AbstractWebPage {
@@ -51,7 +62,7 @@ public interface ElementsPage extends AbstractWebPage {
     @WebLocator(id = "spinner")
     WebImage spinner();
 
-    @Name("Visible link text")
+    @Name("Button with spinner text")
     @WebLocator(id = "button-with-spinner-text")
     WebTextBlock buttonWithSpinnerText();
 
@@ -64,6 +75,90 @@ public interface ElementsPage extends AbstractWebPage {
     @WebLocator(id = "simple-link-text")
     WebTextBlock simpleLinkText();
 
+
+    @Name("Simple input button")
+    @WebLocator(id = "simple-input-button")
+    @WebLocator(component = "Red", xpath = "self::node()[contains(@class, 'btn-danger')]")
+    @WebLocator(component = "Green", xpath = "self::node()[contains(@class, 'btn-success')]")
+    WebButton simpleInputButton();
+
+    @Name("Simple input")
+    @WebLocator(id = "simple-input")
+    @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
+    WebTextInput simpleInput();
+
+    @Name("Simple input text")
+    @WebLocator(id = "simple-input-text")
+    WebTextBlock simpleInputText();
+
+
+    @Name("Area input button")
+    @WebLocator(id = "area-input-button")
+    @WebLocator(component = "Red", xpath = "self::node()[contains(@class, 'btn-danger')]")
+    @WebLocator(component = "Green", xpath = "self::node()[contains(@class, 'btn-success')]")
+    WebButton areaInputButton();
+
+    @Name("Area input")
+    @WebLocator(id = "area-input")
+    @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
+    WebTextInput areaInput();
+
+    @Name("Area input text")
+    @WebLocator(id = "area-input-text")
+    WebTextBlock areaInputText();
+
+
+    @Name("Checkbox one")
+    @WebLocator(xpath = ".//*[@id = 'checkbox-one']/parent::node()")
+    @WebLocator(component = FOCUS, xpath = ".//input")
+    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "checkbox-one"))
+    WebCheckbox checkboxOne();
+
+    @Name("Checkbox two")
+    @WebLocator(xpath = ".//*[@id = 'checkbox-two']/parent::node()")
+    @WebLocator(component = FOCUS, xpath = ".//input")
+    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "checkbox-two"))
+    WebCheckbox checkboxTwo();
+
+    @Name("Checkbox three")
+    @WebLocator(xpath = ".//*[@id = 'checkbox-three']/parent::node()")
+    @WebLocator(component = FOCUS, xpath = ".//input")
+    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "checkbox-three"))
+    WebCheckbox checkboxThree();
+
+    @Name("Checkbox text")
+    @WebLocator(id = "checkbox-text")
+    WebTextBlock checkboxText();
+
+
+    @Name("RadioButton one")
+    @WebLocator(xpath = ".//*[@id = 'radio-one']/parent::node()")
+    @WebLocator(component = FOCUS, xpath = ".//input")
+    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "radio-one"))
+    WebRadioButton radioButtonOne();
+
+//    @Name("Radio group")
+//    @WebLocator(id = "radio-group")
+//    @WebLocator(component = RADIO, xpath = ".//input[@type = 'radio']/parent::node()")
+//    @WebLocator(component = FOCUS, xpath = ".//input[@type = 'radio']")
+//    WebRadioGroup radioGroup();
+
+    @Name("RadioButton text")
+    @WebLocator(id = "radio-text")
+    WebTextBlock radioButtonText();
+
+
+    @Name("File input")
+    @WebLocator(xpath = ".//*[@id = 'file-input']/parent::node()")
+    WebFileInput fileInput();
+
+    @Name("File input text")
+    @WebLocator(id = "file-input-file-name")
+    WebTextBlock fileInputText();
+
+    @Name("File download")
+    @WebLocator(id = "file-download")
+    WebLink fileDownloadLink();
 
 //
 //

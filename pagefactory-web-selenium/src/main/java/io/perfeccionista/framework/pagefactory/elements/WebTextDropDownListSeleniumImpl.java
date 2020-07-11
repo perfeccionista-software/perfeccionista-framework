@@ -126,28 +126,48 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     @Override
     public WebTextDropDownList shouldHaveLabel(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_TEXT_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_TEXT_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebTextDropDownList shouldHaveLabel(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_NUMBER_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_NUMBER_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebTextDropDownList shouldNotHaveLabel(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebTextDropDownList shouldNotHaveLabel(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, Void.class)
+                            .execute(this, actualLabel, expectedValue);
+                });
         return this;
     }
 
@@ -190,28 +210,48 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     @Override
     public WebTextDropDownList shouldHaveText(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_TEXT_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_TEXT_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebTextDropDownList shouldHaveText(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_HAVE_NUMBER_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_HAVE_NUMBER_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebTextDropDownList shouldNotHaveText(StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_TEXT_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_TEXT_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 
     @Override
     public WebTextDropDownList shouldNotHaveText(NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
-                () -> getActionImplementation(SHOULD_NOT_HAVE_NUMBER_METHOD, Void.class).execute(this, expectedValue));
+                () -> {
+                    String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
+                            .execute(this);
+                    getActionImplementation(SHOULD_NOT_HAVE_NUMBER_METHOD, Void.class)
+                            .execute(this, actualText, expectedValue);
+                });
         return this;
     }
 

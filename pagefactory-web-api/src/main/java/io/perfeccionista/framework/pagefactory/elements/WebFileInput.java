@@ -24,11 +24,12 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
 
-@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
-@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text'] | self::node()")
-@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'text'] | self::node()")
+@WebLocator(component = LABEL, xpath = "self::node()//label")
+@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'file']")
+@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'file']")
+@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'file']")
+@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'file']")
+// TODO: Метод loadFile(Path filePath)
 public interface WebFileInput extends WebChildElement,
         GetTextAvailable, SendKeysAvailable, ClearAvailable, SubmitAvailable, IsEnabledAvailable, GetLabelAvailable {
 

@@ -236,7 +236,12 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     @Override
     public WebRadioGroup shouldHaveSize(NumberValue<Integer> expectedSize) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_SIZE_METHOD, this, expectedSize),
-                () -> getActionImplementation(SHOULD_HAVE_SIZE_METHOD, Void.class).execute(this, expectedSize));
+                () -> {
+                    int actualSize = getActionImplementation(SIZE_METHOD, Integer.class)
+                            .execute(this, RADIO);
+                    getActionImplementation(SHOULD_HAVE_SIZE_METHOD, Void.class)
+                            .execute(this, actualSize, expectedSize);
+                });
         return this;
     }
 

@@ -12,6 +12,8 @@ import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 
+import java.util.List;
+
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLEAR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SEND_KEYS_METHOD;
@@ -280,7 +282,7 @@ public class WebTextAutocompleteSeleniumImpl extends WebTextDropDownListSelenium
     @Override
     public WebTextAutocomplete sendKeys(CharSequence... keys) {
         runCheck(getEnvironment(), InvocationName.of(SEND_KEYS_METHOD, this, keys),
-                () -> getActionImplementation(SEND_KEYS_METHOD, Boolean.class).execute(this, keys));
+                () -> getActionImplementation(SEND_KEYS_METHOD, Boolean.class).execute(this, List.of(keys)));
         return this;
     }
 

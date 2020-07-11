@@ -7,6 +7,7 @@ import io.perfeccionista.framework.exceptions.ElementDimensionsException;
 import io.perfeccionista.framework.exceptions.ElementIsDisplayedException;
 import io.perfeccionista.framework.exceptions.ElementIsPresentException;
 import io.perfeccionista.framework.exceptions.ElementLocationException;
+import io.perfeccionista.framework.exceptions.ElementNotDeclaredException;
 import io.perfeccionista.framework.exceptions.ElementNotDisplayedException;
 import io.perfeccionista.framework.exceptions.ElementNotInFocusException;
 import io.perfeccionista.framework.exceptions.ElementPropertyValueException;
@@ -31,6 +32,7 @@ import java.time.Duration;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.base.ExceptionType.ASSERT;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
@@ -134,6 +136,10 @@ class WebImageElementTest extends AbstractUiTest {
         assertTrue(elementIdentifier.containsName("World map"));
         assertFalse(elementIdentifier.isNameDeprecated("World map"));
         assertEquals(1, elementIdentifier.names().size());
+        WebImage simpleImageElement = elementsPage.getElementRegistry().getElementByPath("World map", WebImage.class)
+                .orElseThrow(() -> new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage("World map")));
+        assertNotNull(simpleImageElement);
+        assertEquals("World map", elementIdentifier.getLastUsedName());
         assertNotNull(worldMap.toString());
         // Смотрим описание элемента
         System.out.println( worldMap.toString() );
@@ -163,11 +169,11 @@ class WebImageElementTest extends AbstractUiTest {
                 .componentShouldBePresent("Image border")
                 .componentShouldBeDisplayed("Image border")
                 .componentShouldHaveDimensions(ROOT, Dimensions.of(176.3d, 125.4d).setInaccuracy(0.2d))
-                .componentShouldHaveLocation(ROOT, Location.of(345d, 173d, 345d, 173d).setInaccuracy(0.2d))
+                .componentShouldHaveLocation(ROOT, Location.relative(345d, 173d).setInaccuracy(0.2d))
                 .componentShouldHaveColor(ROOT, "border-color", WebElementColor.of(222, 226, 230, 1.0d))
                 .shouldHavePropertyValue("prompt", value.stringEquals("World map picture"))
-                .shouldHavePropertyValue("source", value.stringEquals("src/static/world_map.jpeg"))
-                .shouldHavePropertyValue("source", value.stringContainsAll(Set.of("src", "static", "world", "jpeg")))
+                .shouldHavePropertyValue("source", value.stringContains("src/static/world_map.jpeg"))
+                .shouldHavePropertyValue("source", value.stringContainsAll("src", "static", "world", "jpeg"))
                 .shouldNotHavePropertyValue("prompt", value.stringContains("image"))
                 .shouldNotHavePropertyValue("source", value.stringEmpty())
                 .should(worldMapImage -> {
@@ -184,7 +190,7 @@ class WebImageElementTest extends AbstractUiTest {
         assertTrue(worldMap.isComponentPresent("Image border"));
         assertTrue(worldMap.isComponentDisplayed("Image border"));
         assertEquals(Dimensions.of(176.3d, 125.4d).setInaccuracy(0.2d), worldMap.getDimensions(ROOT));
-        assertEquals(Location.of(345d, 173d, 345d, 173d).setInaccuracy(0.2d), worldMap.getLocation(ROOT));
+        assertEquals(Location.absolute(345d, 173d).setInaccuracy(0.2d), worldMap.getLocation(ROOT));
         assertEquals(WebElementColor.of(222, 226, 230, 1.0d), worldMap.getColor(ROOT, "border-color"));
         Screenshot screenshot = worldMap.getScreenshot(ROOT);
         assertNotNull(screenshot);
@@ -212,6 +218,7 @@ class WebImageElementTest extends AbstractUiTest {
         Dimensions elementDimensions = Dimensions.of(176.3d, 125.4d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> worldMap.componentShouldNotHaveDimensions(ROOT, elementDimensions));
         Location elementLocation = Location.of(345d, 173d, 345d, 173d).setInaccuracy(0.2d);
+        assertThrows(ElementLocationException.class, () -> worldMap.componentShouldHaveLocation(ROOT, elementLocation.offset(15d, 1d)));
         assertThrows(ElementLocationException.class, () -> worldMap.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(222, 226, 230, 1.0d);
         assertThrows(ElementColorException.class, () -> worldMap.componentShouldNotHaveColor(ROOT, "border-color", elementColor));

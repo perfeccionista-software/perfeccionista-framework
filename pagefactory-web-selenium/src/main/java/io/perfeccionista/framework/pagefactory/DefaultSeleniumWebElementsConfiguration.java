@@ -6,14 +6,22 @@ import io.perfeccionista.framework.pagefactory.elements.AbstractWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.AbstractWebPage;
 import io.perfeccionista.framework.pagefactory.elements.WebButton;
 import io.perfeccionista.framework.pagefactory.elements.WebButtonSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebCheckbox;
+import io.perfeccionista.framework.pagefactory.elements.WebCheckboxSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebFileInput;
+import io.perfeccionista.framework.pagefactory.elements.WebFileInputSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebImageSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebLinkSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebListSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioButtonSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlockSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
+import io.perfeccionista.framework.pagefactory.elements.WebTextInputSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
 import java.util.HashMap;
@@ -41,11 +49,15 @@ public class DefaultSeleniumWebElementsConfiguration implements WebElementsConfi
         Map<Class<? extends WebChildElement>, Class<? extends AbstractWebChildElement>> elementsConfiguration = new HashMap<>();
 
         elementsConfiguration.put(WebButton.class, WebButtonSeleniumImpl.class);
+        elementsConfiguration.put(WebCheckbox.class, WebCheckboxSeleniumImpl.class);
         elementsConfiguration.put(WebImage.class, WebImageSeleniumImpl.class);
+        elementsConfiguration.put(WebFileInput.class, WebFileInputSeleniumImpl.class);
 
         elementsConfiguration.put(WebLink.class, WebLinkSeleniumImpl.class);
         elementsConfiguration.put(WebList.class, WebListSeleniumImpl.class);
+        elementsConfiguration.put(WebRadioButton.class, WebRadioButtonSeleniumImpl.class);
         elementsConfiguration.put(WebTextBlock.class, WebTextBlockSeleniumImpl.class);
+        elementsConfiguration.put(WebTextInput.class, WebTextInputSeleniumImpl.class);
 
         return elementsConfiguration;
     }

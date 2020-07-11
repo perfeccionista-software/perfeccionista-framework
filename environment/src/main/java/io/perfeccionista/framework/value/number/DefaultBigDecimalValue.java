@@ -2,7 +2,7 @@ package io.perfeccionista.framework.value.number;
 
 import io.perfeccionista.framework.exceptions.NumberValueParseException;
 import io.perfeccionista.framework.value.checker.NumberChecker;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 
@@ -15,7 +15,10 @@ public class DefaultBigDecimalValue extends AbstractNumberValue<BigDecimal> {
     }
 
     @Override
-    public boolean checkString(@NotNull String actual) {
+    public boolean checkString(@Nullable String actual) {
+        if (actual == null) {
+            return check(null);
+        }
         try {
             BigDecimal actualValue = new BigDecimal(actual);
             return check(actualValue);

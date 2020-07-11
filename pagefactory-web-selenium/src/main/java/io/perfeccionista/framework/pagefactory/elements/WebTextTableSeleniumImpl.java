@@ -232,7 +232,12 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     @Override
     public WebTextTable shouldHaveSize(NumberValue<Integer> expectedSize) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_SIZE_METHOD, this, expectedSize),
-                () -> getActionImplementation(SHOULD_HAVE_SIZE_METHOD, Void.class).execute(this, TBODY_ROW, expectedSize));
+                () -> {
+                    int actualSize = getActionImplementation(SIZE_METHOD, Integer.class)
+                            .execute(this, TBODY_ROW);
+                    getActionImplementation(SHOULD_HAVE_SIZE_METHOD, Void.class)
+                            .execute(this, actualSize, expectedSize);
+                });
         return this;
     }
 

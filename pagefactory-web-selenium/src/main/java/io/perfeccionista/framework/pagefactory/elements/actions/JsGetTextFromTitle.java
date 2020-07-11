@@ -12,8 +12,8 @@ public class JsGetTextFromTitle implements WebElementActionImplementation<String
 
     @Override
     public String execute(WebChildElement element, Object... args) {
-        GetAttribute getTextFunction = new GetAttribute("title");
-        JsOperation<String> operation = JsOperation.of(element.getLocatorChainTo(TEXT), getTextFunction);
+        GetAttribute getAttributeFunction = new GetAttribute("title");
+        JsOperation<String> operation = JsOperation.of(element.getLocatorChainTo(TEXT), getAttributeFunction);
         JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
         operationResult.ifException(exception -> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));

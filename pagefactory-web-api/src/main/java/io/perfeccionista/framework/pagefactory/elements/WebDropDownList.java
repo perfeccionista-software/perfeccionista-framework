@@ -22,7 +22,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.UL;
 
 @WebLocator(component = UL, xpath = ".//ul")
-@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
+@WebLocator(component = LABEL, xpath = "self::node()//label")
 public interface WebDropDownList extends WebList,
         ClickAvailable, GetTextAvailable, GetLabelAvailable, IsOpenAvailable, OpenAvailable, CloseAvailable {
 

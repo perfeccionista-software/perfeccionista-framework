@@ -60,6 +60,9 @@ public class WebElementRegistry implements ElementRegistry {
                 }
             }
         }
+        if (lookupElement != null) {
+            lookupElement.getElementIdentifier().setLastUsedName(method.getName());
+        }
         return Optional.ofNullable(lookupElement);
     }
 
@@ -97,7 +100,7 @@ public class WebElementRegistry implements ElementRegistry {
                 return Optional.empty();
             }
         }
-        return Optional.empty();
+        return Optional.ofNullable(lookupElement);
     }
 
     public <T extends WebChildElement> Optional<T> getElementByPath(String elementPath, Class<T> elementClass) {
@@ -127,6 +130,9 @@ public class WebElementRegistry implements ElementRegistry {
                     }
                 }
             }
+        }
+        if (lookupElement != null) {
+            lookupElement.getElementIdentifier().setLastUsedName(elementName);
         }
         return Optional.ofNullable(lookupElement);
     }

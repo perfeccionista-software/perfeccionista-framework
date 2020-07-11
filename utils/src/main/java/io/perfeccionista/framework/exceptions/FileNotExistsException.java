@@ -8,10 +8,12 @@ public class FileNotExistsException extends PerfeccionistaException {
 
     public FileNotExistsException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public FileNotExistsException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

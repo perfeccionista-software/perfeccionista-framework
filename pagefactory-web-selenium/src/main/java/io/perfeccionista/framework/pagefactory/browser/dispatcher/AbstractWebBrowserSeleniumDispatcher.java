@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.browser.dispatcher;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.WebDriverInstanceNotStartedException;
+import io.perfeccionista.framework.exceptions.SeleniumWebDriverInstanceNotStartedException;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
 import io.perfeccionista.framework.exceptions.mapper.SeleniumExceptionMapper;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
@@ -166,7 +166,7 @@ public abstract class AbstractWebBrowserSeleniumDispatcher<T extends RemoteWebDr
 
     protected void checkWebDriverInstance() {
         if (this.instance == null) {
-            throw new WebDriverInstanceNotStartedException(WEB_DRIVER_INSTANCE_NOT_STARTED.getMessage());
+            throw new SeleniumWebDriverInstanceNotStartedException(WEB_DRIVER_INSTANCE_NOT_STARTED.getMessage());
         }
     }
 

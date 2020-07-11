@@ -7,7 +7,6 @@ import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 
 public interface ValueService extends Service {
 
@@ -26,9 +25,9 @@ public interface ValueService extends Service {
 
     StringValue stringContainsIgnoreCase(@NotNull String expected);
 
-    StringValue stringContainsAll(@NotNull Collection<String> expectedValues);
+    StringValue stringContainsAll(@NotNull String... expectedValues);
 
-    StringValue stringContainsAny(@NotNull Collection<String> expectedValues);
+    StringValue stringContainsAny(@NotNull String... expectedValues);
 
     StringValue stringStartsWith(@NotNull String expected);
 

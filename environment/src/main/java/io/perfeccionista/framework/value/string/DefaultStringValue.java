@@ -2,6 +2,7 @@ package io.perfeccionista.framework.value.string;
 
 import io.perfeccionista.framework.value.checker.StringChecker;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -52,8 +53,11 @@ public class DefaultStringValue implements StringValue {
     }
 
     @Override
-    public boolean check(@NotNull String actual) {
+    public boolean check(@Nullable String actual) {
         rawActual = actual;
+        if (actual == null) {
+            return false;
+        }
         processedActual = actual;
         for (UnaryOperator<String> transformer : actualValueTransformers) {
             processedActual = transformer.apply(processedActual);

@@ -2,7 +2,7 @@ package io.perfeccionista.framework.value.number;
 
 import io.perfeccionista.framework.exceptions.NumberValueParseException;
 import io.perfeccionista.framework.value.checker.NumberChecker;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.NUMBER_VALUE_TO_INTEGER_PARSING_FAILED;
 
@@ -13,7 +13,10 @@ public class DefaultIntegerValue extends AbstractNumberValue<Integer> {
     }
 
     @Override
-    public boolean checkString(@NotNull String actual) {
+    public boolean checkString(@Nullable String actual) {
+        if (actual == null) {
+            return check(null);
+        }
         try {
             Integer actualValue = Integer.valueOf(actual);
             return check(actualValue);

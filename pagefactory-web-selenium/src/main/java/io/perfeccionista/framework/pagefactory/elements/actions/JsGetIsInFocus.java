@@ -7,12 +7,13 @@ import io.perfeccionista.framework.pagefactory.jsfunction.GetIsInFocus;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
+
 public class JsGetIsInFocus  implements WebElementActionImplementation<Boolean> {
 
     @Override
     public Boolean execute(WebChildElement element, Object... args) {
-        String component = (String) args[0];
-        WebLocatorChain locatorChainToElement = (null == component) ? element.getLocatorChain() : element.getLocatorChainTo(component);
+        WebLocatorChain locatorChainToElement = element.getLocatorChainTo(FOCUS);
         GetIsInFocus getIsInFocusFunction = new GetIsInFocus();
         JsOperation<Boolean> operation = JsOperation.of(locatorChainToElement, getIsInFocusFunction);
         JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);

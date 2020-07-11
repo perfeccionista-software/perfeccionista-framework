@@ -19,9 +19,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.SELECTED;
 
-@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
-@WebLocator(component = SELECTED, xpath = "self::node()//input[@type = 'checkbox'] | self::node()")
-@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'checkbox'] | self::node()")
+@WebLocator(component = LABEL, xpath = "self::node()//label")
+@WebLocator(component = SELECTED, xpath = "self::node()//input[@type = 'checkbox']")
+@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'checkbox']")
 public interface WebCheckbox extends WebChildElement,
         ClickAvailable, IsSelectedAvailable, IsEnabledAvailable, GetLabelAvailable {
 
