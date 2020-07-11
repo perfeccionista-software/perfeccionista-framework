@@ -9,6 +9,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -21,27 +22,27 @@ public class AbstractWebMappedBlock implements WebMappedBlock {
     protected WebChildElement parent;
     protected WebParentInfo parentInfo;
 
-
     @Override
-    public WebElementRegistry getElementRegistry() {
+    public @NotNull WebElementRegistry getElementRegistry() {
         return elementRegistry;
     }
+
     // TODO: Override getLocatorChain
 
 
-    public WebBrowserDispatcher getWebBrowserDispatcher() {
+    public @NotNull WebBrowserDispatcher getWebBrowserDispatcher() {
         return parent.getWebBrowserDispatcher();
     }
 
-    public WebChildElement getParent() {
+    public @NotNull WebChildElement getParent() {
         return parent;
     }
 
-    public WebParentInfo getParentInfo() {
+    public @NotNull WebParentInfo getParentInfo() {
         return parentInfo;
     }
 
-    public Environment getEnvironment() {
+    public @NotNull Environment getEnvironment() {
         return parent.getEnvironment();
     }
 
@@ -49,7 +50,7 @@ public class AbstractWebMappedBlock implements WebMappedBlock {
         return locatorRegistry.getOptionalLocator(componentName);
     }
 
-    public WebLocatorChain getLocatorChainTo(String locatorName) {
+    public @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName) {
         Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
         if (optionalLocator.isPresent()) {
             return getLocatorChain().addLocator(optionalLocator.get());
@@ -57,7 +58,7 @@ public class AbstractWebMappedBlock implements WebMappedBlock {
         return getLocatorChain();
     }
 
-    public WebLocatorChain getLocatorChain() {
+    public @NotNull WebLocatorChain getLocatorChain() {
         WebLocatorHolder webLocatorHolder = parentInfo.getWebLocatorHolder()
                 .setSingle(true)
                 .setIndex(parentInfo.getIndex());

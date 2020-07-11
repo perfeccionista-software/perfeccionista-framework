@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebDropDownList;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.openqa.selenium.WebElement;
 
@@ -19,9 +20,11 @@ public class SeleniumOpen implements WebElementActionImplementation<Void> {
         if (!dropDownList.isOpen()) {
             GetWebElement getWebElementFunction = ReflectionUtils.newInstance(GetWebElement.class);
             JsOperation<WebElement> operation = JsOperation.of(element.getLocatorChainTo(OPEN), getWebElementFunction);
-            WebElement webElement = element.getWebBrowserDispatcher().executor().executeOperation(operation)
-                    .singleResult()
-                    .get();
+            JsOperationResult<WebElement> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
+            operationResult.ifException(exception -> {
+                throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
+            });
+            WebElement webElement = operationResult.singleResult().get();
             element.getWebBrowserDispatcher().getExceptionMapper()
                     .map(webElement::click, element.getElementIdentifier().getLastUsedName())
                     .ifException(exception -> {

@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -13,15 +14,15 @@ public class AbstractBasicWebElement {
     protected WebParentElement parent;
     protected WebLocatorRegistry locatorRegistry;
 
-    public Environment getEnvironment() {
+    public @NotNull Environment getEnvironment() {
         return parent.getEnvironment();
     }
 
-    public WebParentElement getParent() {
+    public @NotNull WebParentElement getParent() {
         return parent;
     }
 
-    public WebBrowserDispatcher getWebBrowserDispatcher() {
+    public @NotNull WebBrowserDispatcher getWebBrowserDispatcher() {
         return parent.getWebBrowserDispatcher();
     }
 

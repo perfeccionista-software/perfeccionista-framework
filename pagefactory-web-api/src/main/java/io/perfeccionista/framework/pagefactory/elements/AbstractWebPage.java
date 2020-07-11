@@ -7,6 +7,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -21,17 +22,17 @@ public class AbstractWebPage extends AbstractBasicWebElement implements WebPage 
     protected Environment environment;
 
     @Override
-    public WebBrowserDispatcher getWebBrowserDispatcher() {
+    public @NotNull WebBrowserDispatcher getWebBrowserDispatcher() {
         return this.webBrowserDispatcher;
     }
 
     @Override
-    public WebElementRegistry getElementRegistry() {
+    public @NotNull WebElementRegistry getElementRegistry() {
         return this.elementRegistry;
     }
 
     @Override
-    public WebPageIdentifier getPageIdentifier() {
+    public @NotNull WebPageIdentifier getPageIdentifier() {
         return pageIdentifier;
     }
 
@@ -42,7 +43,7 @@ public class AbstractWebPage extends AbstractBasicWebElement implements WebPage 
     }
 
     @Override
-    public Environment getEnvironment() {
+    public @NotNull Environment getEnvironment() {
         return environment;
     }
 
@@ -53,7 +54,7 @@ public class AbstractWebPage extends AbstractBasicWebElement implements WebPage 
     }
 
     @Override
-    public WebLocatorChain getLocatorChainTo(String locatorName) {
+    public @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName) {
         Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
         if (optionalLocator.isPresent()) {
             return getLocatorChain().addLocator(optionalLocator.get());
@@ -62,7 +63,7 @@ public class AbstractWebPage extends AbstractBasicWebElement implements WebPage 
     }
 
     @Override
-    public WebLocatorChain getLocatorChain() {
+    public @NotNull WebLocatorChain getLocatorChain() {
         Optional<WebLocatorHolder> optionalPageRootLocator = locatorRegistry.getOptionalLocator(ROOT);
         if (optionalPageRootLocator.isPresent()) {
             return WebLocatorChain.empty().addLocator(optionalPageRootLocator.get());

@@ -44,6 +44,8 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
@@ -134,13 +136,13 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // Actions
 
     @Override
-    public WebLink executeAction(String name, Object... args) {
+    public WebLink executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
 
     @Override
-    public WebLink executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebLink executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(name, other, args);
         return this;
     }
@@ -171,13 +173,13 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Color
 
     @Override
-    public WebLink componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebLink componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebLink componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebLink componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -185,13 +187,13 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Dimensions
 
     @Override
-    public WebLink componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebLink componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebLink componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebLink componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -199,13 +201,13 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Location
 
     @Override
-    public WebLink componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebLink componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebLink componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebLink componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -213,13 +215,13 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Screenshot
 
     @Override
-    public WebLink componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebLink componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebLink componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebLink componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -227,13 +229,13 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Text
 
     @Override
-    public String getText() {
+    public @Nullable String getText() {
         return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebLink shouldHaveText(StringValue expectedValue) {
+    public WebLink shouldHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -245,7 +247,7 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     }
 
     @Override
-    public WebLink shouldHaveText(NumberValue<?> expectedValue) {
+    public WebLink shouldHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -257,7 +259,7 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     }
 
     @Override
-    public WebLink shouldNotHaveText(StringValue expectedValue) {
+    public WebLink shouldNotHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -269,7 +271,7 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     }
 
     @Override
-    public WebLink shouldNotHaveText(NumberValue<?> expectedValue) {
+    public WebLink shouldNotHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -341,25 +343,25 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // WebComponents
 
     @Override
-    public WebLink componentShouldBePresent(String componentName) {
+    public WebLink componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebLink componentShouldNotBePresent(String componentName) {
+    public WebLink componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebLink componentShouldBeDisplayed(String componentName) {
+    public WebLink componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebLink componentShouldNotBeDisplayed(String componentName) {
+    public WebLink componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -367,25 +369,25 @@ public class WebLinkSeleniumImpl extends AbstractWebChildElement implements WebL
     // WebProperties
 
     @Override
-    public WebLink shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebLink shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebLink shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebLink shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebLink shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebLink shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebLink shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebLink shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }

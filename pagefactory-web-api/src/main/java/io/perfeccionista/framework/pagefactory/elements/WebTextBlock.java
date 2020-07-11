@@ -10,6 +10,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 public interface WebTextBlock extends WebChildElement,
         GetTextAvailable {
@@ -17,10 +18,10 @@ public interface WebTextBlock extends WebChildElement,
     // Actions
 
     @Override
-    WebTextBlock executeAction(String name, Object... args);
+    WebTextBlock executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebTextBlock executeInteraction(String name, WebChildElement other, Object... args);
+    WebTextBlock executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -33,48 +34,48 @@ public interface WebTextBlock extends WebChildElement,
     // Get Color
 
     @Override
-    WebTextBlock componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextBlock componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebTextBlock componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextBlock componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebTextBlock componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextBlock componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebTextBlock componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextBlock componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebTextBlock componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebTextBlock componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebTextBlock componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebTextBlock componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebTextBlock componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextBlock componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebTextBlock componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextBlock componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // Get Text
 
     @Override
-    WebTextBlock shouldHaveText(StringValue expectedValue);
+    WebTextBlock shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextBlock shouldHaveText(NumberValue<?> expectedValue);
+    WebTextBlock shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextBlock shouldNotHaveText(StringValue expectedValue);
+    WebTextBlock shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextBlock shouldNotHaveText(NumberValue<?> expectedValue);
+    WebTextBlock shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -113,29 +114,29 @@ public interface WebTextBlock extends WebChildElement,
     // WebComponent
 
     @Override
-    WebTextBlock componentShouldBePresent(String componentName);
+    WebTextBlock componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebTextBlock componentShouldNotBePresent(String componentName);
+    WebTextBlock componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebTextBlock componentShouldBeDisplayed(String componentName);
+    WebTextBlock componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebTextBlock componentShouldNotBeDisplayed(String componentName);
+    WebTextBlock componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebTextBlock shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextBlock shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextBlock shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextBlock shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

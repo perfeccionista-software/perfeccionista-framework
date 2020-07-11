@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -16,6 +15,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
@@ -34,12 +34,12 @@ import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implements WebRadioGroup {
 
     @Override
-    public WebRadioButtonFilterResult filter(WebRadioButtonFilter filter) {
+    public @NotNull WebRadioButtonFilterResult filter(@NotNull WebRadioButtonFilter filter) {
         return filter.filter(this);
     }
 
     @Override
-    public  <V> MultipleResult<V> extractAll(WebRadioButtonValueExtractor<V> extractor) {
+    public @NotNull <V> MultipleResult<V> extractAll(@NotNull WebRadioButtonValueExtractor<V> extractor) {
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_METHOD, this, extractor),
                 () -> new WebRadioButtonFilterSeleniumImpl()
                         .filter(this)
@@ -47,7 +47,7 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     }
 
     @Override
-    public WebRadioButton getSelected() {
+    public @NotNull WebRadioButton getSelected() {
         return runCheck(getEnvironment(), InvocationName.of(GET_SELECTED, this),
                 () -> new WebRadioButtonFilterSeleniumImpl().add(selected())
                         .filter(this)
@@ -56,18 +56,18 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     }
 
     @Override
-    public WebRadioButton getByLabel(StringValue label) {
+    public @NotNull WebRadioButton getByLabel(@NotNull StringValue expectedLabel) {
         return runCheck(getEnvironment(), InvocationName.of(GET_BY_LABEL, this),
-                () -> with(WebConditions.containsLabel(label))
+                () -> with(WebConditions.containsLabel(expectedLabel))
                         .filter(this)
                         .extractOne(element())
                         .shouldHaveNotNull().get());
     }
 
     @Override
-    public WebRadioButton getByIndex(NumberValue<Integer> index) {
+    public @NotNull WebRadioButton getByIndex(@NotNull NumberValue<Integer> expectedIndex) {
         return runCheck(getEnvironment(), InvocationName.of(GET_BY_INDEX, this),
-                () -> with(radioButtonIndex(index))
+                () -> with(radioButtonIndex(expectedIndex))
                         .filter(this)
                         .extractOne(element())
                         .shouldHaveNotNull().get());
@@ -76,13 +76,13 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // Actions
 
     @Override
-    public WebRadioGroup executeAction(String actionName, Object... args) {
+    public WebRadioGroup executeAction(@NotNull String actionName, Object... args) {
         super.executeAction(actionName, args);
         return this;
     }
 
     @Override
-    public WebRadioGroup executeInteraction(String interactionName, WebChildElement other, Object... args) {
+    public WebRadioGroup executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(interactionName, other, args);
         return this;
     }
@@ -105,13 +105,13 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // Get Color
 
     @Override
-    public WebRadioGroup componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebRadioGroup componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebRadioGroup componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebRadioGroup componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -119,13 +119,13 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // Get Dimensions
 
     @Override
-    public WebRadioGroup componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebRadioGroup componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebRadioGroup componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebRadioGroup componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -133,13 +133,13 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // Get Location
 
     @Override
-    public WebRadioGroup componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebRadioGroup componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebRadioGroup componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebRadioGroup componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -147,13 +147,13 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // Get Screenshot
 
     @Override
-    public WebRadioGroup componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebRadioGroup componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebRadioGroup componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebRadioGroup componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -219,7 +219,7 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // ScrollToElement
 
     @Override
-    public WebRadioGroup scrollToElement(WebRadioButtonFilter filter) {
+    public WebRadioGroup scrollToElement(@NotNull WebRadioButtonFilter filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;
@@ -234,7 +234,7 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     }
 
     @Override
-    public WebRadioGroup shouldHaveSize(NumberValue<Integer> expectedSize) {
+    public WebRadioGroup shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_SIZE_METHOD, this, expectedSize),
                 () -> {
                     int actualSize = getActionImplementation(SIZE_METHOD, Integer.class)
@@ -248,25 +248,25 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // WebComponents
 
     @Override
-    public WebRadioGroup componentShouldBePresent(String componentName) {
+    public WebRadioGroup componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebRadioGroup componentShouldNotBePresent(String componentName) {
+    public WebRadioGroup componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebRadioGroup componentShouldBeDisplayed(String componentName) {
+    public WebRadioGroup componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebRadioGroup componentShouldNotBeDisplayed(String componentName) {
+    public WebRadioGroup componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -274,33 +274,27 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // WebProperties
 
     @Override
-    public WebRadioGroup shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebRadioGroup shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebRadioGroup shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebRadioGroup shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebRadioGroup shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebRadioGroup shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebRadioGroup shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebRadioGroup shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
-    }
-
-    // TODO: Implement
-    @Override
-    public JsonNode toJson() {
-        return super.toJson();
     }
 
 }

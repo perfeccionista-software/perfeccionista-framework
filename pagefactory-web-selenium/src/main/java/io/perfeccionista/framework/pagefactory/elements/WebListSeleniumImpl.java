@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetColor;
@@ -47,6 +48,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
@@ -135,12 +137,12 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     protected Class<? extends WebMappedBlock> mappedBlockClass;
 
     @Override
-    public WebListFilterResult filter(WebListFilter filter) {
+    public @NotNull WebListFilterResult filter(@NotNull WebListFilter filter) {
         return filter.filter(this);
     }
 
     @Override
-    public <V> MultipleResult<V> extractAll(WebListBlockValueExtractor<V> extractor) {
+    public @NotNull <V> MultipleResult<V> extractAll(@NotNull WebListBlockValueExtractor<V> extractor) {
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_METHOD, this, extractor),
                 () -> new WebListFilterSeleniumImpl()
                 .filter(this)
@@ -150,13 +152,13 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // Actions
 
     @Override
-    public WebList executeAction(String name, Object... args) {
+    public WebList executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
 
     @Override
-    public WebList executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(name, other, args);
         return this;
     }
@@ -179,7 +181,7 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // ClickToElement
 
     @Override
-    public WebList clickToElement(WebListFilter filter) {
+    public WebList clickToElement(@NotNull WebListFilter filter) {
         runCheck(getEnvironment(), InvocationName.of(CLICK_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(CLICK_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;
@@ -188,13 +190,13 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Color
 
     @Override
-    public WebList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -202,13 +204,13 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Dimensions
 
     @Override
-    public WebList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -216,13 +218,13 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Location
 
     @Override
-    public WebList componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebList componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -230,13 +232,13 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // Get Screenshot
 
     @Override
-    public WebList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -302,7 +304,7 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // ScrollToElement
 
     @Override
-    public WebList scrollToElement(WebListFilter filter) {
+    public WebList scrollToElement(@NotNull WebListFilter filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;
@@ -317,7 +319,7 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     }
 
     @Override
-    public WebList shouldHaveSize(NumberValue<Integer> expectedSize) {
+    public WebList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_SIZE_METHOD, this, expectedSize),
                 () -> {
                     int actualSize = getActionImplementation(SIZE_METHOD, Integer.class)
@@ -331,25 +333,25 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // WebComponents
 
     @Override
-    public WebList componentShouldBePresent(String componentName) {
+    public WebList componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebList componentShouldNotBePresent(String componentName) {
+    public WebList componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebList componentShouldBeDisplayed(String componentName) {
+    public WebList componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebList componentShouldNotBeDisplayed(String componentName) {
+    public WebList componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -357,27 +359,32 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // WebProperties
 
     @Override
-    public WebList shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
+    // TODO: Add information about mappedBlock
+    @Override
+    public JsonNode toJson() {
+        return super.toJson();
+    }
 }

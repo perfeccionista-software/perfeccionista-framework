@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetColor;
@@ -55,6 +54,8 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -167,13 +168,13 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // Actions
 
     @Override
-    public WebTextInput executeAction(String actionName, Object... args) {
+    public WebTextInput executeAction(@NotNull String actionName, Object... args) {
         super.executeAction(actionName, args);
         return this;
     }
 
     @Override
-    public WebTextInput executeInteraction(String interactionName, WebChildElement other, Object... args) {
+    public WebTextInput executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(interactionName, other, args);
         return this;
     }
@@ -213,13 +214,13 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Color
 
     @Override
-    public WebTextInput componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextInput componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebTextInput componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextInput componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -227,13 +228,13 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Dimensions
 
     @Override
-    public WebTextInput componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextInput componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebTextInput componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextInput componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -241,13 +242,13 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Label
 
     @Override
-    public String getLabel() {
+    public @Nullable String getLabel() {
         return runCheck(getEnvironment(), InvocationName.of(GET_LABEL_METHOD, this),
                 () -> getActionImplementation(GET_LABEL_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebTextInput shouldHaveLabel(StringValue expectedValue) {
+    public WebTextInput shouldHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -259,7 +260,7 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextInput shouldHaveLabel(NumberValue<?> expectedValue) {
+    public WebTextInput shouldHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -271,7 +272,7 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextInput shouldNotHaveLabel(StringValue expectedValue) {
+    public WebTextInput shouldNotHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -283,7 +284,7 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextInput shouldNotHaveLabel(NumberValue<?> expectedValue) {
+    public WebTextInput shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -297,13 +298,13 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Location
 
     @Override
-    public WebTextInput componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextInput componentShouldHaveLocation(@NotNull String componentName,@NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebTextInput componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextInput componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -311,13 +312,13 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Screenshot
 
     @Override
-    public WebTextInput componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextInput componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebTextInput componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextInput componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -325,13 +326,13 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Text
 
     @Override
-    public String getText() {
+    public @Nullable String getText() {
         return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebTextInput shouldHaveText(StringValue expectedValue) {
+    public WebTextInput shouldHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -343,7 +344,7 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextInput shouldHaveText(NumberValue<?> expectedValue) {
+    public WebTextInput shouldHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -355,7 +356,7 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextInput shouldNotHaveText(StringValue expectedValue) {
+    public WebTextInput shouldNotHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -367,7 +368,7 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextInput shouldNotHaveText(NumberValue<?> expectedValue) {
+    public WebTextInput shouldNotHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -481,25 +482,25 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // WebComponents
 
     @Override
-    public WebTextInput componentShouldBePresent(String componentName) {
+    public WebTextInput componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextInput componentShouldNotBePresent(String componentName) {
+    public WebTextInput componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextInput componentShouldBeDisplayed(String componentName) {
+    public WebTextInput componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebTextInput componentShouldNotBeDisplayed(String componentName) {
+    public WebTextInput componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -507,33 +508,27 @@ public class WebTextInputSeleniumImpl extends AbstractWebChildElement implements
     // WebProperties
 
     @Override
-    public WebTextInput shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextInput shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextInput shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextInput shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
-    }
-
-    // TODO: Implement
-    @Override
-    public JsonNode toJson() {
-        return super.toJson();
     }
 
 }

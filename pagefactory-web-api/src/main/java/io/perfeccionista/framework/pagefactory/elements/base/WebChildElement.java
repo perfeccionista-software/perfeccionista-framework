@@ -18,6 +18,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailab
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToAvailable;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyAvailable;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
+import org.jetbrains.annotations.NotNull;
 
 public interface WebChildElement extends ElementBase, WebLocatorChainAvailable,
         IsPresentAvailable, IsDisplayedAvailable,
@@ -25,13 +26,13 @@ public interface WebChildElement extends ElementBase, WebLocatorChainAvailable,
         GetDimensionsAvailable, GetLocationAvailable, GetScreenshotAvailable, GetColorAvailable,
         WebComponentAvailable, WebElementPropertyAvailable<WebElementPropertyHolder> {
 
-    <R> WebElementActionImplementation<R> getActionImplementation(String actionName, Class<R> returnType);
+    @NotNull <R> WebElementActionImplementation<R> getActionImplementation(@NotNull String actionName, @NotNull Class<R> returnType);
 
-    WebChildElement executeAction(String name, Object... args);
+    WebChildElement executeAction(@NotNull String name, Object... args);
 
-    WebElementInteractionImplementation getInteractionImplementation(String interactionName);
+    @NotNull WebElementInteractionImplementation getInteractionImplementation(@NotNull String interactionName);
 
-    WebChildElement executeInteraction(String name, WebChildElement other, Object... args);
+    WebChildElement executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     WebChildElement should(WebAssertCondition assertCondition);
 
@@ -39,7 +40,7 @@ public interface WebChildElement extends ElementBase, WebLocatorChainAvailable,
 
     WebBrowserDispatcher getWebBrowserDispatcher();
 
-    WebElementIdentifier getElementIdentifier();
+    @NotNull WebElementIdentifier getElementIdentifier();
 
     WebParentElement getParent();
 

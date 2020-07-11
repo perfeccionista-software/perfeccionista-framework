@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvai
 import io.perfeccionista.framework.pagefactory.filter.WebFilter;
 import io.perfeccionista.framework.plugin.ActionMethodType;
 import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_ELEMENT_METHOD;
 
@@ -12,6 +13,6 @@ public interface ScrollToElementAvailable<F extends WebFilter<?, ?>> extends Web
 
     @ActionMethodType
     @MappedElementAction(SCROLL_TO_ELEMENT_METHOD)
-    WebChildElement scrollToElement(F filter);
+    WebChildElement scrollToElement(@NotNull F filter);
 
 }

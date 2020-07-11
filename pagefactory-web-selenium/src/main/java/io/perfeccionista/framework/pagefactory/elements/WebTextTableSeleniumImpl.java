@@ -16,6 +16,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Optional;
@@ -41,30 +42,30 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public Optional<TableColumnHolder> getTableColumnHolder(String columnName) {
+    public Optional<TableColumnHolder> getTableColumnHolder(@NotNull String columnName) {
         return Optional.ofNullable(tableColumnHolders.get(columnName));
     }
 
-    public WebTextTableFilterResult filter(WebTextTableFilter filter) {
+    public @NotNull WebTextTableFilterResult filter(@NotNull WebTextTableFilter filter) {
         return filter.filter(this);
     }
 
     @Override
-    public SingleResult<String> extractHeader(String columnName) {
+    public @NotNull SingleResult<String> extractHeader(@NotNull String columnName) {
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_HEADER_FILTER, this, columnName),
                 () -> new WebTextTableFilterSeleniumImpl().filter(this)
                         .extractHeader(columnName));
     }
 
     @Override
-    public MultipleResult<String> extractAllRows(String columnName) {
+    public @NotNull MultipleResult<String> extractAllRows(@NotNull String columnName) {
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_ROWS_FILTER, this, columnName),
                 () -> new WebTextTableFilterSeleniumImpl().filter(this)
                         .extractAllRows(columnName));
     }
 
     @Override
-    public SingleResult<String> extractFooter(String columnName) {
+    public @NotNull SingleResult<String> extractFooter(@NotNull String columnName) {
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_FOOTER_FILTER, this, columnName),
                 () -> new WebTextTableFilterSeleniumImpl().filter(this)
                         .extractFooter(columnName));
@@ -73,13 +74,13 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // Actions
 
     @Override
-    public WebTextTable executeAction(String actionName, Object... args) {
+    public WebTextTable executeAction(@NotNull String actionName, Object... args) {
         super.executeAction(actionName, args);
         return this;
     }
 
     @Override
-    public WebTextTable executeInteraction(String interactionName, WebChildElement other, Object... args) {
+    public WebTextTable executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(interactionName, other, args);
         return this;
     }
@@ -101,13 +102,13 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // Color
 
     @Override
-    public WebTextTable componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextTable componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebTextTable componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextTable componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -115,13 +116,13 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // Dimensions
 
     @Override
-    public WebTextTable componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextTable componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebTextTable componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextTable componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -129,13 +130,13 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // Location
 
     @Override
-    public WebTextTable componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextTable componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebTextTable componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextTable componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -143,13 +144,13 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // Screenshot
 
     @Override
-    public WebTextTable componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextTable componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebTextTable componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextTable componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -215,7 +216,7 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // ScrollToElement
 
     @Override
-    public WebTextTable scrollToElement(WebTextTableFilter filter) {
+    public WebTextTable scrollToElement(@NotNull WebTextTableFilter filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;
@@ -230,7 +231,7 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextTable shouldHaveSize(NumberValue<Integer> expectedSize) {
+    public WebTextTable shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_SIZE_METHOD, this, expectedSize),
                 () -> {
                     int actualSize = getActionImplementation(SIZE_METHOD, Integer.class)
@@ -244,25 +245,25 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // WebComponent
 
     @Override
-    public WebTextTable componentShouldBePresent(String componentName) {
+    public WebTextTable componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextTable componentShouldNotBePresent(String componentName) {
+    public WebTextTable componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextTable componentShouldBeDisplayed(String componentName) {
+    public WebTextTable componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebTextTable componentShouldNotBeDisplayed(String componentName) {
+    public WebTextTable componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -270,30 +271,30 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // WebProperties
 
     @Override
-    public WebTextTable shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextTable shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextTable shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextTable shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
-    // TODO: Implement
+    // TODO: Add table column description
     @Override
     public JsonNode toJson() {
         return super.toJson();

@@ -5,11 +5,12 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import org.jetbrains.annotations.NotNull;
 
 public class JsGetSize implements WebElementActionImplementation<Integer> {
 
     @Override
-    public Integer execute(WebChildElement element, Object... args) {
+    public @NotNull Integer execute(WebChildElement element, Object... args) {
         String component = (String) args[0];
         GetIsPresent getIsPresentFunction = new GetIsPresent();
         JsOperation<Boolean> operation = JsOperation.of(element.getLocatorChainTo(component), getIsPresentFunction);

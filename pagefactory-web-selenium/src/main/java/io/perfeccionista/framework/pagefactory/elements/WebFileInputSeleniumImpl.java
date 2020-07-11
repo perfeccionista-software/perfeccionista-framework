@@ -54,6 +54,8 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -166,13 +168,13 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     // Actions
 
     @Override
-    public WebFileInput executeAction(String name, Object... args) {
+    public WebFileInput executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
 
     @Override
-    public WebFileInput executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebFileInput executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(name, other, args);
         return this;
     }
@@ -203,13 +205,13 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Color
 
     @Override
-    public WebFileInput componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebFileInput componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebFileInput componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebFileInput componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -217,13 +219,13 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Dimensions
 
     @Override
-    public WebFileInput componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebFileInput componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebFileInput componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebFileInput componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -237,7 +239,7 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebFileInput shouldHaveLabel(StringValue expectedValue) {
+    public WebFileInput shouldHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -249,7 +251,7 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebFileInput shouldHaveLabel(NumberValue<?> expectedValue) {
+    public WebFileInput shouldHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -261,7 +263,7 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebFileInput shouldNotHaveLabel(StringValue expectedValue) {
+    public WebFileInput shouldNotHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -273,7 +275,7 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebFileInput shouldNotHaveLabel(NumberValue<?> expectedValue) {
+    public WebFileInput shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -287,13 +289,13 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Location
 
     @Override
-    public WebFileInput componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebFileInput componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebFileInput componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebFileInput componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -301,13 +303,13 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Screenshot
 
     @Override
-    public WebFileInput componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebFileInput componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebFileInput componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebFileInput componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -315,13 +317,13 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     // Get Text
 
     @Override
-    public String getText() {
+    public @Nullable String getText() {
         return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebFileInput shouldHaveText(StringValue expectedValue) {
+    public WebFileInput shouldHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -333,7 +335,7 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebFileInput shouldHaveText(NumberValue<?> expectedValue) {
+    public WebFileInput shouldHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -345,7 +347,7 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebFileInput shouldNotHaveText(StringValue expectedValue) {
+    public WebFileInput shouldNotHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -357,7 +359,7 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebFileInput shouldNotHaveText(NumberValue<?> expectedValue) {
+    public WebFileInput shouldNotHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -467,37 +469,28 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
         return this;
     }
 
-    // Submit
-
-    @Override
-    public WebFileInput submit() {
-        runCheck(getEnvironment(), InvocationName.of(SUBMIT_METHOD, this),
-                () -> getActionImplementation(SUBMIT_METHOD, Void.class).execute(this));
-        return this;
-    }
-
     // WebComponents
 
     @Override
-    public WebFileInput componentShouldBePresent(String componentName) {
+    public WebFileInput componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebFileInput componentShouldNotBePresent(String componentName) {
+    public WebFileInput componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebFileInput componentShouldBeDisplayed(String componentName) {
+    public WebFileInput componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebFileInput componentShouldNotBeDisplayed(String componentName) {
+    public WebFileInput componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -505,25 +498,25 @@ public class WebFileInputSeleniumImpl extends AbstractWebChildElement implements
     // WebProperties
 
     @Override
-    public WebFileInput shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebFileInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebFileInput shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebFileInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebFileInput shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebFileInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebFileInput shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebFileInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }

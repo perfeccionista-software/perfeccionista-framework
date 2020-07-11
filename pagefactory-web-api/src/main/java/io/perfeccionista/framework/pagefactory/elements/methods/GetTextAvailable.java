@@ -6,6 +6,8 @@ import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_TEXT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_NUMBER_METHOD;
@@ -16,22 +18,22 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 public interface GetTextAvailable extends WebLocatorChainAvailable {
 
     @MappedElementAction(GET_TEXT_METHOD)
-    String getText();
+    @Nullable String getText();
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_TEXT_METHOD)
-    WebChildElement shouldHaveText(StringValue expectedValue);
+    WebChildElement shouldHaveText(@NotNull StringValue expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_NUMBER_METHOD)
-    WebChildElement shouldHaveText(NumberValue<?> expectedValue);
+    WebChildElement shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_NOT_HAVE_TEXT_METHOD)
-    WebChildElement shouldNotHaveText(StringValue expectedValue);
+    WebChildElement shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_NOT_HAVE_NUMBER_METHOD)
-    WebChildElement shouldNotHaveText(NumberValue<?> expectedValue);
+    WebChildElement shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
 }

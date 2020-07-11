@@ -44,6 +44,8 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
@@ -134,13 +136,13 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // Actions
 
     @Override
-    public WebButton executeAction(String name, Object... args) {
+    public WebButton executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
 
     @Override
-    public WebButton executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebButton executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(name, other, args);
         return this;
     }
@@ -171,13 +173,13 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // Get Color
 
     @Override
-    public WebButton componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebButton componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebButton componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebButton componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -185,13 +187,13 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // Get Dimensions
 
     @Override
-    public WebButton componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebButton componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebButton componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebButton componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -199,13 +201,13 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // Get Location
 
     @Override
-    public WebButton componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebButton componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebButton componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebButton componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -213,13 +215,13 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // Get Screenshot
 
     @Override
-    public WebButton componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebButton componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebButton componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebButton componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -227,13 +229,13 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // Get Text
 
     @Override
-    public String getText() {
+    public @Nullable String getText() {
         return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebButton shouldHaveText(StringValue expectedValue) {
+    public WebButton shouldHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -245,7 +247,7 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     }
 
     @Override
-    public WebButton shouldHaveText(NumberValue<?> expectedValue) {
+    public WebButton shouldHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -257,7 +259,7 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     }
 
     @Override
-    public WebButton shouldNotHaveText(StringValue expectedValue) {
+    public WebButton shouldNotHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -269,7 +271,7 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     }
 
     @Override
-    public WebButton shouldNotHaveText(NumberValue<?> expectedValue) {
+    public WebButton shouldNotHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -341,25 +343,25 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // WebComponents
 
     @Override
-    public WebButton componentShouldBePresent(String componentName) {
+    public WebButton componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebButton componentShouldNotBePresent(String componentName) {
+    public WebButton componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebButton componentShouldBeDisplayed(String componentName) {
+    public WebButton componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebButton componentShouldNotBeDisplayed(String componentName) {
+    public WebButton componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -367,25 +369,25 @@ public class WebButtonSeleniumImpl extends AbstractWebChildElement implements We
     // WebProperties
 
     @Override
-    public WebButton shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebButton shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebButton shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebButton shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebButton shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebButton shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebButton shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebButton shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }

@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.openqa.selenium.WebElement;
 
@@ -13,7 +14,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 public class SeleniumIsEnabled implements WebElementActionImplementation<Boolean> {
 
     @Override
-    public Boolean execute(WebChildElement element, Object... args) {
+    public @NotNull Boolean execute(WebChildElement element, Object... args) {
         GetWebElement getWebElementFunction = ReflectionUtils.newInstance(GetWebElement.class);
         JsOperation<WebElement> operation = JsOperation.of(element.getLocatorChainTo(ENABLED), getWebElementFunction);
         JsOperationResult<WebElement> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);

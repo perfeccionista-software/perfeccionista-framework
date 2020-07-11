@@ -11,6 +11,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 public interface WebButton extends WebChildElement,
         ClickAvailable, GetTextAvailable {
@@ -18,10 +19,10 @@ public interface WebButton extends WebChildElement,
     // Actions
 
     @Override
-    WebButton executeAction(String name, Object... args);
+    WebButton executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebButton executeInteraction(String name, WebChildElement other, Object... args);
+    WebButton executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -39,48 +40,48 @@ public interface WebButton extends WebChildElement,
     // Get Color
 
     @Override
-    WebButton componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebButton componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebButton componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebButton componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebButton componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebButton componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebButton componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebButton componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebButton componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebButton componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebButton componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebButton componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebButton componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebButton componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebButton componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebButton componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // Get Text
 
     @Override
-    WebButton shouldHaveText(StringValue expectedValue);
+    WebButton shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebButton shouldHaveText(NumberValue<?> expectedValue);
+    WebButton shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebButton shouldNotHaveText(StringValue expectedValue);
+    WebButton shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebButton shouldNotHaveText(NumberValue<?> expectedValue);
+    WebButton shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -119,29 +120,29 @@ public interface WebButton extends WebChildElement,
     // WebComponents
 
     @Override
-    WebButton componentShouldBePresent(String componentName);
+    WebButton componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebButton componentShouldNotBePresent(String componentName);
+    WebButton componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebButton componentShouldBeDisplayed(String componentName);
+    WebButton componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebButton componentShouldNotBeDisplayed(String componentName);
+    WebButton componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebButton shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebButton shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebButton shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebButton shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebButton shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebButton shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebButton shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebButton shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

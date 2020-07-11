@@ -13,6 +13,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -28,13 +29,13 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Actions
 
     @Override
-    public WebAutocomplete executeAction(String name, Object... args) {
+    public WebAutocomplete executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
 
     @Override
-    public WebAutocomplete executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebAutocomplete executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(name, other, args);
         return this;
     }
@@ -73,7 +74,7 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // ClickToElement
 
     @Override
-    public WebAutocomplete clickToElement(WebListFilter filter) {
+    public WebAutocomplete clickToElement(@NotNull WebListFilter filter) {
         super.clickToElement(filter);
         return this;
     }
@@ -89,13 +90,13 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Get Color
 
     @Override
-    public WebAutocomplete componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebAutocomplete componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebAutocomplete componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebAutocomplete componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -103,13 +104,13 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Get Dimensions
 
     @Override
-    public WebAutocomplete componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebAutocomplete componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebAutocomplete componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebAutocomplete componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -117,25 +118,25 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Get Label
 
     @Override
-    public WebAutocomplete shouldHaveLabel(StringValue expectedValue) {
+    public WebAutocomplete shouldHaveLabel(@NotNull StringValue expectedValue) {
         super.shouldHaveLabel(expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldHaveLabel(NumberValue<?> expectedValue) {
+    public WebAutocomplete shouldHaveLabel(@NotNull NumberValue<?> expectedValue) {
         super.shouldHaveLabel(expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldNotHaveLabel(StringValue expectedValue) {
+    public WebAutocomplete shouldNotHaveLabel(@NotNull StringValue expectedValue) {
         super.shouldNotHaveLabel(expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldNotHaveLabel(NumberValue<?> expectedValue) {
+    public WebAutocomplete shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue) {
         super.shouldNotHaveLabel(expectedValue);
         return this;
     }
@@ -143,13 +144,13 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Get Location
 
     @Override
-    public WebAutocomplete componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebAutocomplete componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebAutocomplete componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebAutocomplete componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -157,13 +158,13 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Get Screenshot
 
     @Override
-    public WebAutocomplete componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebAutocomplete componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebAutocomplete componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebAutocomplete componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -171,25 +172,25 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Get Text
 
     @Override
-    public WebAutocomplete shouldHaveText(StringValue expectedValue) {
+    public WebAutocomplete shouldHaveText(@NotNull StringValue expectedValue) {
         super.shouldHaveText(expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldHaveText(NumberValue<?> expectedValue) {
+    public WebAutocomplete shouldHaveText(@NotNull NumberValue<?> expectedValue) {
         super.shouldHaveText(expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldNotHaveText(StringValue expectedValue) {
+    public WebAutocomplete shouldNotHaveText(@NotNull StringValue expectedValue) {
         super.shouldNotHaveText(expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldNotHaveText(NumberValue<?> expectedValue) {
+    public WebAutocomplete shouldNotHaveText(@NotNull NumberValue<?> expectedValue) {
         super.shouldNotHaveText(expectedValue);
         return this;
     }
@@ -277,7 +278,7 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // ScrollToElement
 
     @Override
-    public WebAutocomplete scrollToElement(WebListFilter filter) {
+    public WebAutocomplete scrollToElement(@NotNull WebListFilter filter) {
         super.scrollToElement(filter);
         return this;
     }
@@ -285,7 +286,7 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // Size
 
     @Override
-    public WebAutocomplete shouldHaveSize(NumberValue<Integer> expectedSize) {
+    public WebAutocomplete shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
         super.shouldHaveSize(expectedSize);
         return this;
     }
@@ -302,25 +303,25 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // WebComponents
 
     @Override
-    public WebAutocomplete componentShouldBePresent(String componentName) {
+    public WebAutocomplete componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebAutocomplete componentShouldNotBePresent(String componentName) {
+    public WebAutocomplete componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebAutocomplete componentShouldBeDisplayed(String componentName) {
+    public WebAutocomplete componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebAutocomplete componentShouldNotBeDisplayed(String componentName) {
+    public WebAutocomplete componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -328,25 +329,25 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
     // WebProperties
 
     @Override
-    public WebAutocomplete shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebAutocomplete shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }

@@ -7,11 +7,12 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import org.jetbrains.annotations.NotNull;
 
 public class JsGetIsPresent implements WebElementActionImplementation<Boolean> {
 
     @Override
-    public Boolean execute(WebChildElement element, Object... args) {
+    public @NotNull Boolean execute(WebChildElement element, Object... args) {
         String component = (String) args[0];
         WebLocatorChain locatorChainToElement = (null == component) ? element.getLocatorChain() : element.getLocatorChainTo(component);
         locatorChainToElement.getLastLocator().setStrictSearch(false);

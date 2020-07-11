@@ -18,8 +18,12 @@ import io.perfeccionista.framework.pagefactory.pageobjects.extractors.NameAttrib
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.PlaceholderAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.SrcAttributeExtractor;
 
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
 @Name("Elements page")
 public interface ElementsPage extends AbstractWebPage {
@@ -84,6 +88,10 @@ public interface ElementsPage extends AbstractWebPage {
 
     @Name("Simple input")
     @WebLocator(id = "simple-input")
+    @WebLocator(component = TEXT, xpath = "self::node()")
+    @WebLocator(component = INPUT, xpath = "self::node()")
+    @WebLocator(component = CLEAR, xpath = "self::node()")
+    @WebLocator(component = ENABLED, xpath = "self::node()")
     @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
     WebTextInput simpleInput();
 
@@ -100,6 +108,10 @@ public interface ElementsPage extends AbstractWebPage {
 
     @Name("Area input")
     @WebLocator(id = "area-input")
+    @WebLocator(component = TEXT, xpath = "self::node()")
+    @WebLocator(component = INPUT, xpath = "self::node()")
+    @WebLocator(component = CLEAR, xpath = "self::node()")
+    @WebLocator(component = ENABLED, xpath = "self::node()")
     @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
     WebTextInput areaInput();
 

@@ -16,6 +16,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
@@ -35,10 +36,10 @@ public interface WebTextInput extends WebChildElement,
     // Actions
 
     @Override
-    WebTextInput executeAction(String name, Object... args);
+    WebTextInput executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebTextInput executeInteraction(String name, WebChildElement other, Object... args);
+    WebTextInput executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -61,62 +62,62 @@ public interface WebTextInput extends WebChildElement,
     // Get Color
 
     @Override
-    WebTextInput componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextInput componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebTextInput componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextInput componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebTextInput componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextInput componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebTextInput componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextInput componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Label
 
     @Override
-    WebTextInput shouldHaveLabel(StringValue expectedValue);
+    WebTextInput shouldHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextInput shouldHaveLabel(NumberValue<?> expectedValue);
+    WebTextInput shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextInput shouldNotHaveLabel(StringValue expectedValue);
+    WebTextInput shouldNotHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextInput shouldNotHaveLabel(NumberValue<?> expectedValue);
+    WebTextInput shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     // Get Location
 
     @Override
-    WebTextInput componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebTextInput componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebTextInput componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebTextInput componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebTextInput componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextInput componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebTextInput componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextInput componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // Get Text
 
     @Override
-    WebTextInput shouldHaveText(StringValue expectedValue);
+    WebTextInput shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextInput shouldHaveText(NumberValue<?> expectedValue);
+    WebTextInput shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextInput shouldNotHaveText(StringValue expectedValue);
+    WebTextInput shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextInput shouldNotHaveText(NumberValue<?> expectedValue);
+    WebTextInput shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -168,29 +169,29 @@ public interface WebTextInput extends WebChildElement,
     // WebComponent
 
     @Override
-    WebTextInput componentShouldBePresent(String componentName);
+    WebTextInput componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebTextInput componentShouldNotBePresent(String componentName);
+    WebTextInput componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebTextInput componentShouldBeDisplayed(String componentName);
+    WebTextInput componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebTextInput componentShouldNotBeDisplayed(String componentName);
+    WebTextInput componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebTextInput shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextInput shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextInput shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextInput shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

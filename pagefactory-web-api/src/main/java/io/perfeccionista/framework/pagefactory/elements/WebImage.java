@@ -10,6 +10,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 // TODO: Сделать встроенную проверку того, что это изображение (по тегу src)
 // TODO: Добавить метод saveToFile(Path file); который сохранит изображение в указанный файл.
@@ -19,10 +20,10 @@ public interface WebImage extends WebChildElement,
     // Actions
 
     @Override
-    WebImage executeAction(String name, Object... args);
+    WebImage executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebImage executeInteraction(String name, WebChildElement other, Object... args);
+    WebImage executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -40,34 +41,34 @@ public interface WebImage extends WebChildElement,
     // Get Color
 
     @Override
-    WebImage componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebImage componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebImage componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebImage componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebImage componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebImage componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebImage componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebImage componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebImage componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebImage componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebImage componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebImage componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebImage componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebImage componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebImage componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebImage componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -106,29 +107,29 @@ public interface WebImage extends WebChildElement,
     // WebComponents
 
     @Override
-    WebImage componentShouldBePresent(String componentName);
+    WebImage componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebImage componentShouldNotBePresent(String componentName);
+    WebImage componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebImage componentShouldBeDisplayed(String componentName);
+    WebImage componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebImage componentShouldNotBeDisplayed(String componentName);
+    WebImage componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebImage shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebImage shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebImage shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebImage shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebImage shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebImage shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebImage shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebImage shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

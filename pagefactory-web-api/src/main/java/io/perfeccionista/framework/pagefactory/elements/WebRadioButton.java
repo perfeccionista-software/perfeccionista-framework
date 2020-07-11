@@ -15,6 +15,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
@@ -29,10 +30,10 @@ public interface WebRadioButton extends WebChildElement, ParentInfoAvailable,
     // Actions
 
     @Override
-    WebRadioButton executeAction(String name, Object... args);
+    WebRadioButton executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebRadioButton executeInteraction(String name, WebChildElement other, Object... args);
+    WebRadioButton executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -50,48 +51,48 @@ public interface WebRadioButton extends WebChildElement, ParentInfoAvailable,
     // Get Color
 
     @Override
-    WebRadioButton componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebRadioButton componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebRadioButton componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebRadioButton componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebRadioButton componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebRadioButton componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebRadioButton componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebRadioButton componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Label
 
     @Override
-    WebRadioButton shouldHaveLabel(StringValue expectedValue);
+    WebRadioButton shouldHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebRadioButton shouldHaveLabel(NumberValue<?> expectedValue);
+    WebRadioButton shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebRadioButton shouldNotHaveLabel(StringValue expectedValue);
+    WebRadioButton shouldNotHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebRadioButton shouldNotHaveLabel(NumberValue<?> expectedValue);
+    WebRadioButton shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     // Get Location
 
     @Override
-    WebRadioButton componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebRadioButton componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebRadioButton componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebRadioButton componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebRadioButton componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebRadioButton componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebRadioButton componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebRadioButton componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -146,29 +147,29 @@ public interface WebRadioButton extends WebChildElement, ParentInfoAvailable,
     // WebComponents
 
     @Override
-    WebRadioButton componentShouldBePresent(String componentName);
+    WebRadioButton componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebRadioButton componentShouldNotBePresent(String componentName);
+    WebRadioButton componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebRadioButton componentShouldBeDisplayed(String componentName);
+    WebRadioButton componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebRadioButton componentShouldNotBeDisplayed(String componentName);
+    WebRadioButton componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebRadioButton shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebRadioButton shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebRadioButton shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebRadioButton shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebRadioButton shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebRadioButton shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebRadioButton shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebRadioButton shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

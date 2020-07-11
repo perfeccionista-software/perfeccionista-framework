@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvai
 import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
 import io.perfeccionista.framework.value.number.NumberValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_SIZE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SIZE_METHOD;
@@ -16,6 +17,6 @@ public interface SizeAvailable extends WebLocatorChainAvailable {
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_SIZE_METHOD)
-    WebChildElement shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebChildElement shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
 }

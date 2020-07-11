@@ -15,7 +15,9 @@ public class SeleniumSelectForWebTextList implements WebElementActionImplementat
     public Void execute(WebChildElement element, Object... args) {
         // Check this type
         WebTextListFilter filter = (WebTextListFilter) args[0];
-        WebElement webElement = filter.filter((WebTextList) element).extractOne(new WebTextListBlockWebElementExtractor()).get();
+        WebElement webElement = filter
+                .filter((WebTextList) element)
+                .extractOne(new WebTextListBlockWebElementExtractor()).get();
         element.getWebBrowserDispatcher().getExceptionMapper()
                 .map(webElement::click, element.getElementIdentifier().getLastUsedName())
                 .ifException(exception -> {
@@ -24,6 +26,7 @@ public class SeleniumSelectForWebTextList implements WebElementActionImplementat
         return null;
     }
 
+    // TODO: Implement
     private class WebTextListBlockWebElementExtractor implements WebTextListBlockValueExtractor<WebElement> {
 
         @Override

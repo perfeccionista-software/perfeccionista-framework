@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -11,6 +10,8 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.UL;
@@ -36,13 +37,13 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Actions
 
     @Override
-    public WebTextDropDownList executeAction(String actionName, Object... args) {
+    public WebTextDropDownList executeAction(@NotNull String actionName, Object... args) {
         super.executeAction(actionName, args);
         return this;
     }
 
     @Override
-    public WebTextDropDownList executeInteraction(String interactionName, WebChildElement other, Object... args) {
+    public WebTextDropDownList executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(interactionName, other, args);
         return this;
     }
@@ -73,7 +74,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // ClickToElement
 
     @Override
-    public WebTextDropDownList clickToElement(WebTextListFilter filter) {
+    public WebTextDropDownList clickToElement(@NotNull WebTextListFilter filter) {
         super.clickToElement(filter);
         return this;
     }
@@ -90,13 +91,13 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Get Color
 
     @Override
-    public WebTextDropDownList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextDropDownList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebTextDropDownList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextDropDownList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -104,13 +105,13 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Get Dimensions
 
     @Override
-    public WebTextDropDownList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextDropDownList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebTextDropDownList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextDropDownList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -118,13 +119,13 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Get Label
 
     @Override
-    public String getLabel() {
+    public @Nullable String getLabel() {
         return runCheck(getEnvironment(), InvocationName.of(GET_LABEL_METHOD, this),
                 () -> getActionImplementation(GET_LABEL_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebTextDropDownList shouldHaveLabel(StringValue expectedValue) {
+    public WebTextDropDownList shouldHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -136,7 +137,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     }
 
     @Override
-    public WebTextDropDownList shouldHaveLabel(NumberValue<?> expectedValue) {
+    public WebTextDropDownList shouldHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -148,7 +149,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     }
 
     @Override
-    public WebTextDropDownList shouldNotHaveLabel(StringValue expectedValue) {
+    public WebTextDropDownList shouldNotHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -160,7 +161,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     }
 
     @Override
-    public WebTextDropDownList shouldNotHaveLabel(NumberValue<?> expectedValue) {
+    public WebTextDropDownList shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -174,13 +175,13 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Get Location
 
     @Override
-    public WebTextDropDownList componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextDropDownList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebTextDropDownList componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextDropDownList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -188,13 +189,13 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Get Screenshot
 
     @Override
-    public WebTextDropDownList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextDropDownList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebTextDropDownList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextDropDownList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -202,13 +203,13 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Get Text
 
     @Override
-    public String getText() {
+    public @Nullable String getText() {
         return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebTextDropDownList shouldHaveText(StringValue expectedValue) {
+    public WebTextDropDownList shouldHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -220,7 +221,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     }
 
     @Override
-    public WebTextDropDownList shouldHaveText(NumberValue<?> expectedValue) {
+    public WebTextDropDownList shouldHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -232,7 +233,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     }
 
     @Override
-    public WebTextDropDownList shouldNotHaveText(StringValue expectedValue) {
+    public WebTextDropDownList shouldNotHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -244,7 +245,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     }
 
     @Override
-    public WebTextDropDownList shouldNotHaveText(NumberValue<?> expectedValue) {
+    public WebTextDropDownList shouldNotHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -347,7 +348,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // ScrollToElement
 
     @Override
-    public WebTextDropDownList scrollToElement(WebTextListFilter filter) {
+    public WebTextDropDownList scrollToElement(@NotNull WebTextListFilter filter) {
         super.scrollToElement(filter);
         return this;
     }
@@ -355,7 +356,7 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // Size
 
     @Override
-    public WebTextDropDownList shouldHaveSize(NumberValue<Integer> expectedSize) {
+    public WebTextDropDownList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
         super.shouldHaveSize(expectedSize);
         return this;
     }
@@ -363,25 +364,25 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // WebComponents
 
     @Override
-    public WebTextDropDownList componentShouldBePresent(String componentName) {
+    public WebTextDropDownList componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextDropDownList componentShouldNotBePresent(String componentName) {
+    public WebTextDropDownList componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextDropDownList componentShouldBeDisplayed(String componentName) {
+    public WebTextDropDownList componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebTextDropDownList componentShouldNotBeDisplayed(String componentName) {
+    public WebTextDropDownList componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -389,33 +390,27 @@ public class WebTextDropDownListSeleniumImpl extends WebTextListSeleniumImpl imp
     // WebProperties
 
     @Override
-    public WebTextDropDownList shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextDropDownList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextDropDownList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextDropDownList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
-    }
-
-    // TODO: Implement
-    @Override
-    public JsonNode toJson() {
-        return super.toJson();
     }
 
 }

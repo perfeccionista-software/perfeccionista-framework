@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface WebLocatorChainAvailable {
 
-    @NotNull WebLocatorChain getLocatorChainTo(String locatorName);
+    @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName);
 
     @NotNull WebLocatorChain getLocatorChain();
 

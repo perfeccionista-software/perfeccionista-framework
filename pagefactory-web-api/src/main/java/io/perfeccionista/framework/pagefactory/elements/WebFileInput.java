@@ -11,11 +11,11 @@ import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SubmitAvailable;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
@@ -29,17 +29,18 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 @WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'file']")
 @WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'file']")
 @WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'file']")
-// TODO: Метод loadFile(Path filePath)
+// TODO: Метод loadFile(Path filePath) вместо sendKeys()
+// Нужен ли метод submit()?
 public interface WebFileInput extends WebChildElement,
-        GetTextAvailable, SendKeysAvailable, ClearAvailable, SubmitAvailable, IsEnabledAvailable, GetLabelAvailable {
+        GetTextAvailable, SendKeysAvailable, ClearAvailable, IsEnabledAvailable, GetLabelAvailable {
 
     // Actions
 
     @Override
-    WebFileInput executeAction(String name, Object... args);
+    WebFileInput executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebFileInput executeInteraction(String name, WebChildElement other, Object... args);
+    WebFileInput executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -57,62 +58,62 @@ public interface WebFileInput extends WebChildElement,
     // Get Color
 
     @Override
-    WebFileInput componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebFileInput componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebFileInput componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebFileInput componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebFileInput componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebFileInput componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebFileInput componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebFileInput componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Label
 
     @Override
-    WebFileInput shouldHaveLabel(StringValue expectedValue);
+    WebFileInput shouldHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebFileInput shouldHaveLabel(NumberValue<?> expectedValue);
+    WebFileInput shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebFileInput shouldNotHaveLabel(StringValue expectedValue);
+    WebFileInput shouldNotHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebFileInput shouldNotHaveLabel(NumberValue<?> expectedValue);
+    WebFileInput shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     // Get Location
 
     @Override
-    WebFileInput componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebFileInput componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebFileInput componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebFileInput componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebFileInput componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebFileInput componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebFileInput componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebFileInput componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // GetText
 
     @Override
-    WebFileInput shouldHaveText(StringValue expectedValue);
+    WebFileInput shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebFileInput shouldHaveText(NumberValue<?> expectedValue);
+    WebFileInput shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebFileInput shouldNotHaveText(StringValue expectedValue);
+    WebFileInput shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebFileInput shouldNotHaveText(NumberValue<?> expectedValue);
+    WebFileInput shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -161,37 +162,32 @@ public interface WebFileInput extends WebChildElement,
     @Override
     WebFileInput sendKeys(CharSequence... keys);
 
-    // Submit
-
-    @Override
-    WebFileInput submit();
-
     // WebComponents
 
     @Override
-    WebFileInput componentShouldBePresent(String componentName);
+    WebFileInput componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebFileInput componentShouldNotBePresent(String componentName);
+    WebFileInput componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebFileInput componentShouldBeDisplayed(String componentName);
+    WebFileInput componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebFileInput componentShouldNotBeDisplayed(String componentName);
+    WebFileInput componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebFileInput shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebFileInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebFileInput shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebFileInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebFileInput shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebFileInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebFileInput shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebFileInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

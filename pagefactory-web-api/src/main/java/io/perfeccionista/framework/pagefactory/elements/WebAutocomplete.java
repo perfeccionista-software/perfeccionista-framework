@@ -13,6 +13,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
@@ -27,10 +28,10 @@ public interface WebAutocomplete extends WebDropDownList,
     // Actions
 
     @Override
-    WebAutocomplete executeAction(String name, Object... args);
+    WebAutocomplete executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebAutocomplete executeInteraction(String name, WebChildElement other, Object... args);
+    WebAutocomplete executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -53,7 +54,7 @@ public interface WebAutocomplete extends WebDropDownList,
     // ClickToElement
 
     @Override
-    WebAutocomplete clickToElement(WebListFilter filter); // Тут нужно еще скроллить к элементу
+    WebAutocomplete clickToElement(@NotNull WebListFilter filter); // Тут нужно еще скроллить к элементу
 
     // Close
 
@@ -63,62 +64,62 @@ public interface WebAutocomplete extends WebDropDownList,
     // Get Color
 
     @Override
-    WebAutocomplete componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebAutocomplete componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebAutocomplete componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebAutocomplete componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebAutocomplete componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebAutocomplete componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebAutocomplete componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebAutocomplete componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Label
 
     @Override
-    WebAutocomplete shouldHaveLabel(StringValue expectedValue);
+    WebAutocomplete shouldHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebAutocomplete shouldHaveLabel(NumberValue<?> expectedValue);
+    WebAutocomplete shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebAutocomplete shouldNotHaveLabel(StringValue expectedValue);
+    WebAutocomplete shouldNotHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebAutocomplete shouldNotHaveLabel(NumberValue<?> expectedValue);
+    WebAutocomplete shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     // Get Location
 
     @Override
-    WebAutocomplete componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebAutocomplete componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebAutocomplete componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebAutocomplete componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebAutocomplete componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebAutocomplete componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebAutocomplete componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebAutocomplete componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // Get Text
 
     @Override
-    WebAutocomplete shouldHaveText(StringValue expectedValue);
+    WebAutocomplete shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebAutocomplete shouldHaveText(NumberValue<?> expectedValue);
+    WebAutocomplete shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebAutocomplete shouldNotHaveText(StringValue expectedValue);
+    WebAutocomplete shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebAutocomplete shouldNotHaveText(NumberValue<?> expectedValue);
+    WebAutocomplete shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -170,7 +171,7 @@ public interface WebAutocomplete extends WebDropDownList,
     // ScrollToElement
 
     @Override
-    WebAutocomplete scrollToElement(WebListFilter filter);
+    WebAutocomplete scrollToElement(@NotNull WebListFilter filter);
 
     // SendKeys
 
@@ -180,34 +181,34 @@ public interface WebAutocomplete extends WebDropDownList,
     // Size
 
     @Override
-    WebAutocomplete shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebAutocomplete shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponents
 
     @Override
-    WebAutocomplete componentShouldBePresent(String componentName);
+    WebAutocomplete componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebAutocomplete componentShouldNotBePresent(String componentName);
+    WebAutocomplete componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebAutocomplete componentShouldBeDisplayed(String componentName);
+    WebAutocomplete componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebAutocomplete componentShouldNotBeDisplayed(String componentName);
+    WebAutocomplete componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebAutocomplete shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebAutocomplete shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebAutocomplete shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebAutocomplete shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

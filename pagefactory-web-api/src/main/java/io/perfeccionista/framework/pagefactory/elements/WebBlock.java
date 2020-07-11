@@ -10,16 +10,17 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 public interface WebBlock extends WebChildElement, WebParentElement {
 
     // Actions
 
     @Override
-    WebBlock executeAction(String name, Object... args);
+    WebBlock executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebBlock executeInteraction(String name, WebChildElement other, Object... args);
+    WebBlock executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -32,34 +33,34 @@ public interface WebBlock extends WebChildElement, WebParentElement {
     // Get Color
 
     @Override
-    WebBlock componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebBlock componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebBlock componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebBlock componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebBlock componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebBlock componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebBlock componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebBlock componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebBlock componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebBlock componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebBlock componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebBlock componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebBlock componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebBlock componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebBlock componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebBlock componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -98,29 +99,29 @@ public interface WebBlock extends WebChildElement, WebParentElement {
     // WebComponents
 
     @Override
-    WebBlock componentShouldBePresent(String componentName);
+    WebBlock componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebBlock componentShouldNotBePresent(String componentName);
+    WebBlock componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebBlock componentShouldBeDisplayed(String componentName);
+    WebBlock componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebBlock componentShouldNotBeDisplayed(String componentName);
+    WebBlock componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebBlock shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebBlock shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebBlock shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebBlock shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

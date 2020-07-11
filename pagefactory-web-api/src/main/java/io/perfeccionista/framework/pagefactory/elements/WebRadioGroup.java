@@ -16,6 +16,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
 
@@ -23,23 +24,23 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 public interface WebRadioGroup extends WebChildElement,
         ScrollToElementAvailable<WebRadioButtonFilter>, SizeAvailable {
 
-    WebRadioButtonFilterResult filter(WebRadioButtonFilter filter);
+    @NotNull WebRadioButtonFilterResult filter(@NotNull WebRadioButtonFilter filter);
 
-    <V> MultipleResult<V> extractAll(WebRadioButtonValueExtractor<V> extractor);
+    @NotNull <V> MultipleResult<V> extractAll(@NotNull WebRadioButtonValueExtractor<V> extractor);
 
-    WebRadioButton getSelected();
+    @NotNull WebRadioButton getSelected();
 
-    WebRadioButton getByLabel(StringValue label);
+    @NotNull WebRadioButton getByLabel(@NotNull StringValue expectedLabel);
 
-    WebRadioButton getByIndex(NumberValue<Integer> index);
+    @NotNull WebRadioButton getByIndex(@NotNull NumberValue<Integer> expectedIndex);
 
     // Actions
 
     @Override
-    WebRadioGroup executeAction(String name, Object... args);
+    WebRadioGroup executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebRadioGroup executeInteraction(String name, WebChildElement other, Object... args);
+    WebRadioGroup executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -52,34 +53,34 @@ public interface WebRadioGroup extends WebChildElement,
     // Get Color
 
     @Override
-    WebRadioGroup componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebRadioGroup componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebRadioGroup componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebRadioGroup componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebRadioGroup componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebRadioGroup componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebRadioGroup componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebRadioGroup componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebRadioGroup componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebRadioGroup componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebRadioGroup componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebRadioGroup componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebRadioGroup componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebRadioGroup componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebRadioGroup componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebRadioGroup componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -118,39 +119,39 @@ public interface WebRadioGroup extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebRadioGroup scrollToElement(WebRadioButtonFilter filter);
+    WebRadioGroup scrollToElement(@NotNull WebRadioButtonFilter filter);
 
     // Size
 
     @Override
-    WebRadioGroup shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebRadioGroup shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponents
 
     @Override
-    WebRadioGroup componentShouldBePresent(String componentName);
+    WebRadioGroup componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebRadioGroup componentShouldNotBePresent(String componentName);
+    WebRadioGroup componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebRadioGroup componentShouldBeDisplayed(String componentName);
+    WebRadioGroup componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebRadioGroup componentShouldNotBeDisplayed(String componentName);
+    WebRadioGroup componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebRadioGroup shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebRadioGroup shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebRadioGroup shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebRadioGroup shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebRadioGroup shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebRadioGroup shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebRadioGroup shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebRadioGroup shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

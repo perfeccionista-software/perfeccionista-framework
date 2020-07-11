@@ -16,6 +16,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
 
@@ -24,17 +25,17 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 public interface WebTextList extends WebChildElement,
         ScrollToElementAvailable<WebTextListFilter>, ClickToElementAvailable<WebTextListFilter>, SizeAvailable {
 
-    WebTextListFilterResult filter(WebTextListFilter filter);
+    @NotNull WebTextListFilterResult filter(@NotNull WebTextListFilter filter);
 
-    MultipleResult<String> extractAll();
+    @NotNull MultipleResult<String> extractAll();
 
     // Actions
 
     @Override
-    WebTextList executeAction(String name, Object... args);
+    WebTextList executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebTextList executeInteraction(String name, WebChildElement other, Object... args);
+    WebTextList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -47,39 +48,39 @@ public interface WebTextList extends WebChildElement,
     // ClickToElement
 
     @Override
-    WebTextList clickToElement(WebTextListFilter filter);
+    WebTextList clickToElement(@NotNull WebTextListFilter filter);
 
     // Get Color
 
     @Override
-    WebTextList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebTextList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebTextList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebTextList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebTextList componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebTextList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebTextList componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebTextList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebTextList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebTextList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -118,39 +119,39 @@ public interface WebTextList extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebTextList scrollToElement(WebTextListFilter filter);
+    WebTextList scrollToElement(@NotNull WebTextListFilter filter);
 
     // Size
 
     @Override
-    WebTextList shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebTextList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponent
 
     @Override
-    WebTextList componentShouldBePresent(String componentName);
+    WebTextList componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebTextList componentShouldNotBePresent(String componentName);
+    WebTextList componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebTextList componentShouldBeDisplayed(String componentName);
+    WebTextList componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebTextList componentShouldNotBeDisplayed(String componentName);
+    WebTextList componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebTextList shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

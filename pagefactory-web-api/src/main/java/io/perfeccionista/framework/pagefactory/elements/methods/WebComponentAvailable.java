@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvailable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.plugin.AssertMethodType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -20,28 +21,28 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
  */
 public interface WebComponentAvailable extends WebLocatorChainAvailable {
 
-    Optional<WebLocatorHolder> getLocator(String componentName);
+    Optional<WebLocatorHolder> getLocator(@NotNull String componentName);
 
     @MappedElementAction(IS_COMPONENT_PRESENT_METHOD)
-    boolean isComponentPresent(String componentName);
+    boolean isComponentPresent(@NotNull String componentName);
 
     @MappedElementAction(IS_COMPONENT_DISPLAYED_METHOD)
-    boolean isComponentDisplayed(String componentName);
+    boolean isComponentDisplayed(@NotNull String componentName);
 
     @AssertMethodType
     @MappedElementAction(COMPONENT_SHOULD_BE_PRESENT_METHOD)
-    WebChildElement componentShouldBePresent(String componentName);
+    WebChildElement componentShouldBePresent(@NotNull String componentName);
 
     @AssertMethodType
     @MappedElementAction(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD)
-    WebChildElement componentShouldNotBePresent(String componentName);
+    WebChildElement componentShouldNotBePresent(@NotNull String componentName);
 
     @AssertMethodType
     @MappedElementAction(COMPONENT_SHOULD_BE_DISPLAYED_METHOD)
-    WebChildElement componentShouldBeDisplayed(String componentName);
+    WebChildElement componentShouldBeDisplayed(@NotNull String componentName);
 
     @AssertMethodType
     @MappedElementAction(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD)
-    WebChildElement componentShouldNotBeDisplayed(String componentName);
+    WebChildElement componentShouldNotBeDisplayed(@NotNull String componentName);
 
 }

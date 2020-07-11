@@ -6,6 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvai
 import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -24,22 +25,22 @@ public interface WebElementPropertyAvailable<T extends WebElementPropertyHolder>
     Optional<T> getProperty(String propertyName);
 
     @MappedElementAction(GET_PROPERTY_VALUE_METHOD)
-    @Nullable String getPropertyValue(String propertyName);
+    @Nullable String getPropertyValue(@NotNull String propertyName);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_PROPERTY_VALUE_METHOD)
-    WebChildElement shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebChildElement shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_PROPERTY_NUMBER_METHOD)
-    WebChildElement shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebChildElement shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD)
-    WebChildElement shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebChildElement shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD)
-    WebChildElement shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebChildElement shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

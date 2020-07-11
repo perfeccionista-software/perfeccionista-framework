@@ -18,6 +18,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Optional;
@@ -35,23 +36,23 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 public interface WebTable extends WebChildElement,
         ScrollToElementAvailable<WebTableFilter>, SizeAvailable {
 
-    Optional<TableColumnHolder> getTableColumnHolder(String columnName);
+    Optional<TableColumnHolder> getTableColumnHolder(@NotNull String columnName);
 
-    WebTableFilterResult filter(WebTableFilter filter);
+    @NotNull WebTableFilterResult filter(@NotNull WebTableFilter filter);
 
-    <V> SingleResult<V> extractHeader(WebTableCellValueExtractor<V> extractor);
+    @NotNull <V> SingleResult<V> extractHeader(@NotNull WebTableCellValueExtractor<V> extractor);
 
-    <V> MultipleResult<V> extractAllRows(WebTableCellValueExtractor<V> extractor);
+    @NotNull <V> MultipleResult<V> extractAllRows(@NotNull WebTableCellValueExtractor<V> extractor);
 
-    <V> SingleResult<V> extractFooter(WebTableCellValueExtractor<V> extractor);
+    @NotNull <V> SingleResult<V> extractFooter(@NotNull WebTableCellValueExtractor<V> extractor);
 
     // Actions
 
     @Override
-    WebTable executeAction(String name, Object... args);
+    WebTable executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebTable executeInteraction(String name, WebChildElement other, Object... args);
+    WebTable executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -64,34 +65,34 @@ public interface WebTable extends WebChildElement,
     // Get Color
 
     @Override
-    WebTable componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTable componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebTable componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTable componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebTable componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTable componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebTable componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTable componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebTable componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebTable componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebTable componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebTable componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebTable componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTable componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebTable componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTable componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -130,39 +131,39 @@ public interface WebTable extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebTable scrollToElement(WebTableFilter filter);
+    WebTable scrollToElement(@NotNull WebTableFilter filter);
 
     // Size
 
     @Override
-    WebTable shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebTable shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponents
 
     @Override
-    WebTable componentShouldBePresent(String componentName);
+    WebTable componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebTable componentShouldNotBePresent(String componentName);
+    WebTable componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebTable componentShouldBeDisplayed(String componentName);
+    WebTable componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebTable componentShouldNotBeDisplayed(String componentName);
+    WebTable componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebTable shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTable shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTable shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTable shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

@@ -17,6 +17,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.UL;
@@ -29,10 +30,10 @@ public interface WebDropDownList extends WebList,
     // Actions
 
     @Override
-    WebDropDownList executeAction(String name, Object... args);
+    WebDropDownList executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebDropDownList executeInteraction(String name, WebChildElement other, Object... args);
+    WebDropDownList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -50,7 +51,7 @@ public interface WebDropDownList extends WebList,
     // ClickToElement
 
     @Override
-    WebDropDownList clickToElement(WebListFilter filter); // Тут нужно еще скроллить к элементу
+    WebDropDownList clickToElement(@NotNull WebListFilter filter); // Тут нужно еще скроллить к элементу
 
     // Close
 
@@ -60,62 +61,62 @@ public interface WebDropDownList extends WebList,
     // Get Color
 
     @Override
-    WebDropDownList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebDropDownList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebDropDownList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebDropDownList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebDropDownList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebDropDownList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebDropDownList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebDropDownList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Label
 
     @Override
-    WebDropDownList shouldHaveLabel(StringValue expectedValue);
+    WebDropDownList shouldHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebDropDownList shouldHaveLabel(NumberValue<?> expectedValue);
+    WebDropDownList shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebDropDownList shouldNotHaveLabel(StringValue expectedValue);
+    WebDropDownList shouldNotHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebDropDownList shouldNotHaveLabel(NumberValue<?> expectedValue);
+    WebDropDownList shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     // Get Location
 
     @Override
-    WebDropDownList componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebDropDownList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebDropDownList componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebDropDownList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebDropDownList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebDropDownList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebDropDownList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebDropDownList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // Get Text
 
     @Override
-    WebDropDownList shouldHaveText(StringValue expectedValue);
+    WebDropDownList shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebDropDownList shouldHaveText(NumberValue<?> expectedValue);
+    WebDropDownList shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebDropDownList shouldNotHaveText(StringValue expectedValue);
+    WebDropDownList shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebDropDownList shouldNotHaveText(NumberValue<?> expectedValue);
+    WebDropDownList shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -167,39 +168,39 @@ public interface WebDropDownList extends WebList,
     // ScrollToElement
 
     @Override
-    WebDropDownList scrollToElement(WebListFilter filter);
+    WebDropDownList scrollToElement(@NotNull WebListFilter filter);
 
     // Size
 
     @Override
-    WebDropDownList shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebDropDownList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponents
 
     @Override
-    WebDropDownList componentShouldBePresent(String componentName);
+    WebDropDownList componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebDropDownList componentShouldNotBePresent(String componentName);
+    WebDropDownList componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebDropDownList componentShouldBeDisplayed(String componentName);
+    WebDropDownList componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebDropDownList componentShouldNotBeDisplayed(String componentName);
+    WebDropDownList componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebDropDownList shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebDropDownList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebDropDownList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebDropDownList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

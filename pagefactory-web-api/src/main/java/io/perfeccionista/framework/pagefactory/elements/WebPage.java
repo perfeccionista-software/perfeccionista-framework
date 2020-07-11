@@ -4,6 +4,7 @@ import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.name.WebPageIdentifier;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
+import org.jetbrains.annotations.NotNull;
 
 public interface WebPage extends WebParentElement {
 
@@ -11,7 +12,7 @@ public interface WebPage extends WebParentElement {
 
     WebPage setEnvironment(Environment environment);
 
-    WebPageIdentifier getPageIdentifier();
+    @NotNull WebPageIdentifier getPageIdentifier();
 
     /**
      * Если необходимо, то переопределяем и делаем необходимую проверку на

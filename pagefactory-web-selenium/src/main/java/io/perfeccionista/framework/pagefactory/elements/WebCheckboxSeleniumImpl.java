@@ -50,6 +50,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.IS_SELECTED_METHOD;
@@ -152,13 +153,13 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     // Actions
 
     @Override
-    public WebCheckbox executeAction(String name, Object... args) {
+    public WebCheckbox executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
 
     @Override
-    public WebCheckbox executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebCheckbox executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(name, other, args);
         return this;
     }
@@ -190,13 +191,13 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     // Get Color
 
     @Override
-    public WebCheckbox componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebCheckbox componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebCheckbox componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebCheckbox componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -204,13 +205,13 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     // Get Dimensions
 
     @Override
-    public WebCheckbox componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebCheckbox componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebCheckbox componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebCheckbox componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -224,7 +225,7 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     }
 
     @Override
-    public WebCheckbox shouldHaveLabel(StringValue expectedValue) {
+    public WebCheckbox shouldHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -236,7 +237,7 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     }
 
     @Override
-    public WebCheckbox shouldHaveLabel(NumberValue<?> expectedValue) {
+    public WebCheckbox shouldHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -248,7 +249,7 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     }
 
     @Override
-    public WebCheckbox shouldNotHaveLabel(StringValue expectedValue) {
+    public WebCheckbox shouldNotHaveLabel(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -260,7 +261,7 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     }
 
     @Override
-    public WebCheckbox shouldNotHaveLabel(NumberValue<?> expectedValue) {
+    public WebCheckbox shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, this, expectedValue),
                 () -> {
                     String actualLabel = getActionImplementation(GET_LABEL_METHOD, String.class)
@@ -274,13 +275,13 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     // Get Locations
 
     @Override
-    public WebCheckbox componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebCheckbox componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebCheckbox componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebCheckbox componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -288,13 +289,13 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     // Get Screenshot
 
     @Override
-    public WebCheckbox componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebCheckbox componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebCheckbox componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebCheckbox componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -424,25 +425,25 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     // WebComponents
 
     @Override
-    public WebCheckbox componentShouldBePresent(String componentName) {
+    public WebCheckbox componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebCheckbox componentShouldNotBePresent(String componentName) {
+    public WebCheckbox componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebCheckbox componentShouldBeDisplayed(String componentName) {
+    public WebCheckbox componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebCheckbox componentShouldNotBeDisplayed(String componentName) {
+    public WebCheckbox componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -450,25 +451,25 @@ public class WebCheckboxSeleniumImpl extends AbstractWebChildElement implements 
     // WebProperties
 
     @Override
-    public WebCheckbox shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebCheckbox shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebCheckbox shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebCheckbox shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebCheckbox shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebCheckbox shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebCheckbox shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebCheckbox shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }

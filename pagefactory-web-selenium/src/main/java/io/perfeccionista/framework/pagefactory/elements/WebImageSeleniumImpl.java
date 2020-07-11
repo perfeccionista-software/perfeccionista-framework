@@ -39,6 +39,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
@@ -119,13 +120,13 @@ public class WebImageSeleniumImpl extends AbstractWebChildElement implements Web
     // Actions
 
     @Override
-    public WebImage executeAction(String name, Object... args) {
+    public WebImage executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
 
     @Override
-    public WebImage executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebImage executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(name, other, args);
         return this;
     }
@@ -156,13 +157,13 @@ public class WebImageSeleniumImpl extends AbstractWebChildElement implements Web
     // Get Color
 
     @Override
-    public WebImage componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebImage componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebImage componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebImage componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -170,13 +171,13 @@ public class WebImageSeleniumImpl extends AbstractWebChildElement implements Web
     // Get Dimensions
 
     @Override
-    public WebImage componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebImage componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebImage componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebImage componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -184,13 +185,13 @@ public class WebImageSeleniumImpl extends AbstractWebChildElement implements Web
     // Get Location
 
     @Override
-    public WebImage componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebImage componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebImage componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebImage componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -198,13 +199,13 @@ public class WebImageSeleniumImpl extends AbstractWebChildElement implements Web
     // Get Screenshot
 
     @Override
-    public WebImage componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebImage componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebImage componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebImage componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -270,25 +271,25 @@ public class WebImageSeleniumImpl extends AbstractWebChildElement implements Web
     // WebComponents
 
     @Override
-    public WebImage componentShouldBePresent(String componentName) {
+    public WebImage componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebImage componentShouldNotBePresent(String componentName) {
+    public WebImage componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebImage componentShouldBeDisplayed(String componentName) {
+    public WebImage componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebImage componentShouldNotBeDisplayed(String componentName) {
+    public WebImage componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -296,25 +297,25 @@ public class WebImageSeleniumImpl extends AbstractWebChildElement implements Web
     // WebProperties
 
     @Override
-    public WebImage shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebImage shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebImage shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebImage shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebImage shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebImage shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebImage shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebImage shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }

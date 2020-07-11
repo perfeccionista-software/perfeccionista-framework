@@ -11,6 +11,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 
 public interface WebLink extends WebChildElement,
@@ -19,10 +20,10 @@ public interface WebLink extends WebChildElement,
     // Actions
 
     @Override
-    WebLink executeAction(String name, Object... args);
+    WebLink executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebLink executeInteraction(String name, WebChildElement other, Object... args);
+    WebLink executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -40,48 +41,48 @@ public interface WebLink extends WebChildElement,
     // Get Color
 
     @Override
-    WebLink componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebLink componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebLink componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebLink componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebLink componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebLink componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebLink componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebLink componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebLink componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebLink componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebLink componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebLink componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebLink componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebLink componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebLink componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebLink componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // Get Text
 
     @Override
-    WebLink shouldHaveText(StringValue expectedValue);
+    WebLink shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebLink shouldHaveText(NumberValue<?> expectedValue);
+    WebLink shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebLink shouldNotHaveText(StringValue expectedValue);
+    WebLink shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebLink shouldNotHaveText(NumberValue<?> expectedValue);
+    WebLink shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -120,29 +121,29 @@ public interface WebLink extends WebChildElement,
     // WebComponents
 
     @Override
-    WebLink componentShouldBePresent(String componentName);
+    WebLink componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebLink componentShouldNotBePresent(String componentName);
+    WebLink componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebLink componentShouldBeDisplayed(String componentName);
+    WebLink componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebLink componentShouldNotBeDisplayed(String componentName);
+    WebLink componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebLink shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebLink shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebLink shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebLink shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebLink shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebLink shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebLink shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebLink shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

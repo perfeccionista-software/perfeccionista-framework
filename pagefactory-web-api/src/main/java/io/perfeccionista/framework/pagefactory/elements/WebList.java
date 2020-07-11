@@ -17,6 +17,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
 
@@ -24,17 +25,17 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 public interface WebList extends WebChildElement,
         ScrollToElementAvailable<WebListFilter>, ClickToElementAvailable<WebListFilter>, SizeAvailable {
 
-    WebListFilterResult filter(WebListFilter filter);
+    @NotNull WebListFilterResult filter(@NotNull WebListFilter filter);
 
-    <V> MultipleResult<V> extractAll(WebListBlockValueExtractor<V> extractor);
+    @NotNull <V> MultipleResult<V> extractAll(@NotNull WebListBlockValueExtractor<V> extractor);
 
     // Actions
 
     @Override
-    WebList executeAction(String name, Object... args);
+    WebList executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebList executeInteraction(String name, WebChildElement other, Object... args);
+    WebList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -47,39 +48,39 @@ public interface WebList extends WebChildElement,
     // ClickToElement
 
     @Override
-    WebList clickToElement(WebListFilter filter); // Тут нужно еще скроллить к элементу
+    WebList clickToElement(@NotNull WebListFilter filter); // Тут нужно еще скроллить к элементу
 
     // Get Color
 
     @Override
-    WebList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebList componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebList componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -118,39 +119,39 @@ public interface WebList extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebList scrollToElement(WebListFilter filter);
+    WebList scrollToElement(@NotNull WebListFilter filter);
 
     // Size
 
     @Override
-    WebList shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponents
 
     @Override
-    WebList componentShouldBePresent(String componentName);
+    WebList componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebList componentShouldNotBePresent(String componentName);
+    WebList componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebList componentShouldBeDisplayed(String componentName);
+    WebList componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebList componentShouldNotBeDisplayed(String componentName);
+    WebList componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebList shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

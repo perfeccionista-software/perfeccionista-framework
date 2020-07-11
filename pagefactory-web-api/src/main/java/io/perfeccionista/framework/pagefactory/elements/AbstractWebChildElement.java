@@ -23,6 +23,8 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -31,7 +33,6 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessage
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_PROPERTY_NOT_DECLARED;
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.DISPLAYED;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.PRESENTED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
@@ -76,12 +77,6 @@ import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 //  config.put(WebButton.class, new WebButtonImpl().withElementAction(SCROLL_TO_METHOD, JsScrollToWithDelay.class)
 // TODO: Привести во всех имплементациях элементов и методов component -> componentName
 // TODO: Привести к WebChildElement возвращаемые типы и учесть это в обработчике прокси.
-
-
-
-
-
-
 public class AbstractWebChildElement extends AbstractBasicWebElement implements WebChildElement {
 
     protected WebElementInteractionRegistry interactionRegistry;
@@ -89,7 +84,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     protected WebElementActionRegistry actionRegistry;
     protected WebElementIdentifier elementIdentifier;
 
-    public WebLocatorChain getLocatorChainTo(String locatorName) {
+    public @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName) {
         Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
         if (optionalLocator.isPresent()) {
             return getLocatorChain().addLocator(optionalLocator.get());
@@ -97,12 +92,12 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
         return getLocatorChain();
     }
 
-    public WebLocatorChain getLocatorChain() {
+    public @NotNull WebLocatorChain getLocatorChain() {
         return parent.getLocatorChain().addLocator(locatorRegistry.getLocator(ROOT));
     }
 
     @Override
-    public WebElementIdentifier getElementIdentifier() {
+    public @NotNull WebElementIdentifier getElementIdentifier() {
         return elementIdentifier;
     }
 
@@ -112,13 +107,13 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public <T> WebElementActionImplementation<T> getActionImplementation(String actionName, Class<T> returnType) {
+    public @NotNull <T> WebElementActionImplementation<T> getActionImplementation(@NotNull String actionName, @NotNull Class<T> returnType) {
         return actionRegistry.getAction(actionName, returnType)
                 .orElseThrow(() -> new ElementActionNotDeclaredException(ELEMENT_ACTION_NOT_DECLARED.getMessage(actionName)));
     }
 
     @Override
-    public WebElementInteractionImplementation getInteractionImplementation(String interactionName) {
+    public @NotNull WebElementInteractionImplementation getInteractionImplementation(@NotNull String interactionName) {
         return interactionRegistry.getInteraction(interactionName)
                 .orElseThrow(() -> new ElementInteractionNotDeclaredException(ELEMENT_INTERACTION_NOT_DECLARED.getMessage(interactionName)));
     }
@@ -126,7 +121,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     // Actions
 
     @Override
-    public WebChildElement executeAction(String name, Object... args) {
+    public WebChildElement executeAction(@NotNull String name, Object... args) {
         runCheck(getEnvironment(), InvocationName.of(EXECUTE_ACTION, this, name, args), () -> {
             getActionImplementation(name, Void.class)
                     .execute(this, args);
@@ -135,7 +130,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement executeInteraction(String name, WebChildElement other, Object... args) {
+    public WebChildElement executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
         runCheck(getEnvironment(), InvocationName.of(EXECUTE_INTERACTION, this, name, other, args), () -> {
             getInteractionImplementation(name)
                     .execute(this, other, args);
@@ -159,13 +154,13 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     // Color
 
     @Override
-    public Color getColor(String componentName, String cssProperty) {
+    public @NotNull Color getColor(@NotNull String componentName, @NotNull String cssProperty) {
         return runCheck(getEnvironment(), InvocationName.of(GET_COLOR_METHOD, this, componentName, cssProperty),
                 () -> getActionImplementation(GET_COLOR_METHOD, Color.class).execute(this, componentName, cssProperty));
     }
 
     @Override
-    public WebChildElement componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebChildElement componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_COLOR_METHOD, this, componentName, cssProperty, expectedColor),
                 () -> {
                     Color actualColor = getActionImplementation(GET_COLOR_METHOD, Color.class)
@@ -177,7 +172,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebChildElement componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_COLOR_METHOD, this, componentName, cssProperty, expectedColor),
                 () -> {
                     Color actualColor = getActionImplementation(GET_COLOR_METHOD, Color.class)
@@ -191,13 +186,13 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     // Dimensions
 
     @Override
-    public Dimensions getDimensions(String componentName) {
+    public @NotNull Dimensions getDimensions(@NotNull String componentName) {
         return runCheck(getEnvironment(), InvocationName.of(GET_DIMENSIONS_METHOD, this, componentName),
                 () -> getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class).execute(this, componentName));
     }
 
     @Override
-    public WebChildElement componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebChildElement componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_DIMENSIONS_METHOD, this, componentName, expectedDimensions),
                 () -> {
                     Dimensions actualDimensions = getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)
@@ -209,7 +204,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebChildElement componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, this, componentName, expectedDimensions),
                 () -> {
                     Dimensions actualDimensions = getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)
@@ -223,13 +218,13 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     // Location
 
     @Override
-    public Location getLocation(String componentName) {
+    public @NotNull Location getLocation(@NotNull String componentName) {
         return runCheck(getEnvironment(), InvocationName.of(GET_LOCATION_METHOD, this, componentName),
                 () -> getActionImplementation(GET_LOCATION_METHOD, Location.class).execute(this, componentName));
     }
 
     @Override
-    public WebChildElement componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebChildElement componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_LOCATION_METHOD, this, componentName, expectedLocation),
                 () -> {
                     Location actualLocation = getActionImplementation(GET_LOCATION_METHOD, Location.class)
@@ -241,7 +236,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebChildElement componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_LOCATION_METHOD, this, componentName, expectedLocation),
                 () -> {
                     Location actualLocation = getActionImplementation(GET_LOCATION_METHOD, Location.class)
@@ -255,13 +250,13 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     // Screenshot
 
     @Override
-    public Screenshot getScreenshot(String componentName) {
+    public @NotNull Screenshot getScreenshot(@NotNull String componentName) {
         return runCheck(getEnvironment(), InvocationName.of(GET_SCREENSHOT_METHOD, this, componentName),
                 () -> getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class).execute(this, componentName));
     }
 
     @Override
-    public WebChildElement componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebChildElement componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_LOOKS_LIKE_METHOD, this, componentName, expectedScreenshot),
                 () -> {
                     Screenshot actualScreenshot = getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)
@@ -273,7 +268,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebChildElement componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_LOOKS_LIKE_METHOD, this, componentName, expectedScreenshot),
                 () -> {
                     Screenshot actualScreenshot = getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)
@@ -381,40 +376,40 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     // Component
 
     @Override
-    public boolean isComponentPresent(String componentName) {
+    public boolean isComponentPresent(@NotNull String componentName) {
         return runCheck(getEnvironment(), InvocationName.of(IS_COMPONENT_PRESENT_METHOD, this, componentName),
                 () -> getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class).execute(this, componentName));
     }
 
     @Override
-    public boolean isComponentDisplayed(String componentName) {
+    public boolean isComponentDisplayed(@NotNull String componentName) {
         return runCheck(getEnvironment(), InvocationName.of(IS_COMPONENT_DISPLAYED_METHOD, this, componentName),
                 () -> getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class).execute(this, componentName));
     }
 
     @Override
-    public WebChildElement componentShouldBePresent(String componentName) {
+    public WebChildElement componentShouldBePresent(@NotNull String componentName) {
         runCheck(getEnvironment(), InvocationName.of(COMPONENT_SHOULD_BE_PRESENT_METHOD, this, componentName),
                 () -> getActionImplementation(COMPONENT_SHOULD_BE_PRESENT_METHOD, Void.class).execute(this, componentName));
         return this;
     }
 
     @Override
-    public WebChildElement componentShouldNotBePresent(String componentName) {
+    public WebChildElement componentShouldNotBePresent(@NotNull String componentName) {
         runCheck(getEnvironment(), InvocationName.of(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, this, componentName),
                 () -> getActionImplementation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, Void.class).execute(this, componentName));
         return this;
     }
 
     @Override
-    public WebChildElement componentShouldBeDisplayed(String componentName) {
+    public WebChildElement componentShouldBeDisplayed(@NotNull String componentName) {
         runCheck(getEnvironment(), InvocationName.of(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, this, componentName),
                 () -> getActionImplementation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, Void.class).execute(this, componentName));
         return this;
     }
 
     @Override
-    public WebChildElement componentShouldNotBeDisplayed(String componentName) {
+    public WebChildElement componentShouldNotBeDisplayed(@NotNull String componentName) {
         runCheck(getEnvironment(), InvocationName.of(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, this, componentName),
                 () -> getActionImplementation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, Void.class).execute(this, componentName));
         return this;
@@ -423,7 +418,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     // Property
 
     @Override
-    public String getPropertyValue(String propertyName) {
+    public @Nullable String getPropertyValue(@NotNull String propertyName) {
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         return runCheck(getEnvironment(), InvocationName.of(GET_PROPERTY_VALUE_METHOD, this, propertyName),
@@ -431,7 +426,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebChildElement shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_PROPERTY_VALUE_METHOD, this, propertyName, expectedValue),
@@ -445,7 +440,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebChildElement shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedValue),
@@ -459,7 +454,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebChildElement shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, this, propertyName, expectedValue),
@@ -473,7 +468,7 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     }
 
     @Override
-    public WebChildElement shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebChildElement shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> new ElementPropertyNotDeclaredException(ELEMENT_PROPERTY_NOT_DECLARED.getMessage(propertyName)));
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedValue),

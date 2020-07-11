@@ -17,6 +17,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Optional;
@@ -38,23 +39,23 @@ public interface WebTextTable extends WebChildElement,
 
     WebTextTable setTableColumnHolders(Map<String, TableColumnHolder> mappedTableColumnHolders);
 
-    Optional<TableColumnHolder> getTableColumnHolder(String columnName);
+    Optional<TableColumnHolder> getTableColumnHolder(@NotNull String columnName);
 
-    WebTextTableFilterResult filter(WebTextTableFilter filter);
+    @NotNull WebTextTableFilterResult filter(@NotNull WebTextTableFilter filter);
 
-    SingleResult<String> extractHeader(String columnName);
+    @NotNull SingleResult<String> extractHeader(@NotNull String columnName);
 
-    MultipleResult<String> extractAllRows(String columnName);
+    @NotNull MultipleResult<String> extractAllRows(@NotNull String columnName);
 
-    SingleResult<String> extractFooter(String columnName);
+    @NotNull SingleResult<String> extractFooter(@NotNull String columnName);
 
     // Actions
 
     @Override
-    WebTextTable executeAction(String name, Object... args);
+    WebTextTable executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebTextTable executeInteraction(String name, WebChildElement other, Object... args);
+    WebTextTable executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -67,30 +68,31 @@ public interface WebTextTable extends WebChildElement,
     // Get Color
 
     @Override
-    WebTextTable componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextTable componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
+
     @Override
-    WebTextTable componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextTable componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebTextTable componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextTable componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
     @Override
-    WebTextTable componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextTable componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Location
 
     @Override
-    WebTextTable componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebTextTable componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
     @Override
-    WebTextTable componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebTextTable componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebTextTable componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextTable componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
     @Override
-    WebTextTable componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextTable componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -126,39 +128,39 @@ public interface WebTextTable extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebTextTable scrollToElement(WebTextTableFilter filter);
+    WebTextTable scrollToElement(@NotNull WebTextTableFilter filter);
 
     // Size
 
     @Override
-    WebTextTable shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebTextTable shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponent
 
     @Override
-    WebTextTable componentShouldBePresent(String componentName);
+    WebTextTable componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebTextTable componentShouldNotBePresent(String componentName);
+    WebTextTable componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebTextTable componentShouldBeDisplayed(String componentName);
+    WebTextTable componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebTextTable componentShouldNotBeDisplayed(String componentName);
+    WebTextTable componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebTextTable shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextTable shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextTable shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextTable shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

@@ -17,6 +17,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.UL;
@@ -29,10 +30,10 @@ public interface WebTextDropDownList extends WebTextList,
     // Actions
 
     @Override
-    WebTextDropDownList executeAction(String name, Object... args);
+    WebTextDropDownList executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebTextDropDownList executeInteraction(String name, WebChildElement other, Object... args);
+    WebTextDropDownList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -50,7 +51,7 @@ public interface WebTextDropDownList extends WebTextList,
     // ClickToElement
 
     @Override
-    WebTextDropDownList clickToElement(WebTextListFilter filter);
+    WebTextDropDownList clickToElement(@NotNull WebTextListFilter filter);
 
     // Close
 
@@ -60,62 +61,62 @@ public interface WebTextDropDownList extends WebTextList,
     // Get Color
 
     @Override
-    WebTextDropDownList componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextDropDownList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebTextDropDownList componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebTextDropDownList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebTextDropDownList componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextDropDownList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebTextDropDownList componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebTextDropDownList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Label
 
     @Override
-    WebTextDropDownList shouldHaveLabel(StringValue expectedValue);
+    WebTextDropDownList shouldHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextDropDownList shouldHaveLabel(NumberValue<?> expectedValue);
+    WebTextDropDownList shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextDropDownList shouldNotHaveLabel(StringValue expectedValue);
+    WebTextDropDownList shouldNotHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextDropDownList shouldNotHaveLabel(NumberValue<?> expectedValue);
+    WebTextDropDownList shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     // Get Location
 
     @Override
-    WebTextDropDownList componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebTextDropDownList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebTextDropDownList componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebTextDropDownList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebTextDropDownList componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextDropDownList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebTextDropDownList componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebTextDropDownList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // Get Text
 
     @Override
-    WebTextDropDownList shouldHaveText(StringValue expectedValue);
+    WebTextDropDownList shouldHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextDropDownList shouldHaveText(NumberValue<?> expectedValue);
+    WebTextDropDownList shouldHaveText(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextDropDownList shouldNotHaveText(StringValue expectedValue);
+    WebTextDropDownList shouldNotHaveText(@NotNull StringValue expectedValue);
 
     @Override
-    WebTextDropDownList shouldNotHaveText(NumberValue<?> expectedValue);
+    WebTextDropDownList shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
 
     // HoverTo
 
@@ -167,39 +168,39 @@ public interface WebTextDropDownList extends WebTextList,
     // ScrollToElement
 
     @Override
-    WebTextDropDownList scrollToElement(WebTextListFilter filter);
+    WebTextDropDownList scrollToElement(@NotNull WebTextListFilter filter);
 
     // Size
 
     @Override
-    WebTextDropDownList shouldHaveSize(NumberValue<Integer> expectedSize);
+    WebTextDropDownList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
     // WebComponent
 
     @Override
-    WebTextDropDownList componentShouldBePresent(String componentName);
+    WebTextDropDownList componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebTextDropDownList componentShouldNotBePresent(String componentName);
+    WebTextDropDownList componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebTextDropDownList componentShouldBeDisplayed(String componentName);
+    WebTextDropDownList componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebTextDropDownList componentShouldNotBeDisplayed(String componentName);
+    WebTextDropDownList componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebTextDropDownList shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextDropDownList shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebTextDropDownList shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebTextDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebTextDropDownList shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebTextDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

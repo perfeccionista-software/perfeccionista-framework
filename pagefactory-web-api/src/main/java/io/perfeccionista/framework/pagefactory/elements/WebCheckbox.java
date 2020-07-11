@@ -14,6 +14,7 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
@@ -28,10 +29,10 @@ public interface WebCheckbox extends WebChildElement,
     // Actions
 
     @Override
-    WebCheckbox executeAction(String name, Object... args);
+    WebCheckbox executeAction(@NotNull String name, Object... args);
 
     @Override
-    WebCheckbox executeInteraction(String name, WebChildElement other, Object... args);
+    WebCheckbox executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
 
@@ -49,48 +50,48 @@ public interface WebCheckbox extends WebChildElement,
     // Get Color
 
     @Override
-    WebCheckbox componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebCheckbox componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @Override
-    WebCheckbox componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebCheckbox componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     // Get Dimensions
 
     @Override
-    WebCheckbox componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebCheckbox componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     @Override
-    WebCheckbox componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions);
+    WebCheckbox componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
 
     // Get Label
 
     @Override
-    WebCheckbox shouldHaveLabel(StringValue expectedValue);
+    WebCheckbox shouldHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebCheckbox shouldHaveLabel(NumberValue<?> expectedValue);
+    WebCheckbox shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebCheckbox shouldNotHaveLabel(StringValue expectedValue);
+    WebCheckbox shouldNotHaveLabel(@NotNull StringValue expectedValue);
 
     @Override
-    WebCheckbox shouldNotHaveLabel(NumberValue<?> expectedValue);
+    WebCheckbox shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
 
     // Get Location
 
     @Override
-    WebCheckbox componentShouldHaveLocation(String componentName, Location expectedLocation);
+    WebCheckbox componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     @Override
-    WebCheckbox componentShouldNotHaveLocation(String componentName, Location expectedLocation);
+    WebCheckbox componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
 
     // Get Screenshot
 
     @Override
-    WebCheckbox componentShouldLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebCheckbox componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     @Override
-    WebCheckbox componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot);
+    WebCheckbox componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
 
     // HoverTo
 
@@ -145,29 +146,29 @@ public interface WebCheckbox extends WebChildElement,
     // WebComponents
 
     @Override
-    WebCheckbox componentShouldBePresent(String componentName);
+    WebCheckbox componentShouldBePresent(@NotNull String componentName);
 
     @Override
-    WebCheckbox componentShouldNotBePresent(String componentName);
+    WebCheckbox componentShouldNotBePresent(@NotNull String componentName);
 
     @Override
-    WebCheckbox componentShouldBeDisplayed(String componentName);
+    WebCheckbox componentShouldBeDisplayed(@NotNull String componentName);
 
     @Override
-    WebCheckbox componentShouldNotBeDisplayed(String componentName);
+    WebCheckbox componentShouldNotBeDisplayed(@NotNull String componentName);
 
     // WebProperties
 
     @Override
-    WebCheckbox shouldHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebCheckbox shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebCheckbox shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebCheckbox shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
     @Override
-    WebCheckbox shouldNotHavePropertyValue(String propertyName, StringValue expectedValue);
+    WebCheckbox shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
 
     @Override
-    WebCheckbox shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue);
+    WebCheckbox shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetColor;
@@ -44,6 +43,8 @@ import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
@@ -132,13 +133,13 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // Actions
 
     @Override
-    public WebTextBlock executeAction(String actionName, Object... args) {
+    public WebTextBlock executeAction(@NotNull String actionName, Object... args) {
         super.executeAction(actionName, args);
         return this;
     }
 
     @Override
-    public WebTextBlock executeInteraction(String interactionName, WebChildElement other, Object... args) {
+    public WebTextBlock executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
         super.executeInteraction(interactionName, other, args);
         return this;
     }
@@ -160,13 +161,13 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // Get Color
 
     @Override
-    public WebTextBlock componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextBlock componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
 
     @Override
-    public WebTextBlock componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor) {
+    public WebTextBlock componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor) {
         super.componentShouldNotHaveColor(componentName, cssProperty, expectedColor);
         return this;
     }
@@ -174,13 +175,13 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // Get Dimension
 
     @Override
-    public WebTextBlock componentShouldHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextBlock componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldHaveDimensions(componentName, expectedDimensions);
         return this;
     }
 
     @Override
-    public WebTextBlock componentShouldNotHaveDimensions(String componentName, Dimensions expectedDimensions) {
+    public WebTextBlock componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions) {
         super.componentShouldNotHaveDimensions(componentName, expectedDimensions);
         return this;
     }
@@ -188,13 +189,13 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // Get Location
 
     @Override
-    public WebTextBlock componentShouldHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextBlock componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldHaveLocation(componentName, expectedLocation);
         return this;
     }
 
     @Override
-    public WebTextBlock componentShouldNotHaveLocation(String componentName, Location expectedLocation) {
+    public WebTextBlock componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation) {
         super.componentShouldNotHaveLocation(componentName, expectedLocation);
         return this;
     }
@@ -202,13 +203,13 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // Get Screenshot
 
     @Override
-    public WebTextBlock componentShouldLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextBlock componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldLooksLike(componentName, expectedScreenshot);
         return this;
     }
 
     @Override
-    public WebTextBlock componentShouldNotLooksLike(String componentName, Screenshot expectedScreenshot) {
+    public WebTextBlock componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot) {
         super.componentShouldNotLooksLike(componentName, expectedScreenshot);
         return this;
     }
@@ -216,13 +217,13 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // Get Text
 
     @Override
-    public String getText() {
+    public @Nullable String getText() {
         return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
     @Override
-    public WebTextBlock shouldHaveText(StringValue expectedValue) {
+    public WebTextBlock shouldHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -234,7 +235,7 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextBlock shouldHaveText(NumberValue<?> expectedValue) {
+    public WebTextBlock shouldHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -246,7 +247,7 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextBlock shouldNotHaveText(StringValue expectedValue) {
+    public WebTextBlock shouldNotHaveText(@NotNull StringValue expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -258,7 +259,7 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     }
 
     @Override
-    public WebTextBlock shouldNotHaveText(NumberValue<?> expectedValue) {
+    public WebTextBlock shouldNotHaveText(@NotNull NumberValue<?> expectedValue) {
         runCheck(getEnvironment(), InvocationName.of(SHOULD_NOT_HAVE_NUMBER_METHOD, this, expectedValue),
                 () -> {
                     String actualText = getActionImplementation(GET_TEXT_METHOD, String.class)
@@ -330,25 +331,25 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // WebComponents
 
     @Override
-    public WebTextBlock componentShouldBePresent(String componentName) {
+    public WebTextBlock componentShouldBePresent(@NotNull String componentName) {
         super.componentShouldBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextBlock componentShouldNotBePresent(String componentName) {
+    public WebTextBlock componentShouldNotBePresent(@NotNull String componentName) {
         super.componentShouldNotBePresent(componentName);
         return this;
     }
 
     @Override
-    public WebTextBlock componentShouldBeDisplayed(String componentName) {
+    public WebTextBlock componentShouldBeDisplayed(@NotNull String componentName) {
         super.componentShouldBeDisplayed(componentName);
         return this;
     }
 
     @Override
-    public WebTextBlock componentShouldNotBeDisplayed(String componentName) {
+    public WebTextBlock componentShouldNotBeDisplayed(@NotNull String componentName) {
         super.componentShouldNotBeDisplayed(componentName);
         return this;
     }
@@ -356,33 +357,27 @@ public class WebTextBlockSeleniumImpl extends AbstractWebChildElement implements
     // WebProperties
 
     @Override
-    public WebTextBlock shouldHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextBlock shouldHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextBlock shouldNotHavePropertyValue(String propertyName, StringValue expectedValue) {
+    public WebTextBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
 
     @Override
-    public WebTextBlock shouldNotHavePropertyValue(String propertyName, NumberValue<?> expectedValue) {
+    public WebTextBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue) {
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
-    }
-
-    // TODO: Implement
-    @Override
-    public JsonNode toJson() {
-        return super.toJson();
     }
 
 }

@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvai
 import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
 import io.perfeccionista.framework.plugin.Color;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_COLOR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_COLOR_METHOD;
@@ -13,14 +14,14 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 public interface GetColorAvailable extends WebLocatorChainAvailable {
 
     @MappedElementAction(GET_COLOR_METHOD)
-    Color getColor(String componentName, String cssProperty);
+    @NotNull Color getColor(@NotNull String componentName, @NotNull String cssProperty);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_HAVE_COLOR_METHOD)
-    WebChildElement componentShouldHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebChildElement componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
     @AssertMethodType
     @MappedElementAction(SHOULD_NOT_HAVE_COLOR_METHOD)
-    WebChildElement componentShouldNotHaveColor(String componentName, String cssProperty, Color expectedColor);
+    WebChildElement componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
 
 }
