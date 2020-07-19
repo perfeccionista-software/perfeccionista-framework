@@ -16,8 +16,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.TableColumnHolder;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
@@ -27,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -59,14 +59,14 @@ public class WebPageFactory {
         return decorator.decorateWebPageInstance(webPageInstance, webPageElementRegistry);
     }
 
-    public Map<Integer, WebMappedBlock> createWebListBlocks(WebList parent, WebListFilterResult filterResult) {
-        Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder liLocatorHolder = parent.getLocator(LI)
+    public Map<Integer, WebMappedBlock> createWebListBlocks(WebList webList, WebFilterResult filter) {
+        String hash = filter.getHash();
+        Set<Integer> indexes = filter.getIndexes();
+        WebLocatorHolder liLocatorHolder = webList.getLocator(LI)
                 .orElseThrow(() ->
                         new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(LI))
-                                .addAttachmentEntry(JsonAttachmentEntry.of("Element", parent.toJson())));
-        String hash = filterResult.getHash();
-        Class<? extends WebMappedBlock> mappedBlockClass = readField("mappedBlockClass", parent);
+                                .addAttachmentEntry(JsonAttachmentEntry.of("Element", webList.toJson())));
+        Class<? extends WebMappedBlock> mappedBlockClass = readField("mappedBlockClass", webList);
         Map<Integer, WebMappedBlock> webMappedBlocks = new HashMap<>();
         for (int index : indexes) {
             WebMappedBlock webMappedBlockInstance = initializer.initWebMappedBlock(mappedBlockClass);
@@ -74,24 +74,25 @@ public class WebPageFactory {
             WebElementRegistry elementRegistry = createWebChildElements(webMappedBlockInstance, childElementMethods);
             Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
             parentLocators.add(liLocatorHolder.clone().setSingle(true).setIndex(index));
-            WebParentInfo<WebList> parentInfo = WebParentInfo.of(parent, hash, parentLocators);
-            webMappedBlocks.put(index, decorator.decorateWebMappedBlockInstance(parent, webMappedBlockInstance, elementRegistry, parentInfo));
+            WebParentInfo<WebList> parentInfo = WebParentInfo.of(webList, hash, parentLocators);
+            webMappedBlocks.put(index, decorator.decorateWebMappedBlockInstance(webList, webMappedBlockInstance, elementRegistry, parentInfo));
         }
         return webMappedBlocks;
     }
 
-    public Map<Integer, WebMappedBlock> createWebTableCells(WebTable parent, String columnName, WebTableFilterResult filterResult) {
+    public Map<Integer, WebMappedBlock> createWebTableCells(WebTable webTable, String columnName, WebFilterResult filterResult) {
+        String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder tableRowLocator = parent.getLocator(TBODY_ROW)
+        WebLocatorHolder tableRowLocator = webTable.getLocator(TBODY_ROW)
                 .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(TBODY_ROW))
-                        .addAttachmentEntry(JsonAttachmentEntry.of("Element", parent.toJson())));
-        TableColumnHolder tableColumnHolder = parent.getTableColumnHolder(columnName)
+                        .addAttachmentEntry(JsonAttachmentEntry.of("Element", webTable.toJson())));
+        Map<String, TableColumnHolder> tableColumnHolders = readField("tableColumnHolders", webTable);
+        TableColumnHolder tableColumnHolder = Optional.ofNullable(tableColumnHolders.get(columnName))
                 .orElseThrow(() -> new TableColumnNotDeclaredException(
-                        TABLE_COLUMN_NOT_DECLARED.getMessage(columnName, parent.getElementIdentifier().getLastUsedName())));
+                        TABLE_COLUMN_NOT_DECLARED.getMessage(columnName, webTable.getElementIdentifier().getLastUsedName())));
         WebLocatorHolder tableColumnLocator = tableColumnHolder.getBodyLocator()
                 .orElseThrow(() -> new TableColumnLocatorNotDeclaredException(
-                        TABLE_COLUMN_LOCATOR_NOT_DECLARED.getMessage(columnName, parent.getElementIdentifier().getLastUsedName())));
-        String hash = filterResult.getHash();
+                        TABLE_COLUMN_LOCATOR_NOT_DECLARED.getMessage(columnName, webTable.getElementIdentifier().getLastUsedName())));
         Class<? extends WebMappedBlock> mappedCellClass = tableColumnHolder.getBodyClass();
         Map<Integer, WebMappedBlock> webMappedCells = new HashMap<>();
         for (int index : indexes) {
@@ -101,8 +102,8 @@ public class WebPageFactory {
             Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
             parentLocators.add(tableRowLocator.clone().setSingle(true).setIndex(index));
             parentLocators.add(tableColumnLocator.clone());
-            WebParentInfo<WebTable> parentInfo = WebParentInfo.of(parent, hash, parentLocators);
-            webMappedCells.put(index, decorator.decorateWebMappedBlockInstance(parent, webMappedBlockInstance, elementRegistry, parentInfo));
+            WebParentInfo<WebTable> parentInfo = WebParentInfo.of(webTable, hash, parentLocators);
+            webMappedCells.put(index, decorator.decorateWebMappedBlockInstance(webTable, webMappedBlockInstance, elementRegistry, parentInfo));
         }
         return webMappedCells;
     }

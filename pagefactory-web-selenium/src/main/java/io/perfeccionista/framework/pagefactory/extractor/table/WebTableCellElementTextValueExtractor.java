@@ -4,7 +4,6 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
 
 // TODO: Для пустого фильтра возвращаем все значения
 public class WebTableCellElementTextValueExtractor implements WebTableCellValueExtractor<String> {
@@ -33,7 +32,7 @@ public class WebTableCellElementTextValueExtractor implements WebTableCellValueE
     }
 
     @Override
-    public MultipleResult<String> extractValues(WebTable element, WebTableFilterResult filter) {
+    public MultipleResult<String> extractValues(WebTable element, WebTableFilter filter) {
         // Вся логика извлечения и фильтрации здесь
 
         return null;

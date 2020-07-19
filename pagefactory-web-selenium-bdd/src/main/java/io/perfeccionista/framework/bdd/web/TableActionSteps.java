@@ -5,8 +5,8 @@ import io.perfeccionista.framework.bdd.EnvironmentAvailable;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -20,7 +20,7 @@ public class TableActionSteps implements EnvironmentAvailable {
     @Given("user scrolls the {webElement} to row with")
     @Given("пользователь прокручивает {webElement} до строки, в которой")
     public void userScrollsTableToElement(WebElementParameter<WebTable> elementFinder,
-                                          WebTableFilter itemFilter) {
+                                          WebTableFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .scrollToElement(itemFilter));
@@ -34,7 +34,7 @@ public class TableActionSteps implements EnvironmentAvailable {
     @Given("user scrolls the {webElement} to row")
     @Given("пользователь прокручивает {webElement} до строки")
     public void userScrollsTextTableToElement(WebElementParameter<WebTextTable> elementFinder,
-                                              WebTextTableFilter itemFilter) {
+                                              WebTextTableFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .scrollToElement(itemFilter));

@@ -22,7 +22,7 @@ import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotH
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -109,7 +109,7 @@ public class WebDropDownListSeleniumImpl extends WebListSeleniumImpl implements 
     // ClickToElement
 
     @Override
-    public WebDropDownList clickToElement(@NotNull WebListFilter filter) {
+    public WebDropDownList clickToElement(@NotNull WebListFilterBuilder filter) {
         super.clickToElement(filter);
         return this;
     }
@@ -383,7 +383,7 @@ public class WebDropDownListSeleniumImpl extends WebListSeleniumImpl implements 
     // ScrollToElement
 
     @Override
-    public WebDropDownList scrollToElement(@NotNull WebListFilter filter) {
+    public WebDropDownList scrollToElement(@NotNull WebListFilterBuilder filter) {
         super.scrollToElement(filter);
         return this;
     }

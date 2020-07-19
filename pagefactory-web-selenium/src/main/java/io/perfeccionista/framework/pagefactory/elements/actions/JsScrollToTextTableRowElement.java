@@ -8,8 +8,8 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableRowIndexExtractor;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -24,9 +24,9 @@ public class JsScrollToTextTableRowElement implements WebElementActionImplementa
     @Override
     public Void execute(WebChildElement element, Object... args) {
         WebTextTable table = (WebTextTable) element;
-        WebTextTableFilter filter = (WebTextTableFilter) args[0];
-        WebTextTableFilterResult textTableFilterResult = filter.filter(table);
-        SingleResult<Integer> foundIndex = textTableFilterResult
+        WebTextTableFilterBuilder filter = (WebTextTableFilterBuilder) args[0];
+        WebTextTableFilter tableFilter = filter.build(table);
+        SingleResult<Integer> foundIndex = tableFilter
                 .extractOneRow(new WebTextTableRowIndexExtractor());
 
         // Create locator chain instance for scrolling with hash check
@@ -35,7 +35,7 @@ public class JsScrollToTextTableRowElement implements WebElementActionImplementa
                 .setSingle(true)
                 .setIndex(foundIndex.getIndex());
         WebLocatorChain locatorChainForScroll = table.getLocatorChain()
-                .addExpectedHashToLastLocator(textTableFilterResult.getHash())
+                .addExpectedHashToLastLocator(tableFilter.getResult().getHash())
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation
@@ -51,9 +51,9 @@ public class JsScrollToTextTableRowElement implements WebElementActionImplementa
     @Override
     public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
         WebTextTable table = (WebTextTable) element;
-        WebTextTableFilter filter = (WebTextTableFilter) args[0];
-        WebTextTableFilterResult textTableFilterResult = filter.filter(table);
-        SingleResult<Integer> foundIndex = textTableFilterResult
+        WebTextTableFilterBuilder filter = (WebTextTableFilterBuilder) args[0];
+        WebTextTableFilter tableFilter = filter.build(table);
+        SingleResult<Integer> foundIndex = tableFilter
                 .extractOneRow(new WebTextTableRowIndexExtractor());
 
         // Create locator chain instance for scrolling with hash check
@@ -62,7 +62,7 @@ public class JsScrollToTextTableRowElement implements WebElementActionImplementa
                 .setSingle(true)
                 .setIndex(foundIndex.getIndex());
         WebLocatorChain locatorChainForScroll = table.getLocatorChain()
-                .addExpectedHashToLastLocator(textTableFilterResult.getHash())
+                .addExpectedHashToLastLocator(tableFilter.getResult().getHash())
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation

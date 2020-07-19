@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.radio;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowConditionHolder;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -49,7 +49,7 @@ public class WebRadioButtonLabelCondition implements WebRadioButtonCondition {
     }
 
     @Override
-    public @NotNull WebConditionProcessingResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
         return null;
     }
 

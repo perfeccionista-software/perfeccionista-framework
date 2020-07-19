@@ -14,8 +14,8 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -66,7 +66,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} содержит {integerValue} блок(а|ов), в котор(ом|ых)")
     public void filteredListHasSize(WebElementParameter<WebList> elementFinder,
                                     ValueIntegerParameter integerValue,
-                                    WebListFilter itemFilter) {
+                                    WebListFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
@@ -83,7 +83,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} содержит {integerValue} значени(е|я|й)")
     public void filteredTextListHasSize(WebElementParameter<WebTextList> elementFinder,
                                         ValueIntegerParameter integerValue,
-                                        WebTextListFilter itemFilter) {
+                                        WebTextListFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
@@ -144,7 +144,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
                                    @SourceParameterRef("elementFinder") WebBlockElementParameter<WebChildElement> blockElementFinder,
                                    StringComparatorTypeParameter comparatorType,
                                    SortDirectionParameter sortDirection,
-                                   WebListFilter itemFilter) {
+                                   WebListFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
@@ -164,7 +164,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
     public void filteredTextListSorted(WebElementParameter<WebTextList> elementFinder,
                                        StringComparatorTypeParameter comparatorType,
                                        SortDirectionParameter sortDirection,
-                                       WebTextListFilter itemFilter) {
+                                       WebTextListFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)

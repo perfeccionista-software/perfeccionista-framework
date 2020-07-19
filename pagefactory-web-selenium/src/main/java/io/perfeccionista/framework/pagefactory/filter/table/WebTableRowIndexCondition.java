@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
@@ -28,12 +28,12 @@ public class WebTableRowIndexCondition implements WebTableRowCondition {
 
     private final Deque<WebTableRowConditionHolder> childConditions = new ArrayDeque<>();
 
-    private final NumberValue<Integer> value;
+    private final NumberValue<Integer> expectedValue;
 
     private boolean inverse = false;
 
-    public WebTableRowIndexCondition(NumberValue<Integer> value) {
-        this.value = value;
+    public WebTableRowIndexCondition(NumberValue<Integer> expectedValue) {
+        this.expectedValue = expectedValue;
     }
 
     @Override
@@ -60,8 +60,7 @@ public class WebTableRowIndexCondition implements WebTableRowCondition {
     }
 
     @Override
-    public @NotNull WebConditionProcessingResult process(@NotNull WebTable element, @Nullable String hash) {
-        // TODO: Добавить логику inverse
+    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
         WebLocatorChain locatorChain = element.getLocatorChain();
         WebLocatorHolder tableLocatorHolder = locatorChain.getLastLocator();
         tableLocatorHolder.setCalculateHash(true);
@@ -78,16 +77,24 @@ public class WebTableRowIndexCondition implements WebTableRowCondition {
         operationResult.ifException(exception -> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
-        // TODO: После отладки написатть правильные сообщения об ошибке
+        // TODO: После отладки написать правильные сообщения об ошибке
         String returnedHash = operationResult.getJsWebLocatorProcessingResult(tableLocatorHolder.getLocatorId())
                 .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
         Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
-        Set<Integer> matchedIndices = indexes.stream()
-                .filter(value::check)
-                .collect(Collectors.toSet());
-        return WebConditionProcessingResult.of(matchedIndices, returnedHash);
+        return WebFilterResult.of(getMatches(indexes), returnedHash);
+    }
+
+    private Set<Integer> getMatches(Set<Integer> indexes) {
+        Set<Integer> matches = new HashSet<>();
+        indexes.forEach(index -> {
+            boolean check = expectedValue.check(index);
+            if ((check && !inverse) || (!check && inverse)) {
+                matches.add(index);
+            }
+        });
+        return matches;
     }
 
 }

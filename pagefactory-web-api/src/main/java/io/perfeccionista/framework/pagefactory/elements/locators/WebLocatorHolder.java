@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.utils.JsonUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -82,7 +83,7 @@ public class WebLocatorHolder {
         return this;
     }
 
-    public WebLocatorHolder setExpectedHash(String expectedHash) {
+    public WebLocatorHolder setExpectedHash(@Nullable String expectedHash) {
         this.expectedHash = expectedHash;
         return this;
     }

@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -52,13 +52,11 @@ public class WebTableRowElementEmptyCondition implements WebTableRowCondition {
     }
 
     @Override
-    public @NotNull WebConditionProcessingResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
         WebLocatorChain locatorChain = element.getLocatorChain();
-        WebLocatorHolder tableLocatorHolder = locatorChain.getLastLocator();
-        tableLocatorHolder.setCalculateHash(true);
-        if (hash != null) {
-            tableLocatorHolder.setExpectedHash(hash);
-        }
+        WebLocatorHolder tableLocatorHolder = locatorChain.getLastLocator()
+                .setCalculateHash(true)
+                .setExpectedHash(hash);
         WebLocatorHolder tableRowLocatorHolder = element
                 .getLocator(WebComponents.TBODY_ROW)
                 .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(TBODY_ROW)));
@@ -75,7 +73,7 @@ public class WebTableRowElementEmptyCondition implements WebTableRowCondition {
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
         Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
-        return WebConditionProcessingResult.of(indexes, returnedHash);
+        return WebFilterResult.of(indexes, returnedHash);
     }
 
 }

@@ -14,7 +14,6 @@ import io.perfeccionista.framework.pagefactory.elements.actions.JsGetScreenshot;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsGetSize;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsScrollTo;
 import io.perfeccionista.framework.pagefactory.elements.actions.JsScrollToTableRowElement;
-import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
 import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumHoverTo;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
 import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldBeInFocus;
@@ -43,18 +42,16 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Optional;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
@@ -143,33 +140,31 @@ public class WebTableSeleniumImpl extends AbstractWebChildElement implements Web
     protected Map<String, TableColumnHolder> tableColumnHolders;
 
     @Override
-    public Optional<TableColumnHolder> getTableColumnHolder(@NotNull String columnName) {
-        return Optional.ofNullable(tableColumnHolders.get(columnName));
-    }
-
-    @Override
-    public @NotNull WebTableFilterResult filter(@NotNull WebTableFilter filter) {
-        return filter.filter(this);
+    public @NotNull WebTableFilter filter(@NotNull WebTableFilterBuilder filterBuilder) {
+        return filterBuilder.build(this);
     }
 
     @Override
     public @NotNull <V> SingleResult<V> extractHeader(@NotNull WebTableCellValueExtractor<V> extractor) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_HEADER_FILTER, this, extractor),
-                () -> new WebTableFilterSeleniumImpl().filter(this)
+                () -> new WebTableFilterBuilderSeleniumImpl().build(this)
                         .extractHeader(extractor));
     }
 
     @Override
     public @NotNull <V> MultipleResult<V> extractAllRows(@NotNull WebTableCellValueExtractor<V> extractor) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_ROWS_FILTER, this, extractor),
-                () -> new WebTableFilterSeleniumImpl().filter(this)
+                () -> new WebTableFilterBuilderSeleniumImpl().build(this)
                         .extractAllRows(extractor));
     }
 
     @Override
     public @NotNull <V> SingleResult<V> extractFooter(@NotNull WebTableCellValueExtractor<V> extractor) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_FOOTER_FILTER, this, extractor),
-                () -> new WebTableFilterSeleniumImpl().filter(this)
+                () -> new WebTableFilterBuilderSeleniumImpl().build(this)
                         .extractFooter(extractor));
     }
 
@@ -318,7 +313,7 @@ public class WebTableSeleniumImpl extends AbstractWebChildElement implements Web
     // ScrollToElement
 
     @Override
-    public WebTable scrollToElement(@NotNull WebTableFilter filter) {
+    public WebTable scrollToElement(@NotNull WebTableFilterBuilder filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;

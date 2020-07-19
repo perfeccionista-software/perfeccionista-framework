@@ -4,7 +4,7 @@ import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -37,7 +37,7 @@ public class ListElementsTest extends AbstractUiTest {
     /**
      * Проверки выполняемые со списком, состоящим из блоков с несколькими элементами
      *
-     * {@link WebListFilter}
+     * {@link WebListFilterBuilder}
      * позволяют отфильтровать получаемый результат по необходимым условиям. Условий может быть неограниченное количество.
      * Одно условие требует один запрос. Особенностью использования фильтров является проверка элемента на изменения, то есть, если в процессе
      * выполнения запросов состояние элемента поменяется, то вся операция будет выполнена заново.
@@ -169,7 +169,7 @@ public class ListElementsTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(5));
 
         // Case: Получить экземпляр блока, в котором ссылка 'short name' ведет на адрес 'https://ru.wikipedia.org/wiki/Австралия'
-        WebListFilter elementPropertyValueFilter = with(containsProperty(from(CountryNameBlock.class).shortName(), "Wiki link",
+        WebListFilterBuilder elementPropertyValueFilter = with(containsProperty(from(CountryNameBlock.class).shortName(), "Wiki link",
                 value.stringEquals("https://ru.wikipedia.org/wiki/Австралия")));
         SingleResult<CountryNameBlock> filteredByElementPropertyValueBlock = ulElementsPage.webList()
                 .filter(elementPropertyValueFilter)
@@ -182,7 +182,7 @@ public class ListElementsTest extends AbstractUiTest {
                 .extractAll(block(CountryNameBlock.class));
 
         // Case: Получить все экземпляр блоков, в которых номер страны больше 77 и короткое имя страны НЕ содержит 'na'
-        WebListFilter multipleFilter = with(containsText(from(CountryNameBlock.class).number(), value.intGreaterThan(77)))
+        WebListFilterBuilder multipleFilter = with(containsText(from(CountryNameBlock.class).number(), value.intGreaterThan(77)))
                 .subtract(containsText(from(CountryNameBlock.class).shortName(), value.stringContains("na")));
         MultipleResult<CountryNameBlock> filteredByMultipleConditionsBlocks = ulElementsPage.webList()
                 .filter(multipleFilter)
@@ -190,7 +190,7 @@ public class ListElementsTest extends AbstractUiTest {
 
         // В любых условиях, использующих ссылку на элемент вместо указания на поле можно использовать имя элемента, заданное аннотацией @Name
         // Case: Получить все экземпляр блоков, в которых номер страны больше 77 и короткое имя страны НЕ содержит 'na'
-        WebListFilter multipleFilterByName = with(containsText("Number", value.intGreaterThan(77)))
+        WebListFilterBuilder multipleFilterByName = with(containsText("Number", value.intGreaterThan(77)))
                 .subtract(containsText("Short name", value.stringContains("na")));
         MultipleResult<CountryNameBlock> filteredByMultipleConditionsBlocksByName = ulElementsPage.webList()
                 .filter(multipleFilter)

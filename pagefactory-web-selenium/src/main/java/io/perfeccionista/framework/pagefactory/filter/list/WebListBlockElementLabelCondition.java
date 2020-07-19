@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.list;
 
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
@@ -75,7 +75,7 @@ public class WebListBlockElementLabelCondition implements WebListBlockCondition 
     }
 
     @Override
-    public WebConditionProcessingResult process(@NotNull WebList element, @Nullable String hash) {
+    public WebFilterResult process(@NotNull WebList element, @Nullable String hash) {
         // TODO: Implement
         return null;
     }

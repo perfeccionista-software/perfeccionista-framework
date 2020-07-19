@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.texttable;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextBlockConditionHolder;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +41,7 @@ public class WebTextTableRowIndexCondition implements WebTextTableRowCondition {
     }
 
     @Override
-    public @NotNull WebConditionProcessingResult process(@NotNull WebTextList element, @Nullable String hash) {
+    public @NotNull WebFilterResult process(@NotNull WebTextList element, @Nullable String hash) {
         return null;
     }
 }

@@ -5,7 +5,7 @@ import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -68,7 +68,7 @@ public class WebTextAutocompleteSeleniumImpl extends WebTextDropDownListSelenium
     // ClickToElement
 
     @Override
-    public WebTextAutocomplete clickToElement(@NotNull WebTextListFilter filter) {
+    public WebTextAutocomplete clickToElement(@NotNull WebTextListFilterBuilder filter) {
         super.clickToElement(filter);
         return this;
     }
@@ -272,7 +272,7 @@ public class WebTextAutocompleteSeleniumImpl extends WebTextDropDownListSelenium
     // ScrollToElement
 
     @Override
-    public WebTextAutocomplete scrollToElement(@NotNull WebTextListFilter filter) {
+    public WebTextAutocomplete scrollToElement(@NotNull WebTextListFilterBuilder filter) {
         super.scrollToElement(filter);
         return this;
     }

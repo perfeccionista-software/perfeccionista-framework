@@ -4,7 +4,6 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
 
 public class WebTableCellElementExtractor<T extends WebChildElement> implements WebTableCellValueExtractor<T> {
 
@@ -35,7 +34,7 @@ public class WebTableCellElementExtractor<T extends WebChildElement> implements 
     }
 
     @Override
-    public MultipleResult<T> extractValues(WebTable element, WebTableFilterResult filter) {
+    public MultipleResult<T> extractValues(WebTable element, WebTableFilter filter) {
         // Вся логика извлечения и фильтрации здесь
 
         return null;

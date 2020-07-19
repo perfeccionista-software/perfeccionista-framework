@@ -10,8 +10,8 @@ import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementA
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilter;
-import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterResult;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -22,9 +22,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 
 @WebLocator(component = RADIO, xpath = ".//input", single = false)
 public interface WebRadioGroup extends WebChildElement,
-        ScrollToElementAvailable<WebRadioButtonFilter>, SizeAvailable {
+        ScrollToElementAvailable<WebRadioButtonFilterBuilder>, SizeAvailable {
 
-    @NotNull WebRadioButtonFilterResult filter(@NotNull WebRadioButtonFilter filter);
+    @NotNull WebRadioButtonFilter filter(@NotNull WebRadioButtonFilterBuilder filterBuilder);
 
     @NotNull <V> MultipleResult<V> extractAll(@NotNull WebRadioButtonValueExtractor<V> extractor);
 
@@ -119,7 +119,7 @@ public interface WebRadioGroup extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebRadioGroup scrollToElement(@NotNull WebRadioButtonFilter filter);
+    WebRadioGroup scrollToElement(@NotNull WebRadioButtonFilterBuilder filter);
 
     // Size
 

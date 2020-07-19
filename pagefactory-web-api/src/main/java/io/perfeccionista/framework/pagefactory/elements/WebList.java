@@ -11,8 +11,8 @@ import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementA
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -23,9 +23,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 
 @WebLocator(component = LI, xpath = ".//li", single = false)
 public interface WebList extends WebChildElement,
-        ScrollToElementAvailable<WebListFilter>, ClickToElementAvailable<WebListFilter>, SizeAvailable {
+        ScrollToElementAvailable<WebListFilterBuilder>, ClickToElementAvailable<WebListFilterBuilder>, SizeAvailable {
 
-    @NotNull WebListFilterResult filter(@NotNull WebListFilter filter);
+    @NotNull WebListFilter filter(@NotNull WebListFilterBuilder filterBuilder);
 
     @NotNull <V> MultipleResult<V> extractAll(@NotNull WebListBlockValueExtractor<V> extractor);
 
@@ -48,7 +48,7 @@ public interface WebList extends WebChildElement,
     // ClickToElement
 
     @Override
-    WebList clickToElement(@NotNull WebListFilter filter); // Тут нужно еще скроллить к элементу
+    WebList clickToElement(@NotNull WebListFilterBuilder filter); // Тут нужно еще скроллить к элементу
 
     // Get Color
 
@@ -119,7 +119,7 @@ public interface WebList extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebList scrollToElement(@NotNull WebListFilter filter);
+    WebList scrollToElement(@NotNull WebListFilterBuilder filter);
 
     // Size
 

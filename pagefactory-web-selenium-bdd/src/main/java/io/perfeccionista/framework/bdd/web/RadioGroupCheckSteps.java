@@ -6,7 +6,7 @@ import io.perfeccionista.framework.bdd.parameters.ValueIntegerParameter;
 import io.perfeccionista.framework.bdd.parameters.ValueStringParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
-import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilter;
+import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilder;
 import io.perfeccionista.framework.value.ValueService;
 import io.perfeccionista.framework.value.number.NumberValue;
 
@@ -41,7 +41,7 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
     @Given("в {webElement} содержится {integerValue} кноп(ка|ки|ок)")
     public void filteredRadioGroupHasSize(WebElementParameter<WebRadioGroup> elementFinder,
                                           ValueIntegerParameter integerValue,
-                                          WebRadioButtonFilter itemFilter) {
+                                          WebRadioButtonFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)

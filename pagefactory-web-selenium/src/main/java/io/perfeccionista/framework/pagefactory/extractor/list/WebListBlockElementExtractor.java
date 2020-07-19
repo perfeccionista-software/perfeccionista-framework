@@ -7,8 +7,9 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.factory.proxy.mock.WebElementMock;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.filter.WebMultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -34,7 +35,8 @@ public class WebListBlockElementExtractor<T extends WebChildElement> implements 
     }
 
     @Override
-    public MultipleResult<T> extractValues(WebList element, WebListFilterResult filterResult) {
+    public MultipleResult<T> extractValues(WebList element, WebListFilter filter) {
+        WebFilterResult filterResult = filter.getResult();
         if (filterResult.getIndexes().isEmpty()) {
             return new WebMultipleResult<>();
         }

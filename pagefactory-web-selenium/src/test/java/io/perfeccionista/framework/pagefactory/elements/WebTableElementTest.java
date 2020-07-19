@@ -22,7 +22,7 @@ import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage.CheckboxWebMappedBlock;
@@ -517,7 +517,7 @@ class WebTableElementTest extends AbstractUiTest {
         table.filter(without(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Self").inverse()))
                 .shouldHaveSize(value.intEquals(193));
 
-        WebTableFilterResult filterResult = table
+        WebTableFilter filterResult = table
                 .filter(with(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Unknown")));
         NumberValue<Integer> expectedValue = value.intEquals(200);
         assertThrows(LocatorNotDeclaredException.class, () -> filterResult.shouldHaveSize(expectedValue));
@@ -544,7 +544,7 @@ class WebTableElementTest extends AbstractUiTest {
         table.filter(without(componentDisplayed(POPULATION, from(PopulationWebMappedBlock.class).populationUnit(), "Self").inverse()))
                 .shouldHaveSize(value.intEquals(186));
 
-        WebTableFilterResult filterResult = table
+        WebTableFilter filterResult = table
                 .filter(with(componentDisplayed(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Unknown")));
         NumberValue<Integer> expectedValue = value.intEquals(200);
         assertThrows(LocatorNotDeclaredException.class, () -> filterResult.shouldHaveSize(expectedValue));

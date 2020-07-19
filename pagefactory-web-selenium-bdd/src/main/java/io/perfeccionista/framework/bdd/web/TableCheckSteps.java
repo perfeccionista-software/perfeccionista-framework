@@ -14,8 +14,8 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -45,7 +45,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} содержит {integerValue} строк(а|и), в которых")
     public void filteredTableHasSize(WebElementParameter<WebTable> elementFinder,
                                      ValueIntegerParameter integerValue,
-                                     WebTableFilter itemFilter) {
+                                     WebTableFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
@@ -62,7 +62,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} содержится {integerValue} строк(а|и)")
     public void filteredTextTableHasSize(WebElementParameter<WebTextTable> elementFinder,
                                          ValueIntegerParameter integerValue,
-                                         WebTextTableFilter itemFilter) {
+                                         WebTextTableFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
@@ -128,7 +128,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
                                     @SourceParameterRef("elementFinder") WebBlockElementParameter<WebChildElement> blockElementFinder,
                                     StringComparatorTypeParameter comparatorType,
                                     SortDirectionParameter sortDirection,
-                                    WebTableFilter itemFilter) {
+                                    WebTableFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
@@ -149,7 +149,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
                                         @SourceParameterRef("elementFinder") WebTableColumnParameter webTableColumn,
                                         StringComparatorTypeParameter comparatorType,
                                         SortDirectionParameter sortDirection,
-                                        WebTextTableFilter itemFilter) {
+                                        WebTextTableFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)

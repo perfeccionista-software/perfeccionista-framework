@@ -1,20 +1,23 @@
 package io.perfeccionista.framework.pagefactory.filter.list;
 
-import io.perfeccionista.framework.pagefactory.elements.WebList;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebFilter;
+import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Deque;
-
-public interface WebListFilter extends WebFilter<WebList, WebListFilterResult> {
-
-    WebListFilter add(@NotNull WebListBlockCondition condition);
-
-    WebListFilter subtract(@NotNull WebListBlockCondition condition);
+public interface WebListFilter extends WebFilter {
 
     @Override
-    @NotNull WebListFilterResult filter(@NotNull WebList element);
+    WebListFilter setInitialHash(@Nullable String initialHash);
 
-    Deque<WebListBlockConditionHolder> getConditions();
+    @Override
+    WebListFilter shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
+
+    @NotNull <T> SingleResult<T> extractOne(@NotNull WebListBlockValueExtractor<T> extractor);
+
+    @NotNull <T> MultipleResult<T> extractAll(@NotNull WebListBlockValueExtractor<T> extractor);
 
 }

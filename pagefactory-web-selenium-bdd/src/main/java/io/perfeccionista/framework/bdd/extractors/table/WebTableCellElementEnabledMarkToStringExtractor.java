@@ -4,7 +4,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementEnabledMarkExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 
 public class WebTableCellElementEnabledMarkToStringExtractor implements WebTableCellValueExtractor<String> {
 
@@ -30,9 +30,9 @@ public class WebTableCellElementEnabledMarkToStringExtractor implements WebTable
     }
 
     @Override
-    public MultipleResult<String> extractValues(WebTable element, WebTableFilterResult filterResult) {
+    public MultipleResult<String> extractValues(WebTable element, WebTableFilter filter) {
         return new WebTableCellElementEnabledMarkExtractor(columnName, elementName)
-                .extractValues(element, filterResult)
+                .extractValues(element, filter)
                 .convert(enabledMark -> enabledMark ? "1" : "0");
     }
 

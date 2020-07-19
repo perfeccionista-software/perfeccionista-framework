@@ -8,9 +8,9 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebConditions;
+import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilter;
-import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -34,41 +34,45 @@ import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implements WebRadioGroup {
 
     @Override
-    public @NotNull WebRadioButtonFilterResult filter(@NotNull WebRadioButtonFilter filter) {
-        return filter.filter(this);
+    public @NotNull WebRadioButtonFilter filter(@NotNull WebRadioButtonFilterBuilder filterBuilder) {
+        return filterBuilder.build(this);
     }
 
     @Override
     public @NotNull <V> MultipleResult<V> extractAll(@NotNull WebRadioButtonValueExtractor<V> extractor) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_METHOD, this, extractor),
-                () -> new WebRadioButtonFilterSeleniumImpl()
-                        .filter(this)
+                () -> new WebRadioButtonFilterBuilderSeleniumImpl()
+                        .build(this)
                         .extractAll(extractor));
     }
 
     @Override
     public @NotNull WebRadioButton getSelected() {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(GET_SELECTED_METHOD, this),
-                () -> new WebRadioButtonFilterSeleniumImpl().add(selected())
-                        .filter(this)
+                () -> new WebRadioButtonFilterBuilderSeleniumImpl().add(selected())
+                        .build(this)
                         .extractOne(element())
                         .shouldHaveNotNull().get());
     }
 
     @Override
     public @NotNull WebRadioButton getByLabel(@NotNull StringValue expectedLabel) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(GET_BY_LABEL_METHOD, this),
                 () -> with(WebConditions.containsLabel(expectedLabel))
-                        .filter(this)
+                        .build(this)
                         .extractOne(element())
                         .shouldHaveNotNull().get());
     }
 
     @Override
     public @NotNull WebRadioButton getByIndex(@NotNull NumberValue<Integer> expectedIndex) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(GET_BY_INDEX_METHOD, this),
                 () -> with(radioButtonIndex(expectedIndex))
-                        .filter(this)
+                        .build(this)
                         .extractOne(element())
                         .shouldHaveNotNull().get());
     }
@@ -219,7 +223,7 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
     // ScrollToElement
 
     @Override
-    public WebRadioGroup scrollToElement(@NotNull WebRadioButtonFilter filter) {
+    public WebRadioGroup scrollToElement(@NotNull WebRadioButtonFilterBuilder filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;

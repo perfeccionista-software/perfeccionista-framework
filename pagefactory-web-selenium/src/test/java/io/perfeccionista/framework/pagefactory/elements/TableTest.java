@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.extractor.WebExtractors;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebConditions;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage.CheckboxWebMappedBlock;
@@ -148,7 +148,7 @@ public class TableTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(5));
 
         // Case: Получить экземпляр ячейки, в котором ссылка 'short name' ведет на адрес 'https://ru.wikipedia.org/wiki/Австралия'
-        WebTableFilter elementPropertyValueFilter = with(WebConditions.containsProperty(TablePage.SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(),
+        WebTableFilterBuilder elementPropertyValueFilter = with(WebConditions.containsProperty(TablePage.SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(),
                 "Wiki link", value.stringEquals("https://ru.wikipedia.org/wiki/Австралия")));
         SingleResult<ShortNameWebMappedBlock> filteredByElementPropertyValueBlock = tablePage.table()
                 .filter(elementPropertyValueFilter)
@@ -161,7 +161,7 @@ public class TableTest extends AbstractUiTest {
                 .extractAllRows(cell(TablePage.FULL_NAME, FullNameWebMappedBlock.class));
 
         // Case: Получить все экземпляр ячеек, в которых номер страны больше 77 и короткое имя страны НЕ содержит 'na'
-        WebTableFilter multipleFilter = with(WebConditions.containsText(TablePage.NUMBER, from(CountryNumberWebMappedBlock.class).number(), value.intGreaterThan(77)))
+        WebTableFilterBuilder multipleFilter = with(WebConditions.containsText(TablePage.NUMBER, from(CountryNumberWebMappedBlock.class).number(), value.intGreaterThan(77)))
                 .subtract(WebConditions.containsText(TablePage.SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), value.stringContains("na")));
         MultipleResult<CountryNumberWebMappedBlock> filteredByMultipleConditionsBlocks = tablePage.table()
                 .filter(multipleFilter)
@@ -169,7 +169,7 @@ public class TableTest extends AbstractUiTest {
 
         // В любых условиях, использующих ссылку на элемент вместо указания на поле можно использовать имя элемента, заданное аннотацией @Name
         // Case: Получить все экземпляры ячеек, в которых номер страны больше 77 и короткое имя страны НЕ содержит 'na'
-        WebTableFilter multipleFilterByName = with(WebConditions.containsText(TablePage.NUMBER, "Number", value.intGreaterThan(77)))
+        WebTableFilterBuilder multipleFilterByName = with(WebConditions.containsText(TablePage.NUMBER, "Number", value.intGreaterThan(77)))
                 .subtract(WebConditions.containsText(TablePage.SHORT_NAME, "Short name", value.stringContains("na")));
         MultipleResult<CountryNumberWebMappedBlock> filteredByMultipleConditionsBlocksByName = tablePage.table()
                 .filter(multipleFilterByName)

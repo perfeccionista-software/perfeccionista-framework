@@ -9,9 +9,9 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -19,7 +19,6 @@ import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Optional;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
@@ -35,39 +34,31 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
 
     protected Map<String, TableColumnHolder> tableColumnHolders;
 
-    @Override
-    public WebTextTable setTableColumnHolders(Map<String, TableColumnHolder> tableColumnHolders) {
-        this.tableColumnHolders = tableColumnHolders;
-        return this;
-    }
-
-    @Override
-    public Optional<TableColumnHolder> getTableColumnHolder(@NotNull String columnName) {
-        return Optional.ofNullable(tableColumnHolders.get(columnName));
-    }
-
-    public @NotNull WebTextTableFilterResult filter(@NotNull WebTextTableFilter filter) {
-        return filter.filter(this);
+    public @NotNull WebTextTableFilter filter(@NotNull WebTextTableFilterBuilder filterBuilder) {
+        return filterBuilder.build(this);
     }
 
     @Override
     public @NotNull SingleResult<String> extractHeader(@NotNull String columnName) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_HEADER_FILTER, this, columnName),
-                () -> new WebTextTableFilterSeleniumImpl().filter(this)
+                () -> new WebTextTableFilterBuilderSeleniumImpl().build(this)
                         .extractHeader(columnName));
     }
 
     @Override
     public @NotNull MultipleResult<String> extractAllRows(@NotNull String columnName) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_ROWS_FILTER, this, columnName),
-                () -> new WebTextTableFilterSeleniumImpl().filter(this)
+                () -> new WebTextTableFilterBuilderSeleniumImpl().build(this)
                         .extractAllRows(columnName));
     }
 
     @Override
     public @NotNull SingleResult<String> extractFooter(@NotNull String columnName) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_FOOTER_FILTER, this, columnName),
-                () -> new WebTextTableFilterSeleniumImpl().filter(this)
+                () -> new WebTextTableFilterBuilderSeleniumImpl().build(this)
                         .extractFooter(columnName));
     }
 
@@ -216,7 +207,7 @@ public class WebTextTableSeleniumImpl extends AbstractWebChildElement implements
     // ScrollToElement
 
     @Override
-    public WebTextTable scrollToElement(@NotNull WebTextTableFilter filter) {
+    public WebTextTable scrollToElement(@NotNull WebTextTableFilterBuilder filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;

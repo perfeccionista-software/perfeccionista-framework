@@ -4,7 +4,6 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
 
 public class WebTableCellElementPresentMarkExtractor implements WebTableCellValueExtractor<Boolean> {
 
@@ -32,7 +31,7 @@ public class WebTableCellElementPresentMarkExtractor implements WebTableCellValu
     }
 
     @Override
-    public MultipleResult<Boolean> extractValues(WebTable element, WebTableFilterResult filter) {
+    public MultipleResult<Boolean> extractValues(WebTable element, WebTableFilter filter) {
         // Вся логика извлечения и фильтрации здесь
 
         return null;

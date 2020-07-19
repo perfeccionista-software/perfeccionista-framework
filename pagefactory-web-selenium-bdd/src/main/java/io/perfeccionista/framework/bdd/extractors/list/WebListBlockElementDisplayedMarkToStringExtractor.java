@@ -4,7 +4,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementDisplayedMarkExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 
 public class WebListBlockElementDisplayedMarkToStringExtractor implements WebListBlockValueExtractor<String> {
 
@@ -15,9 +15,9 @@ public class WebListBlockElementDisplayedMarkToStringExtractor implements WebLis
     }
 
     @Override
-    public MultipleResult<String> extractValues(WebList element, WebListFilterResult filterResult) {
+    public MultipleResult<String> extractValues(WebList element, WebListFilter filter) {
         return new WebListBlockElementDisplayedMarkExtractor(elementName)
-                .extractValues(element, filterResult)
+                .extractValues(element, filter)
                 .convert(displayedMark -> displayedMark ? "1" : "0");
     }
 

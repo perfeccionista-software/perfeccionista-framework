@@ -7,8 +7,8 @@ import io.perfeccionista.framework.pagefactory.elements.context.WebListBlockCont
 import io.perfeccionista.framework.pagefactory.elements.context.WebTableCellContextLimiter;
 import io.perfeccionista.framework.pagefactory.elements.context.WebTableRowContextLimiter;
 import io.perfeccionista.framework.pagefactory.filter.WebConditions;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage.CountryNameBlock;
@@ -53,7 +53,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         WebList webList = listElementsPage.webList();
 
         // Один блок
-        WebListFilter webListSingleBlockFilter = with(WebConditions.containsText(from(CountryNameBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
+        WebListFilterBuilder webListSingleBlockFilter = with(WebConditions.containsText(from(CountryNameBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
         CountryNameBlock singleBlockContext = pc.usePage(ListElementsPage.class)
                 .setLimiter(new WebListBlockContextLimiter<>(webList, webListSingleBlockFilter))
                 .getSearchContext(CountryNameBlock.class);
@@ -64,7 +64,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         pc.removeLimiters();
 
         // Несколько блоков
-        WebListFilter webListMultipleBlocksFilter = with(blockIndex(value.intLessThan(50)));
+        WebListFilterBuilder webListMultipleBlocksFilter = with(blockIndex(value.intLessThan(50)));
         pc.usePage(ListElementsPage.class)
                 .setLimiter(new WebListBlockContextLimiter<>(webList, webListMultipleBlocksFilter))
                 .getSearchContexts(CountryNameBlock.class)
@@ -87,7 +87,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         pc.usePage(ListElementsPage.class);
 
         // Один блок
-        WebListFilter webListSingleBlockFilter = with(WebConditions.containsText("Short name", value.stringEqualsIgnoreCase("Spain")));
+        WebListFilterBuilder webListSingleBlockFilter = with(WebConditions.containsText("Short name", value.stringEqualsIgnoreCase("Spain")));
         pc.setLimiter(new WebListBlockContextLimiter<>("list of countries", webListSingleBlockFilter));
 //        pc.getSearchContext().getElementByPath("Checkbox", WebCheckbox.class).shouldBeDisplayed();
 //        pc.getSearchContext().getElementByPath("Full name", WebTextBlock.class).shouldBeDisplayed();
@@ -96,7 +96,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         pc.removeLimiters();
 
         // Несколько блоков
-        WebListFilter webListMultipleBlocksFilter = with(blockIndex(value.intLessThan(50)));
+        WebListFilterBuilder webListMultipleBlocksFilter = with(blockIndex(value.intLessThan(50)));
         pc.setLimiter(new WebListBlockContextLimiter<>("list of countries", webListMultipleBlocksFilter));
 //        pc.getSearchContexts().forEachOrdered(block -> block.getElementByPath("Checkbox", WebCheckbox.class).click());
 //        pc.getSearchContexts().forEachOrdered(block -> block.getElementByPath("Full name", WebTextBlock.class).shouldBeDisplayed());
@@ -116,7 +116,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         WebTable webTable = tablePage.table();
 
         // Один блок
-        WebTableFilter webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
+        WebTableFilterBuilder webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
 
         ShortNameWebMappedBlock singleCellContext = pc.usePage(TablePage.class)
                 .setLimiter(new WebTableCellContextLimiter<>(webTable, TablePage.SHORT_NAME, webTableSingleCellFilter))
@@ -126,7 +126,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         pc.removeLimiters();
 
         // Несколько блоков
-        WebTableFilter webTableMultipleCellsFilter = with(rowIndex(value.intLessThan(50)));
+        WebTableFilterBuilder webTableMultipleCellsFilter = with(rowIndex(value.intLessThan(50)));
         pc.usePage(TablePage.class)
                 .setLimiter(new WebTableCellContextLimiter<>(webTable, TablePage.SHORT_NAME, webTableMultipleCellsFilter))
                 .getSearchContexts(ShortNameWebMappedBlock.class)
@@ -146,14 +146,14 @@ public class ContextLimiterTest extends AbstractUiTest {
         pc.usePage(TablePage.class);
 
         // Один блок
-        WebTableFilter webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, "link Short name", value.stringEqualsIgnoreCase("Spain")));
+        WebTableFilterBuilder webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, "link Short name", value.stringEqualsIgnoreCase("Spain")));
         pc.setLimiter(new WebTableCellContextLimiter<>("table of countries", TablePage.SHORT_NAME, webTableSingleCellFilter));
 //        pc.getSearchContext().getElementByPath("link Short name", WebLink.class).shouldBeDisplayed();
 //        pc.getSearchContext().getElementByPath("link Short name", WebLink.class).shouldHaveText(value.stringEqualsIgnoreCase("Spain"));
         pc.removeLimiters();
 
         // Несколько блоков
-        WebTableFilter webTableMultipleCellsFilter = with(rowIndex(value.intLessThan(50)));
+        WebTableFilterBuilder webTableMultipleCellsFilter = with(rowIndex(value.intLessThan(50)));
         pc.setLimiter(new WebTableCellContextLimiter<>("table of countries", TablePage.SHORT_NAME, webTableMultipleCellsFilter));
 //        pc.getSearchContexts().forEachOrdered(cell -> cell.getElementByPath("link Short name", WebLink.class).shouldBeDisplayed());
         pc.removeLimiters();
@@ -169,7 +169,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         pc.usePage(TablePage.class);
 
         // Один блок
-        WebTableFilter webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, "link Short name", value.stringEqualsIgnoreCase("Spain")));
+        WebTableFilterBuilder webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, "link Short name", value.stringEqualsIgnoreCase("Spain")));
         pc.setLimiter(new WebTableRowContextLimiter("table of countries", webTableSingleCellFilter));
 //        pc.getSearchContext().getElementByPath(TablePage.CHECKBOX + " -> checkbox Select", WebCheckbox.class).shouldBeDisplayed();
 //        pc.getSearchContext().getElementByPath(TablePage.SHORT_NAME + " -> link Short name", WebLink.class).shouldBeDisplayed();
@@ -178,7 +178,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         pc.removeLimiters();
 
         // Несколько блоков
-        WebTableFilter webTableMultipleCellsFilter = with(rowIndex(value.intLessThan(50)));
+        WebTableFilterBuilder webTableMultipleCellsFilter = with(rowIndex(value.intLessThan(50)));
         pc.setLimiter(new WebTableRowContextLimiter("table of countries", webTableMultipleCellsFilter));
 //        pc.getSearchContexts().forEachOrdered(cell -> cell.getElementByPath(TablePage.CHECKBOX + " -> checkbox Select", WebCheckbox.class).shouldBeDisplayed());
 //        pc.getSearchContexts().forEachOrdered(cell -> cell.getElementByPath(TablePage.SHORT_NAME + " -> link Short name", WebLink.class).shouldBeDisplayed());

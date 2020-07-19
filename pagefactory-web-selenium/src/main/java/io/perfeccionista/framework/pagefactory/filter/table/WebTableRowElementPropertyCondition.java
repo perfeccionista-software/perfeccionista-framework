@@ -14,7 +14,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.TableColumnHolder;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -26,6 +26,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
@@ -36,6 +37,7 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessage
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.OR;
+import static io.perfeccionista.framework.utils.ReflectionUtils.readField;
 
 public class WebTableRowElementPropertyCondition implements WebTableRowCondition {
 
@@ -111,9 +113,10 @@ public class WebTableRowElementPropertyCondition implements WebTableRowCondition
     }
 
     @Override
-    public @NotNull WebConditionProcessingResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
         // TODO: Переписать эту логику!!! Она работает, но тут много лишнего.
-        TableColumnHolder tableColumnHolder = element.getTableColumnHolder(columnName)
+        Map<String, TableColumnHolder> tableColumnHolders = readField("tableColumnHolders", element);
+        TableColumnHolder tableColumnHolder = Optional.ofNullable(tableColumnHolders.get(columnName))
                 .orElseThrow(() -> new TableColumnNotDeclaredException(
                         TABLE_COLUMN_NOT_DECLARED.getMessage(columnName, element.getElementIdentifier().getLastUsedName())));
         // TODO: Тут лучше создавать новый мок из пейджфактори с энвайроментом
@@ -129,11 +132,9 @@ public class WebTableRowElementPropertyCondition implements WebTableRowCondition
                 .getJsOperation(elementMock, webElementPropertyHolder.getLocatorHolder());
 
         WebLocatorChain locatorChainToTableCell = element.getLocatorChain();
-        WebLocatorHolder tableLocatorHolder = locatorChainToTableCell.getLastLocator();
-        tableLocatorHolder.setCalculateHash(true);
-        if (hash != null) {
-            tableLocatorHolder.setExpectedHash(hash);
-        }
+        WebLocatorHolder tableLocatorHolder = locatorChainToTableCell.getLastLocator()
+                .setCalculateHash(true)
+                .setExpectedHash(hash);
         WebLocatorHolder tableRowLocatorHolder = element
                 .getLocator(WebComponents.TBODY_ROW)
                 .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(TBODY_ROW))
@@ -154,7 +155,7 @@ public class WebTableRowElementPropertyCondition implements WebTableRowCondition
                 .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
-        return WebConditionProcessingResult.of(getMatches(textValues), returnedHash);
+        return WebFilterResult.of(getMatches(textValues), returnedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, String> textValues) {

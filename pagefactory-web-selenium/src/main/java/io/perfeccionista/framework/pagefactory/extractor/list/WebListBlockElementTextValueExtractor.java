@@ -4,7 +4,6 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
 
 public class WebListBlockElementTextValueExtractor implements WebListBlockValueExtractor<String> {
 
@@ -22,7 +21,7 @@ public class WebListBlockElementTextValueExtractor implements WebListBlockValueE
     }
 
     @Override
-    public MultipleResult<String> extractValues(WebList element, WebListFilterResult filter) {
+    public MultipleResult<String> extractValues(WebList element, WebListFilter filter) {
         // Вся логика извлечения и фильтрации здесь
 
         return null;

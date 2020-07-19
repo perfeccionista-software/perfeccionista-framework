@@ -3,10 +3,9 @@ package io.perfeccionista.framework.pagefactory.elements;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
-import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebConditions;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.SimpleListElementsPage;
 import io.perfeccionista.framework.value.ValueService;
@@ -74,7 +73,7 @@ public class TextListElementsTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(127));
 
         // Case: Выбрать из списка все значения, которые содержат 'ia' и не содержат 'Rus' или равны 'Maldives' и проверить их количество
-        WebTextListFilter multipleValueFilter = with(WebConditions.containsTextBlock(value.stringContains("ia")))
+        WebTextListFilterBuilder multipleValueFilter = with(WebConditions.containsTextBlock(value.stringContains("ia")))
                 .subtract(WebConditions.containsTextBlock(value.stringContains("Rus")))
                 .add(WebConditions.containsTextBlock(value.stringEquals("Maldives")));
         ulElementsPage.simpleUnorderedList()
@@ -82,7 +81,7 @@ public class TextListElementsTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(39));
 
         // Case: Выбрать из списка все элементы, индекс которых больше 100 и меньше 150 и не равен 125 и проверить их количество
-        WebTextListFilter multipleIndexFilter = with(textBlockIndex(value.intGreaterThan(100)))
+        WebTextListFilterBuilder multipleIndexFilter = with(textBlockIndex(value.intGreaterThan(100)))
                 .subtract(textBlockIndex(value.intGreaterThan(150)).or(textBlockIndex(value.intEquals(125))));
         ulElementsPage.simpleUnorderedList()
                 .filter(multipleIndexFilter)

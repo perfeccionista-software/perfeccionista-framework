@@ -7,9 +7,9 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockStringExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -20,7 +20,6 @@ import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.EXTRACT_ALL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.FILTER_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_SIZE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SIZE_METHOD;
@@ -28,15 +27,15 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 public class WebTextListSeleniumImpl extends AbstractWebChildElement implements WebTextList {
 
     @Override
-    public @NotNull WebTextListFilterResult filter(@NotNull WebTextListFilter filter) {
-        return runCheck(getEnvironment(), InvocationName.of(FILTER_METHOD, this, filter),
-                () -> filter.filter(this));
+    public @NotNull WebTextListFilter filter(@NotNull WebTextListFilterBuilder filterBuilder) {
+        return filterBuilder.build(this);
     }
 
     @Override
     public @NotNull MultipleResult<String> extractAll() {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_METHOD, this),
-                () -> new WebTextListFilterSeleniumImpl().filter(this)
+                () -> new WebTextListFilterBuilderSeleniumImpl().build(this)
                         .extractAll(new WebTextListBlockStringExtractor()));
     }
 
@@ -71,7 +70,7 @@ public class WebTextListSeleniumImpl extends AbstractWebChildElement implements 
     // ClickToElement
 
     @Override
-    public WebTextList clickToElement(@NotNull WebTextListFilter filter) {
+    public WebTextList clickToElement(@NotNull WebTextListFilterBuilder filter) {
         runCheck(getEnvironment(), InvocationName.of(CLICK_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(CLICK_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;
@@ -195,7 +194,7 @@ public class WebTextListSeleniumImpl extends AbstractWebChildElement implements 
     // ScrollToElement
 
     @Override
-    public WebTextList scrollToElement(@NotNull WebTextListFilter filter) {
+    public WebTextList scrollToElement(@NotNull WebTextListFilterBuilder filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;

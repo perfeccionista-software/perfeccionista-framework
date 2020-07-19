@@ -8,8 +8,8 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockIndexExtractor;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -24,9 +24,9 @@ public class JsScrollToTextBlockElement implements WebElementActionImplementatio
     @Override
     public Void execute(WebChildElement element, Object... args) {
         WebTextList unorderedList = (WebTextList) element;
-        WebTextListFilter filter = (WebTextListFilter) args[0];
-        WebTextListFilterResult textListFilterResult = filter.filter(unorderedList);
-        SingleResult<Integer> result = textListFilterResult
+        WebTextListFilterBuilder filter = (WebTextListFilterBuilder) args[0];
+        WebTextListFilter textListFilter = filter.build(unorderedList);
+        SingleResult<Integer> result = textListFilter
                 .extractOne(new WebTextListBlockIndexExtractor());
 
         // Create locator chain instance for scrolling with hash check
@@ -35,7 +35,7 @@ public class JsScrollToTextBlockElement implements WebElementActionImplementatio
                 .setSingle(true)
                 .setIndex(result.getIndex());
         WebLocatorChain locatorChainForScroll = element.getLocatorChain()
-                .addExpectedHashToLastLocator(textListFilterResult.getHash())
+                .addExpectedHashToLastLocator(textListFilter.getResult().getHash())
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation
@@ -51,9 +51,9 @@ public class JsScrollToTextBlockElement implements WebElementActionImplementatio
     @Override
     public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
         WebTextList unorderedList = (WebTextList) element;
-        WebTextListFilter filter = (WebTextListFilter) args[0];
-        WebTextListFilterResult textListFilterResult = filter.filter(unorderedList);
-        SingleResult<Integer> result = textListFilterResult
+        WebTextListFilterBuilder filter = (WebTextListFilterBuilder) args[0];
+        WebTextListFilter textListFilter = filter.build(unorderedList);
+        SingleResult<Integer> result = textListFilter
                 .extractOne(new WebTextListBlockIndexExtractor());
 
         // Create locator chain instance for scrolling with hash check
@@ -62,7 +62,7 @@ public class JsScrollToTextBlockElement implements WebElementActionImplementatio
                 .setSingle(true)
                 .setIndex(result.getIndex());
         WebLocatorChain locatorChainForScroll = element.getLocatorChain()
-                .addExpectedHashToLastLocator(textListFilterResult.getHash())
+                .addExpectedHashToLastLocator(textListFilter.getResult().getHash())
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation

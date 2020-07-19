@@ -4,23 +4,19 @@ import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.TableColumnHolder;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
-import java.util.Optional;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
@@ -35,13 +31,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 @WebLocator(component = TBODY_ROW, xpath = ".//tbody//tr", single = false)
 @WebLocator(component = TFOOT_ROW, xpath = ".//tfoot//tr")
 public interface WebTextTable extends WebChildElement,
-        ScrollToElementAvailable<WebTextTableFilter>, SizeAvailable {
+        ScrollToElementAvailable<WebTextTableFilterBuilder>, SizeAvailable {
 
-    WebTextTable setTableColumnHolders(Map<String, TableColumnHolder> mappedTableColumnHolders);
-
-    Optional<TableColumnHolder> getTableColumnHolder(@NotNull String columnName);
-
-    @NotNull WebTextTableFilterResult filter(@NotNull WebTextTableFilter filter);
+    @NotNull WebTextTableFilter filter(@NotNull WebTextTableFilterBuilder filterBuilder);
 
     @NotNull SingleResult<String> extractHeader(@NotNull String columnName);
 
@@ -128,7 +120,7 @@ public interface WebTextTable extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebTextTable scrollToElement(@NotNull WebTextTableFilter filter);
+    WebTextTable scrollToElement(@NotNull WebTextTableFilterBuilder filter);
 
     // Size
 

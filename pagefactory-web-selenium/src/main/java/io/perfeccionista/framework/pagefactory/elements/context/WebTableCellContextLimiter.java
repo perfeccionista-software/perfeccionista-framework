@@ -3,17 +3,17 @@ package io.perfeccionista.framework.pagefactory.elements.context;
 import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 
 import java.util.stream.Stream;
 
 public class WebTableCellContextLimiter<T extends WebMappedBlock> implements WebSearchContextLimiter<T> {
 
-    public WebTableCellContextLimiter(WebTable element, String columnName, WebTableFilter filter) {
+    public WebTableCellContextLimiter(WebTable element, String columnName, WebTableFilterBuilder filter) {
 
     }
 
-    public WebTableCellContextLimiter(String elementPath, String columnName, WebTableFilter filter) {
+    public WebTableCellContextLimiter(String elementPath, String columnName, WebTableFilterBuilder filter) {
 
     }
 

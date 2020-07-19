@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebConditions;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.SimpleTablePage;
 import io.perfeccionista.framework.value.ValueService;
@@ -102,7 +102,7 @@ public class TextTableTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(127));
 
         // Case: Выбрать из таблицы все строки, в которых значение колонки 'Short name' содержит 'ia' и не содержат 'Rus' или равны 'Maldives' и проверить их количество
-        WebTextTableFilter multipleValueFilter = with(WebConditions.containsTextCell(SimpleTablePage.SHORT_NAME, value.stringContains("ia")))
+        WebTextTableFilterBuilder multipleValueFilter = with(WebConditions.containsTextCell(SimpleTablePage.SHORT_NAME, value.stringContains("ia")))
                 .subtract(WebConditions.containsTextCell(SimpleTablePage.SHORT_NAME, value.stringContains("Rus")))
                 .add(WebConditions.containsTextCell(SimpleTablePage.SHORT_NAME, value.stringEquals("Maldives")));
         tablePage.simpleTable()
@@ -110,7 +110,7 @@ public class TextTableTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(39));
 
         // Case: Выбрать из таблицы все строки, индекс которых больше 100 и меньше 150 и не равен 125 и проверить их количество
-        WebTextTableFilter multipleIndexFilter = with(textRowIndex(value.intGreaterThan(100)))
+        WebTextTableFilterBuilder multipleIndexFilter = with(textRowIndex(value.intGreaterThan(100)))
                 .subtract(textRowIndex(value.intGreaterThan(150)).or(textRowIndex(value.intEquals(125))));
         tablePage.simpleTable()
                 .filter(multipleIndexFilter)

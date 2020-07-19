@@ -6,7 +6,7 @@ import io.perfeccionista.framework.bdd.parameters.ValueIntegerParameter;
 import io.perfeccionista.framework.bdd.parameters.ValueStringParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
-import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilter;
+import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilder;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -46,7 +46,7 @@ public class RadioGroupActionSteps implements EnvironmentAvailable {
     @Given("user scrolls the {webElement} to button")
     @Given("пользователь прокручивает {webElement} до кнопки")
     public void userScrollsRadioGroupToElement(WebElementParameter<WebRadioGroup> elementFinder,
-                                               WebRadioButtonFilter itemFilter) {
+                                               WebRadioButtonFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element.scrollToElement(itemFilter));
     }

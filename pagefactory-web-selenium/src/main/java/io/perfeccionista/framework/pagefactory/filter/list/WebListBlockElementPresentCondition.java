@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.list;
 
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +50,7 @@ public class WebListBlockElementPresentCondition implements WebListBlockConditio
     }
 
     @Override
-    public WebConditionProcessingResult process(@NotNull WebList element, @Nullable String hash) {
+    public WebFilterResult process(@NotNull WebList element, @Nullable String hash) {
         // TODO: Implemnt
         return null;
     }

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.textlist;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +40,7 @@ public class WebTextListBlockIndexCondition implements WebTextListBlockCondition
     }
 
     @Override
-    public @NotNull WebConditionProcessingResult process(@NotNull WebTextList element, @Nullable String hash) {
+    public @NotNull WebFilterResult process(@NotNull WebTextList element, @Nullable String hash) {
         return null;
     }
 }

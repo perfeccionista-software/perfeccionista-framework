@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -57,7 +57,7 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
     }
 
     @Override
-    public WebConditionProcessingResult process(WebList element, String hash) {
+    public WebFilterResult process(WebList element, String hash) {
         // TODO: Обработать inverse
         WebLocatorChain locatorChain = element.getLocatorChain();
         WebLocatorHolder listLocatorHolder = locatorChain.getLastLocator();
@@ -84,7 +84,7 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
                 .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
-        return WebConditionProcessingResult.of(indexes, returnedHash);
+        return WebFilterResult.of(indexes, returnedHash);
     }
 
 }

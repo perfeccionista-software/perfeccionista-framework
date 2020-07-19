@@ -4,7 +4,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementPresentMarkExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 
 public class WebTableCellElementPresentMarkToStringExtractor implements WebTableCellValueExtractor<String> {
 
@@ -30,9 +30,9 @@ public class WebTableCellElementPresentMarkToStringExtractor implements WebTable
     }
 
     @Override
-    public MultipleResult<String> extractValues(WebTable element, WebTableFilterResult filterResult) {
+    public MultipleResult<String> extractValues(WebTable element, WebTableFilter filter) {
         return new WebTableCellElementPresentMarkExtractor(columnName, elementName)
-                .extractValues(element, filterResult)
+                .extractValues(element, filter)
                 .convert(presentMark -> presentMark ? "1" : "0");
     }
 

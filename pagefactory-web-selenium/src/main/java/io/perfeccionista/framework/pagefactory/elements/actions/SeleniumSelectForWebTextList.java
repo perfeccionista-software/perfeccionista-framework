@@ -5,9 +5,8 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterResult;
-import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import org.openqa.selenium.WebElement;
 
@@ -18,9 +17,9 @@ public class SeleniumSelectForWebTextList implements WebElementActionImplementat
     @Override
     public Void execute(WebChildElement element, Object... args) {
         // Check this type
-        WebTextListFilter filter = (WebTextListFilter) args[0];
+        WebTextListFilterBuilder filter = (WebTextListFilterBuilder) args[0];
         WebElement webElement = filter
-                .filter((WebTextList) element)
+                .build((WebTextList) element)
                 .extractOne(new WebTextListBlockWebElementExtractor()).get();
         element.getWebBrowserDispatcher().getExceptionMapper()
                 .map(webElement::click, element.getElementIdentifier().getLastUsedName())
@@ -39,7 +38,7 @@ public class SeleniumSelectForWebTextList implements WebElementActionImplementat
     private class WebTextListBlockWebElementExtractor implements WebTextListBlockValueExtractor<WebElement> {
 
         @Override
-        public MultipleResult<WebElement> extractValues(WebTextList element, WebTextListFilterResult filter) {
+        public MultipleResult<WebElement> extractValues(WebTextList element, WebTextListFilter filter) {
 
             return null;
         }

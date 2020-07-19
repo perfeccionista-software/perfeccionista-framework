@@ -1,20 +1,29 @@
 package io.perfeccionista.framework.pagefactory.filter.table;
 
-import io.perfeccionista.framework.pagefactory.elements.WebTable;
+import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebFilter;
+import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Deque;
-
-public interface WebTableFilter extends WebFilter<WebTable, WebTableFilterResult> {
-
-    WebTableFilter add(@NotNull WebTableRowCondition condition);
-
-    WebTableFilter subtract(@NotNull WebTableRowCondition condition);
+// TODO: Implement: public Map<String, SingleResult<T>> extractOneRow(Map<String, WebTableCellValueExtractor<T>> columnExtractors)
+// TODO: Implement: public Map<String, MultipleResult<T>> extractAllRows(Map<String, WebTableCellValueExtractor<T>> columnExtractors)
+public interface WebTableFilter extends WebFilter {
 
     @Override
-    @NotNull WebTableFilterResult filter(@NotNull WebTable element);
+    WebTableFilter setInitialHash(@Nullable String initialHash);
 
-    Deque<WebTableRowConditionHolder> getConditions();
+    @Override
+    WebTableFilter shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
+
+    @NotNull <T> SingleResult<T> extractHeader(@NotNull WebTableCellValueExtractor<T> extractor);
+
+    @NotNull <T> SingleResult<T> extractOneRow(@NotNull WebTableCellValueExtractor<T> extractor);
+
+    @NotNull <T> MultipleResult<T> extractAllRows(@NotNull WebTableCellValueExtractor<T> extractor);
+
+    @NotNull <T> SingleResult<T> extractFooter(@NotNull WebTableCellValueExtractor<T> extractor);
 
 }

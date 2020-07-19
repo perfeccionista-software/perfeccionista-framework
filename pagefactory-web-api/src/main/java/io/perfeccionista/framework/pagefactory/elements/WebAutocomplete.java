@@ -8,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -54,7 +54,7 @@ public interface WebAutocomplete extends WebDropDownList,
     // ClickToElement
 
     @Override
-    WebAutocomplete clickToElement(@NotNull WebListFilter filter); // Тут нужно еще скроллить к элементу
+    WebAutocomplete clickToElement(@NotNull WebListFilterBuilder filter); // Тут нужно еще скроллить к элементу
 
     // Close
 
@@ -171,7 +171,7 @@ public interface WebAutocomplete extends WebDropDownList,
     // ScrollToElement
 
     @Override
-    WebAutocomplete scrollToElement(@NotNull WebListFilter filter);
+    WebAutocomplete scrollToElement(@NotNull WebListFilterBuilder filter);
 
     // SendKeys
 

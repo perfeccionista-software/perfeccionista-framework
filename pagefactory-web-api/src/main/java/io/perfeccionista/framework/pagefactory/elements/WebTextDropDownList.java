@@ -12,7 +12,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -51,7 +51,7 @@ public interface WebTextDropDownList extends WebTextList,
     // ClickToElement
 
     @Override
-    WebTextDropDownList clickToElement(@NotNull WebTextListFilter filter);
+    WebTextDropDownList clickToElement(@NotNull WebTextListFilterBuilder filter);
 
     // Close
 
@@ -168,7 +168,7 @@ public interface WebTextDropDownList extends WebTextList,
     // ScrollToElement
 
     @Override
-    WebTextDropDownList scrollToElement(@NotNull WebTextListFilter filter);
+    WebTextDropDownList scrollToElement(@NotNull WebTextListFilterBuilder filter);
 
     // Size
 

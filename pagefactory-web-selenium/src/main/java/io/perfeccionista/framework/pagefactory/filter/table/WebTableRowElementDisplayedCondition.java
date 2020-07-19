@@ -18,7 +18,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolde
 import io.perfeccionista.framework.pagefactory.elements.mapping.TableColumnHolder;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsDisplayedAvailable;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.filter.WebFilters;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -45,6 +45,8 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.OR;
+import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyTableFilter;
+import static io.perfeccionista.framework.utils.ReflectionUtils.readField;
 
 public class WebTableRowElementDisplayedCondition implements WebTableRowCondition {
 
@@ -92,9 +94,10 @@ public class WebTableRowElementDisplayedCondition implements WebTableRowConditio
     }
 
     @Override
-    public @NotNull WebConditionProcessingResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
         // TODO: Переписать эту логику!!! Она работает, но тут много лишнего.
-        TableColumnHolder tableColumnHolder = element.getTableColumnHolder(columnName)
+        Map<String, TableColumnHolder> tableColumnHolders = readField("tableColumnHolders", element);
+        TableColumnHolder tableColumnHolder = Optional.ofNullable(tableColumnHolders.get(columnName))
                 .orElseThrow(() -> new TableColumnNotDeclaredException(
                         TABLE_COLUMN_NOT_DECLARED.getMessage(columnName, element.getElementIdentifier().getLastUsedName())));
         // TODO: Тут лучше создавать новый мок из пейджфактори с энвайроментом
@@ -120,11 +123,9 @@ public class WebTableRowElementDisplayedCondition implements WebTableRowConditio
 
         if (optionalStringJsOperation.isPresent()) {
             WebLocatorChain locatorChainToTableCell = element.getLocatorChain();
-            WebLocatorHolder tableLocatorHolder = locatorChainToTableCell.getLastLocator();
-            tableLocatorHolder.setCalculateHash(true);
-            if (hash != null) {
-                tableLocatorHolder.setExpectedHash(hash);
-            }
+            WebLocatorHolder tableLocatorHolder = locatorChainToTableCell.getLastLocator()
+                    .setCalculateHash(true)
+                    .setExpectedHash(hash);
             WebLocatorHolder tableRowLocatorHolder = element
                     .getLocator(WebComponents.TBODY_ROW)
                     .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(TBODY_ROW))
@@ -146,13 +147,15 @@ public class WebTableRowElementDisplayedCondition implements WebTableRowConditio
                     .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                     .getHash()
                     .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
-            return WebConditionProcessingResult.of(getMatches(presentValues), returnedHash);
+            return WebFilterResult.of(getMatches(presentValues), returnedHash);
         } else {
-            Map<Integer, Boolean> textValues = new HashMap<>();
-            WebTableFilterResult filterResult = element.filter(WebFilters.emptyTableFilter());
+            WebFilterResult filterResult = element.filter(emptyTableFilter())
+                    .setInitialHash(hash)
+                    .getResult();
             WebPageFactory webPageFactory = element.getEnvironment().getService(WebPageService.class).getWebPageFactory();
             Map<Integer, WebMappedBlock> webMappedBlocks = webPageFactory.createWebTableCells(element, columnName, filterResult);
             // В зависимости от того, что указано при создании достаем нужные элементы или по имени или по цепочке методов.
+            Map<Integer, Boolean> textValues = new HashMap<>();
             for (Entry<Integer, WebMappedBlock> webMappedBlockEntry : webMappedBlocks.entrySet()) {
                 WebChildElement elementToExtractText = webMappedBlockEntry.getValue()
                         .getElementRegistry()
@@ -161,7 +164,7 @@ public class WebTableRowElementDisplayedCondition implements WebTableRowConditio
                 textValues.put(webMappedBlockEntry.getKey(), elementToExtractText.isPresent());
             }
             String returnedHash = filterResult.getHash();
-            return WebConditionProcessingResult.of(getMatches(textValues), returnedHash);
+            return WebFilterResult.of(getMatches(textValues), returnedHash);
         }
     }
 

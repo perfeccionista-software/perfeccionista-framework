@@ -7,8 +7,8 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -24,9 +24,9 @@ public class JsScrollToTableRowElement implements WebElementActionImplementation
     @Override
     public Void execute(WebChildElement element, Object... args) {
         WebTable table = (WebTable) element;
-        WebTableFilter filter = (WebTableFilter) args[0];
-        WebTableFilterResult tableFilterResult = filter.filter(table);
-        SingleResult<Integer> result = tableFilterResult
+        WebTableFilterBuilder filter = (WebTableFilterBuilder) args[0];
+        WebTableFilter tableFilter = filter.build(table);
+        SingleResult<Integer> result = tableFilter
                 .extractOneRow(rowIndex());
 
         // Create locator chain instance for scrolling with hash check
@@ -35,7 +35,7 @@ public class JsScrollToTableRowElement implements WebElementActionImplementation
                 .setSingle(true)
                 .setIndex(result.getIndex());
         WebLocatorChain locatorChainForScroll = element.getLocatorChain()
-                .addExpectedHashToLastLocator(tableFilterResult.getHash())
+                .addExpectedHashToLastLocator(tableFilter.getResult().getHash())
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation
@@ -51,9 +51,9 @@ public class JsScrollToTableRowElement implements WebElementActionImplementation
     @Override
     public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
         WebTable table = (WebTable) element;
-        WebTableFilter filter = (WebTableFilter) args[0];
-        WebTableFilterResult tableFilterResult = filter.filter(table);
-        SingleResult<Integer> result = tableFilterResult
+        WebTableFilterBuilder filter = (WebTableFilterBuilder) args[0];
+        WebTableFilter tableFilter = filter.build(table);
+        SingleResult<Integer> result = tableFilter
                 .extractOneRow(rowIndex());
 
         // Create locator chain instance for scrolling with hash check
@@ -62,7 +62,7 @@ public class JsScrollToTableRowElement implements WebElementActionImplementation
                 .setSingle(true)
                 .setIndex(result.getIndex());
         WebLocatorChain locatorChainForScroll = element.getLocatorChain()
-                .addExpectedHashToLastLocator(tableFilterResult.getHash())
+                .addExpectedHashToLastLocator(tableFilter.getResult().getHash())
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation

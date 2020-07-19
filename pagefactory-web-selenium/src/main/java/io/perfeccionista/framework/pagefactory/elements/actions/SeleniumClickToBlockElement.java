@@ -7,10 +7,9 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
-import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.openqa.selenium.WebElement;
@@ -26,9 +25,9 @@ public class SeleniumClickToBlockElement implements WebElementActionImplementati
     @Override
     public Void execute(WebChildElement element, Object... args) {
         WebList unorderedList = (WebList) element;
-        WebListFilter filter = (WebListFilter) args[0];
-        WebListFilterResult listFilterResult = filter.filter(unorderedList);
-        SingleResult<Integer> result = listFilterResult
+        WebListFilterBuilder filter = (WebListFilterBuilder) args[0];
+        WebListFilter listFilter = filter.build(unorderedList);
+        SingleResult<Integer> result = listFilter
                 .extractOne(blockIndex());
 
         // Create locator chain instance for scrolling with hash check
@@ -37,7 +36,7 @@ public class SeleniumClickToBlockElement implements WebElementActionImplementati
                 .setSingle(true)
                 .setIndex(result.getIndex());
         WebLocatorChain locatorChainForScroll = element.getLocatorChain()
-                .addExpectedHashToLastLocator(listFilterResult.getHash())
+                .addExpectedHashToLastLocator(listFilter.getResult().getHash())
                 .addLocator(liLocatorHolderForScroll);
 
         // Create and execute scroll operation

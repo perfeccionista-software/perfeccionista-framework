@@ -10,8 +10,8 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterResult;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -23,9 +23,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 // TODO: Добавить TextBlockExtractor/LinkExtractor
 @WebLocator(component = LI, xpath = ".//li", single = false)
 public interface WebTextList extends WebChildElement,
-        ScrollToElementAvailable<WebTextListFilter>, ClickToElementAvailable<WebTextListFilter>, SizeAvailable {
+        ScrollToElementAvailable<WebTextListFilterBuilder>, ClickToElementAvailable<WebTextListFilterBuilder>, SizeAvailable {
 
-    @NotNull WebTextListFilterResult filter(@NotNull WebTextListFilter filter);
+    @NotNull WebTextListFilter filter(@NotNull WebTextListFilterBuilder filterBuilder);
 
     @NotNull MultipleResult<String> extractAll();
 
@@ -48,7 +48,7 @@ public interface WebTextList extends WebChildElement,
     // ClickToElement
 
     @Override
-    WebTextList clickToElement(@NotNull WebTextListFilter filter);
+    WebTextList clickToElement(@NotNull WebTextListFilterBuilder filter);
 
     // Get Color
 
@@ -119,7 +119,7 @@ public interface WebTextList extends WebChildElement,
     // ScrollToElement
 
     @Override
-    WebTextList scrollToElement(@NotNull WebTextListFilter filter);
+    WebTextList scrollToElement(@NotNull WebTextListFilterBuilder filter);
 
     // Size
 

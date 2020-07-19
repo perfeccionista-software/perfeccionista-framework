@@ -85,6 +85,7 @@ public class WebMethods extends AvailableElementMethods {
     public static final String SHOULD_HAVE_SIZE_METHOD = "ShouldHaveSize";
 
     public static final String FILTER_METHOD = "Filter";
+    public static final String GET_FILTER_RESULT_METHOD = "GetFilterResult";
     public static final String EXTRACT_ALL_METHOD = "ExtractAll";
 
     public static final String EXTRACT_HEADER_FILTER = "ExtractHeader";

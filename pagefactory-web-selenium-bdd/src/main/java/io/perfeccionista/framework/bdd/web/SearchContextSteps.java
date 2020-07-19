@@ -12,8 +12,8 @@ import io.perfeccionista.framework.pagefactory.elements.context.WebBlockContextL
 import io.perfeccionista.framework.pagefactory.elements.context.WebListBlockContextLimiter;
 import io.perfeccionista.framework.pagefactory.elements.context.WebTableCellContextLimiter;
 import io.perfeccionista.framework.pagefactory.elements.context.WebTableRowContextLimiter;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -52,7 +52,7 @@ public class SearchContextSteps implements EnvironmentAvailable {
     @Given("user chooses for work in the {webElement} blocks with")
     @Given("пользователь выбирает в {webElement} для работы блоки, в которых")
     public void userRestrictsBlocksInTheWebList(WebElementParameter<WebList> elementFinder,
-                                                WebListFilter itemFilter) {
+                                                WebListFilterBuilder itemFilter) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
                 .getPageContext()
@@ -67,7 +67,7 @@ public class SearchContextSteps implements EnvironmentAvailable {
     @Given("user chooses for work in the {webElement} rows with")
     @Given("пользователь выбирает в {webElement} для работы строки, в которых")
     public void userRestrictsRowsInTheWebTable(WebElementParameter<WebTable> elementFinder,
-                                               WebTableFilter itemFilter) {
+                                               WebTableFilterBuilder itemFilter) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
                 .getPageContext()
@@ -84,7 +84,7 @@ public class SearchContextSteps implements EnvironmentAvailable {
     @Given("пользователь выбирает в {webElement} для работы ячейки из колонки {webTableColumn}, в которых")
     public void userRestrictsCellsInTheWebTable(WebElementParameter<WebTable> elementFinder,
                                                 WebTableColumnParameter tableColumn,
-                                                WebTableFilter itemFilter) {
+                                                WebTableFilterBuilder itemFilter) {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
                 .getPageContext()

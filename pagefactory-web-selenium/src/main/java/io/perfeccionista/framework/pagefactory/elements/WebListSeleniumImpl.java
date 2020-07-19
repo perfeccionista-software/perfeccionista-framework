@@ -41,9 +41,9 @@ import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import io.perfeccionista.framework.plugin.Color;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -137,15 +137,16 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     protected Class<? extends WebMappedBlock> mappedBlockClass;
 
     @Override
-    public @NotNull WebListFilterResult filter(@NotNull WebListFilter filter) {
-        return filter.filter(this);
+    public @NotNull WebListFilter filter(@NotNull WebListFilterBuilder filterBuilder) {
+        return filterBuilder.build(this);
     }
 
     @Override
     public @NotNull <V> MultipleResult<V> extractAll(@NotNull WebListBlockValueExtractor<V> extractor) {
+        // TODO: Возможно тут runCheck стоит перенести в метод extractHeader как и в методах shouldHaveSize
         return runCheck(getEnvironment(), InvocationName.of(EXTRACT_ALL_METHOD, this, extractor),
-                () -> new WebListFilterSeleniumImpl()
-                .filter(this)
+                () -> new WebListFilterBuilderSeleniumImpl()
+                .build(this)
                 .extractAll(extractor));
     }
 
@@ -181,7 +182,7 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // ClickToElement
 
     @Override
-    public WebList clickToElement(@NotNull WebListFilter filter) {
+    public WebList clickToElement(@NotNull WebListFilterBuilder filter) {
         runCheck(getEnvironment(), InvocationName.of(CLICK_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(CLICK_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;
@@ -304,7 +305,7 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
     // ScrollToElement
 
     @Override
-    public WebList scrollToElement(@NotNull WebListFilter filter) {
+    public WebList scrollToElement(@NotNull WebListFilterBuilder filter) {
         runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_ELEMENT_METHOD, this, filter),
                 () -> getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
         return this;

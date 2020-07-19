@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -50,7 +50,7 @@ public class WebListBlockElementEmptyCondition implements WebListBlockCondition 
     }
 
     @Override
-    public WebConditionProcessingResult process(WebList element, String hash) {
+    public WebFilterResult process(WebList element, String hash) {
         WebLocatorChain locatorChain = element.getLocatorChain();
         WebLocatorHolder listLocatorHolder = locatorChain.getLastLocator();
         listLocatorHolder.setCalculateHash(true);
@@ -75,7 +75,7 @@ public class WebListBlockElementEmptyCondition implements WebListBlockCondition 
         Set<Integer> indexes = operationResult.multipleResult()
                 .getValues()
                 .keySet();
-        return WebConditionProcessingResult.of(inverse ? Set.of() : indexes, returnedHash);
+        return WebFilterResult.of(inverse ? Set.of() : indexes, returnedHash);
     }
 
 }
