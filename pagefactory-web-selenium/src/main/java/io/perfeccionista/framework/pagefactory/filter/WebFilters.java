@@ -8,11 +8,12 @@ import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilter
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementEmptyCondition;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListBlockCondition;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterSeleniumImpl;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableCellCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellCondition;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableRowCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowCondition;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterSeleniumImpl;
 
@@ -68,15 +69,18 @@ public class WebFilters {
     // Table
 
     public static WebTableFilter emptyTableFilter() {
-        return new WebTableFilterSeleniumImpl();
+        return new WebTableFilterSeleniumImpl()
+                .add(new WebTableRowElementEmptyCondition());
     }
 
-    public static WebTableFilter with(WebTableCellCondition condition) {
-        return new WebTableFilterSeleniumImpl().add(condition);
+    public static WebTableFilter with(WebTableRowCondition condition) {
+        return new WebTableFilterSeleniumImpl()
+                .add(condition);
     }
 
-    public static WebTableFilter without(WebTableCellCondition condition) {
-        return new WebTableFilterSeleniumImpl().subtract(condition);
+    public static WebTableFilter without(WebTableRowCondition condition) {
+        return emptyTableFilter()
+                .subtract(condition);
     }
 
     // StringTable
@@ -85,11 +89,11 @@ public class WebFilters {
         return new WebTextTableFilterSeleniumImpl();
     }
 
-    public static WebTextTableFilter with(WebTextTableCellCondition stringCondition) {
+    public static WebTextTableFilter with(WebTextTableRowCondition stringCondition) {
         return new WebTextTableFilterSeleniumImpl().add(stringCondition);
     }
 
-    public static WebTextTableFilter without(WebTextTableCellCondition stringCondition) {
+    public static WebTextTableFilter without(WebTextTableRowCondition stringCondition) {
         return new WebTextTableFilterSeleniumImpl().subtract(stringCondition);
     }
 

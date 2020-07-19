@@ -8,6 +8,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class JsGetDimensions implements WebElementActionImplementation<Dimensions> {
 
     @Override
@@ -20,6 +22,13 @@ public class JsGetDimensions implements WebElementActionImplementation<Dimension
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<Dimensions>> getJsOperation(WebChildElement element, Object... args) {
+        String component = (String) args[0];
+        GetDimensions getDimensionsFunction = new GetDimensions();
+        return Optional.of(JsOperation.of(element.getLocatorChainTo(component), getDimensionsFunction));
     }
 
 }

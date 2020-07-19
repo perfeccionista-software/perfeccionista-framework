@@ -56,10 +56,10 @@ public class WebTextListFilterResultSeleniumImpl implements WebTextListFilterRes
 
     @Override
     @API(status = STABLE)
-    public WebTextListFilterResult shouldHaveSize(NumberValue<Integer> integerValue) {
+    public WebTextListFilterResult shouldHaveSize(NumberValue<Integer> expectedSize) {
         new WebTextListBlockIndexExtractor()
                 .extractValues(element, filter.filter(element))
-                .shouldHaveSize(integerValue);
+                .shouldHaveSize(expectedSize);
         return this;
     }
 

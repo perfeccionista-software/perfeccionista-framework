@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.util.Optional;
+
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
 
 public class DoubleClickActionImplementation implements WebElementActionImplementation<Void> {
@@ -24,6 +26,11 @@ public class DoubleClickActionImplementation implements WebElementActionImplemen
         element.getWebBrowserDispatcher().getExceptionMapper()
                 .map(() -> new Actions(webDriver).doubleClick(webElement).perform());
         return null;
+    }
+
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
     }
 
 }

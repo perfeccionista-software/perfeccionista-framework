@@ -7,7 +7,6 @@ import io.perfeccionista.framework.pagefactory.elements.components.WebComponents
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter.WebListBlockConditionHolder;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
@@ -28,6 +27,8 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
 
     private final NumberValue<Integer> value;
 
+    private boolean inverse = false;
+
     public WebListBlockIndexCondition(NumberValue<Integer> value) {
         this.value = value;
     }
@@ -45,12 +46,19 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
     }
 
     @Override
+    public WebListBlockCondition inverse() {
+        this.inverse = true;
+        return this;
+    }
+
+    @Override
     public Deque<WebListBlockConditionHolder> getChildConditions() {
         return childConditions;
     }
 
     @Override
     public WebConditionProcessingResult process(WebList element, String hash) {
+        // TODO: Обработать inverse
         WebLocatorChain locatorChain = element.getLocatorChain();
         WebLocatorHolder listLocatorHolder = locatorChain.getLastLocator();
         listLocatorHolder.setCalculateHash(true);
@@ -69,6 +77,9 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
         });
         Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
         // TODO: После отладки написатть правильные сообщения об ошибке
+
+        // TODO: Проверить индексы по value
+
         String returnedHash = operationResult.getJsWebLocatorProcessingResult(listLocatorHolder.getLocatorId())
                 .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                 .getHash()

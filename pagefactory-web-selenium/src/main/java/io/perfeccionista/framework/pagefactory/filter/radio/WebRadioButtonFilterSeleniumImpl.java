@@ -8,15 +8,15 @@ import java.util.Deque;
 
 public class WebRadioButtonFilterSeleniumImpl implements WebRadioButtonFilter {
 
-    private final Deque<JsRadioButtonConditionHolder> conditions = new ArrayDeque<>();
+    private final Deque<WebRadioButtonConditionHolder> conditions = new ArrayDeque<>();
 
     public WebRadioButtonFilter add(WebRadioButtonCondition condition) {
-        this.conditions.addLast(new JsRadioButtonConditionHolder(ConditionUsage.ADD, condition));
+        this.conditions.addLast(new WebRadioButtonConditionHolder(ConditionUsage.ADD, condition));
         return this;
     }
 
     public WebRadioButtonFilter subtract(WebRadioButtonCondition condition) {
-        this.conditions.addLast(new JsRadioButtonConditionHolder(ConditionUsage.SUBTRACT, condition));
+        this.conditions.addLast(new WebRadioButtonConditionHolder(ConditionUsage.SUBTRACT, condition));
         return this;
     }
 
@@ -25,7 +25,7 @@ public class WebRadioButtonFilterSeleniumImpl implements WebRadioButtonFilter {
         return new WebRadioButtonFilterResultSeleniumImpl(element, this);
     }
 
-    public Deque<JsRadioButtonConditionHolder> getConditions() {
+    public Deque<WebRadioButtonConditionHolder> getConditions() {
         return conditions;
     }
 

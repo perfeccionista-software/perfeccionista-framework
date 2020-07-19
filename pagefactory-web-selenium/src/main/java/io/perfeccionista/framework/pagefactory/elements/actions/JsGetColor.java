@@ -8,6 +8,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import io.perfeccionista.framework.plugin.Color;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class JsGetColor implements WebElementActionImplementation<Color> {
 
     @Override
@@ -21,6 +23,14 @@ public class JsGetColor implements WebElementActionImplementation<Color> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<Color>> getJsOperation(WebChildElement element, Object... args) {
+        String component = (String) args[0];
+        String cssProperty = (String) args[1];
+        GetColor getColorFunction = new GetColor(cssProperty);
+        return Optional.of(JsOperation.of(element.getLocatorChainTo(component), getColorFunction));
     }
 
 }

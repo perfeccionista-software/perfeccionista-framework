@@ -8,15 +8,15 @@ import java.util.Deque;
 
 public class WebTextTableFilterSeleniumImpl implements WebTextTableFilter {
 
-    private final Deque<JsStringTableRowConditionHolder> conditions = new ArrayDeque<>();
+    private final Deque<WebTextTableRowConditionHolder> conditions = new ArrayDeque<>();
 
-    public WebTextTableFilter add(WebTextTableCellCondition condition) {
-        this.conditions.addLast(new JsStringTableRowConditionHolder(ConditionUsage.ADD, condition));
+    public WebTextTableFilter add(WebTextTableRowCondition condition) {
+        this.conditions.addLast(new WebTextTableRowConditionHolder(ConditionUsage.ADD, condition));
         return this;
     }
 
-    public WebTextTableFilter subtract(WebTextTableCellCondition condition) {
-        this.conditions.addLast(new JsStringTableRowConditionHolder(ConditionUsage.SUBTRACT, condition));
+    public WebTextTableFilter subtract(WebTextTableRowCondition condition) {
+        this.conditions.addLast(new WebTextTableRowConditionHolder(ConditionUsage.SUBTRACT, condition));
         return this;
     }
 
@@ -25,7 +25,7 @@ public class WebTextTableFilterSeleniumImpl implements WebTextTableFilter {
         return new WebTextTableFilterResultSeleniumImpl(element, this);
     }
 
-    public Deque<JsStringTableRowConditionHolder> getConditions() {
+    public Deque<WebTextTableRowConditionHolder> getConditions() {
         return conditions;
     }
 

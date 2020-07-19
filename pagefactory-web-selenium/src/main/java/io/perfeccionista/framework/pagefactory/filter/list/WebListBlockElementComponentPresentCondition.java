@@ -3,7 +3,6 @@ package io.perfeccionista.framework.pagefactory.filter.list;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter.WebListBlockConditionHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +17,8 @@ public class WebListBlockElementComponentPresentCondition implements WebListBloc
     private final WebChildElement elementMock;
     private final String elementName;
 
+    private boolean inverse = false;
+
     public WebListBlockElementComponentPresentCondition(WebChildElement elementMock, String componentName) {
         this.elementName = null;
         this.elementMock = elementMock;
@@ -30,10 +31,6 @@ public class WebListBlockElementComponentPresentCondition implements WebListBloc
         this.componentName = componentName;
     }
 
-    public WebListBlockElementComponentPresentCondition inverse() {
-        return this;
-    }
-
     @Override
     public WebListBlockCondition and(WebListBlockCondition condition) {
 
@@ -43,6 +40,12 @@ public class WebListBlockElementComponentPresentCondition implements WebListBloc
     @Override
     public WebListBlockCondition or(WebListBlockCondition condition) {
 
+        return this;
+    }
+
+    @Override
+    public WebListBlockElementComponentPresentCondition inverse() {
+        inverse = true;
         return this;
     }
 

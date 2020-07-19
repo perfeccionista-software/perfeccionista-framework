@@ -84,7 +84,7 @@ public class WebElementsAsserts {
 //        throw new ElementValueException();
     }
 
-    public static void assertElementProperty(String propertyName, StringValue value, WebElementPropertyAvailable<?> element) {
+    public static void assertElementProperty(String propertyName, StringValue value, WebElementPropertyAvailable element) {
 //        if (value.check(element.getText())) {
 //            return;
 //        }

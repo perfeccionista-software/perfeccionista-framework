@@ -25,6 +25,10 @@ public class JsOperation<R> {
         return new JsOperation<>(locatorChain, jsFunction);
     }
 
+    public WebLocatorChain getLocatorChain() {
+        return locatorChain;
+    }
+
     public JsFunction<R> getEndpointJsFunction() {
         return endpointJsFunction;
     }

@@ -216,6 +216,7 @@
             if (undefined !== parentFunctionInvocations && parentFunctionInvocations.length > 0) {
                 await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
             }
+            let elementIndex = parentElementEntry.index;
             let foundElements = findElements(parentElement, locator);
             let size = foundElements.length;
             if (size === 0) {
@@ -224,10 +225,12 @@
                     addParentElementErrorAttachment(parentElement);
                     throw new ElementSearchError('No elements found');
                 } else {
+                    let elementEntry = createElementEntry(null, locator);
+                    elementEntry.index = elementIndex;
+                    foundElementEntries.push(elementEntry);
                     continue;
                 }
             }
-            let elementIndex = parentElementEntry.index;
             if (size > 1) {
                 if (elementIndex === undefined || elementIndex === null) {
                     addLocatorErrorAttachment(locator);
@@ -262,7 +265,10 @@
      * @return {HTMLElement[]|[]}
      */
     function findElements(parentElement, locator) {
-        let foundElements;
+        let foundElements = [];
+        if (parentElement === null) {
+            return foundElements;
+        }
         switch (locator.locatorStrategy) {
             case 'id':
                 foundElements = [document.getElementById(locator.locatorValue)];
@@ -403,6 +409,16 @@
      */
     async function executeEndpointFunctionForElement(elementEntry, invokeOnCallFunctions, endpointFunction) {
         let element = elementEntry.element;
+        // TODO: Если правильно работает, то можно написать изящнее
+        if (element === undefined || element === null) {
+            let resultEntry = {
+                value: null
+            }
+            if (elementEntry.index !== undefined && elementEntry.index !== null) {
+                resultEntry.index = elementEntry.index;
+            }
+            values.push(resultEntry);
+        }
         if (element !== undefined && element !== null) {
             if (invokeOnCallFunctions !== undefined && invokeOnCallFunctions.length > 0) {
                 await executeInvokeOnCallFunctions(element, invokeOnCallFunctions);
@@ -613,6 +629,8 @@
             }
             if (entry.element !== undefined && entry.element !== null) {
                 searchHistoryElementEntry.found = true;
+            } else {
+                searchHistoryElementEntry.found = false;
             }
             if (entry.hash !== undefined && entry.hash !== null) {
                 searchHistoryElementEntry.hash = entry.hash;

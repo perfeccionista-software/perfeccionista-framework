@@ -64,10 +64,10 @@ public class WebTextTableFilterResultSeleniumImpl implements WebTextTableFilterR
                 .singleResult();
     }
 
-    public WebTextTableFilterResult shouldHaveSize(NumberValue<Integer> integerValue) {
+    public WebTextTableFilterResult shouldHaveSize(NumberValue<Integer> expectedSize) {
         new WebTextTableRowIndexExtractor()
                 .extractValues(element, filter.filter(element))
-                .shouldHaveSize(integerValue);
+                .shouldHaveSize(expectedSize);
         return this;
     }
 

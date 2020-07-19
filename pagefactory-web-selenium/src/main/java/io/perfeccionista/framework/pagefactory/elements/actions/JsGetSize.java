@@ -7,6 +7,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class JsGetSize implements WebElementActionImplementation<Integer> {
 
     @Override
@@ -19,6 +21,11 @@ public class JsGetSize implements WebElementActionImplementation<Integer> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.multipleResult().getSize();
+    }
+
+    @Override
+    public Optional<JsOperation<Integer>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
     }
 
 }

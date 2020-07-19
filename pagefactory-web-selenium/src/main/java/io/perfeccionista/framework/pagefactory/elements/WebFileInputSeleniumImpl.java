@@ -114,7 +114,6 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 // WebTextInput
 @WebElementAction(name = CLEAR_METHOD, implementation = SeleniumClear.class)
 @WebElementAction(name = SEND_KEYS_METHOD, implementation = SeleniumSendKeys.class)
-@WebElementAction(name = SUBMIT_METHOD, implementation = SeleniumSubmit.class)
 @WebElementAction(name = IS_ENABLED_METHOD, implementation = SeleniumIsEnabled.class)
 @WebElementAction(name = SHOULD_BE_ENABLED_METHOD, implementation = AssertShouldBeEnabled.class)
 @WebElementAction(name = SHOULD_BE_DISABLED_METHOD, implementation = AssertShouldBeDisabled.class)

@@ -13,7 +13,7 @@ import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage.CountryNameBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage;
-import io.perfeccionista.framework.pagefactory.pageobjects.TablePage.LinkWebMappedBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.TablePage.ShortNameWebMappedBlock;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Test;
 
@@ -116,11 +116,11 @@ public class ContextLimiterTest extends AbstractUiTest {
         WebTable webTable = tablePage.table();
 
         // Один блок
-        WebTableFilter webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, from(LinkWebMappedBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
+        WebTableFilter webTableSingleCellFilter = with(WebConditions.containsText(TablePage.SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
 
-        LinkWebMappedBlock singleCellContext = pc.usePage(TablePage.class)
+        ShortNameWebMappedBlock singleCellContext = pc.usePage(TablePage.class)
                 .setLimiter(new WebTableCellContextLimiter<>(webTable, TablePage.SHORT_NAME, webTableSingleCellFilter))
-                .getSearchContext(LinkWebMappedBlock.class);
+                .getSearchContext(ShortNameWebMappedBlock.class);
         singleCellContext.shortName().shouldBeDisplayed();
         singleCellContext.shortName().shouldHaveText(value.stringEqualsIgnoreCase("Spain"));
         pc.removeLimiters();
@@ -129,7 +129,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         WebTableFilter webTableMultipleCellsFilter = with(rowIndex(value.intLessThan(50)));
         pc.usePage(TablePage.class)
                 .setLimiter(new WebTableCellContextLimiter<>(webTable, TablePage.SHORT_NAME, webTableMultipleCellsFilter))
-                .getSearchContexts(LinkWebMappedBlock.class)
+                .getSearchContexts(ShortNameWebMappedBlock.class)
                 .forEachOrdered(countryNameCell -> {
                     countryNameCell.shortName().shouldBeDisplayed();
                 });

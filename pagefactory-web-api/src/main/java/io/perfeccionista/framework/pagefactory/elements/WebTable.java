@@ -36,6 +36,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 public interface WebTable extends WebChildElement,
         ScrollToElementAvailable<WebTableFilter>, SizeAvailable {
 
+    // TODO: Тоже можно убрать из интерфейса и вычитывать в кондишенах через readField(), чтобы не путать пользователей
     Optional<TableColumnHolder> getTableColumnHolder(@NotNull String columnName);
 
     @NotNull WebTableFilterResult filter(@NotNull WebTableFilter filter);

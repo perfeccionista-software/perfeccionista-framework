@@ -112,7 +112,6 @@ class WebFileInputElementTest extends AbstractUiTest {
         // WebTextInput
         assertNotNull(fileInput.getActionImplementation(CLEAR_METHOD, Void.class));
         assertNotNull(fileInput.getActionImplementation(SEND_KEYS_METHOD, Void.class));
-        assertNotNull(fileInput.getActionImplementation(SUBMIT_METHOD, Void.class));
         assertNotNull(fileInput.getActionImplementation(IS_ENABLED_METHOD, Boolean.class));
         assertNotNull(fileInput.getActionImplementation(SHOULD_BE_ENABLED_METHOD, Void.class));
         assertNotNull(fileInput.getActionImplementation(SHOULD_BE_DISABLED_METHOD, Void.class));

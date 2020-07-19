@@ -31,4 +31,15 @@ public class WebElementActionAnnotationHandler {
         return WebElementActionRegistry.of(webElementActions);
     }
 
+    public static WebElementActionRegistry createWebElementActionRegistryFor(Class<? extends WebChildElement> webChildElementClass) {
+        Map<String, WebElementActionImplementation<?>> webElementActions = new HashMap<>();
+        findAllRepeatableAnnotationsInHierarchy(WebElementAction.class, WebChildElement.class, webChildElementClass)
+                .forEach(webElementAction -> {
+                    if (!webElementActions.containsKey(webElementAction.name())) {
+                        webElementActions.put(webElementAction.name(), newInstance(webElementAction.implementation()));
+                    }
+                });
+        return WebElementActionRegistry.of(webElementActions);
+    }
+
 }

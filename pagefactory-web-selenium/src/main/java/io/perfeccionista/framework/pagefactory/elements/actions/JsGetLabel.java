@@ -7,6 +7,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
 
 public class JsGetLabel implements WebElementActionImplementation<String> {
@@ -20,6 +22,12 @@ public class JsGetLabel implements WebElementActionImplementation<String> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<String>> getJsOperation(WebChildElement element, Object... args) {
+        GetText getTextFunction = new GetText();
+        return Optional.of(JsOperation.of(element.getLocatorChainTo(LABEL), getTextFunction));
     }
 
 }

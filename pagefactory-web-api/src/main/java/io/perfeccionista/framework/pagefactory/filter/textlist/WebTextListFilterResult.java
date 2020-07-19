@@ -6,6 +6,7 @@ import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 
 import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.apiguardian.api.API.Status.STABLE;
@@ -13,22 +14,22 @@ import static org.apiguardian.api.API.Status.STABLE;
 public interface WebTextListFilterResult extends FilterResult {
 
     @API(status = STABLE)
-    String getHash();
+    @NotNull String getHash();
 
     @API(status = STABLE)
-    SingleResult<String> extractOne();
+    @NotNull SingleResult<String> extractOne();
 
     @API(status = STABLE)
-    MultipleResult<String> extractAll();
+    @NotNull MultipleResult<String> extractAll();
 
     @API(status = INTERNAL)
-    <T> SingleResult<T> extractOne(WebTextListBlockValueExtractor<T> extractor);
+    @NotNull <T> SingleResult<T> extractOne(@NotNull WebTextListBlockValueExtractor<T> extractor);
 
     @API(status = INTERNAL)
-    <T> MultipleResult<T> extractAll(WebTextListBlockValueExtractor<T> extractor);
+    @NotNull <T> MultipleResult<T> extractAll(@NotNull WebTextListBlockValueExtractor<T> extractor);
 
     @Override
     @API(status = STABLE)
-    WebTextListFilterResult shouldHaveSize(NumberValue<Integer> integerValue);
+    WebTextListFilterResult shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
 }

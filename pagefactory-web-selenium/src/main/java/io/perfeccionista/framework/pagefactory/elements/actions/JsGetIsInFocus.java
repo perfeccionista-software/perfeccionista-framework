@@ -7,6 +7,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
 
 public class JsGetIsInFocus  implements WebElementActionImplementation<Boolean> {
@@ -20,6 +22,12 @@ public class JsGetIsInFocus  implements WebElementActionImplementation<Boolean> 
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<Boolean>> getJsOperation(WebChildElement element, Object... args) {
+        GetIsInFocus getIsInFocusFunction = new GetIsInFocus();
+        return Optional.of(JsOperation.of(element.getLocatorChainTo(FOCUS), getIsInFocusFunction));
     }
 
 }

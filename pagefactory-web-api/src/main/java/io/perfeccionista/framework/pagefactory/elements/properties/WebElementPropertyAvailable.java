@@ -20,9 +20,9 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 /**
  * TODO JavaDoc
  */
-public interface WebElementPropertyAvailable<T extends WebElementPropertyHolder> extends WebLocatorChainAvailable {
+public interface WebElementPropertyAvailable extends WebLocatorChainAvailable {
 
-    Optional<T> getProperty(String propertyName);
+    Optional<WebElementPropertyHolder> getProperty(String propertyName);
 
     @MappedElementAction(GET_PROPERTY_VALUE_METHOD)
     @Nullable String getPropertyValue(@NotNull String propertyName);

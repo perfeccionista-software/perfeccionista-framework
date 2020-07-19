@@ -4,21 +4,29 @@ import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
+import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
+import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyRegistry;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 
 public class WebBlockMock implements WebElementMock {
 
+    protected WebElementPropertyRegistry propertyRegistry;
     protected WebLocatorRegistry locatorRegistry;
     protected WebElementRegistry elementRegistry;
     protected WebElementIdentifier elementIdentifier;
     protected WebElementMock parentMock;
     protected Method parentMethod;
     protected Class<?> itemClass;
+
+    public WebElementRegistry getElementRegistry() {
+        return elementRegistry;
+    }
 
     @Override
     public WebElementMock getParentMock() {
@@ -58,16 +66,22 @@ public class WebBlockMock implements WebElementMock {
     }
 
     @Override
-    public @NotNull WebLocatorChain getLocatorChainTo(String locatorName) {
-        WebLocatorHolder locator = locatorRegistry.getLocator(locatorName);
-        if (locator == null) {
-            return getLocatorChain();
+    public @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName) {
+        Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
+        if (optionalLocator.isPresent()) {
+            return getLocatorChain().addLocator(optionalLocator.get());
         }
-        return getLocatorChain().addLocator(locator);
+        return getLocatorChain();
     }
 
     @Override
     public @NotNull WebLocatorChain getLocatorChain() {
         return parentMock.getLocatorChain().addLocator(locatorRegistry.getLocator(ROOT));
     }
+
+    @Override
+    public Optional<WebElementPropertyHolder> getProperty(String propertyName) {
+        return propertyRegistry.getProperty(propertyName);
+    }
+
 }

@@ -8,6 +8,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class JsGetScreenshot implements WebElementActionImplementation<Screenshot> {
 
     @Override
@@ -20,6 +22,13 @@ public class JsGetScreenshot implements WebElementActionImplementation<Screensho
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<Screenshot>> getJsOperation(WebChildElement element, Object... args) {
+        String component = (String) args[0];
+        GetScreenshot getScreenshotFunction = new GetScreenshot();
+        return Optional.of(JsOperation.of(element.getLocatorChainTo(component), getScreenshotFunction));
     }
 
 }

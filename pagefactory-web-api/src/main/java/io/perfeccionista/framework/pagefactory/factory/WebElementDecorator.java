@@ -57,8 +57,17 @@ public class WebElementDecorator {
     public WebMappedBlock decorateWebMappedBlockInstance(WebList parent,
                                                          WebMappedBlock webMappedBlockInstance,
                                                          WebElementRegistry webElementRegistry,
-                                                         WebParentInfo parentInfo) {
-        writeField("parent", webMappedBlockInstance, parent);
+                                                         WebParentInfo<WebList> parentInfo) {
+        writeField("parentInfo", webMappedBlockInstance, parentInfo);
+        writeField("locatorRegistry", webMappedBlockInstance, WebLocatorRegistry.empty());
+        writeField("elementRegistry", webMappedBlockInstance, webElementRegistry);
+        return webMappedBlockInstance;
+    }
+
+    public WebMappedBlock decorateWebMappedBlockInstance(WebTable parent,
+                                                         WebMappedBlock webMappedBlockInstance,
+                                                         WebElementRegistry webElementRegistry,
+                                                         WebParentInfo<WebTable> parentInfo) {
         writeField("parentInfo", webMappedBlockInstance, parentInfo);
         writeField("locatorRegistry", webMappedBlockInstance, WebLocatorRegistry.empty());
         writeField("elementRegistry", webMappedBlockInstance, webElementRegistry);

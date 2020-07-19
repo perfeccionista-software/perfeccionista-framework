@@ -1,12 +1,20 @@
 package io.perfeccionista.framework.pagefactory.filter.textlist;
 
+import io.perfeccionista.framework.pagefactory.elements.WebTextList;
+import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Deque;
 
 public class WebTextListBlockTextCondition implements WebTextListBlockCondition {
 
     private final StringValue stringValue;
     private final NumberValue<? extends Number> numberValue;
+
+    private boolean inverse = false;
 
     public WebTextListBlockTextCondition(StringValue stringValue) {
         this.stringValue = stringValue;
@@ -16,11 +24,6 @@ public class WebTextListBlockTextCondition implements WebTextListBlockCondition 
     public WebTextListBlockTextCondition(NumberValue<? extends Number> numberValue) {
         this.stringValue = null;
         this.numberValue = numberValue;
-    }
-
-    public WebTextListBlockTextCondition inverse() {
-
-        return this;
     }
 
     @Override
@@ -33,4 +36,19 @@ public class WebTextListBlockTextCondition implements WebTextListBlockCondition 
         return null;
     }
 
+    @Override
+    public WebTextListBlockTextCondition inverse() {
+        inverse = true;
+        return this;
+    }
+
+    @Override
+    public Deque<WebTextBlockConditionHolder> getChildConditions() {
+        return null;
+    }
+
+    @Override
+    public @NotNull WebConditionProcessingResult process(@NotNull WebTextList element, @Nullable String hash) {
+        return null;
+    }
 }

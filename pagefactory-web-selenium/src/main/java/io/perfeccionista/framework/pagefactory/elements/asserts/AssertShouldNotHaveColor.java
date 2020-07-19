@@ -5,7 +5,10 @@ import io.perfeccionista.framework.attachment.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementColorException;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.plugin.Color;
+
+import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.base.ExceptionType.ASSERT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_COLOR_IS_EQUAL_EXPECTED_COLOR;
@@ -28,4 +31,8 @@ public class AssertShouldNotHaveColor implements WebElementActionImplementation<
         return null;
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

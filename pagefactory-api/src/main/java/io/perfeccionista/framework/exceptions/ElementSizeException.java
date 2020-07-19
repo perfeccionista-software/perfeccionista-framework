@@ -8,10 +8,12 @@ public class ElementSizeException extends PerfeccionistaException {
 
     public ElementSizeException(String message) {
         super(message);
+        setProcessed(true);
     }
 
     public ElementSizeException(String message, Throwable cause) {
         super(message, cause);
+        setProcessed(true);
     }
 
 }

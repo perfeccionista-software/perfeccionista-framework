@@ -2,35 +2,34 @@ package io.perfeccionista.framework.pagefactory.elements.base;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 
-// TODO: Необходимо доработать формат.
-//  Тут логично указывать непосредственно объект родительского элемента:
-//  WebChildElement: WebRadioGroup, WebList, WebTable, WebTextList, WebTextTable
-public final class WebParentInfo {
+import java.util.Deque;
 
-    private final WebLocatorHolder webLocatorHolder; // radioButtonLocator, li, tr
+public final class WebParentInfo<T extends WebChildElement> {
+
+    private final T parent;
     private final String parentHash;
-    private final int index;
+    private final Deque<WebLocatorHolder> parentLocators;
 
-    private WebParentInfo(String parentHash, WebLocatorHolder webLocatorHolder, int index) {
+    private WebParentInfo(T parent, String parentHash, Deque<WebLocatorHolder> parentLocators) {
+        this.parent = parent;
         this.parentHash = parentHash;
-        this.webLocatorHolder = webLocatorHolder;
-        this.index = index;
+        this.parentLocators = parentLocators;
     }
 
-    public static WebParentInfo of(String parentHash, WebLocatorHolder webLocatorHolder, int index) {
-        return new WebParentInfo(parentHash, webLocatorHolder, index);
+    public static <T extends WebChildElement> WebParentInfo<T> of(T parent, String parentHash, Deque<WebLocatorHolder> parentLocators) {
+        return new WebParentInfo<>(parent, parentHash, parentLocators);
+    }
+
+    public T getParent() {
+        return parent;
     }
 
     public String getParentHash() {
         return parentHash;
     }
 
-    public WebLocatorHolder getWebLocatorHolder() {
-        return webLocatorHolder;
-    }
-
-    public int getIndex() {
-        return index;
+    public Deque<WebLocatorHolder> getParentLocators() {
+        return parentLocators;
     }
 
 }

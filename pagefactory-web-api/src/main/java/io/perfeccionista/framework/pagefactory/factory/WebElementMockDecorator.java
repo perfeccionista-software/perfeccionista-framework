@@ -9,12 +9,16 @@ import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegis
 
 import java.lang.reflect.Method;
 
+import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementIdentifierHandler.extractNames;
+import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementPropertyAnnotationHandler.createWebElementPropertyRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createWebLocatorRegistryFor;
 import static io.perfeccionista.framework.utils.ReflectionUtils.writeField;
 
 public class WebElementMockDecorator {
 
+    // TODO: Возможно, тут кроме объекта с методом ничего не нужно вызывать.
+    //  остальное создавать при инициализации мока внутри кондишена или экстрактора
     private WebElementMockDecorator() {
     }
 
@@ -25,23 +29,31 @@ public class WebElementMockDecorator {
         return webMappedBlockMock;
     }
 
+
+
     public static WebBlock decorateWebBlockMockInstance(WebParentElement parent,
-                                                        WebBlock webBlockInstance,
+                                                        WebBlock webBlock,
+                                                        Class<? extends WebBlock> webBlockClass,
                                                         Method webChildElementMethod,
                                                         WebElementRegistry elementRegistry) {
-        decorateWebChildElementMockInstance(parent, webBlockInstance, webChildElementMethod);
-        writeField("elementRegistry", webBlockInstance, elementRegistry);
-        return webBlockInstance;
+        decorateWebChildElementMockInstance(parent, webBlock, webBlockClass, webChildElementMethod);
+        writeField("elementRegistry", webBlock, elementRegistry);
+        writeField("actionRegistry", webBlock, createWebElementActionRegistryFor(webBlock, webChildElementMethod));
+        return webBlock;
     }
 
     public static WebChildElement decorateWebChildElementMockInstance(WebParentElement parent,
-                                                                      WebChildElement webChildElementInstance,
+                                                                      WebChildElement webChildElement,
+                                                                      Class<? extends WebChildElement> webChildElementClass,
                                                                       Method webChildElementMethod) {
-        writeField("parentMock", webChildElementInstance, parent);
-        writeField("locatorRegistry", webChildElementInstance, createWebLocatorRegistryFor(webChildElementInstance, webChildElementMethod));
-        WebElementIdentifier identifier = WebElementIdentifier.of(extractNames(webChildElementInstance, webChildElementMethod), webChildElementMethod);
-        writeField("elementIdentifier", webChildElementInstance, identifier);
-        return webChildElementInstance;
+        writeField("itemClass", webChildElement, webChildElementClass);
+        writeField("parentMock", webChildElement, parent);
+        writeField("parentMethod", webChildElement, webChildElementMethod);
+        writeField("locatorRegistry", webChildElement, createWebLocatorRegistryFor(webChildElement, webChildElementMethod));
+        writeField("propertyRegistry", webChildElement, createWebElementPropertyRegistryFor(webChildElement, webChildElementMethod));
+        WebElementIdentifier identifier = WebElementIdentifier.of(extractNames(webChildElement, webChildElementMethod), webChildElementMethod);
+        writeField("elementIdentifier", webChildElement, identifier);
+        return webChildElement;
     }
 
 }

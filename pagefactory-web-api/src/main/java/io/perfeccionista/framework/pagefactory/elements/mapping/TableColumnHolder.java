@@ -3,6 +3,9 @@ package io.perfeccionista.framework.pagefactory.elements.mapping;
 import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class TableColumnHolder {
 
@@ -27,36 +30,36 @@ public class TableColumnHolder {
         this.footerClass = footerClass;
     }
 
-    public static TableColumnHolder of(@NotNull WebLocatorHolder headerLocator,
+    public static TableColumnHolder of(@Nullable WebLocatorHolder headerLocator,
                                        @NotNull Class<? extends WebMappedBlock> headerClass,
-                                       @NotNull WebLocatorHolder bodyLocator,
+                                       @Nullable WebLocatorHolder bodyLocator,
                                        @NotNull Class<? extends WebMappedBlock> bodyClass,
-                                       @NotNull WebLocatorHolder footerLocator,
+                                       @Nullable WebLocatorHolder footerLocator,
                                        @NotNull Class<? extends WebMappedBlock> footerClass) {
         return new TableColumnHolder(headerLocator, headerClass, bodyLocator, bodyClass, footerLocator, footerClass);
     }
 
-    public WebLocatorHolder getHeaderLocator() {
-        return headerLocator;
+    public Optional<WebLocatorHolder> getHeaderLocator() {
+        return Optional.ofNullable(headerLocator);
     }
 
-    public Class<? extends WebMappedBlock> getHeaderClass() {
+    public @NotNull Class<? extends WebMappedBlock> getHeaderClass() {
         return headerClass;
     }
 
-    public WebLocatorHolder getBodyLocator() {
-        return bodyLocator;
+    public Optional<WebLocatorHolder> getBodyLocator() {
+        return Optional.ofNullable(bodyLocator);
     }
 
-    public Class<? extends WebMappedBlock> getBodyClass() {
+    public @NotNull Class<? extends WebMappedBlock> getBodyClass() {
         return bodyClass;
     }
 
-    public WebLocatorHolder getFooterLocator() {
-        return footerLocator;
+    public Optional<WebLocatorHolder> getFooterLocator() {
+        return Optional.ofNullable(footerLocator);
     }
 
-    public Class<? extends WebMappedBlock> getFooterClass() {
+    public @NotNull Class<? extends WebMappedBlock> getFooterClass() {
         return footerClass;
     }
 

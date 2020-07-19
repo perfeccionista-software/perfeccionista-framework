@@ -40,6 +40,7 @@ public enum PageFactoryMessages implements Messages {
     ELEMENT_SCREENSHOT_IS_NOT_EQUAL_EXPECTED_SCREENSHOT("Element screenshot for component %s is not equal to expected screenshot"),
     ELEMENT_SCREENSHOT_IS_EQUAL_EXPECTED_SCREENSHOT("Element screenshot for component %s is equal to expected screenshot but should not"),
     ELEMENT_SIZE_NOT_MATCH("Element size doesn't match the expected size"),
+    ELEMENT_FILTERED_SIZE_NOT_MATCH("Filtered element size doesn't match the expected size"),
     ELEMENT_NOT_IN_FOCUS("Element %s is not in focus"),
     ELEMENT_IN_FOCUS("Element %s is in focus but should not"),
 
@@ -48,6 +49,8 @@ public enum PageFactoryMessages implements Messages {
     EMPTY_ELEMENT_PATH("Element path is empty"),
     INCORRECT_PARENT_ELEMENT("Incorrect parent element type. %s can't have child elements"),
     METHOD_NOT_DECLARED("Method with name %s is not declared for element"),
+    TABLE_COLUMN_NOT_DECLARED("Table column with name %s is not declared for element %s"),
+    TABLE_COLUMN_LOCATOR_NOT_DECLARED("Table column locator for column with name %s is not declared for element %s"),
     MULTIPLE_RESULT_HAS_MORE_THAN_ONE_VALUE("MultipleResult has more than one value and can't be converted to SingleResult"),
     PAGE_NAME_DUPLICATE("Page name %s used for classes %s and %s"),
     PAGE_NOT_FOUND_BY_NAME("Page with name %s is not found"),

@@ -40,7 +40,7 @@ public class WebListBlockElementExtractor<T extends WebChildElement> implements 
         }
         Map<Integer, T> extractedElements = new HashMap<>();
         WebPageFactory webPageFactory = element.getEnvironment().getService(WebPageService.class).getWebPageFactory();
-        Map<Integer, WebMappedBlock> webMappedBlocks = webPageFactory.createWebMappedBlocks(element, filterResult);
+        Map<Integer, WebMappedBlock> webMappedBlocks = webPageFactory.createWebListBlocks(element, filterResult);
         // В зависимости от того, что указано при создании достаем нужные элементы или по имени или по цепочке методов.
         for (Entry<Integer, WebMappedBlock> webMappedBlockEntry : webMappedBlocks.entrySet()) {
             if (elementMock == null) {

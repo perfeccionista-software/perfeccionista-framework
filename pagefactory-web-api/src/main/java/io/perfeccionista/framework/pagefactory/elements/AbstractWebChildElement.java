@@ -85,6 +85,9 @@ public class AbstractWebChildElement extends AbstractBasicWebElement implements 
     protected WebElementIdentifier elementIdentifier;
 
     public @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName) {
+        if (ROOT.equals(locatorName)) {
+            return getLocatorChain();
+        }
         Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
         if (optionalLocator.isPresent()) {
             return getLocatorChain().addLocator(optionalLocator.get());

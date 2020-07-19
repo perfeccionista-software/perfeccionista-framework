@@ -1,18 +1,23 @@
 package io.perfeccionista.framework.pagefactory.filter.list;
 
+import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
+import io.perfeccionista.framework.attachment.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.ElementSizeException;
+import io.perfeccionista.framework.exceptions.base.ExceptionType;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockIndexExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.ConditionUsage;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter.WebListBlockConditionHolder;
 import io.perfeccionista.framework.value.number.NumberValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_FILTERED_SIZE_NOT_MATCH;
 
 public class WebListFilterResultSeleniumImpl implements WebListFilterResult {
 
@@ -32,7 +37,7 @@ public class WebListFilterResultSeleniumImpl implements WebListFilterResult {
     }
 
     @Override
-    public String getHash() {
+    public @NotNull String getHash() {
         return hash;
     }
 
@@ -42,33 +47,41 @@ public class WebListFilterResultSeleniumImpl implements WebListFilterResult {
     }
 
     @Override
-    public <T> SingleResult<T> extractOne(WebListBlockValueExtractor<T> extractor) {
+    public @NotNull <T> SingleResult<T> extractOne(@NotNull WebListBlockValueExtractor<T> extractor) {
         return extractor
                 .extractValues(element, this)
                 .singleResult();
     }
 
     @Override
-    public <T> MultipleResult<T> extractAll(WebListBlockValueExtractor<T> extractor) {
+    public @NotNull <T> MultipleResult<T> extractAll(@NotNull WebListBlockValueExtractor<T> extractor) {
         return extractor
                 .extractValues(element, this);
     }
 
     @Override
-    public WebListFilterResult shouldHaveSize(NumberValue<Integer> integerValue) {
-        new WebListBlockIndexExtractor()
-                .extractValues(element, this)
-                .shouldHaveSize(integerValue);
+    public WebListFilterResult shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
+        int actualSize = indexes.size();
+        if (!expectedSize.check(actualSize)) {
+            throw new ElementSizeException(ELEMENT_FILTERED_SIZE_NOT_MATCH.getMessage())
+                    .setType(ExceptionType.ASSERT)
+                    .setProcessed(true)
+                    .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
+                    .addAttachmentEntry(StringAttachmentEntry.of("Actual size", String.valueOf(actualSize)))
+                    .addAttachmentEntry(StringAttachmentEntry.of("Expected size", expectedSize.toString()));
+        }
         return this;
     }
 
+    // TODO: Check this logic
+
     private static WebConditionProcessingResult executeFilter(WebList element, WebListFilter filter) {
         Deque<WebListBlockConditionHolder> conditions = filter.getConditions();
-        if (conditions.isEmpty()) {
-            return WebConditionProcessingResult.of(Set.of(-1), null);
-        }
-        String calculatedHash = null;
         Set<Integer> indexes = new HashSet<>();
+        String calculatedHash = null;
+        if (conditions.isEmpty()) {
+            return new WebListBlockElementEmptyCondition().process(element, null);
+        }
         for (WebListBlockConditionHolder conditionHolder : conditions) {
             WebListBlockCondition condition = conditionHolder.getCondition();
             WebConditionProcessingResult conditionResult = processConditions(element, condition, calculatedHash);

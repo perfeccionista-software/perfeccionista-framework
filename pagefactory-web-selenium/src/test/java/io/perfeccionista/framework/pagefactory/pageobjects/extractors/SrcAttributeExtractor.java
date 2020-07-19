@@ -26,4 +26,11 @@ public class SrcAttributeExtractor implements WebElementPropertyExtractor<WebChi
         return operationResult.singleResult().get();
     }
 
+    @Override
+    public JsOperation<String> getJsOperation(@NotNull WebChildElement element, Optional<WebLocatorHolder> locatorHolder) {
+        WebLocatorChain locatorChain = element.getLocatorChain();
+        locatorHolder.ifPresent(locatorChain::addLocator);
+        return JsOperation.of(locatorChain, new GetAttribute("src"));
+    }
+
 }

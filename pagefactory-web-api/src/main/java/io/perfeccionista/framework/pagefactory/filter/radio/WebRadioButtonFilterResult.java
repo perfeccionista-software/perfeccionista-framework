@@ -5,13 +5,14 @@ import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.value.number.NumberValue;
+import org.jetbrains.annotations.NotNull;
 
 public interface WebRadioButtonFilterResult extends FilterResult {
 
-    <T> SingleResult<T> extractOne(WebRadioButtonValueExtractor<T> extractor);
+    @NotNull <T> SingleResult<T> extractOne(@NotNull WebRadioButtonValueExtractor<T> extractor);
 
-    <T> MultipleResult<T> extractAll(WebRadioButtonValueExtractor<T> extractor);
+    @NotNull <T> MultipleResult<T> extractAll(@NotNull WebRadioButtonValueExtractor<T> extractor);
 
-    WebRadioButtonFilterResult shouldHaveSize(NumberValue<Integer> integerValue);
+    WebRadioButtonFilterResult shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
 }

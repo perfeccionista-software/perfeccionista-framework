@@ -35,10 +35,10 @@ public class WebMockFactory {
                         WebBlock webBlockInstance = WebElementMockInitializer.initWebBlockMock(webBlockType);
                         List<Method> childElementMethods = getWebChildElementMethods(webBlockType);
                         WebElementRegistry elementRegistry = createWebChildElementMocks(webBlockInstance, childElementMethods);
-                        return WebElementMockDecorator.decorateWebBlockMockInstance(parent, webBlockInstance, webChildElementMethod, elementRegistry);
+                        return WebElementMockDecorator.decorateWebBlockMockInstance(parent, webBlockInstance, webBlockType, webChildElementMethod, elementRegistry);
                     } else {
                         WebChildElement webChildElementInstance = WebElementMockInitializer.initWebChildElementMock(webChildElementType);
-                        return WebElementMockDecorator.decorateWebChildElementMockInstance(parent, webChildElementInstance, webChildElementMethod);
+                        return WebElementMockDecorator.decorateWebChildElementMockInstance(parent, webChildElementInstance, webChildElementType, webChildElementMethod);
                     }
                 }).collect(toList());
         return WebElementRegistry.of(webChildElements);

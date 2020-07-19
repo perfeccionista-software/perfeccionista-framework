@@ -60,9 +60,6 @@ import java.util.Optional;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.IS_SELECTED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_BE_SELECTED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.AvailableElementMethods.SHOULD_NOT_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_PRESENT_METHOD;
@@ -81,12 +78,14 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_ENABLED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_IN_FOCUS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_DISABLED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_ENABLED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_IN_FOCUS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_COLOR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_DIMENSIONS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_LOCATION_METHOD;
@@ -98,6 +97,7 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_IN_FOCUS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_COLOR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_DIMENSIONS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_LOCATION_METHOD;
@@ -158,10 +158,10 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 @WebElementAction(name = SHOULD_NOT_LOOKS_LIKE_METHOD, implementation = AssertShouldNotLooksLike.class)
 public class WebRadioButtonSeleniumImpl extends AbstractWebChildElement implements WebRadioButton {
 
-    protected WebParentInfo parentInfo = null;
+    protected WebParentInfo<WebRadioGroup> parentInfo = null;
 
     @Override
-    public @Nullable WebParentInfo getParentInfo() {
+    public @Nullable WebParentInfo<WebRadioGroup> getParentInfo() {
         return parentInfo;
     }
 
@@ -180,12 +180,10 @@ public class WebRadioButtonSeleniumImpl extends AbstractWebChildElement implemen
         if (parentInfo == null) {
             return parent.getLocatorChain().addLocator(locatorRegistry.getLocator(ROOT));
         }
-        // TODO: Implement for RadioGroup
-        // TODO: Здесь нужно будет переопределять построение локатор чейн и добавлять туда индексы и хэш, если они есть
-//        WebLocatorChain locatorChain = parent.getLocatorChain();
-//        WebLocatorHolder parentLocator = locatorChain.getLastLocator();
-//        return .addLocator(locatorRegistry.getLocator(ROOT));
-        return parent.getLocatorChain().addLocator(locatorRegistry.getLocator(ROOT));
+        WebLocatorChain locatorChain = parentInfo.getParent().getLocatorChain();
+        locatorChain.getLastLocator().setExpectedHash(parentInfo.getParentHash());
+        locatorChain.addLocators(parentInfo.getParentLocators());
+        return locatorChain;
     }
 
     // Actions

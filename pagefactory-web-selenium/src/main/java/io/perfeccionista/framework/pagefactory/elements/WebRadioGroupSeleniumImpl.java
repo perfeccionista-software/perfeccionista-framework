@@ -20,9 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.EXTRACT_ALL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_BY_INDEX;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_BY_LABEL;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_SELECTED;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_BY_INDEX_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_BY_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_SIZE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SIZE_METHOD;
@@ -48,7 +48,7 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
 
     @Override
     public @NotNull WebRadioButton getSelected() {
-        return runCheck(getEnvironment(), InvocationName.of(GET_SELECTED, this),
+        return runCheck(getEnvironment(), InvocationName.of(GET_SELECTED_METHOD, this),
                 () -> new WebRadioButtonFilterSeleniumImpl().add(selected())
                         .filter(this)
                         .extractOne(element())
@@ -57,7 +57,7 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
 
     @Override
     public @NotNull WebRadioButton getByLabel(@NotNull StringValue expectedLabel) {
-        return runCheck(getEnvironment(), InvocationName.of(GET_BY_LABEL, this),
+        return runCheck(getEnvironment(), InvocationName.of(GET_BY_LABEL_METHOD, this),
                 () -> with(WebConditions.containsLabel(expectedLabel))
                         .filter(this)
                         .extractOne(element())
@@ -66,7 +66,7 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
 
     @Override
     public @NotNull WebRadioButton getByIndex(@NotNull NumberValue<Integer> expectedIndex) {
-        return runCheck(getEnvironment(), InvocationName.of(GET_BY_INDEX, this),
+        return runCheck(getEnvironment(), InvocationName.of(GET_BY_INDEX_METHOD, this),
                 () -> with(radioButtonIndex(expectedIndex))
                         .filter(this)
                         .extractOne(element())

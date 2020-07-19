@@ -7,6 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolde
 import io.perfeccionista.framework.pagefactory.jsfunction.GetText;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -23,6 +24,14 @@ public class JsGetTextWebElementPropertyExtractor implements WebElementPropertyE
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public JsOperation<String> getJsOperation(@NotNull WebChildElement element, Optional<WebLocatorHolder> locatorHolder) {
+        WebLocatorChain locatorChain = element.getLocatorChain();
+        locatorHolder.ifPresent(locatorChain::addLocator);
+        GetText getTextFunction = new GetText();
+        return JsOperation.of(locatorChain, getTextFunction);
     }
 
 }

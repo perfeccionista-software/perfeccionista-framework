@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class WebConditionProcessingResult {
@@ -17,7 +18,7 @@ public final class WebConditionProcessingResult {
     }
 
     public Set<Integer> getIndexes() {
-        return indexes;
+        return new HashSet<>(indexes);
     }
 
     public String getHash() {

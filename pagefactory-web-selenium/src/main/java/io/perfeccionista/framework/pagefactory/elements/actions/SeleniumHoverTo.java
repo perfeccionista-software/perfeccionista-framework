@@ -5,12 +5,15 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
+import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.util.Optional;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.HOVER;
 
@@ -46,4 +49,8 @@ public class SeleniumHoverTo implements WebElementActionImplementation<Void> {
         return null;
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

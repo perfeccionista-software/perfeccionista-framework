@@ -30,6 +30,13 @@ public class WebMethods extends AvailableElementMethods {
     public static final String SHOULD_LOOKS_LIKE_METHOD = "ShouldLooksLike";
     public static final String SHOULD_NOT_LOOKS_LIKE_METHOD = "ShouldNotLooksLike";
 
+    public static final String IS_SELECTED_METHOD = "IsSelected";
+    public static final String SHOULD_BE_SELECTED_METHOD = "ShouldBeSelected";
+    public static final String SHOULD_NOT_BE_SELECTED_METHOD = "ShouldNotBeSelected";
+
+    public static final String IS_ENABLED_METHOD = "IsEnabled";
+    public static final String SHOULD_BE_ENABLED_METHOD = "ShouldBeEnabled";
+    public static final String SHOULD_BE_DISABLED_METHOD = "ShouldBeDisabled";
 
     public static final String IS_COMPONENT_PRESENT_METHOD = "IsComponentPresent";
     public static final String COMPONENT_SHOULD_BE_PRESENT_METHOD = "ComponentShouldBePresentMethod";
@@ -59,11 +66,6 @@ public class WebMethods extends AvailableElementMethods {
     public static final String SHOULD_NOT_HAVE_TEXT_LABEL_METHOD = "ShouldNotHaveTextLabel";
     public static final String SHOULD_HAVE_NUMBER_LABEL_METHOD = "ShouldHaveNumberLabel";
     public static final String SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD = "ShouldNotHaveNumberLabel";
-
-    public static final String SHOULD_BE_ENABLED_METHOD = "ShouldBeEnabled";
-    public static final String SHOULD_BE_DISABLED_METHOD = "ShouldBeDisabled";
-
-    public static final String IS_ENABLED_METHOD = "IsEnabled";
 
     public static final String CLEAR_METHOD = "Clear";
 
@@ -97,8 +99,8 @@ public class WebMethods extends AvailableElementMethods {
     public static final String SHOULD_BE_CLOSED_METHOD = "ShouldBeClosed";
     public static final String SHOULD_BE_OPEN_METHOD = "ShouldBeOpen";
 
-    public static final String GET_SELECTED = "GetSelected";
-    public static final String GET_BY_LABEL = "GetByLabel";
-    public static final String GET_BY_INDEX = "GetByIndex";
+    public static final String GET_SELECTED_METHOD = "GetSelected";
+    public static final String GET_BY_LABEL_METHOD = "GetByLabel";
+    public static final String GET_BY_INDEX_METHOD = "GetByIndex";
 
 }

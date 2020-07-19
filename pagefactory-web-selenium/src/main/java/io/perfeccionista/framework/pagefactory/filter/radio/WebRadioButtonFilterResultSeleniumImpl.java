@@ -28,10 +28,10 @@ public class WebRadioButtonFilterResultSeleniumImpl implements WebRadioButtonFil
                 .extractValues(element, filter.filter(element));
     }
 
-    public WebRadioButtonFilterResult shouldHaveSize(NumberValue<Integer> integerValue) {
+    public WebRadioButtonFilterResult shouldHaveSize(NumberValue<Integer> expectedSize) {
         new WebRadioButtonIndexExtractor()
                 .extractValues(element, filter.filter(element))
-                .shouldHaveSize(integerValue);
+                .shouldHaveSize(expectedSize);
         return this;
     }
 

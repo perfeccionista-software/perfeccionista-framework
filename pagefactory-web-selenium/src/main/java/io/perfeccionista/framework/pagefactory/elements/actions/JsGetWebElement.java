@@ -8,6 +8,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.WebElement;
 
+import java.util.Optional;
+
 public class JsGetWebElement implements WebElementActionImplementation<WebElement> {
 
     @Override
@@ -20,6 +22,13 @@ public class JsGetWebElement implements WebElementActionImplementation<WebElemen
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<WebElement>> getJsOperation(WebChildElement element, Object... args) {
+        // TODO: Тут логично еще добавить локатор для которого от корня нужно найти вебэлемент
+        GetWebElement getWebElementFunction = new GetWebElement();
+        return Optional.of(JsOperation.of(element.getLocatorChain(), getWebElementFunction));
     }
 
 }

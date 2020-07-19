@@ -9,10 +9,10 @@
                     <b-table striped hover outlined :items="countriesData" :fields="fields">
                         <!-- Selected checkbox -->
                         <template v-slot:cell(selected)="data">
-                            <b-checkbox itemid="checkbox" :id="data.item.name" :checked="data.item.selected" :disabled="!data.item.enabled"></b-checkbox>
+                            <b-checkbox itemid="checkbox" :id="data.item.name" :checked="data.item.selected" :disabled="!data.item.enabled">{{ data.item.number}}</b-checkbox>
                         </template>
                         <template v-slot:cell(name)="data">
-                            <b-link itemid="country-name" :href="data.item.wikiLink">{{ data.item.name }}</b-link>
+                            <b-link itemid="country-name" :href="data.item.wikiLink" v-if="data.item.wikiLink!==null" >{{ data.item.name }}</b-link>
                         </template>
                         <template v-slot:cell(fullName)="data">
                             <span itemid="country-full-name" v-b-tooltip.hover :title="data.item.fullName">{{ data.item.fullName }}

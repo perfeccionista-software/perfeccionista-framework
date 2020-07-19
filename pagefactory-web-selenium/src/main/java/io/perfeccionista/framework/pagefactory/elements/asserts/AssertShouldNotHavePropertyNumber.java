@@ -5,7 +5,10 @@ import io.perfeccionista.framework.attachment.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementPropertyValueException;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
+import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.value.number.NumberValue;
+
+import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.base.ExceptionType.ASSERT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_PROPERTY_CONTAINS_EXPECTED_VALUE;
@@ -36,5 +39,9 @@ public class AssertShouldNotHavePropertyNumber implements WebElementActionImplem
         return null;
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }
 

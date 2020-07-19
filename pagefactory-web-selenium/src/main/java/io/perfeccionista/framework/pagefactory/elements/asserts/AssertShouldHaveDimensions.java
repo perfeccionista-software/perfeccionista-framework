@@ -6,6 +6,9 @@ import io.perfeccionista.framework.exceptions.ElementDimensionsException;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+
+import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.base.ExceptionType.ASSERT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_DIMENSIONS_ARE_NOT_EQUAL_EXPECTED_DIMENSIONS;
@@ -28,4 +31,8 @@ public class AssertShouldHaveDimensions implements WebElementActionImplementatio
                 .addAttachmentEntry(StringAttachmentEntry.of("Expected dimensions", expectedDimensions.toString()));
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

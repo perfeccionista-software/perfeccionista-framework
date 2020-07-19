@@ -41,7 +41,10 @@ public class WebMultipleResult<T> implements MultipleResult<T> {
 
     @Override
     public Map<Integer, T> getValues() {
-        return Map.copyOf(values);
+        Map<Integer, T> copyOfValues = new HashMap<>();
+        // Map.copyOf() выдает NPE при копировании значения равного null
+        values.forEach(copyOfValues::put);
+        return copyOfValues;
     }
 
     @Override

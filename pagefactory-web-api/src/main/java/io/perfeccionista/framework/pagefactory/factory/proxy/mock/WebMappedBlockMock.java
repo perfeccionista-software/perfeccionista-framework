@@ -1,11 +1,12 @@
 package io.perfeccionista.framework.pagefactory.factory.proxy.mock;
 
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 public class WebMappedBlockMock implements WebElementMock {
 
@@ -13,6 +14,10 @@ public class WebMappedBlockMock implements WebElementMock {
     protected WebElementMock parentMock;
     protected Method parentMethod;
     protected Class<?> itemClass;
+
+    public WebElementRegistry getElementRegistry() {
+        return elementRegistry;
+    }
 
     public WebElementMock getParentMock() {
         return parentMock;
@@ -52,5 +57,10 @@ public class WebMappedBlockMock implements WebElementMock {
     @Override
     public @NotNull WebLocatorChain getLocatorChain() {
         return WebLocatorChain.empty();
+    }
+
+    @Override
+    public Optional<WebElementPropertyHolder> getProperty(String propertyName) {
+        return Optional.empty();
     }
 }

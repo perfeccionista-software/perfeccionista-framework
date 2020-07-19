@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentInfo;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
@@ -13,37 +12,30 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class AbstractWebMappedBlock implements WebMappedBlock {
 
     protected WebLocatorRegistry locatorRegistry;
     protected WebElementRegistry elementRegistry;
-    protected WebChildElement parent;
-    protected WebParentInfo parentInfo;
+    protected WebParentInfo<?> parentInfo;
 
     @Override
     public @NotNull WebElementRegistry getElementRegistry() {
         return elementRegistry;
     }
 
-    // TODO: Override getLocatorChain
-
-
     public @NotNull WebBrowserDispatcher getWebBrowserDispatcher() {
-        return parent.getWebBrowserDispatcher();
+        return parentInfo.getParent().getWebBrowserDispatcher();
     }
 
-    public @NotNull WebChildElement getParent() {
-        return parent;
-    }
-
-    public @NotNull WebParentInfo getParentInfo() {
+    public @NotNull WebParentInfo<?> getParentInfo() {
         return parentInfo;
     }
 
     public @NotNull Environment getEnvironment() {
-        return parent.getEnvironment();
+        return parentInfo.getParent().getEnvironment();
     }
 
     public Optional<WebLocatorHolder> getLocator(String componentName) {
@@ -51,6 +43,9 @@ public class AbstractWebMappedBlock implements WebMappedBlock {
     }
 
     public @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName) {
+        if (ROOT.equals(locatorName)) {
+            return getLocatorChain();
+        }
         Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
         if (optionalLocator.isPresent()) {
             return getLocatorChain().addLocator(optionalLocator.get());
@@ -59,10 +54,10 @@ public class AbstractWebMappedBlock implements WebMappedBlock {
     }
 
     public @NotNull WebLocatorChain getLocatorChain() {
-        WebLocatorHolder webLocatorHolder = parentInfo.getWebLocatorHolder()
-                .setSingle(true)
-                .setIndex(parentInfo.getIndex());
-        return parent.getLocatorChain().addLocator(webLocatorHolder);
+        WebLocatorChain locatorChain = parentInfo.getParent().getLocatorChain();
+        locatorChain.getLastLocator().setExpectedHash(parentInfo.getParentHash());
+        locatorChain.addLocators(parentInfo.getParentLocators());
+        return locatorChain;
     }
 
     @Override
@@ -70,6 +65,5 @@ public class AbstractWebMappedBlock implements WebMappedBlock {
     public JsonNode toJson() {
         return createObjectNode();
     }
-
 
 }

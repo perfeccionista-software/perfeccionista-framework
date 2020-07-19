@@ -55,6 +55,9 @@ public class AbstractWebPage extends AbstractBasicWebElement implements WebPage 
 
     @Override
     public @NotNull WebLocatorChain getLocatorChainTo(@NotNull String locatorName) {
+        if (ROOT.equals(locatorName)) {
+            return getLocatorChain();
+        }
         Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
         if (optionalLocator.isPresent()) {
             return getLocatorChain().addLocator(optionalLocator.get());

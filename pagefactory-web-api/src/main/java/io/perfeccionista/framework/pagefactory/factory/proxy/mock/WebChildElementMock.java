@@ -1,18 +1,21 @@
 package io.perfeccionista.framework.pagefactory.factory.proxy.mock;
 
 import io.perfeccionista.framework.name.WebElementIdentifier;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
+import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
+import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 
 public class WebChildElementMock implements WebElementMock {
 
+    protected WebElementPropertyRegistry propertyRegistry;
     protected WebElementIdentifier elementIdentifier;
     protected WebLocatorRegistry locatorRegistry;
     protected WebElementMock parentMock;
@@ -58,16 +61,21 @@ public class WebChildElementMock implements WebElementMock {
 
     @Override
     public @NotNull WebLocatorChain getLocatorChainTo(String locatorName) {
-        WebLocatorHolder locator = locatorRegistry.getLocator(locatorName);
-        if (locator == null) {
-            return getLocatorChain();
+        Optional<WebLocatorHolder> optionalLocator = locatorRegistry.getOptionalLocator(locatorName);
+        if (optionalLocator.isPresent()) {
+            return getLocatorChain().addLocator(optionalLocator.get());
         }
-        return getLocatorChain().addLocator(locator);
+        return getLocatorChain();
     }
 
     @Override
     public @NotNull WebLocatorChain getLocatorChain() {
         return parentMock.getLocatorChain().addLocator(locatorRegistry.getLocator(ROOT));
+    }
+
+    @Override
+    public Optional<WebElementPropertyHolder> getProperty(String propertyName) {
+        return propertyRegistry.getProperty(propertyName);
     }
 
 }

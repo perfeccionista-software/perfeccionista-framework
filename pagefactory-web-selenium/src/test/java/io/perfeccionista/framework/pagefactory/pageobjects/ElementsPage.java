@@ -88,10 +88,6 @@ public interface ElementsPage extends AbstractWebPage {
 
     @Name("Simple input")
     @WebLocator(id = "simple-input")
-    @WebLocator(component = TEXT, xpath = "self::node()")
-    @WebLocator(component = INPUT, xpath = "self::node()")
-    @WebLocator(component = CLEAR, xpath = "self::node()")
-    @WebLocator(component = ENABLED, xpath = "self::node()")
     @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
     WebTextInput simpleInput();
 
@@ -108,10 +104,6 @@ public interface ElementsPage extends AbstractWebPage {
 
     @Name("Area input")
     @WebLocator(id = "area-input")
-    @WebLocator(component = TEXT, xpath = "self::node()")
-    @WebLocator(component = INPUT, xpath = "self::node()")
-    @WebLocator(component = CLEAR, xpath = "self::node()")
-    @WebLocator(component = ENABLED, xpath = "self::node()")
     @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
     WebTextInput areaInput();
 

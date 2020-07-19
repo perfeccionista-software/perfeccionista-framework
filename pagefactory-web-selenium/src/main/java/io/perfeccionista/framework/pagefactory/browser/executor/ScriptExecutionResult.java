@@ -106,7 +106,7 @@ class ScriptExecutionResult<T> {
             if (valueEntry.containsKey("index")) {
                 index = ((Long) valueEntry.get("index")).intValue();
             }
-            results.put(index, converter.apply(value));
+            results.put(index, value == null ? null : converter.apply(value));
         }
         return results;
     }

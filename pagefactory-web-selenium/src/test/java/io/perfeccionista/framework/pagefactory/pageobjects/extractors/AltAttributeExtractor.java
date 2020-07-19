@@ -9,7 +9,6 @@ import io.perfeccionista.framework.pagefactory.jsfunction.GetAttribute;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -25,6 +24,13 @@ public class AltAttributeExtractor implements WebElementPropertyExtractor<WebChi
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public JsOperation<String> getJsOperation(@NotNull WebChildElement element, Optional<WebLocatorHolder> locatorHolder) {
+        WebLocatorChain locatorChain = element.getLocatorChain();
+        locatorHolder.ifPresent(locatorChain::addLocator);
+        return JsOperation.of(locatorChain, new GetAttribute("alt"));
     }
 
 }

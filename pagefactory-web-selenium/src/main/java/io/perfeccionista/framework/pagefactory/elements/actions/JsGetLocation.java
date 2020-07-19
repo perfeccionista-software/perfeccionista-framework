@@ -7,6 +7,8 @@ import io.perfeccionista.framework.pagefactory.jsfunction.GetLocation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 
+import java.util.Optional;
+
 public class JsGetLocation implements WebElementActionImplementation<Location> {
 
     @Override
@@ -19,6 +21,13 @@ public class JsGetLocation implements WebElementActionImplementation<Location> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<Location>> getJsOperation(WebChildElement element, Object... args) {
+        String component = (String) args[0];
+        GetLocation getLocationFunction = new GetLocation();
+        return Optional.of(JsOperation.of(element.getLocatorChainTo(component), getLocationFunction));
     }
 
 }

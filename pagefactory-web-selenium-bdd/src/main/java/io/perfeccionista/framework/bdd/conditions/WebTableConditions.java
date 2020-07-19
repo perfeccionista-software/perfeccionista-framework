@@ -15,16 +15,16 @@ import io.perfeccionista.framework.pagefactory.elements.methods.IsDisplayedAvail
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementComponentDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementComponentPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementEnabledCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementLabelCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementPropertyCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementSelectedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementTextCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementComponentDisplayedCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementComponentPresentCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementDisplayedCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementEnabledCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementLabelCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementPresentCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementPropertyCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementSelectedCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementTextCondition;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowIndexCondition;
 
 public class WebTableConditions {
@@ -35,7 +35,7 @@ public class WebTableConditions {
      */
     @Given("index {integerValue}")
     @Given("индекс {integerValue}")
-    public WebTableCellCondition withIndexCondition(ValueIntegerParameter blockIndex) {
+    public WebTableRowCondition withIndexCondition(ValueIntegerParameter blockIndex) {
         return new WebTableRowIndexCondition(blockIndex.getValue());
     }
 
@@ -45,9 +45,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} exists")
     @Given("в столбце {webTableColumn} {webElement} присутствует")
-    public WebTableCellCondition withElementPresentCondition(WebTableColumnParameter tableColumn,
-                                                             WebElementParameter<IsPresentAvailable> elementFinder) {
-        return new WebTableCellElementPresentCondition(tableColumn.getRaw(), elementFinder.getRaw());
+    public WebTableRowCondition withElementPresentCondition(WebTableColumnParameter tableColumn,
+                                                            WebElementParameter<IsPresentAvailable> elementFinder) {
+        return new WebTableRowElementPresentCondition(tableColumn.getRaw(), elementFinder.getRaw());
     }
 
     /**
@@ -56,9 +56,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} does not exist")
     @Given("в столбце {webTableColumn} {webElement} отсутствует")
-    public WebTableCellCondition withElementNotPresentCondition(WebTableColumnParameter tableColumn,
-                                                                WebElementParameter<IsPresentAvailable> elementFinder) {
-        return new WebTableCellElementPresentCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
+    public WebTableRowCondition withElementNotPresentCondition(WebTableColumnParameter tableColumn,
+                                                               WebElementParameter<IsPresentAvailable> elementFinder) {
+        return new WebTableRowElementPresentCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
     }
 
     /**
@@ -67,9 +67,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} is displayed")
     @Given("в столбце {webTableColumn} {webElement} отображается")
-    public WebTableCellCondition withElementIsDisplayedCondition(WebTableColumnParameter tableColumn,
-                                                                 WebElementParameter<IsDisplayedAvailable> elementFinder) {
-        return new WebTableCellElementDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw());
+    public WebTableRowCondition withElementIsDisplayedCondition(WebTableColumnParameter tableColumn,
+                                                                WebElementParameter<IsDisplayedAvailable> elementFinder) {
+        return new WebTableRowElementDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw());
     }
 
     /**
@@ -78,9 +78,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} is not displayed")
     @Given("в столбце {webTableColumn} {webElement} не отображается")
-    public WebTableCellCondition withElementNotDisplayedCondition(WebTableColumnParameter tableColumn,
-                                                                  WebElementParameter<IsDisplayedAvailable> elementFinder) {
-        return new WebTableCellElementDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
+    public WebTableRowCondition withElementNotDisplayedCondition(WebTableColumnParameter tableColumn,
+                                                                 WebElementParameter<IsDisplayedAvailable> elementFinder) {
+        return new WebTableRowElementDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
     }
 
     /**
@@ -89,9 +89,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} is selected")
     @Given("в столбце {webTableColumn} {webElement} выделен(а|о)")
-    public WebTableCellCondition withElementSelectedCondition(WebTableColumnParameter tableColumn,
-                                                              WebElementParameter<IsSelectedAvailable> elementFinder) {
-        return new WebTableCellElementSelectedCondition(tableColumn.getRaw(), elementFinder.getRaw());
+    public WebTableRowCondition withElementSelectedCondition(WebTableColumnParameter tableColumn,
+                                                             WebElementParameter<IsSelectedAvailable> elementFinder) {
+        return new WebTableRowElementSelectedCondition(tableColumn.getRaw(), elementFinder.getRaw());
     }
 
     /**
@@ -100,9 +100,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} is not selected")
     @Given("в столбце {webTableColumn} {webElement} не выделен(а|о)")
-    public WebTableCellCondition withElementNotSelectedCondition(WebTableColumnParameter tableColumn,
-                                                                 WebElementParameter<IsSelectedAvailable> elementFinder) {
-        return new WebTableCellElementSelectedCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
+    public WebTableRowCondition withElementNotSelectedCondition(WebTableColumnParameter tableColumn,
+                                                                WebElementParameter<IsSelectedAvailable> elementFinder) {
+        return new WebTableRowElementSelectedCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
     }
 
     /**
@@ -111,9 +111,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} is enabled")
     @Given("в столбце {webTableColumn} {webElement} доступ(ен|но|на)")
-    public WebTableCellCondition withElementEnabledCondition(WebTableColumnParameter tableColumn,
-                                                             WebElementParameter<IsEnabledAvailable> elementFinder) {
-        return new WebTableCellElementEnabledCondition(tableColumn.getRaw(), elementFinder.getRaw());
+    public WebTableRowCondition withElementEnabledCondition(WebTableColumnParameter tableColumn,
+                                                            WebElementParameter<IsEnabledAvailable> elementFinder) {
+        return new WebTableRowElementEnabledCondition(tableColumn.getRaw(), elementFinder.getRaw());
     }
 
     /**
@@ -122,9 +122,9 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} is disabled")
     @Given("в столбце {webTableColumn} {webElement} недоступ(ен|но|на)")
-    public WebTableCellCondition withElementDisabledCondition(WebTableColumnParameter tableColumn,
-                                                              WebElementParameter<IsEnabledAvailable> elementFinder) {
-        return new WebTableCellElementEnabledCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
+    public WebTableRowCondition withElementDisabledCondition(WebTableColumnParameter tableColumn,
+                                                             WebElementParameter<IsEnabledAvailable> elementFinder) {
+        return new WebTableRowElementEnabledCondition(tableColumn.getRaw(), elementFinder.getRaw()).inverse();
     }
 
     /**
@@ -134,10 +134,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} contain {stringValue}")
     @Given("в столбце {webTableColumn} {webElement} содержит {stringValue}")
-    public WebTableCellCondition withElementContainsTextCondition(WebTableColumnParameter tableColumn,
-                                                                  WebElementParameter<GetTextAvailable> elementFinder,
-                                                                  ValueStringParameter expectedText) {
-        return new WebTableCellElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue());
+    public WebTableRowCondition withElementContainsTextCondition(WebTableColumnParameter tableColumn,
+                                                                 WebElementParameter<GetTextAvailable> elementFinder,
+                                                                 ValueStringParameter expectedText) {
+        return new WebTableRowElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -147,10 +147,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} does not contain {stringValue}")
     @Given("в столбце {webTableColumn} {webElement} не содержит {stringValue}")
-    public WebTableCellCondition withElementNotContainsTextCondition(WebTableColumnParameter tableColumn,
-                                                                     WebElementParameter<GetTextAvailable> elementFinder,
-                                                                     ValueStringParameter expectedText) {
-        return new WebTableCellElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue()).inverse();
+    public WebTableRowCondition withElementNotContainsTextCondition(WebTableColumnParameter tableColumn,
+                                                                    WebElementParameter<GetTextAvailable> elementFinder,
+                                                                    ValueStringParameter expectedText) {
+        return new WebTableRowElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue()).inverse();
     }
 
     /**
@@ -160,10 +160,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} contain number {numberValue}")
     @Given("в столбце {webTableColumn} {webElement} содержит число {numberValue}")
-    public WebTableCellCondition withElementContainsNumberCondition(WebTableColumnParameter tableColumn,
-                                                                    WebElementParameter<GetTextAvailable> elementFinder,
-                                                                    ValueNumberParameter expectedNumber) {
-        return new WebTableCellElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue());
+    public WebTableRowCondition withElementContainsNumberCondition(WebTableColumnParameter tableColumn,
+                                                                   WebElementParameter<GetTextAvailable> elementFinder,
+                                                                   ValueNumberParameter expectedNumber) {
+        return new WebTableRowElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue());
     }
 
     /**
@@ -173,10 +173,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} {webElement} does not contain number {numberValue}")
     @Given("в столбце {webTableColumn} {webElement} не содержит число {numberValue}")
-    public WebTableCellCondition withElementNotContainsNumberCondition(WebTableColumnParameter tableColumn,
-                                                                       WebElementParameter<GetTextAvailable> elementFinder,
-                                                                       ValueNumberParameter expectedNumber) {
-        return new WebTableCellElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue()).inverse();
+    public WebTableRowCondition withElementNotContainsNumberCondition(WebTableColumnParameter tableColumn,
+                                                                      WebElementParameter<GetTextAvailable> elementFinder,
+                                                                      ValueNumberParameter expectedNumber) {
+        return new WebTableRowElementTextCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue()).inverse();
     }
 
     /**
@@ -186,10 +186,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} label of the {webElement} contain {stringValue}")
     @Given("в столбце {webTableColumn} лейбл {webElement} содержит {stringValue}")
-    public WebTableCellCondition withElementContainsLabelCondition(WebTableColumnParameter tableColumn,
-                                                                   WebElementParameter<GetLabelAvailable> elementFinder,
-                                                                   ValueStringParameter expectedText) {
-        return new WebTableCellElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue());
+    public WebTableRowCondition withElementContainsLabelCondition(WebTableColumnParameter tableColumn,
+                                                                  WebElementParameter<GetLabelAvailable> elementFinder,
+                                                                  ValueStringParameter expectedText) {
+        return new WebTableRowElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -199,10 +199,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} label of the {webElement} does not contain {stringValue}")
     @Given("в столбце {webTableColumn} лейбл {webElement} не содержит {stringValue}")
-    public WebTableCellCondition withElementNotContainsLabelCondition(WebTableColumnParameter tableColumn,
-                                                                      WebElementParameter<GetLabelAvailable> elementFinder,
-                                                                      ValueStringParameter expectedText) {
-        return new WebTableCellElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue()).inverse();
+    public WebTableRowCondition withElementNotContainsLabelCondition(WebTableColumnParameter tableColumn,
+                                                                     WebElementParameter<GetLabelAvailable> elementFinder,
+                                                                     ValueStringParameter expectedText) {
+        return new WebTableRowElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedText.getValue()).inverse();
     }
 
     /**
@@ -212,10 +212,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} label of the {webElement} contain number {stringValue}")
     @Given("в столбце {webTableColumn} лейбл {webElement} содержит число {stringValue}")
-    public WebTableCellCondition withElementContainsLabelNumberCondition(WebTableColumnParameter tableColumn,
-                                                                         WebElementParameter<GetLabelAvailable> elementFinder,
-                                                                         ValueNumberParameter expectedNumber) {
-        return new WebTableCellElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue());
+    public WebTableRowCondition withElementContainsLabelNumberCondition(WebTableColumnParameter tableColumn,
+                                                                        WebElementParameter<GetLabelAvailable> elementFinder,
+                                                                        ValueNumberParameter expectedNumber) {
+        return new WebTableRowElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue());
     }
 
     /**
@@ -225,10 +225,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} label of the {webElement} does not contain number {stringValue}")
     @Given("в столбце {webTableColumn} лейбл {webElement} не содержит число {stringValue}")
-    public WebTableCellCondition withElementNotContainsLabelNumberCondition(WebTableColumnParameter tableColumn,
-                                                                            WebElementParameter<GetLabelAvailable> elementFinder,
-                                                                            ValueNumberParameter expectedNumber) {
-        return new WebTableCellElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue()).inverse();
+    public WebTableRowCondition withElementNotContainsLabelNumberCondition(WebTableColumnParameter tableColumn,
+                                                                           WebElementParameter<GetLabelAvailable> elementFinder,
+                                                                           ValueNumberParameter expectedNumber) {
+        return new WebTableRowElementLabelCondition(tableColumn.getRaw(), elementFinder.getRaw(), expectedNumber.getValue()).inverse();
     }
 
     /**
@@ -237,10 +237,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} component {webElementComponent} of the {webElement} exists")
     @Given("в столбце {webTableColumn} компонент {webElementComponent} элемента {webElement} присутствует")
-    public WebTableCellCondition withElementsComponentPresentCondition(WebTableColumnParameter tableColumn,
-                                                                       WebElementComponentParameter elementComponent,
-                                                                       WebElementParameter<WebChildElement> elementFinder) {
-        return new WebTableCellElementComponentPresentCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw());
+    public WebTableRowCondition withElementsComponentPresentCondition(WebTableColumnParameter tableColumn,
+                                                                      WebElementComponentParameter elementComponent,
+                                                                      WebElementParameter<WebChildElement> elementFinder) {
+        return new WebTableRowElementComponentPresentCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw());
     }
 
     /**
@@ -249,10 +249,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} component {webElementComponent} of the {webElement} does not exist")
     @Given("в столбце {webTableColumn} компонент {webElementComponent} элемента {webElement} отсутствует")
-    public WebTableCellCondition withElementsComponentNotPresentCondition(WebTableColumnParameter tableColumn,
-                                                                          WebElementComponentParameter elementComponent,
-                                                                          WebElementParameter<WebChildElement> elementFinder) {
-        return new WebTableCellElementComponentPresentCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw()).inverse();
+    public WebTableRowCondition withElementsComponentNotPresentCondition(WebTableColumnParameter tableColumn,
+                                                                         WebElementComponentParameter elementComponent,
+                                                                         WebElementParameter<WebChildElement> elementFinder) {
+        return new WebTableRowElementComponentPresentCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw()).inverse();
     }
 
     /**
@@ -261,10 +261,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} component {webElementComponent} of the {webElement} is displayed")
     @Given("в столбце {webTableColumn} компонент {webElementComponent} элемента {webElement} отображается")
-    public WebTableCellCondition withElementsComponentIsDisplayedCondition(WebTableColumnParameter tableColumn,
-                                                                           WebElementComponentParameter elementComponent,
-                                                                           WebElementParameter<WebChildElement> elementFinder) {
-        return new WebTableCellElementComponentDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw());
+    public WebTableRowCondition withElementsComponentIsDisplayedCondition(WebTableColumnParameter tableColumn,
+                                                                          WebElementComponentParameter elementComponent,
+                                                                          WebElementParameter<WebChildElement> elementFinder) {
+        return new WebTableRowElementComponentDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw());
     }
 
     /**
@@ -273,10 +273,10 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} component {webElementComponent} of the {webElement} is not displayed")
     @Given("в столбце {webTableColumn} компонент {webElementComponent} элемента {webElement} не отображается")
-    public WebTableCellCondition withElementsComponentNotDisplayedCondition(WebTableColumnParameter tableColumn,
-                                                                            WebElementComponentParameter elementComponent,
-                                                                            WebElementParameter<WebChildElement> elementFinder) {
-        return new WebTableCellElementComponentDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw()).inverse();
+    public WebTableRowCondition withElementsComponentNotDisplayedCondition(WebTableColumnParameter tableColumn,
+                                                                           WebElementComponentParameter elementComponent,
+                                                                           WebElementParameter<WebChildElement> elementFinder) {
+        return new WebTableRowElementComponentDisplayedCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementComponent.getRaw()).inverse();
     }
 
     /**
@@ -287,11 +287,11 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} property {webElementProperty} of the {webElement} contains {stringValue}")
     @Given("в столбце {webTableColumn} свойство {webElementProperty} элемента {webElement} содержит {stringValue}")
-    public WebTableCellCondition withElementPropertyContainText(WebTableColumnParameter tableColumn,
-                                                                WebElementPropertyParameter elementProperty,
-                                                                WebElementParameter<WebChildElement> elementFinder,
-                                                                ValueStringParameter expectedText) {
-        return new WebTableCellElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue());
+    public WebTableRowCondition withElementPropertyContainText(WebTableColumnParameter tableColumn,
+                                                               WebElementPropertyParameter elementProperty,
+                                                               WebElementParameter<WebChildElement> elementFinder,
+                                                               ValueStringParameter expectedText) {
+        return new WebTableRowElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -302,11 +302,11 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} property {webElementProperty} of the {webElement} does not contain {stringValue}")
     @Given("в столбце {webTableColumn} свойство {webElementProperty} элемента {webElement} не содержит {stringValue}")
-    public WebTableCellCondition withElementPropertyDoesNotContainText(WebTableColumnParameter tableColumn,
-                                                                       WebElementPropertyParameter elementProperty,
-                                                                       WebElementParameter<WebChildElement> elementFinder,
-                                                                       ValueStringParameter expectedText) {
-        return new WebTableCellElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue()).inverse();
+    public WebTableRowCondition withElementPropertyDoesNotContainText(WebTableColumnParameter tableColumn,
+                                                                      WebElementPropertyParameter elementProperty,
+                                                                      WebElementParameter<WebChildElement> elementFinder,
+                                                                      ValueStringParameter expectedText) {
+        return new WebTableRowElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue()).inverse();
 
     }
 
@@ -318,11 +318,11 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} property {webElementProperty} of the {webElement} contains number {numberValue}")
     @Given("в столбце {webTableColumn} свойство {webElementProperty} элемента {webElement} содержит число {numberValue}")
-    public WebTableCellCondition withElementPropertyContainsNumber(WebTableColumnParameter tableColumn,
-                                                                   WebElementPropertyParameter elementProperty,
-                                                                   WebElementParameter<WebChildElement> elementFinder,
-                                                                   ValueNumberParameter expectedNumber) {
-        return new WebTableCellElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue());
+    public WebTableRowCondition withElementPropertyContainsNumber(WebTableColumnParameter tableColumn,
+                                                                  WebElementPropertyParameter elementProperty,
+                                                                  WebElementParameter<WebChildElement> elementFinder,
+                                                                  ValueNumberParameter expectedNumber) {
+        return new WebTableRowElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue());
 
     }
 
@@ -334,11 +334,11 @@ public class WebTableConditions {
      */
     @Given("in column {webTableColumn} property {webElementProperty} of the {webElement} does not contain number {numberValue}")
     @Given("в столбце {webTableColumn} свойство {webElementProperty} элемента {webElement} не содержит число {numberValue}")
-    public WebTableCellCondition withElementPropertyDoesNotContainNumber(WebTableColumnParameter tableColumn,
-                                                                         WebElementPropertyParameter elementProperty,
-                                                                         WebElementParameter<WebChildElement> elementFinder,
-                                                                         ValueNumberParameter expectedNumber) {
-        return new WebTableCellElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue()).inverse();
+    public WebTableRowCondition withElementPropertyDoesNotContainNumber(WebTableColumnParameter tableColumn,
+                                                                        WebElementPropertyParameter elementProperty,
+                                                                        WebElementParameter<WebChildElement> elementFinder,
+                                                                        ValueNumberParameter expectedNumber) {
+        return new WebTableRowElementPropertyCondition(tableColumn.getRaw(), elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue()).inverse();
 
     }
 

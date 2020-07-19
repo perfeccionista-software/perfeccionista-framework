@@ -23,7 +23,10 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
-
+/**
+ * Input элемент для FileInput обычно скрыт,
+ * поэтому тут удобнее объявлять корневым элементом родительский div
+ */
 @WebLocator(component = LABEL, xpath = "self::node()//label")
 @WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'file']")
 @WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'file']")

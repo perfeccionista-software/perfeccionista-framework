@@ -7,7 +7,11 @@ import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlo
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterResult;
+import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
+import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import org.openqa.selenium.WebElement;
+
+import java.util.Optional;
 
 public class SeleniumSelectForWebTextList implements WebElementActionImplementation<Void> {
 
@@ -24,6 +28,11 @@ public class SeleniumSelectForWebTextList implements WebElementActionImplementat
                     throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
                 });
         return null;
+    }
+
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
     }
 
     // TODO: Implement

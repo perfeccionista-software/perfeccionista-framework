@@ -6,6 +6,8 @@ import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 
+import java.util.Optional;
+
 public class JsScrollTo implements WebElementActionImplementation<Void> {
 
     @Override
@@ -17,6 +19,12 @@ public class JsScrollTo implements WebElementActionImplementation<Void> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
         return operationResult.singleResult().get();
+    }
+
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        ScrollTo scrollToFunction = new ScrollTo();
+        return Optional.of(JsOperation.of(element.getLocatorChain(), scrollToFunction));
     }
 
 }

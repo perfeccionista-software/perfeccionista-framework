@@ -18,18 +18,10 @@ import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
 
-@WebLocator(component = LABEL, xpath = "self::node()//label")
-@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text']")
-@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text']")
-@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text']")
-@WebLocator(component = ENABLED, xpath = "self::node()//input[@type = 'text']")
+@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
 public interface WebTextInput extends WebChildElement,
         GetTextAvailable, GetLabelAvailable, ClickAvailable, SendKeysAvailable, ClearAvailable, IsEnabledAvailable {
 

@@ -21,19 +21,19 @@ import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonEnable
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonIndexCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonLabelCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonSelectedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementComponentPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementPresentCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementComponentPresentCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementPresentCondition;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListBlockIndexCondition;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListBlockTextCondition;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableRowIndexCondition;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableCellTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementEnabledCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementLabelCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementPropertyCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementSelectedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementComponentDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableCellElementTextCondition;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableRowTextCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementDisplayedCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementEnabledCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementLabelCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementPropertyCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementSelectedCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementComponentDisplayedCondition;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementTextCondition;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowIndexCondition;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -307,196 +307,196 @@ public class WebConditions {
         return new WebTableRowIndexCondition(integerValue);
     }
 
-    public static WebTableCellElementDisplayedCondition displayed(String columnName, IsDisplayedAvailable elementMock) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementMock);
+    public static WebTableRowElementDisplayedCondition displayed(String columnName, IsDisplayedAvailable elementMock) {
+        return new WebTableRowElementDisplayedCondition(columnName, elementMock);
     }
 
-    public static WebTableCellElementDisplayedCondition notDisplayed(String columnName, IsDisplayedAvailable elementMock) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementMock).inverse();
+    public static WebTableRowElementDisplayedCondition notDisplayed(String columnName, IsDisplayedAvailable elementMock) {
+        return new WebTableRowElementDisplayedCondition(columnName, elementMock).inverse();
     }
 
-    public static WebTableCellElementDisplayedCondition displayed(String columnName, String elementName) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementName);
+    public static WebTableRowElementDisplayedCondition displayed(String columnName, String elementName) {
+        return new WebTableRowElementDisplayedCondition(columnName, elementName);
     }
 
-    public static WebTableCellElementDisplayedCondition notDisplayed(String columnName, String elementName) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementName).inverse();
+    public static WebTableRowElementDisplayedCondition notDisplayed(String columnName, String elementName) {
+        return new WebTableRowElementDisplayedCondition(columnName, elementName).inverse();
     }
 
-    public static WebTableCellElementPresentCondition present(String columnName, IsPresentAvailable elementMock) {
-        return new WebTableCellElementPresentCondition(columnName, elementMock);
+    public static WebTableRowElementPresentCondition present(String columnName, IsPresentAvailable elementMock) {
+        return new WebTableRowElementPresentCondition(columnName, elementMock);
     }
 
-    public static WebTableCellElementPresentCondition notPresent(String columnName, IsPresentAvailable elementMock) {
-        return new WebTableCellElementPresentCondition(columnName, elementMock).inverse();
+    public static WebTableRowElementPresentCondition notPresent(String columnName, IsPresentAvailable elementMock) {
+        return new WebTableRowElementPresentCondition(columnName, elementMock).inverse();
     }
 
-    public static WebTableCellElementPresentCondition present(String columnName, String elementName) {
-        return new WebTableCellElementPresentCondition(columnName, elementName);
+    public static WebTableRowElementPresentCondition present(String columnName, String elementName) {
+        return new WebTableRowElementPresentCondition(columnName, elementName);
     }
 
-    public static WebTableCellElementPresentCondition notPresent(String columnName, String elementName) {
-        return new WebTableCellElementPresentCondition(columnName, elementName).inverse();
+    public static WebTableRowElementPresentCondition notPresent(String columnName, String elementName) {
+        return new WebTableRowElementPresentCondition(columnName, elementName).inverse();
     }
 
-    public static WebTableCellElementEnabledCondition enabled(String columnName, IsEnabledAvailable elementMock) {
-        return new WebTableCellElementEnabledCondition(columnName, elementMock);
+    public static WebTableRowElementEnabledCondition enabled(String columnName, IsEnabledAvailable elementMock) {
+        return new WebTableRowElementEnabledCondition(columnName, elementMock);
     }
 
-    public static WebTableCellElementEnabledCondition disabled(String columnName, IsEnabledAvailable elementMock) {
-        return new WebTableCellElementEnabledCondition(columnName, elementMock).inverse();
+    public static WebTableRowElementEnabledCondition disabled(String columnName, IsEnabledAvailable elementMock) {
+        return new WebTableRowElementEnabledCondition(columnName, elementMock).inverse();
     }
 
-    public static WebTableCellElementEnabledCondition enabled(String columnName, String elementName) {
-        return new WebTableCellElementEnabledCondition(columnName, elementName);
+    public static WebTableRowElementEnabledCondition enabled(String columnName, String elementName) {
+        return new WebTableRowElementEnabledCondition(columnName, elementName);
     }
 
-    public static WebTableCellElementEnabledCondition disabled(String columnName, String elementName) {
-        return new WebTableCellElementEnabledCondition(columnName, elementName).inverse();
+    public static WebTableRowElementEnabledCondition disabled(String columnName, String elementName) {
+        return new WebTableRowElementEnabledCondition(columnName, elementName).inverse();
     }
 
-    public static WebTableCellElementSelectedCondition selected(String columnName, IsSelectedAvailable elementMock) {
-        return new WebTableCellElementSelectedCondition(columnName, elementMock);
+    public static WebTableRowElementSelectedCondition selected(String columnName, IsSelectedAvailable elementMock) {
+        return new WebTableRowElementSelectedCondition(columnName, elementMock);
     }
 
-    public static WebTableCellElementSelectedCondition notSelected(String columnName, IsSelectedAvailable elementMock) {
-        return new WebTableCellElementSelectedCondition(columnName, elementMock).inverse();
+    public static WebTableRowElementSelectedCondition notSelected(String columnName, IsSelectedAvailable elementMock) {
+        return new WebTableRowElementSelectedCondition(columnName, elementMock).inverse();
     }
 
-    public static WebTableCellElementSelectedCondition selected(String columnName, String elementName) {
-        return new WebTableCellElementSelectedCondition(columnName, elementName);
+    public static WebTableRowElementSelectedCondition selected(String columnName, String elementName) {
+        return new WebTableRowElementSelectedCondition(columnName, elementName);
     }
 
-    public static WebTableCellElementSelectedCondition notSelected(String columnName, String elementName) {
-        return new WebTableCellElementSelectedCondition(columnName, elementName).inverse();
+    public static WebTableRowElementSelectedCondition notSelected(String columnName, String elementName) {
+        return new WebTableRowElementSelectedCondition(columnName, elementName).inverse();
     }
 
-    public static WebTableCellElementTextCondition containsText(String columnName, GetTextAvailable elementMock, StringValue stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementMock, stringValue);
+    public static WebTableRowElementTextCondition containsText(String columnName, GetTextAvailable elementMock, StringValue stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementMock, stringValue);
     }
 
-    public static WebTableCellElementTextCondition notContainsText(String columnName, GetTextAvailable elementMock, StringValue stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementMock, stringValue).inverse();
+    public static WebTableRowElementTextCondition notContainsText(String columnName, GetTextAvailable elementMock, StringValue stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementMock, stringValue).inverse();
     }
 
-    public static WebTableCellElementTextCondition containsText(String columnName, GetTextAvailable elementMock, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementMock, stringValue);
+    public static WebTableRowElementTextCondition containsText(String columnName, GetTextAvailable elementMock, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementMock, stringValue);
     }
 
-    public static WebTableCellElementTextCondition notContainsText(String columnName, GetTextAvailable elementMock, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementMock, stringValue).inverse();
+    public static WebTableRowElementTextCondition notContainsText(String columnName, GetTextAvailable elementMock, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementMock, stringValue).inverse();
     }
 
-    public static WebTableCellElementTextCondition containsText(String columnName, String elementName, StringValue stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementName, stringValue);
+    public static WebTableRowElementTextCondition containsText(String columnName, String elementName, StringValue stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementName, stringValue);
     }
 
-    public static WebTableCellElementTextCondition notContainsText(String columnName, String elementName, StringValue stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementName, stringValue).inverse();
+    public static WebTableRowElementTextCondition notContainsText(String columnName, String elementName, StringValue stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementName, stringValue).inverse();
     }
 
-    public static WebTableCellElementTextCondition containsText(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementName, stringValue);
+    public static WebTableRowElementTextCondition containsText(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementName, stringValue);
     }
 
-    public static WebTableCellElementTextCondition notContainsText(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementTextCondition(columnName, elementName, stringValue).inverse();
+    public static WebTableRowElementTextCondition notContainsText(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementTextCondition(columnName, elementName, stringValue).inverse();
     }
 
-    public static WebTableCellElementLabelCondition containsLabel(String columnName, GetLabelAvailable elementMock, StringValue stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementMock, stringValue);
+    public static WebTableRowElementLabelCondition containsLabel(String columnName, GetLabelAvailable elementMock, StringValue stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementMock, stringValue);
     }
 
-    public static WebTableCellElementLabelCondition notContainsLabel(String columnName, GetLabelAvailable elementMock, StringValue stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementMock, stringValue).inverse();
+    public static WebTableRowElementLabelCondition notContainsLabel(String columnName, GetLabelAvailable elementMock, StringValue stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementMock, stringValue).inverse();
     }
 
-    public static WebTableCellElementLabelCondition containsLabel(String columnName, GetLabelAvailable elementMock, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementMock, stringValue);
+    public static WebTableRowElementLabelCondition containsLabel(String columnName, GetLabelAvailable elementMock, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementMock, stringValue);
     }
 
-    public static WebTableCellElementLabelCondition notContainsLabel(String columnName, GetLabelAvailable elementMock, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementMock, stringValue).inverse();
+    public static WebTableRowElementLabelCondition notContainsLabel(String columnName, GetLabelAvailable elementMock, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementMock, stringValue).inverse();
     }
 
-    public static WebTableCellElementLabelCondition containsLabel(String columnName, String elementName, StringValue stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementName, stringValue);
+    public static WebTableRowElementLabelCondition containsLabel(String columnName, String elementName, StringValue stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementName, stringValue);
     }
 
-    public static WebTableCellElementLabelCondition notContainsLabel(String columnName, String elementName, StringValue stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementName, stringValue).inverse();
+    public static WebTableRowElementLabelCondition notContainsLabel(String columnName, String elementName, StringValue stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementName, stringValue).inverse();
     }
 
-    public static WebTableCellElementLabelCondition containsLabel(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementName, stringValue);
+    public static WebTableRowElementLabelCondition containsLabel(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementName, stringValue);
     }
 
-    public static WebTableCellElementLabelCondition notContainsLabel(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementLabelCondition(columnName, elementName, stringValue).inverse();
+    public static WebTableRowElementLabelCondition notContainsLabel(String columnName, String elementName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementLabelCondition(columnName, elementName, stringValue).inverse();
     }
 
-    public static WebTableCellElementComponentDisplayedCondition componentDisplayed(String columnName, WebChildElement elementMock, String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementMock, componentName);
+    public static WebTableRowElementComponentDisplayedCondition componentDisplayed(String columnName, WebChildElement elementMock, String componentName) {
+        return new WebTableRowElementComponentDisplayedCondition(columnName, elementMock, componentName);
     }
 
-    public static WebTableCellElementComponentDisplayedCondition componentNotDisplayed(String columnName, WebChildElement elementMock, String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementMock, componentName).inverse();
+    public static WebTableRowElementComponentDisplayedCondition componentNotDisplayed(String columnName, WebChildElement elementMock, String componentName) {
+        return new WebTableRowElementComponentDisplayedCondition(columnName, elementMock, componentName).inverse();
     }
 
-    public static WebTableCellElementComponentDisplayedCondition componentDisplayed(String columnName, String elementName, String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementName, componentName);
+    public static WebTableRowElementComponentDisplayedCondition componentDisplayed(String columnName, String elementName, String componentName) {
+        return new WebTableRowElementComponentDisplayedCondition(columnName, elementName, componentName);
     }
 
-    public static WebTableCellElementComponentDisplayedCondition componentNotDisplayed(String columnName, String elementName, String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementName, componentName).inverse();
+    public static WebTableRowElementComponentDisplayedCondition componentNotDisplayed(String columnName, String elementName, String componentName) {
+        return new WebTableRowElementComponentDisplayedCondition(columnName, elementName, componentName).inverse();
     }
 
-    public static WebTableCellElementComponentPresentCondition componentPresent(String columnName, WebChildElement elementMock, String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementMock, componentName);
+    public static WebTableRowElementComponentPresentCondition componentPresent(String columnName, WebChildElement elementMock, String componentName) {
+        return new WebTableRowElementComponentPresentCondition(columnName, elementMock, componentName);
     }
 
-    public static WebTableCellElementComponentPresentCondition componentNotPresent(String columnName, WebChildElement elementMock, String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementMock, componentName).inverse();
+    public static WebTableRowElementComponentPresentCondition componentNotPresent(String columnName, WebChildElement elementMock, String componentName) {
+        return new WebTableRowElementComponentPresentCondition(columnName, elementMock, componentName).inverse();
     }
 
-    public static WebTableCellElementComponentPresentCondition componentPresent(String columnName, String elementName, String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementName, componentName);
+    public static WebTableRowElementComponentPresentCondition componentPresent(String columnName, String elementName, String componentName) {
+        return new WebTableRowElementComponentPresentCondition(columnName, elementName, componentName);
     }
 
-    public static WebTableCellElementComponentPresentCondition componentNotPresent(String columnName, String elementName, String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementName, componentName).inverse();
+    public static WebTableRowElementComponentPresentCondition componentNotPresent(String columnName, String elementName, String componentName) {
+        return new WebTableRowElementComponentPresentCondition(columnName, elementName, componentName).inverse();
     }
 
-    public static WebTableCellElementPropertyCondition containsProperty(String columnName, WebChildElement elementMock, String propertyName, StringValue stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementMock, propertyName, stringValue);
+    public static WebTableRowElementPropertyCondition containsProperty(String columnName, WebChildElement elementMock, String propertyName, StringValue stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementMock, propertyName, stringValue);
     }
 
-    public static WebTableCellElementPropertyCondition notContainsProperty(String columnName, WebChildElement elementMock, String propertyName, StringValue stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementMock, propertyName, stringValue).inverse();
+    public static WebTableRowElementPropertyCondition notContainsProperty(String columnName, WebChildElement elementMock, String propertyName, StringValue stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementMock, propertyName, stringValue).inverse();
     }
 
-    public static WebTableCellElementPropertyCondition containsProperty(String columnName, WebChildElement elementMock, String propertyName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementMock, propertyName, stringValue);
+    public static WebTableRowElementPropertyCondition containsProperty(String columnName, WebChildElement elementMock, String propertyName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementMock, propertyName, stringValue);
     }
 
-    public static WebTableCellElementPropertyCondition notContainsProperty(String columnName, WebChildElement elementMock, String propertyName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementMock, propertyName, stringValue).inverse();
+    public static WebTableRowElementPropertyCondition notContainsProperty(String columnName, WebChildElement elementMock, String propertyName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementMock, propertyName, stringValue).inverse();
     }
 
-    public static WebTableCellElementPropertyCondition containsProperty(String columnName, String elementName, String propertyName, StringValue stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementName, propertyName, stringValue);
+    public static WebTableRowElementPropertyCondition containsProperty(String columnName, String elementName, String propertyName, StringValue stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementName, propertyName, stringValue);
     }
 
-    public static WebTableCellElementPropertyCondition notContainsProperty(String columnName, String elementName, String propertyName, StringValue stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementName, propertyName, stringValue).inverse();
+    public static WebTableRowElementPropertyCondition notContainsProperty(String columnName, String elementName, String propertyName, StringValue stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementName, propertyName, stringValue).inverse();
     }
 
-    public static WebTableCellElementPropertyCondition containsProperty(String columnName, String elementName, String propertyName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementName, propertyName, stringValue);
+    public static WebTableRowElementPropertyCondition containsProperty(String columnName, String elementName, String propertyName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementName, propertyName, stringValue);
     }
 
-    public static WebTableCellElementPropertyCondition notContainsProperty(String columnName, String elementName, String propertyName, NumberValue<? extends Number> stringValue) {
-        return new WebTableCellElementPropertyCondition(columnName, elementName, propertyName, stringValue).inverse();
+    public static WebTableRowElementPropertyCondition notContainsProperty(String columnName, String elementName, String propertyName, NumberValue<? extends Number> stringValue) {
+        return new WebTableRowElementPropertyCondition(columnName, elementName, propertyName, stringValue).inverse();
     }
 
     // WebTextTable
@@ -505,20 +505,20 @@ public class WebConditions {
         return new WebTextTableRowIndexCondition(integerValue);
     }
 
-    public static WebTextTableCellTextCondition containsTextCell(String columnName, StringValue stringValue) {
-        return new WebTextTableCellTextCondition(columnName, stringValue);
+    public static WebTextTableRowTextCondition containsTextCell(String columnName, StringValue stringValue) {
+        return new WebTextTableRowTextCondition(columnName, stringValue);
     }
 
-    public static WebTextTableCellTextCondition notContainsTextCell(String columnName, StringValue stringValue) {
-        return new WebTextTableCellTextCondition(columnName, stringValue).inverse();
+    public static WebTextTableRowTextCondition notContainsTextCell(String columnName, StringValue stringValue) {
+        return new WebTextTableRowTextCondition(columnName, stringValue).inverse();
     }
 
-    public static WebTextTableCellTextCondition containsTextCell(String columnName, NumberValue<Integer> integerValue) {
-        return new WebTextTableCellTextCondition(columnName, integerValue);
+    public static WebTextTableRowTextCondition containsTextCell(String columnName, NumberValue<Integer> integerValue) {
+        return new WebTextTableRowTextCondition(columnName, integerValue);
     }
 
-    public static WebTextTableCellTextCondition notContainsTextCell(String columnName, NumberValue<Integer> integerValue) {
-        return new WebTextTableCellTextCondition(columnName, integerValue).inverse();
+    public static WebTextTableRowTextCondition notContainsTextCell(String columnName, NumberValue<Integer> integerValue) {
+        return new WebTextTableRowTextCondition(columnName, integerValue).inverse();
     }
 
 }

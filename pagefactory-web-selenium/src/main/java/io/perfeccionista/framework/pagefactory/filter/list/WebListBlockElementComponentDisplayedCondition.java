@@ -3,7 +3,6 @@ package io.perfeccionista.framework.pagefactory.filter.list;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter.WebListBlockConditionHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +17,8 @@ public class WebListBlockElementComponentDisplayedCondition implements WebListBl
     private final WebChildElement elementMock;
     private final String elementName;
 
+    private boolean inverse = false;
+
     public WebListBlockElementComponentDisplayedCondition(WebChildElement elementMock, String componentName) {
         this.elementName = null;
         this.elementMock = elementMock;
@@ -30,7 +31,9 @@ public class WebListBlockElementComponentDisplayedCondition implements WebListBl
         this.componentName = componentName;
     }
 
+    @Override
     public WebListBlockElementComponentDisplayedCondition inverse() {
+        inverse = true;
         return this;
     }
 

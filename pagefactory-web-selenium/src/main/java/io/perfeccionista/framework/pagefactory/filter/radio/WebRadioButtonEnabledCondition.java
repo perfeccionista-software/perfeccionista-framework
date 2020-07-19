@@ -1,12 +1,16 @@
 package io.perfeccionista.framework.pagefactory.filter.radio;
 
+import io.perfeccionista.framework.pagefactory.elements.WebTable;
+import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
+import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowConditionHolder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Deque;
+
 public class WebRadioButtonEnabledCondition implements WebRadioButtonCondition {
 
-
-    public WebRadioButtonEnabledCondition inverse() {
-
-        return this;
-    }
+    private boolean inverse = false;
 
     @Override
     public WebRadioButtonCondition and(WebRadioButtonCondition condition) {
@@ -17,4 +21,21 @@ public class WebRadioButtonEnabledCondition implements WebRadioButtonCondition {
     public WebRadioButtonCondition or(WebRadioButtonCondition condition) {
         return null;
     }
+
+    @Override
+    public WebRadioButtonEnabledCondition inverse() {
+        inverse = true;
+        return this;
+    }
+
+    @Override
+    public Deque<WebTableRowConditionHolder> getChildConditions() {
+        return null;
+    }
+
+    @Override
+    public @NotNull WebConditionProcessingResult process(@NotNull WebTable element, @Nullable String hash) {
+        return null;
+    }
+
 }

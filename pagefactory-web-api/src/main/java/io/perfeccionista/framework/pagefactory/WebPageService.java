@@ -61,6 +61,10 @@ public class WebPageService implements Service {
                 }));
     }
 
+    public WebPageServiceConfiguration getConfiguration() {
+        return configuration;
+    }
+
     // Инстанс возвращается без экземпляра вебдрайвера
     public <T extends WebPage> T getByClass(@NotNull Class<T> pageClass) {
         if (!availablePageClasses.contains(pageClass)) {

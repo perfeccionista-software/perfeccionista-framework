@@ -3,7 +3,6 @@ package io.perfeccionista.framework.pagefactory.filter.list;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter.WebListBlockConditionHolder;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +21,8 @@ public class WebListBlockElementPropertyCondition implements WebListBlockConditi
     private final String propertyName;
     private final StringValue stringValue;
     private final NumberValue<? extends Number> numberValue;
+
+    private boolean inverse = false;
 
     public WebListBlockElementPropertyCondition(WebChildElement elementMock, String propertyName, StringValue stringValue) {
         this.elementName = null;
@@ -55,10 +56,6 @@ public class WebListBlockElementPropertyCondition implements WebListBlockConditi
         this.numberValue = numberValue;
     }
 
-    public WebListBlockElementPropertyCondition inverse() {
-        return this;
-    }
-
     @Override
     public WebListBlockCondition and(WebListBlockCondition condition) {
 
@@ -68,6 +65,12 @@ public class WebListBlockElementPropertyCondition implements WebListBlockConditi
     @Override
     public WebListBlockCondition or(WebListBlockCondition condition) {
 
+        return this;
+    }
+
+    @Override
+    public WebListBlockElementPropertyCondition inverse() {
+        inverse = true;
         return this;
     }
 

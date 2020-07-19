@@ -5,27 +5,28 @@ import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.value.number.NumberValue;
+import org.jetbrains.annotations.NotNull;
 
 public interface WebTextTableFilterResult extends FilterResult {
 
-    String getHash();
+    @NotNull String getHash();
 
-    SingleResult<String> extractHeader(String columnName);
+    @NotNull SingleResult<String> extractHeader(@NotNull String columnName);
 
-    SingleResult<String> extractOneRow(String columnName);
+    @NotNull SingleResult<String> extractOneRow(@NotNull String columnName);
 
-    <T> SingleResult<T> extractOneRow(WebTextTableCellValueExtractor<T> extractor);
+    @NotNull <T> SingleResult<T> extractOneRow(@NotNull WebTextTableCellValueExtractor<T> extractor);
 
     // TODO: Implement: public Map<String, SingleResult<String>> extractOne(Set<String> columnNames)
 
-    MultipleResult<String> extractAllRows(String columnName);
+    @NotNull MultipleResult<String> extractAllRows(@NotNull String columnName);
 
-    <T> MultipleResult<T> extractAllRows(WebTextTableCellValueExtractor<T> extractor);
+    @NotNull <T> MultipleResult<T> extractAllRows(@NotNull WebTextTableCellValueExtractor<T> extractor);
 
     // TODO: Implement: public Map<String, MultipleResult<String>> extractAll(Set<String> columnNames)
 
-    SingleResult<String> extractFooter(String columnName);
+    @NotNull SingleResult<String> extractFooter(@NotNull String columnName);
 
-    WebTextTableFilterResult shouldHaveSize(NumberValue<Integer> integerValue);
+    WebTextTableFilterResult shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
 
 }

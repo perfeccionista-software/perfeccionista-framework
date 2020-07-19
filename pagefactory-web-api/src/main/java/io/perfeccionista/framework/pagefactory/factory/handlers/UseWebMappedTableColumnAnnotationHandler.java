@@ -8,11 +8,14 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createWebLocatorHolder;
+import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createOptionalWebLocatorHolder;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
 import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
 
 public class UseWebMappedTableColumnAnnotationHandler {
+
+    private UseWebMappedTableColumnAnnotationHandler() {
+    }
 
     public static Map<String, TableColumnHolder> createMappedTableColumnHolders(WebTable webTable, Method elementMethod) {
         Map<String, TableColumnHolder> tableColumnHolders = new HashMap<>();
@@ -20,11 +23,12 @@ public class UseWebMappedTableColumnAnnotationHandler {
                 .forEach(webMappedTableColumn -> {
                     if (!tableColumnHolders.containsKey(webMappedTableColumn.name())) {
                         TableColumnHolder tableColumnHolder = TableColumnHolder.of(
-                                createWebLocatorHolder(webMappedTableColumn.headerLocator()),
+                                // Тут может не быть локатора
+                                createOptionalWebLocatorHolder(webMappedTableColumn.headerLocator()).orElse(null),
                                 webMappedTableColumn.headerClass(),
-                                createWebLocatorHolder(webMappedTableColumn.bodyLocator()),
+                                createOptionalWebLocatorHolder(webMappedTableColumn.bodyLocator()).orElse(null),
                                 webMappedTableColumn.bodyClass(),
-                                createWebLocatorHolder(webMappedTableColumn.footerLocator()),
+                                createOptionalWebLocatorHolder(webMappedTableColumn.footerLocator()).orElse(null),
                                 webMappedTableColumn.footerClass());
                         tableColumnHolders.put(webMappedTableColumn.name(), tableColumnHolder);
                     }
@@ -33,11 +37,11 @@ public class UseWebMappedTableColumnAnnotationHandler {
                 .forEach(webMappedTableColumn -> {
                     if (!tableColumnHolders.containsKey(webMappedTableColumn.name())) {
                         TableColumnHolder tableColumnHolder = TableColumnHolder.of(
-                                createWebLocatorHolder(webMappedTableColumn.headerLocator()),
+                                createOptionalWebLocatorHolder(webMappedTableColumn.headerLocator()).orElse(null),
                                 webMappedTableColumn.headerClass(),
-                                createWebLocatorHolder(webMappedTableColumn.bodyLocator()),
+                                createOptionalWebLocatorHolder(webMappedTableColumn.bodyLocator()).orElse(null),
                                 webMappedTableColumn.bodyClass(),
-                                createWebLocatorHolder(webMappedTableColumn.footerLocator()),
+                                createOptionalWebLocatorHolder(webMappedTableColumn.footerLocator()).orElse(null),
                                 webMappedTableColumn.footerClass());
                         tableColumnHolders.put(webMappedTableColumn.name(), tableColumnHolder);
                     }

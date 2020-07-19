@@ -13,6 +13,8 @@ import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 
+import java.util.Optional;
+
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_PRESENT;
 
 /**
@@ -42,4 +44,8 @@ public class JsAssertShouldBePresent implements WebElementActionImplementation<V
         return null;
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

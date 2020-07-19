@@ -4,6 +4,7 @@ import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
 import io.perfeccionista.framework.attachment.StringAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
+import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.junit.platform.commons.util.ReflectionUtils;
@@ -11,6 +12,7 @@ import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
@@ -40,4 +42,8 @@ public class SeleniumSendKeys implements WebElementActionImplementation<Void> {
         return null;
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

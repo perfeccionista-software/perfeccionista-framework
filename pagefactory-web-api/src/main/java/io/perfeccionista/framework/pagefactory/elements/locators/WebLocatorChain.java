@@ -33,6 +33,14 @@ public class WebLocatorChain {
         return this;
     }
 
+    public WebLocatorChain addLocatorsToTop(@NotNull Collection<WebLocatorHolder> locators) {
+        Deque<WebLocatorHolder> updatedLocatorSequence = new ArrayDeque<>();
+        updatedLocatorSequence.addAll(locators);
+        updatedLocatorSequence.addAll(locatorSequence);
+        locatorSequence = updatedLocatorSequence;
+        return this;
+    }
+
     public WebLocatorChain addLocators(@NotNull Collection<WebLocatorHolder> locators) {
         locatorSequence.addAll(locators);
         return this;

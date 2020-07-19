@@ -5,6 +5,9 @@ import io.perfeccionista.framework.exceptions.ElementNotSelectedException;
 import io.perfeccionista.framework.exceptions.base.ExceptionType;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+
+import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_SELECTED;
 
@@ -22,4 +25,8 @@ public class AssertShouldBeSelected implements WebElementActionImplementation<Vo
                 .addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

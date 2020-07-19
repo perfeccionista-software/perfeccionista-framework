@@ -8,15 +8,15 @@ import java.util.Deque;
 
 public class WebTextListFilterSeleniumImpl implements WebTextListFilter {
 
-    private final Deque<WebTextListFilter.JsStringBlockConditionHolder> conditions = new ArrayDeque<>();
+    private final Deque<WebTextBlockConditionHolder> conditions = new ArrayDeque<>();
 
     public WebTextListFilter add(WebTextListBlockCondition condition) {
-        this.conditions.addLast(new JsStringBlockConditionHolder(ConditionUsage.ADD, condition));
+        this.conditions.addLast(WebTextBlockConditionHolder.of(ConditionUsage.ADD, condition));
         return this;
     }
 
     public WebTextListFilter subtract(WebTextListBlockCondition condition) {
-        this.conditions.addLast(new JsStringBlockConditionHolder(ConditionUsage.SUBTRACT, condition));
+        this.conditions.addLast(WebTextBlockConditionHolder.of(ConditionUsage.SUBTRACT, condition));
         return this;
     }
 
@@ -25,7 +25,7 @@ public class WebTextListFilterSeleniumImpl implements WebTextListFilter {
         return new WebTextListFilterResultSeleniumImpl(element, this);
     }
 
-    public Deque<JsStringBlockConditionHolder> getConditions() {
+    public Deque<WebTextBlockConditionHolder> getConditions() {
         return conditions;
     }
 

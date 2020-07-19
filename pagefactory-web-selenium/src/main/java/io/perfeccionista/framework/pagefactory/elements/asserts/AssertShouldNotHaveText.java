@@ -6,7 +6,10 @@ import io.perfeccionista.framework.exceptions.ElementTextValueException;
 import io.perfeccionista.framework.exceptions.base.ExceptionType;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
+import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.value.string.StringValue;
+
+import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_TEXT_CONTAINS_EXPECTED_VALUE;
 
@@ -27,4 +30,8 @@ public class AssertShouldNotHaveText implements WebElementActionImplementation<V
         return null;
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

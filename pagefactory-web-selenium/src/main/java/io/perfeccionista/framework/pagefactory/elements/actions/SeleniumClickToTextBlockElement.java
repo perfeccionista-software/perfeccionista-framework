@@ -11,10 +11,13 @@ import io.perfeccionista.framework.pagefactory.filter.SingleResult;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
+import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.openqa.selenium.WebElement;
+
+import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
@@ -55,4 +58,8 @@ public class SeleniumClickToTextBlockElement implements WebElementActionImplemen
         return null;
     }
 
+    @Override
+    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
+        return Optional.empty();
+    }
 }

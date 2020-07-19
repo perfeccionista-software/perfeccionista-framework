@@ -9,6 +9,8 @@ import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public class JsGetIsPresent implements WebElementActionImplementation<Boolean> {
 
     @Override
@@ -32,6 +34,15 @@ public class JsGetIsPresent implements WebElementActionImplementation<Boolean> {
         });
         // Мы упали по ошибке ElementSearchJsException, то есть не нашли ни одного элемента. Возвращаем false
         return false;
+    }
+
+    @Override
+    public Optional<JsOperation<Boolean>> getJsOperation(WebChildElement element, Object... args) {
+        String component = (String) args[0];
+        WebLocatorChain locatorChainToElement = (null == component) ? element.getLocatorChain() : element.getLocatorChainTo(component);
+        locatorChainToElement.getLastLocator().setStrictSearch(false);
+        GetIsPresent getIsPresentFunction = new GetIsPresent();
+        return Optional.of(JsOperation.of(locatorChainToElement, getIsPresentFunction));
     }
 
 }

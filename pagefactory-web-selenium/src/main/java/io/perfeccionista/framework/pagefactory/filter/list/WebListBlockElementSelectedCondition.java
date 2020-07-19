@@ -3,7 +3,6 @@ package io.perfeccionista.framework.pagefactory.filter.list;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionProcessingResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter.WebListBlockConditionHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +16,8 @@ public class WebListBlockElementSelectedCondition implements WebListBlockConditi
     private final IsSelectedAvailable elementMock;
     private final String elementName;
 
+    private boolean inverse = false;
+
     public WebListBlockElementSelectedCondition(IsSelectedAvailable elementMock) {
         this.elementName = null;
         this.elementMock = elementMock;
@@ -27,10 +28,6 @@ public class WebListBlockElementSelectedCondition implements WebListBlockConditi
         this.elementMock = null;
     }
 
-    public WebListBlockElementSelectedCondition inverse() {
-        return this;
-    }
-
     @Override
     public WebListBlockCondition and(WebListBlockCondition condition) {
         return null;
@@ -39,6 +36,12 @@ public class WebListBlockElementSelectedCondition implements WebListBlockConditi
     @Override
     public WebListBlockCondition or(WebListBlockCondition condition) {
         return null;
+    }
+
+    @Override
+    public WebListBlockElementSelectedCondition inverse() {
+        inverse = true;
+        return this;
     }
 
     @Override

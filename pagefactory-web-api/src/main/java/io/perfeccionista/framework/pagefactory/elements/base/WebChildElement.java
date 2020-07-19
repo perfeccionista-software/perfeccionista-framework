@@ -17,14 +17,13 @@ import io.perfeccionista.framework.pagefactory.elements.methods.IsInFocusAvailab
 import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToAvailable;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyAvailable;
-import io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyHolder;
 import org.jetbrains.annotations.NotNull;
 
 public interface WebChildElement extends ElementBase, WebLocatorChainAvailable,
         IsPresentAvailable, IsDisplayedAvailable,
         HoverToAvailable, ScrollToAvailable, IsInFocusAvailable,
         GetDimensionsAvailable, GetLocationAvailable, GetScreenshotAvailable, GetColorAvailable,
-        WebComponentAvailable, WebElementPropertyAvailable<WebElementPropertyHolder> {
+        WebComponentAvailable, WebElementPropertyAvailable {
 
     @NotNull <R> WebElementActionImplementation<R> getActionImplementation(@NotNull String actionName, @NotNull Class<R> returnType);
 
