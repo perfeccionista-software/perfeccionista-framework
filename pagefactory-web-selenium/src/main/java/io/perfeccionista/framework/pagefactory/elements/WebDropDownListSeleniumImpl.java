@@ -106,14 +106,6 @@ public class WebDropDownListSeleniumImpl extends WebListSeleniumImpl implements 
         return this;
     }
 
-    // ClickToElement
-
-    @Override
-    public WebDropDownList clickToElement(@NotNull WebListFilterBuilder filter) {
-        super.clickToElement(filter);
-        return this;
-    }
-
     // Close
 
     @Override

@@ -24,8 +24,6 @@ public class WebListBlockElementEmptyCondition implements WebListBlockCondition 
 
     private final Deque<WebListBlockConditionHolder> childConditions = new ArrayDeque<>();
 
-    private boolean inverse = false;
-
     @Override
     public WebListBlockCondition and(WebListBlockCondition condition) {
         childConditions.add(WebListBlockConditionHolder.of(AND, condition));
@@ -40,7 +38,6 @@ public class WebListBlockElementEmptyCondition implements WebListBlockCondition 
 
     @Override
     public WebListBlockElementEmptyCondition inverse() {
-        this.inverse = true;
         return this;
     }
 
@@ -52,11 +49,9 @@ public class WebListBlockElementEmptyCondition implements WebListBlockCondition 
     @Override
     public WebFilterResult process(WebList element, String hash) {
         WebLocatorChain locatorChain = element.getLocatorChain();
-        WebLocatorHolder listLocatorHolder = locatorChain.getLastLocator();
-        listLocatorHolder.setCalculateHash(true);
-        if (hash != null) {
-            listLocatorHolder.setExpectedHash(hash);
-        }
+        WebLocatorHolder listLocatorHolder = locatorChain.getLastLocator()
+                .setCalculateHash(true)
+                .setExpectedHash(hash);
         WebLocatorHolder liLocatorHolder = element
                 .getLocator(WebComponents.LI)
                 .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(LI)));
@@ -72,10 +67,8 @@ public class WebListBlockElementEmptyCondition implements WebListBlockCondition 
                 .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
-        Set<Integer> indexes = operationResult.multipleResult()
-                .getValues()
-                .keySet();
-        return WebFilterResult.of(inverse ? Set.of() : indexes, returnedHash);
+        Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
+        return WebFilterResult.of(indexes, returnedHash);
     }
 
 }

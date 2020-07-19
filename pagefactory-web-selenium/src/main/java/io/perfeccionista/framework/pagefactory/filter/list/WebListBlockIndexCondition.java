@@ -14,6 +14,7 @@ import io.perfeccionista.framework.value.number.NumberValue;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
@@ -25,12 +26,12 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
 
     private final Deque<WebListBlockConditionHolder> childConditions = new ArrayDeque<>();
 
-    private final NumberValue<Integer> value;
+    private final NumberValue<Integer> expectedValue;
 
     private boolean inverse = false;
 
-    public WebListBlockIndexCondition(NumberValue<Integer> value) {
-        this.value = value;
+    public WebListBlockIndexCondition(NumberValue<Integer> expectedValue) {
+        this.expectedValue = expectedValue;
     }
 
     @Override
@@ -60,11 +61,9 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
     public WebFilterResult process(WebList element, String hash) {
         // TODO: Обработать inverse
         WebLocatorChain locatorChain = element.getLocatorChain();
-        WebLocatorHolder listLocatorHolder = locatorChain.getLastLocator();
-        listLocatorHolder.setCalculateHash(true);
-        if (hash != null) {
-            listLocatorHolder.setExpectedHash(hash);
-        }
+        WebLocatorHolder listLocatorHolder = locatorChain.getLastLocator()
+                .setCalculateHash(true)
+                .setExpectedHash(hash);
         WebLocatorHolder liLocatorHolder = element
                 .getLocator(WebComponents.LI)
                 .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(LI)));
@@ -75,16 +74,24 @@ public class WebListBlockIndexCondition implements WebListBlockCondition {
         operationResult.ifException(exception -> {
             throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
-        Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
         // TODO: После отладки написатть правильные сообщения об ошибке
-
-        // TODO: Проверить индексы по value
-
         String returnedHash = operationResult.getJsWebLocatorProcessingResult(listLocatorHolder.getLocatorId())
                 .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
-        return WebFilterResult.of(indexes, returnedHash);
+        Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
+        return WebFilterResult.of(getMatches(indexes), returnedHash);
+    }
+
+    private Set<Integer> getMatches(Set<Integer> indexes) {
+        Set<Integer> matches = new HashSet<>();
+        indexes.forEach(index -> {
+            boolean check = expectedValue.check(index);
+            if ((check && !inverse) || (!check && inverse)) {
+                matches.add(index);
+            }
+        });
+        return matches;
     }
 
 }

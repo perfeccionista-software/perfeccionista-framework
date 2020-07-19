@@ -26,8 +26,6 @@ public class WebTableRowElementEmptyCondition implements WebTableRowCondition {
 
     private final Deque<WebTableRowConditionHolder> childConditions = new ArrayDeque<>();
 
-    private boolean inverse = false;
-
     @Override
     public WebTableRowCondition and(@NotNull WebTableRowCondition condition) {
         childConditions.add(WebTableRowConditionHolder.of(AND, condition));
@@ -42,7 +40,6 @@ public class WebTableRowElementEmptyCondition implements WebTableRowCondition {
 
     @Override
     public WebTableRowElementEmptyCondition inverse() {
-        inverse = true;
         return this;
     }
 

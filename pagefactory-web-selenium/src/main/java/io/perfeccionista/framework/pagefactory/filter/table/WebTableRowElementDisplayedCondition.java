@@ -142,12 +142,12 @@ public class WebTableRowElementDisplayedCondition implements WebTableRowConditio
             operationResult.ifException(exception -> {
                 throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
             });
-            Map<Integer, Boolean> presentValues = operationResult.multipleResult().getValues();
+            Map<Integer, Boolean> displayedValues = operationResult.multipleResult().getValues();
             String returnedHash = operationResult.getJsWebLocatorProcessingResult(tableLocatorHolder.getLocatorId())
                     .orElseThrow(() -> new RuntimeException("Результат обработки локатора не найден"))
                     .getHash()
                     .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
-            return WebFilterResult.of(getMatches(presentValues), returnedHash);
+            return WebFilterResult.of(getMatches(displayedValues), returnedHash);
         } else {
             WebFilterResult filterResult = element.filter(emptyTableFilter())
                     .setInitialHash(hash)
@@ -155,22 +155,22 @@ public class WebTableRowElementDisplayedCondition implements WebTableRowConditio
             WebPageFactory webPageFactory = element.getEnvironment().getService(WebPageService.class).getWebPageFactory();
             Map<Integer, WebMappedBlock> webMappedBlocks = webPageFactory.createWebTableCells(element, columnName, filterResult);
             // В зависимости от того, что указано при создании достаем нужные элементы или по имени или по цепочке методов.
-            Map<Integer, Boolean> textValues = new HashMap<>();
+            Map<Integer, Boolean> displayedValues = new HashMap<>();
             for (Entry<Integer, WebMappedBlock> webMappedBlockEntry : webMappedBlocks.entrySet()) {
                 WebChildElement elementToExtractText = webMappedBlockEntry.getValue()
                         .getElementRegistry()
                         .getElementByMethod(elementMock.getElementIdentifier().getElementMethod())
                         .orElseThrow();
-                textValues.put(webMappedBlockEntry.getKey(), elementToExtractText.isPresent());
+                displayedValues.put(webMappedBlockEntry.getKey(), elementToExtractText.isPresent());
             }
             String returnedHash = filterResult.getHash();
-            return WebFilterResult.of(getMatches(textValues), returnedHash);
+            return WebFilterResult.of(getMatches(displayedValues), returnedHash);
         }
     }
 
-    private Set<Integer> getMatches(Map<Integer, Boolean> presentValues) {
+    private Set<Integer> getMatches(Map<Integer, Boolean> displayedValues) {
         Set<Integer> matches = new HashSet<>();
-        presentValues.forEach((key, value) -> {
+        displayedValues.forEach((key, value) -> {
             if ((!inverse && value != null && value) || (inverse && value == null) || (inverse && !value)) {
                 matches.add(key);
             }

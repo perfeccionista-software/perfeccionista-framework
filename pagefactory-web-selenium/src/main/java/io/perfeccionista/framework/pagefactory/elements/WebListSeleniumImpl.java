@@ -178,16 +178,6 @@ public class WebListSeleniumImpl extends AbstractWebChildElement implements WebL
         return this;
     }
 
-
-    // ClickToElement
-
-    @Override
-    public WebList clickToElement(@NotNull WebListFilterBuilder filter) {
-        runCheck(getEnvironment(), InvocationName.of(CLICK_TO_ELEMENT_METHOD, this, filter),
-                () -> getActionImplementation(CLICK_TO_ELEMENT_METHOD, Void.class).execute(this, filter));
-        return this;
-    }
-
     // Get Color
 
     @Override

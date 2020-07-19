@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
 import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementEmptyCondition;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonCondition;
@@ -41,15 +42,18 @@ public class WebFilters {
     // List
 
     public static WebListFilterBuilder emptyListFilter() {
-        return new WebListFilterBuilderSeleniumImpl();
+        return new WebListFilterBuilderSeleniumImpl()
+                .add(new WebListBlockElementEmptyCondition());
     }
 
     public static WebListFilterBuilder with(WebListBlockCondition condition) {
-        return new WebListFilterBuilderSeleniumImpl().add(condition);
+        return new WebListFilterBuilderSeleniumImpl()
+                .add(condition);
     }
 
     public static WebListFilterBuilder without(WebListBlockCondition condition) {
-        return new WebListFilterBuilderSeleniumImpl().subtract(condition);
+        return emptyListFilter()
+                .subtract(condition);
     }
 
     // StringList

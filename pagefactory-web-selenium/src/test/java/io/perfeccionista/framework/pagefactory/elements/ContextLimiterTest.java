@@ -11,7 +11,7 @@ import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
-import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage.CountryNameBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage.CountryBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage.ShortNameWebMappedBlock;
 import io.perfeccionista.framework.value.ValueService;
@@ -53,10 +53,10 @@ public class ContextLimiterTest extends AbstractUiTest {
         WebList webList = listElementsPage.webList();
 
         // Один блок
-        WebListFilterBuilder webListSingleBlockFilter = with(WebConditions.containsText(from(CountryNameBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
-        CountryNameBlock singleBlockContext = pc.usePage(ListElementsPage.class)
+        WebListFilterBuilder webListSingleBlockFilter = with(WebConditions.containsText(from(CountryBlock.class).shortName(), value.stringEqualsIgnoreCase("Spain")));
+        CountryBlock singleBlockContext = pc.usePage(ListElementsPage.class)
                 .setLimiter(new WebListBlockContextLimiter<>(webList, webListSingleBlockFilter))
-                .getSearchContext(CountryNameBlock.class);
+                .getSearchContext(CountryBlock.class);
         singleBlockContext.checkbox().shouldBeDisplayed();
         singleBlockContext.fullName().shouldBeDisplayed();
         singleBlockContext.number().shouldBeDisplayed();
@@ -67,7 +67,7 @@ public class ContextLimiterTest extends AbstractUiTest {
         WebListFilterBuilder webListMultipleBlocksFilter = with(blockIndex(value.intLessThan(50)));
         pc.usePage(ListElementsPage.class)
                 .setLimiter(new WebListBlockContextLimiter<>(webList, webListMultipleBlocksFilter))
-                .getSearchContexts(CountryNameBlock.class)
+                .getSearchContexts(CountryBlock.class)
                 .forEachOrdered(countryNameBlock -> {
                     countryNameBlock.checkbox().click();
                     countryNameBlock.fullName().shouldBeDisplayed();

@@ -71,14 +71,6 @@ public class WebAutocompleteSeleniumImpl extends WebDropDownListSeleniumImpl imp
         return this;
     }
 
-    // ClickToElement
-
-    @Override
-    public WebAutocomplete clickToElement(@NotNull WebListFilterBuilder filter) {
-        super.clickToElement(filter);
-        return this;
-    }
-
     // Close
 
     @Override

@@ -48,11 +48,6 @@ public interface WebDropDownList extends WebList,
     @Override
     WebDropDownList click();
 
-    // ClickToElement
-
-    @Override
-    WebDropDownList clickToElement(@NotNull WebListFilterBuilder filter); // Тут нужно еще скроллить к элементу
-
     // Close
 
     @Override

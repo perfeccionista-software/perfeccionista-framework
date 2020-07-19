@@ -99,16 +99,16 @@
                         <b-list-group-item itemid="countries-list-item" v-for="country in countriesData" :key="country.name">
                             <b-row>
                                 <b-col cols="1">
-                                    <b-checkbox itemid="checkbox" :id="country.name" :checked="country.selected" :disabled="!country.enabled"></b-checkbox>
+                                    <b-checkbox itemid="checkbox" :id="country.name" :checked="country.selected" :disabled="!country.enabled">{{ country.number}}</b-checkbox>
                                 </b-col>
                                 <b-col cols="1">
                                     <span itemid="number">{{ country.number }}</span>
                                 </b-col>
                                 <b-col cols="3">
-                                    <b-link itemid="name" class="mr-2" v-b-tooltip.hover :title="country.name" :href="country.wikiLink">{{ country.name }}</b-link>
+                                    <b-link itemid="country-name" class="mr-2" v-b-tooltip.hover :title="country.name" :href="country.wikiLink" v-if="country.wikiLink!==null">{{ country.name }}</b-link>
                                 </b-col>
                                 <b-col cols="5">
-                                    <span itemid="full-name" class="mr-2" v-b-tooltip.hover :title="country.fullName">{{ country.fullName }}
+                                    <span itemid="country-full-name" class="mr-2" v-b-tooltip.hover :title="country.fullName">{{ country.fullName }}
                                         <!-- Not present -->
                                         <b-badge class="ml-2" itemid="sng" v-if="country.sng">СНГ</b-badge>
                                     </span>

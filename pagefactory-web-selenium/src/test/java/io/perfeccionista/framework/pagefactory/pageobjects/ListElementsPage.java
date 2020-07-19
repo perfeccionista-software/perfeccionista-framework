@@ -12,41 +12,56 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeExtractor;
+import io.perfeccionista.framework.pagefactory.pageobjects.extractors.TitleAttributeExtractor;
+
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
 
 public interface ListElementsPage extends AbstractWebPage {
 
-    @UseWebMappedBlock(CountryNameBlock.class)
-//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
-    WebDropDownList dropDownList();
+//    @UseWebMappedBlock(CountryBlock.class)
+////    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+//    WebDropDownList dropDownList();
+//
+//    @UseWebMappedBlock(CountryBlock.class)
+////    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+//    WebAutocomplete autocomplete();
 
-    @UseWebMappedBlock(CountryNameBlock.class)
-//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
-    WebAutocomplete autocomplete();
-
-    @Name("list of countries")
-    @UseWebMappedBlock(CountryNameBlock.class)
-//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+    @Name("List of countries")
+    @WebLocator(id = "countries-list")
+    @WebLocator(component = LI, xpath = ".//div[@itemid = 'countries-list-item']", single = false)
+    @UseWebMappedBlock(CountryBlock.class)
     WebList webList();
 
-    interface CountryNameBlock extends WebMappedBlock {
+    interface CountryBlock extends WebMappedBlock {
 
-        @Name("Checkbox")
-//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+        @Name("Select")
+        @WebLocator(xpath = "self::node()//input[@itemid = 'checkbox']/parent::node()")
         WebCheckbox checkbox();
 
-        @Name("Number")
-//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+        @Name("Text")
+        @WebLocator(xpath = "self::node()//span[@itemid = 'number']")
         WebTextBlock number();
 
         @Name("Short name")
-//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+        @WebLocator(xpath = "self::node()//a[@itemid = 'country-name']", strictSearch = false) // В некоторых ячейках этого элемента нет
+        @WebLocator(component = "Self", xpath = "self::node()", strictSearch = false) // В некоторых ячейках этого элемента нет
         @WebElementProperty(name = "Wiki link", extractor = HrefAttributeExtractor.class)
         WebLink shortName();
 
         @Name("Full name")
-        @WebLocator(component = "SNG", css = ".sng-country")
-//        @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+        @WebLocator(xpath = "self::node()//span[@itemid = 'country-full-name']", strictSearch = false)
+        @WebLocator(component = "SNG", xpath = "self::node()//span[@itemid = 'sng']")
+        @WebElementProperty(name = "prompt", extractor = TitleAttributeExtractor.class)
         WebTextBlock fullName();
+
+        @Name("Population")
+        @WebLocator(xpath = "self::node()//span[@itemid = 'population-number']")
+        WebTextBlock population();
+
+        @Name("Population unit")
+        @WebLocator(xpath = "self::node()//span[@itemid = 'population-unit']")
+        @WebLocator(component = "Self", xpath = "self::node()", strictSearch = false)
+        WebTextBlock populationUnit();
 
     }
 

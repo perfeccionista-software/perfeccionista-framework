@@ -51,11 +51,6 @@ public interface WebAutocomplete extends WebDropDownList,
     @Override
     WebAutocomplete click();
 
-    // ClickToElement
-
-    @Override
-    WebAutocomplete clickToElement(@NotNull WebListFilterBuilder filter); // Тут нужно еще скроллить к элементу
-
     // Close
 
     @Override

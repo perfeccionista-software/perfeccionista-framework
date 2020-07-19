@@ -155,16 +155,17 @@ public class WebTableRowElementPresentCondition implements WebTableRowCondition 
             WebPageFactory webPageFactory = element.getEnvironment().getService(WebPageService.class).getWebPageFactory();
             Map<Integer, WebMappedBlock> webMappedBlocks = webPageFactory.createWebTableCells(element, columnName, filterResult);
             // В зависимости от того, что указано при создании достаем нужные элементы или по имени или по цепочке методов.
-            Map<Integer, Boolean> textValues = new HashMap<>();
+            Map<Integer, Boolean> presentValues = new HashMap<>();
             for (Entry<Integer, WebMappedBlock> webMappedBlockEntry : webMappedBlocks.entrySet()) {
-                WebChildElement elementToExtractText = webMappedBlockEntry.getValue()
+                WebChildElement elementToExtractPresentMark = webMappedBlockEntry.getValue()
                         .getElementRegistry()
                         .getElementByMethod(elementMock.getElementIdentifier().getElementMethod())
                         .orElseThrow();
-                textValues.put(webMappedBlockEntry.getKey(), elementToExtractText.isPresent());
+                boolean present = elementToExtractPresentMark.isPresent();
+                presentValues.put(webMappedBlockEntry.getKey(), present);
             }
             String returnedHash = filterResult.getHash();
-            return WebFilterResult.of(getMatches(textValues), returnedHash);
+            return WebFilterResult.of(getMatches(presentValues), returnedHash);
         }
     }
 

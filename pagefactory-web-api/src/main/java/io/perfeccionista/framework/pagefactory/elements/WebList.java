@@ -4,7 +4,6 @@ import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickToElementAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
@@ -23,7 +22,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 
 @WebLocator(component = LI, xpath = ".//li", single = false)
 public interface WebList extends WebChildElement,
-        ScrollToElementAvailable<WebListFilterBuilder>, ClickToElementAvailable<WebListFilterBuilder>, SizeAvailable {
+        ScrollToElementAvailable<WebListFilterBuilder>, SizeAvailable {
 
     @NotNull WebListFilter filter(@NotNull WebListFilterBuilder filterBuilder);
 
@@ -44,11 +43,6 @@ public interface WebList extends WebChildElement,
 
     @Override
     WebList should(WebAssertCondition assertCondition, InvocationName invocationName);
-
-    // ClickToElement
-
-    @Override
-    WebList clickToElement(@NotNull WebListFilterBuilder filter); // Тут нужно еще скроллить к элементу
 
     // Get Color
 

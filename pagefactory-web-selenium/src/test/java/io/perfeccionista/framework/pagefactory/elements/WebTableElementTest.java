@@ -517,10 +517,10 @@ class WebTableElementTest extends AbstractUiTest {
         table.filter(without(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Self").inverse()))
                 .shouldHaveSize(value.intEquals(193));
 
-        WebTableFilter filterResult = table
+        WebTableFilter filter = table
                 .filter(with(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Unknown")));
         NumberValue<Integer> expectedValue = value.intEquals(200);
-        assertThrows(LocatorNotDeclaredException.class, () -> filterResult.shouldHaveSize(expectedValue));
+        assertThrows(LocatorNotDeclaredException.class, () -> filter.shouldHaveSize(expectedValue));
     }
 
     // TODO: То же самое для поиска элемента по имени
@@ -544,11 +544,15 @@ class WebTableElementTest extends AbstractUiTest {
         table.filter(without(componentDisplayed(POPULATION, from(PopulationWebMappedBlock.class).populationUnit(), "Self").inverse()))
                 .shouldHaveSize(value.intEquals(186));
 
-        WebTableFilter filterResult = table
+        WebTableFilter filter = table
                 .filter(with(componentDisplayed(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Unknown")));
         NumberValue<Integer> expectedValue = value.intEquals(200);
-        assertThrows(LocatorNotDeclaredException.class, () -> filterResult.shouldHaveSize(expectedValue));
+        assertThrows(LocatorNotDeclaredException.class, () -> filter.shouldHaveSize(expectedValue));
     }
+
+
+
+
 
     // Extractors
 

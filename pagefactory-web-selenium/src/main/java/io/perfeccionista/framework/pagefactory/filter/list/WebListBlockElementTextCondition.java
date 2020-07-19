@@ -15,8 +15,8 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
+import io.perfeccionista.framework.pagefactory.filter.ConditionUsage;
 import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.WebFilters;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -40,15 +40,14 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_TEXT_METHOD;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyListFilter;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyTableFilter;
 import static io.perfeccionista.framework.utils.ReflectionUtils.readField;
 
 public class WebListBlockElementTextCondition implements WebListBlockCondition {
 
     private final Deque<WebListBlockConditionHolder> childConditions = new ArrayDeque<>();
 
-    private final WebChildElement elementMock;
     private final String elementName;
+    private WebChildElement elementMock;
 
     private final StringValue stringValue;
     private final NumberValue<?> numberValue;
@@ -84,14 +83,14 @@ public class WebListBlockElementTextCondition implements WebListBlockCondition {
     }
 
     @Override
-    public WebListBlockCondition and(WebListBlockCondition condition) {
-
+    public WebListBlockCondition and(@NotNull WebListBlockCondition condition) {
+        childConditions.add(WebListBlockConditionHolder.of(ConditionUsage.AND, condition));
         return this;
     }
 
     @Override
-    public WebListBlockCondition or(WebListBlockCondition condition) {
-
+    public WebListBlockCondition or(@NotNull WebListBlockCondition condition) {
+        childConditions.add(WebListBlockConditionHolder.of(ConditionUsage.OR, condition));
         return this;
     }
 
@@ -110,7 +109,7 @@ public class WebListBlockElementTextCondition implements WebListBlockCondition {
     public WebFilterResult process(@NotNull WebList element, @Nullable String hash) {
         if (elementMock == null) {
             Class<? extends WebMappedBlock> mappedBlockClass = readField("mappedBlockClass", element);
-            WebChildElement mappedElement = WebMappedBlock.from(mappedBlockClass).getElementRegistry().getElementByPath(elementName)
+            elementMock = WebMappedBlock.from(mappedBlockClass).getElementRegistry().getElementByPath(elementName)
                     .orElseThrow(() -> new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage(elementName)));
         }
         Class<?> returnType = elementMock.getElementIdentifier().getElementMethod().getReturnType();
@@ -129,11 +128,9 @@ public class WebListBlockElementTextCondition implements WebListBlockCondition {
 
         if (optionalStringJsOperation.isPresent()) {
             WebLocatorChain locatorChainToListBlock = element.getLocatorChain();
-            WebLocatorHolder listLocatorHolder = locatorChainToListBlock.getLastLocator();
-            listLocatorHolder.setCalculateHash(true);
-            if (hash != null) {
-                listLocatorHolder.setExpectedHash(hash);
-            }
+            WebLocatorHolder listLocatorHolder = locatorChainToListBlock.getLastLocator()
+                    .setCalculateHash(true)
+                    .setExpectedHash(hash);
             WebLocatorHolder listBlockLocatorHolder = element
                     .getLocator(WebComponents.LI)
                     .orElseThrow(() -> new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(LI))
@@ -158,7 +155,6 @@ public class WebListBlockElementTextCondition implements WebListBlockCondition {
                     .getResult();
             WebPageFactory webPageFactory = element.getEnvironment().getService(WebPageService.class).getWebPageFactory();
             Map<Integer, WebMappedBlock> webMappedBlocks = webPageFactory.createWebListBlocks(element, filterResult);
-            // В зависимости от того, что указано при создании достаем нужные элементы или по имени или по цепочке методов.
             Map<Integer, String> textValues = new HashMap<>();
             for (Entry<Integer, WebMappedBlock> webMappedBlockEntry : webMappedBlocks.entrySet()) {
                 WebChildElement elementToExtractText = webMappedBlockEntry.getValue()
