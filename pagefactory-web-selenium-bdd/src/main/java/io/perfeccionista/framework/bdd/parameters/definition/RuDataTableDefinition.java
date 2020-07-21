@@ -17,11 +17,12 @@ public class RuDataTableDefinition implements EnvironmentAvailable {
         this.environment = environment;
     }
 
-    @DataTableType
-    public <T extends Element> WebElementParameter<T> webElementParameterEntry(Map<String, String> entry) {
-        // verifyEntry()
-        return new WebElementParameterImpl<>(environment, entry.get("elementPath"));
-    }
+// FIXME Cucumber can't work with generic type here
+//    @DataTableType
+//    public <T extends Element> WebElementParameter<T> webElementParameterEntry(Map<String, String> entry) {
+//        // verifyEntry()
+//        return new WebElementParameterImpl<>(environment, entry.get("elementPath"));
+//    }
 
 
 

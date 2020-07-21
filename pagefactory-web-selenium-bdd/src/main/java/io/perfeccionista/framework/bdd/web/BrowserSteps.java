@@ -27,7 +27,7 @@ public class BrowserSteps implements EnvironmentAvailable {
      * @param webBrowserName -
      */
     @Given("user launch browser {webBrowser} with name {stringValue}")
-    @Given("пользователь запускает браузер {webBrowser} с именем {stringValue")
+    @Given("пользователь запускает браузер {webBrowser} с именем {stringValue}")
     public void userLaunchWebBrowserWithName(WebBrowserParameter webBrowser,
                                              ValueStringParameter webBrowserName) {
         webBrowser.launch(webBrowserName.getProcessedValue());
@@ -49,7 +49,7 @@ public class BrowserSteps implements EnvironmentAvailable {
      * @param webBrowserName -
      */
     @Given("user close browser with name {stringValue}")
-    @Given("пользователь закрывает браузер с именем {stringValue")
+    @Given("пользователь закрывает браузер с именем {stringValue}")
     public void userCloseWebBrowserWithName(ValueStringParameter webBrowserName) {
         getEnvironment().getService(WebBrowserService.class)
                 .getDispatcherByName(webBrowserName.getProcessedValue())
@@ -61,7 +61,7 @@ public class BrowserSteps implements EnvironmentAvailable {
      * @param webBrowserName -
      */
     @Given("user switches to the browser with name {stringValue}")
-    @Given("пользователь переключается на браузер с именем {stringValue")
+    @Given("пользователь переключается на браузер с именем {stringValue}")
     public void userSwitchesToTheWebBrowserWithName(ValueStringParameter webBrowserName) {
         getEnvironment().getService(WebBrowserService.class)
                 .setActiveDispatcher(webBrowserName.getProcessedValue());

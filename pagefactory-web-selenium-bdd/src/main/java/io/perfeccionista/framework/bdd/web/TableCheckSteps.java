@@ -58,8 +58,8 @@ public class TableCheckSteps implements EnvironmentAvailable {
      * @param integerValue -
      * @param itemFilter -
      */
-    @Given("{webElement} has {integerValue} row(s)")
-    @Given("{webElement} содержится {integerValue} строк(а|и)")
+    @Given("{webElement} has {integerValue} row(s), where")
+    @Given("{webElement} содержится {integerValue} строк(а|и), где")
     public void filteredTextTableHasSize(WebElementParameter<WebTextTable> elementFinder,
                                          ValueIntegerParameter integerValue,
                                          WebTextTableFilterBuilder itemFilter) {

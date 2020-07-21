@@ -37,8 +37,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
      * @param elementFinder -
      * @param integerValue -
      */
-    @Given("{webElement} has {integerValue} button(s)")
-    @Given("в {webElement} содержится {integerValue} кноп(ка|ки|ок)")
+    @Given("{webElement} has {integerValue} button(s), where")
+    @Given("в {webElement} содержится {integerValue} кноп(ка|ки|ок), где")
     public void filteredRadioGroupHasSize(WebElementParameter<WebRadioGroup> elementFinder,
                                           ValueIntegerParameter integerValue,
                                           WebRadioButtonFilterBuilder itemFilter) {

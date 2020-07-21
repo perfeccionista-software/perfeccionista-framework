@@ -76,7 +76,8 @@ public class ListActionSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .open()
-                        .clickToElement(itemFilter)
+// FIXME Method not found
+//                        .clickToElement(itemFilter)
                         .close());
     }
 
