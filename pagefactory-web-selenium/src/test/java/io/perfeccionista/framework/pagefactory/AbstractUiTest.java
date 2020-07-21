@@ -26,6 +26,9 @@ public class AbstractUiTest {
         webBrowserDispatcher
                 .tabs()
                 .openUrl(startUrl);                                 // открываем ссылку
+        webBrowserDispatcher
+                .window()
+                .setWindowSize(1200, 1000);
         return webBrowserDispatcher
                 .getPageContext();                                  // Возвращаем контекст страницы для активного браузера
     }

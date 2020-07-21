@@ -29,15 +29,14 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 public class WebTableFilterSeleniumImpl implements WebTableFilter {
 
     private final WebTable element;
-    private final WebTableFilterBuilder filter;
+    private final WebTableFilterBuilder filterBuilder;
 
     private String initialHash = null;
     private WebFilterResult filterResult = null;
 
-
-    private WebTableFilterSeleniumImpl(WebTable element, WebTableFilterBuilder filter) {
+    private WebTableFilterSeleniumImpl(WebTable element, WebTableFilterBuilder filterBuilder) {
         this.element = element;
-        this.filter = filter;
+        this.filterBuilder = filterBuilder;
     }
 
     public static WebTableFilterSeleniumImpl of(WebTable element, WebTableFilterBuilder filter) {
@@ -48,7 +47,7 @@ public class WebTableFilterSeleniumImpl implements WebTableFilter {
     @Override
     public @NotNull WebFilterResult getResult() {
         if (filterResult == null) {
-            executeFilter(element, filter);
+            executeFilter(element, filterBuilder);
         }
         return filterResult;
     }
@@ -62,7 +61,7 @@ public class WebTableFilterSeleniumImpl implements WebTableFilter {
     @Override
     public WebTableFilter shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
         runCheck(element.getEnvironment(), InvocationName.of(SHOULD_HAVE_SIZE_METHOD, this, expectedSize), () -> {
-            executeFilter(element, filter);
+            executeFilter(element, filterBuilder);
             int actualSize = filterResult.getIndexes().size();
             if (!expectedSize.check(actualSize)) {
                 throw new ElementSizeException(ELEMENT_FILTERED_SIZE_NOT_MATCH.getMessage())
@@ -100,8 +99,8 @@ public class WebTableFilterSeleniumImpl implements WebTableFilter {
     }
 
     // Если у нас Ajax таблица хэш которой постоянно меняется, то ХЗ как с ней работать...
-    private void executeFilter(WebTable element, WebTableFilterBuilder filter) {
-        Deque<WebTableRowConditionHolder> conditions = filter.getConditions();
+    private void executeFilter(WebTable element, WebTableFilterBuilder filterBuilder) {
+        Deque<WebTableRowConditionHolder> conditions = filterBuilder.getConditions();
         Set<Integer> indexes = new HashSet<>();
         String calculatedHash = initialHash;
         for (WebTableRowConditionHolder conditionHolder : conditions) {

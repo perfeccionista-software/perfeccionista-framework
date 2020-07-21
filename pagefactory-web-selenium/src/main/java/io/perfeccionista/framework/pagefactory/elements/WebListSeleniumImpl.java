@@ -93,7 +93,6 @@ import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethod
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SIZE_METHOD;
 
 // WebList
-@WebElementAction(name = CLICK_TO_ELEMENT_METHOD, implementation = SeleniumClickToBlockElement.class)
 @WebElementAction(name = SCROLL_TO_ELEMENT_METHOD, implementation = JsScrollToBlockElement.class)
 @WebElementAction(name = SHOULD_HAVE_SIZE_METHOD, implementation = AssertShouldHaveSize.class)
 @WebElementAction(name = SIZE_METHOD, implementation = JsGetSize.class)

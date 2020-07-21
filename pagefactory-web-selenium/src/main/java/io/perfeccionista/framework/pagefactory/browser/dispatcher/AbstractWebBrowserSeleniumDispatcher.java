@@ -133,7 +133,9 @@ public abstract class AbstractWebBrowserSeleniumDispatcher<T extends RemoteWebDr
     @Override
     public WindowDispatcher window() {
         checkWebDriverInstance();
+        // TODO: Depends on tabs (Пользователь должен открыть вкладку перед тем как )
         return Optional.ofNullable(this.window).orElseGet(() -> {
+            // TODO: Не передавать сюда экзекьютор, а создавать при необходимости, проверяя, что вкладка открыта
             this.window = new SeleniumWindowDispatcher(environment, instance, exceptionMapper, executor());
             return this.window;
         });
@@ -168,6 +170,7 @@ public abstract class AbstractWebBrowserSeleniumDispatcher<T extends RemoteWebDr
         if (this.instance == null) {
             throw new SeleniumWebDriverInstanceNotStartedException(WEB_DRIVER_INSTANCE_NOT_STARTED.getMessage());
         }
+
     }
 
     protected void setTimeouts() {

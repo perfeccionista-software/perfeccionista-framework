@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
 import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
+import io.perfeccionista.framework.exceptions.ElementNotDeclaredException;
 import io.perfeccionista.framework.exceptions.LocatorNotDeclaredException;
 import io.perfeccionista.framework.exceptions.TableColumnLocatorNotDeclaredException;
 import io.perfeccionista.framework.exceptions.TableColumnNotDeclaredException;
@@ -8,6 +9,8 @@ import io.perfeccionista.framework.pagefactory.WebElementsConfiguration;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -29,11 +32,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.TABLE_COLUMN_LOCATOR_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.TABLE_COLUMN_NOT_DECLARED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
 import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
 import static io.perfeccionista.framework.utils.ReflectionUtils.readField;
@@ -59,9 +65,45 @@ public class WebPageFactory {
         return decorator.decorateWebPageInstance(webPageInstance, webPageElementRegistry);
     }
 
-    public Map<Integer, WebMappedBlock> createWebListBlocks(WebList webList, WebFilterResult filter) {
-        String hash = filter.getHash();
-        Set<Integer> indexes = filter.getIndexes();
+    public Map<Integer, WebRadioButton> createWebRadioButtons(WebRadioGroup webRadioGroup, WebFilterResult filterResult) {
+        String hash = filterResult.getHash();
+        Set<Integer> indexes = filterResult.getIndexes();
+        WebLocatorHolder radioButtonLocatorHolder = webRadioGroup.getLocator(RADIO)
+                .orElseThrow(() ->
+                        new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(RADIO))
+                                .addAttachmentEntry(JsonAttachmentEntry.of("Element", webRadioGroup.toJson())));
+        Class<? extends WebMappedBlock> mappedBlockClass = readField("mappedBlockClass", webRadioGroup);
+        Map<Integer, WebRadioButton> webRadioButtons = new HashMap<>();
+        for (int index : indexes) {
+            WebMappedBlock webMappedBlockInstance = initializer.initWebMappedBlock(mappedBlockClass);
+            List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
+
+            WebElementRegistry elementRegistry = createWebChildElements(webMappedBlockInstance, childElementMethods);
+            List<Method> radioButtonMethodList = childElementMethods.stream()
+                    .filter(method -> "radioButton".equals(method.getName()))
+                    .filter(method -> WebRadioButton.class.isAssignableFrom(method.getReturnType()))
+                    .collect(Collectors.toList());
+            if (radioButtonMethodList.size() != 1) {
+                throw new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage("radioButton"));
+            }
+            Method webRadioButtonMethod = radioButtonMethodList.get(0);
+            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+            parentLocators.add(radioButtonLocatorHolder.clone().setSingle(true).setIndex(index));
+            WebParentInfo<WebRadioGroup> parentInfo = WebParentInfo.of(webRadioGroup, hash, parentLocators);
+            WebMappedBlock decoratedWebMappedBlockInstance = decorator
+                    .decorateWebMappedBlockInstance(webMappedBlockInstance, elementRegistry, parentInfo);
+            WebRadioButton webRadioButton = decoratedWebMappedBlockInstance.getElementRegistry()
+                    .getElementByMethod(webRadioButtonMethod, WebRadioButton.class)
+                    .orElseThrow(() -> new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage("radioButton")));
+            webRadioButtons.put(index, webRadioButton);
+        }
+
+        return webRadioButtons;
+    }
+
+    public Map<Integer, WebMappedBlock> createWebListBlocks(WebList webList, WebFilterResult filterResult) {
+        String hash = filterResult.getHash();
+        Set<Integer> indexes = filterResult.getIndexes();
         WebLocatorHolder liLocatorHolder = webList.getLocator(LI)
                 .orElseThrow(() ->
                         new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(LI))
@@ -75,7 +117,9 @@ public class WebPageFactory {
             Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
             parentLocators.add(liLocatorHolder.clone().setSingle(true).setIndex(index));
             WebParentInfo<WebList> parentInfo = WebParentInfo.of(webList, hash, parentLocators);
-            webMappedBlocks.put(index, decorator.decorateWebMappedBlockInstance(webList, webMappedBlockInstance, elementRegistry, parentInfo));
+            WebMappedBlock decoratedWebMappedBlockInstance = decorator
+                    .decorateWebMappedBlockInstance(webMappedBlockInstance, elementRegistry, parentInfo);
+            webMappedBlocks.put(index, decoratedWebMappedBlockInstance);
         }
         return webMappedBlocks;
     }
@@ -103,7 +147,9 @@ public class WebPageFactory {
             parentLocators.add(tableRowLocator.clone().setSingle(true).setIndex(index));
             parentLocators.add(tableColumnLocator.clone());
             WebParentInfo<WebTable> parentInfo = WebParentInfo.of(webTable, hash, parentLocators);
-            webMappedCells.put(index, decorator.decorateWebMappedBlockInstance(webTable, webMappedBlockInstance, elementRegistry, parentInfo));
+            WebMappedBlock decoratedWebMappedBlockInstance = decorator
+                    .decorateWebMappedBlockInstance(webMappedBlockInstance, elementRegistry, parentInfo);
+            webMappedCells.put(index, decoratedWebMappedBlockInstance);
         }
         return webMappedCells;
     }
@@ -128,7 +174,7 @@ public class WebPageFactory {
         return WebElementRegistry.of(webChildElements);
     }
 
-    protected static List<Method> getWebChildElementMethods(Class<? extends WebParentElement> processedClass) {
+    public static List<Method> getWebChildElementMethods(Class<? extends WebParentElement> processedClass) {
         Predicate<Method> methodPredicate = method -> WebChildElement.class.isAssignableFrom(method.getReturnType()) && !method.isDefault();
         Set<Method> methods = new HashSet<>();
         Set<Class<? extends WebParentElement>> inheritedInterfaces = getInheritedInterfaces(WebParentElement.class, processedClass);

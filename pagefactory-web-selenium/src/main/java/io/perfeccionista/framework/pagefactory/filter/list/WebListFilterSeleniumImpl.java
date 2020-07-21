@@ -18,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_FILTERED_SIZE_NOT_MATCH;
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
@@ -70,7 +69,6 @@ public class WebListFilterSeleniumImpl implements WebListFilter {
 
     @Override
     public WebListFilter shouldHaveSize(@NotNull NumberValue<Integer> expectedSize) {
-        AtomicInteger i = new AtomicInteger(0);
         runCheck(element.getEnvironment(), InvocationName.of(SHOULD_HAVE_SIZE_METHOD, this, expectedSize), () -> {
             executeFilter(element, filterBuilder);
             int actualSize = filterResult.getIndexes().size();
@@ -86,8 +84,8 @@ public class WebListFilterSeleniumImpl implements WebListFilter {
 
     // TODO: Check this logic
 
-    private void executeFilter(WebList element, WebListFilterBuilder filter) {
-        Deque<WebListBlockConditionHolder> conditions = filter.getConditions();
+    private void executeFilter(WebList element, WebListFilterBuilder filterBuilder) {
+        Deque<WebListBlockConditionHolder> conditions = filterBuilder.getConditions();
         Set<Integer> indexes = new HashSet<>();
         String calculatedHash = initialHash;
         for (WebListBlockConditionHolder conditionHolder : conditions) {

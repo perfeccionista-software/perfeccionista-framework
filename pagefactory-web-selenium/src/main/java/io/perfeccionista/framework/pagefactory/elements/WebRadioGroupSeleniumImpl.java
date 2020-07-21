@@ -2,7 +2,40 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.asserts.WebAssertCondition;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetColor;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetDimensions;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsDisplayed;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsInFocus;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsPresent;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetLocation;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetPropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetScreenshot;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsGetSize;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsScrollTo;
+import io.perfeccionista.framework.pagefactory.elements.actions.JsScrollToBlockElement;
+import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumHoverTo;
+import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldBeInFocus;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveColor;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveDimensions;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveLocation;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHavePropertyNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHavePropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldHaveSize;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldLooksLike;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotBeInFocus;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveColor;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveDimensions;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHaveLocation;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHavePropertyNumber;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotHavePropertyValue;
+import io.perfeccionista.framework.pagefactory.elements.asserts.AssertShouldNotLooksLike;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBeDisplayed;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldBePresent;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBeDisplayed;
+import io.perfeccionista.framework.pagefactory.elements.asserts.JsAssertShouldNotBePresent;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
@@ -18,20 +51,96 @@ import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.EXTRACT_ALL_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_BY_INDEX_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_BY_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_DIMENSIONS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_LOCATION_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_SCREENSHOT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_SELECTED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.HOVER_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_COMPONENT_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_COMPONENT_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_ELEMENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_DIMENSIONS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_LOCATION_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_NUMBER_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_SIZE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_LOOKS_LIKE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_DIMENSIONS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_LOCATION_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_LOOKS_LIKE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SIZE_METHOD;
 import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.element;
 import static io.perfeccionista.framework.pagefactory.filter.WebConditions.radioButtonIndex;
 import static io.perfeccionista.framework.pagefactory.filter.WebConditions.selected;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 
+// WebRadioGroup
+@WebElementAction(name = SCROLL_TO_ELEMENT_METHOD, implementation = JsScrollToBlockElement.class)
+@WebElementAction(name = SHOULD_HAVE_SIZE_METHOD, implementation = AssertShouldHaveSize.class)
+@WebElementAction(name = SIZE_METHOD, implementation = JsGetSize.class)
+// WebChildElement
+@WebElementAction(name = COMPONENT_SHOULD_BE_DISPLAYED_METHOD, implementation = JsAssertShouldBeDisplayed.class)
+@WebElementAction(name = COMPONENT_SHOULD_BE_PRESENT_METHOD, implementation = JsAssertShouldBePresent.class)
+@WebElementAction(name = COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, implementation = JsAssertShouldNotBeDisplayed.class)
+@WebElementAction(name = COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, implementation = JsAssertShouldNotBePresent.class)
+@WebElementAction(name = GET_COLOR_METHOD, implementation = JsGetColor.class)
+@WebElementAction(name = GET_DIMENSIONS_METHOD, implementation = JsGetDimensions.class)
+@WebElementAction(name = GET_LOCATION_METHOD, implementation = JsGetLocation.class)
+@WebElementAction(name = GET_PROPERTY_VALUE_METHOD, implementation = JsGetPropertyValue.class)
+@WebElementAction(name = GET_SCREENSHOT_METHOD, implementation = JsGetScreenshot.class)
+@WebElementAction(name = HOVER_TO_METHOD, implementation = SeleniumHoverTo.class)
+@WebElementAction(name = IS_COMPONENT_DISPLAYED_METHOD, implementation = JsGetIsDisplayed.class)
+@WebElementAction(name = IS_COMPONENT_PRESENT_METHOD, implementation = JsGetIsPresent.class)
+@WebElementAction(name = IS_DISPLAYED_METHOD, implementation = JsGetIsDisplayed.class)
+@WebElementAction(name = IS_IN_FOCUS_METHOD, implementation = JsGetIsInFocus.class)
+@WebElementAction(name = IS_PRESENT_METHOD, implementation = JsGetIsPresent.class)
+@WebElementAction(name = SCROLL_TO_METHOD, implementation = JsScrollTo.class)
+@WebElementAction(name = SHOULD_BE_DISPLAYED_METHOD, implementation = JsAssertShouldBeDisplayed.class)
+@WebElementAction(name = SHOULD_BE_IN_FOCUS_METHOD, implementation = AssertShouldBeInFocus.class)
+@WebElementAction(name = SHOULD_BE_PRESENT_METHOD, implementation = JsAssertShouldBePresent.class)
+@WebElementAction(name = SHOULD_HAVE_COLOR_METHOD, implementation = AssertShouldHaveColor.class)
+@WebElementAction(name = SHOULD_HAVE_DIMENSIONS_METHOD, implementation = AssertShouldHaveDimensions.class)
+@WebElementAction(name = SHOULD_HAVE_LOCATION_METHOD, implementation = AssertShouldHaveLocation.class)
+@WebElementAction(name = SHOULD_HAVE_PROPERTY_NUMBER_METHOD, implementation = AssertShouldHavePropertyNumber.class)
+@WebElementAction(name = SHOULD_HAVE_PROPERTY_VALUE_METHOD, implementation = AssertShouldHavePropertyValue.class)
+@WebElementAction(name = SHOULD_LOOKS_LIKE_METHOD, implementation = AssertShouldLooksLike.class)
+@WebElementAction(name = SHOULD_NOT_BE_DISPLAYED_METHOD, implementation = JsAssertShouldNotBeDisplayed.class)
+@WebElementAction(name = SHOULD_NOT_BE_IN_FOCUS_METHOD, implementation = AssertShouldNotBeInFocus.class)
+@WebElementAction(name = SHOULD_NOT_BE_PRESENT_METHOD, implementation = JsAssertShouldNotBePresent.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_COLOR_METHOD, implementation = AssertShouldNotHaveColor.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_DIMENSIONS_METHOD, implementation = AssertShouldNotHaveDimensions.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_LOCATION_METHOD, implementation = AssertShouldNotHaveLocation.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, implementation = AssertShouldNotHavePropertyNumber.class)
+@WebElementAction(name = SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, implementation = AssertShouldNotHavePropertyValue.class)
+@WebElementAction(name = SHOULD_NOT_LOOKS_LIKE_METHOD, implementation = AssertShouldNotLooksLike.class)
 public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implements WebRadioGroup {
+
+    protected Class<? extends WebMappedBlock> mappedBlockClass = DefaultWebRadioButtonMappedBlock.class;
 
     @Override
     public @NotNull WebRadioButtonFilter filter(@NotNull WebRadioButtonFilterBuilder filterBuilder) {
@@ -300,5 +409,14 @@ public class WebRadioGroupSeleniumImpl extends AbstractWebChildElement implement
         super.shouldNotHavePropertyValue(propertyName, expectedValue);
         return this;
     }
+
+    public interface DefaultWebRadioButtonMappedBlock extends WebMappedBlock {
+
+        @WebLocator(xpath = ".//input[@type = 'radio']/parent::node()")
+        @WebLocator(component = FOCUS, xpath = ".//input[@type = 'radio']")
+        WebRadioButton radioButton();
+
+    }
+
 
 }

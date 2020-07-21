@@ -8,22 +8,19 @@ import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioGroupSeleniumImpl.DefaultWebRadioButtonMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
-import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.AltAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.NameAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.PlaceholderAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.SrcAttributeExtractor;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
 
 @Name("Elements page")
 public interface ElementsPage extends AbstractWebPage {
@@ -141,11 +138,12 @@ public interface ElementsPage extends AbstractWebPage {
     @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "radio-one"))
     WebRadioButton radioButtonOne();
 
-//    @Name("Radio group")
-//    @WebLocator(id = "radio-group")
-//    @WebLocator(component = RADIO, xpath = ".//input[@type = 'radio']/parent::node()")
-//    @WebLocator(component = FOCUS, xpath = ".//input[@type = 'radio']")
-//    WebRadioGroup radioGroup();
+    @Name("Radio group")
+    @WebLocator(id = "radio-group")
+    @WebLocator(component = RADIO, xpath = ".//input[@type = 'radio']/parent::node()", single = false)
+    // Это дефолтная имплементация настроенного экземпляра кнопки, использовать эту аннотацию имеет смысл только если у вас она другая
+    // @UseWebMappedBlock(DefaultWebRadioButtonMappedBlock.class)
+    WebRadioGroup radioGroup();
 
     @Name("RadioButton text")
     @WebLocator(id = "radio-text")

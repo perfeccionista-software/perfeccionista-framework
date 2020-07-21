@@ -9,13 +9,11 @@ import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
-import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
@@ -23,17 +21,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.OR;
 
-public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
+public class WebRadioButtonEmptyCondition implements WebRadioButtonCondition {
 
     private final Deque<WebRadioButtonConditionHolder> childConditions = new ArrayDeque<>();
-
-    private final NumberValue<Integer> expectedValue;
-
-    private boolean inverse = false;
-
-    public WebRadioButtonIndexCondition(NumberValue<Integer> expectedValue) {
-        this.expectedValue = expectedValue;
-    }
 
     @Override
     public WebRadioButtonCondition and(@NotNull WebRadioButtonCondition condition) {
@@ -48,8 +38,7 @@ public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
     }
 
     @Override
-    public WebRadioButtonIndexCondition inverse() {
-        inverse = true;
+    public WebRadioButtonEmptyCondition inverse() {
         return this;
     }
 
@@ -60,7 +49,6 @@ public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
 
     @Override
     public @NotNull WebFilterResult process(@NotNull WebRadioGroup element, @Nullable String hash) {
-        // TODO: Обработать inverse
         WebLocatorChain locatorChain = element.getLocatorChain();
         WebLocatorHolder radioGroupLocatorHolder = locatorChain.getLastLocator()
                 .setCalculateHash(true)
@@ -81,18 +69,7 @@ public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
         Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
-        return WebFilterResult.of(getMatches(indexes), returnedHash);
-    }
-
-    private Set<Integer> getMatches(Set<Integer> indexes) {
-        Set<Integer> matches = new HashSet<>();
-        indexes.forEach(index -> {
-            boolean check = expectedValue.check(index);
-            if ((check && !inverse) || (!check && inverse)) {
-                matches.add(index);
-            }
-        });
-        return matches;
+        return WebFilterResult.of(indexes, returnedHash);
     }
 
 }

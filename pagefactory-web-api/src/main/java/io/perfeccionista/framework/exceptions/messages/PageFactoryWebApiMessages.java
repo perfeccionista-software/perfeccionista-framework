@@ -13,6 +13,7 @@ public enum PageFactoryWebApiMessages implements Messages {
     WEB_LOCATOR_PROCESSING_RESULT_NOT_FOUND("Processing result for locator is not found"),
     WEB_LOCATOR_STRATEGY_VALIDATION_FAILED("Locator must contain only one filled search strategy"),
     WEB_PAGE_IMPLEMENTATION_NOT_DECLARED("WebPage implementation is not declared"),
+    WEB_RADIO_BUTTON_IMPLEMENTATION_NOT_DECLARED("WebRadioButton implementation is not declared"),
     WEB_BLOCK_IMPLEMENTATION_NOT_DECLARED("WebBlock implementation is not declared"),
     WEB_MAPPED_BLOCK_IMPLEMENTATION_NOT_DECLARED("WebMappedBlock implementation is not declared"),
     WEB_CHILD_ELEMENT_IMPLEMENTATION_NOT_DECLARED("WebChildElement implementation for %s is not declared"),

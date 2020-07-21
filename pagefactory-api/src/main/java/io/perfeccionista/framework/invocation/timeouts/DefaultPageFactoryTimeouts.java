@@ -12,7 +12,7 @@ public class DefaultPageFactoryTimeouts implements Timeouts {
 
     public DefaultPageFactoryTimeouts() {
         timeouts.put(LogicTimeout.class, Duration.ofSeconds(30L));
-        timeouts.put(CheckTimeout.class, Duration.ofSeconds(5L));
+        timeouts.put(CheckTimeout.class, Duration.ofSeconds(10L));
         timeouts.put(LogicDelayTimeout.class, Duration.ofMillis(10L));
     }
 

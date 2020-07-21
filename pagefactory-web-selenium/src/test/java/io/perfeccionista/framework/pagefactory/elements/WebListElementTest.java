@@ -31,6 +31,8 @@ import io.perfeccionista.framework.plugin.WebElementColor;
 import io.perfeccionista.framework.value.ValueService;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -98,10 +100,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
+@Tags(@Tag("Element"))
 class WebListElementTest extends AbstractUiTest {
 
     @Test
-    void webListInitializationTest(Environment env, ValueService value) {
+    void webListInitializationTest(Environment env) {
         WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebElementsConfiguration());
         ListElementsPage listElementsPage = (ListElementsPage) pageFactory.createWebPage(ListElementsPage.class);
         listElementsPage.setEnvironment(env);
@@ -182,7 +185,7 @@ class WebListElementTest extends AbstractUiTest {
                 .scrollTo()
                 .hoverTo(true)
                 .componentShouldHaveDimensions(ROOT, Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d))
-                .componentShouldHaveLocation(ROOT, Location.relative(345d, -4396d).setInaccuracy(0.2d))
+                .componentShouldHaveLocation(ROOT, Location.relative(345d, -4709d).setInaccuracy(0.2d))
                 .componentShouldHaveColor(ROOT, "border-color", WebElementColor.of(33, 37, 41, 1.0d))
                 .shouldHaveSize(value.intEquals(195))
                 .should(worldMapImage -> {
@@ -224,7 +227,7 @@ class WebListElementTest extends AbstractUiTest {
         assertThrows(ElementLocationException.class, () -> list.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(33, 37, 41, 1.0d);
         assertThrows(ElementColorException.class, () -> list.componentShouldNotHaveColor(ROOT, "border-color", elementColor));
-        StringValue correctPropertyValue = value.stringEquals("World map picture");
+        StringValue correctPropertyValue = value.stringEquals("Some value");
         assertThrows(ElementPropertyNotDeclaredException.class, () -> list.shouldNotHavePropertyValue("unknown property", correctPropertyValue));
         NumberValue<Integer> expectedSize = value.intEquals(196);
         assertThrows(ElementSizeException.class, () -> list.shouldHaveSize(expectedSize));
@@ -260,7 +263,6 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(100));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementTextConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -271,6 +273,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(containsText(from(CountryBlock.class).shortName(), value.stringEquals("Финляндия"))))
                 .shouldHaveSize(value.intEquals(1));
         list.filter(with(containsText(from(CountryBlock.class).shortName(), value.stringStartsWith("М"))))
@@ -306,9 +309,45 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(1));
         list.filter(without(containsText(from(CountryBlock.class).number(), value.intGreaterThanOrEqual(124)).inverse()))
                 .shouldHaveSize(value.intEquals(72));
+
+        // By Element name
+        list.filter(with(containsText("Short name", value.stringEquals("Финляндия"))))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(with(containsText("Short name", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(17));
+        list.filter(with(containsText("Short name", value.stringEquals("Финляндия")).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(with(containsText("Short name", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(178));
+
+        list.filter(without(containsText("Short name", value.stringEquals("Финляндия"))))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(without(containsText("Short name", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(178));
+        list.filter(without(containsText("Short name", value.stringEquals("Финляндия")).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(without(containsText("Short name", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(17));
+
+        list.filter(with(containsText("Number", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(with(containsText("Number", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(72));
+        list.filter(with(containsText("Number", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(with(containsText("Number", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(123));
+
+        list.filter(without(containsText("Number", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(without(containsText("Number", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(123));
+        list.filter(without(containsText("Number", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(without(containsText("Number", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(72));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementSelectedConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -319,6 +358,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(selected(from(CountryBlock.class).checkbox())))
                 .shouldHaveSize(value.intEquals(6));
         list.filter(with(selected(from(CountryBlock.class).checkbox()).inverse()))
@@ -328,9 +368,19 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(189));
         list.filter(without(selected(from(CountryBlock.class).checkbox()).inverse()))
                 .shouldHaveSize(value.intEquals(6));
+
+        // By Element name
+        list.filter(with(selected("Select")))
+                .shouldHaveSize(value.intEquals(6));
+        list.filter(with(selected("Select").inverse()))
+                .shouldHaveSize(value.intEquals(189));
+
+        list.filter(without(selected("Select")))
+                .shouldHaveSize(value.intEquals(189));
+        list.filter(without(selected("Select").inverse()))
+                .shouldHaveSize(value.intEquals(6));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementPropertyConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -341,6 +391,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика"))))
                 .shouldHaveSize(value.intEquals(1));
         list.filter(with(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
@@ -358,9 +409,27 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(1));
         list.filter(without(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringStartsWith("М")).inverse()))
                 .shouldHaveSize(value.intEquals(5));
+
+        // By Element name
+        list.filter(with(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика"))))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(with(containsProperty("Full name", "prompt", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(5));
+        list.filter(with(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика")).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(with(containsProperty("Full name", "prompt", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(190));
+
+        list.filter(without(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика"))))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(without(containsProperty("Full name", "prompt", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(190));
+        list.filter(without(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика")).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(without(containsProperty("Full name", "prompt", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(5));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementPresentConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -371,6 +440,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(present(from(CountryBlock.class).shortName())))
                 .shouldHaveSize(value.intEquals(193));
         list.filter(with(present(from(CountryBlock.class).shortName()).inverse()))
@@ -380,9 +450,19 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(2));
         list.filter(without(present(from(CountryBlock.class).shortName()).inverse()))
                 .shouldHaveSize(value.intEquals(193));
+
+        // By Element name
+        list.filter(with(present("Short name")))
+                .shouldHaveSize(value.intEquals(193));
+        list.filter(with(present("Short name").inverse()))
+                .shouldHaveSize(value.intEquals(2));
+
+        list.filter(without(present("Short name")))
+                .shouldHaveSize(value.intEquals(2));
+        list.filter(without(present("Short name").inverse()))
+                .shouldHaveSize(value.intEquals(193));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementLabelConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -393,6 +473,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.stringEquals("86"))))
                 .shouldHaveSize(value.intEquals(1));
         list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.stringStartsWith("15"))))
@@ -428,9 +509,45 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(1));
         list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.intGreaterThanOrEqual(124)).inverse()))
                 .shouldHaveSize(value.intEquals(72));
+
+        // By Element name
+        list.filter(with(containsLabel("Select", value.stringEquals("86"))))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(with(containsLabel("Select", value.stringStartsWith("15"))))
+                .shouldHaveSize(value.intEquals(11));
+        list.filter(with(containsLabel("Select", value.stringEquals("86")).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(with(containsLabel("Select", value.stringStartsWith("15")).inverse()))
+                .shouldHaveSize(value.intEquals(184));
+
+        list.filter(without(containsLabel("Select", value.stringEquals("86"))))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(without(containsLabel("Select", value.stringStartsWith("15"))))
+                .shouldHaveSize(value.intEquals(184));
+        list.filter(without(containsLabel("Select", value.stringEquals("86")).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(without(containsLabel("Select", value.stringStartsWith("15")).inverse()))
+                .shouldHaveSize(value.intEquals(11));
+
+        list.filter(with(containsLabel("Select", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(with(containsLabel("Select", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(72));
+        list.filter(with(containsLabel("Select", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(with(containsLabel("Select", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(123));
+
+        list.filter(without(containsLabel("Select", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(194));
+        list.filter(without(containsLabel("Select", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(123));
+        list.filter(without(containsLabel("Select", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        list.filter(without(containsLabel("Select", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(72));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementEnabledConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -441,6 +558,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(enabled(from(CountryBlock.class).checkbox())))
                 .shouldHaveSize(value.intEquals(189));
         list.filter(with(disabled(from(CountryBlock.class).checkbox())))
@@ -450,9 +568,19 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(6));
         list.filter(without(disabled(from(CountryBlock.class).checkbox())))
                 .shouldHaveSize(value.intEquals(189));
+
+        // By Element name
+        list.filter(with(enabled("Select")))
+                .shouldHaveSize(value.intEquals(189));
+        list.filter(with(disabled("Select")))
+                .shouldHaveSize(value.intEquals(6));
+
+        list.filter(without(enabled("Select")))
+                .shouldHaveSize(value.intEquals(6));
+        list.filter(without(disabled("Select")))
+                .shouldHaveSize(value.intEquals(189));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementDisplayedConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -463,6 +591,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         // Для элементов, которых нет в DOM
         list.filter(with(displayed(from(CountryBlock.class).shortName())))
                 .shouldHaveSize(value.intEquals(193));
@@ -484,9 +613,31 @@ class WebListElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(9));
         list.filter(without(displayed(from(CountryBlock.class).populationUnit()).inverse()))
                 .shouldHaveSize(value.intEquals(186));
+
+        // By Element name
+        // Для элементов, которых нет в DOM
+        list.filter(with(displayed("Short name")))
+                .shouldHaveSize(value.intEquals(193));
+        list.filter(with(displayed("Short name").inverse()))
+                .shouldHaveSize(value.intEquals(2));
+
+        list.filter(without(displayed("Short name")))
+                .shouldHaveSize(value.intEquals(2));
+        list.filter(without(displayed("Short name").inverse()))
+                .shouldHaveSize(value.intEquals(193));
+
+        // Для элементов, которые есть в DOM, но не отображаются
+        list.filter(with(displayed("Population unit")))
+                .shouldHaveSize(value.intEquals(186));
+        list.filter(with(displayed("Population unit").inverse()))
+                .shouldHaveSize(value.intEquals(9));
+
+        list.filter(without(displayed("Population unit")))
+                .shouldHaveSize(value.intEquals(9));
+        list.filter(without(displayed("Population unit").inverse()))
+                .shouldHaveSize(value.intEquals(186));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webListFilterElementComponentPresentConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -497,6 +648,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(componentPresent(from(CountryBlock.class).shortName(), "Self")))
                 .shouldHaveSize(value.intEquals(193));
         list.filter(with(componentPresent(from(CountryBlock.class).shortName(), "Self").inverse()))
@@ -505,6 +657,17 @@ class WebListElementTest extends AbstractUiTest {
         list.filter(without(componentPresent(from(CountryBlock.class).shortName(), "Self")))
                 .shouldHaveSize(value.intEquals(2));
         list.filter(without(componentPresent(from(CountryBlock.class).shortName(), "Self").inverse()))
+                .shouldHaveSize(value.intEquals(193));
+
+        // By Element name
+        list.filter(with(componentPresent("Short name", "Self")))
+                .shouldHaveSize(value.intEquals(193));
+        list.filter(with(componentPresent("Short name", "Self").inverse()))
+                .shouldHaveSize(value.intEquals(2));
+
+        list.filter(without(componentPresent("Short name", "Self")))
+                .shouldHaveSize(value.intEquals(2));
+        list.filter(without(componentPresent("Short name", "Self").inverse()))
                 .shouldHaveSize(value.intEquals(193));
 
         WebListFilter filter = list
@@ -524,6 +687,7 @@ class WebListElementTest extends AbstractUiTest {
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
 
+        // By Element
         list.filter(with(componentDisplayed(from(CountryBlock.class).populationUnit(), "Self")))
                 .shouldHaveSize(value.intEquals(186));
         list.filter(with(componentDisplayed(from(CountryBlock.class).populationUnit(), "Self").inverse()))
@@ -534,15 +698,22 @@ class WebListElementTest extends AbstractUiTest {
         list.filter(without(componentDisplayed(from(CountryBlock.class).populationUnit(), "Self").inverse()))
                 .shouldHaveSize(value.intEquals(186));
 
+        // By Element name
+        list.filter(with(componentDisplayed("Population unit", "Self")))
+                .shouldHaveSize(value.intEquals(186));
+        list.filter(with(componentDisplayed("Population unit", "Self").inverse()))
+                .shouldHaveSize(value.intEquals(9));
+
+        list.filter(without(componentDisplayed("Population unit", "Self")))
+                .shouldHaveSize(value.intEquals(9));
+        list.filter(without(componentDisplayed("Population unit", "Self").inverse()))
+                .shouldHaveSize(value.intEquals(186));
+
         WebListFilter filter = list
                 .filter(with(componentDisplayed(from(CountryBlock.class).shortName(), "Unknown")));
         NumberValue<Integer> expectedValue = value.intEquals(200);
         assertThrows(LocatorNotDeclaredException.class, () -> filter.shouldHaveSize(expectedValue));
     }
-
-
-
-
 
     // Extractors
 
@@ -555,8 +726,6 @@ class WebListElementTest extends AbstractUiTest {
         ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
         WebList list = listElementsPage.webList()
                 .shouldBeDisplayed();
-
-
 
 
     }

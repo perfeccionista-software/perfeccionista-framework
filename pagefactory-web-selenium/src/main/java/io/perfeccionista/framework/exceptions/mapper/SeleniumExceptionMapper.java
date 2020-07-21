@@ -67,6 +67,8 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
             .compile("(create container: Error: No such image:)+");
     protected static final Pattern REMOTE_WEB_DRIVER_DOES_NOT_RESPOND_PATTERN = Pattern
             .compile("(wait: http(s)*://\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d{1,5} does not respond in \\d+s)+");
+    protected static final Pattern LOCAL_STORAGE_PROPERTY_NOT_AVAILABLE_PATTERN = Pattern
+            .compile("(Failed to read the 'localStorage' property from 'Window')+");
 
     @Override
     public <T> ExceptionMapperResult<T> map(Supplier<T> supplier, String... exceptionMessageOptionalArgs) {
@@ -148,6 +150,8 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
         } else if (PAGE_CRASH_PATTERN.matcher(message).find()) {
             return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
         } else if (UNKNOWN_WEBDRIVER_ERROR_PATTERN.matcher(message).find()) {
+            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
+        } else if (LOCAL_STORAGE_PROPERTY_NOT_AVAILABLE_PATTERN.matcher(message).find()) {
             return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
         }
         return new SeleniumWebDriverException(exception.getMessage(), exception);

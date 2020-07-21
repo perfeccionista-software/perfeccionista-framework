@@ -18,6 +18,8 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebListSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButtonSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioGroupSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTableSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
@@ -58,6 +60,7 @@ public class DefaultSeleniumWebElementsConfiguration implements WebElementsConfi
         elementsConfiguration.put(WebLink.class, WebLinkSeleniumImpl.class);
         elementsConfiguration.put(WebList.class, WebListSeleniumImpl.class);
         elementsConfiguration.put(WebRadioButton.class, WebRadioButtonSeleniumImpl.class);
+        elementsConfiguration.put(WebRadioGroup.class, WebRadioGroupSeleniumImpl.class);
         elementsConfiguration.put(WebTable.class, WebTableSeleniumImpl.class);
         elementsConfiguration.put(WebTextBlock.class, WebTextBlockSeleniumImpl.class);
         elementsConfiguration.put(WebTextInput.class, WebTextInputSeleniumImpl.class);

@@ -38,7 +38,7 @@ public interface ListElementsPage extends AbstractWebPage {
         @WebLocator(xpath = "self::node()//input[@itemid = 'checkbox']/parent::node()")
         WebCheckbox checkbox();
 
-        @Name("Text")
+        @Name("Number")
         @WebLocator(xpath = "self::node()//span[@itemid = 'number']")
         WebTextBlock number();
 

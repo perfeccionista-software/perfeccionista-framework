@@ -32,6 +32,9 @@ public class LocalWebBrowserSeleniumDispatcher<T extends RemoteWebDriver, C exte
         System.setProperty(webDriverType.getLinkedProperty(), localFilePath.toString());
         this.instance = newInstance(this.webDriverType.getWebDriverClass(), this.options);
         setTimeouts();
+
+        // TODO: check started
+
         return this;
     }
 

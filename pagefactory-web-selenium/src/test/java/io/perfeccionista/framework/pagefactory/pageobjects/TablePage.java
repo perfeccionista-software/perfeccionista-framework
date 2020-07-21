@@ -66,7 +66,7 @@ public interface TablePage extends AbstractWebPage {
 
     interface CountryNumberWebMappedBlock extends WebMappedBlock {
 
-        @Name("Text")
+        @Name("Number")
         @WebLocator(xpath = "self::node()")
         WebTextBlock number();
 

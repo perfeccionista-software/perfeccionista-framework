@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementEm
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonCondition;
+import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonEmptyCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
@@ -28,15 +29,18 @@ public class WebFilters {
     // RadioButton
 
     public static WebRadioButtonFilterBuilder emptyRadioButtonFilter() {
-        return new WebRadioButtonFilterBuilderSeleniumImpl();
+        return new WebRadioButtonFilterBuilderSeleniumImpl()
+                .add(new WebRadioButtonEmptyCondition());
     }
 
     public static WebRadioButtonFilterBuilder with(WebRadioButtonCondition condition) {
-        return new WebRadioButtonFilterBuilderSeleniumImpl().add(condition);
+        return new WebRadioButtonFilterBuilderSeleniumImpl()
+                .add(condition);
     }
 
     public static WebRadioButtonFilterBuilder without(WebRadioButtonCondition condition) {
-        return new WebRadioButtonFilterBuilderSeleniumImpl().subtract(condition);
+        return emptyRadioButtonFilter()
+                .subtract(condition);
     }
 
     // List

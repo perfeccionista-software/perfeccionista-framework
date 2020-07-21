@@ -35,6 +35,8 @@ import io.perfeccionista.framework.plugin.WebElementColor;
 import io.perfeccionista.framework.value.ValueService;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -107,6 +109,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
+@Tags(@Tag("Element"))
 class WebTableElementTest extends AbstractUiTest {
 
     @Test
@@ -191,7 +194,7 @@ class WebTableElementTest extends AbstractUiTest {
                 .scrollTo()
                 .hoverTo(true)
                 .componentShouldHaveDimensions(ROOT, Dimensions.of(795.0d, 10447.0d).setInaccuracy(0.2d))
-                .componentShouldHaveLocation(ROOT, Location.relative(345d, -4472d).setInaccuracy(0.2d))
+                .componentShouldHaveLocation(ROOT, Location.relative(345d, -4785d).setInaccuracy(0.2d))
                 .componentShouldHaveColor(ROOT, "border-color", WebElementColor.of(222, 226, 230, 1.0d))
                 .shouldHaveSize(value.intEquals(195))
                 .should(worldMapImage -> {
@@ -233,7 +236,7 @@ class WebTableElementTest extends AbstractUiTest {
         assertThrows(ElementLocationException.class, () -> table.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(222, 226, 230, 1.0d);
         assertThrows(ElementColorException.class, () -> table.componentShouldNotHaveColor(ROOT, "border-color", elementColor));
-        StringValue correctPropertyValue = value.stringEquals("World map picture");
+        StringValue correctPropertyValue = value.stringEquals("Some value");
         assertThrows(ElementPropertyNotDeclaredException.class, () -> table.shouldNotHavePropertyValue("unknown property", correctPropertyValue));
         NumberValue<Integer> expectedSize = value.intEquals(196);
         assertThrows(ElementSizeException.class, () -> table.shouldHaveSize(expectedSize));
@@ -269,8 +272,6 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(100));
     }
 
-
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementTextConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -281,6 +282,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(containsText(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), value.stringEquals("Финляндия"))))
                 .shouldHaveSize(value.intEquals(1));
         table.filter(with(containsText(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), value.stringStartsWith("М"))))
@@ -316,9 +318,45 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(1));
         table.filter(without(containsText(NUMBER, from(CountryNumberWebMappedBlock.class).number(), value.intGreaterThanOrEqual(124)).inverse()))
                 .shouldHaveSize(value.intEquals(72));
+
+        // By Element name
+        table.filter(with(containsText(SHORT_NAME, "Short name", value.stringEquals("Финляндия"))))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(with(containsText(SHORT_NAME, "Short name", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(17));
+        table.filter(with(containsText(SHORT_NAME, "Short name", value.stringEquals("Финляндия")).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(with(containsText(SHORT_NAME, "Short name", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(178));
+
+        table.filter(without(containsText(SHORT_NAME, "Short name", value.stringEquals("Финляндия"))))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(without(containsText(SHORT_NAME, "Short name", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(178));
+        table.filter(without(containsText(SHORT_NAME, "Short name", value.stringEquals("Финляндия")).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(without(containsText(SHORT_NAME, "Short name", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(17));
+
+        table.filter(with(containsText(NUMBER, "Number", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(with(containsText(NUMBER, "Number", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(72));
+        table.filter(with(containsText(NUMBER, "Number", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(with(containsText(NUMBER, "Number", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(123));
+
+        table.filter(without(containsText(NUMBER, "Number", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(without(containsText(NUMBER, "Number", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(123));
+        table.filter(without(containsText(NUMBER, "Number", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(without(containsText(NUMBER, "Number", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(72));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementSelectedConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -329,6 +367,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(selected(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox())))
                 .shouldHaveSize(value.intEquals(6));
         table.filter(with(selected(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox()).inverse()))
@@ -338,9 +377,19 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(189));
         table.filter(without(selected(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox()).inverse()))
                 .shouldHaveSize(value.intEquals(6));
+
+        // By Element name
+        table.filter(with(selected(CHECKBOX, "Select")))
+                .shouldHaveSize(value.intEquals(6));
+        table.filter(with(selected(CHECKBOX, "Select").inverse()))
+                .shouldHaveSize(value.intEquals(189));
+
+        table.filter(without(selected(CHECKBOX, "Select")))
+                .shouldHaveSize(value.intEquals(189));
+        table.filter(without(selected(CHECKBOX, "Select").inverse()))
+                .shouldHaveSize(value.intEquals(6));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementPropertyConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -351,6 +400,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(containsProperty(FULL_NAME, from(FullNameWebMappedBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика"))))
                 .shouldHaveSize(value.intEquals(1));
         table.filter(with(containsProperty(FULL_NAME, from(FullNameWebMappedBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
@@ -368,9 +418,27 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(1));
         table.filter(without(containsProperty(FULL_NAME, from(FullNameWebMappedBlock.class).fullName(), "prompt", value.stringStartsWith("М")).inverse()))
                 .shouldHaveSize(value.intEquals(5));
+
+        // By Element name
+        table.filter(with(containsProperty(FULL_NAME, "Full name", "prompt", value.stringEquals("Финляндская Республика"))))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(with(containsProperty(FULL_NAME, "Full name", "prompt", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(5));
+        table.filter(with(containsProperty(FULL_NAME, "Full name", "prompt", value.stringEquals("Финляндская Республика")).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(with(containsProperty(FULL_NAME, "Full name", "prompt", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(190));
+
+        table.filter(without(containsProperty(FULL_NAME, "Full name", "prompt", value.stringEquals("Финляндская Республика"))))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(without(containsProperty(FULL_NAME, "Full name", "prompt", value.stringStartsWith("М"))))
+                .shouldHaveSize(value.intEquals(190));
+        table.filter(without(containsProperty(FULL_NAME, "Full name", "prompt", value.stringEquals("Финляндская Республика")).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(without(containsProperty(FULL_NAME, "Full name", "prompt", value.stringStartsWith("М")).inverse()))
+                .shouldHaveSize(value.intEquals(5));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementPresentConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -381,6 +449,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(present(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName())))
                 .shouldHaveSize(value.intEquals(193));
         table.filter(with(present(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName()).inverse()))
@@ -390,9 +459,19 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(2));
         table.filter(without(present(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName()).inverse()))
                 .shouldHaveSize(value.intEquals(193));
+
+        // By Element name
+        table.filter(with(present(SHORT_NAME, "Short name")))
+                .shouldHaveSize(value.intEquals(193));
+        table.filter(with(present(SHORT_NAME, "Short name").inverse()))
+                .shouldHaveSize(value.intEquals(2));
+
+        table.filter(without(present(SHORT_NAME, "Short name")))
+                .shouldHaveSize(value.intEquals(2));
+        table.filter(without(present(SHORT_NAME, "Short name").inverse()))
+                .shouldHaveSize(value.intEquals(193));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementLabelConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -403,6 +482,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(containsLabel(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox(), value.stringEquals("86"))))
                 .shouldHaveSize(value.intEquals(1));
         table.filter(with(containsLabel(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox(), value.stringStartsWith("15"))))
@@ -438,9 +518,45 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(1));
         table.filter(without(containsLabel(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox(), value.intGreaterThanOrEqual(124)).inverse()))
                 .shouldHaveSize(value.intEquals(72));
+
+        // By Element name
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.stringEquals("86"))))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.stringStartsWith("15"))))
+                .shouldHaveSize(value.intEquals(11));
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.stringEquals("86")).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.stringStartsWith("15")).inverse()))
+                .shouldHaveSize(value.intEquals(184));
+
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.stringEquals("86"))))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.stringStartsWith("15"))))
+                .shouldHaveSize(value.intEquals(184));
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.stringEquals("86")).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.stringStartsWith("15")).inverse()))
+                .shouldHaveSize(value.intEquals(11));
+
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(72));
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(with(containsLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(123));
+
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.intEquals(77))))
+                .shouldHaveSize(value.intEquals(194));
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124))))
+                .shouldHaveSize(value.intEquals(123));
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.intEquals(77)).inverse()))
+                .shouldHaveSize(value.intEquals(1));
+        table.filter(without(containsLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124)).inverse()))
+                .shouldHaveSize(value.intEquals(72));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementEnabledConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -451,6 +567,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(enabled(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox())))
                 .shouldHaveSize(value.intEquals(189));
         table.filter(with(disabled(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox())))
@@ -460,9 +577,19 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(6));
         table.filter(without(disabled(CHECKBOX, from(CheckboxWebMappedBlock.class).checkbox())))
                 .shouldHaveSize(value.intEquals(189));
+
+        // By Element name
+        table.filter(with(enabled(CHECKBOX, "Select")))
+                .shouldHaveSize(value.intEquals(189));
+        table.filter(with(disabled(CHECKBOX, "Select")))
+                .shouldHaveSize(value.intEquals(6));
+
+        table.filter(without(enabled(CHECKBOX, "Select")))
+                .shouldHaveSize(value.intEquals(6));
+        table.filter(without(disabled(CHECKBOX, "Select")))
+                .shouldHaveSize(value.intEquals(189));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementDisplayedConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -473,6 +600,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         // Для элементов, которых нет в DOM
         table.filter(with(displayed(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName())))
                 .shouldHaveSize(value.intEquals(193));
@@ -494,9 +622,31 @@ class WebTableElementTest extends AbstractUiTest {
                 .shouldHaveSize(value.intEquals(9));
         table.filter(without(displayed(POPULATION, from(PopulationWebMappedBlock.class).populationUnit()).inverse()))
                 .shouldHaveSize(value.intEquals(186));
+
+        // By Element name
+        // Для элементов, которых нет в DOM
+        table.filter(with(displayed(SHORT_NAME, "Short name")))
+                .shouldHaveSize(value.intEquals(193));
+        table.filter(with(displayed(SHORT_NAME, "Short name").inverse()))
+                .shouldHaveSize(value.intEquals(2));
+
+        table.filter(without(displayed(SHORT_NAME, "Short name")))
+                .shouldHaveSize(value.intEquals(2));
+        table.filter(without(displayed(SHORT_NAME, "Short name").inverse()))
+                .shouldHaveSize(value.intEquals(193));
+
+        // Для элементов, которые есть в DOM, но не отображаются
+        table.filter(with(displayed(POPULATION, "Population unit")))
+                .shouldHaveSize(value.intEquals(186));
+        table.filter(with(displayed(POPULATION, "Population unit").inverse()))
+                .shouldHaveSize(value.intEquals(9));
+
+        table.filter(without(displayed(POPULATION, "Population unit")))
+                .shouldHaveSize(value.intEquals(9));
+        table.filter(without(displayed(POPULATION, "Population unit").inverse()))
+                .shouldHaveSize(value.intEquals(186));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementComponentPresentConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -507,6 +657,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Self")))
                 .shouldHaveSize(value.intEquals(193));
         table.filter(with(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Self").inverse()))
@@ -517,13 +668,23 @@ class WebTableElementTest extends AbstractUiTest {
         table.filter(without(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Self").inverse()))
                 .shouldHaveSize(value.intEquals(193));
 
+        // By Element name
+        table.filter(with(componentPresent(SHORT_NAME, "Short name", "Self")))
+                .shouldHaveSize(value.intEquals(193));
+        table.filter(with(componentPresent(SHORT_NAME, "Short name", "Self").inverse()))
+                .shouldHaveSize(value.intEquals(2));
+
+        table.filter(without(componentPresent(SHORT_NAME, "Short name", "Self")))
+                .shouldHaveSize(value.intEquals(2));
+        table.filter(without(componentPresent(SHORT_NAME, "Short name", "Self").inverse()))
+                .shouldHaveSize(value.intEquals(193));
+
         WebTableFilter filter = table
                 .filter(with(componentPresent(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Unknown")));
         NumberValue<Integer> expectedValue = value.intEquals(200);
         assertThrows(LocatorNotDeclaredException.class, () -> filter.shouldHaveSize(expectedValue));
     }
 
-    // TODO: То же самое для поиска элемента по имени
     @Test
     void webTableFilterElementComponentDisplayedConditionTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
@@ -534,6 +695,7 @@ class WebTableElementTest extends AbstractUiTest {
         WebTable table = tablePage.table()
                 .shouldBeDisplayed();
 
+        // By Element
         table.filter(with(componentDisplayed(POPULATION, from(PopulationWebMappedBlock.class).populationUnit(), "Self")))
                 .shouldHaveSize(value.intEquals(186));
         table.filter(with(componentDisplayed(POPULATION, from(PopulationWebMappedBlock.class).populationUnit(), "Self").inverse()))
@@ -544,15 +706,22 @@ class WebTableElementTest extends AbstractUiTest {
         table.filter(without(componentDisplayed(POPULATION, from(PopulationWebMappedBlock.class).populationUnit(), "Self").inverse()))
                 .shouldHaveSize(value.intEquals(186));
 
+        // By Element name
+        table.filter(with(componentDisplayed(POPULATION, "Population unit", "Self")))
+                .shouldHaveSize(value.intEquals(186));
+        table.filter(with(componentDisplayed(POPULATION, "Population unit", "Self").inverse()))
+                .shouldHaveSize(value.intEquals(9));
+
+        table.filter(without(componentDisplayed(POPULATION, "Population unit", "Self")))
+                .shouldHaveSize(value.intEquals(9));
+        table.filter(without(componentDisplayed(POPULATION, "Population unit", "Self").inverse()))
+                .shouldHaveSize(value.intEquals(186));
+
         WebTableFilter filter = table
                 .filter(with(componentDisplayed(SHORT_NAME, from(ShortNameWebMappedBlock.class).shortName(), "Unknown")));
         NumberValue<Integer> expectedValue = value.intEquals(200);
         assertThrows(LocatorNotDeclaredException.class, () -> filter.shouldHaveSize(expectedValue));
     }
-
-
-
-
 
     // Extractors
 
