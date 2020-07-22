@@ -45,6 +45,7 @@ public class WebPageService implements Service {
     public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
         this.environment = environment;
         this.configuration = validate(configuration);
+        // TODO Move reflection scan into configuration instance
         this.configuration.getPageObjectPackages()
                 .forEach(pageObjectPackage -> findAllClassesInPackage(pageObjectPackage, ClassFilter.of(WebPage.class::isAssignableFrom))
                 .stream()

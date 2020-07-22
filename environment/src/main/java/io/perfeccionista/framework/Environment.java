@@ -157,11 +157,17 @@ public class Environment {
     }
 
     /**
-     * Привязывает этот экземпляр {@link Environment} к потоку,
-     * в котором он создан {@link Thread}
+     * Привязывает этот экземпляр {@link Environment} к текущему потоку {@link Thread}
      */
     public void setEnvironmentForCurrentThread() {
         INSTANCES.set(this);
+    }
+
+    /**
+     * Отвязывает этот экземпляр {@link Environment} от текущего потока {@link Thread}
+     */
+    public void removeEnvironmentForCurrentThread() {
+        INSTANCES.set(null);
     }
 
     // Check and Initialization
@@ -204,13 +210,19 @@ public class Environment {
                         if (configurationClass.equals(ServiceConfiguration.class)) {
                             initService(serviceClass);
                         } else {
-                            ServiceConfiguration serviceConfiguration = newInstance(configurationClass);
+                            ServiceConfiguration serviceConfiguration = initConfiguration(configurationClass);
                             initService(serviceClass, serviceConfiguration);
                         }
                     }
                 });
 
         logger.info(environmentLogger::toString);
+    }
+
+    protected ServiceConfiguration initConfiguration(@NotNull Class<? extends ServiceConfiguration> configurationClass) {
+        ServiceConfiguration serviceConfiguration = newInstance(configurationClass);
+        serviceConfiguration.init(this);
+        return serviceConfiguration;
     }
 
     protected void initService(@NotNull Class<? extends Service> serviceClass) {

@@ -46,7 +46,10 @@ public enum EnvironmentMessages implements Messages {
     SERVICE_NOT_FOUND("Service %s not registered in environment"),
     TIMEOUTS_IMPLEMENTATION_NOT_FOUND("Timeouts implementation for class %s is not declared in configuration %s"),
     UNEXPECTED_TEST_CLASS_NOT_FOUND("Unexpected exception when processing test class in PerfeccionistaExtension"),
-    UNEXPECTED_TEST_METHOD_NOT_FOUND("Unexpected exception when processing test method in PerfeccionistaExtension")
+    UNEXPECTED_TEST_METHOD_NOT_FOUND("Unexpected exception when processing test method in PerfeccionistaExtension"),
+    FIXTURE_NOT_FOUND("Fixture not found by name %s"),
+    FIXTURE_NAME_DUPLICATE("Fixture name %s user for classes %s and %s"),
+    FIXTURE_INSTANTIATE_FAILED("Can't create fixture instance of class %s"),
     ;
 
 

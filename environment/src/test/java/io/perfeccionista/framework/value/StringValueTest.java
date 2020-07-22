@@ -23,9 +23,9 @@ public class StringValueTest extends SimpleParallelTest {
                 .check("Checked value"));
         assertTrue(value.stringContainsIgnoreCase("eCKed vA")
                 .check("Checked value"));
-        assertTrue(value.stringContainsAll(Set.of("Checked", "value"))
+        assertTrue(value.stringContainsAll("Checked", "value")
                 .check("Checked value"));
-        assertTrue(value.stringContainsAny(Set.of("Unknown", "value"))
+        assertTrue(value.stringContainsAny("Unknown", "value")
                 .check("Checked value"));
         assertTrue(value.stringEmpty()
                 .check(""));
@@ -49,9 +49,9 @@ public class StringValueTest extends SimpleParallelTest {
                 .check("Checked value"));
         assertTrue(value.stringContainsIgnoreCase("eCKed  vA").inverse()
                 .check("Checked value"));
-        assertTrue(value.stringContainsAll(Set.of("Checked", "Value")).inverse()
+        assertTrue(value.stringContainsAll("Checked", "Value").inverse()
                 .check("Checked value"));
-        assertTrue(value.stringContainsAny(Set.of("Unknown", "value!")).inverse()
+        assertTrue(value.stringContainsAny("Unknown", "value!").inverse()
                 .check("Checked value"));
         assertTrue(value.stringEmpty().inverse()
                 .check("0"));
@@ -76,9 +76,9 @@ public class StringValueTest extends SimpleParallelTest {
                 .check("Checked value"));
         assertFalse(value.stringContainsIgnoreCase("eCKed  vA")
                 .check("Checked value"));
-        assertFalse(value.stringContainsAll(Set.of("Checked", "Value"))
+        assertFalse(value.stringContainsAll("Checked", "Value")
                 .check("Checked value"));
-        assertFalse(value.stringContainsAny(Set.of("Unknown", "value!"))
+        assertFalse(value.stringContainsAny("Unknown", "value!")
                 .check("Checked value"));
         assertFalse(value.stringEmpty()
                 .check("0"));

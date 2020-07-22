@@ -1,5 +1,7 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.fixture.DefaultFixtureServiceConfiguration;
+import io.perfeccionista.framework.fixture.FixtureService;
 import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
 import io.perfeccionista.framework.invocation.runner.DefaultInvocationRunnerConfiguration;
 import io.perfeccionista.framework.invocation.timeouts.DefaultTimeouts;
@@ -12,6 +14,7 @@ import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
 
 @UseService(service = ValueService.class, configuration = DefaultValueServiceConfiguration.class)
+@UseService(service = FixtureService.class, configuration = DefaultFixtureServiceConfiguration.class)
 public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
 
     @Override

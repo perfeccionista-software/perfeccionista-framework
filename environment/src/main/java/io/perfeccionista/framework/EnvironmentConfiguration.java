@@ -64,7 +64,7 @@ public interface EnvironmentConfiguration {
 
     /**
      * @return реализацию {@link Environment}, которая будет использована при
-     * запуске всех тестов внутри аннотарованного тестового класса.
+     * запуске всех тестов внутри аннотированного тестового класса.
      * @see Environment
      */
     @NotNull
