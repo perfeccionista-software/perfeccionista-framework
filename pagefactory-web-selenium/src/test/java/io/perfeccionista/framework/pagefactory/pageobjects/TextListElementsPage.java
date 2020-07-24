@@ -1,19 +1,25 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
+import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebTextAutocomplete;
 import io.perfeccionista.framework.pagefactory.elements.WebTextDropDownList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 
-public interface SimpleListElementsPage extends AbstractWebPage {
+import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
 
-//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
-    WebTextDropDownList simpleDropDownList();
+public interface TextListElementsPage extends AbstractWebPage {
 
-//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
-    WebTextAutocomplete simpleAutocomplete();
+////    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+//    WebTextDropDownList simpleDropDownList();
+//
+////    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
+//    WebTextAutocomplete simpleAutocomplete();
 
-//    @WebLocator(invokeOnCall = {IsDisplayedFunctionInvoke.class})
-    WebTextList simpleUnorderedList();
+    @Name("Text list of countries")
+    @WebLocator(id = "text-list")
+    @WebLocator(component = LI, xpath = "self::node()//div[@itemid = 'text-list-item']", single = false)
+    WebTextList textList();
 
     /** Список стран для тестирования списков + ДОЛЖНЫ БЫТЬ 2 ПУСТЫХ БЛОКА ДЛЯ ПРОВЕРКИ DISPLAYED_CONDITION
      * По-английски

@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.factory.handlers;
 
-import io.perfeccionista.framework.pagefactory.elements.WebTable;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.mapping.TableColumnHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumn;
 
@@ -17,7 +17,7 @@ public class UseWebMappedTableColumnAnnotationHandler {
     private UseWebMappedTableColumnAnnotationHandler() {
     }
 
-    public static Map<String, TableColumnHolder> createMappedTableColumnHolders(WebTable webTable, Method elementMethod) {
+    public static Map<String, TableColumnHolder> createMappedTableColumnHolders(WebChildElement webTable, Method elementMethod) {
         Map<String, TableColumnHolder> tableColumnHolders = new HashMap<>();
         findRepeatableAnnotations(elementMethod, UseWebMappedTableColumn.class)
                 .forEach(webMappedTableColumn -> {
@@ -33,7 +33,7 @@ public class UseWebMappedTableColumnAnnotationHandler {
                         tableColumnHolders.put(webMappedTableColumn.name(), tableColumnHolder);
                     }
                 });
-        findAllRepeatableAnnotationsInHierarchy(UseWebMappedTableColumn.class, WebTable.class, webTable.getClass())
+        findAllRepeatableAnnotationsInHierarchy(UseWebMappedTableColumn.class, WebChildElement.class, webTable.getClass())
                 .forEach(webMappedTableColumn -> {
                     if (!tableColumnHolders.containsKey(webMappedTableColumn.name())) {
                         TableColumnHolder tableColumnHolder = TableColumnHolder.of(

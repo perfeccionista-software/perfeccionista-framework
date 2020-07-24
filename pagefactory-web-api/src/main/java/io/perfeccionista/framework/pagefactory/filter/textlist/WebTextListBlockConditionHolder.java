@@ -2,18 +2,18 @@ package io.perfeccionista.framework.pagefactory.filter.textlist;
 
 import io.perfeccionista.framework.pagefactory.filter.ConditionUsage;
 
-public class WebTextBlockConditionHolder {
+public class WebTextListBlockConditionHolder {
 
     private final ConditionUsage usage;
     private final WebTextListBlockCondition condition;
 
-    private WebTextBlockConditionHolder(ConditionUsage usage, WebTextListBlockCondition condition) {
+    private WebTextListBlockConditionHolder(ConditionUsage usage, WebTextListBlockCondition condition) {
         this.usage = usage;
         this.condition = condition;
     }
 
-    public static WebTextBlockConditionHolder of(ConditionUsage usage, WebTextListBlockCondition condition) {
-        return new WebTextBlockConditionHolder(usage, condition);
+    public static WebTextListBlockConditionHolder of(ConditionUsage usage, WebTextListBlockCondition condition) {
+        return new WebTextListBlockConditionHolder(usage, condition);
     }
 
     public ConditionUsage getUsage() {

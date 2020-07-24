@@ -16,7 +16,7 @@ public interface WebTextListBlockCondition extends Condition {
 
     WebTextListBlockCondition inverse();
 
-    Deque<WebTextBlockConditionHolder> getChildConditions();
+    Deque<WebTextListBlockConditionHolder> getChildConditions();
 
     @NotNull WebFilterResult process(@NotNull WebTextList element, @Nullable String hash);
 

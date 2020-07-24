@@ -303,5 +303,25 @@ class WebButtonElementTest extends AbstractUiTest {
                 .shouldHaveText(value.stringEquals("Spinner Button clicked"));
     }
 
+    @Test
+    void webButtonWithDoubleClickText(Environment env, ValueService value) {
+        WebPageContext context = initWebPageContext(env, value);
+        context.getPage(HomePage.class)
+                .leftMenu()
+                .select(value.stringEquals("Elements"));
+        ElementsPage elementsPage = context.getPage(ElementsPage.class);
+        WebButton doubleClickButton = elementsPage.doubleClickButton()
+                .shouldBeDisplayed()
+                .scrollTo();
+        WebTextBlock doubleClickText = elementsPage.doubleClickText()
+                .shouldBeDisplayed()
+                .shouldHaveText(value.stringEmpty());
+        doubleClickButton.click();
+        doubleClickText.shouldHaveText(value.stringEmpty());
+        doubleClickButton.executeAction("Double click");
+        doubleClickText.shouldHaveText(value.stringEquals("Double click done"));
+    }
+
+
 }
 

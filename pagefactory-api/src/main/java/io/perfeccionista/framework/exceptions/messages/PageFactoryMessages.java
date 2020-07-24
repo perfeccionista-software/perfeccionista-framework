@@ -8,6 +8,7 @@ public enum PageFactoryMessages implements Messages {
     ELEMENT_COMPONENT_NOT_DECLARED("Element component %s is not declared"),
     ELEMENT_INTERACTION_NOT_DECLARED("Element interaction %s is not declared"),
     ELEMENT_LOCATOR_NOT_DECLARED("Element locator %s is not declared"),
+    ELEMENT_TABLE_COLUMN_LOCATOR_NOT_DECLARED("Element column locator for column %s is not declared"),
     ELEMENT_PROPERTY_NOT_DECLARED("Element property %s is not declared"),
     // Runtime checks
     ELEMENT_IS_PRESENT("Element %s is present in DOM"),

@@ -113,7 +113,7 @@ import static org.mockito.Mockito.mock;
 class WebTableElementTest extends AbstractUiTest {
 
     @Test
-    void webTableInitializationTest(Environment env, ValueService value) {
+    void webTableInitializationTest(Environment env) {
         WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebElementsConfiguration());
         TablePage tablePage = (TablePage) pageFactory.createWebPage(TablePage.class);
         tablePage.setEnvironment(env);

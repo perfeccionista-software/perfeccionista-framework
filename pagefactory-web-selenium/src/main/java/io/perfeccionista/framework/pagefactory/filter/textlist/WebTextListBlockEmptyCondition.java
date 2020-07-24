@@ -9,13 +9,11 @@ import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
-import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
@@ -23,17 +21,9 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionUsage.OR;
 
-public class WebTextListBlockIndexCondition implements WebTextListBlockCondition {
+public class WebTextListBlockEmptyCondition implements WebTextListBlockCondition {
 
     private final Deque<WebTextListBlockConditionHolder> childConditions = new ArrayDeque<>();
-
-    private final NumberValue<Integer> expectedValue;
-
-    private boolean inverse = false;
-
-    public WebTextListBlockIndexCondition(NumberValue<Integer> expectedValue) {
-        this.expectedValue = expectedValue;
-    }
 
     @Override
     public WebTextListBlockIndexCondition and(@NotNull WebTextListBlockCondition condition) {
@@ -48,8 +38,7 @@ public class WebTextListBlockIndexCondition implements WebTextListBlockCondition
     }
 
     @Override
-    public WebTextListBlockIndexCondition inverse() {
-        inverse = true;
+    public WebTextListBlockEmptyCondition inverse() {
         return this;
     }
 
@@ -80,18 +69,7 @@ public class WebTextListBlockIndexCondition implements WebTextListBlockCondition
                 .getHash()
                 .orElseThrow(() -> new RuntimeException("Хэш у запрашиваемого элемента не рассчитан"));
         Set<Integer> indexes = operationResult.multipleResult().getValues().keySet();
-        return WebFilterResult.of(getMatches(indexes), returnedHash);
-    }
-
-    private Set<Integer> getMatches(Set<Integer> indexes) {
-        Set<Integer> matches = new HashSet<>();
-        indexes.forEach(index -> {
-            boolean check = expectedValue.check(index);
-            if ((check && !inverse) || (!check && inverse)) {
-                matches.add(index);
-            }
-        });
-        return matches;
+        return WebFilterResult.of(indexes, returnedHash);
     }
 
 }

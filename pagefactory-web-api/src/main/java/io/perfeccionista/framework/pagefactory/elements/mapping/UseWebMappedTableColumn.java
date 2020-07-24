@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.mapping;
 
+import io.perfeccionista.framework.pagefactory.elements.TextWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 
@@ -20,15 +21,15 @@ public @interface UseWebMappedTableColumn {
 
     String name();
 
-    Class<? extends WebMappedBlock> headerClass() default WebMappedBlock.class;
+    Class<? extends WebMappedBlock> headerClass() default TextWebMappedBlock.class;
 
     WebLocator headerLocator() default @WebLocator;
 
-    Class<? extends WebMappedBlock> bodyClass() default WebMappedBlock.class;
+    Class<? extends WebMappedBlock> bodyClass() default TextWebMappedBlock.class;
 
     WebLocator bodyLocator() default @WebLocator;
 
-    Class<? extends WebMappedBlock> footerClass() default WebMappedBlock.class;
+    Class<? extends WebMappedBlock> footerClass() default TextWebMappedBlock.class;
 
     WebLocator footerLocator() default @WebLocator;
 

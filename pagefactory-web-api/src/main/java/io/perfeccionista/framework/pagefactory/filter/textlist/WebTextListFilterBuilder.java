@@ -15,6 +15,6 @@ public interface WebTextListFilterBuilder extends WebFilterBuilder<WebTextList, 
 
     WebTextListFilterBuilder subtract(@NotNull WebTextListBlockCondition condition);
 
-    Deque<WebTextBlockConditionHolder> getConditions();
+    Deque<WebTextListBlockConditionHolder> getConditions();
 
 }

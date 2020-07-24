@@ -1,19 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
-import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
-import io.perfeccionista.framework.pagefactory.filter.WebConditions;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
-import io.perfeccionista.framework.pagefactory.pageobjects.SimpleListElementsPage;
-import io.perfeccionista.framework.value.ValueService;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import static io.perfeccionista.framework.pagefactory.filter.WebConditions.containsTextBlock;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.textBlockIndex;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
 

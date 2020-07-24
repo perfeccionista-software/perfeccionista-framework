@@ -26,6 +26,10 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlockSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInputSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebTextList;
+import io.perfeccionista.framework.pagefactory.elements.WebTextListSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
+import io.perfeccionista.framework.pagefactory.elements.WebTextTableSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
 import java.util.HashMap;
@@ -64,6 +68,8 @@ public class DefaultSeleniumWebElementsConfiguration implements WebElementsConfi
         elementsConfiguration.put(WebTable.class, WebTableSeleniumImpl.class);
         elementsConfiguration.put(WebTextBlock.class, WebTextBlockSeleniumImpl.class);
         elementsConfiguration.put(WebTextInput.class, WebTextInputSeleniumImpl.class);
+        elementsConfiguration.put(WebTextList.class, WebTextListSeleniumImpl.class);
+        elementsConfiguration.put(WebTextTable.class, WebTextTableSeleniumImpl.class);
 
         return elementsConfiguration;
     }

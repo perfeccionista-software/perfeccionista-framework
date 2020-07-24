@@ -1,9 +1,8 @@
 package io.perfeccionista.framework.pagefactory.filter.texttable;
 
-import io.perfeccionista.framework.pagefactory.elements.WebTextList;
+import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.filter.Condition;
 import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextBlockConditionHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,8 +16,8 @@ public interface WebTextTableRowCondition extends Condition {
 
     WebTextTableRowCondition inverse();
 
-    Deque<WebTextBlockConditionHolder> getChildConditions();
+    Deque<WebTextTableRowConditionHolder> getChildConditions();
 
-    @NotNull WebFilterResult process(@NotNull WebTextList element, @Nullable String hash);
+    @NotNull WebFilterResult process(@NotNull WebTextTable element, @Nullable String hash);
 
 }

@@ -1,10 +1,13 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
+import io.perfeccionista.framework.exceptions.WebElementInitializationException;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.name.WebPageIdentifier;
 import io.perfeccionista.framework.pagefactory.WebElementsConfiguration;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebTextList;
+import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
@@ -15,7 +18,9 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegis
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_LIST_MAPPED_CLASS_NOT_DECLARED;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseWebMappedBlockAnnotationHandler.getMappedBlock;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseWebMappedTableColumnAnnotationHandler.createMappedTableColumnHolders;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
@@ -76,19 +81,40 @@ public class WebElementDecorator {
         if (webChildElement instanceof WebList) {
             decorateWebListInstance((WebList) webChildElement, webChildElementMethod);
         }
+        if (webChildElement instanceof WebTextList) {
+            decorateWebTextListInstance((WebTextList) webChildElement, webChildElementMethod);
+        }
         if (webChildElement instanceof WebTable) {
             decorateWebTableInstance((WebTable) webChildElement, webChildElementMethod);
+        }
+        if (webChildElement instanceof WebTextTable) {
+            decorateWebTextTableInstance((WebTextTable) webChildElement, webChildElementMethod);
         }
         // TODO: ParentInfo должен будет инжектиться при инициализации элемента внутри родительского элемента или экстрактора
         return webChildElement;
     }
 
     public void decorateWebListInstance(WebList webListInstance, Method webChildElementMethod) {
-        writeField("mappedBlockClass", webListInstance, getMappedBlock(webListInstance, webChildElementMethod));
+        Optional<Class<? extends WebMappedBlock>> optionalMappedBlock = getMappedBlock(webListInstance, webChildElementMethod);
+        if (optionalMappedBlock.isEmpty()) {
+            throw new WebElementInitializationException(WEB_LIST_MAPPED_CLASS_NOT_DECLARED.getMessage(webListInstance.getElementIdentifier().getLastUsedName()));
+        }
+        writeField("mappedBlockClass", webListInstance, optionalMappedBlock.get());
+    }
+
+    public void decorateWebTextListInstance(WebTextList webTextListInstance, Method webChildElementMethod) {
+        Optional<Class<? extends WebMappedBlock>> optionalMappedBlock = getMappedBlock(webTextListInstance, webChildElementMethod);
+        if (optionalMappedBlock.isPresent()) {
+            writeField("mappedBlockClass", webTextListInstance, getMappedBlock(webTextListInstance, webChildElementMethod));
+        }
     }
 
     public void decorateWebTableInstance(WebTable webTableInstance, Method webChildElementMethod) {
         writeField("tableColumnHolders", webTableInstance, createMappedTableColumnHolders(webTableInstance, webChildElementMethod));
+    }
+
+    public void decorateWebTextTableInstance(WebTextTable webTextTableInstance, Method webChildElementMethod) {
+        writeField("tableColumnHolders", webTextTableInstance, createMappedTableColumnHolders(webTextTableInstance, webChildElementMethod));
     }
 
 }

@@ -24,6 +24,7 @@ import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
 
 public class WebElementRegistry implements ElementRegistry {
 
+    protected Map<String, WebChildElement> elementsByMethodName = new HashMap<>();
     protected Map<Method, WebChildElement> elementsByMethod = new HashMap<>();
     protected Map<String, WebChildElement> elementsByName = new HashMap<>();
 
@@ -34,10 +35,9 @@ public class WebElementRegistry implements ElementRegistry {
         webChildElements
                 .forEach(webChildElement -> {
                     WebElementIdentifier elementIdentifier = webChildElement.getElementIdentifier();
+                    elementsByMethodName.put(elementIdentifier.getElementMethod().getName(), webChildElement);
                     elementsByMethod.put(elementIdentifier.getElementMethod(), webChildElement);
-                    elementIdentifier.forEachName(webChildElementName -> {
-                        elementsByName.put(webChildElementName, webChildElement);
-                    });
+                    elementIdentifier.forEachName(webChildElementName -> elementsByName.put(webChildElementName, webChildElement));
                 });
     }
 
@@ -78,6 +78,42 @@ public class WebElementRegistry implements ElementRegistry {
         }
         return Optional.empty();
     }
+
+
+    protected Optional<WebChildElement> getElementByMethodName(String methodName) {
+        WebChildElement lookupElement = null;
+        if (elementsByMethodName.containsKey(methodName)) {
+            lookupElement = elementsByMethodName.get(methodName);
+        } else {
+            for (WebChildElement element : elementsByMethodName.values()) {
+                if (isSubtypeOf(element, WebParentElement.class)) {
+                    Optional<WebChildElement> result = ((WebParentElement) element).getElementRegistry().getElementByMethodName(methodName);
+                    if (result.isPresent()) {
+                        lookupElement = result.get();
+                        break;
+                    }
+                }
+            }
+        }
+        if (lookupElement != null) {
+            lookupElement.getElementIdentifier().setLastUsedName(methodName);
+        }
+        return Optional.ofNullable(lookupElement);
+    }
+
+    public <T> Optional<T> getElementByMethodName(@NotNull String methodName, Class<T> elementClass) {
+        Optional<WebChildElement> optionalLookupElement = getElementByMethodName(methodName);
+        if (optionalLookupElement.isPresent()) {
+            WebChildElement lookupElement = optionalLookupElement.get();
+            if (isSubtypeOf(lookupElement, elementClass)) {
+                return Optional.of(elementClass.cast(lookupElement));
+            }
+            throw new ElementCastException(CANT_CAST_ELEMENT.getMessage(elementClass.getCanonicalName()))
+                    .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", lookupElement.toString())));
+        }
+        return Optional.empty();
+    }
+
 
     // Вынести реализацию этих методов в утилитный класс и передавать туда blocks & elements
     public Optional<WebChildElement> getElementByPath(String elementPath) {

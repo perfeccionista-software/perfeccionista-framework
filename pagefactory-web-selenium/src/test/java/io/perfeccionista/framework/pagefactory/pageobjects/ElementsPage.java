@@ -11,6 +11,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroupSeleniumImpl.DefaultWebRadioButtonMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
+import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
@@ -18,6 +19,8 @@ import io.perfeccionista.framework.pagefactory.pageobjects.extractors.AltAttribu
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.NameAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.PlaceholderAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.SrcAttributeExtractor;
+import io.perfeccionista.framework.pagefactory.pageobjects.implementations.DoubleClickActionImplementation;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
@@ -161,6 +164,16 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("File download")
     @WebLocator(id = "file-download")
     WebLink fileDownloadLink();
+
+
+    @Name("Double click button")
+    @WebLocator(id = "double-click-button")
+    @WebElementAction(name = "Double click", implementation = DoubleClickActionImplementation.class)
+    WebButton doubleClickButton();
+
+    @Name("Double click text")
+    @WebLocator(id = "double-click-text")
+    WebTextBlock doubleClickText();
 
 //
 //

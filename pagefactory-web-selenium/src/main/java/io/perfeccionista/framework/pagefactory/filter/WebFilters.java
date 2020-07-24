@@ -12,12 +12,14 @@ import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilde
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowElementEmptyCondition;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListBlockEmptyCondition;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilderSeleniumImpl;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableRowCondition;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableRowCondition;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilderSeleniumImpl;
+import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableRowEmptyCondition;
 
 // TODO: Это тоже можно вынести в конфигурируемый интерфейс.
 //  Тогда при замене модуля элементов нужно будет в тестах только подменить конфигурацию фильтров
@@ -60,18 +62,21 @@ public class WebFilters {
                 .subtract(condition);
     }
 
-    // StringList
+    // TextList
 
     public static WebTextListFilterBuilder emptyTextListFilter() {
-        return new WebTextListFilterBuilderSeleniumImpl();
+        return new WebTextListFilterBuilderSeleniumImpl()
+                .add(new WebTextListBlockEmptyCondition());
     }
 
     public static WebTextListFilterBuilder with(WebTextListBlockCondition stringCondition) {
-        return new WebTextListFilterBuilderSeleniumImpl().add(stringCondition);
+        return new WebTextListFilterBuilderSeleniumImpl()
+                .add(stringCondition);
     }
 
     public static WebTextListFilterBuilder without(WebTextListBlockCondition stringCondition) {
-        return new WebTextListFilterBuilderSeleniumImpl().subtract(stringCondition);
+        return emptyTextListFilter()
+                .subtract(stringCondition);
     }
 
     // Table
@@ -91,18 +96,21 @@ public class WebFilters {
                 .subtract(condition);
     }
 
-    // StringTable
+    // TextTable
 
     public static WebTextTableFilterBuilder emptyTextTableFilter() {
-        return new WebTextTableFilterBuilderSeleniumImpl();
+        return new WebTextTableFilterBuilderSeleniumImpl()
+                .add(new WebTextTableRowEmptyCondition());
     }
 
     public static WebTextTableFilterBuilder with(WebTextTableRowCondition stringCondition) {
-        return new WebTextTableFilterBuilderSeleniumImpl().add(stringCondition);
+        return new WebTextTableFilterBuilderSeleniumImpl()
+                .add(stringCondition);
     }
 
     public static WebTextTableFilterBuilder without(WebTextTableRowCondition stringCondition) {
-        return new WebTextTableFilterBuilderSeleniumImpl().subtract(stringCondition);
+        return emptyTextTableFilter()
+                .subtract(stringCondition);
     }
 
 }
