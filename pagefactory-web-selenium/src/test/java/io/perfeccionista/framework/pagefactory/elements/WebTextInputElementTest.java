@@ -22,6 +22,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -259,6 +260,7 @@ class WebTextInputElementTest extends AbstractUiTest {
         Screenshot screenshot = simpleInput.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(4500).check(screenshot.getRaw().length));
+        assertEquals(Point.of(191.3d, 19d).setInaccuracy(0.2d), simpleInput.getDimensions(ROOT).getCenter());
     }
 
     @Test
@@ -279,7 +281,7 @@ class WebTextInputElementTest extends AbstractUiTest {
         assertThrows(ElementIsEnabledException.class, simpleInput::shouldBeDisabled);
         Dimensions elementDimensions = Dimensions.of(382.5d, 38.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> simpleInput.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(551.3d, 517.4d, 551.3d, 517.4d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(551.3d, 517.4d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> simpleInput.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(206, 212, 218, 1.0d);
         assertThrows(ElementColorException.class, () -> simpleInput.componentShouldNotHaveColor(ROOT, "border-color", elementColor));
@@ -323,7 +325,7 @@ class WebTextInputElementTest extends AbstractUiTest {
                 .shouldBeEnabled()
                 .scrollTo()
                 .componentShouldHaveDimensions(ROOT, Dimensions.of(382.5d, 86.0d).setInaccuracy(0.2d))
-                .componentShouldHaveLocation(ROOT, Location.of(551.3d, 571.4d, 551.3d, 571.4d).setInaccuracy(0.2d))
+                .componentShouldHaveLocation(ROOT, Location.relative(551.3d, 571.4d).setInaccuracy(0.2d))
                 .componentShouldHaveColor(ROOT, "border-color", WebElementColor.of(206, 212, 218, 1.0d))
                 .hoverTo(true)
                 .click()

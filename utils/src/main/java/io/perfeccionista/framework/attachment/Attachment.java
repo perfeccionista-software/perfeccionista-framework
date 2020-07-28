@@ -2,7 +2,10 @@ package io.perfeccionista.framework.attachment;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,18 +21,23 @@ import java.util.stream.Stream;
  */
 public class Attachment {
 
-    private final List<AttachmentEntry<?>> entries;
+    private final Deque<AttachmentEntry<?>> entries;
 
-    private Attachment(List<AttachmentEntry<?>> entries) {
+    private Attachment(Deque<AttachmentEntry<?>> entries) {
         this.entries = entries;
     }
 
     public static Attachment of(@NotNull AttachmentEntry<?>... entries) {
-        return new Attachment(Arrays.stream(entries).collect(Collectors.toList()));
+        return new Attachment(new ArrayDeque<>(Arrays.asList(entries)));
     }
 
     public Attachment addAttachmentEntry(@NotNull AttachmentEntry<?> entry) {
-        entries.add(entry);
+        entries.addLast(entry);
+        return this;
+    }
+
+    public Attachment addAttachmentEntryToTop(@NotNull AttachmentEntry<?> entry) {
+        entries.addFirst(entry);
         return this;
     }
 

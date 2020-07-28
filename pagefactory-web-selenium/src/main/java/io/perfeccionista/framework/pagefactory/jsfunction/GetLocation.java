@@ -19,7 +19,9 @@ public class GetLocation implements JsFunction<Location> {
                     locationNode.get("pageX").asDouble(),
                     locationNode.get("pageY").asDouble(),
                     locationNode.get("absolutePageX").asDouble(),
-                    locationNode.get("absolutePageY").asDouble()
+                    locationNode.get("absolutePageY").asDouble(),
+                    locationNode.get("elementCenterX").asDouble(),
+                    locationNode.get("elementCenterY").asDouble()
             );
         };
     }

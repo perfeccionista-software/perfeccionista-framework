@@ -20,6 +20,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -242,6 +243,8 @@ class WebFileInputElementTest extends AbstractUiTest {
         Screenshot screenshot = fileInput.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(4500).check(screenshot.getRaw().length));
+        assertEquals(Point.of(191.3d, 19d).setInaccuracy(0.2d), fileInput.getDimensions(ROOT).getCenter());
+
     }
 
     @Test
@@ -262,7 +265,7 @@ class WebFileInputElementTest extends AbstractUiTest {
         assertThrows(ElementIsEnabledException.class, fileInput::shouldBeDisabled);
         Dimensions elementDimensions = Dimensions.of(382.5d, 38.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> fileInput.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(345.0d, 753.4d, 345.0d, 753.4d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(345.0d, 753.4d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> fileInput.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(220, 53, 69, 1.0d);
         assertThrows(ElementColorException.class, () -> fileInput.componentShouldNotHaveColor(LABEL, "border-color", elementColor));

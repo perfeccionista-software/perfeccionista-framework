@@ -24,6 +24,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -221,6 +222,7 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(3500).check(screenshot.getRaw().length));
         radioButtonText.shouldHaveText(value.stringContainsAll("Label 1"));
+        assertEquals(Point.of(88.1d, 12d).setInaccuracy(0.2d), radioButtonOne.getDimensions(ROOT).getCenter());
     }
 
     @Test
@@ -242,7 +244,7 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
         assertThrows(ElementNotSelectedException.class, radioButtonOne::shouldBeSelected);
         Dimensions elementDimensions = Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> radioButtonOne.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(345.0d, 713.4d, 345.0d, 713.4d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(345.0d, 713.4d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> radioButtonOne.componentShouldHaveLocation(ROOT, elementLocation.offset(12d, 10d)));
         assertThrows(ElementLocationException.class, () -> radioButtonOne.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(33, 37, 41, 1.0d);

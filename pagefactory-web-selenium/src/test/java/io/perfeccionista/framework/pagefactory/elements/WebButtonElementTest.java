@@ -21,6 +21,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -180,6 +181,7 @@ class WebButtonElementTest extends AbstractUiTest {
                 .scrollTo()
                 .componentShouldHaveDimensions(ROOT, Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d))
                 .componentShouldHaveLocation(ROOT, Location.relative(369.3d, 314.3d).setInaccuracy(0.2d))
+                .componentShouldHaveLocation(ROOT, Location.center(472.3d, 333.4d).setInaccuracy(0.2d))
                 .componentShouldHaveColor(ROOT, "background-color", WebElementColor.of(0, 123, 255, 1.0d))
                 .hoverTo(true)
                 .componentShouldHaveColor(ROOT, "background-color", WebElementColor.of(0, 105, 217, 1.0d))
@@ -209,6 +211,7 @@ class WebButtonElementTest extends AbstractUiTest {
                 .shouldNotBeDisplayed();
         assertFalse(simpleButtonText.isPresent());
         assertFalse(simpleButtonText.isDisplayed());
+        assertEquals(Point.of(63.8d, 19d).setInaccuracy(0.2d), simpleButton.getDimensions(ROOT).getCenter());
         // Simple button click
         simpleButton.click()
                 .shouldBeInFocus();
@@ -235,7 +238,7 @@ class WebButtonElementTest extends AbstractUiTest {
         assertThrows(ElementNotInFocusException.class, simpleButton::shouldBeInFocus);
         Dimensions elementDimensions = Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> simpleButton.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(369.3d, 314.3d, 369.3d, 314.3d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(369.3d, 314.3d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> simpleButton.componentShouldHaveLocation(ROOT, elementLocation.offset(12d, 10d)));
         assertThrows(ElementLocationException.class, () -> simpleButton.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(0, 123, 255, 1.0d);
@@ -303,24 +306,7 @@ class WebButtonElementTest extends AbstractUiTest {
                 .shouldHaveText(value.stringEquals("Spinner Button clicked"));
     }
 
-    @Test
-    void webButtonWithDoubleClickText(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("Elements"));
-        ElementsPage elementsPage = context.getPage(ElementsPage.class);
-        WebButton doubleClickButton = elementsPage.doubleClickButton()
-                .shouldBeDisplayed()
-                .scrollTo();
-        WebTextBlock doubleClickText = elementsPage.doubleClickText()
-                .shouldBeDisplayed()
-                .shouldHaveText(value.stringEmpty());
-        doubleClickButton.click();
-        doubleClickText.shouldHaveText(value.stringEmpty());
-        doubleClickButton.executeAction("Double click");
-        doubleClickText.shouldHaveText(value.stringEquals("Double click done"));
-    }
+
 
 
 }

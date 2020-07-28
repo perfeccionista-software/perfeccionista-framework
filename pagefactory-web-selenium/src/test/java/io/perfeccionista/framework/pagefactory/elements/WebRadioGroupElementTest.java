@@ -20,6 +20,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -193,6 +194,7 @@ class WebRadioGroupElementTest extends AbstractUiTest {
         assertEquals(Location.absolute(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getLocation(ROOT));
         assertEquals(WebElementColor.of(33, 37, 41, 1.0d), radioGroup.getColor(ROOT, "border-color"));
         assertEquals(3, radioGroup.size());
+        assertEquals(Point.of(412.5d, 12d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT).getCenter());
     }
 
     @Test
@@ -212,7 +214,7 @@ class WebRadioGroupElementTest extends AbstractUiTest {
         assertThrows(ElementNotInFocusException.class, radioGroup::shouldBeInFocus);
         Dimensions elementDimensions = Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> radioGroup.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(330d, 713.4d, 330d, 713.4d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(330d, 713.4d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> radioGroup.componentShouldHaveLocation(ROOT, elementLocation.offset(15d, 1d)));
         assertThrows(ElementLocationException.class, () -> radioGroup.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(33, 37, 41, 1.0d);

@@ -21,6 +21,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -212,6 +213,7 @@ class WebTableElementTest extends AbstractUiTest {
         assertEquals(Location.absolute(345d, 173d).setInaccuracy(0.2d), table.getLocation(ROOT));
         assertEquals(WebElementColor.of(222, 226, 230, 1.0d), table.getColor(ROOT, "border-color"));
         assertEquals(195, table.size());
+        assertEquals(Point.of(397.5d, 5223.5d).setInaccuracy(0.2d), table.getDimensions(ROOT).getCenter());
     }
 
     @Test
@@ -231,7 +233,7 @@ class WebTableElementTest extends AbstractUiTest {
         assertThrows(ElementNotInFocusException.class, table::shouldBeInFocus);
         Dimensions elementDimensions = Dimensions.of(795.0d, 10447.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> table.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(345d, 173d, 345d, 173d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(345d, 173d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> table.componentShouldHaveLocation(ROOT, elementLocation.offset(15d, 1d)));
         assertThrows(ElementLocationException.class, () -> table.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(222, 226, 230, 1.0d);

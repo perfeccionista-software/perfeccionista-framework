@@ -4,37 +4,33 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
-public class Dimensions {
+public class Point {
 
-    private final double width;
-    private final double height;
+    private final double x;
+    private final double y;
     private Double inaccuracy = null;
 
-    private Dimensions(double width, double height) {
-        this.width = width;
-        this.height = height;
+    private Point(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public static Dimensions of(double width, double height) {
-        return new Dimensions(width, height);
+    public static Point of(double x, double y) {
+        return new Point(x, y);
     }
 
-    public double getWidth() {
-        return width;
+    public double getX() {
+        return x;
     }
 
-    public double getHeight() {
-        return height;
-    }
-
-    public Point getCenter() {
-        return Point.of(width/2, height/2);
+    public double getY() {
+        return y;
     }
 
     /**
      * @param inaccuracy - допустимая погрешность при сравнении размеров
      */
-    public Dimensions setInaccuracy(double inaccuracy) {
+    public Point setInaccuracy(double inaccuracy) {
         this.inaccuracy = Math.abs(inaccuracy);
         return this;
     }
@@ -47,13 +43,13 @@ public class Dimensions {
         if (other == null || getClass() != other.getClass()) {
             return false;
         }
-        Dimensions that = (Dimensions) other;
+        Point that = (Point) other;
         if (inaccuracy == null) {
-            return (this.width - that.width == 0) && (this.height - that.height == 0);
+            return (this.x - that.x == 0) && (this.y - that.y == 0);
         }
-        double widthDifference = this.width - that.width;
-        double heightDifference = this.height - that.height;
-        if (Math.abs(widthDifference) > inaccuracy || Math.abs(heightDifference) > inaccuracy) {
+        double xDifference = this.x - that.x;
+        double yDifference = this.y - that.y;
+        if (Math.abs(xDifference) > inaccuracy || Math.abs(yDifference) > inaccuracy) {
             return false;
         }
         return true;
@@ -63,9 +59,9 @@ public class Dimensions {
     public int hashCode() {
         int result;
         long temp;
-        temp = Double.doubleToLongBits(width);
+        temp = Double.doubleToLongBits(x);
         result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(height);
+        temp = Double.doubleToLongBits(y);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (inaccuracy != null ? inaccuracy.hashCode() : 0);
         return result;
@@ -73,8 +69,8 @@ public class Dimensions {
 
     public JsonNode toJson() {
         return createObjectNode()
-                .put("width", width)
-                .put("height", height)
+                .put("x", x)
+                .put("y", y)
                 .put("inaccuracy", inaccuracy);
     }
 

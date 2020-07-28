@@ -24,6 +24,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -237,6 +238,8 @@ class WebCheckboxElementTest extends AbstractUiTest {
                 .shouldBeInFocus()
                 .shouldBeSelected();
         checkboxText.shouldHaveText(value.stringContainsAll("Label 1", "Label 2"));
+        assertEquals(Point.of(88.1d, 12d).setInaccuracy(0.2d), checkboxOne.getDimensions(ROOT).getCenter());
+
     }
 
     @Test
@@ -258,7 +261,7 @@ class WebCheckboxElementTest extends AbstractUiTest {
         assertThrows(ElementNotSelectedException.class, checkboxOne::shouldBeSelected);
         Dimensions elementDimensions = Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> checkboxOne.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(345.0d, 673.4d, 345.0d, 673.4d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(345.0d, 673.4d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> checkboxOne.componentShouldHaveLocation(ROOT, elementLocation.offset(12d, 10d)));
         assertThrows(ElementLocationException.class, () -> checkboxOne.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(33, 37, 41, 1.0d);

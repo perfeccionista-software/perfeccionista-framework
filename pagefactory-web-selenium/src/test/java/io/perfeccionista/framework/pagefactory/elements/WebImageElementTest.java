@@ -19,6 +19,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -199,6 +200,8 @@ class WebImageElementTest extends AbstractUiTest {
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(10000).check(screenshot.getRaw().length));
         assertEquals("World map picture", worldMap.getPropertyValue("prompt"));
+        assertEquals(Point.of(88.3d, 62.7d).setInaccuracy(0.2d), worldMap.getDimensions(ROOT).getCenter());
+
     }
 
     @Test
@@ -220,7 +223,7 @@ class WebImageElementTest extends AbstractUiTest {
         assertThrows(ElementIsDisplayedException.class, () -> worldMap.componentShouldNotBeDisplayed("Image border"));
         Dimensions elementDimensions = Dimensions.of(176.3d, 125.4d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> worldMap.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(345d, 173d, 345d, 173d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(345d, 173d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> worldMap.componentShouldHaveLocation(ROOT, elementLocation.offset(15d, 1d)));
         assertThrows(ElementLocationException.class, () -> worldMap.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(222, 226, 230, 1.0d);

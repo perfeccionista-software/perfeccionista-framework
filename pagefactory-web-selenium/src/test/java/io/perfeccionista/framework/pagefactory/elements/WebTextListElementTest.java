@@ -20,6 +20,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TextListElementsPage;
@@ -192,6 +193,7 @@ public class WebTextListElementTest extends AbstractUiTest {
         assertEquals(Location.absolute(345d, 281d).setInaccuracy(0.2d), textList.getLocation(ROOT));
         assertEquals(WebElementColor.of(33, 37, 41, 1.0d), textList.getColor(ROOT, "border-color"));
         assertEquals(195, textList.size());
+        assertEquals(Point.of(397.5d, 4754d).setInaccuracy(0.2d), textList.getDimensions(ROOT).getCenter());
     }
 
     @Test
@@ -211,7 +213,7 @@ public class WebTextListElementTest extends AbstractUiTest {
         assertThrows(ElementNotInFocusException.class, textList::shouldBeInFocus);
         Dimensions elementDimensions = Dimensions.of(795.0d, 9508.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> textList.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(345d, 281d, 345d, 281d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(345d, 281d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> textList.componentShouldHaveLocation(ROOT, elementLocation.offset(15d, 1d)));
         assertThrows(ElementLocationException.class, () -> textList.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(33, 37, 41, 1.0d);

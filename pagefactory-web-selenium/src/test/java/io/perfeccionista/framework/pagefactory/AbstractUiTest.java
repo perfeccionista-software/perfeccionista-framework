@@ -17,6 +17,12 @@ public class AbstractUiTest {
     public static final String EXTERNAL = "External";
 
     protected WebPageContext initWebPageContext(Environment env, ValueService value) {
+        WebBrowserDispatcher webBrowserDispatcher = initWebBrowserDispatcher(env, value);
+        return webBrowserDispatcher
+                .getPageContext();                                  // Возвращаем контекст страницы для активного браузера
+    }
+
+    protected WebBrowserDispatcher initWebBrowserDispatcher(Environment env, ValueService value) {
         String browserName = value.stringProcess("${[props] browser}");
         String startUrl = value.stringProcess("${[props] start_url}");
         // Создаем окружение для выполнения теста (браузер, начальный УРЛ, контекст страницы)
@@ -28,9 +34,8 @@ public class AbstractUiTest {
                 .openUrl(startUrl);                                 // открываем ссылку
         webBrowserDispatcher
                 .window()
-                .setWindowSize(1200, 1000);
-        return webBrowserDispatcher
-                .getPageContext();                                  // Возвращаем контекст страницы для активного браузера
+                .setWindowSize(1200, 1000);           // Возвращаем контекст страницы для активного браузера
+        return webBrowserDispatcher;
     }
 
 }

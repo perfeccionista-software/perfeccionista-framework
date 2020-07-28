@@ -12,6 +12,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebRadioGroupSeleniumImp
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
+import io.perfeccionista.framework.pagefactory.elements.interactions.WebElementInteraction;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
@@ -20,6 +21,7 @@ import io.perfeccionista.framework.pagefactory.pageobjects.extractors.NameAttrib
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.PlaceholderAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.SrcAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.implementations.DoubleClickActionImplementation;
+import io.perfeccionista.framework.pagefactory.pageobjects.implementations.DragAndDropInteraction;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
@@ -166,12 +168,21 @@ public interface ElementsPage extends AbstractWebPage {
     WebLink fileDownloadLink();
 
 
-    @Name("Double click button")
+    @WebLocator(id = "drag-and-drop-source")
+    @WebElementInteraction(name = "Drag and Drop", implementation = DragAndDropInteraction.class)
+    WebTextBlock sourceBlock();
+
+    @WebLocator(id = "drag-and-drop-target")
+    WebTextBlock targetBlock();
+
+    @WebLocator(id = "drag-and-drop-text")
+    WebTextBlock dragAndDropText();
+
+
     @WebLocator(id = "double-click-button")
     @WebElementAction(name = "Double click", implementation = DoubleClickActionImplementation.class)
     WebButton doubleClickButton();
 
-    @Name("Double click text")
     @WebLocator(id = "double-click-text")
     WebTextBlock doubleClickText();
 

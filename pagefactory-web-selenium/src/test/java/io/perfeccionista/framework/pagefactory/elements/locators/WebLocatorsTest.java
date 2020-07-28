@@ -3,8 +3,10 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.UseEnvironmentConfiguration;
 import io.perfeccionista.framework.extension.PerfeccionistaExtension;
+import io.perfeccionista.framework.pagefactory.AbstractUiTest;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
+import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetInnerText;
 import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
@@ -19,16 +21,11 @@ import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
-public class WebLocatorsTest {
+class WebLocatorsTest extends AbstractUiTest {
 
     @Test
     void executeOperationTest(Environment env, ValueService val) {
-        WebBrowserDispatcher chrome = env.getService(WebBrowserService.class)
-                .createDispatcher(val.stringProcess("${[props]browser}"))
-                .launch();
-        chrome.tabs()
-                .openUrl(val.stringProcess("${[props]base_url}"));
-
+        WebBrowserDispatcher webBrowserDispatcher = initWebBrowserDispatcher(env, val);
 
         // TODO: Написать реальные локаторы на:
         //  один элемент
@@ -55,13 +52,13 @@ public class WebLocatorsTest {
 
         long start = System.nanoTime();
         for (int i = 0; i < 1000; i++) {
-            chrome.executor()
+            webBrowserDispatcher.executor()
                     .executeOperation(operation);
         }
         System.out.println((System.nanoTime() - start)/1_000_000);
 
         sleep(Duration.ofSeconds(1));
 
-        chrome.close();
+        webBrowserDispatcher.close();
     }
 }

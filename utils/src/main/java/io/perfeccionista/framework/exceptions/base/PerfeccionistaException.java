@@ -88,6 +88,14 @@ public class PerfeccionistaException extends RuntimeException {
         return this;
     }
 
+    public PerfeccionistaException addAttachmentEntryToTop(@NotNull AttachmentEntry<?> attachmentEntry) {
+        if (getAttachment().isEmpty()) {
+            this.attachment = Attachment.of();
+        }
+        this.attachment.addAttachmentEntryToTop(attachmentEntry);
+        return this;
+    }
+
     public PerfeccionistaException addAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
         if (getAttachment().isEmpty()) {
             this.attachment = Attachment.of();

@@ -20,6 +20,7 @@ import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.pagefactory.elements.methods.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -215,6 +216,8 @@ class WebLinkElementTest extends AbstractUiTest {
         simpleLinkText.shouldBePresent()
                 .shouldBeDisplayed()
                 .shouldNotBeInFocus();
+        assertEquals(Point.of(40.9d, 11d).setInaccuracy(0.2d), simpleLink.getDimensions(ROOT).getCenter());
+
     }
 
     @Test
@@ -234,7 +237,7 @@ class WebLinkElementTest extends AbstractUiTest {
         assertThrows(ElementNotInFocusException.class, simpleLink::shouldBeInFocus);
         Dimensions elementDimensions = Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d);
         assertThrows(ElementDimensionsException.class, () -> simpleLink.componentShouldNotHaveDimensions(ROOT, elementDimensions));
-        Location elementLocation = Location.of(392.2d, 478.4d, 392.2d, 478.4d).setInaccuracy(0.2d);
+        Location elementLocation = Location.relative(392.2d, 478.4d).setInaccuracy(0.2d);
         assertThrows(ElementLocationException.class, () -> simpleLink.componentShouldHaveLocation(ROOT, elementLocation.offset(54d, -4d)));
         assertThrows(ElementLocationException.class, () -> simpleLink.componentShouldNotHaveLocation(ROOT, elementLocation));
         WebElementColor elementColor = WebElementColor.of(0, 123, 255, 1.0d);
