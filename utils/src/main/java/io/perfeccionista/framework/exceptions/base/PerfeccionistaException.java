@@ -1,26 +1,19 @@
 package io.perfeccionista.framework.exceptions.base;
 
-import io.perfeccionista.framework.attachment.AttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import io.perfeccionista.framework.attachment.Attachment;
+import io.perfeccionista.framework.exceptions.attachments.Attachment;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 /**
- * Base class for all {@link RuntimeException RuntimeExceptions} thrown by
- * Perfeccionista framework.<br/>
- * Base {@link ExceptionType} is {@link ExceptionType#EXCEPTION}, but if you need
- * check business logic you should use {@link ExceptionType#ASSERT}<br/>
  *
- * TODO: Завести на Артема задачи, которые позволят подерживать передачу ошибки с прикремпленным репортом
  * TODO: JavaDoc по каждому из параметров эксепшена - зачем он и как его использовать
- * TODO: Добавить ID выброса эксепшена и сравнивать ошибки по этому ID для Flaky.
  *
  * Нужно сначала создать исключений, чтобы корректно заполнилось время возникновения,
  * а потом заполнять его репорт.
@@ -28,101 +21,34 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
  * необходимые энтри
  */
 @API(status = EXPERIMENTAL, since = "1.0")
-public class PerfeccionistaException extends RuntimeException {
+public interface PerfeccionistaException {
 
-    private static final long serialVersionUID = 1L;
+    String ATTACHMENT_SPLITTER = "----------------------------------------------------------------------------------------------------\n";
 
-    protected static final String ATTACHMENT_SPLITTER = "----------------------------------------------------------------------------------------------------\n";
+    boolean isProcessed();
 
-    private final LocalDateTime exceptionTimestamp;
+    PerfeccionistaException setProcessed(boolean processed);
 
-    private ExceptionType type = ExceptionType.EXCEPTION;
-    private Attachment attachment = null;
-    private boolean processed = false;
-    private boolean service = false;
+    boolean isService();
 
-    public PerfeccionistaException(@NotNull String message) {
-        super(message);
-        exceptionTimestamp = LocalDateTime.now();
-    }
+    PerfeccionistaException setService(boolean service);
 
-    public PerfeccionistaException(@NotNull String message, @NotNull Throwable cause) {
-        super(message, cause);
-        exceptionTimestamp = LocalDateTime.now();
-    }
+    Optional<Attachment> getAttachment();
 
-    @NotNull
-    public ExceptionType getType() {
-        return type;
-    }
+    PerfeccionistaException setAttachment(@Nullable Attachment attachment);
 
-    public PerfeccionistaException setType(@NotNull ExceptionType type) {
-        this.type = type;
-        return this;
-    }
+    PerfeccionistaException addFirstAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry);
 
-    public boolean isProcessed() {
-        return processed;
-    }
+    PerfeccionistaException addLastAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry);
 
-    public PerfeccionistaException setProcessed(boolean processed) {
-        this.processed = processed;
-        return this;
-    }
+    PerfeccionistaException addSuppressedException(@NotNull Throwable throwable);
 
-    public boolean isService() {
-        return service;
-    }
+    LocalDateTime getExceptionTimestamp();
 
-    public PerfeccionistaException setService(boolean service) {
-        this.service = service;
-        return this;
-    }
+    String getAttachmentDescription();
 
-    public Optional<Attachment> getAttachment() {
-        return Optional.ofNullable(attachment);
-    }
+    String getLocalizedMessage();
 
-    public PerfeccionistaException setAttachment(@Nullable Attachment attachment) {
-        this.attachment = attachment;
-        return this;
-    }
-
-    public PerfeccionistaException addAttachmentEntryToTop(@NotNull AttachmentEntry<?> attachmentEntry) {
-        if (getAttachment().isEmpty()) {
-            this.attachment = Attachment.of();
-        }
-        this.attachment.addAttachmentEntryToTop(attachmentEntry);
-        return this;
-    }
-
-    public PerfeccionistaException addAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
-        if (getAttachment().isEmpty()) {
-            this.attachment = Attachment.of();
-        }
-        this.attachment.addAttachmentEntry(attachmentEntry);
-        return this;
-    }
-
-    public PerfeccionistaException addSuppressedException(Throwable throwable) {
-        this.addSuppressed(throwable);
-        return this;
-    }
-
-    public final LocalDateTime getExceptionTimestamp() {
-        return exceptionTimestamp;
-    }
-
-    public String getAttachmentDescription() {
-        if (null == attachment) {
-            return "Exception has no attachment";
-        }
-        return "\n\nException attachments:\n\n" + attachment.getAttachmentEntries()
-                .map(attachmentEntry -> ATTACHMENT_SPLITTER
-                        + attachmentEntry.getName() + "\n"
-                        + ATTACHMENT_SPLITTER
-                        + attachmentEntry.getDescription() + "\n")
-                .collect(Collectors.joining("\n"));
-    }
+    String getMessage();
 
 }

@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.pagefactory;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
-import io.perfeccionista.framework.exceptions.RegisterDuplicateException;
-import io.perfeccionista.framework.exceptions.PageNotFoundException;
+import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
+import io.perfeccionista.framework.exceptions.RegisterDuplicate;
+import io.perfeccionista.framework.exceptions.WebPageNotFound;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
@@ -20,9 +20,9 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.PAGE_NAME_DUPLICATE;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.PAGE_NOT_FOUND_BY_CLASS;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.PAGE_NOT_FOUND_BY_NAME;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NAME_DUPLICATE;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NOT_FOUND_BY_CLASS;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NOT_FOUND_BY_NAME;
 import static org.junit.platform.commons.util.ReflectionUtils.findAllClassesInPackage;
 
 /**
@@ -54,7 +54,7 @@ public class WebPageService implements Service {
                     List<Name> names = AnnotationUtils.findRepeatableAnnotations(webPageClass, Name.class);
                     names.stream().map(Name::value).forEach(name -> {
                         if (pageClassesByName.containsKey(name)) {
-                            throw new RegisterDuplicateException(PAGE_NAME_DUPLICATE.getMessage(name, webPageClass, pageClassesByName.get(name)));
+                            throw RegisterDuplicate.exception(PAGE_NAME_DUPLICATE.getMessage(name, webPageClass, pageClassesByName.get(name)));
                         }
                         pageClassesByName.put(name, webPageClass);
                     });
@@ -68,7 +68,7 @@ public class WebPageService implements Service {
     // Инстанс возвращается без экземпляра вебдрайвера
     public <T extends WebPage> T getByClass(@NotNull Class<T> pageClass) {
         if (!availablePageClasses.contains(pageClass)) {
-            throw new PageNotFoundException(PAGE_NOT_FOUND_BY_CLASS.getMessage(pageClass.getCanonicalName()));
+            throw WebPageNotFound.exception(PAGE_NOT_FOUND_BY_CLASS.getMessage(pageClass.getCanonicalName()));
         }
         if (pageInstances.containsKey(pageClass)) {
             // TODO: Сделать проверку на соответствие класса
@@ -81,7 +81,7 @@ public class WebPageService implements Service {
     public <T extends WebPage> T getByName(@NotNull String pageName) {
         Class<? extends WebPage> pageClass = pageClassesByName.get(pageName);
         if (pageClass == null) {
-            throw new PageNotFoundException(PAGE_NOT_FOUND_BY_NAME.getMessage(pageName));
+            throw WebPageNotFound.exception(PAGE_NOT_FOUND_BY_NAME.getMessage(pageName));
         }
         if (pageInstances.containsKey(pageClass)) {
             // TODO: Сделать проверку на соответствие класса
@@ -92,7 +92,7 @@ public class WebPageService implements Service {
     }
 
     public WebPageFactory getWebPageFactory() {
-        return new WebPageFactory(configuration.getElementsConfiguration());
+        return new WebPageFactory(configuration.getElementsPreferences());
     }
 
     private WebPage createInstance(Class<? extends WebPage> pageClass) {
@@ -107,7 +107,7 @@ public class WebPageService implements Service {
         if (configuration instanceof WebPageServiceConfiguration) {
             return (WebPageServiceConfiguration) configuration;
         }
-        throw new IncorrectServiceConfigurationException(
+        throw IncorrectServiceConfiguration.exception(
                 CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 

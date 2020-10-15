@@ -2,8 +2,8 @@ package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.exceptions.DataSourceNotFoundException;
-import io.perfeccionista.framework.exceptions.RegisterDuplicateException;
+import io.perfeccionista.framework.exceptions.DataSourceNotFound;
+import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 
@@ -26,13 +26,13 @@ public class NamedDataSourceService extends DataSourceService {
         validatedConfiguration.getDataSources().forEach(dataSource -> {
             Class<? extends DataSource> dataSourceClass = dataSource.getClass();
             if (dataSourcesByClass.containsKey(dataSourceClass)) {
-                throw new RegisterDuplicateException(DATA_SOURCE_REGISTER_BY_CLASS_DUPLICATE.getMessage(dataSourceClass.getCanonicalName()));
+                throw RegisterDuplicate.exception(DATA_SOURCE_REGISTER_BY_CLASS_DUPLICATE.getMessage(dataSourceClass.getCanonicalName()));
             }
             findRepeatableAnnotations(dataSourceClass, Name.class).stream()
                     .map(Name::value)
                     .forEach(name -> {
                         if (dataSourcesByName.containsKey(name)) {
-                            throw new RegisterDuplicateException(DATA_SOURCE_REGISTER_BY_NAME_DUPLICATE.getMessage(name));
+                            throw RegisterDuplicate.exception(DATA_SOURCE_REGISTER_BY_NAME_DUPLICATE.getMessage(name));
                         }
                         dataSourcesByName.put(name, dataSource);
                     });
@@ -47,7 +47,7 @@ public class NamedDataSourceService extends DataSourceService {
     public <T extends DataSource> T get(String dataSourceName) {
         DataSource<?, ?> dataSource = dataSourcesByName.get(dataSourceName);
         if (null == dataSource) {
-            throw new DataSourceNotFoundException(DATA_SOURCE_NOT_FOUND_BY_NAME.getMessage(dataSourceName));
+            throw DataSourceNotFound.exception(DATA_SOURCE_NOT_FOUND_BY_NAME.getMessage(dataSourceName));
         }
         return (T) dataSourcesByName.get(dataSourceName);
     }

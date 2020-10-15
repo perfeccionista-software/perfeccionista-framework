@@ -1,189 +1,90 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsEnabledAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextInputMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
+import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
-
-
-@WebLocator(component = LABEL, xpath = "preceding::label | following::label | parent::label")
 public interface WebTextInput extends WebChildElement,
         GetTextAvailable, GetLabelAvailable, ClickAvailable, SendKeysAvailable, ClearAvailable, IsEnabledAvailable {
 
     // Actions
-
     @Override
     WebTextInput executeAction(@NotNull String name, Object... args);
-
     @Override
     WebTextInput executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebTextInput should(@NotNull WebTextInputMatcher matcher);
     @Override
-    WebTextInput should(WebAssertCondition assertCondition);
-
+    WebTextInput should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebTextInput should(WebAssertCondition assertCondition, InvocationName invocationName);
+    WebTextInput should(@NotNull GetColorAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull GetDimensionsAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull GetLocationAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull GetScreenshotAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull IsDisplayedAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull IsInFocusAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull IsOnTheScreenAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull IsPresentAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull GetLabelAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull GetTextAvailableMatcher matcher);
+    @Override
+    WebTextInput should(@NotNull IsEnabledAvailableMatcher matcher);
 
     // Clear
-
     @Override
     WebTextInput clear();
 
     // Click
-
     @Override
     WebTextInput click();
 
-    // Get Color
-
-    @Override
-    WebTextInput componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    @Override
-    WebTextInput componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
-    @Override
-    WebTextInput componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    @Override
-    WebTextInput componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Label
-
-    @Override
-    WebTextInput shouldHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextInput shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextInput shouldNotHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextInput shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    // Get Location
-
-    @Override
-    WebTextInput componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    @Override
-    WebTextInput componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
-    @Override
-    WebTextInput componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    @Override
-    WebTextInput componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    // Get Text
-
-    @Override
-    WebTextInput shouldHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextInput shouldHaveText(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextInput shouldNotHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextInput shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
-
     // HoverTo
-
     @Override
     WebTextInput hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebTextInput shouldBeDisplayed();
-
-    @Override
-    WebTextInput shouldNotBeDisplayed();
-
-    // IsEnabled
-
-    @Override
-    WebTextInput shouldBeEnabled();
-
-    @Override
-    WebTextInput shouldBeDisabled();
-
-    // IsInFocus
-
-    @Override
-    WebTextInput shouldBeInFocus();
-
-    @Override
-    WebTextInput shouldNotBeInFocus();
-
-    // IsPresent
-
-    @Override
-    WebTextInput shouldBePresent();
-
-    @Override
-    WebTextInput shouldNotBePresent();
-
     // ScrollTo
-
     @Override
     WebTextInput scrollTo();
 
     // SendKeys
-
     @Override
-    WebTextInput sendKeys(CharSequence... keys);
-
-    // WebComponent
-
+    WebTextInput sendKeys(@NotNull String keys);
     @Override
-    WebTextInput componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextInput componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextInput componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebTextInput componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebTextInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextInput shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextInput shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
+    WebTextInput sendKeys(@NotNull KeysEventChain keyEvents);
 
 }

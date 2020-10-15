@@ -13,11 +13,15 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 
-// TODO: Wrap runLogic()
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beClosed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beOpen;
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.beSorted;
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
+
+// TODO: Wrap runLogic() - и внутри создавать обернутый степ с проверками всех значений
 // TODO: Add step categories
 public class ListCheckSteps implements EnvironmentAvailable {
 
@@ -29,7 +33,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} раскрыт")
     public void listIsOpen(WebElementParameter<IsOpenAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsOpenAvailable::shouldBeOpen);
+                .forEachOrdered(element -> element.should(beOpen()));
     }
 
     /**
@@ -40,7 +44,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} закрыт")
     public void listIsClosed(WebElementParameter<IsOpenAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsOpenAvailable::shouldBeClosed);
+                .forEachOrdered(element -> element.should(beClosed()));
     }
 
     /**
@@ -50,10 +54,10 @@ public class ListCheckSteps implements EnvironmentAvailable {
      */
     @Given("{webElement} has {integerValue} block(s)")
     @Given("{webElement} содержит {integerValue} блок(а|ов)")
-    public void listHasSize(WebElementParameter<SizeAvailable> elementFinder,
+    public void listHasSize(WebElementParameter<WebList> elementFinder,
                             ValueIntegerParameter integerValue) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHaveSize(integerValue.getValue()));
+                .forEachOrdered(element -> element.should(haveSize(integerValue.getValue())));
     }
 
     /**
@@ -70,24 +74,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
-                        .shouldHaveSize(integerValue.getValue()));
-    }
-
-    /**
-     *
-     * @param elementFinder -
-     * @param integerValue -
-     * @param itemFilter -
-     */
-    @Given("{webElement} has {integerValue} value(s) with")
-    @Given("{webElement} содержит {integerValue} значени(е|я|й)")
-    public void filteredTextListHasSize(WebElementParameter<WebTextList> elementFinder,
-                                        ValueIntegerParameter integerValue,
-                                        WebTextListFilterBuilder itemFilter) {
-        elementFinder.find()
-                .forEachOrdered(element -> element
-                        .filter(itemFilter)
-                        .shouldHaveSize(integerValue.getValue()));
+                        .should(haveSize(integerValue.getValue())));
     }
 
     /**
@@ -108,25 +95,10 @@ public class ListCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .extractAll(extractorFinder.createExtractorFor(blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
 
-    /**
-     *
-     * @param elementFinder -
-     * @param comparatorType -
-     * @param sortDirection -
-     */
-    @Given("in the {webElement} values in {comparatorType} format sorted {sortDirection}")
-    @Given("в {webElement} значения в формате {comparatorType} отсортированы {sortDirection}")
-    public void textListSorted(WebElementParameter<WebTextList> elementFinder,
-                               StringComparatorTypeParameter comparatorType,
-                               SortDirectionParameter sortDirection) {
-        elementFinder.find()
-                .forEachOrdered(element -> element
-                        .extractAll()
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
-    }
+
 
     /**
      *
@@ -149,7 +121,56 @@ public class ListCheckSteps implements EnvironmentAvailable {
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
                         .extractAll(valueExtractor.createExtractorFor(blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
+    }
+
+    // TextList
+
+    /**
+     *
+     * @param elementFinder -
+     * @param integerValue -
+     */
+    @Given("{webElement} has {integerValue} value(s)")
+    @Given("{webElement} содержит {integerValue} значени(е|я|й)")
+    public void textListHasSize(WebElementParameter<WebTextList> elementFinder,
+                                ValueIntegerParameter integerValue) {
+        elementFinder.find()
+                .forEachOrdered(element -> element.should(haveSize(integerValue.getValue())));
+    }
+
+    /**
+     *
+     * @param elementFinder -
+     * @param integerValue -
+     * @param itemFilter -
+     */
+    @Given("{webElement} has {integerValue} value(s) with")
+    @Given("{webElement} содержит {integerValue} значени(е|я|й) с")             // Вопрос - можно ли одинаковые текстовки на разные сигнатуры
+    public void filteredTextListHasSize(WebElementParameter<WebTextList> elementFinder,
+                                        ValueIntegerParameter integerValue,
+                                        WebTextListFilterBuilder itemFilter) {
+        elementFinder.find()
+                .forEachOrdered(element -> element
+                        .filter(itemFilter)
+                        .should(haveSize(integerValue.getValue())));
+    }
+
+    /**
+     *
+     * @param elementFinder -
+     * @param comparatorType -
+     * @param sortDirection -
+     */
+    @Given("in the {webElement} values in {comparatorType} format sorted {sortDirection}")
+    @Given("в {webElement} значения в формате {comparatorType} отсортированы {sortDirection}")
+    public void textListSorted(WebElementParameter<WebTextList> elementFinder,
+                               StringComparatorTypeParameter comparatorType,
+                               SortDirectionParameter sortDirection) {
+        elementFinder.find()
+                .forEachOrdered(element -> element
+                        .extractAll()
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
 
     /**
@@ -169,7 +190,7 @@ public class ListCheckSteps implements EnvironmentAvailable {
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
                         .extractAll()
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
 
 }

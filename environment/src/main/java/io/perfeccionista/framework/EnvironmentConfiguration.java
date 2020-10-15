@@ -78,7 +78,7 @@ public interface EnvironmentConfiguration {
      * @see InvocationRunnerConfiguration
      * @see InvocationRunner
      */
-    @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration();
+    @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration();
 
     /**
      * @return используемую политику перезапусков тестов,

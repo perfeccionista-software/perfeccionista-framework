@@ -14,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.Set;
 
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TAG_NAME;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.XPATH;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
 /**
@@ -72,21 +75,21 @@ public class BrowserTest extends AbstractUiTest {
         //  с запросом хэша
         //  с проверкой хэша
         //  с действиями
-        WebLocatorHolder tableLocator = WebLocatorHolder.of("ROOT", "id", "payments-table")
+        WebLocatorHolder tableLocator = WebLocatorHolder.of("ROOT", ID, "payments-table")
                 .setExpectedHash("kljfldjf;sodjlfjsvnflgjlfjfgdlk")
                 .addInvokedOnCallFunction(new ScrollTo());
-        WebLocatorHolder tableRowLocator = WebLocatorHolder.of("TR", "tagName", "TR")
+        WebLocatorHolder tableRowLocator = WebLocatorHolder.of("TR", TAG_NAME, "TR")
                 .setIndexes(Set.of(3, 4, 7, 8, 12, 14))
                 .setSingle(false)
                 .setStrictSearch(false);
-        WebLocatorHolder tableCellLocator = WebLocatorHolder.of("TD", "xpath", ".//td[1]");
-        WebLocatorHolder tableCellElementLocator = WebLocatorHolder.of("ROOT", "xpath", ".//span")
+        WebLocatorHolder tableCellLocator = WebLocatorHolder.of("TD", XPATH, ".//td[1]");
+        WebLocatorHolder tableCellElementLocator = WebLocatorHolder.of("ROOT", XPATH, ".//span")
                 .addInvokedOnCallFunction(new ScrollTo());
         WebLocatorChain webLocatorChain = WebLocatorChain.empty()
-                .addLocator(tableLocator)
-                .addLocator(tableRowLocator)
-                .addLocator(tableCellLocator)
-                .addLocator(tableCellElementLocator);
+                .addFirstLocator(tableLocator)
+                .addFirstLocator(tableRowLocator)
+                .addFirstLocator(tableCellLocator)
+                .addFirstLocator(tableCellElementLocator);
 
         JsOperation<String> operation = JsOperation.of(webLocatorChain, new GetAttribute("placeholder"));
 

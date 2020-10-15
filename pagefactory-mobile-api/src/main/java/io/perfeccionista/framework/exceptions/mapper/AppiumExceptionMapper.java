@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.exceptions.mapper;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -20,7 +20,7 @@ public class AppiumExceptionMapper implements ExceptionMapper {
     }
 
     @Override
-    public PerfeccionistaException createByName(@NotNull String name, @NotNull String message) {
+    public PerfeccionistaRuntimeException createByName(@NotNull String name, @NotNull String message) {
         return null;
     }
 

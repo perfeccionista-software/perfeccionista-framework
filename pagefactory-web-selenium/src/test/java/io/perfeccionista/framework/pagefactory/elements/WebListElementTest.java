@@ -1,99 +1,64 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.ElementColorException;
-import io.perfeccionista.framework.exceptions.ElementDimensionsException;
-import io.perfeccionista.framework.exceptions.ElementIsDisplayedException;
-import io.perfeccionista.framework.exceptions.ElementIsPresentException;
-import io.perfeccionista.framework.exceptions.ElementLocationException;
-import io.perfeccionista.framework.exceptions.ElementNotDeclaredException;
-import io.perfeccionista.framework.exceptions.ElementNotDisplayedException;
-import io.perfeccionista.framework.exceptions.ElementNotInFocusException;
-import io.perfeccionista.framework.exceptions.ElementPropertyNotDeclaredException;
-import io.perfeccionista.framework.exceptions.ElementSizeException;
-import io.perfeccionista.framework.exceptions.LocatorNotDeclaredException;
+import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
+import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
+import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
+import io.perfeccionista.framework.exceptions.WebElementIsPresent.WebElementIsPresentAssertionError;
+import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocationAssertionError;
+import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
+import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound.WebElementPropertyNotFoundException;
+import io.perfeccionista.framework.exceptions.WebElementSize.WebElementSizeAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
-import io.perfeccionista.framework.pagefactory.DefaultSeleniumWebElementsConfiguration;
+import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.elements.methods.Point;
+import io.perfeccionista.framework.measurements.Dimensions;
+import io.perfeccionista.framework.measurements.Location;
+import io.perfeccionista.framework.measurements.Point;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
-import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage.CountryBlock;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.WebElementColor;
+import io.perfeccionista.framework.screenshots.Screenshot;
+import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static io.perfeccionista.framework.exceptions.base.ExceptionType.ASSERT;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DECLARED;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DISPLAYED;
-import static io.perfeccionista.framework.pagefactory.elements.WebMappedBlock.from;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beInFocus;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.bePresent;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveColor;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveDimensions;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLocation;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeInFocus;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBePresent;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveColor;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveDimensions;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveLocation;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHavePropertyValue;
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ON_THE_SCREEN_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_BE_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_COLOR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_DIMENSIONS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_LOCATION_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.GET_SCREENSHOT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.HOVER_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_COMPONENT_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_COMPONENT_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_IN_FOCUS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_ELEMENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_IN_FOCUS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_BE_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_COLOR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_DIMENSIONS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_LOCATION_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_NUMBER_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_SIZE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_LOOKS_LIKE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_IN_FOCUS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_BE_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_COLOR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_DIMENSIONS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_LOCATION_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_NOT_LOOKS_LIKE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SIZE_METHOD;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.blockIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.componentDisplayed;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.componentPresent;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.containsLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.containsProperty;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.containsText;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.disabled;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.displayed;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.enabled;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.present;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.selected;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyListFilter;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_DIMENSIONS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LOCATION_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SCREENSHOT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.HOVER_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_ELEMENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.block;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -101,32 +66,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tags(@Tag("Element"))
+@Tag("Element") @Tag("WebList")
 class WebListElementTest extends AbstractUiTest {
 
     @Test
     void webListInitializationTest(Environment env) {
-        WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebElementsConfiguration());
+        WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebPageFactoryPreferences());
         ListElementsPage listElementsPage = (ListElementsPage) pageFactory.createWebPage(ListElementsPage.class);
         listElementsPage.setEnvironment(env);
         listElementsPage.setWebBrowserDispatcher(mock(WebBrowserDispatcher.class));
         WebList list = listElementsPage.webList();
         assertNotNull(list.getEnvironment());
-        assertNotNull(list.getLocator(ROOT));
         assertNotNull(list.getLocatorChain());
-        assertEquals(listElementsPage, list.getParent());
-        WebBrowserDispatcher webBrowserDispatcher = list.getWebBrowserDispatcher();
-        assertNotNull(webBrowserDispatcher);
-        // WebButton
-        assertNotNull(list.getActionImplementation(SCROLL_TO_ELEMENT_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SIZE_METHOD, Integer.class));
-        assertNotNull(list.getActionImplementation(SHOULD_HAVE_SIZE_METHOD, Void.class));
+        assertNotNull(list.getWebBrowserDispatcher());
+        assertNotNull(list.getOptionalLocator(ROOT));
         // WebChildElement
-        assertNotNull(list.getActionImplementation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(COMPONENT_SHOULD_BE_PRESENT_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(GET_COLOR_METHOD, WebElementColor.class));
+        assertNotNull(list.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
         assertNotNull(list.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(list.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(list.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -136,26 +91,9 @@ class WebListElementTest extends AbstractUiTest {
         assertNotNull(list.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class));
         assertNotNull(list.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class));
         assertNotNull(list.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class));
+        assertNotNull(list.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class));
         assertNotNull(list.getActionImplementation(IS_PRESENT_METHOD, Boolean.class));
         assertNotNull(list.getActionImplementation(SCROLL_TO_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_BE_DISPLAYED_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_BE_IN_FOCUS_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_BE_PRESENT_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_HAVE_COLOR_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_HAVE_DIMENSIONS_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_HAVE_LOCATION_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_HAVE_PROPERTY_VALUE_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_LOOKS_LIKE_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_BE_DISPLAYED_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_BE_IN_FOCUS_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_BE_PRESENT_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_HAVE_COLOR_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_HAVE_LOCATION_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD, Void.class));
-        assertNotNull(list.getActionImplementation(SHOULD_NOT_LOOKS_LIKE_METHOD, Void.class));
         // Identifier
         WebElementIdentifier elementIdentifier = list.getElementIdentifier();
         assertEquals("webList", elementIdentifier.getElementMethod().getName());
@@ -163,8 +101,8 @@ class WebListElementTest extends AbstractUiTest {
         assertTrue(elementIdentifier.containsName("List of countries"));
         assertFalse(elementIdentifier.isNameDeprecated("List of countries"));
         assertEquals(1, elementIdentifier.names().size());
-        WebList listElement = listElementsPage.getElementRegistry().getElementByPath("List of countries", WebList.class)
-                .orElseThrow(() -> new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage("List of countries")));
+        WebList listElement = listElementsPage.getElementRegistry()
+                .getRequiredElementByPath("List of countries", WebList.class);
         assertNotNull(listElement);
         assertEquals("List of countries", elementIdentifier.getLastUsedName());
         assertNotNull(list.toString());
@@ -177,560 +115,61 @@ class WebListElementTest extends AbstractUiTest {
         WebPageContext context = initWebPageContext(env, value);
         context.getPage(HomePage.class)
                 .leftMenu()
-                .select(value.stringEquals("List Elements"));
+                .select("List Elements");
         ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
         WebList list = listElementsPage.webList();
-        list.shouldBePresent()
-                .shouldBeDisplayed()
-                .shouldNotBeInFocus()
+        list.should(bePresent())
+                .should(beDisplayed())
+                .should(notBeInFocus())
                 .scrollTo()
                 .hoverTo(true)
-                .componentShouldHaveDimensions(ROOT, Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d))
-                .componentShouldHaveLocation(ROOT, Location.relative(345d, -4709d).setInaccuracy(0.2d))
-                .componentShouldHaveColor(ROOT, "border-color", WebElementColor.of(33, 37, 41, 1.0d))
-                .shouldHaveSize(value.intEquals(195))
-                .should(worldMapImage -> {
-                    if (worldMapImage.isDisplayed()) {
-                        return;
-                    }
-                    throw new ElementNotDisplayedException(ELEMENT_NOT_DISPLAYED.getMessage(worldMapImage.getElementIdentifier().getLastUsedName()))
-                            .setType(ASSERT)
-                            .addAttachmentEntry(JsonAttachmentEntry.of("Element", worldMapImage.toJson()));
-                });
+                .should(haveDimensions(Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d)))
+                .should(haveLocation(Location.relative(345d, -4709d).setInaccuracy(0.2d)))
+                .should(haveColor("border-color", WebColor.of(33, 37, 41, 1.0d)))
+                .should(haveSize(195));
         assertTrue(list.isPresent());
         assertTrue(list.isDisplayed());
         assertFalse(list.isInFocus());
         assertEquals(Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d), list.getDimensions(ROOT));
         assertEquals(Location.absolute(345d, 335d).setInaccuracy(0.2d), list.getLocation(ROOT));
-        assertEquals(WebElementColor.of(33, 37, 41, 1.0d), list.getColor(ROOT, "border-color"));
-        assertEquals(195, list.size());
+        assertEquals(WebColor.of(33, 37, 41, 1.0d), list.getColor(ROOT, "border-color"));
+        assertEquals(195, list.extractAll(block()).getSize());
         assertEquals(Point.of(397.5d, 5147.5d).setInaccuracy(0.2d), list.getDimensions(ROOT).getCenter());
     }
 
     @Test
     void webListNegativeTest(Environment env, ValueService value) {
         WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
+        context.getPage(HomePage.class).leftMenu()
+                .select("List Elements");
         ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
         WebList list = listElementsPage.webList();
         // Выполнение этого метода показывает завершение загрузки страницы
-        list.shouldBeDisplayed();
+        list.should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
-        env.getEnvironmentConfiguration().getTimeouts().setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
-        assertThrows(ElementIsPresentException.class, list::shouldNotBePresent);
-        assertThrows(ElementIsDisplayedException.class, list::shouldNotBeDisplayed);
-        assertThrows(ElementNotInFocusException.class, list::shouldBeInFocus);
+        env.getEnvironmentConfiguration().getTimeouts()
+                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+        assertThrows(WebElementIsPresentAssertionError.class,
+                () -> list.should(notBePresent()));
+        assertThrows(WebElementIsDisplayedAssertionError.class,
+                () -> list.should(notBeDisplayed()));
+        assertThrows(WebElementNotInFocusAssertionError.class,
+                () -> list.should(beInFocus()));
         Dimensions elementDimensions = Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d);
-        assertThrows(ElementDimensionsException.class, () -> list.componentShouldNotHaveDimensions(ROOT, elementDimensions));
+        assertThrows(WebElementDimensionsAssertionError.class,
+                () -> list.should(notHaveDimensions(elementDimensions)));
         Location elementLocation = Location.relative(345d, 335d).setInaccuracy(0.2d);
-        assertThrows(ElementLocationException.class, () -> list.componentShouldHaveLocation(ROOT, elementLocation.offset(15d, 1d)));
-        assertThrows(ElementLocationException.class, () -> list.componentShouldNotHaveLocation(ROOT, elementLocation));
-        WebElementColor elementColor = WebElementColor.of(33, 37, 41, 1.0d);
-        assertThrows(ElementColorException.class, () -> list.componentShouldNotHaveColor(ROOT, "border-color", elementColor));
-        StringValue correctPropertyValue = value.stringEquals("Some value");
-        assertThrows(ElementPropertyNotDeclaredException.class, () -> list.shouldNotHavePropertyValue("unknown property", correctPropertyValue));
-        NumberValue<Integer> expectedSize = value.intEquals(196);
-        assertThrows(ElementSizeException.class, () -> list.shouldHaveSize(expectedSize));
+        assertThrows(WebElementLocationAssertionError.class,
+                () -> list.should(haveLocation(elementLocation.offset(15d, 1d))));
+        assertThrows(WebElementLocationAssertionError.class,
+                () -> list.should(notHaveLocation(elementLocation)));
+        WebColor elementColor = WebColor.of(33, 37, 41, 1.0d);
+        assertThrows(WebElementColorAssertionError.class,
+                () -> list.should(notHaveColor("border-color", elementColor)));
+        assertThrows(WebElementPropertyNotFoundException.class,
+                () -> list.should(notHavePropertyValue("unknown property", "Some value")));
+        assertThrows(WebElementSizeAssertionError.class,
+                () -> list.should(haveSize(196)));
     }
-
-    @Test
-    void webListFilterEmptyConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        list.filter(emptyListFilter())
-                .shouldHaveSize(value.intEquals(195));
-    }
-
-    @Test
-    void webListFilterRowIndexConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        list.filter(with(blockIndex(value.intGreaterThanOrEqual(100))))
-                .shouldHaveSize(value.intEquals(95));
-        list.filter(without(blockIndex(value.intGreaterThanOrEqual(100))))
-                .shouldHaveSize(value.intEquals(100));
-    }
-
-    @Test
-    void webListFilterElementTextConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(containsText(from(CountryBlock.class).shortName(), value.stringEquals("Финляндия"))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsText(from(CountryBlock.class).shortName(), value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(17));
-        list.filter(with(containsText(from(CountryBlock.class).shortName(), value.stringEquals("Финляндия")).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsText(from(CountryBlock.class).shortName(), value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(178));
-
-        list.filter(without(containsText(from(CountryBlock.class).shortName(), value.stringEquals("Финляндия"))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsText(from(CountryBlock.class).shortName(), value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(178));
-        list.filter(without(containsText(from(CountryBlock.class).shortName(), value.stringEquals("Финляндия")).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsText(from(CountryBlock.class).shortName(), value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(17));
-
-        list.filter(with(containsText(from(CountryBlock.class).number(), value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsText(from(CountryBlock.class).number(), value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(72));
-        list.filter(with(containsText(from(CountryBlock.class).number(), value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsText(from(CountryBlock.class).number(), value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(123));
-
-        list.filter(without(containsText(from(CountryBlock.class).number(), value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsText(from(CountryBlock.class).number(), value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(123));
-        list.filter(without(containsText(from(CountryBlock.class).number(), value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsText(from(CountryBlock.class).number(), value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(72));
-
-        // By Element name
-        list.filter(with(containsText("Short name", value.stringEquals("Финляндия"))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsText("Short name", value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(17));
-        list.filter(with(containsText("Short name", value.stringEquals("Финляндия")).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsText("Short name", value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(178));
-
-        list.filter(without(containsText("Short name", value.stringEquals("Финляндия"))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsText("Short name", value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(178));
-        list.filter(without(containsText("Short name", value.stringEquals("Финляндия")).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsText("Short name", value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(17));
-
-        list.filter(with(containsText("Number", value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsText("Number", value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(72));
-        list.filter(with(containsText("Number", value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsText("Number", value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(123));
-
-        list.filter(without(containsText("Number", value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsText("Number", value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(123));
-        list.filter(without(containsText("Number", value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsText("Number", value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(72));
-    }
-
-    @Test
-    void webListFilterElementSelectedConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(selected(from(CountryBlock.class).checkbox())))
-                .shouldHaveSize(value.intEquals(6));
-        list.filter(with(selected(from(CountryBlock.class).checkbox()).inverse()))
-                .shouldHaveSize(value.intEquals(189));
-
-        list.filter(without(selected(from(CountryBlock.class).checkbox())))
-                .shouldHaveSize(value.intEquals(189));
-        list.filter(without(selected(from(CountryBlock.class).checkbox()).inverse()))
-                .shouldHaveSize(value.intEquals(6));
-
-        // By Element name
-        list.filter(with(selected("Select")))
-                .shouldHaveSize(value.intEquals(6));
-        list.filter(with(selected("Select").inverse()))
-                .shouldHaveSize(value.intEquals(189));
-
-        list.filter(without(selected("Select")))
-                .shouldHaveSize(value.intEquals(189));
-        list.filter(without(selected("Select").inverse()))
-                .shouldHaveSize(value.intEquals(6));
-    }
-
-    @Test
-    void webListFilterElementPropertyConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика"))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(5));
-        list.filter(with(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика")).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(190));
-
-        list.filter(without(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика"))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(190));
-        list.filter(without(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика")).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsProperty(from(CountryBlock.class).fullName(), "prompt", value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(5));
-
-        // By Element name
-        list.filter(with(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика"))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsProperty("Full name", "prompt", value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(5));
-        list.filter(with(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика")).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsProperty("Full name", "prompt", value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(190));
-
-        list.filter(without(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика"))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsProperty("Full name", "prompt", value.stringStartsWith("М"))))
-                .shouldHaveSize(value.intEquals(190));
-        list.filter(without(containsProperty("Full name", "prompt", value.stringEquals("Финляндская Республика")).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsProperty("Full name", "prompt", value.stringStartsWith("М")).inverse()))
-                .shouldHaveSize(value.intEquals(5));
-    }
-
-    @Test
-    void webListFilterElementPresentConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(present(from(CountryBlock.class).shortName())))
-                .shouldHaveSize(value.intEquals(193));
-        list.filter(with(present(from(CountryBlock.class).shortName()).inverse()))
-                .shouldHaveSize(value.intEquals(2));
-
-        list.filter(without(present(from(CountryBlock.class).shortName())))
-                .shouldHaveSize(value.intEquals(2));
-        list.filter(without(present(from(CountryBlock.class).shortName()).inverse()))
-                .shouldHaveSize(value.intEquals(193));
-
-        // By Element name
-        list.filter(with(present("Short name")))
-                .shouldHaveSize(value.intEquals(193));
-        list.filter(with(present("Short name").inverse()))
-                .shouldHaveSize(value.intEquals(2));
-
-        list.filter(without(present("Short name")))
-                .shouldHaveSize(value.intEquals(2));
-        list.filter(without(present("Short name").inverse()))
-                .shouldHaveSize(value.intEquals(193));
-    }
-
-    @Test
-    void webListFilterElementLabelConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.stringEquals("86"))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.stringStartsWith("15"))))
-                .shouldHaveSize(value.intEquals(11));
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.stringEquals("86")).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.stringStartsWith("15")).inverse()))
-                .shouldHaveSize(value.intEquals(184));
-
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.stringEquals("86"))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.stringStartsWith("15"))))
-                .shouldHaveSize(value.intEquals(184));
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.stringEquals("86")).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.stringStartsWith("15")).inverse()))
-                .shouldHaveSize(value.intEquals(11));
-
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(72));
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsLabel(from(CountryBlock.class).checkbox(), value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(123));
-
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(123));
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsLabel(from(CountryBlock.class).checkbox(), value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(72));
-
-        // By Element name
-        list.filter(with(containsLabel("Select", value.stringEquals("86"))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsLabel("Select", value.stringStartsWith("15"))))
-                .shouldHaveSize(value.intEquals(11));
-        list.filter(with(containsLabel("Select", value.stringEquals("86")).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsLabel("Select", value.stringStartsWith("15")).inverse()))
-                .shouldHaveSize(value.intEquals(184));
-
-        list.filter(without(containsLabel("Select", value.stringEquals("86"))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsLabel("Select", value.stringStartsWith("15"))))
-                .shouldHaveSize(value.intEquals(184));
-        list.filter(without(containsLabel("Select", value.stringEquals("86")).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsLabel("Select", value.stringStartsWith("15")).inverse()))
-                .shouldHaveSize(value.intEquals(11));
-
-        list.filter(with(containsLabel("Select", value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(with(containsLabel("Select", value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(72));
-        list.filter(with(containsLabel("Select", value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(with(containsLabel("Select", value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(123));
-
-        list.filter(without(containsLabel("Select", value.intEquals(77))))
-                .shouldHaveSize(value.intEquals(194));
-        list.filter(without(containsLabel("Select", value.intGreaterThanOrEqual(124))))
-                .shouldHaveSize(value.intEquals(123));
-        list.filter(without(containsLabel("Select", value.intEquals(77)).inverse()))
-                .shouldHaveSize(value.intEquals(1));
-        list.filter(without(containsLabel("Select", value.intGreaterThanOrEqual(124)).inverse()))
-                .shouldHaveSize(value.intEquals(72));
-    }
-
-    @Test
-    void webListFilterElementEnabledConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(enabled(from(CountryBlock.class).checkbox())))
-                .shouldHaveSize(value.intEquals(189));
-        list.filter(with(disabled(from(CountryBlock.class).checkbox())))
-                .shouldHaveSize(value.intEquals(6));
-
-        list.filter(without(enabled(from(CountryBlock.class).checkbox())))
-                .shouldHaveSize(value.intEquals(6));
-        list.filter(without(disabled(from(CountryBlock.class).checkbox())))
-                .shouldHaveSize(value.intEquals(189));
-
-        // By Element name
-        list.filter(with(enabled("Select")))
-                .shouldHaveSize(value.intEquals(189));
-        list.filter(with(disabled("Select")))
-                .shouldHaveSize(value.intEquals(6));
-
-        list.filter(without(enabled("Select")))
-                .shouldHaveSize(value.intEquals(6));
-        list.filter(without(disabled("Select")))
-                .shouldHaveSize(value.intEquals(189));
-    }
-
-    @Test
-    void webListFilterElementDisplayedConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        // Для элементов, которых нет в DOM
-        list.filter(with(displayed(from(CountryBlock.class).shortName())))
-                .shouldHaveSize(value.intEquals(193));
-        list.filter(with(displayed(from(CountryBlock.class).shortName()).inverse()))
-                .shouldHaveSize(value.intEquals(2));
-
-        list.filter(without(displayed(from(CountryBlock.class).shortName())))
-                .shouldHaveSize(value.intEquals(2));
-        list.filter(without(displayed(from(CountryBlock.class).shortName()).inverse()))
-                .shouldHaveSize(value.intEquals(193));
-
-        // Для элементов, которые есть в DOM, но не отображаются
-        list.filter(with(displayed(from(CountryBlock.class).populationUnit())))
-                .shouldHaveSize(value.intEquals(186));
-        list.filter(with(displayed(from(CountryBlock.class).populationUnit()).inverse()))
-                .shouldHaveSize(value.intEquals(9));
-
-        list.filter(without(displayed(from(CountryBlock.class).populationUnit())))
-                .shouldHaveSize(value.intEquals(9));
-        list.filter(without(displayed(from(CountryBlock.class).populationUnit()).inverse()))
-                .shouldHaveSize(value.intEquals(186));
-
-        // By Element name
-        // Для элементов, которых нет в DOM
-        list.filter(with(displayed("Short name")))
-                .shouldHaveSize(value.intEquals(193));
-        list.filter(with(displayed("Short name").inverse()))
-                .shouldHaveSize(value.intEquals(2));
-
-        list.filter(without(displayed("Short name")))
-                .shouldHaveSize(value.intEquals(2));
-        list.filter(without(displayed("Short name").inverse()))
-                .shouldHaveSize(value.intEquals(193));
-
-        // Для элементов, которые есть в DOM, но не отображаются
-        list.filter(with(displayed("Population unit")))
-                .shouldHaveSize(value.intEquals(186));
-        list.filter(with(displayed("Population unit").inverse()))
-                .shouldHaveSize(value.intEquals(9));
-
-        list.filter(without(displayed("Population unit")))
-                .shouldHaveSize(value.intEquals(9));
-        list.filter(without(displayed("Population unit").inverse()))
-                .shouldHaveSize(value.intEquals(186));
-    }
-
-    @Test
-    void webListFilterElementComponentPresentConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(componentPresent(from(CountryBlock.class).shortName(), "Self")))
-                .shouldHaveSize(value.intEquals(193));
-        list.filter(with(componentPresent(from(CountryBlock.class).shortName(), "Self").inverse()))
-                .shouldHaveSize(value.intEquals(2));
-
-        list.filter(without(componentPresent(from(CountryBlock.class).shortName(), "Self")))
-                .shouldHaveSize(value.intEquals(2));
-        list.filter(without(componentPresent(from(CountryBlock.class).shortName(), "Self").inverse()))
-                .shouldHaveSize(value.intEquals(193));
-
-        // By Element name
-        list.filter(with(componentPresent("Short name", "Self")))
-                .shouldHaveSize(value.intEquals(193));
-        list.filter(with(componentPresent("Short name", "Self").inverse()))
-                .shouldHaveSize(value.intEquals(2));
-
-        list.filter(without(componentPresent("Short name", "Self")))
-                .shouldHaveSize(value.intEquals(2));
-        list.filter(without(componentPresent("Short name", "Self").inverse()))
-                .shouldHaveSize(value.intEquals(193));
-
-        WebListFilter filter = list
-                .filter(with(componentPresent(from(CountryBlock.class).shortName(), "Unknown")));
-        NumberValue<Integer> expectedValue = value.intEquals(200);
-        assertThrows(LocatorNotDeclaredException.class, () -> filter.shouldHaveSize(expectedValue));
-    }
-
-    // TODO: То же самое для поиска элемента по имени
-    @Test
-    void webListFilterElementComponentDisplayedConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-        // By Element
-        list.filter(with(componentDisplayed(from(CountryBlock.class).populationUnit(), "Self")))
-                .shouldHaveSize(value.intEquals(186));
-        list.filter(with(componentDisplayed(from(CountryBlock.class).populationUnit(), "Self").inverse()))
-                .shouldHaveSize(value.intEquals(9));
-
-        list.filter(without(componentDisplayed(from(CountryBlock.class).populationUnit(), "Self")))
-                .shouldHaveSize(value.intEquals(9));
-        list.filter(without(componentDisplayed(from(CountryBlock.class).populationUnit(), "Self").inverse()))
-                .shouldHaveSize(value.intEquals(186));
-
-        // By Element name
-        list.filter(with(componentDisplayed("Population unit", "Self")))
-                .shouldHaveSize(value.intEquals(186));
-        list.filter(with(componentDisplayed("Population unit", "Self").inverse()))
-                .shouldHaveSize(value.intEquals(9));
-
-        list.filter(without(componentDisplayed("Population unit", "Self")))
-                .shouldHaveSize(value.intEquals(9));
-        list.filter(without(componentDisplayed("Population unit", "Self").inverse()))
-                .shouldHaveSize(value.intEquals(186));
-
-        WebListFilter filter = list
-                .filter(with(componentDisplayed(from(CountryBlock.class).shortName(), "Unknown")));
-        NumberValue<Integer> expectedValue = value.intEquals(200);
-        assertThrows(LocatorNotDeclaredException.class, () -> filter.shouldHaveSize(expectedValue));
-    }
-
-    // Extractors
-
-    @Test
-    void webListExtractorsTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("List Elements"));
-        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
-                .shouldBeDisplayed();
-
-
-    }
-
 
 }

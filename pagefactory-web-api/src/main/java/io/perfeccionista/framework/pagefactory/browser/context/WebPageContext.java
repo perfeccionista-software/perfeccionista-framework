@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.browser.context;
 
-import io.perfeccionista.framework.exceptions.SearchContextException;
+import io.perfeccionista.framework.exceptions.SearchContext;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.context.WebSearchContextLimiter;
@@ -32,11 +32,11 @@ public interface WebPageContext {
     default WebParentElement getSearchContext() {
         Stream<WebParentElement> contexts = getSearchContexts();
         if (contexts.count() > 1) {
-            throw new SearchContextException(CONTEXT_LIMITER_RETURN_MORE_THAN_ONE_SEARCH_CONTEXT.getMessage());
+            throw SearchContext.exception(CONTEXT_LIMITER_RETURN_MORE_THAN_ONE_SEARCH_CONTEXT.getMessage());
         }
         return contexts
                 .findFirst()
-                .orElseThrow(() -> new SearchContextException(CONTEXT_LIMITER_RETURN_NO_ONE_SEARCH_CONTEXT.getMessage()));
+                .orElseThrow(() -> SearchContext.exception(CONTEXT_LIMITER_RETURN_NO_ONE_SEARCH_CONTEXT.getMessage()));
     }
 
     WebPageContext resetSearchContextCache();

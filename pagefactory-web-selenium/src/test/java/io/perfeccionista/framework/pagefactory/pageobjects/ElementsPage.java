@@ -8,21 +8,18 @@ import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
-import io.perfeccionista.framework.pagefactory.elements.WebRadioGroupSeleniumImpl.DefaultWebRadioButtonMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
-import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
-import io.perfeccionista.framework.pagefactory.elements.interactions.WebElementInteraction;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementAction;
+import io.perfeccionista.framework.pagefactory.elements.interactions.base.WebElementInteraction;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
-import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.AltAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.NameAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.PlaceholderAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.pageobjects.extractors.SrcAttributeExtractor;
+import io.perfeccionista.framework.pagefactory.elements.properties.SrcAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.implementations.DoubleClickActionImplementation;
-import io.perfeccionista.framework.pagefactory.pageobjects.implementations.DragAndDropInteraction;
-import org.jetbrains.annotations.NotNull;
+import io.perfeccionista.framework.pagefactory.elements.interactions.JsDragAndDropInteraction;
 
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
@@ -139,15 +136,11 @@ public interface ElementsPage extends AbstractWebPage {
 
     @Name("RadioButton one")
     @WebLocator(xpath = ".//*[@id = 'radio-one']/parent::node()")
-    @WebLocator(component = FOCUS, xpath = ".//input")
     @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "radio-one"))
     WebRadioButton radioButtonOne();
 
     @Name("Radio group")
     @WebLocator(id = "radio-group")
-    @WebLocator(component = RADIO, xpath = ".//input[@type = 'radio']/parent::node()", single = false)
-    // Это дефолтная имплементация настроенного экземпляра кнопки, использовать эту аннотацию имеет смысл только если у вас она другая
-    // @UseWebMappedBlock(DefaultWebRadioButtonMappedBlock.class)
     WebRadioGroup radioGroup();
 
     @Name("RadioButton text")
@@ -169,7 +162,7 @@ public interface ElementsPage extends AbstractWebPage {
 
 
     @WebLocator(id = "drag-and-drop-source")
-    @WebElementInteraction(name = "Drag and Drop", implementation = DragAndDropInteraction.class)
+    @WebElementInteraction(name = "Drag and Drop", implementation = JsDragAndDropInteraction.class)
     WebTextBlock sourceBlock();
 
     @WebLocator(id = "drag-and-drop-target")

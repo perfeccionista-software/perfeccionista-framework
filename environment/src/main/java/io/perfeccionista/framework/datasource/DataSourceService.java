@@ -2,9 +2,9 @@ package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.exceptions.DataSourceNotFoundException;
-import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
-import io.perfeccionista.framework.exceptions.RegisterDuplicateException;
+import io.perfeccionista.framework.exceptions.DataSourceNotFound;
+import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
+import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 
@@ -28,7 +28,7 @@ public class DataSourceService implements Service {
         validatedConfiguration.getDataSources().forEach(dataSource -> {
             Class<? extends DataSource> dataSourceClass = dataSource.getClass();
             if (dataSourcesByClass.containsKey(dataSourceClass)) {
-                throw new RegisterDuplicateException(DATA_SOURCE_REGISTER_BY_CLASS_DUPLICATE.getMessage(dataSourceClass.getCanonicalName()));
+                throw RegisterDuplicate.exception(DATA_SOURCE_REGISTER_BY_CLASS_DUPLICATE.getMessage(dataSourceClass.getCanonicalName()));
             }
             dataSourcesByClass.put(dataSourceClass, dataSource);
         });
@@ -41,7 +41,7 @@ public class DataSourceService implements Service {
     public <T extends DataSource> T get(Class<T> dataSourceClass) {
         DataSource<?, ?> dataSource = dataSourcesByClass.get(dataSourceClass);
         if (null == dataSource) {
-            throw new DataSourceNotFoundException(DATA_SOURCE_NOT_FOUND_BY_CLASS.getMessage(dataSourceClass.getCanonicalName()));
+            throw DataSourceNotFound.exception(DATA_SOURCE_NOT_FOUND_BY_CLASS.getMessage(dataSourceClass.getCanonicalName()));
         }
         return (T) dataSourcesByClass.get(dataSourceClass);
     }
@@ -50,7 +50,7 @@ public class DataSourceService implements Service {
         if (validatedConfiguration.getDefaultDataSource().isPresent()) {
             return (T) validatedConfiguration.getDefaultDataSource().get();
         }
-        throw new DataSourceNotFoundException(DEFAULT_DATA_SOURCE_NOT_DECLARED.getMessage());
+        throw DataSourceNotFound.exception(DEFAULT_DATA_SOURCE_NOT_DECLARED.getMessage());
     }
 
     public Stream<DataSource<?, ?>> stream() {
@@ -61,7 +61,7 @@ public class DataSourceService implements Service {
         if (configuration instanceof DataSourceServiceConfiguration) {
             return (DataSourceServiceConfiguration) configuration;
         }
-        throw new IncorrectServiceConfigurationException(
+        throw IncorrectServiceConfiguration.exception(
                 CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 

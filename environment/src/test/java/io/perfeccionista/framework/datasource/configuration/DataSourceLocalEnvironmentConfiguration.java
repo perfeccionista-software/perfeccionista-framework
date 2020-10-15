@@ -25,7 +25,7 @@ public class DataSourceLocalEnvironmentConfiguration implements EnvironmentConfi
     }
 
     @Override
-    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+    public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
         return actionRunnerConfiguration;
     }
 

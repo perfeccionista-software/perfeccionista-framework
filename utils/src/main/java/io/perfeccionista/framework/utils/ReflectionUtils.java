@@ -1,9 +1,10 @@
 package io.perfeccionista.framework.utils;
 
-import io.perfeccionista.framework.exceptions.FieldAccessException;
-import io.perfeccionista.framework.exceptions.FieldNotFoundException;
+import io.perfeccionista.framework.exceptions.FieldAccess;
+import io.perfeccionista.framework.exceptions.FieldNotFound;
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.exceptions.ConstructorNotFoundException;
+import io.perfeccionista.framework.exceptions.ConstructorNotFound;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,7 +15,6 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CONSTRUCTOR_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FIELD_NOT_FOUND;
@@ -35,14 +35,13 @@ public final class ReflectionUtils {
      * @return экземпляр, записанный в переданном поле переданного объекта
      */
     @SuppressWarnings("unchecked")
-    public static <T> T readField(String fieldName, Object parentElement) {
+    public static <T> T readField(@NotNull String fieldName, @NotNull Object parentElement) {
         try {
             Field targetField = getAccessibleFieldWithInheritance(parentElement.getClass(), fieldName);
-            targetField.setAccessible(true);
             // TODO Проверить типы
             return (T) targetField.get(parentElement);
         } catch (IllegalAccessException e) {
-            throw new FieldAccessException(FIELD_READING_ERROR.getMessage(fieldName), e);
+            throw FieldAccess.exception(FIELD_READING_ERROR.getMessage(fieldName), e);
         }
     }
 
@@ -54,56 +53,55 @@ public final class ReflectionUtils {
      * @return объект
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Object> T writeField(String fieldName, T parentElement, Object value) {
+    public static <T extends Object> T writeField(@NotNull String fieldName, @NotNull T parentElement, @Nullable Object value) {
         try {
             Field targetField = getAccessibleFieldWithInheritance(parentElement.getClass(), fieldName);
-            targetField.setAccessible(true);
             targetField.set(parentElement, value);
             return parentElement;
         } catch (IllegalAccessException e) {
-            throw new FieldAccessException(FIELD_WRITING_ERROR.getMessage(fieldName), e);
+            throw FieldAccess.exception(FIELD_WRITING_ERROR.getMessage(fieldName), e);
         }
     }
 
     /**
-     * Проверяет что переданный экземпляр {@param originalInstance} является наследником класса {@param comparedClass}
-     * @param originalInstance экземпляр для проверки
-     * @param comparedClass    класс, по отношению к которому проводится проверка принадлежности
+     * Проверяет что переданный экземпляр {@param inheritorInstance} является наследником класса {@param ancestorClass}
+     * @param inheritorInstance экземпляр для проверки
+     * @param ancestorClass    класс, по отношению к которому проводится проверка принадлежности
      * @return является ли экземпляр наследником переданного класса
      */
-    public static boolean isSubtypeOf(@NotNull Object originalInstance, @NotNull Class<?> comparedClass) {
-        return isSubtypeOf(originalInstance.getClass(), comparedClass);
+    public static boolean isSubtypeOf(@NotNull Object inheritorInstance, @NotNull Class<?> ancestorClass) {
+        return isSubtypeOf(inheritorInstance.getClass(), ancestorClass);
     }
 
     /**
      * Проверка, что тип переданного поля является наследником от переданного класса.
      *
      * @param fieldToTest поле, тип которого нужно проверить
-     * @param clazz       класс, к которому проверяем приводимость - должен быть среди родителей
+     * @param ancestorClass       класс, к которому проверяем приводимость - должен быть среди родителей
      * @return является ли поле наследником переданного класса
      */
-    public static boolean isSubtypeOf(Field fieldToTest, Class<?> clazz) {
-        return isSubtypeOf(fieldToTest.getType(), clazz);
+    public static boolean isSubtypeOf(@NotNull Field fieldToTest, @NotNull Class<?> ancestorClass) {
+        return isSubtypeOf(fieldToTest.getType(), ancestorClass);
     }
 
     /**
-     * Проверяет что переданный класс {@param originalClass} является наследником класса {@param comparedClass}
-     * @param originalClass класс для проверки
-     * @param comparedClass класс, по отношению к которому проводится проверка принадлежности
-     * @return является ли класс {@param originalClass} наследником класса {@param comparedClass}
+     * Проверяет что переданный класс {@param inheritorClass} является наследником класса {@param ancestorClass}
+     * @param inheritorClass класс для проверки
+     * @param ancestorClass класс, по отношению к которому проводится проверка принадлежности
+     * @return является ли класс {@param inheritorClass} наследником класса {@param ancestorClass}
      */
-    public static boolean isSubtypeOf(@NotNull Class<?> originalClass, @NotNull Class<?> comparedClass) {
-        return comparedClass.isAssignableFrom(originalClass);
+    public static boolean isSubtypeOf(@NotNull Class<?> inheritorClass, @NotNull Class<?> ancestorClass) {
+        return ancestorClass.isAssignableFrom(inheritorClass);
     }
 
     /**
      * TODO: JavaDoc
      */
-    public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes) {
+    public static <T> Constructor<T> getConstructor(@NotNull Class<T> clazz, Class<?>... parameterTypes) {
         try {
             return clazz.getDeclaredConstructor(parameterTypes);
         } catch (NoSuchMethodException e) {
-            throw new ConstructorNotFoundException(CONSTRUCTOR_NOT_FOUND.getMessage(clazz.getCanonicalName(), parameterTypes));
+            throw ConstructorNotFound.exception(CONSTRUCTOR_NOT_FOUND.getMessage(clazz.getCanonicalName(), parameterTypes));
         }
     }
 
@@ -120,12 +118,12 @@ public final class ReflectionUtils {
      * @param fieldName имя поля
      * @return поле, объявленное доступным
      */
-    public static Field getAccessibleFieldWithInheritance(Class<?> processedClass, String fieldName) {
+    public static Field getAccessibleFieldWithInheritance(@NotNull Class<?> processedClass, @NotNull String fieldName) {
         Field targetField = getFieldsWithInheritance(processedClass)
                 .stream()
                 .filter(field -> field.getName().equals(fieldName))
                 .findFirst()
-                .orElseThrow(() -> new FieldNotFoundException(FIELD_NOT_FOUND.getMessage(processedClass.getCanonicalName(), fieldName)));
+                .orElseThrow(() -> FieldNotFound.exception(FIELD_NOT_FOUND.getMessage(processedClass.getCanonicalName(), fieldName)));
         targetField.setAccessible(true);
         return targetField;
     }
@@ -136,7 +134,7 @@ public final class ReflectionUtils {
      * @param clazz тип объекта
      * @return список всех полей класса с учетом полей в родителях
      */
-    public static List<Field> getFieldsWithInheritance(Class<?> clazz) {
+    public static List<Field> getFieldsWithInheritance(@NotNull Class<?> clazz) {
         List<Field> fields = new ArrayList<>();
         do {
             fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
@@ -175,10 +173,10 @@ public final class ReflectionUtils {
      * @param <T>       тип класса-ограничителя
      */
     @SuppressWarnings("unchecked")
-    public static <T> Deque<Class<T>> getClassInheritors(@NotNull Class<T> ancestorClass,
-                                                         @NotNull Class<? extends T> inheritorClass,
-                                                         @NotNull Order order) {
-        Deque<Class<T>> classChain = new ArrayDeque<>();
+    public static <T> Deque<Class<? extends T>> getInheritedClasses(@NotNull Class<T> ancestorClass,
+                                                                    @NotNull Class<? extends T> inheritorClass,
+                                                                    @NotNull Order order) {
+        Deque<Class<? extends T>> classChain = new ArrayDeque<>();
         Class<?> processedClass = inheritorClass;
         while (ancestorClass.isAssignableFrom(processedClass)) {
             if (order == Order.ASC) {
@@ -209,24 +207,36 @@ public final class ReflectionUtils {
      * @param <T>               тип класса-ограничителя
      */
     @SuppressWarnings("unchecked")
-    public static <T> Set<Class<? extends T>> getInheritedInterfaces(Class<T> ancestorInterface, Class<? extends T> processedInterface) {
-        Set<Class<? extends T>> result = new HashSet<>();
-        result.add(processedInterface);
-        for (Class<?> foundInterface : processedInterface.getInterfaces()) {
-            if (ancestorInterface.isAssignableFrom(foundInterface)) {
-                Class<? extends T> typifiedFoundInterface = (Class<? extends T>) foundInterface;
-                result.addAll(getInheritedInterfaces(ancestorInterface, typifiedFoundInterface));
-            }
-        }
-        return result;
+    public static <T> Deque<Class<? extends T>> getInheritedInterfaces(@NotNull Class<T> ancestorInterface,
+                                                                       @NotNull Class<? extends T> inheritorClass,
+                                                                       @NotNull Order order) {
+        return getAllInheritedInterfaces(new ArrayDeque<>(), ancestorInterface, inheritorClass, order);
     }
 
+    protected static <T> Deque<Class<? extends T>> getAllInheritedInterfaces(@NotNull Deque<Class<? extends T>> inheritedInterfacesCollector,
+                                                                             @NotNull Class<T> ancestorClass,
+                                                                             @NotNull Class<? extends T> inheritorClass,
+                                                                             @NotNull Order order) {
+        Class<?>[] inheritedInterfaces = inheritorClass.getInterfaces();
+        for (Class<?> inheritedInterface : inheritedInterfaces) {
+            if (ancestorClass.isAssignableFrom(inheritedInterface) && !inheritedInterfacesCollector.contains(inheritedInterface)) {
+                Class<? extends T> castedInheritedInterface = (Class<? extends T>) inheritedInterface;
+                if (Order.DESC == order) {
+                    inheritedInterfacesCollector.addLast(castedInheritedInterface);
+                } else {
+                    inheritedInterfacesCollector.addFirst(castedInheritedInterface);
+                }
+                getAllInheritedInterfaces(inheritedInterfacesCollector, ancestorClass, castedInheritedInterface, order);
+            }
+        }
+        return inheritedInterfacesCollector;
+    }
 
-    /**
-     *
-     */
     public enum Order {
-        ASC, DESC
+
+        ASC,
+        DESC
+
     }
 
 }

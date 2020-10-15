@@ -1,10 +1,13 @@
 package io.perfeccionista.framework.bdd.extractors.list;
 
-import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementDisplayedMarkExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class WebListBlockElementDisplayedMarkToStringExtractor implements WebListBlockValueExtractor<String> {
 
@@ -15,10 +18,10 @@ public class WebListBlockElementDisplayedMarkToStringExtractor implements WebLis
     }
 
     @Override
-    public MultipleResult<String> extractValues(WebList element, WebListFilter filter) {
+    public Map<Integer, String> extractValues(@NotNull WebListFilter filter) {
         return new WebListBlockElementDisplayedMarkExtractor(elementName)
-                .extractValues(element, filter)
-                .convert(displayedMark -> displayedMark ? "1" : "0");
+                .extractValues(filter).entrySet().stream()
+                .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue() ? "1" : "0"));
     }
 
 }

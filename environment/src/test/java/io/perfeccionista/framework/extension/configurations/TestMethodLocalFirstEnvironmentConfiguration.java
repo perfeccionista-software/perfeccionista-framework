@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 public class TestMethodLocalFirstEnvironmentConfiguration implements EnvironmentConfiguration {
 
     @Override
-    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+    public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
         return mock(InvocationRunnerConfiguration.class);
     }
 

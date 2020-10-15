@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.browser.window;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.measurements.Location;
+import io.perfeccionista.framework.measurements.Dimensions;
 
 public interface WindowDispatcher {
 

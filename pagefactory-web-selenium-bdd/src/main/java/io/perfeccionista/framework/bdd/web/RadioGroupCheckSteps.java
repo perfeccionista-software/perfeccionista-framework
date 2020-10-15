@@ -6,13 +6,21 @@ import io.perfeccionista.framework.bdd.parameters.ValueIntegerParameter;
 import io.perfeccionista.framework.bdd.parameters.ValueStringParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
-import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioButtonFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilder;
 import io.perfeccionista.framework.value.ValueService;
 import io.perfeccionista.framework.value.number.NumberValue;
 
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisabled;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beEnabled;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beSelected;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLabel;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeSelected;
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveIndex;
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveNotNullResults;
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
 import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.element;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.*;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditions.radioButtonIndex;
+import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsLabel;
+import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.radioButtonIndex;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 
 // TODO: Wrap runLogic()
@@ -29,7 +37,7 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
     public void radioGroupHasSize(WebElementParameter<WebRadioGroup> elementFinder,
                                   ValueIntegerParameter integerValue) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHaveSize(integerValue.getValue()));
+                .forEachOrdered(element -> element.should(haveSize(integerValue.getValue())));
     }
 
     /**
@@ -41,11 +49,11 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
     @Given("в {webElement} содержится {integerValue} кноп(ка|ки|ок), где")
     public void filteredRadioGroupHasSize(WebElementParameter<WebRadioGroup> elementFinder,
                                           ValueIntegerParameter integerValue,
-                                          WebRadioButtonFilterBuilder itemFilter) {
+                                          WebRadioGroupFilterBuilder itemFilter) {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
-                        .shouldHaveSize(integerValue.getValue()));
+                        .should(haveSize(integerValue.getValue())));
     }
 
     /**
@@ -61,7 +69,7 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(containsLabel(labelValue.getValue())))
-                        .shouldHaveSize(expectedCount));
+                        .should(haveSize(expectedCount)));
     }
 
     /**
@@ -77,7 +85,7 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(radioButtonIndex(indexValue.getValue())))
-                        .shouldHaveSize(expectedCount));
+                        .should(haveSize(expectedCount)));
     }
 
     /**
@@ -93,7 +101,7 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(containsLabel(labelValue.getValue())))
-                        .shouldHaveSize(expectedCount));
+                        .should(haveSize(expectedCount)));
     }
 
     /**
@@ -109,7 +117,7 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(radioButtonIndex(indexValue.getValue())))
-                        .shouldHaveSize(expectedCount));
+                        .should(haveSize(expectedCount)));
     }
 
     /**
@@ -124,8 +132,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldBeSelected());
+                        .extractOne(element()).getValue()
+                        .should(beSelected()));
     }
 
     /**
@@ -140,8 +148,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(radioButtonIndex(indexValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldBeSelected());
+                        .extractOne(element()).getValue()
+                        .should(beSelected()));
     }
 
     /**
@@ -156,8 +164,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldNotBeSelected());
+                        .extractOne(element()).getValue()
+                        .should(notBeSelected()));
     }
 
     /**
@@ -172,8 +180,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(radioButtonIndex(indexValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldNotBeSelected());
+                        .extractOne(element()).getValue()
+                        .should(notBeSelected()));
     }
 
     /**
@@ -188,8 +196,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldBeEnabled());
+                        .extractOne(element()).getValue()
+                        .should(beEnabled()));
     }
 
     /**
@@ -204,8 +212,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(radioButtonIndex(indexValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldBeEnabled());
+                        .extractOne(element()).getValue()
+                        .should(beEnabled()));
     }
 
     /**
@@ -220,8 +228,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldBeDisabled());
+                        .extractOne(element()).getValue()
+                        .should(beDisabled()));
     }
 
     /**
@@ -236,8 +244,8 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(radioButtonIndex(indexValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldBeDisabled());
+                        .extractOne(element()).getValue()
+                        .should(beDisabled()));
     }
 
     /**
@@ -254,8 +262,7 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element())
-                        .shouldHaveIndex(indexValue.getValue()));
+                        .should(haveIndex(indexValue.getValue())));
     }
 
     /**
@@ -272,8 +279,10 @@ public class RadioGroupCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(with(radioButtonIndex(indexValue.getValue())))
-                        .extractOne(element()).get()
-                        .shouldHaveLabel(labelValue.getValue()));
+                        .extractOne(element())
+                        .should(haveNotNullResults())
+                        .getValue()
+                        .should(haveLabel(labelValue.getValue())));
     }
 
 }

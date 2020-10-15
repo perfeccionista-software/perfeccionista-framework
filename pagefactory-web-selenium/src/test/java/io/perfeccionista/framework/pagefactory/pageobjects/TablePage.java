@@ -1,15 +1,15 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebCheckbox;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
-import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumn;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedTableColumns;
-import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumn;
+import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumns;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.TitleAttributeExtractor;
@@ -24,28 +24,28 @@ public interface TablePage extends AbstractWebPage {
 
     @Name("Table of countries")
     @WebLocator(tagName = "table", invokeOnCall = {CheckIsDisplayed.class})
-    @UseWebMappedTableColumns({
-            @UseWebMappedTableColumn(name = CHECKBOX,
-                    headerClass = HeaderWebMappedBlock.class, headerLocator = @WebLocator(xpath = ".//th[1]"),
-                    bodyClass = CheckboxWebMappedBlock.class, bodyLocator = @WebLocator(xpath = ".//td[1]")),
-            @UseWebMappedTableColumn(name = NUMBER,
-                    headerClass = HeaderWebMappedBlock.class, headerLocator = @WebLocator(xpath = ".//th[2]"),
-                    bodyClass = CountryNumberWebMappedBlock.class, bodyLocator = @WebLocator(xpath = ".//td[2]")),
-            @UseWebMappedTableColumn(name = SHORT_NAME,
-                    headerClass = HeaderWebMappedBlock.class, headerLocator = @WebLocator(xpath = ".//th[3]"),
-                    bodyClass = ShortNameWebMappedBlock.class, bodyLocator = @WebLocator(xpath = ".//td[3]")),
-            @UseWebMappedTableColumn(name = FULL_NAME,
-                    headerClass = HeaderWebMappedBlock.class, headerLocator = @WebLocator(xpath = ".//th[4]"),
-                    bodyClass = FullNameWebMappedBlock.class, bodyLocator = @WebLocator(xpath = ".//td[4]")),
-            @UseWebMappedTableColumn(name = POPULATION,
-                    headerClass = HeaderWebMappedBlock.class, headerLocator = @WebLocator(xpath = ".//th[5]"),
-                    bodyClass = PopulationWebMappedBlock.class, bodyLocator = @WebLocator(xpath = ".//td[5]"))
+    @UseMappedWebTableColumns({
+            @UseMappedWebTableColumn(name = CHECKBOX,
+                    headerClass = HeaderWebBlock.class, headerLocator = @WebLocator(xpath = ".//th[1]"),
+                    bodyClass = CheckboxWebBlock.class, bodyLocator = @WebLocator(xpath = ".//td[1]")),
+            @UseMappedWebTableColumn(name = NUMBER,
+                    headerClass = HeaderWebBlock.class, headerLocator = @WebLocator(xpath = ".//th[2]"),
+                    bodyClass = CountryNumberWebBlock.class, bodyLocator = @WebLocator(xpath = ".//td[2]")),
+            @UseMappedWebTableColumn(name = SHORT_NAME,
+                    headerClass = HeaderWebBlock.class, headerLocator = @WebLocator(xpath = ".//th[3]"),
+                    bodyClass = ShortNameWebBlock.class, bodyLocator = @WebLocator(xpath = ".//td[3]")),
+            @UseMappedWebTableColumn(name = FULL_NAME,
+                    headerClass = HeaderWebBlock.class, headerLocator = @WebLocator(xpath = ".//th[4]"),
+                    bodyClass = FullNameWebBlock.class, bodyLocator = @WebLocator(xpath = ".//td[4]")),
+            @UseMappedWebTableColumn(name = POPULATION,
+                    headerClass = HeaderWebBlock.class, headerLocator = @WebLocator(xpath = ".//th[5]"),
+                    bodyClass = PopulationWebBlock.class, bodyLocator = @WebLocator(xpath = ".//td[5]"))
     })
     WebTable table();
 
     // WebMappedBlocks
 
-    interface HeaderWebMappedBlock extends WebMappedBlock {
+    interface HeaderWebBlock extends WebBlock {
 
         @Name("Title")
         @WebLocator(xpath = "self::node()")
@@ -56,7 +56,7 @@ public interface TablePage extends AbstractWebPage {
 
     }
 
-    interface CheckboxWebMappedBlock extends WebMappedBlock {
+    interface CheckboxWebBlock extends WebBlock {
 
         @Name("Select")
         @WebLocator(xpath = ".//input[@itemid = 'checkbox']/parent::node()")
@@ -64,7 +64,7 @@ public interface TablePage extends AbstractWebPage {
 
     }
 
-    interface CountryNumberWebMappedBlock extends WebMappedBlock {
+    interface CountryNumberWebBlock extends WebBlock {
 
         @Name("Number")
         @WebLocator(xpath = "self::node()")
@@ -72,7 +72,7 @@ public interface TablePage extends AbstractWebPage {
 
     }
 
-    interface ShortNameWebMappedBlock extends WebMappedBlock {
+    interface ShortNameWebBlock extends WebBlock {
 
         @Name("Short name")
         @WebLocator(xpath = "self::node()//a[@itemid = 'country-name']", strictSearch = false) // В некоторых ячейках этого элемента нет
@@ -82,7 +82,7 @@ public interface TablePage extends AbstractWebPage {
 
     }
 
-    interface FullNameWebMappedBlock extends WebMappedBlock {
+    interface FullNameWebBlock extends WebBlock {
 
         @Name("Full name")
         @WebLocator(xpath = "self::node()//span[@itemid = 'country-full-name']", strictSearch = false)
@@ -92,7 +92,7 @@ public interface TablePage extends AbstractWebPage {
 
     }
 
-    interface PopulationWebMappedBlock extends WebMappedBlock {
+    interface PopulationWebBlock extends WebBlock {
 
         @Name("Population")
         @WebLocator(xpath = "self::node()//span[@itemid = 'population-number']")

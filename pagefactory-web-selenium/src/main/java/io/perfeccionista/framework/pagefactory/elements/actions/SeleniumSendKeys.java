@@ -1,49 +1,36 @@
 package io.perfeccionista.framework.pagefactory.elements.actions;
 
-import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
-import io.perfeccionista.framework.attachment.StringAttachmentEntry;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementActionImplementation;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetWebElement;
-import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
 import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
-import org.junit.platform.commons.util.ReflectionUtils;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.WebElement;
 
-import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
-
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
-import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
 public class SeleniumSendKeys implements WebElementActionImplementation<Void> {
-    private static final Duration SEND_KEYS_DELAY_IN_MILLISECONDS = Duration.ofMillis(100);
 
     @Override
-    public Void execute(WebChildElement element, Object... args) {
-        List<CharSequence> keysToSend = (List<CharSequence>) args[0];
-        GetWebElement getWebElementFunction = ReflectionUtils.newInstance(GetWebElement.class);
-        JsOperation<WebElement> operation = JsOperation.of(element.getLocatorChainTo(INPUT), getWebElementFunction);
-        JsOperationResult<WebElement> operationResult = element.getWebBrowserDispatcher().executor().executeOperation(operation);
-        operationResult.ifException(exception -> {
-            throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
-        });
-        WebElement webElement = operationResult.singleResult().get();
-        keysToSend.forEach(charSequence -> {
-            element.getWebBrowserDispatcher().getExceptionMapper()
-                    .map(() -> webElement.sendKeys(charSequence), element.getElementIdentifier().getLastUsedName())
-                    .ifException(exception -> {
-                        throw exception.addAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                                .addAttachmentEntry(StringAttachmentEntry.of("Keys To Send", charSequence.toString()));
-                    });
-            sleep(SEND_KEYS_DELAY_IN_MILLISECONDS);
-        });
+    public Void execute(@NotNull WebChildElementBase element, Object... args) {
+        String keysToSend = (String) args[0];
+        JsOperation<WebElement> operation = JsOperation.of(element.getLocatorChainTo(INPUT), new GetWebElement());
+        JsOperationResult<WebElement> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeOperation(operation)
+                .ifException(exception -> {
+                    throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
+                });
+        WebElement webElement = operationResult.getResult();
+        element.getWebBrowserDispatcher().getExceptionMapper()
+                .map(() -> webElement.sendKeys(keysToSend), element.getElementIdentifier().getLastUsedName())
+                .ifException(exception -> {
+                    throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
+                            .addLastAttachmentEntry(StringAttachmentEntry.of("Keys", keysToSend));
+                });
         return null;
     }
 
-    @Override
-    public Optional<JsOperation<Void>> getJsOperation(WebChildElement element, Object... args) {
-        return Optional.empty();
-    }
 }

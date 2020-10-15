@@ -1,142 +1,69 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextBlockMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 public interface WebTextBlock extends WebChildElement,
-        GetTextAvailable {
+        GetTextAvailable, ClickAvailable {
 
     // Actions
-
     @Override
     WebTextBlock executeAction(@NotNull String name, Object... args);
-
     @Override
     WebTextBlock executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebTextBlock should(@NotNull WebTextBlockMatcher matcher);
     @Override
-    WebTextBlock should(WebAssertCondition assertCondition);
-
+    WebTextBlock should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebTextBlock should(WebAssertCondition assertCondition, InvocationName invocationName);
-
-    // Get Color
-
+    WebTextBlock should(@NotNull GetColorAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
+    WebTextBlock should(@NotNull GetDimensionsAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
+    WebTextBlock should(@NotNull GetLocationAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
+    WebTextBlock should(@NotNull GetScreenshotAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Location
-
+    WebTextBlock should(@NotNull IsDisplayedAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
+    WebTextBlock should(@NotNull IsInFocusAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
+    WebTextBlock should(@NotNull IsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
+    WebTextBlock should(@NotNull IsPresentAvailableMatcher matcher);
     @Override
-    WebTextBlock componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    // Get Text
-
+    WebTextBlock should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
-    WebTextBlock shouldHaveText(@NotNull StringValue expectedValue);
-
+    WebTextBlock should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebTextBlock shouldHaveText(@NotNull NumberValue<?> expectedValue);
+    WebTextBlock should(@NotNull GetTextAvailableMatcher matcher);
 
+    // Click
     @Override
-    WebTextBlock shouldNotHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextBlock shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
+    WebTextBlock click();
 
     // HoverTo
-
     @Override
     WebTextBlock hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebTextBlock shouldBeDisplayed();
-
-    @Override
-    WebTextBlock shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebTextBlock shouldBeInFocus();
-
-    @Override
-    WebTextBlock shouldNotBeInFocus();
-
-    // IsPresent
-
-    @Override
-    WebTextBlock shouldBePresent();
-
-    @Override
-    WebTextBlock shouldNotBePresent();
-
     // ScrollTo
-
     @Override
     WebTextBlock scrollTo();
-
-    // WebComponent
-
-    @Override
-    WebTextBlock componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextBlock componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextBlock componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebTextBlock componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebTextBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

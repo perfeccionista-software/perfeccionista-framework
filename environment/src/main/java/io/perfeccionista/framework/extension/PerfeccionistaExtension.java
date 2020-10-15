@@ -21,10 +21,10 @@ import org.junit.platform.engine.TestExecutionResult;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
 import io.perfeccionista.framework.UseEnvironmentConfiguration;
-import io.perfeccionista.framework.exceptions.EnvironmentNotDeclaredException;
-import io.perfeccionista.framework.exceptions.RepeatPolicyInitializationException;
-import io.perfeccionista.framework.exceptions.TestClassNotFoundException;
-import io.perfeccionista.framework.exceptions.TestMethodNotFoundException;
+import io.perfeccionista.framework.exceptions.EnvironmentNotConfigured;
+import io.perfeccionista.framework.exceptions.RepeatPolicyInitialization;
+import io.perfeccionista.framework.exceptions.TestClassNotFound;
+import io.perfeccionista.framework.exceptions.TestMethodNotFound;
 import io.perfeccionista.framework.repeater.NoRepeatPolicy;
 import io.perfeccionista.framework.repeater.RepeatPolicy;
 import io.perfeccionista.framework.repeater.TestRepeatedOnCondition;
@@ -75,10 +75,10 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        Class<?> testClass = context.getTestClass().orElseThrow(() ->
-                new TestClassNotFoundException(UNEXPECTED_TEST_CLASS_NOT_FOUND.getErrorMessage()));
-        Method testMethod = context.getTestMethod().orElseThrow(() ->
-                new TestMethodNotFoundException(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
+        Class<?> testClass = context.getTestClass()
+                .orElseThrow(() -> TestClassNotFound.exception(UNEXPECTED_TEST_CLASS_NOT_FOUND.getMessage()));
+        Method testMethod = context.getTestMethod()
+                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getMessage()));
         // Ищем конфигурацию для Environment для тестового метода
         Optional<Class<? extends EnvironmentConfiguration>> testMethodConfiguration = findEnvironmentConfiguration(testMethod);
         if (testMethodConfiguration.isPresent()) {
@@ -116,8 +116,8 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
         Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
-        Environment environment = environmentInstanceForCurrentThread.orElseThrow(() ->
-                new EnvironmentNotDeclaredException(ENVIRONMENT_NOT_DECLARED.getErrorMessage()));
+        Environment environment = environmentInstanceForCurrentThread
+                .orElseThrow(() -> EnvironmentNotConfigured.exception(ENVIRONMENT_NOT_DECLARED.getErrorMessage()));
         if (ValueService.class.isAssignableFrom(parameterContext.getParameter().getType())) {
             return environment.getService(ValueService.class);
         }
@@ -144,8 +144,8 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      */
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-        Method testMethod = context.getTestMethod().orElseThrow(() ->
-                new TestMethodNotFoundException(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
+        Method testMethod = context.getTestMethod()
+                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
 
         RepeatPolicy repeatPolicy = new NoRepeatPolicy();
 
@@ -160,7 +160,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
             Class<? extends RepeatPolicy> repeatPolicyClass = optionalAnnotation.get().value();
             if (!RepeatPolicy.class.equals(repeatPolicyClass)) {
                 if (org.junit.platform.commons.util.ReflectionUtils.isAbstract(repeatPolicyClass) || repeatPolicyClass.isInterface()) {
-                    throw new RepeatPolicyInitializationException(CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION.getMessage(repeatPolicyClass));
+                    throw RepeatPolicyInitialization.exception(CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION.getMessage(repeatPolicyClass));
                 }
                 repeatPolicy = newInstance(repeatPolicyClass);
             }
@@ -197,22 +197,22 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     @Override
     public void testSuccessful(ExtensionContext context) {
-        Method testMethod = context.getTestMethod().orElseThrow(() ->
-                new TestMethodNotFoundException(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
+        Method testMethod = context.getTestMethod()
+                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
         getThreadLocalTestResults(testMethod).addLast(TestExecutionResult.successful());
     }
 
     @Override
     public void testAborted(ExtensionContext context, Throwable cause) {
-        Method testMethod = context.getTestMethod().orElseThrow(() ->
-                new TestMethodNotFoundException(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
+        Method testMethod = context.getTestMethod()
+                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
         getThreadLocalTestResults(testMethod).addLast(TestExecutionResult.aborted(cause));
     }
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-        Method testMethod = context.getTestMethod().orElseThrow(() ->
-                new TestMethodNotFoundException(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
+        Method testMethod = context.getTestMethod()
+                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
         getThreadLocalTestResults(testMethod).addLast(TestExecutionResult.failed(cause));
     }
 
@@ -277,7 +277,8 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     protected void resolveActiveEnvironmentForTestMethod(Class<? extends EnvironmentConfiguration> configurationClass, Class<?> testClass) {
         EnvironmentConfiguration environmentConfiguration = newInstance(configurationClass);
         // Создаем новый экземпляр Environment для теста
-        Environment environmentInstance = createEnvironment(testClass, environmentConfiguration);
+        Environment environmentInstance = createEnvironment(testClass, environmentConfiguration)
+                .setEnvironmentForCurrentThread();
         activeEnvironment.set(environmentInstance);
         environmentInstance.getServices().forEach(Service::beforeTest);
     }

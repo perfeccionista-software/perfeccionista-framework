@@ -1,12 +1,12 @@
 package io.perfeccionista.framework.value.processor;
 
+import io.perfeccionista.framework.exceptions.StringValueParse.StringValueParseException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.SimpleParallelTest;
-import io.perfeccionista.framework.exceptions.StringValueParseException;
+import io.perfeccionista.framework.exceptions.StringValueParse;
 
-import java.math.BigDecimal;
 import java.util.Deque;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

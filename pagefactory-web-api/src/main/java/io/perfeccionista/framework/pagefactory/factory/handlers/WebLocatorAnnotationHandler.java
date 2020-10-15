@@ -3,14 +3,16 @@ package io.perfeccionista.framework.pagefactory.factory.handlers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.attachment.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.WebLocatorProcessingException;
+import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
+import io.perfeccionista.framework.exceptions.WebLocatorProcessing;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
+import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
@@ -19,6 +21,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_LOCATOR_STRATEGY_VALIDATION_FAILED;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CONTAINS_TEXT;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CSS;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.NAME;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TAG_NAME;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TEXT;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.XPATH;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
@@ -30,42 +40,37 @@ public class WebLocatorAnnotationHandler {
     private WebLocatorAnnotationHandler() {
     }
 
-    public static WebLocatorRegistry createWebLocatorRegistryFor(Class<? extends WebPage> webElementClass) {
+    public static @NotNull WebLocatorRegistry createWebLocatorRegistryFor(@NotNull Class<? extends WebPage> webElementClass) {
         Map<String, WebLocatorHolder> webLocators = new HashMap<>();
         findAllRepeatableAnnotationsInHierarchy(WebLocator.class, WebPage.class, webElementClass)
-                .forEach(webLocator -> {
-                    if (!webLocators.containsKey(webLocator.component())) {
-                        webLocators.put(webLocator.component(), createWebLocatorHolder(webLocator));
-                    }
-                });
+                .forEach(webLocator -> webLocators.put(webLocator.component(), createWebLocatorHolder(webLocator)));
         return WebLocatorRegistry.of(webLocators);
     }
 
-    public static WebLocatorRegistry createWebLocatorRegistryFor(WebChildElement webChildElement) {
-        Map<String, WebLocatorHolder> webLocators = new HashMap<>();
+    public static @NotNull WebLocatorRegistry createWebLocatorRegistryFor(@NotNull WebChildElement webChildElement,
+                                                                          @NotNull Method elementMethod,
+                                                                          @NotNull WebPageFactoryPreferences configuration) {
+        Map<String, WebLocatorHolder> webLocators = configuration
+                .getWebLocatorConfiguration(webChildElement.getClass())
+                .asMap();
         findAllRepeatableAnnotationsInHierarchy(WebLocator.class, WebChildElement.class, webChildElement.getClass())
-                .forEach(webLocator -> {
-                    if (!webLocators.containsKey(webLocator.component())) {
-                        webLocators.put(webLocator.component(), createWebLocatorHolder(webLocator));
-                    }
-                });
-        return WebLocatorRegistry.of(webLocators);
-    }
-
-    public static WebLocatorRegistry createWebLocatorRegistryFor(WebChildElement webChildElement, Method elementMethod) {
-        Map<String, WebLocatorHolder> webLocators = new HashMap<>();
+                .forEach(webLocator -> webLocators.put(webLocator.component(), createWebLocatorHolder(webLocator)));
         findRepeatableAnnotations(elementMethod, WebLocator.class)
                 .forEach(webLocator -> webLocators.put(webLocator.component(), createWebLocatorHolder(webLocator)));
-        findAllRepeatableAnnotationsInHierarchy(WebLocator.class, WebChildElement.class, webChildElement.getClass())
-                .forEach(webLocator -> {
-                    if (!webLocators.containsKey(webLocator.component())) {
-                        webLocators.put(webLocator.component(), createWebLocatorHolder(webLocator));
-                    }
-                });
         return WebLocatorRegistry.of(webLocators);
     }
 
-    public static WebLocatorHolder createWebLocatorHolder(WebLocator webLocator) {
+    public static @NotNull WebLocatorRegistry createWebLocatorRegistryFor(@NotNull WebChildElement webChildElement,
+                                                                          @NotNull WebPageFactoryPreferences configuration) {
+        Map<String, WebLocatorHolder> webLocators = configuration
+                .getWebLocatorConfiguration(webChildElement.getClass())
+                .asMap();
+        findAllRepeatableAnnotationsInHierarchy(WebLocator.class, WebChildElement.class, webChildElement.getClass())
+                .forEach(webLocator -> webLocators.put(webLocator.component(), createWebLocatorHolder(webLocator)));
+        return WebLocatorRegistry.of(webLocators);
+    }
+
+    public static @NotNull WebLocatorHolder createWebLocatorHolder(@NotNull WebLocator webLocator) {
         Optional<WebLocatorHolder> optionalWebLocatorHolder = createOptionalWebLocatorHolder(webLocator);
         if (optionalWebLocatorHolder.isPresent()) {
             WebLocatorHolder webLocatorHolder = optionalWebLocatorHolder.get();
@@ -77,50 +82,50 @@ public class WebLocatorAnnotationHandler {
             }
             return webLocatorHolder;
         }
-        throw new WebLocatorProcessingException(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
-                .addAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
+        throw WebLocatorProcessing.exception(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
+                .addLastAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
     }
 
     public static Optional<WebLocatorHolder> createOptionalWebLocatorHolder(WebLocator webLocator) {
         WebLocatorHolder webLocatorHolder = null;
         if (isNotBlank(webLocator.id())) {
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "id", webLocator.id());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), ID, webLocator.id());
         }
         if (isNotBlank(webLocator.css())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "css", webLocator.css());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), CSS, webLocator.css());
         }
         if (isNotBlank(webLocator.xpath())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "xpath", webLocator.xpath());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), XPATH, webLocator.xpath());
         }
         if (isNotBlank(webLocator.className())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "className", webLocator.className());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), CLASS_NAME, webLocator.className());
         }
         if (isNotBlank(webLocator.tagName())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "tagName", webLocator.tagName());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), TAG_NAME, webLocator.tagName());
         }
         if (isNotBlank(webLocator.name())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "name", webLocator.name());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), NAME, webLocator.name());
         }
         if (isNotBlank(webLocator.text())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "text", webLocator.text());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), TEXT, webLocator.text());
         }
         if (isNotBlank(webLocator.containsText())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
-            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), "containsText", webLocator.containsText());
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), CONTAINS_TEXT, webLocator.containsText());
         }
         return Optional.ofNullable(webLocatorHolder);
     }
 
     private static void checkWebLocatorStrategyIsEmpty(@Nullable WebLocatorHolder webLocatorHolder, WebLocator webLocator) {
         if (webLocatorHolder != null) {
-            throw new WebLocatorProcessingException(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
-                    .addAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
+            throw WebLocatorProcessing.exception(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
+                    .addLastAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
         }
     }
 

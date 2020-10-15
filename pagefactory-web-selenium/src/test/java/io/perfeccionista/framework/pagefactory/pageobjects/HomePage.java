@@ -1,19 +1,16 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
-import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
 import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
-import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.AltAttributeExtractor;
-
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SHOULD_HAVE_TEXT_METHOD;
 
 @Name("Main page")
 public interface HomePage extends AbstractWebPage {
@@ -35,7 +32,7 @@ public interface HomePage extends AbstractWebPage {
     @Name("первый Блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-first-group']")
     @WebLocator(component = WebComponents.LI, tagName = "img")
-    @UseWebMappedBlock(FlagBlock.class)
+    @UseMappedWebBlock(FlagBlock.class)
     WebList flagsFirstGroup();
 
     @Name("второй Текстовый блок")
@@ -45,7 +42,7 @@ public interface HomePage extends AbstractWebPage {
     @Name("второй Блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-second-group']")
     @WebLocator(component = WebComponents.LI, tagName = "img")
-    @UseWebMappedBlock(FlagBlock.class)
+    @UseMappedWebBlock(FlagBlock.class)
     WebList flagsSecondGroup();
 
     @Name("третий Текстовый блок")
@@ -66,7 +63,7 @@ public interface HomePage extends AbstractWebPage {
         return "Hello static";
     }
 
-    interface FlagBlock extends WebMappedBlock {
+    interface FlagBlock extends WebBlock {
 
         @Name("флаг")
         @WebLocator(css = ".img-thumbnail")

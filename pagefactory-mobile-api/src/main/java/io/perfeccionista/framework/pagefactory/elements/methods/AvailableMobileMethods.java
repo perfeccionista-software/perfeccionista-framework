@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.methods;
 
-public class AvailableMobileMethods extends AvailableElementMethods {
+public class AvailableMobileMethods  {
 
     public static final String CLEAR_METHOD = "Clear";
     public static final String CLOSE_METHOD = "Close";

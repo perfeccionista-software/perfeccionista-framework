@@ -1,39 +1,51 @@
 package io.perfeccionista.framework.bdd.extractors.table;
 
-import io.perfeccionista.framework.pagefactory.elements.WebTable;
+import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementDisplayedMarkExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class WebTableCellElementDisplayedMarkToStringExtractor implements WebTableCellValueExtractor<String> {
+
+    private TableSection section = TableSection.BODY;
 
     protected final String columnName;
     protected final String elementName;
 
-    public WebTableCellElementDisplayedMarkToStringExtractor(String columnName, String elementName) {
+    public WebTableCellElementDisplayedMarkToStringExtractor(@NotNull String columnName,
+                                                             @NotNull String elementName) {
         this.columnName = columnName;
         this.elementName = elementName;
     }
 
     @Override
-    public MultipleResult<String> extractHeaderValues(WebTable element) {
-        return new WebTableCellElementDisplayedMarkExtractor(columnName, elementName)
-                .extractHeaderValues(element)
-                .convert(displayedMark -> displayedMark ? "1" : "0");    }
-
-    @Override
-    public MultipleResult<String> extractFooterValues(WebTable element) {
-        return new WebTableCellElementDisplayedMarkExtractor(columnName, elementName)
-                .extractFooterValues(element)
-                .convert(displayedMark -> displayedMark ? "1" : "0");
+    public Map<Integer, String> extractValues(@NotNull WebTableFilter filter) {
+        WebTableCellElementDisplayedMarkExtractor extractor = new WebTableCellElementDisplayedMarkExtractor(columnName, elementName);
+        if (TableSection.HEADER == section) {
+            extractor.fromHeader();
+        }
+        if (TableSection.FOOTER == section) {
+            extractor.fromFooter();
+        }
+        return extractor.extractValues(filter).entrySet().stream()
+                .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue() ? "1" : "0"));
     }
 
     @Override
-    public MultipleResult<String> extractValues(WebTable element, WebTableFilter filter) {
-        return new WebTableCellElementDisplayedMarkExtractor(columnName, elementName)
-                .extractValues(element, filter)
-                .convert(displayedMark -> displayedMark ? "1" : "0");
+    public WebTableCellElementDisplayedMarkToStringExtractor fromHeader() {
+        this.section = TableSection.HEADER;
+        return this;
+    }
+
+    @Override
+    public WebTableCellElementDisplayedMarkToStringExtractor fromFooter() {
+        this.section = TableSection.FOOTER;
+        return this;
     }
 
 }

@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.attachment;
 
+import io.perfeccionista.framework.exceptions.attachments.Attachment;
+import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.SimpleParallelTest;
 
@@ -22,7 +24,7 @@ final class AttachmentTest extends SimpleParallelTest {
     @Test
     void notNullArgumentsTest() {
         Attachment attachment = Attachment.of();
-        assertThrows(IllegalArgumentException.class, () -> attachment.addAttachmentEntry(null));
+        assertThrows(IllegalArgumentException.class, () -> attachment.addLastAttachmentEntry(null));
         assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntriesByType(null));
         assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntry(null, "name"));
         assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntry(AttachmentEntry.class, null));

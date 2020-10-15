@@ -1,5 +1,9 @@
 package io.perfeccionista.framework.name;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.perfeccionista.framework.json.JsonSerializable;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 
 import java.util.HashSet;
@@ -7,7 +11,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class WebPageIdentifier {
+import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
+
+public class WebPageIdentifier implements JsonSerializable {
 
     private final Set<String> names;
     private final Set<String> urls;
@@ -65,6 +71,17 @@ public class WebPageIdentifier {
 
     public void forEachUrl(Consumer<String> consumer) {
         urls.forEach(consumer);
+    }
+
+    @Override
+    public JsonNode toJson() {
+        ObjectNode rootNode = createObjectNode()
+                .put("lastUsedName", lastUsedName);
+        ArrayNode namesNode = rootNode.putArray("names");
+        forEachName(namesNode::add);
+        ArrayNode urlsNode = rootNode.putArray("urls");
+        forEachUrl(urlsNode::add);
+        return rootNode;
     }
 
 }

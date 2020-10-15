@@ -22,6 +22,6 @@ public @interface IosElementProperty {
 
     IosLocator uiLocator();
 
-    Class<? extends MobileElementPropertyExtractor<MobileChildElement>> extractor();
+//    Class<? extends MobileElementPropertyExtractor<MobileChildElement>> extractor();
 
 }

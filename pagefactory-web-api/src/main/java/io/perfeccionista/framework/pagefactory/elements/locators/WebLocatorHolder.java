@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import io.perfeccionista.framework.utils.JsonUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
@@ -19,8 +20,8 @@ import static io.perfeccionista.framework.utils.JsonUtils.toPrettyJson;
 public class WebLocatorHolder {
 
     protected final String locatorId;
-    protected final String locatorComponent;
-    protected final String locatorStrategy;
+    protected String locatorComponent;
+    protected final WebLocatorStrategy locatorStrategy;
     protected final String locatorValue;
     protected Set<Integer> indexes;
     protected int index;
@@ -31,7 +32,7 @@ public class WebLocatorHolder {
     protected String expectedHash;
     protected Deque<JsFunction<Void>> invokeOnCallFunctions;
 
-    protected WebLocatorHolder(String locatorComponent, String locatorStrategy, String locatorValue) {
+    protected WebLocatorHolder(String locatorComponent, WebLocatorStrategy locatorStrategy, String locatorValue) {
         // TODO: Нужно формировать из pageObjectId(пейдж + блоки + филд) + ComponentName -> md5 (чтобы он был одинаковый для перерасчета)
 //        this.id = id;
         this.locatorId = UUID.randomUUID().toString();
@@ -48,8 +49,13 @@ public class WebLocatorHolder {
         this.invokeOnCallFunctions = new ArrayDeque<>();
     }
 
-    public static WebLocatorHolder of(String locatorComponent, String locatorStrategy, String locatorValue) {
+    public static WebLocatorHolder of(String locatorComponent, WebLocatorStrategy locatorStrategy, String locatorValue) {
         return new WebLocatorHolder(locatorComponent, locatorStrategy, locatorValue);
+    }
+
+    public WebLocatorHolder setLocatorComponent(@NotNull String locatorComponent) {
+        this.locatorComponent = locatorComponent;
+        return this;
     }
 
     public WebLocatorHolder setIndex(int index) {
@@ -88,6 +94,7 @@ public class WebLocatorHolder {
         return this;
     }
 
+    // TODO: Проверять на наличие дубликатов, что такой функции тут нет, иначе игнорировать добавление
     public WebLocatorHolder addInvokedOnCallFunction(JsFunction<Void> invokeOnCallFunction) {
         this.invokeOnCallFunctions.add(invokeOnCallFunction);
         return this;
@@ -106,7 +113,7 @@ public class WebLocatorHolder {
         return locatorComponent;
     }
 
-    public String getLocatorStrategy() {
+    public WebLocatorStrategy getLocatorStrategy() {
         return locatorStrategy;
     }
 
@@ -158,7 +165,7 @@ public class WebLocatorHolder {
         ObjectNode locatorNode = JsonUtils.createObjectNode()
                 .put("locatorId", this.locatorId)
                 .put("locatorComponent", this.locatorComponent)
-                .put("locatorStrategy", this.locatorStrategy)
+                .put("locatorStrategy", this.locatorStrategy.getStrategyName())
                 .put("locatorValue", this.locatorValue)
                 .put("single", this.single)
                 .put("strictSearch", this.strictSearch)

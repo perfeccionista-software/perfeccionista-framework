@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.browser.emulator;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.measurements.Location;
 
 public interface MouseEmulator {
 

@@ -14,30 +14,43 @@ import io.perfeccionista.framework.pagefactory.elements.methods.IsDisplayedAvail
 import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementComponentDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementComponentPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementEnabledCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementLabelCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementPropertyCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementSelectedCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockElementTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListBlockIndexCondition;
+import io.perfeccionista.framework.pagefactory.filter.WebFilterConditions;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
 
 // TODO: Реализации этих методов по хорошему тоже нужно куда-то вынести.
 //  Или просто для каждого модуля элементов иметь отдельную реализацию BDD
+//  Или вынести в конфигурацию, где можно для конкретного метода подложить другой кондишен.
+@BddFilterCondition(WebListFilterBuilder.class)
 public class WebListBddConditions {
+
+    /**
+     *
+     */
+    @Given("without filter")
+    @Given("без фильтра")
+    public WebListBlockCondition withEmptyCondition() {
+        return WebFilterConditions.allBlocks();
+    }
 
     /**
      *
      * @param blockIndex -
      */
-    @Given("index {integerValue}")
+    @Given("index is {integerValue}")
     @Given("индекс {integerValue}")
     public WebListBlockCondition withIndexCondition(ValueIntegerParameter blockIndex) {
-        return new WebListBlockIndexCondition(blockIndex.getValue());
+        return WebFilterConditions.blockIndex(blockIndex.getValue());
+    }
+
+    /**
+     *
+     * @param blockIndex -
+     */
+    @Given("index is not {integerValue}")
+    @Given("индекс не {integerValue}")
+    public WebListBlockCondition withoutIndexCondition(ValueIntegerParameter blockIndex) {
+        return WebFilterConditions.blockIndexNot(blockIndex.getValue());
     }
 
     /**
@@ -47,7 +60,7 @@ public class WebListBddConditions {
     @Given("{webElement} exists")
     @Given("{webElement} присутствует")
     public WebListBlockCondition withElementPresentCondition(WebElementParameter<IsPresentAvailable> elementFinder) {
-        return new WebListBlockElementPresentCondition(elementFinder.getRaw());
+        return WebFilterConditions.present(elementFinder.getRaw());
     }
 
     /**
@@ -57,7 +70,7 @@ public class WebListBddConditions {
     @Given("{webElement} does not exist")
     @Given("{webElement} отсутствует")
     public WebListBlockCondition withElementNotPresentCondition(WebElementParameter<IsPresentAvailable> elementFinder) {
-        return new WebListBlockElementPresentCondition(elementFinder.getRaw()).inverse();
+        return WebFilterConditions.notPresent(elementFinder.getRaw());
     }
 
     /**
@@ -67,7 +80,7 @@ public class WebListBddConditions {
     @Given("{webElement} is displayed")
     @Given("{webElement} отображается")
     public WebListBlockCondition withElementIsDisplayedCondition(WebElementParameter<IsDisplayedAvailable> elementFinder) {
-        return new WebListBlockElementDisplayedCondition(elementFinder.getRaw());
+        return WebFilterConditions.displayed(elementFinder.getRaw());
     }
 
     /**
@@ -77,7 +90,7 @@ public class WebListBddConditions {
     @Given("{webElement} is not displayed")
     @Given("{webElement} не отображается")
     public WebListBlockCondition withElementNotDisplayedCondition(WebElementParameter<IsDisplayedAvailable> elementFinder) {
-        return new WebListBlockElementDisplayedCondition(elementFinder.getRaw()).inverse();
+        return WebFilterConditions.notDisplayed(elementFinder.getRaw());
     }
 
     /**
@@ -87,7 +100,7 @@ public class WebListBddConditions {
     @Given("{webElement} is selected")
     @Given("{webElement} выделен(а|о)")
     public WebListBlockCondition withElementSelectedCondition(WebElementParameter<IsSelectedAvailable> elementFinder) {
-        return new WebListBlockElementSelectedCondition(elementFinder.getRaw());
+        return WebFilterConditions.selected(elementFinder.getRaw());
     }
 
     /**
@@ -97,7 +110,7 @@ public class WebListBddConditions {
     @Given("{webElement} is not selected")
     @Given("{webElement} не выделен(а|о)")
     public WebListBlockCondition withElementNotSelectedCondition(WebElementParameter<IsSelectedAvailable> elementFinder) {
-        return new WebListBlockElementSelectedCondition(elementFinder.getRaw()).inverse();
+        return WebFilterConditions.notSelected(elementFinder.getRaw());
     }
 
     /**
@@ -107,7 +120,7 @@ public class WebListBddConditions {
     @Given("{webElement} is enabled")
     @Given("{webElement} доступ(ен|но|на)")
     public WebListBlockCondition withElementEnabledCondition(WebElementParameter<IsEnabledAvailable> elementFinder) {
-        return new WebListBlockElementEnabledCondition(elementFinder.getRaw());
+        return WebFilterConditions.enabled(elementFinder.getRaw());
     }
 
     /**
@@ -117,7 +130,7 @@ public class WebListBddConditions {
     @Given("{webElement} is disabled")
     @Given("{webElement} недоступ(ен|но|на)")
     public WebListBlockCondition withElementDisabledCondition(WebElementParameter<IsEnabledAvailable> elementFinder) {
-        return new WebListBlockElementEnabledCondition(elementFinder.getRaw()).inverse();
+        return WebFilterConditions.disabled(elementFinder.getRaw());
     }
 
     /**
@@ -129,7 +142,7 @@ public class WebListBddConditions {
     @Given("{webElement} содержит {stringValue}")
     public WebListBlockCondition withElementContainsTextCondition(WebElementParameter<GetTextAvailable> elementFinder,
                                                                   ValueStringParameter expectedText) {
-        return new WebListBlockElementTextCondition(elementFinder.getRaw(), expectedText.getValue());
+        return WebFilterConditions.containsText(elementFinder.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -141,7 +154,7 @@ public class WebListBddConditions {
     @Given("{webElement} не содержит {stringValue}")
     public WebListBlockCondition withElementNotContainsTextCondition(WebElementParameter<GetTextAvailable> elementFinder,
                                                                      ValueStringParameter expectedText) {
-        return new WebListBlockElementTextCondition(elementFinder.getRaw(), expectedText.getValue()).inverse();
+        return WebFilterConditions.notContainsText(elementFinder.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -153,7 +166,7 @@ public class WebListBddConditions {
     @Given("{webElement} содержит число {numberValue}")
     public WebListBlockCondition withElementContainsNumberCondition(WebElementParameter<GetTextAvailable> elementFinder,
                                                                     ValueNumberParameter expectedNumber) {
-        return new WebListBlockElementTextCondition(elementFinder.getRaw(), expectedNumber.getValue());
+        return WebFilterConditions.containsText(elementFinder.getRaw(), expectedNumber.getValue());
     }
 
     /**
@@ -165,7 +178,7 @@ public class WebListBddConditions {
     @Given("{webElement} не содержит число {numberValue}")
     public WebListBlockCondition withElementNotContainsNumberCondition(WebElementParameter<GetTextAvailable> elementFinder,
                                                                        ValueNumberParameter expectedNumber) {
-        return new WebListBlockElementTextCondition(elementFinder.getRaw(), expectedNumber.getValue()).inverse();
+        return WebFilterConditions.notContainsText(elementFinder.getRaw(), expectedNumber.getValue());
     }
 
     /**
@@ -177,7 +190,7 @@ public class WebListBddConditions {
     @Given("лейбл {webElement} содержит {stringValue}")
     public WebListBlockCondition withElementContainsLabelCondition(WebElementParameter<GetLabelAvailable> elementFinder,
                                                                    ValueStringParameter expectedText) {
-        return new WebListBlockElementLabelCondition(elementFinder.getRaw(), expectedText.getValue());
+        return WebFilterConditions.containsLabel(elementFinder.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -189,7 +202,7 @@ public class WebListBddConditions {
     @Given("лейбл {webElement} не содержит {stringValue}")
     public WebListBlockCondition withElementNotContainsLabelCondition(WebElementParameter<GetLabelAvailable> elementFinder,
                                                                       ValueStringParameter expectedText) {
-        return new WebListBlockElementLabelCondition(elementFinder.getRaw(), expectedText.getValue()).inverse();
+        return WebFilterConditions.notContainsLabel(elementFinder.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -201,7 +214,7 @@ public class WebListBddConditions {
     @Given("лейбл {webElement} содержит число {stringValue}")
     public WebListBlockCondition withElementContainsLabelNumberCondition(WebElementParameter<GetLabelAvailable> elementFinder,
                                                                          ValueNumberParameter expectedNumber) {
-        return new WebListBlockElementLabelCondition(elementFinder.getRaw(), expectedNumber.getValue());
+        return WebFilterConditions.containsLabel(elementFinder.getRaw(), expectedNumber.getValue());
     }
 
     /**
@@ -213,7 +226,7 @@ public class WebListBddConditions {
     @Given("лейбл {webElement} не содержит число {stringValue}")
     public WebListBlockCondition withElementNotContainsLabelNumberCondition(WebElementParameter<GetLabelAvailable> elementFinder,
                                                                             ValueNumberParameter expectedNumber) {
-        return new WebListBlockElementLabelCondition(elementFinder.getRaw(), expectedNumber.getValue()).inverse();
+        return WebFilterConditions.notContainsLabel(elementFinder.getRaw(), expectedNumber.getValue());
     }
 
     /**
@@ -224,7 +237,7 @@ public class WebListBddConditions {
     @Given("компонент {webElementComponent} элемента {webElement} присутствует")
     public WebListBlockCondition withElementsComponentPresentCondition(WebElementComponentParameter elementComponent,
                                                                        WebElementParameter<WebChildElement> elementFinder) {
-        return new WebListBlockElementComponentPresentCondition(elementFinder.getRaw(), elementComponent.getRaw());
+        return WebFilterConditions.componentPresent(elementFinder.getRaw(), elementComponent.getRaw());
     }
 
     /**
@@ -235,7 +248,7 @@ public class WebListBddConditions {
     @Given("компонент {webElementComponent} элемента {webElement} отсутствует")
     public WebListBlockCondition withElementsComponentNotPresentCondition(WebElementComponentParameter elementComponent,
                                                                           WebElementParameter<WebChildElement> elementFinder) {
-        return new WebListBlockElementComponentPresentCondition(elementFinder.getRaw(), elementComponent.getRaw()).inverse();
+        return WebFilterConditions.componentNotPresent(elementFinder.getRaw(), elementComponent.getRaw());
     }
 
     /**
@@ -246,7 +259,7 @@ public class WebListBddConditions {
     @Given("компонент {webElementComponent} элемента {webElement} отображается")
     public WebListBlockCondition withElementsComponentIsDisplayedCondition(WebElementComponentParameter elementComponent,
                                                                            WebElementParameter<WebChildElement> elementFinder) {
-        return new WebListBlockElementComponentDisplayedCondition(elementFinder.getRaw(), elementComponent.getRaw());
+        return WebFilterConditions.componentDisplayed(elementFinder.getRaw(), elementComponent.getRaw());
     }
 
     /**
@@ -257,7 +270,7 @@ public class WebListBddConditions {
     @Given("компонент {webElementComponent} элемента {webElement} не отображается")
     public WebListBlockCondition withElementsComponentNotDisplayedCondition(WebElementComponentParameter elementComponent,
                                                                             WebElementParameter<WebChildElement> elementFinder) {
-        return new WebListBlockElementComponentDisplayedCondition(elementFinder.getRaw(), elementComponent.getRaw()).inverse();
+        return WebFilterConditions.componentNotDisplayed(elementFinder.getRaw(), elementComponent.getRaw());
     }
 
     /**
@@ -271,7 +284,7 @@ public class WebListBddConditions {
     public WebListBlockCondition withElementPropertyContainText(WebElementPropertyParameter elementProperty,
                                                                 WebElementParameter<WebChildElement> elementFinder,
                                                                 ValueStringParameter expectedText) {
-        return new WebListBlockElementPropertyCondition(elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue());
+        return WebFilterConditions.containsProperty(elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -285,8 +298,7 @@ public class WebListBddConditions {
     public WebListBlockCondition withElementPropertyDoesNotContainText(WebElementPropertyParameter elementProperty,
                                                                        WebElementParameter<WebChildElement> elementFinder,
                                                                        ValueStringParameter expectedText) {
-        return new WebListBlockElementPropertyCondition(elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue()).inverse();
-
+        return WebFilterConditions.notContainsProperty(elementFinder.getRaw(), elementProperty.getRaw(), expectedText.getValue());
     }
 
     /**
@@ -300,8 +312,7 @@ public class WebListBddConditions {
     public WebListBlockCondition withElementPropertyContainsNumber(WebElementPropertyParameter elementProperty,
                                                                    WebElementParameter<WebChildElement> elementFinder,
                                                                    ValueNumberParameter expectedNumber) {
-        return new WebListBlockElementPropertyCondition(elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue());
-
+        return WebFilterConditions.containsProperty(elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue());
     }
 
     /**
@@ -315,8 +326,7 @@ public class WebListBddConditions {
     public WebListBlockCondition withElementPropertyDoesNotContainNumber(WebElementPropertyParameter elementProperty,
                                                                          WebElementParameter<WebChildElement> elementFinder,
                                                                          ValueNumberParameter expectedNumber) {
-        return new WebListBlockElementPropertyCondition(elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue()).inverse();
-
+        return WebFilterConditions.notContainsProperty(elementFinder.getRaw(), elementProperty.getRaw(), expectedNumber.getValue());
     }
 
 }

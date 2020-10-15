@@ -1,16 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvailable;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.plugin.ActionMethodType;
-import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebMappedElementAction;
 
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLICK_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
 
-public interface ClickAvailable extends WebLocatorChainAvailable {
+public interface ClickAvailable extends WebChildElementBase {
 
     @ActionMethodType
-    @MappedElementAction(CLICK_METHOD)
-    WebChildElement click();
+    @WebMappedElementAction(CLICK_METHOD)
+    ClickAvailable click();
 
 }

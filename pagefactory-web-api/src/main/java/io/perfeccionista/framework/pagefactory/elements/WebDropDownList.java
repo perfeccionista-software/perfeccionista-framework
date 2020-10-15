@@ -1,201 +1,93 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOpenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.element.WebDropDownListMatcher;
+import io.perfeccionista.framework.matcher.element.WebListMatcher;
+import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.CloseAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.UL;
-
-@WebLocator(component = UL, xpath = ".//ul")
-@WebLocator(component = LABEL, xpath = "self::node()//label")
 public interface WebDropDownList extends WebList,
         ClickAvailable, GetTextAvailable, GetLabelAvailable, IsOpenAvailable, OpenAvailable, CloseAvailable {
 
     // Actions
-
     @Override
     WebDropDownList executeAction(@NotNull String name, Object... args);
-
     @Override
     WebDropDownList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebDropDownList should(@NotNull WebDropDownListMatcher matcher);
     @Override
-    WebDropDownList should(WebAssertCondition assertCondition);
-
+    WebDropDownList should(@NotNull WebListMatcher matcher);
     @Override
-    WebDropDownList should(WebAssertCondition assertCondition, InvocationName invocationName);
+    WebDropDownList should(@NotNull WebIndexesMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull WebChildElementMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull GetColorAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull GetDimensionsAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull GetLocationAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull GetScreenshotAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull IsDisplayedAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull IsInFocusAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull IsOnTheScreenAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull IsPresentAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull GetLabelAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull GetTextAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull IsOpenAvailableMatcher matcher);
 
     // Click
-
     @Override
     WebDropDownList click();
 
     // Close
-
     @Override
     WebDropDownList close();
 
-    // Get Color
-
-    @Override
-    WebDropDownList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    @Override
-    WebDropDownList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
-    @Override
-    WebDropDownList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    @Override
-    WebDropDownList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Label
-
-    @Override
-    WebDropDownList shouldHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebDropDownList shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebDropDownList shouldNotHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebDropDownList shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    // Get Location
-
-    @Override
-    WebDropDownList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    @Override
-    WebDropDownList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
-    @Override
-    WebDropDownList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    @Override
-    WebDropDownList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    // Get Text
-
-    @Override
-    WebDropDownList shouldHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebDropDownList shouldHaveText(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebDropDownList shouldNotHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebDropDownList shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
-
     // HoverTo
-
     @Override
     WebDropDownList hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebDropDownList shouldBeDisplayed();
-
-    @Override
-    WebDropDownList shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebDropDownList shouldBeInFocus();
-
-    @Override
-    WebDropDownList shouldNotBeInFocus();
-
-    // IsOpen
-
-    @Override
-    WebDropDownList shouldBeOpen();
-
-    @Override
-    WebDropDownList shouldBeClosed();
-
-    // IsPresent
-
-    @Override
-    WebDropDownList shouldBePresent();
-
-    @Override
-    WebDropDownList shouldNotBePresent();
-
     // Open
-
     @Override
     WebDropDownList open();
 
     // ScrollTo
-
     @Override
     WebDropDownList scrollTo();
-
-    // ScrollToElement
-
-    @Override
-    WebDropDownList scrollToElement(@NotNull WebListFilterBuilder filter);
-
-    // Size
-
-    @Override
-    WebDropDownList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
-
-    // WebComponents
-
-    @Override
-    WebDropDownList componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebDropDownList componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebDropDownList componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebDropDownList componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebDropDownList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebDropDownList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

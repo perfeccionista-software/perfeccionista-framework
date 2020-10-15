@@ -1,15 +1,19 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebImageMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 // TODO: Сделать встроенную проверку того, что это изображение (по тегу src)
@@ -17,8 +21,9 @@ import org.jetbrains.annotations.NotNull;
 public interface WebImage extends WebChildElement,
         ClickAvailable {
 
-    // Actions
+    WebImage saveToFile(@NotNull String filePath);
 
+    // Actions
     @Override
     WebImage executeAction(@NotNull String name, Object... args);
 
@@ -26,110 +31,40 @@ public interface WebImage extends WebChildElement,
     WebImage executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebImage should(@NotNull WebImageMatcher matcher);
     @Override
-    WebImage should(WebAssertCondition assertCondition);
-
+    WebImage should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebImage should(WebAssertCondition assertCondition, InvocationName invocationName);
+    WebImage should(@NotNull GetColorAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull GetDimensionsAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull GetLocationAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull GetScreenshotAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull IsDisplayedAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull IsInFocusAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull IsOnTheScreenAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull IsPresentAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull WebElementPropertyAvailableMatcher matcher);
 
     // Click
-
     @Override
     WebImage click();
 
-    // Get Color
-
-    @Override
-    WebImage componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    @Override
-    WebImage componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
-    @Override
-    WebImage componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    @Override
-    WebImage componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Location
-
-    @Override
-    WebImage componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    @Override
-    WebImage componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
-    @Override
-    WebImage componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    @Override
-    WebImage componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
     // HoverTo
-
     @Override
     WebImage hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebImage shouldBeDisplayed();
-
-    @Override
-    WebImage shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebImage shouldBeInFocus();
-
-    @Override
-    WebImage shouldNotBeInFocus();
-
-    // IsPresent
-
-    @Override
-    WebImage shouldBePresent();
-
-    @Override
-    WebImage shouldNotBePresent();
-
     // ScrollTo
-
     @Override
     WebImage scrollTo();
-
-    // WebComponents
-
-    @Override
-    WebImage componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebImage componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebImage componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebImage componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebImage shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebImage shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebImage shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebImage shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

@@ -16,11 +16,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
-import static io.perfeccionista.framework.invocation.wrappers.CheckActionWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TEXT;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
-public class GetAttributeTest {
+class GetAttributeTest {
 
     @Test
     void singleElementTest(Environment env, ValueService val) throws IOException {
@@ -28,22 +30,25 @@ public class GetAttributeTest {
                 .createDispatcher(val.stringProcess("${[props]browser}"))
                 .launch();
         chrome.tabs()
-                .openUrl(val.stringProcess("${[props]base_url}"));
+                .openUrl(val.stringProcess("${[props]start_url}"));
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addLocator(WebLocatorHolder.of("ROOT", "text", "Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new Click());
+                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
+            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         String placeholderValue = runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addLocator(WebLocatorHolder.of("ROOT", "id", "simple-input"));
+                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "simple-input"));
             JsOperation<String> getAttributeOperation = JsOperation.of(scrollToLocatorChain, new GetAttribute("placeholder"));
             return chrome.executor()
                     .executeOperation(getAttributeOperation)
-                    .singleResult().get();
+                    .ifException(e -> {
+                        throw e;
+                    })
+                    .getResult();
         });
         Assertions.assertEquals("Enter text", placeholderValue);
     }

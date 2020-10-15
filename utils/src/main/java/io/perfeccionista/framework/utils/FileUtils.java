@@ -1,14 +1,13 @@
 package io.perfeccionista.framework.utils;
 
-import io.perfeccionista.framework.exceptions.FileExistsException;
-import io.perfeccionista.framework.exceptions.FileNotExistsException;
+import io.perfeccionista.framework.exceptions.FileExists;
+import io.perfeccionista.framework.exceptions.FileNotExists;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -27,13 +26,15 @@ public class FileUtils {
 
     public static void shouldExist(@NotNull Path path) {
         if (!path.toFile().exists()) {
-            throw new FileNotExistsException(FILE_NOT_EXISTS.getMessage(path.toString()));
+            throw FileNotExists.exception(FILE_NOT_EXISTS.getMessage(path.toString()))
+                    .setProcessed(true);
         }
     }
 
     public static void shouldBeMissing(@NotNull Path path) {
         if (path.toFile().exists()) {
-            throw new FileExistsException(FILE_EXISTS.getMessage(path.toString()));
+            throw FileExists.exception(FILE_EXISTS.getMessage(path.toString()))
+                    .setProcessed(true);
         }
     }
 
@@ -100,7 +101,7 @@ public class FileUtils {
         return scriptBuilder.toString();
     }
 
-    public static boolean isExecutable(Path path) {
+    public static boolean isExecutable(@NotNull Path path) {
         return Files.isRegularFile(path) && Files.isReadable(path) && Files.isExecutable(path);
     }
 

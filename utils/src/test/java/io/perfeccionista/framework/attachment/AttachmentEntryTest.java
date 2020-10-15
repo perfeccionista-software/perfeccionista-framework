@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.attachment;
 
+import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;

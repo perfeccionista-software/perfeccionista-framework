@@ -7,10 +7,12 @@ import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
-@Tags(@Tag("Element"))
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveText;
+
+@Tag("Element")
 class WebElementActionTest extends AbstractUiTest {
 
     @Test
@@ -18,18 +20,23 @@ class WebElementActionTest extends AbstractUiTest {
         WebPageContext context = initWebPageContext(env, value);
         context.getPage(HomePage.class)
                 .leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
-        WebButton doubleClickButton = elementsPage.doubleClickButton()
-                .shouldBeDisplayed()
+        elementsPage.doubleClickButton()
+                .should(beDisplayed())
                 .scrollTo();
-        WebTextBlock doubleClickText = elementsPage.doubleClickText()
-                .shouldBeDisplayed()
-                .shouldHaveText(value.stringEmpty());
-        doubleClickButton.click();
-        doubleClickText.shouldHaveText(value.stringEmpty());
-        doubleClickButton.executeAction("Double click");
-        doubleClickText.shouldHaveText(value.stringEquals("Double click done"));
+        elementsPage.doubleClickText()
+                .should(beDisplayed())
+                .should(haveText(value.stringEmpty()));
+        elementsPage.doubleClickButton()
+                .click();
+        elementsPage.doubleClickText()
+                .should(haveText(value.stringEmpty()));
+        elementsPage.doubleClickButton()
+                .executeAction("Double click");
+        elementsPage.doubleClickText()
+                .should(haveText("Double click done"));
     }
 
 }

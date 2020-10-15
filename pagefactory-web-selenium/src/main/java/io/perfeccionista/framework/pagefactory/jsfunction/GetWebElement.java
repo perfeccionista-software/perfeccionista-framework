@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.jsfunction;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 

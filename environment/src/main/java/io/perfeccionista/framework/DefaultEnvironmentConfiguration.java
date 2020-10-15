@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
 
     @Override
-    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+    public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
         return new DefaultInvocationRunnerConfiguration();
     }
 

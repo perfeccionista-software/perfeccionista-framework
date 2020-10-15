@@ -22,7 +22,10 @@ public enum EnvironmentMessages implements Messages {
 
     DEFAULT_DATA_SOURCE_NOT_DECLARED("Default DataSource is not configured for DataSourceService"),
     ENVIRONMENT_NOT_DECLARED("Environment is not configured for test class and test method"),
+    ENVIRONMENT_NOT_INITIALIZED("Environment instance is not initialized for current thread"),
 
+    SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE("WebSingleResult has more than one value"),
+    SINGLE_RESULT_HAS_NO_VALUE("WebSingleResult has no value"),
     NUMBER_VALUE_TO_BIG_DECIMAL_PARSING_FAILED("String '%s' parsing to BigDecimal failed"),
     NUMBER_VALUE_TO_DOUBLE_PARSING_FAILED("String '%s' parsing to Double failed"),
     NUMBER_VALUE_TO_INTEGER_PARSING_FAILED("String '%s' parsing to Integer failed"),

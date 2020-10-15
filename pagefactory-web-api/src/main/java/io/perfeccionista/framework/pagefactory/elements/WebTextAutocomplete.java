@@ -1,213 +1,103 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOpenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextAutocompleteMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextDropDownListMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
+import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
+import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
-
-@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text']")
-@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text']")
-@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text']")
 public interface WebTextAutocomplete extends WebTextDropDownList,
         SendKeysAvailable, ClearAvailable {
 
     // Actions
-
     @Override
     WebTextAutocomplete executeAction(@NotNull String name, Object... args);
-
     @Override
     WebTextAutocomplete executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebTextAutocomplete should(@NotNull WebTextAutocompleteMatcher matcher);
     @Override
-    WebTextAutocomplete should(WebAssertCondition assertCondition);
-
+    WebTextAutocomplete should(@NotNull WebTextDropDownListMatcher matcher);
     @Override
-    WebTextAutocomplete should(WebAssertCondition assertCondition, InvocationName invocationName);
+    WebTextAutocomplete should(@NotNull WebTextListMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull WebIndexesMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull WebChildElementMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull GetColorAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull GetDimensionsAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull GetLocationAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull GetScreenshotAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull IsDisplayedAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull IsInFocusAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull IsOnTheScreenAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull IsPresentAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull GetLabelAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull GetTextAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull IsOpenAvailableMatcher matcher);
 
     // Clear
-
     @Override
     WebTextAutocomplete clear();
 
     // Click
-
     @Override
     WebTextAutocomplete click();
 
-    // ClickToElement
-
-    @Override
-    WebTextAutocomplete clickToElement(@NotNull WebTextListFilterBuilder filter);
-
     // Close
-
     @Override
     WebTextAutocomplete close();
 
-    // Get Color
-
-    @Override
-    WebTextAutocomplete componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    @Override
-    WebTextAutocomplete componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
-    @Override
-    WebTextAutocomplete componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    @Override
-    WebTextAutocomplete componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Label
-
-    @Override
-    WebTextAutocomplete shouldHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    // Get Location
-
-    @Override
-    WebTextAutocomplete componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    @Override
-    WebTextAutocomplete componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
-    @Override
-    WebTextAutocomplete componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    @Override
-    WebTextAutocomplete componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    // Get Text
-
-    @Override
-    WebTextAutocomplete shouldHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldHaveText(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
-
     // HoverTo
-
     @Override
     WebTextAutocomplete hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebTextAutocomplete shouldBeDisplayed();
-
-    @Override
-    WebTextAutocomplete shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebTextAutocomplete shouldBeInFocus();
-
-    @Override
-    WebTextAutocomplete shouldNotBeInFocus();
-
-    // IsOpen
-
-    @Override
-    WebTextAutocomplete shouldBeOpen();
-
-    @Override
-    WebTextAutocomplete shouldBeClosed();
-
-    // IsPresent
-
-    @Override
-    WebTextAutocomplete shouldBePresent();
-
-    @Override
-    WebTextAutocomplete shouldNotBePresent();
-
     // Open
-
     @Override
     WebTextAutocomplete open();
 
     // ScrollTo
-
     @Override
     WebTextAutocomplete scrollTo();
 
-    // ScrollToElement
-
-    @Override
-    WebTextAutocomplete scrollToElement(@NotNull WebTextListFilterBuilder filter);
-
     // SendKeys
-
     @Override
-    WebTextAutocomplete sendKeys(CharSequence... keys);
-
-    // Size
-
+    WebTextAutocomplete sendKeys(@NotNull String keys);
     @Override
-    WebTextAutocomplete shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
+    WebTextAutocomplete sendKeys(@NotNull KeysEventChain keyEvents);
 
-    // WebComponent
-
-    @Override
-    WebTextAutocomplete componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextAutocomplete componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextAutocomplete componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebTextAutocomplete componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebTextAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 }

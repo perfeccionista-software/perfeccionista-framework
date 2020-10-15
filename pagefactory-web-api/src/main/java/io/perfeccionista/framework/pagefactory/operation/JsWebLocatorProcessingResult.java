@@ -1,10 +1,15 @@
 package io.perfeccionista.framework.pagefactory.operation;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.perfeccionista.framework.json.JsonSerializable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class JsWebLocatorProcessingResult {
+import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
+
+public class JsWebLocatorProcessingResult implements JsonSerializable {
 
     private final long index;
     private final boolean found;
@@ -36,6 +41,15 @@ public class JsWebLocatorProcessingResult {
 
     public Optional<Boolean> getHashCorrect() {
         return Optional.ofNullable(hashCorrect);
+    }
+
+    @Override
+    public JsonNode toJson() {
+        return createObjectNode()
+                .put("index", index)
+                .put("found", found)
+                .put("hash", hash)
+                .put("hashCorrect", hashCorrect);
     }
 
 }

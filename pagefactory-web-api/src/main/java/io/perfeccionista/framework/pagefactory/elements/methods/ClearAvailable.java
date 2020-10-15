@@ -1,16 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvailable;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.plugin.ActionMethodType;
-import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebMappedElementAction;
 
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLEAR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLEAR_METHOD;
 
-public interface ClearAvailable extends WebLocatorChainAvailable {
+public interface ClearAvailable extends WebChildElementBase {
 
     @ActionMethodType
-    @MappedElementAction(CLEAR_METHOD)
-    WebChildElement clear();
+    @WebMappedElementAction(CLEAR_METHOD)
+    ClearAvailable clear();
 
 }

@@ -70,12 +70,13 @@ public class DefaultStringValue implements StringValue {
 
     @Override
     public String toString() {
-        return String.format("String value: {checker = %s; inverse = %s; rawExpected = '%s'; rawActual = '%s'}\n"
-                        + "    processedExpected = '%s'\n"
-                        + "      processedActual = '%s'",
-                stringChecker.getClass().getCanonicalName(), inverse, stringChecker.getExpected(), rawActual,
-                stringChecker.getProcessedExpected(),
-                processedActual);
+        return String.format("             Expected = '%s'\n"
+                           + "               Actual = '%s'\n"
+                           + "    processedExpected = '%s'\n"
+                           + "      processedActual = '%s'\n"
+                           + "String value parameters: {checker = %s; inverse = %s}",
+                stringChecker.getExpected(), rawActual, stringChecker.getProcessedExpected(), processedActual,
+                stringChecker.getClass().getCanonicalName(), inverse);
     }
 
 }

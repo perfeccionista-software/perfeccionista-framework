@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.bdd.parameters;
 
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
+import io.perfeccionista.framework.measurements.Dimensions;
 
 public class DimensionsParameterImpl implements DimensionsParameter {
 

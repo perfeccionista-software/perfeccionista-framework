@@ -1,151 +1,79 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebListMatcher;
+import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
+import io.perfeccionista.framework.pagefactory.elements.methods.ElementContainer;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+public interface WebList extends WebChildElement, ElementContainer<WebListFilter, WebListFilterBuilder> {
 
-@WebLocator(component = LI, xpath = ".//li", single = false)
-public interface WebList extends WebChildElement,
-        ScrollToElementAvailable<WebListFilterBuilder>, SizeAvailable {
+    @API(status = Status.MAINTAINED)
+    @NotNull WebListFrame<WebBlock> getWebListFrame();
 
+    // Extractor
+    @NotNull <V> WebMultipleIndexedResult<V, WebList> extractAll(@NotNull WebListBlockValueExtractor<V> extractor);
+
+    // Filter
+    @Override
     @NotNull WebListFilter filter(@NotNull WebListFilterBuilder filterBuilder);
 
-    @NotNull <V> MultipleResult<V> extractAll(@NotNull WebListBlockValueExtractor<V> extractor);
-
     // Actions
-
     @Override
     WebList executeAction(@NotNull String name, Object... args);
-
     @Override
     WebList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebList should(@NotNull WebListMatcher matcher);
+    WebList should(@NotNull WebIndexesMatcher matcher);
     @Override
-    WebList should(WebAssertCondition assertCondition);
-
+    WebList should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebList should(WebAssertCondition assertCondition, InvocationName invocationName);
-
-    // Get Color
-
+    WebList should(@NotNull GetColorAvailableMatcher matcher);
     @Override
-    WebList componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
+    WebList should(@NotNull GetDimensionsAvailableMatcher matcher);
     @Override
-    WebList componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
+    WebList should(@NotNull GetLocationAvailableMatcher matcher);
     @Override
-    WebList componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
+    WebList should(@NotNull GetScreenshotAvailableMatcher matcher);
     @Override
-    WebList componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Location
-
+    WebList should(@NotNull IsDisplayedAvailableMatcher matcher);
     @Override
-    WebList componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
+    WebList should(@NotNull IsInFocusAvailableMatcher matcher);
     @Override
-    WebList componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
+    WebList should(@NotNull IsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebList componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
+    WebList should(@NotNull IsPresentAvailableMatcher matcher);
     @Override
-    WebList componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
+    WebList should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebList should(@NotNull WebElementPropertyAvailableMatcher matcher);
 
     // HoverTo
-
     @Override
     WebList hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebList shouldBeDisplayed();
-
-    @Override
-    WebList shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebList shouldBeInFocus();
-
-    @Override
-    WebList shouldNotBeInFocus();
-
-    // IsPresent
-
-    @Override
-    WebList shouldBePresent();
-
-    @Override
-    WebList shouldNotBePresent();
-
     // ScrollTo
-
     @Override
     WebList scrollTo();
-
-    // ScrollToElement
-
-    @Override
-    WebList scrollToElement(@NotNull WebListFilterBuilder filter);
-
-    // Size
-
-    @Override
-    WebList shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
-
-    // WebComponents
-
-    @Override
-    WebList componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebList componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebList componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebList componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebList shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebList shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebList shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

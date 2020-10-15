@@ -6,6 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
@@ -25,12 +26,17 @@ public class JsOperation<R> {
         return new JsOperation<>(locatorChain, jsFunction);
     }
 
+    public JsFunction<R> getEndpointJsFunction() {
+        return endpointJsFunction;
+    }
+
     public WebLocatorChain getLocatorChain() {
         return locatorChain;
     }
 
-    public JsFunction<R> getEndpointJsFunction() {
-        return endpointJsFunction;
+    public JsOperation<R> updateLocatorChain(Consumer<WebLocatorChain> webLocatorChainUpdater) {
+        webLocatorChainUpdater.accept(locatorChain);
+        return this;
     }
 
     public JsOperation<R> withLogs() {

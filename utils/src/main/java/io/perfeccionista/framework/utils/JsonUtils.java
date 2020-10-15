@@ -4,41 +4,41 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.attachment.Attachment;
-import io.perfeccionista.framework.attachment.StringAttachmentEntry;
-import io.perfeccionista.framework.exceptions.JsonParseException;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
+import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.JsonParse;
+import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.JSON_OBJECT_PARSE_ERROR;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.JSON_STRING_PARSE_ERROR;
 
 public class JsonUtils {
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
-    // From documentation: Mapper instances are fully thread-safe
+
+    // Documentation said: Mapper instances are fully thread-safe
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private JsonUtils() {}
+    private JsonUtils() {
+    }
 
-    public static ObjectNode createObjectNode() {
+    public static @NotNull ObjectNode createObjectNode() {
         return objectMapper.createObjectNode();
     }
 
-    public static JsonNode parseJsonNode(String content) {
+    public static @NotNull JsonNode parseJsonNode(@NotNull String content) {
         try {
             return objectMapper.readTree(content);
         } catch (JsonProcessingException e) {
-            throw new JsonParseException(JSON_STRING_PARSE_ERROR.getMessage())
-                    .setAttachment(Attachment.of(StringAttachmentEntry.of("Json string", content)));
+            throw JsonParse.exception(JSON_STRING_PARSE_ERROR.getMessage())
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("Json string", content));
         }
     }
 
-    public static String toPrettyJson(JsonNode node) {
+    public static @NotNull String toPrettyJson(@NotNull JsonNode node) {
         try {
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
         } catch (JsonProcessingException e) {
-            throw new JsonParseException(JSON_OBJECT_PARSE_ERROR.getMessage())
-                    .setAttachment(Attachment.of(StringAttachmentEntry.of("Json object", node.asText())));
+            throw JsonParse.exception(JSON_OBJECT_PARSE_ERROR.getMessage())
+                    .addLastAttachmentEntry(JsonAttachmentEntry.of("Json object", node));
         }
     }
 

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.browser.dispatcher;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.SeleniumWebDriverBinaryNotDeclaredException;
+import io.perfeccionista.framework.exceptions.SeleniumWebDriverBinaryNotDeclared;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.configuration.WebDriverBinaryResolver;
 import io.perfeccionista.framework.pagefactory.browser.configuration.WebDriverTimeouts;
@@ -28,7 +28,7 @@ public class LocalWebBrowserSeleniumDispatcher<T extends RemoteWebDriver, C exte
     @Override
     public WebBrowserDispatcher launch() {
         Path localFilePath = this.binaryResolver.getPath()
-                .orElseThrow(() -> new SeleniumWebDriverBinaryNotDeclaredException(WEB_DRIVER_BINARY_NOT_DECLARED.getMessage(System.getProperty("os.name"))));
+                .orElseThrow(() -> SeleniumWebDriverBinaryNotDeclared.exception(WEB_DRIVER_BINARY_NOT_DECLARED.getMessage(System.getProperty("os.name"))));
         System.setProperty(webDriverType.getLinkedProperty(), localFilePath.toString());
         this.instance = newInstance(this.webDriverType.getWebDriverClass(), this.options);
         setTimeouts();

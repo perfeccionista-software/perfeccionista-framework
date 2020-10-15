@@ -1,12 +1,13 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.exceptions.ServiceNotFoundException;
+import io.perfeccionista.framework.exceptions.EnvironmentNotInitialized;
+import io.perfeccionista.framework.exceptions.ServiceNotFound;
 import io.perfeccionista.framework.utils.ReflectionUtils.Order;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.util.Preconditions;
-import io.perfeccionista.framework.exceptions.RegisterDuplicateException;
+import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import io.perfeccionista.framework.service.UseService;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_INITIALIZED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_NOT_FOUND;
 import static java.lang.Math.max;
 import static java.lang.String.format;
@@ -91,8 +93,7 @@ public class Environment {
                     SERVICE_REGISTER_CLASS_CAST.getMessage(service, serviceClass));
         }
         if (services.containsKey(serviceClass)) {
-            throw new RegisterDuplicateException(
-                    SERVICE_REGISTER_BY_CLASS_DUPLICATE.getMessage(service));
+            throw RegisterDuplicate.exception(SERVICE_REGISTER_BY_CLASS_DUPLICATE.getMessage(service));
         }
         services.put(serviceClass, service);
         return this;
@@ -112,7 +113,7 @@ public class Environment {
         if (services.containsKey(serviceClass)) {
             return serviceClass.cast(services.get(serviceClass));
         }
-        throw new ServiceNotFoundException(SERVICE_NOT_FOUND.getMessage(serviceClass.getCanonicalName()));
+        throw ServiceNotFound.exception(SERVICE_NOT_FOUND.getMessage(serviceClass.getCanonicalName()));
     }
 
     /**
@@ -157,11 +158,20 @@ public class Environment {
     }
 
     /**
+     * {@link Environment} для текущего {@link Thread}.
+     * В противном случае, выбрасывает исключение {@link io.perfeccionista.framework.exceptions.EnvironmentNotInitialized.EnvironmentNotInitializedException}
+     */
+    public static Environment getCurrent() {
+        return get().orElseThrow(() -> EnvironmentNotInitialized.exception(ENVIRONMENT_NOT_INITIALIZED.getMessage()));
+    }
+
+    /**
      * Привязывает этот экземпляр {@link Environment} к потоку,
      * в котором он создан {@link Thread}
      */
-    public void setEnvironmentForCurrentThread() {
+    public Environment setEnvironmentForCurrentThread() {
         INSTANCES.set(this);
+        return this;
     }
 
     // Check and Initialization
@@ -173,7 +183,7 @@ public class Environment {
     protected void checkEnvironmentConfiguration(@NotNull EnvironmentConfiguration environmentConfiguration) {
         Preconditions.notNull(environmentConfiguration.getEnvironmentClass(),
                 CHECK_ARGUMENT_MUST_NOT_BE_NULL.getMessage("Environment class"));
-        Preconditions.notNull(environmentConfiguration.getActionRunnerConfiguration(),
+        Preconditions.notNull(environmentConfiguration.getInvocationRunnerConfiguration(),
                 CHECK_ARGUMENT_MUST_NOT_BE_NULL.getMessage("ActionRunnerConfiguration"));
         Preconditions.notNull(environmentConfiguration.getRepeatPolicy(),
                 CHECK_ARGUMENT_MUST_NOT_BE_NULL.getMessage("RepeatPolicy"));
@@ -189,7 +199,7 @@ public class Environment {
         EnvironmentLogger environmentLogger = EnvironmentLogger.of(environmentConfiguration);
         Map<Class<? extends Service>, UseService> servicesMap = new HashMap<>();
 
-        ReflectionUtils.getClassInheritors(EnvironmentConfiguration.class, environmentConfiguration.getClass(), Order.ASC)
+        ReflectionUtils.getInheritedClasses(EnvironmentConfiguration.class, environmentConfiguration.getClass(), Order.ASC)
                 .forEach(configurationClass -> findRepeatableAnnotations(configurationClass, UseService.class)
                         .forEach(annotation -> servicesMap.put(annotation.service(), annotation)));
 
@@ -266,7 +276,7 @@ public class Environment {
         private EnvironmentLogger(EnvironmentConfiguration environmentConfiguration) {
             this.environmentConfiguration = environmentConfiguration;
             column2 = getMaxLength(environmentConfiguration.getEnvironmentClass().getCanonicalName(), column2);
-            column2 = getMaxLength(environmentConfiguration.getActionRunnerConfiguration().getClass().getCanonicalName(), column2);
+            column2 = getMaxLength(environmentConfiguration.getInvocationRunnerConfiguration().getClass().getCanonicalName(), column2);
             column2 = getMaxLength(environmentConfiguration.getRepeatPolicy().getClass().getCanonicalName(), column2);
             column2 = getMaxLength(environmentConfiguration.getTimeouts().getClass().getCanonicalName(), column2);
         }
@@ -304,9 +314,9 @@ public class Environment {
                     .append(tab)
                     .append(formatToColumn(column2, environmentConfiguration.getEnvironmentClass().getCanonicalName())).append("\n");
             sb.append(tab)
-                    .append(formatToColumn(column1, "Action runner configuration"))
+                    .append(formatToColumn(column1, "Invocation runner configuration"))
                     .append(tab)
-                    .append(formatToColumn(column2, environmentConfiguration.getActionRunnerConfiguration().getClass().getCanonicalName())).append("\n");
+                    .append(formatToColumn(column2, environmentConfiguration.getInvocationRunnerConfiguration().getClass().getCanonicalName())).append("\n");
             sb.append(tab)
                     .append(formatToColumn(column1, "Repeat policy"))
                     .append(tab)

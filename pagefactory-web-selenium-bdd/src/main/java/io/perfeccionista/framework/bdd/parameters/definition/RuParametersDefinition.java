@@ -55,8 +55,9 @@ import io.perfeccionista.framework.bdd.parameters.WebTableColumnParameter;
 import io.perfeccionista.framework.bdd.parameters.WebTableColumnParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.WebTableValueExtractorParameter;
 import io.perfeccionista.framework.bdd.parameters.WebTableValueExtractorParameterImpl;
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.value.number.NumberValue;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.intellij.lang.annotations.Language;
 
 public class RuParametersDefinition implements EnvironmentAvailable {
@@ -91,7 +92,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
     }
 
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
-    public FixtureParameter<?> fixtureName(String fixtureName) {
+    public FixtureParameter<?, ?> fixtureName(String fixtureName) {
         return new FixtureParameterImpl<>();
     }
 
@@ -212,7 +213,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
 
     /**
      *
-     * @param value - строковое выражение для {@link io.perfeccionista.framework.value.number.NumberValue<Integer>}
+     * @param value - строковое выражение для {@link NumberValue <Integer>}
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ValueIntegerParameter integerValue(String value) {
@@ -221,7 +222,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
 
     /**
      *
-     * @param value - строковое выражение для {@link io.perfeccionista.framework.value.number.NumberValue<?>}
+     * @param value - строковое выражение для {@link NumberValue <?>}
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ValueNumberParameter numberValue(String value) {
@@ -230,7 +231,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
 
     /**
      *
-     * @param value - строковое выражение для {@link io.perfeccionista.framework.value.string.StringValue}
+     * @param value - строковое выражение для {@link StringValue}
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ValueStringParameter stringValue(String value) {
@@ -282,7 +283,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      * @param <T> - тип искомого элемента
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
-    public <T extends Element> WebElementParameter<T> webElement(String value) {
+    public <T extends WebChildElement> WebElementParameter<T> webElement(String value) {
         return new WebElementParameterImpl<>(environment, value);
     }
 

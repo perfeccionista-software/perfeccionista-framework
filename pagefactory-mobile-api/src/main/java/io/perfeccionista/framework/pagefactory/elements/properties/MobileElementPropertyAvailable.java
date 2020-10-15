@@ -1,15 +1,10 @@
 package io.perfeccionista.framework.pagefactory.elements.properties;
 
-import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
-import io.perfeccionista.framework.plugin.AssertMethodType;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
 
 import java.util.Optional;
 
 
-public interface MobileElementPropertyAvailable <T extends MobileElementPropertyHolder> extends Element {
+public interface MobileElementPropertyAvailable <T extends MobileElementPropertyHolder> {
 
     Optional<T> getProperty(String propertyName);
 

@@ -1,5 +1,6 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.exceptions.RegisterDuplicate.RegisterDuplicateException;
 import io.perfeccionista.framework.service.UseService;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
@@ -7,7 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
 import io.perfeccionista.framework.invocation.timeouts.Timeouts;
-import io.perfeccionista.framework.exceptions.RegisterDuplicateException;
 import io.perfeccionista.framework.repeater.RepeatPolicy;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-final class EnvironmentTest extends SimpleParallelTest {
+class EnvironmentTest extends SimpleParallelTest {
 
     @Test
     void initializationSuccessTest() {
@@ -104,7 +104,7 @@ final class EnvironmentTest extends SimpleParallelTest {
     static class TestEnvironmentConfiguration implements EnvironmentConfiguration {
 
         @Override
-        public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+        public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
             return mock(InvocationRunnerConfiguration.class);
         }
 

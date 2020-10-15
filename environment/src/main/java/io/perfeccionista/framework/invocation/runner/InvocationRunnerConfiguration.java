@@ -13,11 +13,11 @@ public interface InvocationRunnerConfiguration {
      * Для всех тестов используется дефолтная пустая обертка, которая возвращается этим методом.
      * Эта обертка используется для оборачивания вызова всего тела метода через интерфейс InvocationInterceptor
      *
-     * if (actionWrapper == MyClass.class) {
+     * if (invocationWrapper == MyClass.class) {
      *     return MyClassActionRunner.class;
      * }
      * return EmptyActionRunner.class;
      */
-    @NotNull Class<? extends InvocationRunner> getActionRunnerImplementation(@NotNull Class<?> actionWrapper);
+    @NotNull Class<? extends InvocationRunner> getInvocationRunnerImplementation(@NotNull Class<?> invocationWrapper);
 
 }

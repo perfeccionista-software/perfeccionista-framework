@@ -1,127 +1,65 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebBlockMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
+import io.perfeccionista.framework.pagefactory.factory.WebElementFrameFactory;
 import org.jetbrains.annotations.NotNull;
 
 public interface WebBlock extends WebChildElement, WebParentElement {
 
-    // Actions
+    static <T extends WebBlock> T frame(Class<T> blockClass) {
+        return WebElementFrameFactory.createWebBlockFrame(blockClass);
+    }
 
+    // Actions
     @Override
     WebBlock executeAction(@NotNull String name, Object... args);
-
     @Override
     WebBlock executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebBlock should(@NotNull WebBlockMatcher matcher);
     @Override
-    WebBlock should(WebAssertCondition assertCondition);
-
+    WebBlock should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebBlock should(WebAssertCondition assertCondition, InvocationName invocationName);
-
-    // Get Color
-
+    WebBlock should(@NotNull GetColorAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
+    WebBlock should(@NotNull GetDimensionsAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
+    WebBlock should(@NotNull GetLocationAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
+    WebBlock should(@NotNull GetScreenshotAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Location
-
+    WebBlock should(@NotNull IsDisplayedAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
+    WebBlock should(@NotNull IsInFocusAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
+    WebBlock should(@NotNull IsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
+    WebBlock should(@NotNull IsPresentAvailableMatcher matcher);
     @Override
-    WebBlock componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
+    WebBlock should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebBlock should(@NotNull WebElementPropertyAvailableMatcher matcher);
 
     // HoverTo
-
     @Override
     WebBlock hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebBlock shouldBeDisplayed();
-
-    @Override
-    WebBlock shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebBlock shouldBeInFocus();
-
-    @Override
-    WebBlock shouldNotBeInFocus();
-
-    // IsPresent
-
-    @Override
-    WebBlock shouldBePresent();
-
-    @Override
-    WebBlock shouldNotBePresent();
-
     // ScrollTo
-
     @Override
     WebBlock scrollTo();
-
-    // WebComponents
-
-    @Override
-    WebBlock componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebBlock componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebBlock componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebBlock componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebBlock shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebBlock shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

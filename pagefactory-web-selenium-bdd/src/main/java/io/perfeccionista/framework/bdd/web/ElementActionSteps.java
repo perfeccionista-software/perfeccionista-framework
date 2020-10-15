@@ -14,7 +14,6 @@ import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable
 import io.perfeccionista.framework.pagefactory.elements.methods.HoverToAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SubmitAvailable;
 
 import java.util.List;
 
@@ -208,17 +207,6 @@ public class ElementActionSteps implements EnvironmentAvailable {
     public void userPasteTextFromTheClipboardToTheElement(WebElementParameter<SendKeysAvailable> elementFinder) {
         elementFinder.find()
                 .forEachOrdered(element -> element.sendKeys(getFromClipboard()));
-    }
-
-    /**
-     *
-     * @param elementFinder -
-     */
-    @Given("user submits the form {webElement}")
-    @Given("пользователь отправляет форму {webElement}")
-    public void userSubmitsTheForm(WebElementParameter<SubmitAvailable> elementFinder) {
-        elementFinder.find()
-                .forEachOrdered(SubmitAvailable::submit);
     }
 
 }

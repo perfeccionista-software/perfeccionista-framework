@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public class DefaultInvocationRunnerConfiguration implements InvocationRunnerConfiguration {
 
     @Override
-    public @NotNull Class<? extends InvocationRunner> getActionRunnerImplementation(@NotNull Class<?> actionWrapper) {
+    public @NotNull Class<? extends InvocationRunner> getInvocationRunnerImplementation(@NotNull Class<?> invocationWrapper) {
         return EmptyInvocationRunner.class;
     }
 

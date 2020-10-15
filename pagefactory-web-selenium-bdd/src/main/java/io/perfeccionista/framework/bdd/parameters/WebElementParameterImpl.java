@@ -2,7 +2,6 @@ package io.perfeccionista.framework.bdd.parameters;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
 import java.util.List;
@@ -24,9 +23,9 @@ public class WebElementParameterImpl<T> implements WebElementParameter<T> {
     public T findSingle() {
         List<T> elements = find().collect(toList());
         if (elements.size() == 0) {
-            // no element found
+            // TODO: no element found
         } else if (elements.size() > 1) {
-            // more than one element found
+            // TODO: more than one element found
         }
         return elements.get(0);
     }

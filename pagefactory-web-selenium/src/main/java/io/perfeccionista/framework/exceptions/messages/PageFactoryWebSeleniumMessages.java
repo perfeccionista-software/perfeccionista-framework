@@ -9,7 +9,7 @@ public enum PageFactoryWebSeleniumMessages implements Messages {
     WEB_DRIVER_INTERNAL_ERROR("WebDriver internal error"),
 
     WEB_ELEMENT_CLICK_INTERCEPTED("Click on element %s was intercepted by another element"),
-    WEB_ELEMENT_NOT_INTRACTABLE("Element %s is not intractable"),
+    WEB_ELEMENT_NOT_INTRACTABLE("Selenium WebElement %s is not intractable"),
     WEB_ELEMENT_IS_STALE("Element %s has stale WebElement reference"),
 
 

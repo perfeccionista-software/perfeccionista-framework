@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static io.perfeccionista.framework.utils.ReflectionUtils.getClassInheritors;
+import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedClasses;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 
 public class AnnotationUtils {
@@ -20,7 +20,7 @@ public class AnnotationUtils {
     public static <A extends Annotation, T> Optional<A> findFirstAnnotationInHierarchy(@NotNull Class<A> annotationClass,
                                                                                        @NotNull Class<T> ancestorClass,
                                                                                        @NotNull Class<? extends T> inheritorClass) {
-        return getClassInheritors(ancestorClass, inheritorClass, Order.DESC).stream()
+        return getInheritedClasses(ancestorClass, inheritorClass, Order.DESC).stream()
                 .map(processedClass -> findAnnotation(processedClass, annotationClass))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -31,7 +31,7 @@ public class AnnotationUtils {
                                                                                             @NotNull Class<T> ancestorClass,
                                                                                             @NotNull Class<? extends T> inheritorClass) {
         List<A> annotationsList = new ArrayList<>();
-        return getClassInheritors(ancestorClass, inheritorClass, Order.DESC).stream()
+        return getInheritedClasses(ancestorClass, inheritorClass, Order.ASC).stream()
                 .map(processedClass -> findAllRepeatableAnnotationsInClassHierarchy(processedClass, annotationClass))
                 .reduce(annotationsList, (previousElement, nextElement) -> {
                     previousElement.addAll(nextElement);

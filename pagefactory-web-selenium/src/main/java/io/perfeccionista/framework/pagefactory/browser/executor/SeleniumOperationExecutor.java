@@ -19,7 +19,7 @@ public class SeleniumOperationExecutor implements OperationExecutor {
     protected final Environment environment;
     protected final RemoteWebDriver instance;
     protected final ExceptionMapper exceptionMapper;
-    protected final SeleniumJsRepository jsRepository;
+    protected final SeleniumJsFunctionRepository jsRepository;
 
     protected boolean withLogs = false;
 
@@ -27,7 +27,7 @@ public class SeleniumOperationExecutor implements OperationExecutor {
         this.environment = environment;
         this.instance = instance;
         this.exceptionMapper = exceptionMapper;
-        this.jsRepository = new SeleniumJsRepository(instance);
+        this.jsRepository = new SeleniumJsFunctionRepository(instance);
     }
 
     public SeleniumOperationExecutor withJsLogs() {
@@ -42,7 +42,7 @@ public class SeleniumOperationExecutor implements OperationExecutor {
             operation.withLogs();
         }
 
-        ScriptExecutionResult<T> result = ScriptExecutionResult.of(
+        SeleniumOperationExecutionResult<T> result = SeleniumOperationExecutionResult.of(
                 instance.executeScript(new LaunchOperationExecuting().getScript(), toPrettyJson(operation.toJson())),
                 operation.getEndpointJsFunction().getConverter()
         );

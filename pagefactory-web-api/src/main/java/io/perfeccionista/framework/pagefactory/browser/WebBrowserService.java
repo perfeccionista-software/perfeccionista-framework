@@ -1,8 +1,10 @@
 package io.perfeccionista.framework.pagefactory.browser;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.IncorrectServiceConfigurationException;
-import io.perfeccionista.framework.exceptions.WebBrowserServiceException;
+import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
+import io.perfeccionista.framework.exceptions.WebBrowserConfigurationNotFound;
+import io.perfeccionista.framework.exceptions.WebBrowserDispatcherNotStarted;
+import io.perfeccionista.framework.exceptions.WebBrowserExceptionMapperNotFound;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
@@ -17,9 +19,9 @@ import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.NO_ACTIVE_WEB_BROWSER_DISPATCHER_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.NO_EXCEPTION_MAPPER_BY_CLASS_DECLARED;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.NO_WEB_BROWSER_DISPATCHER_WITH_NAME_CREATED;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_CONFIGURATION_NOT_DECLARED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_EXCEPTION_MAPPER_BY_CLASS_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.NO_ACTIVE_WEB_BROWSER_DISPATCHER_WITH_NAME_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_CONFIGURATION_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_SERVICE_CONFIGURATION_NOT_DECLARED;
 
 public class WebBrowserService implements Service {
@@ -44,37 +46,37 @@ public class WebBrowserService implements Service {
         }
     }
 
-    public WebBrowserDispatcher createDispatcher(String webBrowserConfigurationName) {
+    public @NotNull WebBrowserDispatcher createDispatcher(@NotNull String webBrowserConfigurationName) {
         WebBrowserDispatcher webBrowserDispatcher = Optional.ofNullable(configuration.getWebBrowserConfigurations().get(webBrowserConfigurationName))
-                .orElseThrow(() -> new WebBrowserServiceException(WEB_BROWSER_CONFIGURATION_NOT_DECLARED.getMessage(webBrowserConfigurationName)))
+                .orElseThrow(() -> WebBrowserConfigurationNotFound.exception(WEB_BROWSER_CONFIGURATION_NOT_FOUND.getMessage(webBrowserConfigurationName)))
                 .get(environment);
         webBrowserDispatchers.add(webBrowserDispatcher);
         this.activeWebBrowserDispatcher = webBrowserDispatcher;
         return webBrowserDispatcher;
     }
 
-    public WebBrowserDispatcher createDispatcher(String webBrowserConfigurationName, String webBrowserDispatcherName) {
+    public @NotNull WebBrowserDispatcher createDispatcher(@NotNull String webBrowserConfigurationName, @NotNull String webBrowserDispatcherName) {
         WebBrowserDispatcher webBrowserDispatcher = Optional.ofNullable(configuration.getWebBrowserConfigurations().get(webBrowserConfigurationName))
-                .orElseThrow(() -> new WebBrowserServiceException(WEB_BROWSER_CONFIGURATION_NOT_DECLARED.getMessage(webBrowserConfigurationName)))
+                .orElseThrow(() -> WebBrowserConfigurationNotFound.exception(WEB_BROWSER_CONFIGURATION_NOT_FOUND.getMessage(webBrowserConfigurationName)))
                 .get(environment);
         webBrowserDispatchersByName.put(webBrowserDispatcherName, webBrowserDispatcher);
         this.activeWebBrowserDispatcher = webBrowserDispatcher;
         return webBrowserDispatcher;
     }
 
-    public WebBrowserDispatcher getActiveDispatcher() {
+    public @NotNull WebBrowserDispatcher getActiveDispatcher() {
         return Optional.ofNullable(activeWebBrowserDispatcher)
-                .orElseThrow(() -> new WebBrowserServiceException(NO_ACTIVE_WEB_BROWSER_DISPATCHER_FOUND.getMessage()));
+                .orElseThrow(() -> WebBrowserDispatcherNotStarted.exception(NO_ACTIVE_WEB_BROWSER_DISPATCHER_FOUND.getMessage()));
     }
 
-    public WebBrowserDispatcher setActiveDispatcher(String webBrowserDispatcherName) {
+    public @NotNull WebBrowserDispatcher setActiveDispatcher(@NotNull String webBrowserDispatcherName) {
         activeWebBrowserDispatcher = getDispatcherByName(webBrowserDispatcherName);
         return this.activeWebBrowserDispatcher;
     }
 
-    public WebBrowserDispatcher getDispatcherByName(String webBrowserDispatcherName) {
+    public @NotNull WebBrowserDispatcher getDispatcherByName(@NotNull String webBrowserDispatcherName) {
         return Optional.ofNullable(webBrowserDispatchersByName.get(webBrowserDispatcherName))
-                .orElseThrow(() -> new WebBrowserServiceException(NO_WEB_BROWSER_DISPATCHER_WITH_NAME_CREATED.getMessage(webBrowserDispatcherName)));
+                .orElseThrow(() -> WebBrowserDispatcherNotStarted.exception(NO_ACTIVE_WEB_BROWSER_DISPATCHER_WITH_NAME_FOUND.getMessage(webBrowserDispatcherName)));
     }
 
     public WebBrowserService closeAll() {
@@ -85,21 +87,21 @@ public class WebBrowserService implements Service {
         return this;
     }
 
-    public ExceptionMapper getExceptionMapper(Class<? extends ExceptionMapper> exceptionMapperClass) {
+    public @NotNull ExceptionMapper getExceptionMapper(@NotNull Class<? extends ExceptionMapper> exceptionMapperClass) {
         return Optional.ofNullable(this.configuration.getExceptionMappers().get(exceptionMapperClass))
-                .orElseThrow(() -> new WebBrowserServiceException(NO_EXCEPTION_MAPPER_BY_CLASS_DECLARED
-                        .getMessage(exceptionMapperClass.getCanonicalName())));
+                .orElseThrow(() -> WebBrowserExceptionMapperNotFound
+                        .exception(WEB_BROWSER_EXCEPTION_MAPPER_BY_CLASS_NOT_FOUND.getMessage(exceptionMapperClass.getCanonicalName())));
     }
 
     protected WebBrowserServiceConfiguration validate(ServiceConfiguration configuration) {
         if (configuration == null) {
-            throw new WebBrowserServiceException(WEB_BROWSER_SERVICE_CONFIGURATION_NOT_DECLARED.getMessage());
+            throw IncorrectServiceConfiguration.exception(WEB_BROWSER_SERVICE_CONFIGURATION_NOT_DECLARED.getMessage());
         }
         if (configuration instanceof WebBrowserServiceConfiguration) {
             return (WebBrowserServiceConfiguration) configuration;
         }
-        throw new IncorrectServiceConfigurationException(
-                CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
+        throw IncorrectServiceConfiguration
+                .exception(CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
 }

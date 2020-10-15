@@ -8,6 +8,10 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveNotNullResults;
+import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.row;
+import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textRow;
+
 // TODO: Wrap runLogic()
 // TODO: Add step categories
 public class TableActionSteps implements EnvironmentAvailable {
@@ -22,8 +26,11 @@ public class TableActionSteps implements EnvironmentAvailable {
     public void userScrollsTableToElement(WebElementParameter<WebTable> elementFinder,
                                           WebTableFilterBuilder itemFilter) {
         elementFinder.find()
-                .forEachOrdered(element -> element
-                        .scrollToElement(itemFilter));
+                .forEachOrdered(element -> element.filter(itemFilter)
+                        .extractOneRow(row())
+                        .should(haveNotNullResults())
+                        .getValue()
+                        .scrollTo());
     }
 
     /**
@@ -36,8 +43,11 @@ public class TableActionSteps implements EnvironmentAvailable {
     public void userScrollsTextTableToElement(WebElementParameter<WebTextTable> elementFinder,
                                               WebTextTableFilterBuilder itemFilter) {
         elementFinder.find()
-                .forEachOrdered(element -> element
-                        .scrollToElement(itemFilter));
+                .forEachOrdered(element -> element.filter(itemFilter)
+                        .extractOneRow(textRow())
+                        .should(haveNotNullResults())
+                        .getValue()
+                        .scrollTo());
     }
 
 }

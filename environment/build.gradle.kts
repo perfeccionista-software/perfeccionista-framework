@@ -1,5 +1,5 @@
 dependencies {
-    compile(project(":utils")) {
+    api(project(":utils")) {
         because("utils module contains tools for current module")
     }
 }

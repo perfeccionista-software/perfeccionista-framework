@@ -25,7 +25,7 @@ public class TestValueEnvironmentConfigurationWithoutDataConverterService implem
     }
 
     @Override
-    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+    public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
         return actionRunnerConfiguration;
     }
 

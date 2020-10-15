@@ -1,27 +1,24 @@
 package io.perfeccionista.framework.pagefactory.factory.proxy;
 
-import io.perfeccionista.framework.exceptions.ElementNotDeclaredException;
-import io.perfeccionista.framework.exceptions.UnimplementedMethodCallException;
+import io.perfeccionista.framework.exceptions.WebElementMethodNotImplemented;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import net.sf.cglib.proxy.InvocationHandler;
 
 import java.lang.reflect.Method;
-import java.util.Optional;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DECLARED;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.CALLED_METHOD_IS_NOT_IMPLEMENTED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_ELEMENT_METHOD_NOT_IMPLEMENTED;
 
 public class WebParentElementInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (isElementMethod(method)) {
-            Optional<WebChildElement> optionalElement = ((WebParentElement) proxy).getElementRegistry().getElementByMethod(method);
-            return optionalElement
-                    .orElseThrow(() -> new ElementNotDeclaredException(ELEMENT_NOT_DECLARED.getMessage(method.getName())));
+            return ((WebParentElement) proxy).getElementRegistry()
+                    .getRequiredElementByMethod(method);
         }
-        throw new UnimplementedMethodCallException(CALLED_METHOD_IS_NOT_IMPLEMENTED.getMessage());
+        // TODO: Добавить в сообщение об ошибке имя класса в котором вызывается метод
+        throw WebElementMethodNotImplemented.exception(WEB_ELEMENT_METHOD_NOT_IMPLEMENTED.getMessage(method.getName()));
     }
 
     /**

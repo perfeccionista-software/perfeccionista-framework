@@ -1,13 +1,13 @@
 package io.perfeccionista.framework.pagefactory.elements.context;
 
-import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 
 import java.util.stream.Stream;
 
-public class WebTableRowContextLimiter implements WebSearchContextLimiter<WebMappedBlock> {
+public class WebTableRowContextLimiter implements WebSearchContextLimiter<WebBlock> {
 
     public WebTableRowContextLimiter(WebTable element, WebTableFilterBuilder filter) {
 
@@ -18,22 +18,22 @@ public class WebTableRowContextLimiter implements WebSearchContextLimiter<WebMap
     }
 
     @Override
-    public WebSearchContextLimiter<WebMappedBlock> setParentContext(WebSearchContextLimiter<? extends WebParentElement> parentContext) {
+    public WebSearchContextLimiter<WebBlock> setParentContext(WebSearchContextLimiter<? extends WebParentElement> parentContext) {
         return null;
     }
 
     @Override
-    public WebSearchContextLimiter<WebMappedBlock> resetCachedElement() {
+    public WebSearchContextLimiter<WebBlock> resetCachedElement() {
         return null;
     }
 
     @Override
-    public Stream<WebMappedBlock> getContexts() {
+    public Stream<WebBlock> getContexts() {
         return null;
     }
 
     @Override
-    public WebMappedBlock getContext() {
+    public WebBlock getContext() {
         return null;
     }
 

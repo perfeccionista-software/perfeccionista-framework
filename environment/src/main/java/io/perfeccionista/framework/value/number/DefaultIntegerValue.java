@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.value.number;
 
-import io.perfeccionista.framework.exceptions.NumberValueParseException;
+import io.perfeccionista.framework.exceptions.NumberValueParse;
 import io.perfeccionista.framework.value.checker.NumberChecker;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +21,7 @@ public class DefaultIntegerValue extends AbstractNumberValue<Integer> {
             Integer actualValue = Integer.valueOf(actual);
             return check(actualValue);
         } catch (Exception e) {
-            throw new NumberValueParseException(NUMBER_VALUE_TO_INTEGER_PARSING_FAILED.getMessage(actual));
+            throw NumberValueParse.exception(NUMBER_VALUE_TO_INTEGER_PARSING_FAILED.getMessage(actual));
         }
     }
 

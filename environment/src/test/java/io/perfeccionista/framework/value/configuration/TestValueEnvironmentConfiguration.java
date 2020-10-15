@@ -27,7 +27,7 @@ public class TestValueEnvironmentConfiguration implements EnvironmentConfigurati
     }
 
     @Override
-    public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+    public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
         return actionRunnerConfiguration;
     }
 

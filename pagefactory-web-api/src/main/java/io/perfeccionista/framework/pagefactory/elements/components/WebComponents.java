@@ -21,6 +21,11 @@ public class WebComponents {
     public static final String CLEAR = "CLEAR";
     public static final String SELECTED = "SELECTED";
     public static final String ENABLED = "ENABLED";
+    /**
+     * Для тега img
+     */
+    public static final String IMAGE = "IMAGE";
+    public static final String PROPERTY = "PROPERTY";
 
     // WebRadioGroup
     public static final String RADIO = "RADIO";

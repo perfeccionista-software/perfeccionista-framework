@@ -1,16 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvailable;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.plugin.ActionMethodType;
-import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebMappedElementAction;
 
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.CLOSE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLOSE_METHOD;
 
-public interface CloseAvailable extends WebLocatorChainAvailable {
+public interface CloseAvailable extends WebChildElementBase {
 
     @ActionMethodType
-    @MappedElementAction(CLOSE_METHOD)
-    WebChildElement close();
+    @WebMappedElementAction(CLOSE_METHOD)
+    CloseAvailable close();
 
 }

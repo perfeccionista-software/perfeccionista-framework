@@ -52,9 +52,4 @@ public abstract class MobileSimpleTableImpl extends AbstractMobileChildElement i
 //        return getMethodImplementation(SIZE_METHOD, Integer.class).execute(this, TBODY_ROW);
 //    }
 
-    @Override
-    public Optional<MobileColumnMapper> getColumnMapper(String columnName) {
-        return Optional.ofNullable(columnMappers.get(columnName));
-    }
-
 }

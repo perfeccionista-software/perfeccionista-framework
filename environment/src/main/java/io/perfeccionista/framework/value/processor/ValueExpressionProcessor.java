@@ -1,17 +1,16 @@
 package io.perfeccionista.framework.value.processor;
 
+import io.perfeccionista.framework.exceptions.StringValueParse;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.junit.platform.commons.util.StringUtils;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.attachment.Attachment;
-import io.perfeccionista.framework.attachment.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
 import io.perfeccionista.framework.datasource.DataConverter;
 import io.perfeccionista.framework.datasource.DataSource;
 import io.perfeccionista.framework.datasource.NamedDataConverterService;
 import io.perfeccionista.framework.datasource.NamedDataSourceService;
-import io.perfeccionista.framework.exceptions.StringValueParseException;
 
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
@@ -134,8 +133,8 @@ public class ValueExpressionProcessor {
         }
 
         if (!expressionContext.isEmpty()) {
-            throw new StringValueParseException(STRING_VALUE_PARSING_FAILED.getMessage(expression)).setAttachment(Attachment.of(
-                    StringAttachmentEntry.of("Token", expressionContext.getFirst().toString())));
+            throw StringValueParse.exception(STRING_VALUE_PARSING_FAILED.getMessage(expression))
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("Token", expressionContext.getFirst().toString()));
         }
 
         if (escaped) {
@@ -207,9 +206,9 @@ public class ValueExpressionProcessor {
                 rawTokens = expressionResult.getRawTokens();
                 objectContent = expressionResult.getResult();
             } else {
-                throw new StringValueParseException(STRING_VALUE_PROCESSING_FAILED.getMessage(expression)).setAttachment(Attachment.of(
-                        StringAttachmentEntry.of("Tokenized expression", tokenizedExpression.toString()),
-                        StringAttachmentEntry.of("Token", processedToken.toString())));
+                throw StringValueParse.exception(STRING_VALUE_PROCESSING_FAILED.getMessage(expression))
+                        .addLastAttachmentEntry(StringAttachmentEntry.of("Tokenized expression", tokenizedExpression.toString()))
+                        .addLastAttachmentEntry(StringAttachmentEntry.of("Token", processedToken.toString()));
             }
         }
 
@@ -245,10 +244,10 @@ public class ValueExpressionProcessor {
             stringKey = stringContent.trim();
         }
         if (null != objectContent && StringUtils.isNotBlank(stringKey)) {
-            throw new StringValueParseException(STRING_VALUE_COMPOUND_DATA_SOURCE_KEY.getMessage(expression)).setAttachment(Attachment.of(
-                    StringAttachmentEntry.of("DataSource", dataSource.getClass().getCanonicalName()),
-                    StringAttachmentEntry.of("String key content", stringContent),
-                    StringAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName())));
+            throw StringValueParse.exception(STRING_VALUE_COMPOUND_DATA_SOURCE_KEY.getMessage(expression))
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("DataSource", dataSource.getClass().getCanonicalName()))
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("String key content", stringContent))
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName()));
         }
         return getDataSourceValue(dataSource, null == objectContent ? stringKey : objectContent);
     }
@@ -278,13 +277,13 @@ public class ValueExpressionProcessor {
         if (optionalMethod.isPresent()) {
             Object result = ReflectionUtils.invokeMethod(optionalMethod.get(), dataSource, key);
             if (null == result) {
-                throw new StringValueParseException(DATA_SOURCE_VALUE_NOT_FOUND.getMessage(dataSource.getClass().getCanonicalName(), key.toString()));
+                throw StringValueParse.exception(DATA_SOURCE_VALUE_NOT_FOUND.getMessage(dataSource.getClass().getCanonicalName(), key.toString()));
             }
             return result;
         }
-        throw new StringValueParseException(STRING_VALUE_DATA_SOURCE_INCORRECT_KEY_TYPE.getMessage(expression)).setAttachment(Attachment.of(
-                StringAttachmentEntry.of("DataSource class", dataSource.getClass().getCanonicalName()),
-                StringAttachmentEntry.of("Key class", key.getClass().getCanonicalName())));
+        throw StringValueParse.exception(STRING_VALUE_DATA_SOURCE_INCORRECT_KEY_TYPE.getMessage(expression))
+                .addLastAttachmentEntry(StringAttachmentEntry.of("DataSource class", dataSource.getClass().getCanonicalName()))
+                .addLastAttachmentEntry(StringAttachmentEntry.of("Key class", key.getClass().getCanonicalName()));
     }
 
     // Process DataConverter
@@ -295,10 +294,10 @@ public class ValueExpressionProcessor {
         DataConverter<?, ?> dataConverter = dataConverterService.get(dataConverterDeclaration.getName());
         String stringKey = stringContent.replace(dataConverterDeclaration.getDeclaration(), "").trim();
         if (null != objectContent && StringUtils.isNotBlank(stringKey)) {
-            throw new StringValueParseException(STRING_VALUE_COMPOUND_DATA_CONVERTER_KEY.getMessage(expression)).setAttachment(Attachment.of(
-                    StringAttachmentEntry.of("DataConverter", dataConverter.getClass().getCanonicalName()),
-                    StringAttachmentEntry.of("String key content", stringContent),
-                    StringAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName())));
+            throw StringValueParse.exception(STRING_VALUE_COMPOUND_DATA_CONVERTER_KEY.getMessage(expression))
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("DataConverter", dataConverter.getClass().getCanonicalName()))
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("String key content", stringContent))
+                    .addLastAttachmentEntry(StringAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName()));
         }
         return getDataConverterValue(dataConverter, null == objectContent ? stringKey : objectContent, dataConverterDeclaration.getFormat());
     }
@@ -317,8 +316,8 @@ public class ValueExpressionProcessor {
                 return DataConverterDeclaration.of(dataConverterDeclaration.trim(), dataConverterDeclarationMatcher.group());
             }
         }
-        throw new StringValueParseException(STRING_VALUE_DATA_CONVERTER_NAME_NOT_FOUND.getMessage(expression)).setAttachment(Attachment.of(
-                StringAttachmentEntry.of("String key content", stringContent)));
+        throw StringValueParse.exception(STRING_VALUE_DATA_CONVERTER_NAME_NOT_FOUND.getMessage(expression))
+                .addLastAttachmentEntry(StringAttachmentEntry.of("String key content", stringContent));
     }
 
     /**
@@ -338,14 +337,14 @@ public class ValueExpressionProcessor {
         if (optionalMethod.isPresent()) {
             Object result = ReflectionUtils.invokeMethod(optionalMethod.get(), dataConverter, key, format);
             if (null == result) {
-                throw new StringValueParseException(
+                throw StringValueParse.exception(
                         DATA_CONVERTER_VALUE_NOT_FOUND.getMessage(dataConverter.getClass().getCanonicalName(), key.toString(), format));
             }
             return result;
         }
-        throw new StringValueParseException(STRING_VALUE_DATA_CONVERTER_INCORRECT_KEY_TYPE.getMessage(expression)).setAttachment(Attachment.of(
-                StringAttachmentEntry.of("DataConverter class", dataConverter.getClass().getCanonicalName()),
-                StringAttachmentEntry.of("Key class", key.getClass().getCanonicalName())));
+        throw StringValueParse.exception(STRING_VALUE_DATA_CONVERTER_INCORRECT_KEY_TYPE.getMessage(expression))
+                .addLastAttachmentEntry(StringAttachmentEntry.of("DataConverter class", dataConverter.getClass().getCanonicalName()))
+                .addLastAttachmentEntry(StringAttachmentEntry.of("Key class", key.getClass().getCanonicalName()));
     }
 
     protected static class DataSourceDeclaration {

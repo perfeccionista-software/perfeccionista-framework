@@ -3,11 +3,11 @@ package io.perfeccionista.framework.bdd.parameters.datatable.entries;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
 import io.perfeccionista.framework.bdd.parameters.WebElementParameterImpl;
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
 import java.util.Map;
 
-public class WebElementEntryImpl<T extends Element> implements WebElementEntry<T> {
+public class WebElementEntryImpl<T extends WebChildElement> implements WebElementEntry<T> {
 
     private final WebElementParameter<T> webElementParameter;
     private final String rawInput;

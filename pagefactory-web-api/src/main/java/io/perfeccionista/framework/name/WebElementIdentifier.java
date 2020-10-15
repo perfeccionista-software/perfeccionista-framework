@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.name;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.perfeccionista.framework.json.JsonSerializable;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -10,68 +10,33 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
+public interface WebElementIdentifier extends JsonSerializable {
 
-// TODO
-public class WebElementIdentifier {
+    @NotNull String getLastUsedName();
 
-    private final Method elementMethod;
-    private final Map<String, Boolean> names;
-    private String lastUsedName = null;
+    @NotNull Method getElementMethod();
 
-    private WebElementIdentifier(Map<String, Boolean> names, Method elementMethod) {
-        this.names = names;
-        this.elementMethod = elementMethod;
-    }
+    @NotNull Class<? extends WebChildElement> getElementType();
 
-    public static WebElementIdentifier of(Map<String, Boolean> names, Method elementMethod) {
-        return new WebElementIdentifier(names, elementMethod);
-    }
+    boolean containsName(@NotNull String name);
 
-    public Method getElementMethod() {
-        return elementMethod;
-    }
+    boolean isNameDeprecated(@NotNull String name);
 
-    public void setLastUsedName(String lastUsedName) {
-        this.lastUsedName = lastUsedName;
-    }
+    Set<String> names();
 
-    public String getLastUsedName() {
-        return lastUsedName == null ? elementMethod.getName() : lastUsedName;
-    }
+    Stream<String> namesStream();
 
-    public boolean containsName(String name) {
-        return names.containsKey(name);
-    }
+    WebElementIdentifier forEachName(@NotNull Consumer<String> consumer);
 
-    public boolean isNameDeprecated(String name) {
-        // TODO: Проверять что такое имя в элементе есть
-        return names.get(name);
-    }
+    WebElementIdentifier setLastUsedName(@NotNull String lastUsedName);
 
-    public Set<String> names() {
-        return Set.copyOf(names.keySet());
-    }
+    WebElementIdentifier addElementsByMethodName(@NotNull Map<String, WebChildElement> elementsByMethodName,
+                                                 @NotNull WebChildElement webChildElement);
 
-    public Stream<String> namesStream() {
-        return names().stream();
-    }
+    WebElementIdentifier addElementsByMethod(@NotNull Map<Method, WebChildElement> elementsByMethod,
+                                             @NotNull WebChildElement webChildElement);
 
-    public void forEachName(Consumer<String> consumer) {
-        names().forEach(consumer);
-    }
-
-    public JsonNode toJson() {
-        ObjectNode rootNode = createObjectNode()
-                .put("elementMethod", elementMethod.toString())
-                .put("lastUsedName", lastUsedName);
-        ArrayNode namesNode = rootNode.putArray("names");
-        forEachName(namesNode::add);
-        return rootNode;
-    }
-
-    public String toString() {
-        return toJson().toPrettyString();
-    }
+    WebElementIdentifier addElementsByName(@NotNull Map<String, WebChildElement> elementsByName,
+                                           @NotNull WebChildElement webChildElement);
 
 }

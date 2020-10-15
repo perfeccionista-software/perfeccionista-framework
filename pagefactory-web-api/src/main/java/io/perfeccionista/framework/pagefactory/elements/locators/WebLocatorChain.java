@@ -3,10 +3,12 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.function.Consumer;
 
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
@@ -19,7 +21,7 @@ public class WebLocatorChain {
     }
 
     public static WebLocatorChain of(WebLocatorHolder locator) {
-        return new WebLocatorChain().addLocator(locator);
+        return new WebLocatorChain().addLastLocator(locator);
     }
 
     public WebLocatorChain validate() {
@@ -28,12 +30,22 @@ public class WebLocatorChain {
         return this;
     }
 
-    public WebLocatorChain addLocator(@NotNull WebLocatorHolder locator) {
+    public WebLocatorChain addFirstLocator(@NotNull WebLocatorHolder locator) {
+        locatorSequence.addFirst(locator);
+        return this;
+    }
+
+    public WebLocatorChain addLastLocator(@NotNull WebLocatorHolder locator) {
         locatorSequence.addLast(locator);
         return this;
     }
 
-    public WebLocatorChain addLocatorsToTop(@NotNull Collection<WebLocatorHolder> locators) {
+    public WebLocatorChain addFirstLocators(@NotNull WebLocatorChain locatorChain) {
+        addFirstLocators(locatorChain.getAllLocators());
+        return this;
+    }
+
+    public WebLocatorChain addFirstLocators(@NotNull Collection<WebLocatorHolder> locators) {
         Deque<WebLocatorHolder> updatedLocatorSequence = new ArrayDeque<>();
         updatedLocatorSequence.addAll(locators);
         updatedLocatorSequence.addAll(locatorSequence);
@@ -41,14 +53,23 @@ public class WebLocatorChain {
         return this;
     }
 
-    public WebLocatorChain addLocators(@NotNull Collection<WebLocatorHolder> locators) {
+    public WebLocatorChain addLastLocators(@NotNull WebLocatorChain locatorChain) {
+        locatorSequence.addAll(locatorChain.getAllLocators());
+        return this;
+    }
+
+    public WebLocatorChain addLastLocators(@NotNull Collection<WebLocatorHolder> locators) {
         locatorSequence.addAll(locators);
         return this;
     }
 
-    public WebLocatorChain addExpectedHashToLastLocator(String expectedHash) {
-        locatorSequence.getLast().setExpectedHash(expectedHash);
+    public WebLocatorChain updateLastLocator(Consumer<WebLocatorHolder> lastLocatorHolderConsumer) {
+        lastLocatorHolderConsumer.accept(locatorSequence.getLast());
         return this;
+    }
+
+    public WebLocatorHolder getFirstLocator() {
+        return locatorSequence.getFirst();
     }
 
     public WebLocatorHolder getLastLocator() {
@@ -62,6 +83,8 @@ public class WebLocatorChain {
     public Deque<WebLocatorHolder> getAllLocators() {
         return new ArrayDeque<>(locatorSequence);
     }
+
+
 
     public ObjectNode toJson() {
         ObjectNode rootNode = createObjectNode();

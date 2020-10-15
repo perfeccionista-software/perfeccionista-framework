@@ -1,11 +1,23 @@
 package io.perfeccionista.framework.fixture;
 
-import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
-public interface Fixture<T> {
+/**
+ * Формируем результат и при ошибке при необходимости запускаем обработчик ошибок:
+ * <pre>
+ * {@code
+ * FixtureTearDownResult.failure(exception)
+ *     .ifException(exception -> throw exception);
+ * }
+ *
+ * </pre>
+ * @return
+ */
 
-    Optional<T> execute();
+public interface Fixture<S, T> {
 
-    boolean revert();
+    @NotNull FixtureSetUpResult<S> setUp();
+
+    @NotNull FixtureTearDownResult<T> tearDown();
 
 }

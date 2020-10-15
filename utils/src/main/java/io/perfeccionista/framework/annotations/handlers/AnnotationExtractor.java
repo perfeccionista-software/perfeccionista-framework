@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import static org.junit.platform.commons.util.AnnotationUtils.isAnnotated;
 
+// TODO: Выполнять весь поиск аннотаций этими методами. Должны возвращаться аннотации из Inherited аннотаций
 public class AnnotationExtractor {
 
     private AnnotationExtractor() {}

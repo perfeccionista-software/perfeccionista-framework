@@ -1,19 +1,18 @@
 package io.perfeccionista.framework.exceptions.mapper;
 
-import io.perfeccionista.framework.exceptions.ElementIsDisabledException;
-import io.perfeccionista.framework.exceptions.ElementNotClickableException;
-import io.perfeccionista.framework.exceptions.ElementNotDisplayedException;
-import io.perfeccionista.framework.exceptions.SeleniumWebDriverException;
-import io.perfeccionista.framework.exceptions.SeleniumWebDriverInstanceInternalException;
-import io.perfeccionista.framework.exceptions.SeleniumWebDriverInstanceNotAvailableException;
-import io.perfeccionista.framework.exceptions.SeleniumWebElementNotIntractableException;
-import io.perfeccionista.framework.exceptions.SeleniumWebElementReferenceStaleException;
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
-import io.perfeccionista.framework.exceptions.js.ElementSearchJsException;
-import io.perfeccionista.framework.exceptions.js.ElementStateJsException;
-import io.perfeccionista.framework.exceptions.js.FunctionCallJsException;
-import io.perfeccionista.framework.exceptions.js.IncorrectSearchQueryJsException;
-import io.perfeccionista.framework.exceptions.js.JsExecutionException;
+import io.perfeccionista.framework.exceptions.WebElementIsDisabled;
+import io.perfeccionista.framework.exceptions.WebElementNotClickable;
+import io.perfeccionista.framework.exceptions.WebElementNotDisplayed;
+import io.perfeccionista.framework.exceptions.SeleniumWebDriverInstance;
+import io.perfeccionista.framework.exceptions.SeleniumWebDriverInstanceNotAvailable;
+import io.perfeccionista.framework.exceptions.SeleniumWebElementNotIntractable;
+import io.perfeccionista.framework.exceptions.SeleniumStaleWebElementReference;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
+import io.perfeccionista.framework.exceptions.js.JsElementSearch;
+import io.perfeccionista.framework.exceptions.js.JsElementState;
+import io.perfeccionista.framework.exceptions.js.JsFunctionCall;
+import io.perfeccionista.framework.exceptions.js.JsIncorrectSearchQuery;
+import io.perfeccionista.framework.exceptions.js.JsExecution;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -36,8 +35,8 @@ import org.openqa.selenium.safari.ConnectionClosedException;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_IS_DISABLED;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_NOT_DISPLAYED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_DISABLED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_NOT_AVAILABLE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_INITIALIZATION_FAILED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_INTERNAL_ERROR;
@@ -71,7 +70,7 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
             .compile("(Failed to read the 'localStorage' property from 'Window')+");
 
     @Override
-    public <T> ExceptionMapperResult<T> map(Supplier<T> supplier, String... exceptionMessageOptionalArgs) {
+    public @NotNull<T> ExceptionMapperResult<T> map(@NotNull Supplier<T> supplier, String... exceptionMessageOptionalArgs) {
         try {
             T result = supplier.get();
             return ExceptionMapperResult.success(result);
@@ -81,7 +80,7 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
     }
 
     @Override
-    public ExceptionMapperResult<Void> map(Runnable runnable, String... exceptionMessageOptionalArgs) {
+    public @NotNull ExceptionMapperResult<Void> map(@NotNull Runnable runnable, String... exceptionMessageOptionalArgs) {
         try {
             runnable.run();
             return ExceptionMapperResult.empty();
@@ -90,25 +89,31 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
         }
     }
 
-    public PerfeccionistaException mapWebDriverException(WebDriverException e, String[] args) {
+    public @NotNull PerfeccionistaRuntimeException mapWebDriverException(@NotNull WebDriverException e, String[] args) {
         if (e instanceof ElementClickInterceptedException) {
-            return new ElementNotClickableException(WEB_ELEMENT_CLICK_INTERCEPTED.getMessage(getArg(args, 0)), e);
+            return WebElementNotClickable.exception(WEB_ELEMENT_CLICK_INTERCEPTED.getMessage(getArg(args, 0)), e)
+                    .setProcessed(true);
         } else if (e instanceof ElementNotVisibleException
                 || e instanceof NotFoundException) {
-            return new ElementNotDisplayedException(ELEMENT_NOT_DISPLAYED.getMessage(getArg(args, 0)), e);
+            return WebElementNotDisplayed.exception(ELEMENT_NOT_DISPLAYED.getMessage(getArg(args, 0)), e)
+                    .setProcessed(true);
         } else if (e instanceof ElementNotInteractableException
                 || e instanceof ElementNotSelectableException) {
-            return new ElementIsDisabledException(ELEMENT_IS_DISABLED.getMessage(getArg(args, 0)), e);
+            return WebElementIsDisabled.exception(ELEMENT_IS_DISABLED.getMessage(getArg(args, 0)), e)
+                    .setProcessed(true);
         } else if (e instanceof InvalidElementStateException
                 || e instanceof MoveTargetOutOfBoundsException
                 || e instanceof InvalidCoordinatesException) {
-            return new SeleniumWebElementNotIntractableException(WEB_ELEMENT_NOT_INTRACTABLE.getMessage(getArg(args, 0)), e);
+            return SeleniumWebElementNotIntractable.exception(WEB_ELEMENT_NOT_INTRACTABLE.getMessage(getArg(args, 0)), e)
+                    .setProcessed(true);
         } else if (e instanceof StaleElementReferenceException) {
-            return new SeleniumWebElementReferenceStaleException(WEB_ELEMENT_IS_STALE.getMessage(getArg(args, 0)), e);
+            return SeleniumStaleWebElementReference.exception(WEB_ELEMENT_IS_STALE.getMessage(getArg(args, 0)), e)
+                    .setProcessed(true);
         } else if (e instanceof InvalidArgumentException
                 || e instanceof ErrorHandler.UnknownServerException
                 || e instanceof UnsupportedCommandException) {
-            return new SeleniumWebDriverInstanceInternalException(WEB_DRIVER_INTERNAL_ERROR.getMessage(), e);
+            return SeleniumWebDriverInstance.exception(WEB_DRIVER_INTERNAL_ERROR.getMessage(), e)
+                    .setService(true);
         } else if (e instanceof UnreachableBrowserException
                 || e instanceof NoSuchSessionException
                 || e instanceof SessionNotCreatedException
@@ -119,56 +124,73 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
         }
     }
 
-    protected SeleniumWebDriverInstanceNotAvailableException mapSeleniumWebDriverInstanceNotAvailableException(WebDriverException exception) {
+    protected @NotNull PerfeccionistaRuntimeException mapSeleniumWebDriverInstanceNotAvailableException(@NotNull WebDriverException exception) {
         String message = exception.getMessage();
         if (START_REMOTE_WEB_DRIVER_SESSION_ERROR_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception)
+                    .setService(true);
         }
         if (REMOTE_BROWSER_COMMUNICATION_ERROR_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception)
+                    .setService(true);
         }
         if (INVALID_SESSION_ID_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception)
+                    .setService(true);
         }
-        return new SeleniumWebDriverInstanceNotAvailableException(exception.getMessage(), exception);
+        return SeleniumWebDriverInstanceNotAvailable.exception(exception.getMessage(), exception)
+                .setService(true);
     }
 
-    protected PerfeccionistaException mapUnclassifiedWebDriverException(WebDriverException exception) {
+    protected @NotNull PerfeccionistaRuntimeException mapUnclassifiedWebDriverException(WebDriverException exception) {
         String message = exception.getMessage();
         if (START_CONTAINER_ERROR_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception)
+                    .setService(true);
         } else if (START_SESSION_ERROR_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception)
+                    .setService(true);
         } else if (START_REMOTE_WEB_DRIVER_SESSION_ERROR_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception)
+                    .setService(true);
         } else if (REMOTE_WEB_DRIVER_DOES_NOT_RESPOND_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception)
+                    .setService(true);
         } else if (CHROME_FAILED_TO_START_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception)
+                    .setService(true);
         } else if (NO_SUCH_DOCKER_IMAGE_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_INITIALIZATION_FAILED.getMessage(), exception)
+                    .setService(true);
         } else if (PAGE_CRASH_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception)
+                    .setService(true);
         } else if (UNKNOWN_WEBDRIVER_ERROR_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception)
+                    .setService(true);
         } else if (LOCAL_STORAGE_PROPERTY_NOT_AVAILABLE_PATTERN.matcher(message).find()) {
-            return new SeleniumWebDriverInstanceNotAvailableException(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception);
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception)
+                    .setService(true);
         }
-        return new SeleniumWebDriverException(exception.getMessage(), exception);
+        return SeleniumWebDriverInstance.exception(exception.getMessage(), exception)
+                .setService(true);
     }
 
     @Override
-    public PerfeccionistaException createByName(@NotNull String name, @NotNull String message) {
-        if ("IncorrectSearchQueryError".equals(name)) {
-            return new IncorrectSearchQueryJsException(message);
-        } else if ("ElementSearchError".equals(name)) {
-            return new ElementSearchJsException(message);
-        } else if ("ElementStateError".equals(name)) {
-            return new ElementStateJsException(message);
-        } else if ("FunctionCallError".equals(name)) {
-            return new FunctionCallJsException(message);
-        } else {
-            return new JsExecutionException(message);
+    public @NotNull PerfeccionistaRuntimeException createByName(@NotNull String name, @NotNull String message) {
+        switch (name) {
+            case "IncorrectSearchQueryError":
+                return JsIncorrectSearchQuery.exception(message);
+            case "ElementSearchError":
+                return JsElementSearch.exception(message)
+                        .setProcessed(true);
+            case "ElementStateError":
+                return JsElementState.exception(message);
+            case "FunctionCallError":
+                return JsFunctionCall.exception(message);
+            default:
+                return JsExecution.exception(message)
+                        .setProcessed(true);
         }
     }
 

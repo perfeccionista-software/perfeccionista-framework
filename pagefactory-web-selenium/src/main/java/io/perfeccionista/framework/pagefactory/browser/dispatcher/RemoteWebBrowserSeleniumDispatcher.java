@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.browser.dispatcher;
 
 import com.google.common.collect.ImmutableMap;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.SeleniumWebDriverInstantiationException;
+import io.perfeccionista.framework.exceptions.SeleniumWebDriverInstantiation;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.type.RemoteType;
 import org.openqa.selenium.MutableCapabilities;
@@ -40,7 +40,7 @@ public class RemoteWebBrowserSeleniumDispatcher extends AbstractWebBrowserSeleni
             this.instance = new RemoteWebDriver(httpCommandExecutor, this.options);
             this.instance.setFileDetector(new LocalFileDetector());
         } catch (MalformedURLException e) {
-            throw new SeleniumWebDriverInstantiationException(INCORRECT_WEB_DRIVER_URL.getMessage(remoteUrl), e);
+            throw SeleniumWebDriverInstantiation.exception(INCORRECT_WEB_DRIVER_URL.getMessage(remoteUrl), e);
         }
         setTimeouts();
         return this;

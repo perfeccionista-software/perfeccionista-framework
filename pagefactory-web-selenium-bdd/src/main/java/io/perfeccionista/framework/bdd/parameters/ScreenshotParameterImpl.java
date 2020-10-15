@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.bdd.parameters;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
+import io.perfeccionista.framework.screenshots.Screenshot;
 
 public class ScreenshotParameterImpl implements ScreenshotParameter {
 

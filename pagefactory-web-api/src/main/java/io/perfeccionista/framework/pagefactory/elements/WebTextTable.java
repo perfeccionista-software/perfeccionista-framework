@@ -1,158 +1,85 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextTableMatcher;
+import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
-import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToElementAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
-import io.perfeccionista.framework.pagefactory.filter.MultipleResult;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
+import io.perfeccionista.framework.pagefactory.elements.methods.ElementContainer;
+import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableCellValueExtractor;
+import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.SingleResult;
+import io.perfeccionista.framework.result.WebSingleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
+import org.apiguardian.api.API;
+import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
+// TODO: Map<String, SingleResult<String>> extractHeader(String... columnNames, extractor);
+// TODO: Map<String, MultipleResult<String>> extractAll(String... columnNames);
+// TODO: Map<String, SingleResult<String>> extractFooter(String... columnNames);
+public interface WebTextTable extends WebChildElement, ElementContainer<WebTextTableFilter, WebTextTableFilterBuilder> {
 
-// TODO: Map<String, SingleResult<String>> extractHeader(Set<String> columnNames);
-// TODO: Map<String, MultipleResult<String>> extractAll(Set<String> columnNames);
-// TODO: Map<String, SingleResult<String>> extractFooter(Set<String> columnNames);
-// TODO: Добавить TextBlockExtractor/LinkExtractor
-// TODO: ClickToHeader / Cell / Footer
-@WebLocator(component = THEAD_ROW, xpath = ".//thead//tr")
-@WebLocator(component = TBODY_ROW, xpath = ".//tbody//tr", single = false)
-@WebLocator(component = TFOOT_ROW, xpath = ".//tfoot//tr")
-public interface WebTextTable extends WebChildElement,
-        ScrollToElementAvailable<WebTextTableFilterBuilder>, SizeAvailable {
+    @API(status = Status.MAINTAINED)
+    @NotNull WebTableFrame<DefaultWebTextBlock> getWebTextTableFrame();
 
+    // Extractor
+    @NotNull <V> WebSingleIndexedResult<V, WebTextTable> extractHeader(@NotNull WebTextTableCellValueExtractor<V> extractor);
+    @NotNull <V> WebMultipleIndexedResult<V, WebTextTable> extractAllRows(@NotNull WebTextTableCellValueExtractor<V> extractor);
+    @NotNull <V> WebSingleIndexedResult<V, WebTextTable> extractFooter(@NotNull WebTextTableCellValueExtractor<V> extractor);
+
+    // Filter
+    @Override
     @NotNull WebTextTableFilter filter(@NotNull WebTextTableFilterBuilder filterBuilder);
 
-    @NotNull SingleResult<String> extractHeader(@NotNull String columnName);
-
-    @NotNull MultipleResult<String> extractAllRows(@NotNull String columnName);
-
-    @NotNull SingleResult<String> extractFooter(@NotNull String columnName);
-
     // Actions
-
     @Override
     WebTextTable executeAction(@NotNull String name, Object... args);
-
     @Override
     WebTextTable executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebTextTable should(@NotNull WebTextTableMatcher matcher);
+    WebTextTable should(@NotNull WebIndexesMatcher matcher);
     @Override
-    WebTextTable should(WebAssertCondition assertCondition);
-
+    WebTextTable should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebTextTable should(WebAssertCondition assertCondition, InvocationName invocationName);
-
-    // Get Color
-
+    WebTextTable should(@NotNull GetColorAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
+    WebTextTable should(@NotNull GetDimensionsAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
+    WebTextTable should(@NotNull GetLocationAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
+    WebTextTable should(@NotNull GetScreenshotAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Location
-
+    WebTextTable should(@NotNull IsDisplayedAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
+    WebTextTable should(@NotNull IsInFocusAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
+    WebTextTable should(@NotNull IsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
+    WebTextTable should(@NotNull IsPresentAvailableMatcher matcher);
     @Override
-    WebTextTable componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
+    WebTextTable should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebTextTable should(@NotNull WebElementPropertyAvailableMatcher matcher);
 
     // HoverTo
-
     @Override
     WebTextTable hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebTextTable shouldBeDisplayed();
-    @Override
-    WebTextTable shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebTextTable shouldBeInFocus();
-    @Override
-    WebTextTable shouldNotBeInFocus();
-
-    // IsPresent
-
-    @Override
-    WebTextTable shouldBePresent();
-    @Override
-    WebTextTable shouldNotBePresent();
-
     // ScrollTo
-
     @Override
     WebTextTable scrollTo();
-
-    // ScrollToElement
-
-    @Override
-    WebTextTable scrollToElement(@NotNull WebTextTableFilterBuilder filter);
-
-    // Size
-
-    @Override
-    WebTextTable shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
-
-    // WebComponent
-
-    @Override
-    WebTextTable componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextTable componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebTextTable componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebTextTable componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebTextTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextTable shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebTextTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebTextTable shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
 
 }

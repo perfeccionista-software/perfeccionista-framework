@@ -1,5 +1,5 @@
 dependencies {
-    compile(project(":pagefactory-api")) {
-        because("pagefactory-api module contains api for current module")
+    api(project(":environment")) {
+        because("environment module contains platform for current module")
     }
 }

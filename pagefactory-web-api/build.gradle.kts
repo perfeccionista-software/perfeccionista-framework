@@ -1,9 +1,8 @@
 val cglibVersion: String by rootProject
 
 dependencies {
-    compile(project(":pagefactory-api")) {
-        because("pagefactory-api module contains api for current module")
+    api(project(":environment")) {
+        because("environment module contains platform for current module")
     }
-
-    compile(group = "cglib", name = "cglib", version = cglibVersion)
+    api(group = "cglib", name = "cglib", version = cglibVersion)
 }

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-final class EnvironmentLoggerTest extends SimpleParallelTest {
+class EnvironmentLoggerTest extends SimpleParallelTest {
 
     @Test
     void initializationSuccessTest() {
@@ -26,9 +26,9 @@ final class EnvironmentLoggerTest extends SimpleParallelTest {
         assertNotNull(environmentDescription);
 
         assertTrue(environmentDescription.contains("io.perfeccionista.framework.Environment"));
-        assertTrue(environmentDescription.contains("io.perfeccionista.framework.action.runner.ActionRunnerConfiguration"));
+        assertTrue(environmentDescription.contains("io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration"));
         assertTrue(environmentDescription.contains("io.perfeccionista.framework.repeater.RepeatPolicy"));
-        assertTrue(environmentDescription.contains("io.perfeccionista.framework.action.timeouts.Timeouts"));
+        assertTrue(environmentDescription.contains("io.perfeccionista.framework.invocation.timeouts.Timeouts"));
      }
 
     @Test
@@ -46,7 +46,7 @@ final class EnvironmentLoggerTest extends SimpleParallelTest {
     static class TestEnvironmentConfiguration implements EnvironmentConfiguration {
 
         @Override
-        public @NotNull InvocationRunnerConfiguration getActionRunnerConfiguration() {
+        public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
             return mock(InvocationRunnerConfiguration.class);
         }
 

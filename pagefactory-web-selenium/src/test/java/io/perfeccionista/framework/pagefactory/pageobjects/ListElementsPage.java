@@ -1,16 +1,14 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
-import io.perfeccionista.framework.pagefactory.elements.WebAutocomplete;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebCheckbox;
-import io.perfeccionista.framework.pagefactory.elements.WebDropDownList;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
-import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseWebMappedBlock;
-import io.perfeccionista.framework.pagefactory.elements.properties.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.pageobjects.extractors.TitleAttributeExtractor;
 
@@ -29,10 +27,10 @@ public interface ListElementsPage extends AbstractWebPage {
     @Name("List of countries")
     @WebLocator(id = "countries-list")
     @WebLocator(component = LI, xpath = ".//div[@itemid = 'countries-list-item']", single = false)
-    @UseWebMappedBlock(CountryBlock.class)
+    @UseMappedWebBlock(CountryBlock.class)
     WebList webList();
 
-    interface CountryBlock extends WebMappedBlock {
+    interface CountryBlock extends WebBlock {
 
         @Name("Select")
         @WebLocator(xpath = "self::node()//input[@itemid = 'checkbox']/parent::node()")

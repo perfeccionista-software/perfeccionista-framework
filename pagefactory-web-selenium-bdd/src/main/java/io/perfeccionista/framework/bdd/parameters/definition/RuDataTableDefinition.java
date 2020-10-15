@@ -1,13 +1,7 @@
 package io.perfeccionista.framework.bdd.parameters.definition;
 
-import io.cucumber.java.DataTableType;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.bdd.EnvironmentAvailable;
-import io.perfeccionista.framework.bdd.parameters.WebElementParameter;
-import io.perfeccionista.framework.bdd.parameters.WebElementParameterImpl;
-import io.perfeccionista.framework.pagefactory.elements.base.Element;
-
-import java.util.Map;
 
 public class RuDataTableDefinition implements EnvironmentAvailable {
 

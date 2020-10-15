@@ -2,9 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.attachment.Attachment;
-import io.perfeccionista.framework.attachment.StringAttachmentEntry;
-import io.perfeccionista.framework.exceptions.LocatorNotDeclaredException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +11,6 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryMessages.ELEMENT_LOCATOR_NOT_DECLARED;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebLocatorRegistry {
@@ -33,6 +30,11 @@ public class WebLocatorRegistry {
         return new WebLocatorRegistry(locators);
     }
 
+    public WebLocatorRegistry addLocator(@NotNull String rootLocator, @NotNull WebLocatorHolder locator) {
+        locators.put(rootLocator, locator);
+        return this;
+    }
+
     /**
      * Во многих сценариях нам необходимо будет модифицировать заданный ранее локатор (добавить индекс),
      * поэтому необходимо возвращать его клон, а не оригинальный инстанс
@@ -45,15 +47,6 @@ public class WebLocatorRegistry {
             return Optional.empty();
         }
         return Optional.of(locatorHolder.clone());
-    }
-
-    public WebLocatorHolder getLocator(String locatorName) {
-        WebLocatorHolder locatorHolder = locators.get(locatorName);
-        if (null == locatorHolder) {
-            throw new LocatorNotDeclaredException(ELEMENT_LOCATOR_NOT_DECLARED.getMessage(locatorName))
-                    .setAttachment(Attachment.of(StringAttachmentEntry.of("Element", this.toString())));
-        }
-        return locatorHolder.clone();
     }
 
     public Stream<Entry<String, WebLocatorHolder>> stream() {

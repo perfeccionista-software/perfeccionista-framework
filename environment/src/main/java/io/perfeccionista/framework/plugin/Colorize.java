@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.plugin;
 
+import io.perfeccionista.framework.color.Color;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

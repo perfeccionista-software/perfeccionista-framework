@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.bdd.parameters;
 
-import io.perfeccionista.framework.plugin.Color;
+import io.perfeccionista.framework.color.Color;
 
 public interface ColorParameter extends BddStepParameter {
 

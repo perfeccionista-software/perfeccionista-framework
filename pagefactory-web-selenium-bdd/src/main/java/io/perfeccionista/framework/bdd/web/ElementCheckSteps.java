@@ -2,6 +2,7 @@ package io.perfeccionista.framework.bdd.web;
 
 import io.cucumber.java.en.Given;
 import io.perfeccionista.framework.bdd.EnvironmentAvailable;
+import io.perfeccionista.framework.bdd.parameters.CssPropertyParameter;
 import io.perfeccionista.framework.bdd.parameters.DimensionsParameter;
 import io.perfeccionista.framework.bdd.parameters.ColorParameter;
 import io.perfeccionista.framework.bdd.parameters.ScreenshotParameter;
@@ -21,6 +22,33 @@ import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailab
 import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
 
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisabled;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beEnabled;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beInFocus;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.bePresent;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beSelected;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.componentBeDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.componentBePresent;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.componentNotBeDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.componentNotBePresent;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveColor;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveDimensions;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLabel;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.havePropertyValue;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveText;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.looksLike;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeInFocus;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBePresent;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeSelected;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveColor;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveDimensions;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveLabel;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHavePropertyValue;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveText;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.notLooksLike;
+
 // TODO: Написать в доке, что не все методы доступны для использования во множественном контексте
 // TODO: Add to exception context limiter information
 // TODO: Wrap runLogic()
@@ -36,7 +64,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} присутствует")
     public void elementExists(WebElementParameter<IsPresentAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsPresentAvailable::shouldBePresent);
+                .forEachOrdered(element -> element.should(bePresent()));
     }
 
     /**
@@ -47,7 +75,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} отсутствует")
     public void elementDoesNotExist(WebElementParameter<IsPresentAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsPresentAvailable::shouldNotBePresent);
+                .forEachOrdered(element -> element.should(notBePresent()));
     }
 
     /**
@@ -58,7 +86,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} отображается")
     public void elementIsDisplayed(WebElementParameter<IsDisplayedAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsDisplayedAvailable::shouldBeDisplayed);
+                .forEachOrdered(element -> element.should(beDisplayed()));
     }
 
     /**
@@ -69,7 +97,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} не отображается")
     public void elementIsNotDisplayed(WebElementParameter<IsDisplayedAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsDisplayedAvailable::shouldNotBeDisplayed);
+                .forEachOrdered(element -> element.should(notBeDisplayed()));
     }
 
     /**
@@ -82,7 +110,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementContainsText(WebElementParameter<GetTextAvailable> elementFinder,
                                     ValueStringParameter expectedText) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHaveText(expectedText.getValue()));
+                .forEachOrdered(element -> element.should(haveText(expectedText.getValue())));
     }
 
     /**
@@ -95,7 +123,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementDoesNotContainText(WebElementParameter<GetTextAvailable> elementFinder,
                                           ValueStringParameter expectedText) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldNotHaveText(expectedText.getValue()));
+                .forEachOrdered(element -> element.should(notHaveText(expectedText.getValue())));
     }
 
     /**
@@ -108,7 +136,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementContainsNumber(WebElementParameter<GetTextAvailable> elementFinder,
                                       ValueNumberParameter expectedNumber) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHaveText(expectedNumber.getValue()));
+                .forEachOrdered(element -> element.should(haveText(expectedNumber.getValue())));
     }
 
     /**
@@ -121,7 +149,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementDoesNotContainNumber(WebElementParameter<GetTextAvailable> elementFinder,
                                             ValueNumberParameter expectedNumber) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldNotHaveText(expectedNumber.getValue()));
+                .forEachOrdered(element -> element.should(notHaveText(expectedNumber.getValue())));
     }
 
     /**
@@ -134,7 +162,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void labelOfTheElementContainText(WebElementParameter<GetLabelAvailable> elementFinder,
                                              ValueStringParameter expectedText) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHaveLabel(expectedText.getValue()));
+                .forEachOrdered(element -> element.should(haveLabel(expectedText.getValue())));
     }
 
     /**
@@ -147,7 +175,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void labelOfTheElementDoesNotContainText(WebElementParameter<GetLabelAvailable> elementFinder,
                                                     ValueStringParameter expectedText) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldNotHaveLabel(expectedText.getValue()));
+                .forEachOrdered(element -> element.should(notHaveLabel(expectedText.getValue())));
     }
 
     /**
@@ -160,7 +188,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void labelOfTheElementContainNumber(WebElementParameter<GetLabelAvailable> elementFinder,
                                               ValueNumberParameter expectedNumber) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHaveLabel(expectedNumber.getValue()));
+                .forEachOrdered(element -> element.should(haveLabel(expectedNumber.getValue())));
     }
 
     /**
@@ -173,7 +201,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void labelOfTheElementDoesNotContainNumber(WebElementParameter<GetLabelAvailable> elementFinder,
                                                       ValueNumberParameter expectedNumber) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldNotHaveLabel(expectedNumber.getValue()));
+                .forEachOrdered(element -> element.should(notHaveLabel(expectedNumber.getValue())));
     }
 
     /**
@@ -188,7 +216,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                                 WebElementParameter<WebChildElement> elementFinder,
                                                 ValueStringParameter expectedText) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHavePropertyValue(elementProperty.getRaw(), expectedText.getValue()));
+                .forEachOrdered(element -> element.should(havePropertyValue(elementProperty.getRaw(), expectedText.getValue())));
     }
 
     /**
@@ -203,7 +231,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                                        WebElementParameter<WebChildElement> elementFinder,
                                                        ValueStringParameter expectedText) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldNotHavePropertyValue(elementProperty.getRaw(), expectedText.getValue()));
+                .forEachOrdered(element -> element.should(notHavePropertyValue(elementProperty.getRaw(), expectedText.getValue())));
     }
 
     /**
@@ -218,7 +246,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                                   WebElementParameter<WebChildElement> elementFinder,
                                                   ValueNumberParameter expectedNumber) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldHavePropertyValue(elementProperty.getRaw(), expectedNumber.getValue()));
+                .forEachOrdered(element -> element.should(havePropertyValue(elementProperty.getRaw(), expectedNumber.getValue())));
     }
 
     /**
@@ -233,7 +261,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                                          WebElementParameter<WebChildElement> elementFinder,
                                                          ValueNumberParameter expectedNumber) {
         elementFinder.find()
-                .forEachOrdered(element -> element.shouldNotHavePropertyValue(elementProperty.getRaw(), expectedNumber.getValue()));
+                .forEachOrdered(element -> element.should(notHavePropertyValue(elementProperty.getRaw(), expectedNumber.getValue())));
     }
 
     /**
@@ -246,7 +274,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementComponentIsPresent(WebElementComponentParameter elementComponent,
                                           WebElementParameter<WebChildElement> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldBePresent(elementComponent.getRaw()));
+                .forEachOrdered(element -> element.should(componentBePresent(elementComponent.getRaw())));
     }
 
     /**
@@ -259,7 +287,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementComponentIsNotPresent(WebElementComponentParameter elementComponent,
                                              WebElementParameter<WebChildElement> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldNotBePresent(elementComponent.getRaw()));
+                .forEachOrdered(element -> element.should(componentNotBePresent(elementComponent.getRaw())));
     }
 
     /**
@@ -272,7 +300,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementComponentIsDisplayed(WebElementComponentParameter elementComponent,
                                             WebElementParameter<WebChildElement> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldBeDisplayed(elementComponent.getRaw()));
+                .forEachOrdered(element -> element.should(componentBeDisplayed(elementComponent.getRaw())));
     }
 
     /**
@@ -285,40 +313,40 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     public void elementComponentIsNotDisplayed(WebElementComponentParameter elementComponent,
                                                WebElementParameter<WebChildElement> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldNotBeDisplayed(elementComponent.getRaw()));
+                .forEachOrdered(element -> element.should(componentNotBeDisplayed(elementComponent.getRaw())));
     }
 
+    /**
+     *
+     * @param elementComponent -
+     * @param elementFinder -
+     * @param expectedColor -
+     */
+    @Given("component {webElementComponent} of the {webElement} has color {color} of css-property {cssProperty}")
+    @Given("компонент {webElementComponent} элемента {webElement} имеет цвет {color} css-свойства {cssProperty}")
+    public void elementComponentHasColor(WebElementComponentParameter elementComponent,
+                                         WebElementParameter<GetColorAvailable> elementFinder,
+                                         ColorParameter expectedColor,
+                                         CssPropertyParameter cssProperty) {
+        elementFinder.find()
+                .forEachOrdered(element -> element.should(haveColor(elementComponent.getRaw(), cssProperty.getRaw(), expectedColor.getColor())));
+    }
 
-    // TODO: Добавить параметр cssProperty и поменять формулировку
-//    /**
-//     *
-//     * @param elementComponent -
-//     * @param elementFinder -
-//     * @param expectedColor -
-//     */
-//    @Given("component {webElementComponent} of the {webElement} has color {color}")
-//    @Given("компонент {webElementComponent} элемента {webElement} имеет цвет {color}")
-//    public void elementComponentHasColor(WebElementComponentParameter elementComponent,
-//                                         WebElementParameter<GetColorAvailable> elementFinder,
-//                                         ColorParameter expectedColor) {
-//        elementFinder.find()
-//                .forEachOrdered(element -> element.componentShouldHaveColor(elementComponent.getRaw(), expectedColor.getColor()));
-//    }
-//
-//    /**
-//     *
-//     * @param elementComponent -
-//     * @param elementFinder -
-//     * @param expectedColor -
-//     */
-//    @Given("component {webElementComponent} of the {webElement} does not have color {color}")
-//    @Given("компонент {webElementComponent} элемента {webElement} не имеет цвет {color}")
-//    public void elementComponentDoesNotHaveColor(WebElementComponentParameter elementComponent,
-//                                                 WebElementParameter<GetColorAvailable> elementFinder,
-//                                                 ColorParameter expectedColor) {
-//        elementFinder.find()
-//                .forEachOrdered(element -> element.componentShouldNotHaveColor(elementComponent.getRaw(), expectedColor.getColor()));
-//    }
+    /**
+     *
+     * @param elementComponent -
+     * @param elementFinder -
+     * @param expectedColor -
+     */
+    @Given("component {webElementComponent} of the {webElement} does not have color {color} of css-property {cssProperty}")
+    @Given("компонент {webElementComponent} элемента {webElement} не имеет цвет {color} css-свойства {cssProperty}")
+    public void elementComponentDoesNotHaveColor(WebElementComponentParameter elementComponent,
+                                                 WebElementParameter<GetColorAvailable> elementFinder,
+                                                 ColorParameter expectedColor,
+                                                 CssPropertyParameter cssProperty) {
+        elementFinder.find()
+                .forEachOrdered(element -> element.should(notHaveColor(elementComponent.getRaw(), cssProperty.getRaw(), expectedColor.getColor())));
+    }
 
     /**
      *
@@ -332,7 +360,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                           WebElementParameter<GetDimensionsAvailable> elementFinder,
                                           DimensionsParameter expectedDimensions) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldHaveDimensions(elementComponent.getRaw(), expectedDimensions.getDimensions()));
+                .forEachOrdered(element -> element.should(haveDimensions(elementComponent.getRaw(), expectedDimensions.getDimensions())));
     }
 
     /**
@@ -347,7 +375,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                                   WebElementParameter<GetDimensionsAvailable> elementFinder,
                                                   DimensionsParameter expectedDimensions) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldNotHaveDimensions(elementComponent.getRaw(), expectedDimensions.getDimensions()));
+                .forEachOrdered(element -> element.should(notHaveDimensions(elementComponent.getRaw(), expectedDimensions.getDimensions())));
     }
 
     /**
@@ -362,7 +390,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                                     WebElementParameter<GetScreenshotAvailable> elementFinder,
                                                     ScreenshotParameter expectedScreenshot) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldLooksLike(elementComponent.getRaw(), expectedScreenshot.getScreenshot()));
+                .forEachOrdered(element -> element.should(looksLike(elementComponent.getRaw(), expectedScreenshot.getScreenshot())));
     }
 
     /**
@@ -377,7 +405,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
                                                            WebElementParameter<GetScreenshotAvailable> elementFinder,
                                                            ScreenshotParameter expectedScreenshot) {
         elementFinder.find()
-                .forEachOrdered(element -> element.componentShouldNotLooksLike(elementComponent.getRaw(), expectedScreenshot.getScreenshot()));
+                .forEachOrdered(element -> element.should(notLooksLike(elementComponent.getRaw(), expectedScreenshot.getScreenshot())));
     }
 
     /**
@@ -388,7 +416,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} доступ(ен|но|на)")
     public void elementIsEnabled(WebElementParameter<IsEnabledAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsEnabledAvailable::shouldBeEnabled);
+                .forEachOrdered(element -> element.should(beEnabled()));
     }
 
     /**
@@ -399,7 +427,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} недоступ(ен|но|на)")
     public void elementIsDisabled(WebElementParameter<IsEnabledAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsEnabledAvailable::shouldBeDisabled);
+                .forEachOrdered(element -> element.should(beDisabled()));
     }
 
     /**
@@ -410,7 +438,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} выделен(а|о)")
     public void elementIsSelected(WebElementParameter<IsSelectedAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsSelectedAvailable::shouldBeSelected);
+                .forEachOrdered(element -> element.should(beSelected()));
     }
 
     /**
@@ -421,7 +449,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} не выделен(а|о)")
     public void elementIsNotSelected(WebElementParameter<IsSelectedAvailable> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(IsSelectedAvailable::shouldNotBeSelected);
+                .forEachOrdered(element -> element.should(notBeSelected()));
     }
 
     /**
@@ -432,7 +460,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} находится в фокусе")
     public void elementIsInFocus(WebElementParameter<WebChildElement> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(WebChildElement::shouldBeInFocus);
+                .forEachOrdered(element -> element.should(beInFocus()));
     }
 
     /**
@@ -443,7 +471,7 @@ public class ElementCheckSteps implements EnvironmentAvailable {
     @Given("{webElement} находится не в фокусе")
     public void elementIsNotInFocus(WebElementParameter<WebChildElement> elementFinder) {
         elementFinder.find()
-                .forEachOrdered(WebChildElement::shouldNotBeInFocus);
+                .forEachOrdered(element -> element.should(notBeInFocus()));
     }
 
 }

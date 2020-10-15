@@ -1,13 +1,13 @@
 package io.perfeccionista.framework.pagefactory.elements.context;
 
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 
 import java.util.stream.Stream;
 
-public class WebListBlockContextLimiter<T extends WebMappedBlock> implements WebSearchContextLimiter<T> {
+public class WebListBlockContextLimiter<T extends WebBlock> implements WebSearchContextLimiter<T> {
 
     public WebListBlockContextLimiter(WebList element, WebListFilterBuilder filter) {
 

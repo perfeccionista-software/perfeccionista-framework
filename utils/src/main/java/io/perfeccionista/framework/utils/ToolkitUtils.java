@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.utils;
 
-import io.perfeccionista.framework.exceptions.ExtractingClipboardValueException;
+import io.perfeccionista.framework.exceptions.ExtractingClipboardValue;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -27,7 +27,7 @@ public class ToolkitUtils {
                     .getSystemClipboard()
                     .getData(DataFlavor.stringFlavor);
         } catch (IOException | UnsupportedFlavorException e) {
-            throw new ExtractingClipboardValueException(CLIPBOARD_VALUE_NOT_AVAILABLE.getMessage(), e);
+            throw ExtractingClipboardValue.exception(CLIPBOARD_VALUE_NOT_AVAILABLE.getMessage(), e);
         }
     }
 

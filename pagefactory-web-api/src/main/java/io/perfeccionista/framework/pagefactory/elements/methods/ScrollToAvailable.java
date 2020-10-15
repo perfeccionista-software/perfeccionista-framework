@@ -1,16 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements.methods;
 
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.base.WebLocatorChainAvailable;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.plugin.ActionMethodType;
-import io.perfeccionista.framework.pagefactory.elements.actions.MappedElementAction;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebMappedElementAction;
 
-import static io.perfeccionista.framework.pagefactory.elements.methods.WebMethods.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
 
-public interface ScrollToAvailable extends WebLocatorChainAvailable {
+public interface ScrollToAvailable extends WebChildElementBase {
 
     @ActionMethodType
-    @MappedElementAction(SCROLL_TO_METHOD)
-    WebChildElement scrollTo();
+    @WebMappedElementAction(SCROLL_TO_METHOD)
+    ScrollToAvailable scrollTo();
 
 }

@@ -2,8 +2,8 @@ package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.exceptions.DataConverterNotFoundException;
-import io.perfeccionista.framework.exceptions.RegisterDuplicateException;
+import io.perfeccionista.framework.exceptions.DataConverterNotFound;
+import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 
@@ -26,13 +26,13 @@ public class NamedDataConverterService extends DataConverterService {
         validatedConfiguration.getDataConverters().forEach(dataConverter -> {
             Class<? extends DataConverter> dataConverterClass = dataConverter.getClass();
             if (dataConvertersByClass.containsKey(dataConverterClass)) {
-                throw new RegisterDuplicateException(DATA_CONVERTER_REGISTER_BY_CLASS_DUPLICATE.getMessage(dataConverterClass.getCanonicalName()));
+                throw RegisterDuplicate.exception(DATA_CONVERTER_REGISTER_BY_CLASS_DUPLICATE.getMessage(dataConverterClass.getCanonicalName()));
             }
             findRepeatableAnnotations(dataConverterClass, Name.class).stream()
                     .map(Name::value)
                     .forEach(name -> {
                         if (dataConvertersByName.containsKey(name)) {
-                            throw new RegisterDuplicateException(DATA_CONVERTER_REGISTER_BY_NAME_DUPLICATE.getMessage(name));
+                            throw RegisterDuplicate.exception(DATA_CONVERTER_REGISTER_BY_NAME_DUPLICATE.getMessage(name));
                         }
                         dataConvertersByName.put(name, dataConverter);
                     });
@@ -47,7 +47,7 @@ public class NamedDataConverterService extends DataConverterService {
     public <T extends DataConverter> T get(String dataConverterName) {
         DataConverter<?, ?> dataConverter = dataConvertersByName.get(dataConverterName);
         if (null == dataConverter) {
-            throw new DataConverterNotFoundException(DATA_CONVERTER_NOT_FOUND_BY_NAME.getMessage(dataConverterName));
+            throw DataConverterNotFound.exception(DATA_CONVERTER_NOT_FOUND_BY_NAME.getMessage(dataConverterName));
         }
         return (T) dataConvertersByName.get(dataConverterName);
     }

@@ -22,6 +22,6 @@ public @interface AndroidElementProperty {
 
     AndroidLocator uiLocator();
 
-    Class<? extends MobileElementPropertyExtractor<MobileChildElement>> extractor();
+//    Class<? extends MobileElementPropertyExtractor<MobileChildElement>> extractor();
 
 }

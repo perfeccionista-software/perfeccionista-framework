@@ -3,8 +3,8 @@ package io.perfeccionista.framework.pagefactory.browser.window;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
 import io.perfeccionista.framework.pagefactory.browser.executor.OperationExecutor;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
+import io.perfeccionista.framework.measurements.Dimensions;
+import io.perfeccionista.framework.measurements.Location;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.remote.RemoteWebDriver;
 

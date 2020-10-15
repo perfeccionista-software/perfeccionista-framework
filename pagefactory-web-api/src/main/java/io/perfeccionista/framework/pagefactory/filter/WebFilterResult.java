@@ -1,8 +1,11 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 import java.util.Set;
 
+// TODO: Хранить тут же элемент, чтобы в экстракторе не передавать его отдельно
 public final class WebFilterResult {
 
     private final Set<Integer> indexes;
@@ -13,16 +16,20 @@ public final class WebFilterResult {
         this.hash = hash;
     }
 
-    public static WebFilterResult of(Set<Integer> indexes, String hash) {
+    public static WebFilterResult of(@NotNull Set<Integer> indexes, @NotNull String hash) {
         return new WebFilterResult(indexes, hash);
     }
 
-    public Set<Integer> getIndexes() {
+    public @NotNull Set<Integer> getIndexes() {
         return new HashSet<>(indexes);
     }
 
-    public String getHash() {
+    public @NotNull String getHash() {
         return hash;
+    }
+
+    public int getSize() {
+        return indexes.size();
     }
 
 }

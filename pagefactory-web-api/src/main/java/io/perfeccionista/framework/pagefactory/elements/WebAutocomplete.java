@@ -1,209 +1,103 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.asserts.WebAssertCondition;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsOpenAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.element.WebAutocompleteMatcher;
+import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.element.WebDropDownListMatcher;
+import io.perfeccionista.framework.matcher.element.WebListMatcher;
+import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.Dimensions;
-import io.perfeccionista.framework.pagefactory.elements.methods.Location;
 import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.screenshots.Screenshot;
-import io.perfeccionista.framework.plugin.Color;
-import io.perfeccionista.framework.value.number.NumberValue;
-import io.perfeccionista.framework.value.string.StringValue;
+import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
-
-@WebLocator(component = TEXT, xpath = "self::node()//input[@type = 'text']")
-@WebLocator(component = INPUT, xpath = "self::node()//input[@type = 'text']")
-@WebLocator(component = CLEAR, xpath = "self::node()//input[@type = 'text']")
 public interface WebAutocomplete extends WebDropDownList,
         SendKeysAvailable, ClearAvailable {
 
     // Actions
-
     @Override
     WebAutocomplete executeAction(@NotNull String name, Object... args);
-
     @Override
     WebAutocomplete executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-
+    WebAutocomplete should(@NotNull WebAutocompleteMatcher matcher);
     @Override
-    WebAutocomplete should(WebAssertCondition assertCondition);
-
+    WebAutocomplete should(@NotNull WebDropDownListMatcher matcher);
     @Override
-    WebAutocomplete should(WebAssertCondition assertCondition, InvocationName invocationName);
+    WebAutocomplete should(@NotNull WebListMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull WebIndexesMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull WebChildElementMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull GetColorAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull GetDimensionsAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull GetLocationAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull GetScreenshotAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull IsDisplayedAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull IsInFocusAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull IsOnTheScreenAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull IsPresentAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull GetLabelAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull GetTextAvailableMatcher matcher);
+    @Override
+    WebAutocomplete should(@NotNull IsOpenAvailableMatcher matcher);
 
     // Clear
-
     @Override
     WebAutocomplete clear();
 
     // Click
-
     @Override
     WebAutocomplete click();
 
     // Close
-
     @Override
     WebAutocomplete close();
 
-    // Get Color
-
-    @Override
-    WebAutocomplete componentShouldHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    @Override
-    WebAutocomplete componentShouldNotHaveColor(@NotNull String componentName, @NotNull String cssProperty, @NotNull Color expectedColor);
-
-    // Get Dimensions
-
-    @Override
-    WebAutocomplete componentShouldHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    @Override
-    WebAutocomplete componentShouldNotHaveDimensions(@NotNull String componentName, @NotNull Dimensions expectedDimensions);
-
-    // Get Label
-
-    @Override
-    WebAutocomplete shouldHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebAutocomplete shouldHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebAutocomplete shouldNotHaveLabel(@NotNull StringValue expectedValue);
-
-    @Override
-    WebAutocomplete shouldNotHaveLabel(@NotNull NumberValue<?> expectedValue);
-
-    // Get Location
-
-    @Override
-    WebAutocomplete componentShouldHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    @Override
-    WebAutocomplete componentShouldNotHaveLocation(@NotNull String componentName, @NotNull Location expectedLocation);
-
-    // Get Screenshot
-
-    @Override
-    WebAutocomplete componentShouldLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    @Override
-    WebAutocomplete componentShouldNotLooksLike(@NotNull String componentName, @NotNull Screenshot expectedScreenshot);
-
-    // Get Text
-
-    @Override
-    WebAutocomplete shouldHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebAutocomplete shouldHaveText(@NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebAutocomplete shouldNotHaveText(@NotNull StringValue expectedValue);
-
-    @Override
-    WebAutocomplete shouldNotHaveText(@NotNull NumberValue<?> expectedValue);
-
     // HoverTo
-
     @Override
     WebAutocomplete hoverTo(boolean withOutOfBounds);
 
-    // IsDisplayed
-
-    @Override
-    WebAutocomplete shouldBeDisplayed();
-
-    @Override
-    WebAutocomplete shouldNotBeDisplayed();
-
-    // IsInFocus
-
-    @Override
-    WebAutocomplete shouldBeInFocus();
-
-    @Override
-    WebAutocomplete shouldNotBeInFocus();
-
-    // IsOpen
-
-    @Override
-    WebAutocomplete shouldBeOpen();
-
-    @Override
-    WebAutocomplete shouldBeClosed();
-
-    // IsPresent
-
-    @Override
-    WebAutocomplete shouldBePresent();
-
-    @Override
-    WebAutocomplete shouldNotBePresent();
-
     // Open
-
     @Override
     WebAutocomplete open();
 
     // ScrollTo
-
     @Override
     WebAutocomplete scrollTo();
 
-    // ScrollToElement
-
-    @Override
-    WebAutocomplete scrollToElement(@NotNull WebListFilterBuilder filter);
-
     // SendKeys
-
     @Override
-    WebAutocomplete sendKeys(CharSequence... keys);
-
-    // Size
-
+    WebAutocomplete sendKeys(@NotNull String keys);
     @Override
-    WebAutocomplete shouldHaveSize(@NotNull NumberValue<Integer> expectedSize);
-
-    // WebComponents
-
-    @Override
-    WebAutocomplete componentShouldBePresent(@NotNull String componentName);
-
-    @Override
-    WebAutocomplete componentShouldNotBePresent(@NotNull String componentName);
-
-    @Override
-    WebAutocomplete componentShouldBeDisplayed(@NotNull String componentName);
-
-    @Override
-    WebAutocomplete componentShouldNotBeDisplayed(@NotNull String componentName);
-
-    // WebProperties
-
-    @Override
-    WebAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebAutocomplete shouldHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
-
-    @Override
-    WebAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull StringValue expectedValue);
-
-    @Override
-    WebAutocomplete shouldNotHavePropertyValue(@NotNull String propertyName, @NotNull NumberValue<?> expectedValue);
+    WebAutocomplete sendKeys(@NotNull KeysEventChain keyEvents);
 
 }

@@ -7,10 +7,12 @@ import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
-@Tags(@Tag("Element"))
+import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
+import static io.perfeccionista.framework.matcher.WebElementAssertions.haveText;
+
+@Tag("Element")
 class WebElementInteractionTest extends AbstractUiTest {
 
     @Test
@@ -18,18 +20,21 @@ class WebElementInteractionTest extends AbstractUiTest {
         WebPageContext context = initWebPageContext(env, value);
         context.getPage(HomePage.class)
                 .leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
-        WebTextBlock sourceBlock = elementsPage.sourceBlock()
-                .shouldBeDisplayed()
+        elementsPage.sourceBlock()
+                .should(beDisplayed())
                 .scrollTo();
-        WebTextBlock targetBlock = elementsPage.targetBlock()
-                .shouldBeDisplayed();
-        WebTextBlock dragAndDropText = elementsPage.dragAndDropText()
-                .shouldBeDisplayed()
-                .shouldHaveText(value.stringEmpty());
-        sourceBlock.executeInteraction("Drag and Drop", targetBlock);
-        dragAndDropText.shouldHaveText(value.stringEquals("Source moved"));
+        elementsPage.targetBlock()
+                .should(beDisplayed());
+        elementsPage.dragAndDropText()
+                .should(beDisplayed())
+                .should(haveText(value.stringEmpty()));
+        elementsPage.sourceBlock()
+                .executeInteraction("Drag and Drop", elementsPage.targetBlock());
+        elementsPage.dragAndDropText()
+                .should(haveText("Source moved"));
     }
 
 }

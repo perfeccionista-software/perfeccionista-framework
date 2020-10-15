@@ -1,12 +1,13 @@
 package io.perfeccionista.framework.pagefactory.factory.handlers;
 
-import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
-import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionImplementation;
-import io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionRegistry;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementAction;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementActionImplementation;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementActionRegistry;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
@@ -18,27 +19,29 @@ public class WebElementActionAnnotationHandler {
     private WebElementActionAnnotationHandler() {
     }
 
-    public static WebElementActionRegistry createWebElementActionRegistryFor(WebChildElement webChildElement, Method elementMethod) {
-        Map<String, WebElementActionImplementation<?>> webElementActions = new HashMap<>();
-        findRepeatableAnnotations(elementMethod, WebElementAction.class)
-                .forEach(webElementAction -> webElementActions.put(webElementAction.name(), newInstance(webElementAction.implementation())));
+    public static @NotNull WebElementActionRegistry createWebElementActionRegistryFor(@NotNull WebChildElement webChildElement,
+                                                                                      @NotNull Method elementMethod,
+                                                                                      @NotNull WebPageFactoryPreferences configuration) {
+        Map<String, WebElementActionImplementation<?>> webElementActions = configuration
+                .getWebElementActionConfiguration(webChildElement.getClass())
+                .asMap();
         findAllRepeatableAnnotationsInHierarchy(WebElementAction.class, WebChildElement.class, webChildElement.getClass())
-                .forEach(webElementAction -> {
-                    if (!webElementActions.containsKey(webElementAction.name())) {
-                        webElementActions.put(webElementAction.name(), newInstance(webElementAction.implementation()));
-                    }
-                });
+                .forEach(webElementAction -> webElementActions
+                        .put(webElementAction.name(), newInstance(webElementAction.implementation())));
+        findRepeatableAnnotations(elementMethod, WebElementAction.class)
+                .forEach(webElementAction -> webElementActions
+                        .put(webElementAction.name(), newInstance(webElementAction.implementation())));
         return WebElementActionRegistry.of(webElementActions);
     }
 
-    public static WebElementActionRegistry createWebElementActionRegistryFor(Class<? extends WebChildElement> webChildElementClass) {
-        Map<String, WebElementActionImplementation<?>> webElementActions = new HashMap<>();
-        findAllRepeatableAnnotationsInHierarchy(WebElementAction.class, WebChildElement.class, webChildElementClass)
-                .forEach(webElementAction -> {
-                    if (!webElementActions.containsKey(webElementAction.name())) {
-                        webElementActions.put(webElementAction.name(), newInstance(webElementAction.implementation()));
-                    }
-                });
+    public static @NotNull WebElementActionRegistry createWebElementActionRegistryFor(@NotNull WebChildElement webChildElement,
+                                                                                      @NotNull WebPageFactoryPreferences configuration) {
+        Map<String, WebElementActionImplementation<?>> webElementActions = configuration
+                .getWebElementActionConfiguration(webChildElement.getClass())
+                .asMap();
+        findAllRepeatableAnnotationsInHierarchy(WebElementAction.class, WebChildElement.class, webChildElement.getClass())
+                .forEach(webElementAction -> webElementActions
+                        .put(webElementAction.name(), newInstance(webElementAction.implementation())));
         return WebElementActionRegistry.of(webElementActions);
     }
 

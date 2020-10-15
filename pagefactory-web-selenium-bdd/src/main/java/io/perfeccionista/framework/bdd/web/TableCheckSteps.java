@@ -13,27 +13,16 @@ import io.perfeccionista.framework.bdd.parameters.ref.SourceParameterRef;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SizeAvailable;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
+
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.beSorted;
+import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
+import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textCellValue;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
 public class TableCheckSteps implements EnvironmentAvailable {
-
-    /**
-     *
-     * @param elementFinder -
-     * @param integerValue -
-     */
-    @Given("{webElement} has {integerValue} row(s)")
-    @Given("{webElement} содержит {integerValue} строк(а|и)")
-    public void tableHasSize(WebElementParameter<SizeAvailable> elementFinder,
-                             ValueIntegerParameter integerValue) {
-        elementFinder.find()
-                .forEachOrdered(element -> element
-                        .shouldHaveSize(integerValue.getValue()));
-    }
 
     /**
      *
@@ -49,7 +38,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
-                        .shouldHaveSize(integerValue.getValue()));
+                        .should(haveSize(integerValue.getValue())));
     }
 
     /**
@@ -66,7 +55,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
-                        .shouldHaveSize(integerValue.getValue()));
+                        .should(haveSize(integerValue.getValue())));
     }
 
     /**
@@ -89,7 +78,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
         elementFinder.find()
                 .forEachOrdered(element -> element
                         .extractAllRows(valueExtractor.createExtractorFor(webTableColumn.getRaw(), blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
 
     /**
@@ -107,8 +96,8 @@ public class TableCheckSteps implements EnvironmentAvailable {
                                 SortDirectionParameter sortDirection) {
         elementFinder.find()
                 .forEachOrdered(element -> element
-                        .extractAllRows(webTableColumn.getRaw())
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
+                        .extractAllRows(textCellValue(webTableColumn.getRaw()))
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
 
     /**
@@ -133,7 +122,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
                         .extractAllRows(valueExtractor.createExtractorFor(webTableColumn.getRaw(), blockElementFinder.getRaw()))
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
 
     /**
@@ -154,7 +143,7 @@ public class TableCheckSteps implements EnvironmentAvailable {
                 .forEachOrdered(element -> element
                         .filter(itemFilter)
                         .extractAllRows(webTableColumn.getRaw())
-                        .shouldBeSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection())));
+                        .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
 
 }

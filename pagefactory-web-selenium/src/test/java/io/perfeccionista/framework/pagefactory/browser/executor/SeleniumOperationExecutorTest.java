@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.Duration;
 
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
 @ExtendWith(PerfeccionistaExtension.class)
@@ -46,16 +47,16 @@ public class SeleniumOperationExecutorTest {
         //  с проверкой хэша
         //  с действиями
         //  по разным локаторам (id, css, xpath, text и т.п.)
-        WebLocatorHolder blockLocator = WebLocatorHolder.of("ROOT", "className", "container")
+        WebLocatorHolder blockLocator = WebLocatorHolder.of("ROOT", CLASS_NAME, "container")
 //                .setCalculateHash(true)
 //                .setExpectedHash("40147a539d7214a432b4c3f71978e82b")
                 .addInvokedOnCallFunction(new ScrollTo());
-        WebLocatorHolder textLocator = WebLocatorHolder.of("ROOT", "className", "row")
+        WebLocatorHolder textLocator = WebLocatorHolder.of("ROOT", CLASS_NAME, "row")
                 .setIndex(0)
                 .addInvokedOnCallFunction(new ScrollTo());
         WebLocatorChain webLocatorChain = WebLocatorChain.empty()
-                .addLocator(blockLocator)
-                .addLocator(textLocator);
+                .addFirstLocator(blockLocator)
+                .addFirstLocator(textLocator);
         JsOperation<String> operation = JsOperation.of(webLocatorChain, new GetInnerText());
 
         sleep(Duration.ofSeconds(1));

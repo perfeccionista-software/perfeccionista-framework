@@ -1,27 +1,29 @@
 package io.perfeccionista.framework.pagefactory.elements.mapping;
 
-import io.perfeccionista.framework.pagefactory.elements.WebMappedBlock;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.perfeccionista.framework.json.JsonSerializable;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class TableColumnHolder {
+public class TableColumnHolder implements JsonSerializable {
 
     private final WebLocatorHolder headerLocator;
-    private final Class<? extends WebMappedBlock> headerClass;
+    private final Class<? extends WebBlock> headerClass;
     private final WebLocatorHolder bodyLocator;
-    private final Class<? extends WebMappedBlock> bodyClass;
+    private final Class<? extends WebBlock> bodyClass;
     private final WebLocatorHolder footerLocator;
-    private final Class<? extends WebMappedBlock> footerClass;
+    private final Class<? extends WebBlock> footerClass;
 
     private TableColumnHolder(WebLocatorHolder headerLocator,
-                              Class<? extends WebMappedBlock> headerClass,
+                              Class<? extends WebBlock> headerClass,
                               WebLocatorHolder bodyLocator,
-                              Class<? extends WebMappedBlock> bodyClass,
+                              Class<? extends WebBlock> bodyClass,
                               WebLocatorHolder footerLocator,
-                              Class<? extends WebMappedBlock> footerClass) {
+                              Class<? extends WebBlock> footerClass) {
         this.headerLocator = headerLocator;
         this.headerClass = headerClass;
         this.bodyLocator = bodyLocator;
@@ -31,11 +33,11 @@ public class TableColumnHolder {
     }
 
     public static TableColumnHolder of(@Nullable WebLocatorHolder headerLocator,
-                                       @NotNull Class<? extends WebMappedBlock> headerClass,
+                                       @NotNull Class<? extends WebBlock> headerClass,
                                        @Nullable WebLocatorHolder bodyLocator,
-                                       @NotNull Class<? extends WebMappedBlock> bodyClass,
+                                       @NotNull Class<? extends WebBlock> bodyClass,
                                        @Nullable WebLocatorHolder footerLocator,
-                                       @NotNull Class<? extends WebMappedBlock> footerClass) {
+                                       @NotNull Class<? extends WebBlock> footerClass) {
         return new TableColumnHolder(headerLocator, headerClass, bodyLocator, bodyClass, footerLocator, footerClass);
     }
 
@@ -43,7 +45,7 @@ public class TableColumnHolder {
         return Optional.ofNullable(headerLocator);
     }
 
-    public @NotNull Class<? extends WebMappedBlock> getHeaderClass() {
+    public @NotNull Class<? extends WebBlock> getHeaderClass() {
         return headerClass;
     }
 
@@ -51,7 +53,7 @@ public class TableColumnHolder {
         return Optional.ofNullable(bodyLocator);
     }
 
-    public @NotNull Class<? extends WebMappedBlock> getBodyClass() {
+    public @NotNull Class<? extends WebBlock> getBodyClass() {
         return bodyClass;
     }
 
@@ -59,8 +61,14 @@ public class TableColumnHolder {
         return Optional.ofNullable(footerLocator);
     }
 
-    public @NotNull Class<? extends WebMappedBlock> getFooterClass() {
+    public @NotNull Class<? extends WebBlock> getFooterClass() {
         return footerClass;
+    }
+
+    // TODO: Implement
+    @Override
+    public JsonNode toJson() {
+        return null;
     }
 
 }
