@@ -2,7 +2,7 @@ package io.perfeccionista.framework.bdd.parameters.definition;
 
 import io.cucumber.java.ParameterType;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.bdd.EnvironmentAvailable;
+import io.perfeccionista.framework.EnvironmentAvailable;
 import io.perfeccionista.framework.bdd.parameters.DimensionsParameter;
 import io.perfeccionista.framework.bdd.parameters.DimensionsParameterImpl;
 import io.perfeccionista.framework.bdd.parameters.CallParameter;
@@ -62,10 +62,9 @@ import org.intellij.lang.annotations.Language;
 
 public class RuParametersDefinition implements EnvironmentAvailable {
 
-    private final Environment environment;
-
-    public RuParametersDefinition(Environment environment) {
-        this.environment = environment;
+    @Override
+    public Environment getEnvironment() {
+        return Environment.getCurrent();
     }
 
     // Mark default cucumber group as Non-capturing.
@@ -130,7 +129,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public <K, V> DataStorageParameter<K, V> dataStorage(String value) {
-        return new DataStorageParameterImpl<>(environment, value);
+        return new DataStorageParameterImpl<>(getEnvironment(), value);
     }
 
     /**
@@ -178,7 +177,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ScenarioNameParameter scenarioName(String value) {
-        return new ScenarioNameParameterImpl(environment, value);
+        return new ScenarioNameParameterImpl(getEnvironment(), value);
     }
 
     /**
@@ -188,7 +187,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ScreenshotParameter screenshot(String value) {
-        return new ScreenshotParameterImpl(environment, value);
+        return new ScreenshotParameterImpl(getEnvironment(), value);
     }
 
     /**
@@ -208,7 +207,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public StringComparatorTypeParameter comparatorType(String value) {
-        return new StringComparatorTypeParameterImpl(environment, value);
+        return new StringComparatorTypeParameterImpl(getEnvironment(), value);
     }
 
     /**
@@ -217,7 +216,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ValueIntegerParameter integerValue(String value) {
-        return new ValueRuIntegerParameter(environment, value);
+        return new ValueRuIntegerParameter(getEnvironment(), value);
     }
 
     /**
@@ -226,7 +225,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ValueNumberParameter numberValue(String value) {
-        return new ValueRuNumberParameter(environment, value);
+        return new ValueRuNumberParameter(getEnvironment(), value);
     }
 
     /**
@@ -235,7 +234,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public ValueStringParameter stringValue(String value) {
-        return new ValueRuStringParameter(environment, value);
+        return new ValueRuStringParameter(getEnvironment(), value);
     }
 
     /**
@@ -244,7 +243,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public WebBrowserParameter webBrowser(String value) {
-        return new WebBrowserParameterImpl(environment, value);
+        return new WebBrowserParameterImpl(getEnvironment(), value);
     }
 
     /**
@@ -254,7 +253,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public <T extends WebChildElement> WebBlockElementParameter<T> webBlockElement(String value) {
-        return new WebBlockElementParameterImpl<>(environment, value);
+        return new WebBlockElementParameterImpl<>(getEnvironment(), value);
     }
 
     /**
@@ -284,7 +283,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public <T extends WebChildElement> WebElementParameter<T> webElement(String value) {
-        return new WebElementParameterImpl<>(environment, value);
+        return new WebElementParameterImpl<>(getEnvironment(), value);
     }
 
     /**
@@ -313,7 +312,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public WebListValueExtractorParameter webListValueExtractor(String value) {
-       return new WebListValueExtractorParameterImpl(environment, value);
+       return new WebListValueExtractorParameterImpl(getEnvironment(), value);
     }
 
     /**
@@ -321,7 +320,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public WebPageParameter webPage(String value) {
-        return new WebPageParameterImpl(environment, value);
+        return new WebPageParameterImpl(getEnvironment(), value);
     }
 
     /**
@@ -331,7 +330,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public WebTableValueExtractorParameter webTableValueExtractor(String value) {
-        return new WebTableValueExtractorParameterImpl(environment, value);
+        return new WebTableValueExtractorParameterImpl(getEnvironment(), value);
     }
 
     /**

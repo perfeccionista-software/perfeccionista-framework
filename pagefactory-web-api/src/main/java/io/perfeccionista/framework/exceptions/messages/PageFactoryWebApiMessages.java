@@ -104,6 +104,7 @@ public enum PageFactoryWebApiMessages implements Messages {
 
 
     PAGE_NAME_DUPLICATE("Page name %s used for classes %s and %s"),
+    PAGE_NOT_INITIALIZED("Active page not initialized"),
     PAGE_NOT_FOUND_BY_NAME("Page with name %s is not found"),
     PAGE_NOT_FOUND_BY_CLASS("Page with class %s is not found"),
     REQUESTED_NODE_HASH_NOT_CALCULATED("Requested node hash not calculated"),
@@ -112,7 +113,7 @@ public enum PageFactoryWebApiMessages implements Messages {
     WEB_ELEMENT_NAME_NOT_FOUND("WebElement doesn't contain name %s"),
     WEB_ELEMENT_METHOD_NOT_IMPLEMENTED("WebElement method %s not implemented"),
 
-    CONTEXT_LIMITER_RETURN_MORE_THAN_ONE_SEARCH_CONTEXT("Context limiter return more than one search context"),
+    CONTEXT_LIMITER_RESULT_SIZE_NOT_MATCH("Context limiter's result size doesn't match the expected size"),
     CONTEXT_LIMITER_RETURN_NO_ONE_SEARCH_CONTEXT("Context limiter return no one search context"),
 
     WEB_LOCATOR_STRATEGY_VALIDATION_FAILED("Locator must contain only one filled search strategy"),

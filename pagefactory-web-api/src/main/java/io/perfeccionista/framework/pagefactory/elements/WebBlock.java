@@ -23,6 +23,10 @@ public interface WebBlock extends WebChildElement, WebParentElement {
         return WebElementFrameFactory.createWebBlockFrame(blockClass);
     }
 
+    // Search
+    @NotNull WebChildElement getElement(@NotNull String elementPath);
+    <T extends WebChildElement> @NotNull T getElement(@NotNull String elementPath, @NotNull Class<T> elementClass);
+
     // Actions
     @Override
     WebBlock executeAction(@NotNull String name, Object... args);

@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.pagefactory.extractor.table;
 
 import io.perfeccionista.framework.pagefactory.WebPageService;
-import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
+import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
 import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
@@ -11,12 +11,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class WebTableRowExtractor implements WebTableCellValueExtractor<WebBlock> {
+public class WebTableRowExtractor implements WebTableValueExtractor<WebTableRow> {
 
     private TableSection section = TableSection.BODY;
 
     @Override
-    public Map<Integer, WebBlock> extractValues(@NotNull WebTableFilter filter) {
+    public Map<Integer, WebTableRow> extractValues(@NotNull WebTableFilter filter) {
         WebFilterResult filterResult = filter.getFilterResult();
         WebTable element = filter.getElement();
 

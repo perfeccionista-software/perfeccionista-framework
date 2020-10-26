@@ -18,7 +18,7 @@ public class WebPageParameterImpl implements WebPageParameter {
     public WebPageParameter usePage() {
         environment.getService(WebBrowserService.class)
                 .getActiveDispatcher()
-                .getPageContext()
+                .getWebPageContext()
                 .usePage(rawInput);
         return this;
     }
@@ -27,7 +27,7 @@ public class WebPageParameterImpl implements WebPageParameter {
     public WebPage getPage() {
         return environment.getService(WebBrowserService.class)
                 .getActiveDispatcher()
-                .getPageContext()
+                .getWebPageContext()
                 .getPage(rawInput);
     }
 

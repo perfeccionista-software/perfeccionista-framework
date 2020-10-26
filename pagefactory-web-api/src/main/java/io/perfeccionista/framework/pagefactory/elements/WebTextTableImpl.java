@@ -45,7 +45,7 @@ public class WebTextTableImpl extends AbstractWebChildElement implements WebText
     }
 
     @Override
-    public @NotNull <V> WebMultipleIndexedResult<V, WebTextTable> extractAllRows(@NotNull WebTextTableCellValueExtractor<V> extractor) {
+    public @NotNull <V> WebMultipleIndexedResult<V, WebTextTable> extractRows(@NotNull WebTextTableCellValueExtractor<V> extractor) {
         return WebTextTableMultipleIndexedResult.of(this, extractor);
     }
 

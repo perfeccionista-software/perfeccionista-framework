@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.browser;
 
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
-import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
+import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.browser.cookies.CookiesDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.executor.OperationExecutor;
 import io.perfeccionista.framework.pagefactory.browser.logs.LogsDispatcher;
@@ -23,7 +23,7 @@ public interface WebBrowserDispatcher {
     ExceptionMapper getExceptionMapper();
 
     @API(status = Status.STABLE)
-    WebPageContext getPageContext();
+    WebPageContext getWebPageContext();
 
     @API(status = Status.STABLE)
     OperationExecutor executor();

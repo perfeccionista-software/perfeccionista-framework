@@ -35,12 +35,12 @@ public class CheckInvocationRunner implements InvocationRunner {
         if (name.isNotEmpty()) {
             logger.info(name::toString);
         }
-        logger.info(() -> format("Check action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));
+        logger.debug(() -> format("Check action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));
 
         while (deadline >= currentTime) {
             try {
                 T result = supplier.get();
-                logger.info(() -> "Check action finished");
+                logger.debug(() -> "Check action finished");
                 return result;
             } catch (final PerfeccionistaRuntimeException | PerfeccionistaAssertionError e) {
                 processException(e);
@@ -55,7 +55,7 @@ public class CheckInvocationRunner implements InvocationRunner {
             currentTime = System.nanoTime();
         }
 
-        logger.info(() -> "Check action finished with exception");
+        logger.error(() -> "Check action finished with exception");
         exceptionCollector.throwIfSingleException();
         throw exceptionCollector.getExceptionSequence();
     }

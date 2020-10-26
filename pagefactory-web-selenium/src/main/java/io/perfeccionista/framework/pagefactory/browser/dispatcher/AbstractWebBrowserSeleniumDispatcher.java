@@ -6,8 +6,8 @@ import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
 import io.perfeccionista.framework.exceptions.mapper.SeleniumExceptionMapper;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.configuration.WebDriverTimeouts;
-import io.perfeccionista.framework.pagefactory.browser.context.SeleniumWebPageContext;
-import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
+import io.perfeccionista.framework.pagefactory.context.base.DefaultWebPageContext;
+import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.browser.cookies.CookiesDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.cookies.SeleniumCookiesDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.executor.OperationExecutor;
@@ -100,10 +100,10 @@ public abstract class AbstractWebBrowserSeleniumDispatcher<T extends RemoteWebDr
     }
 
     @Override
-    public WebPageContext getPageContext() {
+    public WebPageContext getWebPageContext() {
         checkWebDriverInstance();
         return Optional.ofNullable(this.context).orElseGet(() -> {
-            this.context = new SeleniumWebPageContext(environment, this, exceptionMapper);
+            this.context = new DefaultWebPageContext(environment, this, exceptionMapper);
             return this.context;
         });
     }

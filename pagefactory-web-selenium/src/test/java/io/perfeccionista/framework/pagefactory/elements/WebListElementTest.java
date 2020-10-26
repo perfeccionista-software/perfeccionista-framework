@@ -14,7 +14,7 @@ import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
+import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.measurements.Dimensions;
 import io.perfeccionista.framework.measurements.Location;
 import io.perfeccionista.framework.measurements.Point;
@@ -56,7 +56,6 @@ import static io.perfeccionista.framework.pagefactory.elements.actions.WebElemen
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_IN_FOCUS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_ELEMENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.block;
 import static org.junit.jupiter.api.Assertions.assertEquals;

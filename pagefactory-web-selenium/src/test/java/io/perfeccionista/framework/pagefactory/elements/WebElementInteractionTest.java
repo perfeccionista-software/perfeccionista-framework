@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
-import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
+import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.value.ValueService;

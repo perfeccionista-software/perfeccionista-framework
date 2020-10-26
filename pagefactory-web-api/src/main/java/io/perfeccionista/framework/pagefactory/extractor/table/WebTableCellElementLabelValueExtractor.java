@@ -22,7 +22,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
 
-public class WebTableCellElementLabelValueExtractor implements WebTableCellValueExtractor<String> {
+public class WebTableCellElementLabelValueExtractor implements WebTableValueExtractor<String> {
 
     private TableSection section = TableSection.BODY;
 

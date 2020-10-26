@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.bdd.extractors.table;
 
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.table.WebTableValueExtractor;
 
 public interface WebTableCellElementValueExtractorHolder {
 
-    WebTableCellValueExtractor<String> getForElement(String columnName, String blockElementName);
+    WebTableValueExtractor<String> getForElement(String columnName, String blockElementName);
 
 }

@@ -109,7 +109,7 @@ public class Environment {
      * по указанному классу или ServiceNotFoundException, если по указанному классу
      * не зарегистрировано экземпляров {@link Service}.
      */
-    public <T extends Service> T getService(@NotNull Class<T> serviceClass) {
+    public @NotNull <T extends Service> T getService(@NotNull Class<T> serviceClass) {
         if (services.containsKey(serviceClass)) {
             return serviceClass.cast(services.get(serviceClass));
         }

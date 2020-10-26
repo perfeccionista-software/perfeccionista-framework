@@ -61,6 +61,8 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     private static class HImpl implements H {}
 
+    private static class H2Impl extends HImpl {}
+
     @Test
     void getInheritedInterfacesNotNullArgumentsTest() {
         assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedInterfaces(null, Object.class, null));
@@ -85,4 +87,11 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
         assertEquals(H.class, interfacesFromHToA.getLast());
     }
 
+    @Test
+    void getInheritedInterfacesFromExtendedClassAscTest() {
+        Deque<Class<? extends A>> interfacesFromHToA = ReflectionUtils.getInheritedInterfaces(A.class, H2Impl.class, Order.ASC);
+        assertEquals(5, interfacesFromHToA.size());
+        assertEquals(A.class, interfacesFromHToA.getFirst());
+        assertEquals(H.class, interfacesFromHToA.getLast());
+    }
 }

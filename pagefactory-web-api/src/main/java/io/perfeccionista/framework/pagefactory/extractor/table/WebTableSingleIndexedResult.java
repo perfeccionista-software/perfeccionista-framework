@@ -26,11 +26,11 @@ public class WebTableSingleIndexedResult<T> implements WebSingleIndexedResult<T,
 
     private final WebTable element;
     private final WebTableFilterBuilder filterBuilder;
-    private final WebTableCellValueExtractor<T> extractor;
+    private final WebTableValueExtractor<T> extractor;
 
     private WebTableSingleIndexedResult(WebTable element,
                                         WebTableFilterBuilder filterBuilder,
-                                        WebTableCellValueExtractor<T> extractor) {
+                                        WebTableValueExtractor<T> extractor) {
         this.element = element;
         this.filterBuilder = filterBuilder;
         this.extractor = extractor;
@@ -38,12 +38,12 @@ public class WebTableSingleIndexedResult<T> implements WebSingleIndexedResult<T,
 
     public static <T> WebTableSingleIndexedResult<T> of(@NotNull WebTable element,
                                                         @NotNull WebTableFilterBuilder filterBuilder,
-                                                        @NotNull WebTableCellValueExtractor<T> extractor) {
+                                                        @NotNull WebTableValueExtractor<T> extractor) {
         return new WebTableSingleIndexedResult<>(element, filterBuilder, extractor);
     }
 
     public static <T> WebTableSingleIndexedResult<T> of(@NotNull WebTable element,
-                                                        @NotNull WebTableCellValueExtractor<T> extractor) {
+                                                        @NotNull WebTableValueExtractor<T> extractor) {
         return new WebTableSingleIndexedResult<>(element, emptyWebTableFilter(), extractor);
     }
 

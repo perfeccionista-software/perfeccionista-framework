@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
 
-public class WebTableRowIndexExtractor implements WebTableCellValueExtractor<Integer> {
+public class WebTableRowIndexExtractor implements WebTableValueExtractor<Integer> {
 
     private TableSection section = TableSection.BODY;
 

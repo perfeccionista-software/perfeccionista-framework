@@ -16,7 +16,7 @@ import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
 import io.perfeccionista.framework.pagefactory.elements.methods.ElementContainer;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.table.WebTableValueExtractor;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
@@ -34,9 +34,9 @@ public interface WebTable extends WebChildElement, ElementContainer<WebTableFilt
     @NotNull WebTableFrame<WebBlock> getWebTableFrame();
 
     // Extractor
-    @NotNull <V> WebSingleIndexedResult<V, WebTable> extractHeader(@NotNull WebTableCellValueExtractor<V> extractor);
-    @NotNull <V> WebMultipleIndexedResult<V, WebTable> extractAllRows(@NotNull WebTableCellValueExtractor<V> extractor);
-    @NotNull <V> WebSingleIndexedResult<V, WebTable> extractFooter(@NotNull WebTableCellValueExtractor<V> extractor);
+    @NotNull <V> WebSingleIndexedResult<V, WebTable> extractHeader(@NotNull WebTableValueExtractor<V> extractor);
+    @NotNull <V> WebMultipleIndexedResult<V, WebTable> extractRows(@NotNull WebTableValueExtractor<V> extractor);
+    @NotNull <V> WebSingleIndexedResult<V, WebTable> extractFooter(@NotNull WebTableValueExtractor<V> extractor);
 
     // Filter
     @Override

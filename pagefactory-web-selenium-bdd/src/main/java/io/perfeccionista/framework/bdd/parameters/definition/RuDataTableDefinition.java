@@ -1,17 +1,16 @@
 package io.perfeccionista.framework.bdd.parameters.definition;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.bdd.EnvironmentAvailable;
+import io.perfeccionista.framework.EnvironmentAvailable;
 
 public class RuDataTableDefinition implements EnvironmentAvailable {
 
-    private final Environment environment;
-
-    public RuDataTableDefinition(Environment environment) {
-        this.environment = environment;
+    @Override
+    public Environment getEnvironment() {
+        return Environment.getCurrent();
     }
 
-// FIXME Cucumber can't work with generic type here
+    // FIXME Cucumber can't work with generic type here
 //    @DataTableType
 //    public <T extends Element> WebElementParameter<T> webElementParameterEntry(Map<String, String> entry) {
 //        // verifyEntry()

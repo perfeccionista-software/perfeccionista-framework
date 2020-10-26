@@ -167,6 +167,14 @@ public class WebElementRegistry implements JsonSerializable {
         return Optional.empty();
     }
 
+    public WebChildElement getRequiredElementByPath(@NotNull String elementPath) {
+        Optional<WebChildElement> optionalLookupElement = getElementByPath(elementPath);
+        if (optionalLookupElement.isPresent()) {
+            return optionalLookupElement.get();
+        }
+        throw WebElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(elementPath));
+    }
+
     public <T extends WebChildElement> T getRequiredElementByPath(@NotNull String elementPath, @NotNull Class<T> elementClass) {
         Optional<WebChildElement> optionalLookupElement = getElementByPath(elementPath);
         if (optionalLookupElement.isPresent()) {

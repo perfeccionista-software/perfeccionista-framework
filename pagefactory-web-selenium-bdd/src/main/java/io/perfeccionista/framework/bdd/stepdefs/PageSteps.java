@@ -1,0 +1,218 @@
+package io.perfeccionista.framework.bdd.stepdefs;
+
+import io.cucumber.java.en.Given;
+import io.perfeccionista.framework.bdd.parameters.ValueStringParameter;
+import io.perfeccionista.framework.bdd.parameters.WebPageParameter;
+
+// TODO: Wrap runLogic()
+// TODO: Add step categories
+// TODO: Как сделать снятие скриншотов конфигурируемым из проекта (для каждого метода)
+public class PageSteps implements WebStepDefinitions {
+
+    // TODO: Пользователь нажимает комбинацию клавиш (Ctrl + R, ...)
+
+    /**
+     *
+     * @param webPage -
+     */
+    @Given("page {webPage} opens")
+    @Given("открывается страница {webPage}")
+    public void webPageOpens(WebPageParameter webPage) {
+        webPage.usePage();
+    }
+
+    /**
+     *
+     */
+    @Given("user clicks 'Refresh' button")
+    @Given("пользователь нажимает кнопку 'Обновить'")
+    public void userClicksRefreshButton() {
+        getWebBrowserDispatcher().tabs()
+                .refresh();
+    }
+
+    /**
+     *
+     */
+    @Given("user clicks 'Back' button")
+    @Given("пользователь нажимает кнопку 'Назад'")
+    public void userClicksBackButton() {
+        getWebBrowserDispatcher().tabs()
+                .back();
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("user enters a URL {stringValue} in the browser and clicks 'Enter'")
+    @Given("пользователь вводит URL {stringValue} в браузер и нажимает 'Enter'")
+    public void userOpenUrl(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .openUrl(tabUrl.getProcessedValue());
+    }
+
+    /**
+     *
+     */
+    @Given("user opens new tab")
+    @Given("пользователь открывает новую вкладку")
+    public void userOpensNewTab() {
+        getWebBrowserDispatcher().tabs()
+                .newTab();
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("user opens new tab with URL {stringValue}")
+    @Given("пользователь открывает новую вкладку с URL {stringValue}")
+    public void userOpensNewTabWithUrl(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .newTab(tabUrl.getProcessedValue());
+    }
+
+    /**
+     *
+     * @param tabTitle -
+     */
+    @Given("active tab contain title {stringValue}")
+    @Given("активная вкладка содержит заголовок {stringValue}")
+    public void activeTabContainTitle(ValueStringParameter tabTitle) {
+        getWebBrowserDispatcher().tabs()
+                .activeTabShouldHaveTitle(tabTitle.getValue());
+    }
+
+    /**
+     *
+     * @param tabTitle -
+     */
+    @Given("active tab doesn't contain title {stringValue}")
+    @Given("активная вкладка не содержит заголовок {stringValue}")
+    public void activeTabDoesNotContainTitle(ValueStringParameter tabTitle) {
+        getWebBrowserDispatcher().tabs()
+                .activeTabShouldNotHaveTitle(tabTitle.getValue());
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("active tab contain URL {stringValue}")
+    @Given("активная вкладка содержит URL {stringValue}")
+    public void activeTabContainUrl(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .activeTabShouldHaveUrl(tabUrl.getValue());
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("active tab doesn't contain URL {stringValue}")
+    @Given("активная вкладка не содержит URL {stringValue}")
+    public void activeTabDoesNotContainUrl(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .activeTabShouldNotHaveUrl(tabUrl.getValue());
+    }
+
+    /**
+     *
+     * @param tabTitle -
+     */
+    @Given("browser has tab with title {stringValue}")
+    @Given("в браузере присутствует вкладка с заголовком {stringValue}")
+    public void tabWithTitleExists(ValueStringParameter tabTitle) {
+        getWebBrowserDispatcher().tabs()
+                .shouldHaveTabWithTitle(tabTitle.getValue());
+    }
+
+    /**
+     *
+     * @param tabTitle -
+     */
+    @Given("browser doesn't have tab with title {stringValue}")
+    @Given("в браузере отсутствует вкладка с заголовком {stringValue}")
+    public void tabWithTitleAbsent(ValueStringParameter tabTitle) {
+        getWebBrowserDispatcher().tabs()
+                .shouldNotHaveTabWithTitle(tabTitle.getValue());
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("browser has tab with URL {stringValue}")
+    @Given("в браузере присутствует вкладка с URL {stringValue}")
+    public void tabWithUrlExists(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .shouldHaveTabWithUrl(tabUrl.getValue());
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("browser doesn't have tab with URL {stringValue}")
+    @Given("в браузере отсутствует вкладка с URL {stringValue}")
+    public void tabWithUrlAbsent(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .shouldNotHaveTabWithUrl(tabUrl.getValue());
+    }
+
+    /**
+     *
+     * @param tabTitle -
+     */
+    @Given("user switches to tab with title {stringValue}")
+    @Given("пользователь переключается на вкладку с заголовком {stringValue}")
+    public void userSetTabByTitle(ValueStringParameter tabTitle) {
+        getWebBrowserDispatcher().tabs()
+                .switchToTabWithTitle(tabTitle.getValue());
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("user switches to tab with URL {stringValue}")
+    @Given("пользователь переключается на вкладку с URL {stringValue}")
+    public void userSetTabByUrl(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .switchToTabWithUrl(tabUrl.getValue());
+    }
+
+    /**
+     *
+     */
+    @Given("user closes active tab")
+    @Given("пользователь закрывает активную вкладку")
+    public void userCloseActiveTab() {
+        getWebBrowserDispatcher().tabs()
+                .closeActiveTab();
+    }
+
+    /**
+     *
+     * @param tabTitle -
+     */
+    @Given("user closes tab with title {stringValue}")
+    @Given("пользователь закрывает вкладку с заголовком {stringValue}")
+    public void userCloseTabWithTitle(ValueStringParameter tabTitle) {
+        getWebBrowserDispatcher().tabs()
+                .closeTabWithTitle(tabTitle.getValue());
+    }
+
+    /**
+     *
+     * @param tabUrl -
+     */
+    @Given("user closes tab with URL {stringValue}")
+    @Given("пользователь закрывает вкладку с URL {stringValue}")
+    public void userCloseTabWithUrl(ValueStringParameter tabUrl) {
+        getWebBrowserDispatcher().tabs()
+                .closeTabWithUrl(tabUrl.getValue());
+    }
+
+}

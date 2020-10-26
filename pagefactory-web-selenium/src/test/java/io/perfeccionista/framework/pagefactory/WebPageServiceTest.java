@@ -16,7 +16,7 @@ public class WebPageServiceTest {
     @Test
     void singleElementTest(Environment env, ValueService val) {
         HomePage homePage = env.getService(WebPageService.class)
-                .getByClass(HomePage.class);
+                .getPageInstanceByClass(HomePage.class);
 
         homePage.vvv();
 //        homePage.getNames();

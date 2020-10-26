@@ -2,6 +2,8 @@ package io.perfeccionista.framework.pagefactory.factory;
 
 import io.perfeccionista.framework.exceptions.WebElementImplementationNotFound;
 import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
+import io.perfeccionista.framework.pagefactory.elements.WebTableRowImpl;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
@@ -25,7 +27,6 @@ import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInte
 import static java.lang.reflect.Modifier.isAbstract;
 import static java.lang.reflect.Modifier.isInterface;
 import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
-
 
 public class WebElementInitializer {
 
@@ -65,13 +66,13 @@ public class WebElementInitializer {
         return (T) enhancer.create();
     }
 
-    public @NotNull WebBlock initWebTableRow() {
-        Class<? extends WebBlockImpl> webBlockImplementation = configuration.getWebBlockImplementation();
+    public @NotNull WebTableRow initWebTableRow() {
+        Class<? extends WebTableRowImpl> webTableRowImplementation = configuration.getWebTableRowImplementation();
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(webBlockImplementation);
+        enhancer.setSuperclass(webTableRowImplementation);
         enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new WebParentElementInvocationHandler()});
-        enhancer.setCallbackFilter(new WebParentElementCallbackFilter(webBlockImplementation));
-        return (WebBlock) enhancer.create();
+        enhancer.setCallbackFilter(new WebParentElementCallbackFilter(webTableRowImplementation));
+        return (WebTableRow) enhancer.create();
     }
 
     public @NotNull WebChildElement initWebChildElement(@NotNull Class<? extends WebChildElement> webChildElementClass) {

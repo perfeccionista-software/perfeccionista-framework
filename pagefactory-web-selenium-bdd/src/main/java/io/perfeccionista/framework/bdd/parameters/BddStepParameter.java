@@ -1,7 +1,9 @@
 package io.perfeccionista.framework.bdd.parameters;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface BddStepParameter {
 
-    String getRaw();
+    @NotNull String getRaw();
 
 }

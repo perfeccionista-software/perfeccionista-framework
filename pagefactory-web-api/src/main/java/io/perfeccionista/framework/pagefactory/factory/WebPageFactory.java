@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
 import io.perfeccionista.framework.exceptions.WebElementNotFound;
-import io.perfeccionista.framework.name.MappedWebBlockIdentifier;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlock;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
@@ -351,10 +351,10 @@ public class WebPageFactory {
         return webMappedCells;
     }
 
-    public Map<Integer, WebBlock> createWebTableRows(@NotNull WebTable webTable,
-                                                     @NotNull TableSection tableSection,
-                                                     @NotNull WebFilterResult filterResult) {
-        Map<Integer, WebBlock> webMappedRows = new HashMap<>();
+    public Map<Integer, WebTableRow> createWebTableRows(@NotNull WebTable webTable,
+                                                        @NotNull TableSection tableSection,
+                                                        @NotNull WebFilterResult filterResult) {
+        Map<Integer, WebTableRow> webMappedRows = new HashMap<>();
 
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
@@ -388,7 +388,7 @@ public class WebPageFactory {
 
         if (TableSection.BODY == tableSection) {
             for (int index : indexes) {
-                WebBlock webMappedRowInstance = initializer.initWebTableRow();
+                WebTableRow webMappedRowInstance = initializer.initWebTableRow();
 
                 Map<String, WebBlock> tableCells = new HashMap<>();
                 for (String tableColumnName : tableColumnNames) {
@@ -420,12 +420,12 @@ public class WebPageFactory {
                 WebLocatorHolder tableRowRootLocator = tableRowLocator.clone().setSingle(true).setIndex(index);
                 parentLocators.add(tableRowRootLocator);
                 WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
-                WebBlock decoratedWebMappedRowInstance = decorator
-                        .decorateMappedWebBlockInstance(webMappedRowInstance, WebBlock.class, elementRegistry, parentInfo);
+                WebTableRow decoratedWebMappedRowInstance = decorator
+                        .decorateMappedWebBlockInstance(webMappedRowInstance, WebTableRow.class, elementRegistry, parentInfo);
                 webMappedRows.put(index, decoratedWebMappedRowInstance);
             }
         } else {
-            WebBlock webMappedRowInstance = initializer.initWebTableRow();
+            WebTableRow webMappedRowInstance = initializer.initWebTableRow();
 
             Map<String, WebBlock> tableCells = new HashMap<>();
             for (String tableColumnName : tableColumnNames) {
@@ -457,8 +457,8 @@ public class WebPageFactory {
             WebLocatorHolder tableRowRootLocator = tableRowLocator.clone();
             parentLocators.add(tableRowRootLocator);
             WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
-            WebBlock decoratedWebMappedRowInstance = decorator
-                    .decorateMappedWebBlockInstance(webMappedRowInstance, WebBlock.class, elementRegistry, parentInfo);
+            WebTableRow decoratedWebMappedRowInstance = decorator
+                    .decorateMappedWebBlockInstance(webMappedRowInstance, WebTableRow.class, elementRegistry, parentInfo);
             webMappedRows.put(-1, decoratedWebMappedRowInstance);
         }
 

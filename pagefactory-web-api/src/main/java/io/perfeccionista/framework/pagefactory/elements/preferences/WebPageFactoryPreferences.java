@@ -3,6 +3,7 @@ package io.perfeccionista.framework.pagefactory.elements.preferences;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebTableRowImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,9 @@ public interface WebPageFactoryPreferences {
 
     @NotNull Class<? extends WebBlockImpl> getMappedWebBlockImplementation();
     WebPageFactoryPreferences setMappedWebBlockImplementation(@NotNull Class<? extends WebBlockImpl> mappedWebBlockImplementation);
+
+    @NotNull Class<? extends WebTableRowImpl> getWebTableRowImplementation();
+    WebPageFactoryPreferences setWebTableRowImplementation(@NotNull Class<? extends WebTableRowImpl> webTableRowImplementation);
 
     /**
      * Имплементация может быть не задана для интерфейсов, которые наследуются от других интерфейсов только чтобы переопределить настройки элемента.

@@ -35,12 +35,12 @@ public class LogicInvocationRunner implements InvocationRunner {
         if (name.isNotEmpty()) {
             logger.info(name::toString);
         }
-        logger.info(() -> format("Logic action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));
+        logger.debug(() -> format("Logic action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));
 
         while (deadline >= currentTime) {
             try {
                 T result = supplier.get();
-                logger.info(() -> "Logic action finished");
+                logger.debug(() -> "Logic action finished");
                 return result;
             } catch (final PerfeccionistaRuntimeException | PerfeccionistaAssertionError e) {
                 processException(e);
@@ -55,7 +55,7 @@ public class LogicInvocationRunner implements InvocationRunner {
             currentTime = System.nanoTime();
         }
 
-        logger.info(() -> "Logic action finished with exception");
+        logger.error(() -> "Logic action finished with exception");
         exceptionCollector.throwIfSingleException();
         throw exceptionCollector.getExceptionSequence();
     }

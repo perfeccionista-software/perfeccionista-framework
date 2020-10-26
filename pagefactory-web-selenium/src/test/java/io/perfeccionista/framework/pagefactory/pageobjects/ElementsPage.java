@@ -25,6 +25,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
 
 @Name("Elements page")
+// TODO: @PageActs("ElementsPage feature name")
 public interface ElementsPage extends AbstractWebPage {
 
     @Name("World map")

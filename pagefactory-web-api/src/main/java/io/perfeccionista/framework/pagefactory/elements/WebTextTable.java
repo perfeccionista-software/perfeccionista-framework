@@ -35,7 +35,7 @@ public interface WebTextTable extends WebChildElement, ElementContainer<WebTextT
 
     // Extractor
     @NotNull <V> WebSingleIndexedResult<V, WebTextTable> extractHeader(@NotNull WebTextTableCellValueExtractor<V> extractor);
-    @NotNull <V> WebMultipleIndexedResult<V, WebTextTable> extractAllRows(@NotNull WebTextTableCellValueExtractor<V> extractor);
+    @NotNull <V> WebMultipleIndexedResult<V, WebTextTable> extractRows(@NotNull WebTextTableCellValueExtractor<V> extractor);
     @NotNull <V> WebSingleIndexedResult<V, WebTextTable> extractFooter(@NotNull WebTextTableCellValueExtractor<V> extractor);
 
     // Filter

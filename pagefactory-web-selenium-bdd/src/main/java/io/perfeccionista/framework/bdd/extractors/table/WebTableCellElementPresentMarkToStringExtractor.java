@@ -2,7 +2,7 @@ package io.perfeccionista.framework.bdd.extractors.table;
 
 import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementPresentMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.table.WebTableValueExtractor;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-public class WebTableCellElementPresentMarkToStringExtractor implements WebTableCellValueExtractor<String> {
+public class WebTableCellElementPresentMarkToStringExtractor implements WebTableValueExtractor<String> {
 
     private TableSection section = TableSection.BODY;
 

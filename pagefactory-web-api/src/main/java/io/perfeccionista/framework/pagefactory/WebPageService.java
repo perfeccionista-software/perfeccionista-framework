@@ -17,12 +17,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NAME_DUPLICATE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NOT_FOUND_BY_CLASS;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NOT_FOUND_BY_NAME;
+import static io.perfeccionista.framework.utils.ReflectionUtils.castObject;
 import static org.junit.platform.commons.util.ReflectionUtils.findAllClassesInPackage;
 
 /**
@@ -32,8 +34,10 @@ public class WebPageService implements Service {
 
     private final Map<Class<? extends WebPage>, WebPage> pageInstances = new HashMap<>();
     private final Map<String, Class<? extends WebPage>> pageClassesByName = new HashMap<>();
-    private Set<Class<? extends WebPage>> availablePageClasses = new HashSet<>();
+    private final Set<Class<? extends WebPage>> availablePageClasses = new HashSet<>();
+
     private WebPageServiceConfiguration configuration;
+    private WebPageFactory webPageFactory;
     private Environment environment;
 
     /**
@@ -65,42 +69,32 @@ public class WebPageService implements Service {
         return configuration;
     }
 
-    // Инстанс возвращается без экземпляра вебдрайвера
-    public <T extends WebPage> T getByClass(@NotNull Class<T> pageClass) {
+    public @NotNull WebPageFactory getWebPageFactory() {
+        if (Objects.isNull(webPageFactory)) {
+            webPageFactory = new WebPageFactory(configuration.getElementsPreferences());
+        }
+        return webPageFactory;
+    }
+
+    public <T extends WebPage> @NotNull T getPageInstanceByClass(@NotNull Class<T> pageClass) {
         if (!availablePageClasses.contains(pageClass)) {
             throw WebPageNotFound.exception(PAGE_NOT_FOUND_BY_CLASS.getMessage(pageClass.getCanonicalName()));
         }
-        if (pageInstances.containsKey(pageClass)) {
-            // TODO: Сделать проверку на соответствие класса
-            return (T) pageInstances.get(pageClass);
+        if (!pageInstances.containsKey(pageClass)) {
+            createInstance(pageClass);
         }
-        // TODO: Сделать проверку на соответствие класса
-        return (T) createInstance(pageClass);
+        return castObject(pageInstances.get(pageClass), pageClass);
     }
 
-    public <T extends WebPage> T getByName(@NotNull String pageName) {
+    public @NotNull WebPage getPageInstanceByName(@NotNull String pageName) {
         Class<? extends WebPage> pageClass = pageClassesByName.get(pageName);
         if (pageClass == null) {
             throw WebPageNotFound.exception(PAGE_NOT_FOUND_BY_NAME.getMessage(pageName));
         }
-        if (pageInstances.containsKey(pageClass)) {
-            // TODO: Сделать проверку на соответствие класса
-            return (T) pageInstances.get(pageClass);
+        if (!pageInstances.containsKey(pageClass)) {
+            createInstance(pageClass);
         }
-        // TODO: Сделать проверку на соответствие класса
-        return (T) createInstance(pageClass);
-    }
-
-    public WebPageFactory getWebPageFactory() {
-        return new WebPageFactory(configuration.getElementsPreferences());
-    }
-
-    private WebPage createInstance(Class<? extends WebPage> pageClass) {
-        WebPage webPageInstance = getWebPageFactory()
-                .createWebPage(pageClass);
-        webPageInstance.setEnvironment(environment);
-        pageInstances.put(pageClass, webPageInstance);
-        return webPageInstance;
+        return pageInstances.get(pageClass);
     }
 
     protected WebPageServiceConfiguration validate(ServiceConfiguration configuration) {
@@ -109,6 +103,12 @@ public class WebPageService implements Service {
         }
         throw IncorrectServiceConfiguration.exception(
                 CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
+    }
+
+    protected void createInstance(@NotNull Class<? extends WebPage> pageClass) {
+        WebPage webPageInstance = getWebPageFactory()
+                .createWebPage(pageClass);
+        pageInstances.put(pageClass, webPageInstance);
     }
 
 }

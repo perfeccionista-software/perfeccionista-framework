@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.utils;
 
+import io.perfeccionista.framework.exceptions.ClassCast;
 import io.perfeccionista.framework.exceptions.FieldAccess;
 import io.perfeccionista.framework.exceptions.FieldNotFound;
 import org.jetbrains.annotations.NotNull;
@@ -14,8 +15,10 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
+import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_CAST_OBJECT;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CONSTRUCTOR_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FIELD_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FIELD_READING_ERROR;
@@ -61,6 +64,13 @@ public final class ReflectionUtils {
         } catch (IllegalAccessException e) {
             throw FieldAccess.exception(FIELD_WRITING_ERROR.getMessage(fieldName), e);
         }
+    }
+
+    public static @NotNull <T> T castObject(@NotNull Object objectToCast, @NotNull Class<T> castType) {
+        if (isSubtypeOf(objectToCast, castType)) {
+            return castType.cast(objectToCast);
+        }
+        throw ClassCast.exception(CANT_CAST_OBJECT.getMessage(objectToCast.getClass().getCanonicalName(), castType.getCanonicalName()));
     }
 
     /**
@@ -213,6 +223,8 @@ public final class ReflectionUtils {
         return getAllInheritedInterfaces(new ArrayDeque<>(), ancestorInterface, inheritorClass, order);
     }
 
+
+    // TODO: Если класс экстендит другой класс, то интерфейсы не извлекаются
     protected static <T> Deque<Class<? extends T>> getAllInheritedInterfaces(@NotNull Deque<Class<? extends T>> inheritedInterfacesCollector,
                                                                              @NotNull Class<T> ancestorClass,
                                                                              @NotNull Class<? extends T> inheritorClass,
@@ -228,6 +240,11 @@ public final class ReflectionUtils {
                 }
                 getAllInheritedInterfaces(inheritedInterfacesCollector, ancestorClass, castedInheritedInterface, order);
             }
+        }
+        Class<?> superclass = inheritorClass.getSuperclass();
+        if (Objects.nonNull(superclass) && ancestorClass.isAssignableFrom(superclass)) {
+            Class<? extends T> castedSuperclass = (Class<? extends T>) superclass;
+            getAllInheritedInterfaces(inheritedInterfacesCollector, ancestorClass, castedSuperclass, order);
         }
         return inheritedInterfacesCollector;
     }

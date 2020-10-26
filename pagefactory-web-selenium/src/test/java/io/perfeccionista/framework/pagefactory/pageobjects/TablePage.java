@@ -1,18 +1,17 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
-import io.perfeccionista.framework.pagefactory.elements.WebBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebCheckbox;
-import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumns;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
-import io.perfeccionista.framework.pagefactory.pageobjects.extractors.HrefAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.pageobjects.extractors.TitleAttributeExtractor;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CheckboxWebBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryNumberWebBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.FullNameWebBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.HeaderWebBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.PopulationWebBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.ShortNameWebBlock;
 
 public interface TablePage extends AbstractWebPage {
 
@@ -42,67 +41,5 @@ public interface TablePage extends AbstractWebPage {
                     bodyClass = PopulationWebBlock.class, bodyLocator = @WebLocator(xpath = ".//td[5]"))
     })
     WebTable table();
-
-    // WebMappedBlocks
-
-    interface HeaderWebBlock extends WebBlock {
-
-        @Name("Title")
-        @WebLocator(xpath = "self::node()")
-        @WebLocator(component = "Not sorted", xpath = "self::node()[@aria-sort = 'none']")
-        @WebLocator(component = "Sorted by asc", xpath = "self::node()[@aria-sort = 'ascending']")
-        @WebLocator(component = "Sorted by desc", xpath = "self::node()[@aria-sort = 'descending']")
-        WebLink columnTitle();
-
-    }
-
-    interface CheckboxWebBlock extends WebBlock {
-
-        @Name("Select")
-        @WebLocator(xpath = ".//input[@itemid = 'checkbox']/parent::node()")
-        WebCheckbox checkbox();
-
-    }
-
-    interface CountryNumberWebBlock extends WebBlock {
-
-        @Name("Number")
-        @WebLocator(xpath = "self::node()")
-        WebTextBlock number();
-
-    }
-
-    interface ShortNameWebBlock extends WebBlock {
-
-        @Name("Short name")
-        @WebLocator(xpath = "self::node()//a[@itemid = 'country-name']", strictSearch = false) // В некоторых ячейках этого элемента нет
-        @WebLocator(component = "Self", xpath = "self::node()", strictSearch = false) // В некоторых ячейках этого элемента нет
-        @WebElementProperty(name = "Wiki link", extractor = HrefAttributeExtractor.class)
-        WebLink shortName();
-
-    }
-
-    interface FullNameWebBlock extends WebBlock {
-
-        @Name("Full name")
-        @WebLocator(xpath = "self::node()//span[@itemid = 'country-full-name']", strictSearch = false)
-        @WebLocator(component = "SNG", xpath = "self::node()//span[@itemid = 'sng']")
-        @WebElementProperty(name = "prompt", extractor = TitleAttributeExtractor.class)
-        WebTextBlock fullName();
-
-    }
-
-    interface PopulationWebBlock extends WebBlock {
-
-        @Name("Population")
-        @WebLocator(xpath = "self::node()//span[@itemid = 'population-number']")
-        WebTextBlock population();
-
-        @Name("Population unit")
-        @WebLocator(xpath = "self::node()//span[@itemid = 'population-unit']")
-        @WebLocator(component = "Self", xpath = "self::node()", strictSearch = false)
-        WebTextBlock populationUnit();
-
-    }
 
 }

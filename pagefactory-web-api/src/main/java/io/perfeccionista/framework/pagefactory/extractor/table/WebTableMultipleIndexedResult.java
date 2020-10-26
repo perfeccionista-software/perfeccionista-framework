@@ -20,11 +20,11 @@ public class WebTableMultipleIndexedResult<T> implements WebMultipleIndexedResul
 
     private final WebTable element;
     private final WebTableFilterBuilder filterBuilder;
-    private final WebTableCellValueExtractor<T> extractor;
+    private final WebTableValueExtractor<T> extractor;
 
     private WebTableMultipleIndexedResult(WebTable element,
                                           WebTableFilterBuilder filterBuilder,
-                                          WebTableCellValueExtractor<T> extractor) {
+                                          WebTableValueExtractor<T> extractor) {
         this.element = element;
         this.filterBuilder = filterBuilder;
         this.extractor = extractor;
@@ -32,12 +32,12 @@ public class WebTableMultipleIndexedResult<T> implements WebMultipleIndexedResul
 
     public static <T> WebTableMultipleIndexedResult<T> of(@NotNull WebTable element,
                                                           @NotNull WebTableFilterBuilder filterBuilder,
-                                                          @NotNull WebTableCellValueExtractor<T> extractor) {
+                                                          @NotNull WebTableValueExtractor<T> extractor) {
         return new WebTableMultipleIndexedResult<>(element, filterBuilder, extractor);
     }
 
     public static <T> WebTableMultipleIndexedResult<T> of(@NotNull WebTable element,
-                                                          @NotNull WebTableCellValueExtractor<T> extractor) {
+                                                          @NotNull WebTableValueExtractor<T> extractor) {
         return new WebTableMultipleIndexedResult<>(element, emptyWebTableFilter(), extractor);
     }
 

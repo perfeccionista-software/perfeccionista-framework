@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.table;
 
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.table.WebTableValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder.WebTableRowFilterResultGroupingHolder;
@@ -42,24 +42,24 @@ public class WebTableFilterImpl implements WebTableFilter {
     }
 
     @Override
-    public @NotNull <T> WebSingleIndexedResult<T, WebTable> extractHeader(@NotNull WebTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebSingleIndexedResult<T, WebTable> extractHeader(@NotNull WebTableValueExtractor<T> extractor) {
         return WebTableMultipleIndexedResult.of(element, filterBuilder, extractor.fromHeader())
                 .singleResult();
     }
 
     @Override
-    public @NotNull <T> WebSingleIndexedResult<T, WebTable> extractOneRow(@NotNull WebTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebSingleIndexedResult<T, WebTable> extractRow(@NotNull WebTableValueExtractor<T> extractor) {
         return WebTableMultipleIndexedResult.of(element, filterBuilder, extractor)
                 .singleResult();
     }
 
     @Override
-    public @NotNull <T> WebMultipleIndexedResult<T, WebTable> extractAllRows(@NotNull WebTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebMultipleIndexedResult<T, WebTable> extractRows(@NotNull WebTableValueExtractor<T> extractor) {
         return WebTableMultipleIndexedResult.of(element, filterBuilder, extractor);
     }
 
     @Override
-    public @NotNull <T> WebSingleIndexedResult<T, WebTable> extractFooter(@NotNull WebTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebSingleIndexedResult<T, WebTable> extractFooter(@NotNull WebTableValueExtractor<T> extractor) {
         return WebTableMultipleIndexedResult.of(element, filterBuilder, extractor.fromFooter())
                 .singleResult();
     }

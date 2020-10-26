@@ -5,7 +5,7 @@ import io.perfeccionista.framework.UseEnvironmentConfiguration;
 import io.perfeccionista.framework.extension.PerfeccionistaExtension;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
-import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
+import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,7 @@ public class AbstractUiTest {
     protected WebPageContext initWebPageContext(Environment env, ValueService value) {
         WebBrowserDispatcher webBrowserDispatcher = initWebBrowserDispatcher(env, value);
         return webBrowserDispatcher
-                .getPageContext();                                  // Возвращаем контекст страницы для активного браузера
+                .getWebPageContext();                                  // Возвращаем контекст страницы для активного браузера
     }
 
     protected WebBrowserDispatcher initWebBrowserDispatcher(Environment env, ValueService value) {

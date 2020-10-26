@@ -15,13 +15,13 @@ public interface WebTextTableFilter extends WebFilter<WebTextTable> {
 
     @NotNull WebSingleIndexedResult<String, WebTextTable> extractHeader(@NotNull String columnName);
 
-    @NotNull WebSingleIndexedResult<String, WebTextTable> extractOneRow(@NotNull String columnName);
+    @NotNull WebSingleIndexedResult<String, WebTextTable> extractRow(@NotNull String columnName);
 
-    @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractOneRow(@NotNull WebTextTableCellValueExtractor<T> extractor);
+    @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractRow(@NotNull WebTextTableCellValueExtractor<T> extractor);
 
-    @NotNull WebMultipleIndexedResult<String, WebTextTable> extractAllRows(@NotNull String columnName);
+    @NotNull WebMultipleIndexedResult<String, WebTextTable> extractRows(@NotNull String columnName);
 
-    @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractAllRows(@NotNull WebTextTableCellValueExtractor<T> extractor);
+    @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractRows(@NotNull WebTextTableCellValueExtractor<T> extractor);
 
     @NotNull WebSingleIndexedResult<String, WebTextTable> extractFooter(@NotNull String columnName);
 

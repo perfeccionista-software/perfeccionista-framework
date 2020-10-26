@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.bdd.parameters;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.table.WebTableValueExtractor;
 
 public class WebTableValueExtractorParameterImpl implements WebTableValueExtractorParameter {
 
@@ -14,7 +14,7 @@ public class WebTableValueExtractorParameterImpl implements WebTableValueExtract
     }
 
     @Override
-    public WebTableCellValueExtractor<String> createExtractorFor(String webTableColumnName, String webCellElementName) {
+    public WebTableValueExtractor<String> createExtractorFor(String webTableColumnName, String webCellElementName) {
         // TODO: Тут мы откуда-то получаем распорсенный по тексту rawInput соответствующий велью экстрактор холдер и создаем из него велью экстрактор
         // WebListBlockValueExtractorHolder holder = bddEngineService.getByName(rawInput);
         // return holder.getForElement(blockElementName);

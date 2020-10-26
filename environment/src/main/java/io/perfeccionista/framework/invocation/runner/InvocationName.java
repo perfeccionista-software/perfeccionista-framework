@@ -34,4 +34,10 @@ public class InvocationName {
         return args;
     }
 
+    // TODO: Implement with bundles and arguments
+    @Override
+    public String toString() {
+        return format;
+    }
+
 }

@@ -21,7 +21,7 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
 
-public class WebTableCellElementComponentPresentMarkExtractor implements WebTableCellValueExtractor<Boolean> {
+public class WebTableCellElementComponentPresentMarkExtractor implements WebTableValueExtractor<Boolean> {
 
     private TableSection section = TableSection.BODY;
 

@@ -14,7 +14,7 @@ import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.pagefactory.AbstractUiTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.browser.context.WebPageContext;
+import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.measurements.Dimensions;
 import io.perfeccionista.framework.measurements.Location;
 import io.perfeccionista.framework.measurements.Point;
@@ -131,7 +131,7 @@ class WebTextTableElementTest extends AbstractUiTest {
         assertEquals(Dimensions.of(795.0d, 10014.0d).setInaccuracy(0.2d), textTable.getDimensions(ROOT));
         assertEquals(Location.absolute(345d, 173d).setInaccuracy(0.2d), textTable.getLocation(ROOT));
         assertEquals(WebColor.of(222, 226, 230, 1.0d), textTable.getColor(ROOT, "border-color"));
-        assertEquals(195, textTable.filter(emptyWebTextTableFilter()).extractAllRows(SHORT_NAME).getSize());
+        assertEquals(195, textTable.filter(emptyWebTextTableFilter()).extractRows(SHORT_NAME).getSize());
         assertEquals(Point.of(397.5d, 5007d).setInaccuracy(0.2d), textTable.getDimensions(ROOT).getCenter());
     }
 

@@ -27,6 +27,18 @@ public class WebBlockImpl extends AbstractWebChildElement implements WebBlock {
         return elementRegistry;
     }
 
+    // Search
+
+    @Override
+    public @NotNull WebChildElement getElement(@NotNull String elementPath) {
+        return getElementRegistry().getRequiredElementByPath(elementPath);
+    }
+
+    @Override
+    public <T extends WebChildElement> @NotNull T getElement(@NotNull String elementPath, @NotNull Class<T> elementClass) {
+        return getElementRegistry().getRequiredElementByPath(elementPath, elementClass);
+    }
+
     // Actions
 
     @Override

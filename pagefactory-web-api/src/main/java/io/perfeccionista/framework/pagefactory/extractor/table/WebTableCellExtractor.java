@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-public class WebTableCellExtractor<T extends WebBlock> implements WebTableCellValueExtractor<T> {
+public class WebTableCellExtractor<T extends WebBlock> implements WebTableValueExtractor<T> {
 
     private TableSection section = TableSection.BODY;
 

@@ -46,23 +46,23 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
                 .singleResult();
     }
 
-    public @NotNull WebSingleIndexedResult<String, WebTextTable> extractOneRow(@NotNull String columnName) {
+    public @NotNull WebSingleIndexedResult<String, WebTextTable> extractRow(@NotNull String columnName) {
         return WebTextTableMultipleIndexedResult.of(element, filterBuilder, textCellValue(columnName))
                 .singleResult();
     }
 
     @Override
-    public @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractOneRow(@NotNull WebTextTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractRow(@NotNull WebTextTableCellValueExtractor<T> extractor) {
         return WebTextTableMultipleIndexedResult.of(element, filterBuilder, extractor)
                 .singleResult();
     }
 
-    public @NotNull WebMultipleIndexedResult<String, WebTextTable> extractAllRows(@NotNull String columnName) {
+    public @NotNull WebMultipleIndexedResult<String, WebTextTable> extractRows(@NotNull String columnName) {
         return WebTextTableMultipleIndexedResult.of(element, filterBuilder, textCellValue(columnName));
     }
 
     @Override
-    public @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractAllRows(@NotNull WebTextTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractRows(@NotNull WebTextTableCellValueExtractor<T> extractor) {
         return WebTextTableMultipleIndexedResult.of(element, filterBuilder, extractor);
     }
 

@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 /**
  * TODO: JavaDoc
  */
-@Deprecated
 public interface ClassCast extends Reason {
 
     static ClassCastException exception(@NotNull String message) {
