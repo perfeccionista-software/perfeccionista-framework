@@ -13,6 +13,10 @@ public interface ValueService extends Service {
     // TODO: Object
     // ObjectValue objectEquals(String dataSourceExpression) {}
 
+    // Object
+
+    Object objectProcess(@NotNull String expression);
+
     // String
 
     StringValue stringEmpty();

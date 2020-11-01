@@ -56,6 +56,12 @@ public class DefaultValueService implements ValueService {
         this.configuration = configuration;
     }
 
+    // Object
+
+    public Object objectProcess(@NotNull String expression) {
+        return new ValueExpressionProcessor(environment).processExpression(expression);
+    }
+
     // String
 
     public StringValue stringEmpty() {

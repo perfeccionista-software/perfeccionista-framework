@@ -92,7 +92,7 @@ public class RuParametersDefinition implements EnvironmentAvailable {
 
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public FixtureParameter<?, ?> fixtureName(String fixtureName) {
-        return new FixtureParameterImpl<>();
+        return new FixtureParameterImpl<>(getEnvironment(), fixtureName);
     }
 
 

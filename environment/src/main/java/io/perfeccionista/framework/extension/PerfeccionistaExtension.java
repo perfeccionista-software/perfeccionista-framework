@@ -98,7 +98,10 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     @Override
     public void afterEach(ExtensionContext context) {
         Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
-        environmentInstanceForCurrentThread.ifPresent(environment -> environment.getServices().forEach(Service::afterTest));
+        environmentInstanceForCurrentThread.ifPresent(environment -> {
+            environment.getServices().forEach(Service::afterTest);
+            environment.removeEnvironmentForCurrentThread();
+        });
         activeEnvironment.remove();
     }
 

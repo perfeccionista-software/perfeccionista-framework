@@ -18,8 +18,16 @@ public class FixtureTearDownResult<T> {
         this.exception = exception;
     }
 
-    public static <T> FixtureTearDownResult<T> of(@Nullable T result, @Nullable Exception exception) {
+    public static <T> FixtureTearDownResult<T> of(@Nullable T result) {
+        return new FixtureTearDownResult<>(result, null);
+    }
+
+    public static <T> FixtureTearDownResult<T> of(@Nullable T result, @NotNull Exception exception) {
         return new FixtureTearDownResult<>(result, exception);
+    }
+
+    public static <T> FixtureTearDownResult<T> exception(@NotNull Exception exception) {
+        return new FixtureTearDownResult<>(null, exception);
     }
 
     public Optional<T> getResult() {

@@ -13,6 +13,8 @@ public enum EnvironmentMessages implements Messages {
     DATA_SOURCE_REGISTER_BY_CLASS_DUPLICATE("DataSource with class %s already registered"),
     DATA_SOURCE_REGISTER_BY_NAME_DUPLICATE("DataSource with name %s already registered"),
 
+    FIXTURE_REGISTER_BY_NAME_DUPLICATE("Fixture with name %s already registered"),
+
     CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION("Can't create instance of RepeatPolicy class %s"),
 
     CHECK_ARGUMENT_MUST_NOT_BE_NULL("%s must not be null"),
@@ -23,6 +25,7 @@ public enum EnvironmentMessages implements Messages {
     DEFAULT_DATA_SOURCE_NOT_DECLARED("Default DataSource is not configured for DataSourceService"),
     ENVIRONMENT_NOT_DECLARED("Environment is not configured for test class and test method"),
     ENVIRONMENT_NOT_INITIALIZED("Environment instance is not initialized for current thread"),
+    FIXTURE_NOT_PARAMETRIZED("Fixture with name %s is not parametrized"),
 
     SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE("WebSingleResult has more than one value"),
     SINGLE_RESULT_HAS_NO_VALUE("WebSingleResult has no value"),
@@ -46,7 +49,8 @@ public enum EnvironmentMessages implements Messages {
     DATA_SOURCE_NOT_FOUND_BY_CLASS("DataSource not found by class %s"),
     DATA_SOURCE_NOT_FOUND_BY_NAME("DataSource not found by name %s"),
     DATA_SOURCE_VALUE_NOT_FOUND("DataSource %s hasn't value by key %s"),
-    SERVICE_NOT_FOUND("Service %s not registered in environment"),
+    SERVICE_NOT_FOUND("Service %s is not registered in environment"),
+    FIXTURE_NOT_FOUND("Fixture with name %s is not found"),
     TIMEOUTS_IMPLEMENTATION_NOT_FOUND("Timeouts implementation for class %s is not declared in configuration %s"),
     UNEXPECTED_TEST_CLASS_NOT_FOUND("Unexpected exception when processing test class in PerfeccionistaExtension"),
     UNEXPECTED_TEST_METHOD_NOT_FOUND("Unexpected exception when processing test method in PerfeccionistaExtension")
