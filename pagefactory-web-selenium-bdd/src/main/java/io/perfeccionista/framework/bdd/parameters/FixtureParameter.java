@@ -1,13 +1,15 @@
 package io.perfeccionista.framework.bdd.parameters;
 
-import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.bdd.parameters.datatable.entries.FixtureEntry;
 import io.perfeccionista.framework.fixture.Fixture;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public interface FixtureParameter<S, T> extends BddStepParameter {
 
-    Fixture<S, T> getFixtureInstance(Environment environment);
+    @NotNull Fixture<S, T> getFixtureInstance();
 
-    Fixture<S, T> getFixtureInstance(Environment environment, FixtureEntry fixtureParameters);
+    @NotNull Fixture<S, T> getFixtureInstance(@NotNull List<FixtureEntry> fixtureParameterEntries);
 
 }

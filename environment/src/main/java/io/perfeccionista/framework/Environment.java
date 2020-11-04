@@ -174,6 +174,15 @@ public class Environment {
         return this;
     }
 
+    /**
+     * Отвязывает этот экземпляр {@link Environment} от потока,
+     * в котором он создан {@link Thread}
+     */
+    public Environment removeEnvironmentForCurrentThread() {
+        INSTANCES.remove();
+        return this;
+    }
+
     // Check and Initialization
 
     /**

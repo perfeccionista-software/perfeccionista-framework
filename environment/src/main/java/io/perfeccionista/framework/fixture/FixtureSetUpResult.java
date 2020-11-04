@@ -17,8 +17,16 @@ public class FixtureSetUpResult<T> {
         this.exception = exception;
     }
 
-    public static <T> FixtureSetUpResult<T> of(@Nullable T result, @Nullable Exception exception) {
+    public static <T> FixtureSetUpResult<T> of(@Nullable T result) {
+        return new FixtureSetUpResult<>(result, null);
+    }
+
+    public static <T> FixtureSetUpResult<T> of(@Nullable T result, @NotNull Exception exception) {
         return new FixtureSetUpResult<>(result, exception);
+    }
+
+    public static <T> FixtureSetUpResult<T> exception(@NotNull Exception exception) {
+        return new FixtureSetUpResult<>(null, exception);
     }
 
     public Optional<T> getResult() {
