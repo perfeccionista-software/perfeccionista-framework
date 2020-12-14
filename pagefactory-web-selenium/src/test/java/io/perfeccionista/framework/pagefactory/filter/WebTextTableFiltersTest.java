@@ -13,15 +13,15 @@ import org.junit.jupiter.api.Test;
 import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
 import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsTextCell;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainsTextCell;
+import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainTextCell;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.textRowIndex;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextTableFilter;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.NUMBER;
-import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_NAME;
+import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_COUNTRY_NAME;
 
-@Tag("Element") @Tag("WebTextTable")
+@Tag("WebElement") @Tag("WebTextTable")
 class WebTextTableFiltersTest extends AbstractUiTest {
 
     @Test
@@ -62,40 +62,40 @@ class WebTextTableFiltersTest extends AbstractUiTest {
                 .should(beDisplayed());
 
         // By Element
-        textTable.filter(with(containsTextCell(SHORT_NAME, "Финляндия")))
+        textTable.filter(with(containsTextCell(SHORT_COUNTRY_NAME, "Финляндия")))
                 .should(haveSize(1));
-        textTable.filter(with(containsTextCell(SHORT_NAME, value.stringStartsWith("М"))))
+        textTable.filter(with(containsTextCell(SHORT_COUNTRY_NAME, value.stringStartsWith("М"))))
                 .should(haveSize(17));
-        textTable.filter(with(notContainsTextCell(SHORT_NAME, value.stringEquals("Финляндия"))))
+        textTable.filter(with(notContainTextCell(SHORT_COUNTRY_NAME, value.stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        textTable.filter(with(notContainsTextCell(SHORT_NAME, value.stringStartsWith("М"))))
+        textTable.filter(with(notContainTextCell(SHORT_COUNTRY_NAME, value.stringStartsWith("М"))))
                 .should(haveSize(178));
 
-        textTable.filter(without(containsTextCell(SHORT_NAME, "Финляндия")))
+        textTable.filter(without(containsTextCell(SHORT_COUNTRY_NAME, "Финляндия")))
                 .should(haveSize(194));
-        textTable.filter(without(containsTextCell(SHORT_NAME, value.stringStartsWith("М"))))
+        textTable.filter(without(containsTextCell(SHORT_COUNTRY_NAME, value.stringStartsWith("М"))))
                 .should(haveSize(178));
-        textTable.filter(without(notContainsTextCell(SHORT_NAME, value.stringEquals("Финляндия"))))
+        textTable.filter(without(notContainTextCell(SHORT_COUNTRY_NAME, value.stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        textTable.filter(without(notContainsTextCell(SHORT_NAME, value.stringStartsWith("М"))))
+        textTable.filter(without(notContainTextCell(SHORT_COUNTRY_NAME, value.stringStartsWith("М"))))
                 .should(haveSize(17));
 
         textTable.filter(with(containsTextCell(NUMBER, value.intEquals(77))))
                 .should(haveSize(1));
         textTable.filter(with(containsTextCell(NUMBER, value.intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        textTable.filter(with(notContainsTextCell(NUMBER, value.intEquals(77))))
+        textTable.filter(with(notContainTextCell(NUMBER, value.intEquals(77))))
                 .should(haveSize(194));
-        textTable.filter(with(notContainsTextCell(NUMBER, value.intGreaterThanOrEqual(124))))
+        textTable.filter(with(notContainTextCell(NUMBER, value.intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
         textTable.filter(without(containsTextCell(NUMBER, value.intEquals(77))))
                 .should(haveSize(194));
         textTable.filter(without(containsTextCell(NUMBER, value.intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        textTable.filter(without(notContainsTextCell(NUMBER, value.intEquals(77))))
+        textTable.filter(without(notContainTextCell(NUMBER, value.intEquals(77))))
                 .should(haveSize(1));
-        textTable.filter(without(notContainsTextCell(NUMBER, value.intGreaterThanOrEqual(124))))
+        textTable.filter(without(notContainTextCell(NUMBER, value.intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
     }
 

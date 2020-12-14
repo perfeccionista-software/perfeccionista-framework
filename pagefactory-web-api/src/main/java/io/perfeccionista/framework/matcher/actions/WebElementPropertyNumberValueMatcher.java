@@ -2,19 +2,16 @@ package io.perfeccionista.framework.matcher.actions;
 
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
-import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound;
 import io.perfeccionista.framework.exceptions.WebElementPropertyValue;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebElementPropertyAvailable;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyHolder;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_CONTAINS_EXPECTED_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_DOES_NOT_CONTAIN_EXPECTED_VALUE;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_PROPERTY_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_PROPERTY_NUMBER_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD;
 
@@ -33,17 +30,12 @@ public class WebElementPropertyNumberValueMatcher implements WebElementPropertyA
     @Override
     public void check(@NotNull WebElementPropertyAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedNumberValue)
-                : InvocationName.of(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedNumberValue);
-
-        WebElementPropertyHolder propertyHolder = element.getProperty(propertyName)
-                .orElseThrow(() -> WebElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName))
-                        .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson())));
+                ? assertInvocation(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedNumberValue)
+                : assertInvocation(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, this, propertyName, expectedNumberValue);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    String actualPropertyValue = element.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)
-                            .execute(element, propertyHolder);
+                    String actualPropertyValue = element.getPropertyValue(propertyName);
                     if (positive) {
                         shouldHavePropertyNumber(element, actualPropertyValue);
                     } else {

@@ -56,7 +56,7 @@ public class WebListBlockElementPropertyTextCondition implements WebListBlockCon
         return this;
     }
 
-    public WebListBlockElementPropertyTextCondition notContainsProperty() {
+    public WebListBlockElementPropertyTextCondition notContainProperty() {
         return this.inverse();
     }
 

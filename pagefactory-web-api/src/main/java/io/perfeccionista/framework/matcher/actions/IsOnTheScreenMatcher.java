@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_ON_THE_SCREEN;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_ON_THE_SCREEN;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ON_THE_SCREEN_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_BE_ON_THE_SCREEN_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_BE_ON_THE_SCREEN_METHOD;
 
@@ -32,13 +32,12 @@ public class IsOnTheScreenMatcher implements IsOnTheScreenAvailableMatcher {
     @Override
     public void check(@NotNull IsOnTheScreenAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_BE_ON_THE_SCREEN_METHOD, element)
-                : InvocationName.of(SHOULD_NOT_BE_ON_THE_SCREEN_METHOD, element);
+                ? assertInvocation(SHOULD_BE_ON_THE_SCREEN_METHOD, element)
+                : assertInvocation(SHOULD_NOT_BE_ON_THE_SCREEN_METHOD, element);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    boolean onTheScreen = element.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class)
-                            .execute(element);
+                    boolean onTheScreen = element.isOnTheScreen();
                     if (positive) {
                         shouldBeOnTheScreen(element, onTheScreen);
                     } else {

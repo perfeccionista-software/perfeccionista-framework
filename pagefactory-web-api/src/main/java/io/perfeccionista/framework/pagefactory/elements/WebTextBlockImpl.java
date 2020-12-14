@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
@@ -18,6 +17,8 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
@@ -123,7 +124,7 @@ public class WebTextBlockImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public WebTextBlock click() {
-        runCheck(getEnvironment(), InvocationName.of(CLICK_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
                 () -> getActionImplementation(CLICK_METHOD, String.class).execute(this, CLICK));
         return this;
     }
@@ -132,7 +133,7 @@ public class WebTextBlockImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public @Nullable String getText() {
-        return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 

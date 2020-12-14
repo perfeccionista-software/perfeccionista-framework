@@ -79,7 +79,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tags(@Tag("Element"))
+@Tag("WebElement") @Tag("WebRadioButton")
 class WebRadioButtonElementTest  extends AbstractUiTest {
 
     @Test

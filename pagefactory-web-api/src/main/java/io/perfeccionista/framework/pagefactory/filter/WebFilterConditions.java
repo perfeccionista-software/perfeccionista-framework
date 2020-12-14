@@ -124,16 +124,16 @@ public class WebFilterConditions {
         return new WebRadioButtonLabelCondition(expectedValue).containsLabel();
     }
 
-    public static WebRadioButtonLabelCondition notContainsLabel(@NotNull String expectedText) {
-        return new WebRadioButtonLabelCondition(expectedText).notContainsLabel();
+    public static WebRadioButtonLabelCondition notContainLabel(@NotNull String expectedText) {
+        return new WebRadioButtonLabelCondition(expectedText).notContainLabel();
     }
 
-    public static WebRadioButtonLabelCondition notContainsLabel(@NotNull StringValue expectedValue) {
-        return new WebRadioButtonLabelCondition(expectedValue).notContainsLabel();
+    public static WebRadioButtonLabelCondition notContainLabel(@NotNull StringValue expectedValue) {
+        return new WebRadioButtonLabelCondition(expectedValue).notContainLabel();
     }
 
-    public static WebRadioButtonLabelCondition notContainsLabel(@NotNull NumberValue<? extends Number> expectedValue) {
-        return new WebRadioButtonLabelCondition(expectedValue).notContainsLabel();
+    public static WebRadioButtonLabelCondition notContainLabel(@NotNull NumberValue<? extends Number> expectedValue) {
+        return new WebRadioButtonLabelCondition(expectedValue).notContainLabel();
     }
 
     // Selected
@@ -308,14 +308,14 @@ public class WebFilterConditions {
         return new WebListBlockElementLabelTextCondition(elementFrame, expectedText).containsLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition notContainsLabel(@NotNull String elementPath,
-                                                                         @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementPath, expectedText).notContainsLabel();
+    public static WebListBlockElementLabelTextCondition notContainLabel(@NotNull String elementPath,
+                                                                        @NotNull String expectedText) {
+        return new WebListBlockElementLabelTextCondition(elementPath, expectedText).notContainLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition notContainsLabel(@NotNull GetLabelAvailable elementFrame,
-                                                                         @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementFrame, expectedText).notContainsLabel();
+    public static WebListBlockElementLabelTextCondition notContainLabel(@NotNull GetLabelAvailable elementFrame,
+                                                                        @NotNull String expectedText) {
+        return new WebListBlockElementLabelTextCondition(elementFrame, expectedText).notContainLabel();
     }
 
     public static WebListBlockElementLabelStringValueCondition containsLabel(@NotNull String elementPath,
@@ -328,14 +328,14 @@ public class WebFilterConditions {
         return new WebListBlockElementLabelStringValueCondition(elementFrame, expectedStringValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition notContainsLabel(@NotNull String elementPath,
-                                                                                @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementPath, expectedStringValue).notContainsLabel();
+    public static WebListBlockElementLabelStringValueCondition notContainLabel(@NotNull String elementPath,
+                                                                               @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementLabelStringValueCondition(elementPath, expectedStringValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition notContainsLabel(@NotNull GetLabelAvailable elementFrame,
-                                                                                @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementFrame, expectedStringValue).notContainsLabel();
+    public static WebListBlockElementLabelStringValueCondition notContainLabel(@NotNull GetLabelAvailable elementFrame,
+                                                                               @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementLabelStringValueCondition(elementFrame, expectedStringValue).notContainLabel();
     }
 
     public static WebListBlockElementLabelNumberValueCondition containsLabel(@NotNull String elementPath,
@@ -348,14 +348,14 @@ public class WebFilterConditions {
         return new WebListBlockElementLabelNumberValueCondition(elementFrame, expectedNumberValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition notContainsLabel(@NotNull String elementPath,
-                                                                                @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementPath, expectedNumberValue).notContainsLabel();
+    public static WebListBlockElementLabelNumberValueCondition notContainLabel(@NotNull String elementPath,
+                                                                               @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementLabelNumberValueCondition(elementPath, expectedNumberValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition notContainsLabel(@NotNull GetLabelAvailable elementFrame,
-                                                                                @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementFrame, expectedNumberValue).notContainsLabel();
+    public static WebListBlockElementLabelNumberValueCondition notContainLabel(@NotNull GetLabelAvailable elementFrame,
+                                                                               @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementLabelNumberValueCondition(elementFrame, expectedNumberValue).notContainLabel();
     }
 
     // ContainsProperty
@@ -372,16 +372,16 @@ public class WebFilterConditions {
         return new WebListBlockElementPropertyTextCondition(elementPath, propertyName, expectedText).containsProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition notContainsProperty(@NotNull WebChildElement elementFrame,
-                                                                               @NotNull String propertyName,
-                                                                               @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementFrame, propertyName, expectedText).notContainsProperty();
+    public static WebListBlockElementPropertyTextCondition notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                              @NotNull String propertyName,
+                                                                              @NotNull String expectedText) {
+        return new WebListBlockElementPropertyTextCondition(elementFrame, propertyName, expectedText).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition notContainsProperty(@NotNull String elementPath,
-                                                                               @NotNull String propertyName,
-                                                                               @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementPath, propertyName, expectedText).notContainsProperty();
+    public static WebListBlockElementPropertyTextCondition notContainProperty(@NotNull String elementPath,
+                                                                              @NotNull String propertyName,
+                                                                              @NotNull String expectedText) {
+        return new WebListBlockElementPropertyTextCondition(elementPath, propertyName, expectedText).notContainProperty();
     }
 
     public static WebListBlockElementPropertyStringValueCondition containsProperty(@NotNull WebChildElement elementFrame,
@@ -396,16 +396,16 @@ public class WebFilterConditions {
         return new WebListBlockElementPropertyStringValueCondition(elementPath, propertyName, expectedStringValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition notContainsProperty(@NotNull WebChildElement elementFrame,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementFrame, propertyName, expectedStringValue).notContainsProperty();
+    public static WebListBlockElementPropertyStringValueCondition notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementPropertyStringValueCondition(elementFrame, propertyName, expectedStringValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition notContainsProperty(@NotNull String elementPath,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementPath, propertyName, expectedStringValue).notContainsProperty();
+    public static WebListBlockElementPropertyStringValueCondition notContainProperty(@NotNull String elementPath,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementPropertyStringValueCondition(elementPath, propertyName, expectedStringValue).notContainProperty();
     }
 
     public static WebListBlockElementPropertyNumberValueCondition containsProperty(@NotNull WebChildElement elementFrame,
@@ -420,16 +420,16 @@ public class WebFilterConditions {
         return new WebListBlockElementPropertyNumberValueCondition(elementPath, propertyName, expectedNumberValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition notContainsProperty(@NotNull WebChildElement elementFrame,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementFrame, propertyName, expectedNumberValue).notContainsProperty();
+    public static WebListBlockElementPropertyNumberValueCondition notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebListBlockElementPropertyNumberValueCondition(elementFrame, propertyName, expectedNumberValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition notContainsProperty(@NotNull String elementPath,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementPath, propertyName, expectedNumberValue).notContainsProperty();
+    public static WebListBlockElementPropertyNumberValueCondition notContainProperty(@NotNull String elementPath,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebListBlockElementPropertyNumberValueCondition(elementPath, propertyName, expectedNumberValue).notContainProperty();
     }
 
     // ContainsText
@@ -444,14 +444,14 @@ public class WebFilterConditions {
         return new WebListBlockElementTextCondition(elementFrame, expectedText).containsText();
     }
 
-    public static WebListBlockElementTextCondition notContainsText(@NotNull String elementPath,
-                                                                   @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementPath, expectedText).notContainsText();
+    public static WebListBlockElementTextCondition notContainText(@NotNull String elementPath,
+                                                                  @NotNull String expectedText) {
+        return new WebListBlockElementTextCondition(elementPath, expectedText).notContainText();
     }
 
-    public static WebListBlockElementTextCondition notContainsText(@NotNull GetTextAvailable elementFrame,
-                                                                   @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementFrame, expectedText).notContainsText();
+    public static WebListBlockElementTextCondition notContainText(@NotNull GetTextAvailable elementFrame,
+                                                                  @NotNull String expectedText) {
+        return new WebListBlockElementTextCondition(elementFrame, expectedText).notContainText();
     }
 
     public static WebListBlockElementTextStringValueCondition containsText(@NotNull String elementPath,
@@ -464,14 +464,14 @@ public class WebFilterConditions {
         return new WebListBlockElementTextStringValueCondition(elementFrame, expectedStringValue).containsText();
     }
 
-    public static WebListBlockElementTextStringValueCondition notContainsText(@NotNull String elementPath,
-                                                                              @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementPath, expectedStringValue).notContainsText();
+    public static WebListBlockElementTextStringValueCondition notContainText(@NotNull String elementPath,
+                                                                             @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementTextStringValueCondition(elementPath, expectedStringValue).notContainText();
     }
 
-    public static WebListBlockElementTextStringValueCondition notContainsText(@NotNull GetTextAvailable elementFrame,
-                                                                              @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementFrame, expectedStringValue).notContainsText();
+    public static WebListBlockElementTextStringValueCondition notContainText(@NotNull GetTextAvailable elementFrame,
+                                                                             @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementTextStringValueCondition(elementFrame, expectedStringValue).notContainText();
     }
 
     public static WebListBlockElementTextNumberValueCondition containsText(@NotNull String elementPath,
@@ -484,14 +484,14 @@ public class WebFilterConditions {
         return new WebListBlockElementTextNumberValueCondition(elementFrame, expectedNumberValue).containsText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition notContainsText(@NotNull String elementPath,
-                                                                              @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementPath, expectedNumberValue).notContainsText();
+    public static WebListBlockElementTextNumberValueCondition notContainText(@NotNull String elementPath,
+                                                                             @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementTextNumberValueCondition(elementPath, expectedNumberValue).notContainText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition notContainsText(@NotNull GetTextAvailable elementFrame,
-                                                                              @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementFrame, expectedNumberValue).notContainsText();
+    public static WebListBlockElementTextNumberValueCondition notContainText(@NotNull GetTextAvailable elementFrame,
+                                                                             @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementTextNumberValueCondition(elementFrame, expectedNumberValue).notContainText();
     }
 
 
@@ -535,24 +535,24 @@ public class WebFilterConditions {
         return new WebTextListBlockTextCondition(expectedText).containsTextBlock();
     }
 
-    public static WebTextListBlockTextCondition notContainsTextBlock(@NotNull String expectedText) {
-        return new WebTextListBlockTextCondition(expectedText).notContainsTextBlock();
+    public static WebTextListBlockTextCondition notContainTextBlock(@NotNull String expectedText) {
+        return new WebTextListBlockTextCondition(expectedText).notContainTextBlock();
     }
 
     public static WebTextListBlockTextStringValueCondition containsTextBlock(@NotNull StringValue expectedStringValue) {
         return new WebTextListBlockTextStringValueCondition(expectedStringValue).containsTextBlock();
     }
 
-    public static WebTextListBlockTextStringValueCondition notContainsTextBlock(@NotNull StringValue expectedStringValue) {
-        return new WebTextListBlockTextStringValueCondition(expectedStringValue).notContainsTextBlock();
+    public static WebTextListBlockTextStringValueCondition notContainTextBlock(@NotNull StringValue expectedStringValue) {
+        return new WebTextListBlockTextStringValueCondition(expectedStringValue).notContainTextBlock();
     }
 
     public static WebTextListBlockTextNumberValueCondition containsTextBlock(@NotNull NumberValue<?> expectedNumberValue) {
         return new WebTextListBlockTextNumberValueCondition(expectedNumberValue).containsTextBlock();
     }
 
-    public static WebTextListBlockTextNumberValueCondition notContainsTextBlock(@NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTextListBlockTextNumberValueCondition(expectedNumberValue).notContainsTextBlock();
+    public static WebTextListBlockTextNumberValueCondition notContainTextBlock(@NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTextListBlockTextNumberValueCondition(expectedNumberValue).notContainTextBlock();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -727,16 +727,16 @@ public class WebFilterConditions {
         return new WebTableCellElementLabelTextCondition(columnName, elementFrame, expectedText).containsLabel();
     }
 
-    public static WebTableCellElementLabelTextCondition notContainsLabel(@NotNull String columnName,
-                                                                         @NotNull String elementPath,
-                                                                         @NotNull String expectedText) {
-        return new WebTableCellElementLabelTextCondition(columnName, elementPath, expectedText).notContainsLabel();
+    public static WebTableCellElementLabelTextCondition notContainLabel(@NotNull String columnName,
+                                                                        @NotNull String elementPath,
+                                                                        @NotNull String expectedText) {
+        return new WebTableCellElementLabelTextCondition(columnName, elementPath, expectedText).notContainLabel();
     }
 
-    public static WebTableCellElementLabelTextCondition notContainsLabel(@NotNull String columnName,
-                                                                         @NotNull GetLabelAvailable elementFrame,
-                                                                         @NotNull String expectedText) {
-        return new WebTableCellElementLabelTextCondition(columnName, elementFrame, expectedText).notContainsLabel();
+    public static WebTableCellElementLabelTextCondition notContainLabel(@NotNull String columnName,
+                                                                        @NotNull GetLabelAvailable elementFrame,
+                                                                        @NotNull String expectedText) {
+        return new WebTableCellElementLabelTextCondition(columnName, elementFrame, expectedText).notContainLabel();
     }
 
     public static WebTableCellElementLabelStringValueCondition containsLabel(@NotNull String columnName,
@@ -751,16 +751,16 @@ public class WebFilterConditions {
         return new WebTableCellElementLabelStringValueCondition(columnName, elementFrame, expectedStringValue).containsLabel();
     }
 
-    public static WebTableCellElementLabelStringValueCondition notContainsLabel(@NotNull String columnName,
-                                                                                @NotNull String elementPath,
-                                                                                @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementLabelStringValueCondition(columnName, elementPath, expectedStringValue).notContainsLabel();
+    public static WebTableCellElementLabelStringValueCondition notContainLabel(@NotNull String columnName,
+                                                                               @NotNull String elementPath,
+                                                                               @NotNull StringValue expectedStringValue) {
+        return new WebTableCellElementLabelStringValueCondition(columnName, elementPath, expectedStringValue).notContainLabel();
     }
 
-    public static WebTableCellElementLabelStringValueCondition notContainsLabel(@NotNull String columnName,
-                                                                                @NotNull GetLabelAvailable elementFrame,
-                                                                                @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementLabelStringValueCondition(columnName, elementFrame, expectedStringValue).notContainsLabel();
+    public static WebTableCellElementLabelStringValueCondition notContainLabel(@NotNull String columnName,
+                                                                               @NotNull GetLabelAvailable elementFrame,
+                                                                               @NotNull StringValue expectedStringValue) {
+        return new WebTableCellElementLabelStringValueCondition(columnName, elementFrame, expectedStringValue).notContainLabel();
     }
 
     public static WebTableCellElementLabelNumberValueCondition containsLabel(@NotNull String columnName,
@@ -775,16 +775,16 @@ public class WebFilterConditions {
         return new WebTableCellElementLabelNumberValueCondition(columnName, elementFrame, expectedNumberValue).containsLabel();
     }
 
-    public static WebTableCellElementLabelNumberValueCondition notContainsLabel(@NotNull String columnName,
-                                                                                @NotNull String elementPath,
-                                                                                @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementLabelNumberValueCondition(columnName, elementPath, expectedNumberValue).notContainsLabel();
+    public static WebTableCellElementLabelNumberValueCondition notContainLabel(@NotNull String columnName,
+                                                                               @NotNull String elementPath,
+                                                                               @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTableCellElementLabelNumberValueCondition(columnName, elementPath, expectedNumberValue).notContainLabel();
     }
 
-    public static WebTableCellElementLabelNumberValueCondition notContainsLabel(@NotNull String columnName,
-                                                                                @NotNull GetLabelAvailable elementFrame,
-                                                                                @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementLabelNumberValueCondition(columnName, elementFrame, expectedNumberValue).notContainsLabel();
+    public static WebTableCellElementLabelNumberValueCondition notContainLabel(@NotNull String columnName,
+                                                                               @NotNull GetLabelAvailable elementFrame,
+                                                                               @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTableCellElementLabelNumberValueCondition(columnName, elementFrame, expectedNumberValue).notContainLabel();
     }
 
     // ContainsProperty
@@ -803,18 +803,18 @@ public class WebFilterConditions {
         return new WebTableCellElementPropertyTextCondition(columnName, elementFrame, propertyName, expectedText).containsProperty();
     }
 
-    public static WebTableCellElementPropertyTextCondition notContainsProperty(@NotNull String columnName,
-                                                                               @NotNull String elementPath,
-                                                                               @NotNull String propertyName,
-                                                                               @NotNull String expectedText) {
-        return new WebTableCellElementPropertyTextCondition(columnName, elementPath, propertyName, expectedText).notContainsProperty();
+    public static WebTableCellElementPropertyTextCondition notContainProperty(@NotNull String columnName,
+                                                                              @NotNull String elementPath,
+                                                                              @NotNull String propertyName,
+                                                                              @NotNull String expectedText) {
+        return new WebTableCellElementPropertyTextCondition(columnName, elementPath, propertyName, expectedText).notContainProperty();
     }
 
-    public static WebTableCellElementPropertyTextCondition notContainsProperty(@NotNull String columnName,
-                                                                               @NotNull WebElementPropertyAvailable elementFrame,
-                                                                               @NotNull String propertyName,
-                                                                               @NotNull String expectedText) {
-        return new WebTableCellElementPropertyTextCondition(columnName, elementFrame, propertyName, expectedText).notContainsProperty();
+    public static WebTableCellElementPropertyTextCondition notContainProperty(@NotNull String columnName,
+                                                                              @NotNull WebElementPropertyAvailable elementFrame,
+                                                                              @NotNull String propertyName,
+                                                                              @NotNull String expectedText) {
+        return new WebTableCellElementPropertyTextCondition(columnName, elementFrame, propertyName, expectedText).notContainProperty();
     }
 
     public static WebTableCellElementPropertyStringValueCondition containsProperty(@NotNull String columnName,
@@ -831,18 +831,18 @@ public class WebFilterConditions {
         return new WebTableCellElementPropertyStringValueCondition(columnName, elementFrame, propertyName, expectedStringValue).containsProperty();
     }
 
-    public static WebTableCellElementPropertyStringValueCondition notContainsProperty(@NotNull String columnName,
-                                                                                      @NotNull String elementPath,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementPropertyStringValueCondition(columnName, elementPath, propertyName, expectedStringValue).notContainsProperty();
+    public static WebTableCellElementPropertyStringValueCondition notContainProperty(@NotNull String columnName,
+                                                                                     @NotNull String elementPath,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebTableCellElementPropertyStringValueCondition(columnName, elementPath, propertyName, expectedStringValue).notContainProperty();
     }
 
-    public static WebTableCellElementPropertyStringValueCondition notContainsProperty(@NotNull String columnName,
-                                                                                      @NotNull WebElementPropertyAvailable elementFrame,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementPropertyStringValueCondition(columnName, elementFrame, propertyName, expectedStringValue).notContainsProperty();
+    public static WebTableCellElementPropertyStringValueCondition notContainProperty(@NotNull String columnName,
+                                                                                     @NotNull WebElementPropertyAvailable elementFrame,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebTableCellElementPropertyStringValueCondition(columnName, elementFrame, propertyName, expectedStringValue).notContainProperty();
     }
 
     public static WebTableCellElementPropertyNumberValueCondition containsProperty(@NotNull String columnName,
@@ -859,18 +859,18 @@ public class WebFilterConditions {
         return new WebTableCellElementPropertyNumberValueCondition(columnName, elementFrame, propertyName, expectedNumberValue).containsProperty();
     }
 
-    public static WebTableCellElementPropertyNumberValueCondition notContainsProperty(@NotNull String columnName,
-                                                                                      @NotNull String elementPath,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementPath, propertyName, expectedNumberValue).notContainsProperty();
+    public static WebTableCellElementPropertyNumberValueCondition notContainProperty(@NotNull String columnName,
+                                                                                     @NotNull String elementPath,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementPath, propertyName, expectedNumberValue).notContainProperty();
     }
 
-    public static WebTableCellElementPropertyNumberValueCondition notContainsProperty(@NotNull String columnName,
-                                                                                      @NotNull WebElementPropertyAvailable elementFrame,
-                                                                                      @NotNull String propertyName,
-                                                                                      @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementFrame, propertyName, expectedNumberValue).notContainsProperty();
+    public static WebTableCellElementPropertyNumberValueCondition notContainProperty(@NotNull String columnName,
+                                                                                     @NotNull WebElementPropertyAvailable elementFrame,
+                                                                                     @NotNull String propertyName,
+                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementFrame, propertyName, expectedNumberValue).notContainProperty();
     }
 
     // ContainsText
@@ -887,16 +887,16 @@ public class WebFilterConditions {
         return new WebTableCellElementTextCondition(columnName, elementFrame, expectedText).containsText();
     }
 
-    public static WebTableCellElementTextCondition notContainsText(@NotNull String columnName,
-                                                                   @NotNull String elementPath,
-                                                                   @NotNull String expectedText) {
-        return new WebTableCellElementTextCondition(columnName, elementPath, expectedText).notContainsText();
+    public static WebTableCellElementTextCondition notContainText(@NotNull String columnName,
+                                                                  @NotNull String elementPath,
+                                                                  @NotNull String expectedText) {
+        return new WebTableCellElementTextCondition(columnName, elementPath, expectedText).notContainText();
     }
 
-    public static WebTableCellElementTextCondition notContainsText(@NotNull String columnName,
-                                                                   @NotNull GetTextAvailable elementFrame,
-                                                                   @NotNull String expectedText) {
-        return new WebTableCellElementTextCondition(columnName, elementFrame, expectedText).notContainsText();
+    public static WebTableCellElementTextCondition notContainText(@NotNull String columnName,
+                                                                  @NotNull GetTextAvailable elementFrame,
+                                                                  @NotNull String expectedText) {
+        return new WebTableCellElementTextCondition(columnName, elementFrame, expectedText).notContainText();
     }
 
     public static WebTableCellElementTextStringValueCondition containsText(@NotNull String columnName,
@@ -911,16 +911,16 @@ public class WebFilterConditions {
         return new WebTableCellElementTextStringValueCondition(columnName, elementFrame, expectedStringValue).containsText();
     }
 
-    public static WebTableCellElementTextStringValueCondition notContainsText(@NotNull String columnName,
-                                                                              @NotNull String elementPath,
-                                                                              @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementTextStringValueCondition(columnName, elementPath, expectedStringValue).notContainsText();
+    public static WebTableCellElementTextStringValueCondition notContainText(@NotNull String columnName,
+                                                                             @NotNull String elementPath,
+                                                                             @NotNull StringValue expectedStringValue) {
+        return new WebTableCellElementTextStringValueCondition(columnName, elementPath, expectedStringValue).notContainText();
     }
 
-    public static WebTableCellElementTextStringValueCondition notContainsText(@NotNull String columnName,
-                                                                              @NotNull GetTextAvailable elementFrame,
-                                                                              @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementTextStringValueCondition(columnName, elementFrame, expectedStringValue).notContainsText();
+    public static WebTableCellElementTextStringValueCondition notContainText(@NotNull String columnName,
+                                                                             @NotNull GetTextAvailable elementFrame,
+                                                                             @NotNull StringValue expectedStringValue) {
+        return new WebTableCellElementTextStringValueCondition(columnName, elementFrame, expectedStringValue).notContainText();
     }
 
     public static WebTableCellElementTextNumberValueCondition containsText(@NotNull String columnName,
@@ -935,16 +935,16 @@ public class WebFilterConditions {
         return new WebTableCellElementTextNumberValueCondition(columnName, elementFrame, expectedNumberValue).containsText();
     }
 
-    public static WebTableCellElementTextNumberValueCondition notContainsText(@NotNull String columnName,
-                                                                              @NotNull String elementPath,
-                                                                              @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementTextNumberValueCondition(columnName, elementPath, expectedNumberValue).notContainsText();
+    public static WebTableCellElementTextNumberValueCondition notContainText(@NotNull String columnName,
+                                                                             @NotNull String elementPath,
+                                                                             @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTableCellElementTextNumberValueCondition(columnName, elementPath, expectedNumberValue).notContainText();
     }
 
-    public static WebTableCellElementTextNumberValueCondition notContainsText(@NotNull String columnName,
-                                                                              @NotNull GetTextAvailable elementFrame,
-                                                                              @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementTextNumberValueCondition(columnName, elementFrame, expectedNumberValue).notContainsText();
+    public static WebTableCellElementTextNumberValueCondition notContainText(@NotNull String columnName,
+                                                                             @NotNull GetTextAvailable elementFrame,
+                                                                             @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTableCellElementTextNumberValueCondition(columnName, elementFrame, expectedNumberValue).notContainText();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -987,24 +987,24 @@ public class WebFilterConditions {
         return new WebTextTableRowTextCondition(columnName, expectedText).containsTextCell();
     }
 
-    public static WebTextTableRowTextCondition notContainsTextCell(@NotNull String columnName, @NotNull String expectedText) {
-        return new WebTextTableRowTextCondition(columnName, expectedText).notContainsTextCell();
+    public static WebTextTableRowTextCondition notContainTextCell(@NotNull String columnName, @NotNull String expectedText) {
+        return new WebTextTableRowTextCondition(columnName, expectedText).notContainTextCell();
     }
 
     public static WebTextTableRowTextStringValueCondition containsTextCell(@NotNull String columnName, @NotNull StringValue expectedStringValue) {
         return new WebTextTableRowTextStringValueCondition(columnName, expectedStringValue).containsTextCell();
     }
 
-    public static WebTextTableRowTextStringValueCondition notContainsTextCell(@NotNull String columnName, @NotNull StringValue expectedStringValue) {
-        return new WebTextTableRowTextStringValueCondition(columnName, expectedStringValue).notContainsTextCell();
+    public static WebTextTableRowTextStringValueCondition notContainTextCell(@NotNull String columnName, @NotNull StringValue expectedStringValue) {
+        return new WebTextTableRowTextStringValueCondition(columnName, expectedStringValue).notContainTextCell();
     }
 
     public static WebTextTableRowTextNumberValueCondition containsTextCell(@NotNull String columnName, @NotNull NumberValue<?> expectedNumberValue) {
         return new WebTextTableRowTextNumberValueCondition(columnName, expectedNumberValue).containsTextCell();
     }
 
-    public static WebTextTableRowTextNumberValueCondition notContainsTextCell(@NotNull String columnName, @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTextTableRowTextNumberValueCondition(columnName, expectedNumberValue).notContainsTextCell();
+    public static WebTextTableRowTextNumberValueCondition notContainTextCell(@NotNull String columnName, @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTextTableRowTextNumberValueCondition(columnName, expectedNumberValue).notContainTextCell();
     }
 
 }

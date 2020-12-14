@@ -13,13 +13,13 @@ import org.junit.jupiter.api.Test;
 import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
 import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsTextBlock;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainsTextBlock;
+import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainTextBlock;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.textBlockIndex;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextListFilter;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
 
-@Tag("Element") @Tag("WebTextList")
+@Tag("WebElement") @Tag("WebTextList")
 class WebTextListFiltersTest extends AbstractUiTest {
 
     @Test
@@ -64,18 +64,18 @@ class WebTextListFiltersTest extends AbstractUiTest {
                 .should(haveSize(1));
         textList.filter(with(containsTextBlock(value.stringStartsWith("М"))))
                 .should(haveSize(17));
-        textList.filter(with(notContainsTextBlock(value.stringEquals("Финляндия"))))
+        textList.filter(with(notContainTextBlock(value.stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        textList.filter(with(notContainsTextBlock(value.stringStartsWith("М"))))
+        textList.filter(with(notContainTextBlock(value.stringStartsWith("М"))))
                 .should(haveSize(178));
 
         textList.filter(without(containsTextBlock("Финляндия")))
                 .should(haveSize(194));
         textList.filter(without(containsTextBlock(value.stringStartsWith("М"))))
                 .should(haveSize(178));
-        textList.filter(without(notContainsTextBlock("Финляндия")))
+        textList.filter(without(notContainTextBlock("Финляндия")))
                 .should(haveSize(1));
-        textList.filter(without(notContainsTextBlock(value.stringStartsWith("М"))))
+        textList.filter(without(notContainTextBlock(value.stringStartsWith("М"))))
                 .should(haveSize(17));
     }
 

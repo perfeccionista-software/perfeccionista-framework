@@ -138,7 +138,7 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
                 indexes = overallIndexes;
             }
             if (WebConditionGrouping.OR == childConditionHolder.getUsage()) {
-                indexes.addAll(conditionResult.getIndexes());
+                indexes.addAll(childConditionResult.getIndexes());
             }
         }
         return WebFilterResult.of(indexes, calculatedHash);

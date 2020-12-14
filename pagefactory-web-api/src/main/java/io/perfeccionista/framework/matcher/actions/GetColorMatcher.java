@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_COLOR_IS_EQUAL_EXPECTED_COLOR;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_COLOR_IS_NOT_EQUAL_EXPECTED_COLOR;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_COLOR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_COLOR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_HAVE_COLOR_METHOD;
 
@@ -32,13 +32,12 @@ public class GetColorMatcher implements GetColorAvailableMatcher {
     @Override
     public void check(@NotNull GetColorAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor)
-                : InvocationName.of(SHOULD_NOT_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor);
+                ? assertInvocation(SHOULD_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor)
+                : assertInvocation(SHOULD_NOT_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    Color actualColor = element.getActionImplementation(GET_COLOR_METHOD, Color.class)
-                            .execute(element, componentName, cssProperty);
+                    Color actualColor = element.getColor(componentName, cssProperty);
                     if (positive) {
                         shouldHaveColor(element, actualColor, expectedColor, componentName);
                     } else {

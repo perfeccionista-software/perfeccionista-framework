@@ -16,7 +16,7 @@ import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsLabel;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.disabled;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.enabled;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainsLabel;
+import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainLabel;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notSelected;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.radioButtonIndex;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.selected;
@@ -24,7 +24,7 @@ import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWeb
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
 
-@Tag("Element") @Tag("WebRadioGroup")
+@Tag("WebElement") @Tag("WebRadioGroup")
 class WebRadioGroupFiltersTest extends AbstractUiTest {
 
     @Test
@@ -93,18 +93,18 @@ class WebRadioGroupFiltersTest extends AbstractUiTest {
                 .should(haveSize(1));
         radioGroup.filter(with(containsLabel(value.stringStartsWith("Label"))))
                 .should(haveSize(3));
-        radioGroup.filter(with(notContainsLabel("Label 3")))
+        radioGroup.filter(with(notContainLabel("Label 3")))
                 .should(haveSize(2));
-        radioGroup.filter(with(notContainsLabel(value.stringStartsWith("Label"))))
+        radioGroup.filter(with(notContainLabel(value.stringStartsWith("Label"))))
                 .should(haveSize(0));
 
         radioGroup.filter(without(containsLabel(value.stringEquals("Label 3"))))
                 .should(haveSize(value.intEquals(2)));
         radioGroup.filter(without(containsLabel(value.stringStartsWith("Label"))))
                 .should(haveSize(value.intEquals(0)));
-        radioGroup.filter(without(notContainsLabel(value.stringEquals("Label 3"))))
+        radioGroup.filter(without(notContainLabel(value.stringEquals("Label 3"))))
                 .should(haveSize(value.intEquals(1)));
-        radioGroup.filter(without(notContainsLabel(value.stringStartsWith("Label"))))
+        radioGroup.filter(without(notContainLabel(value.stringStartsWith("Label"))))
                 .should(haveSize(value.intEquals(3)));
     }
 

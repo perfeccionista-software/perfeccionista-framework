@@ -1,35 +1,35 @@
 package io.perfeccionista.framework.value;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.value.checker.bigdecimalvalue.BigDecimalEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.bigdecimalvalue.BigDecimalGreaterNumberChecker;
-import io.perfeccionista.framework.value.checker.bigdecimalvalue.BigDecimalGreaterOrEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.bigdecimalvalue.BigDecimalLessNumberChecker;
-import io.perfeccionista.framework.value.checker.bigdecimalvalue.BigDecimalLessOrEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.bigdecimalvalue.BigDecimalNotEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.doublevalue.DoubleEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.doublevalue.DoubleGreaterNumberChecker;
-import io.perfeccionista.framework.value.checker.doublevalue.DoubleGreaterOrEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.doublevalue.DoubleLessNumberChecker;
-import io.perfeccionista.framework.value.checker.doublevalue.DoubleLessOrEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.doublevalue.DoubleNotEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.integervalue.IntegerEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.integervalue.IntegerGreaterNumberChecker;
-import io.perfeccionista.framework.value.checker.integervalue.IntegerGreaterOrEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.integervalue.IntegerLessNumberChecker;
-import io.perfeccionista.framework.value.checker.integervalue.IntegerLessOrEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.integervalue.IntegerNotEqualsNumberChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringContainsAllChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringContainsAnyChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringContainsChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringContainsIgnoreCaseChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringEmptyValueChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringEndsWithChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringEqualsChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringEqualsIgnoreCaseChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringLengthChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringRegularExpressionChecker;
-import io.perfeccionista.framework.value.checker.stringvalue.StringStartsWithChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalGreaterNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalGreaterOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalLessNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalLessOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalNotEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleGreaterNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleGreaterOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleLessNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleLessOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleNotEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerGreaterNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerGreaterOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerLessNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerLessOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerNotEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsAllChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsAnyChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsIgnoreCaseChecker;
+import io.perfeccionista.framework.value.checker.string.StringEmptyValueChecker;
+import io.perfeccionista.framework.value.checker.string.StringEndsWithChecker;
+import io.perfeccionista.framework.value.checker.string.StringEqualsChecker;
+import io.perfeccionista.framework.value.checker.string.StringEqualsIgnoreCaseChecker;
+import io.perfeccionista.framework.value.checker.string.StringLengthChecker;
+import io.perfeccionista.framework.value.checker.string.StringRegularExpressionChecker;
+import io.perfeccionista.framework.value.checker.string.StringStartsWithChecker;
 import io.perfeccionista.framework.value.number.DefaultBigDecimalValue;
 import io.perfeccionista.framework.value.number.DefaultDoubleValue;
 import io.perfeccionista.framework.value.number.DefaultIntegerValue;
@@ -51,7 +51,7 @@ public class Values {
     // String
 
     public static StringValue stringEmpty() {
-        return new DefaultStringValue(new StringEmptyValueChecker());
+        return new DefaultStringValue(new StringEmptyValueChecker(Environment.getCurrent()));
     }
 
     public static StringValue stringEquals(@NotNull String expected) {
@@ -91,7 +91,7 @@ public class Values {
     }
 
     public static StringValue stringLength(int expectedLength) {
-        return new DefaultStringValue(new StringLengthChecker(expectedLength));
+        return new DefaultStringValue(new StringLengthChecker(Environment.getCurrent(), expectedLength));
     }
 
     public static String stringProcess(@NotNull String expression) {

@@ -12,6 +12,7 @@ import java.util.Collection;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_CONTAINS_INDEX;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_DOES_NOT_CONTAIN_INDEX;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_INDEX_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_HAVE_INDEX_METHOD;
@@ -30,8 +31,8 @@ public class IndexNumberMatcher implements WebIndexesMatcher {
     @Override
     public void check(@NotNull WebMultipleIndexedResult<Integer, ? extends WebChildElement> result) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_HAVE_INDEX_METHOD, this, expectedIndex)
-                : InvocationName.of(SHOULD_NOT_HAVE_INDEX_METHOD, this, expectedIndex);
+                ? assertInvocation(SHOULD_HAVE_INDEX_METHOD, this, expectedIndex)
+                : assertInvocation(SHOULD_NOT_HAVE_INDEX_METHOD, this, expectedIndex);
 
         WebChildElement element = result.getElement();
 
@@ -51,8 +52,8 @@ public class IndexNumberMatcher implements WebIndexesMatcher {
         if (!actualValue) {
             throw WebElementIndex.assertionError(FILTERED_ELEMENT_DOES_NOT_CONTAIN_INDEX.getMessage())
                     .setProcessed(true)
-                    .addLastAttachmentEntry(ValueAttachmentEntry.of(String.valueOf(expectedIndex), indexesToString(indexes)))
-                    .addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
+                    .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
+                    .addLastAttachmentEntry(ValueAttachmentEntry.of(String.valueOf(expectedIndex), indexesToString(indexes)));
         }
     }
 
@@ -60,8 +61,8 @@ public class IndexNumberMatcher implements WebIndexesMatcher {
         if (actualValue) {
             throw WebElementIndex.assertionError(FILTERED_ELEMENT_CONTAINS_INDEX.getMessage())
                     .setProcessed(true)
-                    .addLastAttachmentEntry(ValueAttachmentEntry.of(String.valueOf(expectedIndex), indexesToString(indexes)))
-                    .addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
+                    .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
+                    .addLastAttachmentEntry(ValueAttachmentEntry.of(String.valueOf(expectedIndex), indexesToString(indexes)));
         }
     }
 

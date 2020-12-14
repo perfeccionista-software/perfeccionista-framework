@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATION_IS_EQUAL_EXPECTED_LOCATION;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATION_IS_NOT_EQUAL_EXPECTED_LOCATION;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LOCATION_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_LOCATION_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_HAVE_LOCATION_METHOD;
 
@@ -30,13 +30,12 @@ public class GetLocationMatcher implements GetLocationAvailableMatcher {
     @Override
     public void check(@NotNull GetLocationAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_HAVE_LOCATION_METHOD, element, componentName, expectedLocation)
-                : InvocationName.of(SHOULD_NOT_HAVE_LOCATION_METHOD, element, componentName, expectedLocation);
+                ? assertInvocation(SHOULD_HAVE_LOCATION_METHOD, element, componentName, expectedLocation)
+                : assertInvocation(SHOULD_NOT_HAVE_LOCATION_METHOD, element, componentName, expectedLocation);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    Location actualLocation = element.getActionImplementation(GET_LOCATION_METHOD, Location.class)
-                            .execute(element, componentName);
+                    Location actualLocation = element.getLocation(componentName);
                     if (positive) {
                         shouldHaveLocation(element, actualLocation, expectedLocation, componentName);
                     } else {

@@ -66,7 +66,7 @@ public class WebTableCellElementPropertyStringValueCondition implements WebTable
         return this;
     }
 
-    public WebTableCellElementPropertyStringValueCondition notContainsProperty() {
+    public WebTableCellElementPropertyStringValueCondition notContainProperty() {
         return this.inverse();
     }
 

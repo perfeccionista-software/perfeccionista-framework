@@ -44,7 +44,7 @@ public class WebTextTableRowTextNumberValueCondition implements WebTextTableRowC
         return this;
     }
 
-    public WebTextTableRowTextNumberValueCondition notContainsTextCell() {
+    public WebTextTableRowTextNumberValueCondition notContainTextCell() {
         return this.inverse();
     }
 

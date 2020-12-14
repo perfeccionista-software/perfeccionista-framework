@@ -11,6 +11,8 @@ public interface WebSingleIndexedResult<T, E extends WebChildElement> {
 
     @Nullable T getValue();
 
+    @NotNull T getNotNullValue();
+
     int getIndex();
 
     WebSingleIndexedResult<T, E> should(WebMultipleIndexedResultMatcher<T> matcher);

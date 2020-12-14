@@ -12,6 +12,7 @@ public enum UtilsMessages implements Messages {
     FILE_EXISTS("File '%s' exists"),
     FILE_NOT_EXISTS("File '%s' not exists"),
     METHOD_NOT_FOUND("Method with name %s is not declared for element"),
+    REQUIRED_ARGUMENT_NOT_FOUND("Required argument is not found"),
     JSON_OBJECT_PARSE_ERROR("Json object parse error"),
     JSON_STRING_PARSE_ERROR("Json string parse error"),
     ;

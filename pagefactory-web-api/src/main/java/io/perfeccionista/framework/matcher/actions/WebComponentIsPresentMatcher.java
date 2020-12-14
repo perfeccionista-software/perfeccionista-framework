@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.COMPONENT_IS_PRESENT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.COMPONENT_NOT_PRESENT;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.COMPONENT_SHOULD_BE_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD;
@@ -34,8 +35,8 @@ public class WebComponentIsPresentMatcher implements WebComponentAvailableMatche
     @Override
     public void check(@NotNull WebComponentAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(COMPONENT_SHOULD_BE_PRESENT_METHOD, element)
-                : InvocationName.of(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, element);
+                ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, element)
+                : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, element);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {

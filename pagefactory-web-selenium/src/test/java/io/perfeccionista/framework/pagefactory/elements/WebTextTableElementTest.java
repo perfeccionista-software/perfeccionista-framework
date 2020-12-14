@@ -57,7 +57,7 @@ import static io.perfeccionista.framework.pagefactory.elements.actions.WebElemen
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextTableFilter;
-import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_NAME;
+import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_COUNTRY_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -65,7 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("WebTextTable")
+@Tag("WebElement") @Tag("WebTextTable")
 class WebTextTableElementTest extends AbstractUiTest {
 
     @Test
@@ -131,7 +131,7 @@ class WebTextTableElementTest extends AbstractUiTest {
         assertEquals(Dimensions.of(795.0d, 10014.0d).setInaccuracy(0.2d), textTable.getDimensions(ROOT));
         assertEquals(Location.absolute(345d, 173d).setInaccuracy(0.2d), textTable.getLocation(ROOT));
         assertEquals(WebColor.of(222, 226, 230, 1.0d), textTable.getColor(ROOT, "border-color"));
-        assertEquals(195, textTable.filter(emptyWebTextTableFilter()).extractRows(SHORT_NAME).getSize());
+        assertEquals(195, textTable.filter(emptyWebTextTableFilter()).extractRows(SHORT_COUNTRY_NAME).getSize());
         assertEquals(Point.of(397.5d, 5007d).setInaccuracy(0.2d), textTable.getDimensions(ROOT).getCenter());
     }
 

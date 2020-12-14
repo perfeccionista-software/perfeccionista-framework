@@ -13,6 +13,7 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import java.time.Duration;
 import java.util.function.Supplier;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.GETTER;
 import static java.lang.String.format;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
@@ -32,7 +33,7 @@ public class LogicInvocationRunner implements InvocationRunner {
         // We need this for one attempt if timeout = 0
         long currentTime = System.nanoTime();
         long deadline = currentTime + timeout.toNanos();
-        if (name.isNotEmpty()) {
+        if (name.isNotEmpty() && GETTER != name.getType()) {
             logger.info(name::toString);
         }
         logger.debug(() -> format("Logic action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));

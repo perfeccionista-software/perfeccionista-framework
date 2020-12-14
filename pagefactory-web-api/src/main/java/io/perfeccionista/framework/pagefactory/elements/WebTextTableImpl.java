@@ -86,8 +86,7 @@ public class WebTextTableImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public WebTextTable should(@NotNull WebIndexesMatcher matcher) {
-        WebTextTableMultipleIndexedResult<Integer> indexesResult = WebTextTableMultipleIndexedResult.of(this, textRowIndex());
-        matcher.check(indexesResult);
+        matcher.check(WebTextTableMultipleIndexedResult.of(this, textRowIndex()));
         return this;
     }
 

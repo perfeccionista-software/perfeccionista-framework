@@ -49,7 +49,7 @@ public class WebListBlockElementLabelTextCondition implements WebListBlockCondit
         return this;
     }
 
-    public WebListBlockElementLabelTextCondition notContainsLabel() {
+    public WebListBlockElementLabelTextCondition notContainLabel() {
         return this.inverse();
     }
 

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
 import static io.perfeccionista.framework.matcher.WebElementAssertions.haveText;
 
-@Tag("Element")
+@Tag("WebElement") @Tag("WebElementAction")
 class WebElementActionTest extends AbstractUiTest {
 
     @Test

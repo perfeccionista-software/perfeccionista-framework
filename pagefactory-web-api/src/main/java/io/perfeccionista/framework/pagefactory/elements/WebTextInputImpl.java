@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
@@ -21,6 +20,8 @@ import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLEAR_METHOD;
@@ -143,7 +144,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public WebTextInput clear() {
-        runCheck(getEnvironment(), InvocationName.of(CLEAR_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(CLEAR_METHOD, this),
                 () -> getActionImplementation(CLEAR_METHOD, Void.class).execute(this));
         return this;
     }
@@ -152,7 +153,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public WebTextInput click() {
-        runCheck(getEnvironment(), InvocationName.of(CLICK_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
                 () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
         return this;
     }
@@ -161,7 +162,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public @Nullable String getLabel() {
-        return runCheck(getEnvironment(), InvocationName.of(GET_LABEL_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(GET_LABEL_METHOD, this),
                 () -> getActionImplementation(GET_LABEL_METHOD, String.class).execute(this));
     }
 
@@ -169,7 +170,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public @Nullable String getText() {
-        return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
@@ -185,7 +186,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public boolean isEnabled() {
-        return runCheck(getEnvironment(), InvocationName.of(IS_ENABLED_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(IS_ENABLED_METHOD, this),
                 () -> getActionImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this));
     }
 
@@ -201,14 +202,14 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public WebTextInput sendKeys(@NotNull String keys) {
-        runCheck(getEnvironment(), InvocationName.of(SEND_KEYS_METHOD, this, keys),
+        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_METHOD, this, keys),
                 () -> getActionImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys));
         return this;
     }
 
     @Override
     public WebTextInput sendKeys(@NotNull KeysEventChain keyEvents) {
-        runCheck(getEnvironment(), InvocationName.of(SEND_KEYS_EVENTS_METHOD, this, keyEvents),
+        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_EVENTS_METHOD, this, keyEvents),
                 () -> getActionImplementation(SEND_KEYS_EVENTS_METHOD, Void.class).execute(this, keyEvents));
         return this;
     }

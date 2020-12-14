@@ -56,7 +56,7 @@ public class WebRadioButtonLabelCondition implements WebRadioButtonCondition {
         return this;
     }
 
-    public WebRadioButtonLabelCondition notContainsLabel() {
+    public WebRadioButtonLabelCondition notContainLabel() {
         return this.inverse();
     }
 

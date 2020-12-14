@@ -39,6 +39,11 @@ public class AnnotationUtils {
                 });
     }
 
+    public static <A extends Annotation> List<A> findAllRepeatableAnnotationsInHierarchy(@NotNull Class<A> annotationClass,
+                                                                                         @NotNull Class<?> annotatedClass) {
+        return findAllRepeatableAnnotationsInHierarchy(annotationClass, Object.class, annotatedClass);
+    }
+
     protected static <A extends Annotation, T> List<A> findAllRepeatableAnnotationsInClassHierarchy(Class<T> processedClass, Class<A> annotationClass) {
         List<A> annotations = new ArrayList<>(Arrays.asList(processedClass.getDeclaredAnnotationsByType(annotationClass)));
         Arrays.stream(processedClass.getInterfaces())

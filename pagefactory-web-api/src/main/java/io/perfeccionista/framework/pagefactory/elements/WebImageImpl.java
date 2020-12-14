@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
@@ -16,6 +15,7 @@ import io.perfeccionista.framework.matcher.element.WebImageMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
@@ -25,7 +25,7 @@ public class WebImageImpl extends AbstractWebChildElement implements WebImage {
 
     @Override
     public WebImage saveToFile(@NotNull String filePath) {
-        runCheck(getEnvironment(), InvocationName.of(SAVE_TO_FILE_METHOD, this, filePath),
+        runCheck(getEnvironment(), actionInvocation(SAVE_TO_FILE_METHOD, this, filePath),
                 () -> getActionImplementation(SAVE_TO_FILE_METHOD, Void.class).execute(this, filePath));
         return this;
     }
@@ -122,7 +122,7 @@ public class WebImageImpl extends AbstractWebChildElement implements WebImage {
 
     @Override
     public WebImage click() {
-        runCheck(getEnvironment(), InvocationName.of(CLICK_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
                 () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
         return this;
     }

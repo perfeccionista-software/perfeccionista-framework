@@ -39,7 +39,7 @@ public class WebTextListBlockTextNumberValueCondition implements WebTextListBloc
         return this;
     }
 
-    public WebTextListBlockTextNumberValueCondition notContainsTextBlock() {
+    public WebTextListBlockTextNumberValueCondition notContainTextBlock() {
         return this.inverse();
     }
 

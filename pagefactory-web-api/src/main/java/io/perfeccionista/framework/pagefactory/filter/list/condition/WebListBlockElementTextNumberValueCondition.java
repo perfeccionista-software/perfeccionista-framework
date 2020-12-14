@@ -50,7 +50,7 @@ public class WebListBlockElementTextNumberValueCondition implements WebListBlock
         return this;
     }
 
-    public WebListBlockElementTextNumberValueCondition notContainsText() {
+    public WebListBlockElementTextNumberValueCondition notContainText() {
         return this.inverse();
     }
 

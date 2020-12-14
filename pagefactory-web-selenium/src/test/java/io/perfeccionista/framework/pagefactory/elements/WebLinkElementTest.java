@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("WebLink")
+@Tag("WebElement") @Tag("WebLink")
 class WebLinkElementTest extends AbstractUiTest {
 
     @Test

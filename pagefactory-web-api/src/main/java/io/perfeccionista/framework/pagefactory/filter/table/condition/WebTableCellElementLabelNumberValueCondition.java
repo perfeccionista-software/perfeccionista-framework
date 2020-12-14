@@ -60,7 +60,7 @@ public class WebTableCellElementLabelNumberValueCondition implements WebTableRow
         return this;
     }
 
-    public WebTableCellElementLabelNumberValueCondition notContainsLabel() {
+    public WebTableCellElementLabelNumberValueCondition notContainLabel() {
         return this.inverse();
     }
 

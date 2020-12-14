@@ -2,12 +2,15 @@ package io.perfeccionista.framework.utils;
 
 import io.perfeccionista.framework.exceptions.EmptyPath;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.EMPTY_PATH;
+import static java.util.stream.Collectors.joining;
 import static org.junit.platform.commons.util.StringUtils.isBlank;
 
 public class StringUtils {
@@ -30,5 +33,20 @@ public class StringUtils {
                 .map(Object::toString)
                 .collect(Collectors.joining(", "));
     }
+
+    public static String objectsToString(@Nullable Object[] objects) {
+        return Objects.isNull(objects) ? "null" : Arrays.stream(objects)
+                .map(arg -> arg == null ? "null" : arg.toString())
+                .collect(joining(","));
+    }
+
+
+
+
+
+
+
+
+
 
 }

@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_SCREENSHOT_IS_EQUAL_EXPECTED_SCREENSHOT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_SCREENSHOT_IS_NOT_EQUAL_EXPECTED_SCREENSHOT;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SCREENSHOT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_LOOKS_LIKE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_LOOKS_LIKE_METHOD;
 
@@ -30,13 +30,12 @@ public class GetScreenshotMatcher implements GetScreenshotAvailableMatcher {
     @Override
     public void check(@NotNull GetScreenshotAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot)
-                : InvocationName.of(SHOULD_NOT_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot);
+                ? assertInvocation(SHOULD_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot)
+                : assertInvocation(SHOULD_NOT_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    Screenshot actualScreenshot = element.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)
-                            .execute(element, componentName);
+                    Screenshot actualScreenshot = element.getScreenshot(componentName);
                     if (positive) {
                         shouldLooksLike(element, actualScreenshot, expectedScreenshot, componentName);
                     } else {

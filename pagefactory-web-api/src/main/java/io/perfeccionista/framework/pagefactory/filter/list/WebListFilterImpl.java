@@ -116,7 +116,7 @@ public class WebListFilterImpl implements WebListFilter {
                 indexes = overallIndexes;
             }
             if (OR == childConditionHolder.getUsage()) {
-                indexes.addAll(conditionResult.getIndexes());
+                indexes.addAll(childConditionResult.getIndexes());
             }
         }
         return WebFilterResult.of(indexes, calculatedHash);

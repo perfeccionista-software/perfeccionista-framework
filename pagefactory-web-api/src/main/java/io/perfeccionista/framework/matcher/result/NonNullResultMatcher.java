@@ -8,6 +8,7 @@ import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_CONTAINS_NULL_RESULT;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_NOT_NULL_RESULT_METHOD;
 import static java.util.Objects.isNull;
@@ -16,7 +17,7 @@ public class NonNullResultMatcher<T> implements WebMultipleIndexedResultMatcher<
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<T, ? extends WebChildElement> result) {
-        InvocationName invocationName = InvocationName.of(SHOULD_HAVE_NOT_NULL_RESULT_METHOD, this);
+        InvocationName invocationName = assertInvocation(SHOULD_HAVE_NOT_NULL_RESULT_METHOD, this);
 
         WebChildElement element = result.getElement();
 

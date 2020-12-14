@@ -73,8 +73,7 @@ public class WebListImpl extends AbstractWebChildElement implements WebList {
 
     @Override
     public WebList should(@NotNull WebIndexesMatcher matcher) {
-        WebListMultipleIndexedResult<Integer> indexesResult = WebListMultipleIndexedResult.of(this, blockIndex());
-        matcher.check(indexesResult);
+        matcher.check(WebListMultipleIndexedResult.of(this, blockIndex()));
         return this;
     }
 

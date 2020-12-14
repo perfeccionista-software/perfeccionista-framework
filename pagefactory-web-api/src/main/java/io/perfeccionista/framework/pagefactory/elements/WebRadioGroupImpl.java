@@ -105,8 +105,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
 
     @Override
     public WebRadioGroup should(@NotNull WebIndexesMatcher matcher) {
-        WebRadioGroupMultipleIndexedResult<Integer> indexesResult = WebRadioGroupMultipleIndexedResult.of(this, index());
-        matcher.check(indexesResult);
+        matcher.check(WebRadioGroupMultipleIndexedResult.of(this, index()));
         return this;
     }
 

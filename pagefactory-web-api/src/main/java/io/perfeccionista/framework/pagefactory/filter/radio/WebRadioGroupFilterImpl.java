@@ -116,7 +116,7 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
                 indexes = overallIndexes;
             }
             if (WebConditionGrouping.OR == childConditionHolder.getUsage()) {
-                indexes.addAll(conditionResult.getIndexes());
+                indexes.addAll(childConditionResult.getIndexes());
             }
         }
         return WebFilterResult.of(indexes, calculatedHash);

@@ -81,7 +81,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("FileInput")
+@Tag("WebElement") @Tag("WebFileInput")
 class WebFileInputElementTest extends AbstractUiTest {
 
     @Test
@@ -246,7 +246,7 @@ class WebFileInputElementTest extends AbstractUiTest {
                 .should(beDisplayed())
                 .click()
                 .should((WebLinkMatcher) element -> {
-                    runCheck(element.getEnvironment(), InvocationName.of(SHOULD_FILE_EXIST_METHOD, element),
+                    runCheck(element.getEnvironment(), InvocationName.assertInvocation(SHOULD_FILE_EXIST_METHOD, element),
                             () -> FileUtils.shouldExist(Path.of(downloadFile)));
                 });
     }

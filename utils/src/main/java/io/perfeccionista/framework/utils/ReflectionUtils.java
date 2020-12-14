@@ -196,6 +196,9 @@ public final class ReflectionUtils {
                 classChain.addLast((Class<T>) processedClass);
             }
             processedClass = processedClass.getSuperclass();
+            if (Objects.isNull(processedClass)) {
+                break;
+            }
         }
         return classChain;
     }

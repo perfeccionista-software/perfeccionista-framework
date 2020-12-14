@@ -99,9 +99,11 @@ public class WebPageFactory {
         Set<Integer> indexes = filterResult.getIndexes();
         WebLocatorHolder radioButtonLocatorHolder = webRadioGroup.getRequiredLocator(RADIO);
 
-        Class<? extends DefaultWebRadioButtonBlock> mappedBlockClass = webRadioGroup.getWebRadioGroupFrame()
+        Class<? extends DefaultWebRadioButtonBlock> mappedBlockClass = (Class<? extends DefaultWebRadioButtonBlock>) webRadioGroup.getWebRadioGroupFrame()
                 .getMappedBlockFrame()
-                .getClass();
+                .getElementIdentifier()
+                // TODO: Либо добавить проверку, либо отдельный тип идентифаера
+                .getElementType();
 
         List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
         Method webRadioButtonMethod = childElementMethods.stream()

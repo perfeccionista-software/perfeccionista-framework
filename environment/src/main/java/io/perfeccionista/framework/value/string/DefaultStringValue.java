@@ -1,21 +1,18 @@
 package io.perfeccionista.framework.value.string;
 
 import io.perfeccionista.framework.value.checker.StringChecker;
+import io.perfeccionista.framework.value.transformer.string.ActualStringValueTransformer;
+import io.perfeccionista.framework.value.transformer.string.ExpectedStringValueTransformer;
+import io.perfeccionista.framework.value.transformer.string.StringValueTransformer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Set;
 import java.util.function.UnaryOperator;
 
 public class DefaultStringValue implements StringValue {
 
     protected final StringChecker stringChecker;
-    protected final Deque<UnaryOperator<String>> actualValueTransformers = new ArrayDeque<>();
 
-    protected String rawActual;
-    protected String processedActual;
     protected boolean inverse = false;
 
     public DefaultStringValue(StringChecker stringChecker) {
@@ -24,14 +21,19 @@ public class DefaultStringValue implements StringValue {
 
     @Override
     public StringValue transformExpected(UnaryOperator<String> transformFunction) {
-        stringChecker.setTransformers(Set.of(transformFunction));
+        stringChecker.addTransformer((ExpectedStringValueTransformer) transformFunction::apply);
         return this;
     }
 
     @Override
     public StringValue transformActual(UnaryOperator<String> transformFunction) {
-        actualValueTransformers.clear();
-        actualValueTransformers.addLast(transformFunction);
+        stringChecker.addTransformer((ActualStringValueTransformer) transformFunction::apply);
+        return this;
+    }
+
+    @Override
+    public StringValue addTransformer(@NotNull StringValueTransformer transformer) {
+        stringChecker.addTransformer(transformer);
         return this;
     }
 
@@ -54,29 +56,19 @@ public class DefaultStringValue implements StringValue {
 
     @Override
     public boolean check(@Nullable String actual) {
-        rawActual = actual;
         if (actual == null) {
             return false;
         }
-        processedActual = actual;
-        for (UnaryOperator<String> transformer : actualValueTransformers) {
-            processedActual = transformer.apply(processedActual);
-        }
+        stringChecker.setActual(actual);
         if (inverse) {
-            return !stringChecker.check(processedActual);
+            return !stringChecker.check();
         }
-        return stringChecker.check(processedActual);
+        return stringChecker.check();
     }
 
     @Override
     public String toString() {
-        return String.format("             Expected = '%s'\n"
-                           + "               Actual = '%s'\n"
-                           + "    processedExpected = '%s'\n"
-                           + "      processedActual = '%s'\n"
-                           + "String value parameters: {checker = %s; inverse = %s}",
-                stringChecker.getExpected(), rawActual, stringChecker.getProcessedExpected(), processedActual,
-                stringChecker.getClass().getCanonicalName(), inverse);
+        return stringChecker.getComparisonDescription();
     }
 
 }

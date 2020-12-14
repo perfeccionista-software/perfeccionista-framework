@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-public class ValueExpressionProcessorTokenizeTest extends SimpleParallelTest {
+class ValueExpressionProcessorTokenizeTest extends SimpleParallelTest {
 
     @Test
     void tokenizeSimpleExpression() {

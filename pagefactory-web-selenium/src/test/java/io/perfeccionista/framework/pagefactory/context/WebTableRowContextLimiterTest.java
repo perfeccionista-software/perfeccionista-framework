@@ -8,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.pageobjects.ContextTableElementsP
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.ContinentNameWebBlock;
-import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.ShortNameWebBlock;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryNameWebBlock;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsText;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.pagefactory.pageobjects.ContextTableElementsPage.CONTINENT;
-import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_NAME;
+import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_COUNTRY_NAME;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
 
 // TODO: Попробовать разные сценарии выборки (по индексу, отображаению элемента и т.п.)
@@ -43,17 +43,17 @@ public class WebTableRowContextLimiterTest extends AbstractUiTest {
                 })
 
                 .execute((WebTableRow tableRow) -> {
-                    tableRow.getCell(SHORT_NAME, ShortNameWebBlock.class).shortName()
+                    tableRow.getCell(SHORT_COUNTRY_NAME, CountryNameWebBlock.class).shortName()
                             .scrollTo()
                             .should(haveText("Финляндия"));
 
-                }, selectWebTableRow("Table of countries", with(containsText(SHORT_NAME, frame(ShortNameWebBlock.class).shortName(), "Финляндия"))))
+                }, selectWebTableRow("Table of countries", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия"))))
 
                 .execute((WebTableRow tableRow) -> {
-                    tableRow.getCell(SHORT_NAME, ShortNameWebBlock.class).shortName()
+                    tableRow.getCell(SHORT_COUNTRY_NAME, CountryNameWebBlock.class).shortName()
                             .scrollTo()
                             .should(haveText(stringStartsWith("М")));
-                }, selectWebTableRows("Table of countries", with(containsText(SHORT_NAME, frame(ShortNameWebBlock.class).shortName(), stringStartsWith("М"))), 17));
+                }, selectWebTableRows("Table of countries", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))), 17));
     }
 
     @Test
@@ -71,18 +71,18 @@ public class WebTableRowContextLimiterTest extends AbstractUiTest {
                 })
 
                 .execute((WebTableRow tableRow) -> {
-                    tableRow.getCell(SHORT_NAME, ShortNameWebBlock.class).shortName()
+                    tableRow.getCell(SHORT_COUNTRY_NAME, CountryNameWebBlock.class).shortName()
                             .scrollTo()
                             .should(haveText("Финляндия"));
                 }, selectWebTableRow("Table of continents", with(containsText(CONTINENT, frame(ContinentNameWebBlock.class).continentName(), "Eurasia"))),
-                selectWebTableRow("Countries -> Table of countries", with(containsText(SHORT_NAME, frame(ShortNameWebBlock.class).shortName(), "Финляндия"))))
+                selectWebTableRow("Countries -> Table of countries", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия"))))
 
                 .execute((WebTableRow tableRow) -> {
-                    tableRow.getCell(SHORT_NAME, ShortNameWebBlock.class).shortName()
+                    tableRow.getCell(SHORT_COUNTRY_NAME, CountryNameWebBlock.class).shortName()
                             .scrollTo()
                             .should(haveText(stringStartsWith("М")));
                 }, selectWebTableRow("Table of continents", with(containsText(CONTINENT, frame(ContinentNameWebBlock.class).continentName(), "Eurasia"))),
-                selectWebTableRows("Countries -> Table of countries", with(containsText(SHORT_NAME, frame(ShortNameWebBlock.class).shortName(), stringStartsWith("М"))), 7));
+                selectWebTableRows("Countries -> Table of countries", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))), 7));
     }
 
 }

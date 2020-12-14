@@ -4,6 +4,7 @@ import io.perfeccionista.framework.exceptions.EnvironmentNotInitialized;
 import io.perfeccionista.framework.exceptions.ServiceNotFound;
 import io.perfeccionista.framework.utils.ReflectionUtils.Order;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.util.Preconditions;
@@ -70,13 +71,22 @@ public class Environment {
      * Наследники этого класса должны иметь такой же конструктор
      * {@link io.perfeccionista.framework.extension.PerfeccionistaExtension}.
      */
-    public Environment(@NotNull Class<?> testClass, @NotNull EnvironmentConfiguration environmentConfiguration) {
+    public Environment(@Nullable Class<?> testClass, @NotNull EnvironmentConfiguration environmentConfiguration) {
         this.testClass = testClass;
         this.configuration = environmentConfiguration;
         logger.debug(() -> "Environment configuration check");
         checkEnvironmentConfiguration(environmentConfiguration);
         logger.debug(() -> "Environment configuration initialization");
         initEnvironment(environmentConfiguration);
+    }
+
+    /**
+     * Экземпляр {@link Environment} создается во время инициализации
+     * Наследники этого класса должны иметь такой же конструктор
+     * {@link io.perfeccionista.framework.extension.PerfeccionistaExtension}.
+     */
+    public Environment(@NotNull EnvironmentConfiguration environmentConfiguration) {
+        this(null, environmentConfiguration);
     }
 
     /**
@@ -141,8 +151,8 @@ public class Environment {
     /**
      * @return тестовый класс в котором создан экземпляр {@link Environment}
      */
-    public @NotNull Class<?> getTestClass() {
-        return testClass;
+    public @Nullable Optional<Class<?>> getTestClass() {
+        return Optional.ofNullable(testClass);
     }
 
     // ThreadLocal access point

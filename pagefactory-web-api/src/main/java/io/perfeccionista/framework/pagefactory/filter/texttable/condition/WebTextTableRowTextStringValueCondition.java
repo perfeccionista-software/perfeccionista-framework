@@ -44,7 +44,7 @@ public class WebTextTableRowTextStringValueCondition  implements WebTextTableRow
         return this;
     }
 
-    public WebTextTableRowTextStringValueCondition notContainsTextCell() {
+    public WebTextTableRowTextStringValueCondition notContainTextCell() {
         return this.inverse();
     }
 

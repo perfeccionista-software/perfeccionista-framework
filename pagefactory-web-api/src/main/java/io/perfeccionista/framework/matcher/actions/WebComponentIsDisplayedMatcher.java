@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.COMPONENT_IS_DISPLAYED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.COMPONENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_DISPLAYED;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD;
@@ -35,8 +36,8 @@ public class WebComponentIsDisplayedMatcher implements WebComponentAvailableMatc
     @Override
     public void check(@NotNull WebComponentAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, element)
-                : InvocationName.of(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, element);
+                ? assertInvocation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, element)
+                : assertInvocation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, element);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {

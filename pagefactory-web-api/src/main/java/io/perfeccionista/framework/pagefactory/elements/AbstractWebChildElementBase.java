@@ -6,7 +6,6 @@ import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.WebElementActionNotFound;
 import io.perfeccionista.framework.exceptions.WebLocatorNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementActionImplementation;
@@ -24,6 +23,7 @@ import java.util.Optional;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_ACTION_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_JS_OPERATION_ACTION_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATOR_NOT_FOUND;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.EXECUTE_ACTION;
@@ -100,7 +100,7 @@ public class AbstractWebChildElementBase implements WebChildElementBase {
 
     @Override
     public WebChildElementBase executeAction(@NotNull String name, Object... args) {
-        runCheck(getEnvironment(), InvocationName.of(EXECUTE_ACTION, this, name, args), () -> {
+        runCheck(getEnvironment(), actionInvocation(EXECUTE_ACTION, this, name, args), () -> {
             getActionImplementation(name, Void.class)
                     .execute(this, args);
         });

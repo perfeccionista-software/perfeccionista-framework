@@ -1,6 +1,8 @@
 package io.perfeccionista.framework.value.string;
 
 import io.perfeccionista.framework.value.Value;
+import io.perfeccionista.framework.value.transformer.string.StringValueTransformer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.UnaryOperator;
 
@@ -8,9 +10,11 @@ import java.util.function.UnaryOperator;
 //  так и actual значения, а так же результат сравнения
 public interface StringValue extends Value<String> {
 
-    StringValue transformExpected(UnaryOperator<String> transformFunction);
+    StringValue transformExpected(@NotNull UnaryOperator<String> transformFunction);
 
-    StringValue transformActual(UnaryOperator<String> transformFunction);
+    StringValue transformActual(@NotNull UnaryOperator<String> transformFunction);
+
+    StringValue addTransformer(@NotNull StringValueTransformer transformer);
 
     StringValue withoutProcessing();
 
