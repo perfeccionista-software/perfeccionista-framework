@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.comparators.string;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -8,12 +10,20 @@ public class StringDateComparator implements StringValueComparator {
 
     protected final DateTimeFormatter defaultFormatter;
 
-    public StringDateComparator() {
+    private StringDateComparator() {
         this.defaultFormatter  = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     }
 
-    public StringDateComparator(DateTimeFormatter defaultFormatter) {
+    private StringDateComparator(DateTimeFormatter defaultFormatter) {
         this.defaultFormatter = defaultFormatter;
+    }
+
+    public static StringDateComparator defaultFormat() {
+        return new StringDateComparator();
+    }
+
+    public static StringDateComparator format(@NotNull DateTimeFormatter defaultFormatter) {
+        return new StringDateComparator(defaultFormatter);
     }
 
     @Override

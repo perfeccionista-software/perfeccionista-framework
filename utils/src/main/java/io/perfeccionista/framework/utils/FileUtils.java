@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.utils;
 
 import io.perfeccionista.framework.exceptions.FileExists;
-import io.perfeccionista.framework.exceptions.FileNotExists;
+import io.perfeccionista.framework.exceptions.FileNotExist;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
@@ -16,7 +16,7 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_EXISTS;
-import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_NOT_EXISTS;
+import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_NOT_EXIST;
 
 // TODO: Привести аргументы к одному виду Path вместо Path и URL.
 public class FileUtils {
@@ -24,21 +24,21 @@ public class FileUtils {
 
     private FileUtils() {}
 
-    public static void shouldExist(@NotNull Path path) {
+    public static void fileShouldExist(@NotNull Path path) {
         if (!path.toFile().exists()) {
-            throw FileNotExists.exception(FILE_NOT_EXISTS.getMessage(path.toString()))
+            throw FileNotExist.assertionError(FILE_NOT_EXIST.getMessage(path.toString()))
                     .setProcessed(true);
         }
     }
 
-    public static void shouldBeMissing(@NotNull Path path) {
+    public static void fileShouldBeMissing(@NotNull Path path) {
         if (path.toFile().exists()) {
-            throw FileExists.exception(FILE_EXISTS.getMessage(path.toString()))
+            throw FileExists.assertionError(FILE_EXISTS.getMessage(path.toString()))
                     .setProcessed(true);
         }
     }
 
-    public static void delete(@NotNull Path path) throws IOException {
+    public static void deleteFile(@NotNull Path path) throws IOException {
         File file = path.toFile();
         if (!file.exists()) {
             return;
@@ -47,16 +47,16 @@ public class FileUtils {
             File[] innerFiles = file.listFiles();
             if (innerFiles != null) {
                 for (File innerFile : innerFiles) {
-                    delete(innerFile.toPath());
+                    deleteFile(innerFile.toPath());
                 }
             }
         }
         Files.deleteIfExists(path);
     }
 
-    public static void deleteIgnoreExceptions(@NotNull Path path) {
+    public static void deleteFileIgnoreExceptions(@NotNull Path path) {
         try {
-            delete(path);
+            deleteFile(path);
         } catch (IOException e) {
             logger.error(e, () -> String.format("Exception when deleting file %s", path.toString()));
         }
@@ -101,7 +101,7 @@ public class FileUtils {
         return scriptBuilder.toString();
     }
 
-    public static boolean isExecutable(@NotNull Path path) {
+    public static boolean isFileExecutable(@NotNull Path path) {
         return Files.isRegularFile(path) && Files.isReadable(path) && Files.isExecutable(path);
     }
 

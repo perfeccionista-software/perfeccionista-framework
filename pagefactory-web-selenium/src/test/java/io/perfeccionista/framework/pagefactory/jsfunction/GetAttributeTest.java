@@ -34,14 +34,14 @@ class GetAttributeTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         String placeholderValue = runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "simple-input"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-input"));
             JsOperation<String> getAttributeOperation = JsOperation.of(scrollToLocatorChain, new GetAttribute("placeholder"));
             return chrome.executor()
                     .executeOperation(getAttributeOperation)

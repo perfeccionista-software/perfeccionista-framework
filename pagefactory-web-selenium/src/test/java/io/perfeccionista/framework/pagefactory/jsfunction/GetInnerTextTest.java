@@ -32,14 +32,14 @@ public class GetInnerTextTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         String innerText = runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
             JsOperation<String> getInnerTextOperation = JsOperation.of(scrollToLocatorChain, new GetInnerText());
             return chrome.executor()
                     .executeOperation(getInnerTextOperation)

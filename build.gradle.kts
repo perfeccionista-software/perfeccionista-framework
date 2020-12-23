@@ -43,7 +43,7 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 
     val notToPublish = kotlin.collections.listOf("demo-app")
 
-    apply(plugin = "checkstyle")
+//    apply(plugin = "checkstyle")
     apply(plugin = "java")
     apply(plugin = "java-gradle-plugin")
     apply(plugin = "jacoco")
@@ -70,11 +70,11 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         testCompile(group = "org.mockito", name = "mockito-core", version = "3.0.0")
     }
 
-    checkstyle {
-        toolVersion = "8.7"
-        configFile = rootProject.file("checkstyle/checkstyle.xml")
-        configProperties["suppressionsFile"] = rootProject.file("checkstyle/suppressions.xml")
-    }
+//    checkstyle {
+//        toolVersion = "8.7"
+//        configFile = rootProject.file("checkstyle/checkstyle.xml")
+//        configProperties["suppressionsFile"] = rootProject.file("checkstyle/suppressions.xml")
+//    }
 
     jacoco {
         toolVersion = "0.8.4"

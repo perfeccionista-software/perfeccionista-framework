@@ -26,7 +26,7 @@ import static io.perfeccionista.framework.value.Values.stringStartsWith;
 
 // TODO: Попробовать разные сценарии выборки (по индексу, отображаению элемента и т.п.)
 @Tag("Context") @Tag("WebTable")
-public class WebTableCellContextLimiterTest extends AbstractUiTest {
+class WebTableCellContextLimiterTest extends AbstractUiTest {
 
     @Test
     void webTableRowSingleLimiterPositiveTest(Environment env, ValueService value) {
@@ -46,13 +46,13 @@ public class WebTableCellContextLimiterTest extends AbstractUiTest {
                     tableCell.shortName()
                             .scrollTo()
                             .should(haveText("Финляндия"));
-                }, selectWebTableCell("Table of countries", SHORT_COUNTRY_NAME, with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия"))))
+                }, selectWebTableCell("Table of countries", "Short country name", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия"))))
 
                 .execute((CountryNameWebBlock tableCell) -> {
                     tableCell.shortName()
                             .scrollTo()
                             .should(haveText(stringStartsWith("М")));
-                }, selectWebTableCells("Table of countries", SHORT_COUNTRY_NAME, with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))), 17));
+                }, selectWebTableCells("Table of countries", "Short country name", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))), 17));
     }
 
     @Test
@@ -73,15 +73,15 @@ public class WebTableCellContextLimiterTest extends AbstractUiTest {
                     tableCell.shortName()
                             .scrollTo()
                             .should(haveText("Финляндия"));
-                }, selectWebTableCell("Table of continents", COUNTRIES, with(containsText(CONTINENT, frame(ContinentNameWebBlock.class).continentName(), "Eurasia"))),
-                selectWebTableCell("Table of countries", SHORT_COUNTRY_NAME, with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия"))))
+                }, selectWebTableCell("Table of continents", "Countries", with(containsText(CONTINENT, frame(ContinentNameWebBlock.class).continentName(), "Eurasia"))),
+                selectWebTableCell("Table of countries", "Short country name", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия"))))
 
                 .execute((CountryNameWebBlock tableCell) -> {
                     tableCell.shortName()
                             .scrollTo()
                             .should(haveText(stringStartsWith("М")));
-                }, selectWebTableCell("Table of continents", COUNTRIES, with(containsText(CONTINENT, frame(ContinentNameWebBlock.class).continentName(), "Eurasia"))),
-                selectWebTableCells("Table of countries", SHORT_COUNTRY_NAME, with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))), 7));
+                }, selectWebTableCell("Table of continents", "Countries", with(containsText(CONTINENT, frame(ContinentNameWebBlock.class).continentName(), "Eurasia"))),
+                selectWebTableCells("Table of countries", "Short country name", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))), 7));
     }
 
 }

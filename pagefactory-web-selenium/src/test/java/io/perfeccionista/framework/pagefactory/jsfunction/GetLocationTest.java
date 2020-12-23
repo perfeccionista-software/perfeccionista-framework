@@ -35,17 +35,17 @@ public class GetLocationTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         Location location = runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
-                    .addFirstLocator(WebLocatorHolder.of("LI", TEXT, "Индия")
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
+                    .addLastLocator(WebLocatorHolder.of("LI", TEXT, "Индия")
                             .addInvokedOnCallFunction(new ScrollTo()
-                                    .setDelay(Duration.ofSeconds(5))));
+                                    .setDelay(Duration.ofSeconds(1))));
             JsOperation<Location> getLocationOperation = JsOperation.of(scrollToLocatorChain, new GetLocation());
             return chrome.executor()
                     .executeOperation(getLocationOperation)

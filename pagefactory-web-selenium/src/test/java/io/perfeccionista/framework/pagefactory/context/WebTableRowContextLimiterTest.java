@@ -46,7 +46,6 @@ public class WebTableRowContextLimiterTest extends AbstractUiTest {
                     tableRow.getCell(SHORT_COUNTRY_NAME, CountryNameWebBlock.class).shortName()
                             .scrollTo()
                             .should(haveText("Финляндия"));
-
                 }, selectWebTableRow("Table of countries", with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия"))))
 
                 .execute((WebTableRow tableRow) -> {

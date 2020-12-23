@@ -23,11 +23,11 @@ import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWra
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TEXT;
-import static io.perfeccionista.framework.utils.FileUtils.deleteIgnoreExceptions;
+import static io.perfeccionista.framework.utils.FileUtils.deleteFileIgnoreExceptions;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
-public class GetScreenshotTest {
+class GetScreenshotTest {
 
     @Test
     void singleElementTest(Environment env, ValueService val) {
@@ -39,15 +39,15 @@ public class GetScreenshotTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
-        deleteIgnoreExceptions(Path.of(getHome() + "/Downloads/images/simple-button.png"));
+        deleteFileIgnoreExceptions(Path.of(getHome() + "/Downloads/images/simple-button.png"));
         Screenshot screenshot = runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "simple-button")
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-button")
                             .addInvokedOnCallFunction(new ScrollTo()
                                     // Без задержки скриншот снимается до того, как браузер успеет отрисовать элемент
                                     .setDelay(Duration.ofSeconds(1))));
@@ -68,23 +68,23 @@ public class GetScreenshotTest {
                 .createDispatcher(val.stringProcess("${[props]browser}"))
                 .launch();
         chrome.tabs()
-                .openUrl(val.stringProcess("${[props]base_url}"));
+                .openUrl(val.stringProcess("${[props]start_url}"));
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         Set<Integer> indexes = Set.of(7, 56, 125, 170, 171);
         indexes.forEach(index -> {
-            deleteIgnoreExceptions(Path.of(getHome() + "/Downloads/images/" + index + "-list-item.jpg"));
+            deleteFileIgnoreExceptions(Path.of(getHome() + "/Downloads/images/" + index + "-list-item.jpg"));
         });
         Map<Integer, Screenshot> screenshots = runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
-                    .addFirstLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item").setIndexes(indexes));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
+                    .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item").setIndexes(indexes));
             JsOperation<Screenshot> getScreenshotOperation = JsOperation.of(scrollToLocatorChain, new GetScreenshot("image/jpeg"));
             return chrome.executor()
                     .executeOperation(getScreenshotOperation)

@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
@@ -21,7 +22,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -85,7 +85,7 @@ class WebImageElementTest extends AbstractUiTest {
         // WebImage
         assertNotNull(worldMap.getActionImplementation(CLICK_METHOD, Void.class));
         // WebChildElement
-        assertNotNull(worldMap.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(worldMap.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(worldMap.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(worldMap.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(worldMap.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -104,7 +104,7 @@ class WebImageElementTest extends AbstractUiTest {
         assertEquals("worldMap", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("World map"));
         assertFalse(elementIdentifier.isNameDeprecated("World map"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebImage simpleImageElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("World map", WebImage.class);
         assertNotNull(simpleImageElement);
@@ -138,7 +138,7 @@ class WebImageElementTest extends AbstractUiTest {
                 .should(componentBeDisplayed("Image border"))
                 .should(haveDimensions(Dimensions.of(176.3d, 125.4d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(345d, 173d).setInaccuracy(0.2d)))
-                .should(haveColor("border-color", WebColor.of(222, 226, 230, 1.0d)))
+                .should(haveColor("border-color", Color.of(222, 226, 230, 1.0d)))
                 .should(havePropertyValue("prompt", "World map picture"))
                 .should(havePropertyValue("source", value.stringContains("src/static/world_map.jpeg")))
                 .should(havePropertyValue("source", value.stringContainsAll("src", "static", "world", "jpeg")))
@@ -151,7 +151,7 @@ class WebImageElementTest extends AbstractUiTest {
         assertTrue(worldMap.isComponentDisplayed("Image border"));
         assertEquals(Dimensions.of(176.3d, 125.4d).setInaccuracy(0.2d), worldMap.getDimensions(ROOT));
         assertEquals(Location.absolute(345d, 173d).setInaccuracy(0.2d), worldMap.getLocation(ROOT));
-        assertEquals(WebColor.of(222, 226, 230, 1.0d), worldMap.getColor(ROOT, "border-color"));
+        assertEquals(Color.of(222, 226, 230, 1.0d), worldMap.getColor(ROOT, "border-color"));
         Screenshot screenshot = worldMap.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(10000).check(screenshot.getRaw().length));
@@ -189,7 +189,7 @@ class WebImageElementTest extends AbstractUiTest {
                 () -> worldMap.should(haveLocation(elementLocation.offset(15d, 1d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> worldMap.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(222, 226, 230, 1.0d);
+        Color elementColor = Color.of(222, 226, 230, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> worldMap.should(notHaveColor("border-color", elementColor)));
         assertThrows(WebElementPropertyValueAssertionError.class,

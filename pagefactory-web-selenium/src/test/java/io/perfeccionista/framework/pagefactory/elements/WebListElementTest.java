@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
@@ -22,7 +23,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -80,7 +80,7 @@ class WebListElementTest extends AbstractUiTest {
         assertNotNull(list.getWebBrowserDispatcher());
         assertNotNull(list.getOptionalLocator(ROOT));
         // WebChildElement
-        assertNotNull(list.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(list.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(list.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(list.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(list.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -99,7 +99,7 @@ class WebListElementTest extends AbstractUiTest {
         assertEquals("webList", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("List of countries"));
         assertFalse(elementIdentifier.isNameDeprecated("List of countries"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebList listElement = listElementsPage.getElementRegistry()
                 .getRequiredElementByPath("List of countries", WebList.class);
         assertNotNull(listElement);
@@ -124,14 +124,14 @@ class WebListElementTest extends AbstractUiTest {
                 .hoverTo(true)
                 .should(haveDimensions(Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(345d, -4709d).setInaccuracy(0.2d)))
-                .should(haveColor("border-color", WebColor.of(33, 37, 41, 1.0d)))
+                .should(haveColor("border-color", Color.of(33, 37, 41, 1.0d)))
                 .should(haveSize(195));
         assertTrue(list.isPresent());
         assertTrue(list.isDisplayed());
         assertFalse(list.isInFocus());
         assertEquals(Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d), list.getDimensions(ROOT));
         assertEquals(Location.absolute(345d, 335d).setInaccuracy(0.2d), list.getLocation(ROOT));
-        assertEquals(WebColor.of(33, 37, 41, 1.0d), list.getColor(ROOT, "border-color"));
+        assertEquals(Color.of(33, 37, 41, 1.0d), list.getColor(ROOT, "border-color"));
         assertEquals(195, list.extractAll(block()).getSize());
         assertEquals(Point.of(397.5d, 5147.5d).setInaccuracy(0.2d), list.getDimensions(ROOT).getCenter());
     }
@@ -162,7 +162,7 @@ class WebListElementTest extends AbstractUiTest {
                 () -> list.should(haveLocation(elementLocation.offset(15d, 1d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> list.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(33, 37, 41, 1.0d);
+        Color elementColor = Color.of(33, 37, 41, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> list.should(notHaveColor("border-color", elementColor)));
         assertThrows(WebElementPropertyNotFoundException.class,

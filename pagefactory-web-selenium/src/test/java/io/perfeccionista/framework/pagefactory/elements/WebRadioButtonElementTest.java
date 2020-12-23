@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementInFocus.WebElementInFocusAssertionError;
@@ -26,10 +27,8 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -99,7 +98,7 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
         assertNotNull(radioButtonOne.getActionImplementation(IS_SELECTED_METHOD, Boolean.class));
         assertNotNull(radioButtonOne.getActionImplementation(IS_ENABLED_METHOD, Boolean.class));
         // WebChildElement
-        assertNotNull(radioButtonOne.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(radioButtonOne.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(radioButtonOne.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(radioButtonOne.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(radioButtonOne.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -118,7 +117,7 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
         assertEquals("radioButtonOne", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("RadioButton one"));
         assertFalse(elementIdentifier.isNameDeprecated("RadioButton one"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebRadioButton radioButtonOneElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("RadioButton one", WebRadioButton.class);
         assertNotNull(radioButtonOneElement);
@@ -147,7 +146,7 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
                 .scrollTo()
                 .should(haveDimensions(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(345.0d, 713.4d).setInaccuracy(0.2d)))
-                .should(haveColor(LABEL, "color", WebColor.of(33, 37, 41, 1.0d)))
+                .should(haveColor(LABEL, "color", Color.of(33, 37, 41, 1.0d)))
                 .hoverTo(true) // 280 ms
                 .should(haveLabel("Label 1"))
                 .should(notHaveLabel(value.stringContains("Label 2")))
@@ -162,7 +161,7 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
         assertTrue(radioButtonOne.isInFocus());
         assertEquals(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d), radioButtonOne.getDimensions(ROOT));
         assertEquals(Location.absolute(345.0d, 713.4d).setInaccuracy(0.2d), radioButtonOne.getLocation(ROOT));
-        assertEquals(WebColor.of(33, 37, 41, 1.0d), radioButtonOne.getColor(LABEL, "color"));
+        assertEquals(Color.of(33, 37, 41, 1.0d), radioButtonOne.getColor(LABEL, "color"));
         Screenshot screenshot = radioButtonOne.getScreenshot(ROOT); // 400 ms
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(3500).check(screenshot.getRaw().length));
@@ -201,7 +200,7 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
                 () -> radioButtonOne.should(haveLocation(elementLocation.offset(12d, 10d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> radioButtonOne.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(33, 37, 41, 1.0d);
+        Color elementColor = Color.of(33, 37, 41, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> radioButtonOne.should(notHaveColor(LABEL, "color", elementColor)));
         assertThrows(WebElementLabelValueAssertionError.class,

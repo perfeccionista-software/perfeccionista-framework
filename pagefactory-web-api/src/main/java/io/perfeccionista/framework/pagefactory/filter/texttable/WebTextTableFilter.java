@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.texttable;
 
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableValueExtractor;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.WebFilter;
@@ -17,11 +17,11 @@ public interface WebTextTableFilter extends WebFilter<WebTextTable> {
 
     @NotNull WebSingleIndexedResult<String, WebTextTable> extractRow(@NotNull String columnName);
 
-    @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractRow(@NotNull WebTextTableCellValueExtractor<T> extractor);
+    @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractRow(@NotNull WebTextTableValueExtractor<T> extractor);
 
     @NotNull WebMultipleIndexedResult<String, WebTextTable> extractRows(@NotNull String columnName);
 
-    @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractRows(@NotNull WebTextTableCellValueExtractor<T> extractor);
+    @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractRows(@NotNull WebTextTableValueExtractor<T> extractor);
 
     @NotNull WebSingleIndexedResult<String, WebTextTable> extractFooter(@NotNull String columnName);
 

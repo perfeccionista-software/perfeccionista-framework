@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class WebTextTableRowExtractor implements WebTextTableCellValueExtractor<WebBlock> {
+public class WebTextTableRowExtractor implements WebTextTableValueExtractor<WebBlock> {
 
     private TableSection section = TableSection.BODY;
 

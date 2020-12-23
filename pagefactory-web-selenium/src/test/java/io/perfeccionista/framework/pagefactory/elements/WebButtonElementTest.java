@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementInFocus.WebElementInFocusAssertionError;
@@ -24,7 +25,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -86,7 +86,7 @@ class WebButtonElementTest extends AbstractUiTest {
         assertNotNull(simpleButton.getActionImplementation(CLICK_METHOD, Void.class));
         assertNotNull(simpleButton.getActionImplementation(GET_TEXT_METHOD, String.class));
         // WebChildElement
-        assertNotNull(simpleButton.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(simpleButton.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(simpleButton.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(simpleButton.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(simpleButton.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -105,7 +105,7 @@ class WebButtonElementTest extends AbstractUiTest {
         assertEquals("simpleButton", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("Simple button"));
         assertFalse(elementIdentifier.isNameDeprecated("Simple button"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebButton simpleButtonElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("Simple button", WebButton.class);
         assertNotNull(simpleButtonElement);
@@ -138,9 +138,9 @@ class WebButtonElementTest extends AbstractUiTest {
                 .should(haveDimensions(Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(369.3d, 314.3d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.center(472.3d, 333.4d).setInaccuracy(0.2d)))
-                .should(haveColor("background-color", WebColor.of(0, 123, 255, 1.0d)))
+                .should(haveColor("background-color", Color.of(0, 123, 255, 1.0d)))
                 .hoverTo(true)
-                .should(haveColor( "background-color", WebColor.of(0, 105, 217, 1.0d)))
+                .should(haveColor( "background-color", Color.of(0, 105, 217, 1.0d)))
                 .should(haveText("Simple Button"))
                 .should(haveText(value.stringContains("Button")))
                 .should(notHaveText(value.stringContains("link")));
@@ -149,7 +149,7 @@ class WebButtonElementTest extends AbstractUiTest {
         assertFalse(simpleButton.isInFocus());
         assertEquals(Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d), simpleButton.getDimensions(ROOT));
         assertEquals(Location.absolute(369.3d, 314.3d).setInaccuracy(0.2d), simpleButton.getLocation(ROOT));
-        assertEquals(WebColor.of(0, 105, 217, 1.0d), simpleButton.getColor(ROOT, "background-color"));
+        assertEquals(Color.of(0, 105, 217, 1.0d), simpleButton.getColor(ROOT, "background-color"));
         Screenshot screenshot = simpleButton.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(4500).check(screenshot.getRaw().length));
@@ -198,7 +198,7 @@ class WebButtonElementTest extends AbstractUiTest {
                 () -> simpleButton.should(haveLocation(elementLocation.offset(12d, 10d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> simpleButton.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(0, 123, 255, 1.0d);
+        Color elementColor = Color.of(0, 123, 255, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> simpleButton.should(notHaveColor("background-color", elementColor)));
         assertThrows(WebElementTextValueAssertionError.class,

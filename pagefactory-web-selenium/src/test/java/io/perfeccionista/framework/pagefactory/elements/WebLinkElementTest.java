@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementInFocus.WebElementInFocusAssertionError;
@@ -23,7 +24,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -85,7 +85,7 @@ class WebLinkElementTest extends AbstractUiTest {
         assertNotNull(simpleLink.getActionImplementation(CLICK_METHOD, Void.class));
         assertNotNull(simpleLink.getActionImplementation(GET_TEXT_METHOD, String.class));
         // WebChildElement
-        assertNotNull(simpleLink.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(simpleLink.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(simpleLink.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(simpleLink.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(simpleLink.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -104,7 +104,7 @@ class WebLinkElementTest extends AbstractUiTest {
         assertEquals("simpleLink", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("Simple link"));
         assertFalse(elementIdentifier.isNameDeprecated("Simple link"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebLink simpleLinkElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("Simple link", WebLink.class);
         assertNotNull(simpleLinkElement);
@@ -136,9 +136,9 @@ class WebLinkElementTest extends AbstractUiTest {
                 .scrollTo()
                 .should(haveDimensions(Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(392.2d, 478.4d).setInaccuracy(0.2d)))
-                .should(haveColor("color", WebColor.of(0, 123, 255, 1.0d)))
+                .should(haveColor("color", Color.of(0, 123, 255, 1.0d)))
                 .hoverTo(true)
-                .should(haveColor("color", WebColor.of(0, 86, 179, 1.0d)))
+                .should(haveColor("color", Color.of(0, 86, 179, 1.0d)))
                 .should(haveText("Simple Link"))
                 .should(haveText(value.stringContains("Link")))
                 .should(notHaveText(value.stringContains("button")));
@@ -147,7 +147,7 @@ class WebLinkElementTest extends AbstractUiTest {
         assertFalse(simpleLink.isInFocus());
         assertEquals(Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d), simpleLink.getDimensions(ROOT));
         assertEquals(Location.absolute(392.2d, 478.4d).setInaccuracy(0.2d), simpleLink.getLocation(ROOT));
-        assertEquals(WebColor.of(0, 86, 179, 1.0d), simpleLink.getColor(ROOT, "color"));
+        assertEquals(Color.of(0, 86, 179, 1.0d), simpleLink.getColor(ROOT, "color"));
         Screenshot screenshot = simpleLink.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(2500).check(screenshot.getRaw().length));
@@ -197,7 +197,7 @@ class WebLinkElementTest extends AbstractUiTest {
                 () -> simpleLink.should(haveLocation(elementLocation.offset(54d, -4d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> simpleLink.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(0, 123, 255, 1.0d);
+        Color elementColor = Color.of(0, 123, 255, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> simpleLink.should(notHaveColor("color", elementColor)));
         assertThrows(WebElementTextValueAssertionError.class,

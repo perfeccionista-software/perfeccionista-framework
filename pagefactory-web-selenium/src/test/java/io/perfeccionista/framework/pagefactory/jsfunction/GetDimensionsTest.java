@@ -32,14 +32,14 @@ class GetDimensionsTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         Dimensions dimensions = runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
             JsOperation<Dimensions> getDimensionsOperation = JsOperation.of(scrollToLocatorChain, new GetDimensions());
             return chrome.executor()
                     .executeOperation(getDimensionsOperation)

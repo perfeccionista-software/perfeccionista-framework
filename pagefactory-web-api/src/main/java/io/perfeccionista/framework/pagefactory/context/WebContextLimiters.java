@@ -17,99 +17,99 @@ public class WebContextLimiters {
 
     // WebList block limiters
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull WebList webListFrame,
-                                                                                        @NotNull WebListFilterBuilder filterBuilder) {
-        return WebListBlockContextLimiter.of(webListFrame, filterBuilder, intEquals(1));
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull WebList fromList,
+                                                                                        @NotNull WebListFilterBuilder blockFilter) {
+        return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(1));
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull String webListPath,
-                                                                                        @NotNull WebListFilterBuilder filterBuilder) {
-        return WebListBlockContextLimiter.of(webListPath, filterBuilder, intEquals(1));
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull String fromList,
+                                                                                        @NotNull WebListFilterBuilder blockFilter) {
+        return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(1));
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList webListFrame,
-                                                                                         @NotNull WebListFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList fromList,
+                                                                                         @NotNull WebListFilterBuilder blockFilter,
                                                                                          int expectedSize) {
-        return WebListBlockContextLimiter.of(webListFrame, filterBuilder, intEquals(expectedSize));
+        return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(expectedSize));
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList webListFrame,
-                                                                                         @NotNull WebListFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList fromList,
+                                                                                         @NotNull WebListFilterBuilder blockFilter,
                                                                                          @NotNull NumberValue<Integer> expectedSize) {
-        return WebListBlockContextLimiter.of(webListFrame, filterBuilder, expectedSize);
+        return WebListBlockContextLimiter.of(fromList, blockFilter, expectedSize);
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull String webListPath,
-                                                                                         @NotNull WebListFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull String fromList,
+                                                                                         @NotNull WebListFilterBuilder blockFilter,
                                                                                          int expectedSize) {
-        return WebListBlockContextLimiter.of(webListPath, filterBuilder, intEquals(expectedSize));
+        return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(expectedSize));
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull String webListPath,
-                                                                                         @NotNull WebListFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull String fromList,
+                                                                                         @NotNull WebListFilterBuilder blockFilter,
                                                                                          @NotNull NumberValue<Integer> expectedSize) {
-        return WebListBlockContextLimiter.of(webListPath, filterBuilder, expectedSize);
+        return WebListBlockContextLimiter.of(fromList, blockFilter, expectedSize);
     }
 
     // WebTable row limiters
 
-    public static WebTableRowContextLimiter selectWebTableRow(@NotNull String webTablePath,
-                                                              @NotNull WebTableFilterBuilder filterBuilder) {
-        return WebTableRowContextLimiter.of(webTablePath, filterBuilder, intEquals(1));
+    public static WebTableRowContextLimiter selectWebTableRow(@NotNull String fromTable,
+                                                              @NotNull WebTableFilterBuilder rowFilter) {
+        return WebTableRowContextLimiter.of(fromTable, rowFilter, intEquals(1));
     }
 
-    public static WebTableRowContextLimiter selectWebTableRows(@NotNull String webTablePath,
-                                                               @NotNull WebTableFilterBuilder filterBuilder,
+    public static WebTableRowContextLimiter selectWebTableRows(@NotNull String fromTable,
+                                                               @NotNull WebTableFilterBuilder rowFilter,
                                                                int expectedSize) {
-        return WebTableRowContextLimiter.of(webTablePath, filterBuilder, intEquals(expectedSize));
+        return WebTableRowContextLimiter.of(fromTable, rowFilter, intEquals(expectedSize));
     }
 
-    public static WebTableRowContextLimiter selectWebTableRows(@NotNull String webTablePath,
-                                                               @NotNull WebTableFilterBuilder filterBuilder,
+    public static WebTableRowContextLimiter selectWebTableRows(@NotNull String fromTable,
+                                                               @NotNull WebTableFilterBuilder rowFilter,
                                                                @NotNull NumberValue<Integer> expectedSize) {
-        return WebTableRowContextLimiter.of(webTablePath, filterBuilder, expectedSize);
+        return WebTableRowContextLimiter.of(fromTable, rowFilter, expectedSize);
     }
 
     // WebTable cell limiters
 
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCell(@NotNull WebTable webTableFrame,
-                                                                                        @NotNull String columnName,
-                                                                                        @NotNull WebTableFilterBuilder filterBuilder) {
-        return WebTableCellContextLimiter.of(webTableFrame, columnName, filterBuilder, intEquals(1));
+    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCell(@NotNull WebTable fromTable,
+                                                                                        @NotNull String fromColumn,
+                                                                                        @NotNull WebTableFilterBuilder rowFilter) {
+        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(1));
     }
 
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCell(@NotNull String webTablePath,
-                                                                                        @NotNull String columnName,
-                                                                                        @NotNull WebTableFilterBuilder filterBuilder) {
-        return WebTableCellContextLimiter.of(webTablePath, columnName, filterBuilder, intEquals(1));
+    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCell(@NotNull String fromTable,
+                                                                                        @NotNull String fromColumn,
+                                                                                        @NotNull WebTableFilterBuilder rowFilter) {
+        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(1));
     }
 
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull WebTable webTableFrame,
-                                                                                         @NotNull String columnName,
-                                                                                         @NotNull WebTableFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull WebTable fromTable,
+                                                                                         @NotNull String fromColumn,
+                                                                                         @NotNull WebTableFilterBuilder rowFilter,
                                                                                          int expectedSize) {
-        return WebTableCellContextLimiter.of(webTableFrame, columnName, filterBuilder, intEquals(expectedSize));
+        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(expectedSize));
     }
 
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull WebTable webTableFrame,
-                                                                                         @NotNull String columnName,
-                                                                                         @NotNull WebTableFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull WebTable fromTable,
+                                                                                         @NotNull String fromColumn,
+                                                                                         @NotNull WebTableFilterBuilder rowFilter,
                                                                                          @NotNull NumberValue<Integer> expectedSize) {
-        return WebTableCellContextLimiter.of(webTableFrame, columnName, filterBuilder, expectedSize);
+        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, expectedSize);
     }
 
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull String webTablePath,
-                                                                                         @NotNull String columnName,
-                                                                                         @NotNull WebTableFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull String fromTable,
+                                                                                         @NotNull String fromColumn,
+                                                                                         @NotNull WebTableFilterBuilder rowFilter,
                                                                                          int expectedSize) {
-        return WebTableCellContextLimiter.of(webTablePath, columnName, filterBuilder, intEquals(expectedSize));
+        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(expectedSize));
     }
 
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull String webTablePath,
-                                                                                         @NotNull String columnName,
-                                                                                         @NotNull WebTableFilterBuilder filterBuilder,
+    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull String fromTable,
+                                                                                         @NotNull String fromColumn,
+                                                                                         @NotNull WebTableFilterBuilder rowFilter,
                                                                                          @NotNull NumberValue<Integer> expectedSize) {
-        return WebTableCellContextLimiter.of(webTablePath, columnName, filterBuilder, expectedSize);
+        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, expectedSize);
     }
 
 }

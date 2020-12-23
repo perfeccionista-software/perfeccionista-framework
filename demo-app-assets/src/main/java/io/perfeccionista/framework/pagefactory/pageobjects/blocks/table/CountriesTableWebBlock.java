@@ -12,8 +12,8 @@ import static io.perfeccionista.framework.pagefactory.elements.components.WebCom
 public interface CountriesTableWebBlock extends WebBlock {
 
     String CHECKBOX = "Checkbox";
-    String SHORT_NAME = "Short name";
-    String FULL_NAME = "Full name";
+    String SHORT_NAME = "Short country name";
+    String FULL_NAME = "Full country name";
     String POPULATION = "Population";
 
     @Name("Table of countries")

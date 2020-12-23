@@ -18,7 +18,7 @@ public class WebPageServiceTest {
         HomePage homePage = env.getService(WebPageService.class)
                 .getPageInstanceByClass(HomePage.class);
 
-        homePage.vvv();
+//        homePage.vvv();
 //        homePage.getNames();
 
 

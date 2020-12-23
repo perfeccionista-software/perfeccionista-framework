@@ -20,7 +20,7 @@ import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocat
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
-public class GetIsDisplayedTest {
+class GetIsDisplayedTest {
 
     @Test
     void singleElementTest(Environment env, ValueService val) {
@@ -32,14 +32,14 @@ public class GetIsDisplayedTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         boolean visibleLinkIsDisplayed = runCheck(env, () -> {
             WebLocatorChain linkElementLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
             JsOperation<Boolean> getIsDisplayedOperation = JsOperation.of(linkElementLocatorChain, new GetIsDisplayed());
             return chrome.executor()
                     .executeOperation(getIsDisplayedOperation)
@@ -51,7 +51,7 @@ public class GetIsDisplayedTest {
         System.out.println(visibleLinkIsDisplayed);
         boolean invisibleLinkIsDisplayed = runCheck(env, () -> {
             WebLocatorChain textElementLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Simple Link clicked"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Simple Link clicked"));
             JsOperation<Boolean> getIsDisplayed2Operation = JsOperation.of(textElementLocatorChain, new GetIsDisplayed());
             return chrome.executor()
                     .executeOperation(getIsDisplayed2Operation)
