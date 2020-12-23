@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WebTextTableCellElementExtractor implements WebTextTableCellValueExtractor<WebLink> {
+public class WebTextTableCellElementExtractor implements WebTextTableValueExtractor<WebLink> {
 
     private TableSection section = TableSection.BODY;
 

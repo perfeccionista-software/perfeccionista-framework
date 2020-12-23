@@ -15,6 +15,7 @@ import io.perfeccionista.framework.service.ServiceConfiguration;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,16 +24,28 @@ import static org.mockito.Mockito.mock;
 class EnvironmentTest extends SimpleParallelTest {
 
     @Test
-    void initializationSuccessTest() {
+    void initializationWithTestClassSuccessTest() {
         EnvironmentConfiguration configuration = new TestEnvironmentConfiguration();
         Environment environment = new Environment(this.getClass(), configuration);
-        assertEquals(EnvironmentTest.class, environment.getTestClass());
+        Optional<Class<?>> optionalTestClass = environment.getTestClass();
+        assertNotNull(optionalTestClass);
+        assertTrue(optionalTestClass.isPresent());
+        assertEquals(EnvironmentTest.class, optionalTestClass.get());
+        assertEquals(configuration, environment.getEnvironmentConfiguration());
+    }
+
+    @Test
+    void initializationWithoutTestClassSuccessTest() {
+        EnvironmentConfiguration configuration = new TestEnvironmentConfiguration();
+        Environment environment = new Environment(configuration);
+        Optional<Class<?>> optionalTestClass = environment.getTestClass();
+        assertNotNull(optionalTestClass);
+        assertFalse(optionalTestClass.isPresent());
         assertEquals(configuration, environment.getEnvironmentConfiguration());
     }
 
     @Test
     void initializationFailedTest() {
-        assertThrows(IllegalArgumentException.class, () -> new Environment(null, new TestEnvironmentConfiguration()));
         assertThrows(IllegalArgumentException.class, () -> new Environment(this.getClass(), null));
     }
 

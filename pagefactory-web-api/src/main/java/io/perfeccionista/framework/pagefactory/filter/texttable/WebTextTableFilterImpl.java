@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.texttable;
 
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableCellValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
 import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
@@ -52,7 +52,7 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
     }
 
     @Override
-    public @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractRow(@NotNull WebTextTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebSingleIndexedResult<T, WebTextTable> extractRow(@NotNull WebTextTableValueExtractor<T> extractor) {
         return WebTextTableMultipleIndexedResult.of(element, filterBuilder, extractor)
                 .singleResult();
     }
@@ -62,7 +62,7 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
     }
 
     @Override
-    public @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractRows(@NotNull WebTextTableCellValueExtractor<T> extractor) {
+    public @NotNull <T> WebMultipleIndexedResult<T, WebTextTable> extractRows(@NotNull WebTextTableValueExtractor<T> extractor) {
         return WebTextTableMultipleIndexedResult.of(element, filterBuilder, extractor);
     }
 
@@ -138,7 +138,7 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
                 indexes = overallIndexes;
             }
             if (WebConditionGrouping.OR == childConditionHolder.getUsage()) {
-                indexes.addAll(conditionResult.getIndexes());
+                indexes.addAll(childConditionResult.getIndexes());
             }
         }
         return WebFilterResult.of(indexes, calculatedHash);

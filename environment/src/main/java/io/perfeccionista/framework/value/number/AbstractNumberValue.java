@@ -1,36 +1,37 @@
 package io.perfeccionista.framework.value.number;
 
 import io.perfeccionista.framework.value.checker.NumberChecker;
+import io.perfeccionista.framework.value.transformer.number.ActualNumberValueTransformer;
+import io.perfeccionista.framework.value.transformer.number.ExpectedNumberValueTransformer;
+import io.perfeccionista.framework.value.transformer.number.NumberValueTransformer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Set;
 import java.util.function.UnaryOperator;
 
 public abstract class AbstractNumberValue<T extends Number> implements NumberValue<T> {
 
     protected final NumberChecker<T> numberChecker;
-    protected final Deque<UnaryOperator<T>> actualValueTransformers = new ArrayDeque<>();
 
-    protected T rawActual;
-    protected T processedActual;
-
-    public AbstractNumberValue(NumberChecker<T> numberChecker) {
+    public AbstractNumberValue(@NotNull NumberChecker<T> numberChecker) {
         this.numberChecker = numberChecker;
     }
 
     @Override
-    public AbstractNumberValue<T> transformExpected(UnaryOperator<T> transformFunction) {
-        numberChecker.setTransformers(Set.of(transformFunction));
+    public AbstractNumberValue<T> transformExpected(@NotNull UnaryOperator<T> transformFunction) {
+        numberChecker.addTransformer((ExpectedNumberValueTransformer<T>) transformFunction::apply);
         return this;
     }
 
     @Override
-    public AbstractNumberValue<T> transformActual(UnaryOperator<T> transformFunction) {
-        actualValueTransformers.clear();
-        actualValueTransformers.addLast(transformFunction);
+    public AbstractNumberValue<T> transformActual(@NotNull UnaryOperator<T> transformFunction) {
+        numberChecker.addTransformer((ActualNumberValueTransformer<T>) transformFunction::apply);
+        return this;
+    }
+
+    @Override
+    public NumberValue<T> addTransformer(@NotNull NumberValueTransformer<T> transformer) {
+        numberChecker.addTransformer(transformer);
         return this;
     }
 
@@ -47,25 +48,16 @@ public abstract class AbstractNumberValue<T extends Number> implements NumberVal
 
     @Override
     public boolean check(@Nullable T actual) {
-        rawActual = actual;
         if (actual == null) {
             return false;
         }
-        processedActual = actual;
-        for (UnaryOperator<T> transformer : actualValueTransformers) {
-            processedActual = transformer.apply(processedActual);
-        }
-        return numberChecker.check(processedActual);
+        numberChecker.setActual(actual);
+        return numberChecker.check();
     }
 
     @Override
     public String toString() {
-        return String.format("Number value: {checker = %s; rawExpected = '%s'; rawActual = '%s'}\n"
-                        + "    processedExpected = '%s'\n"
-                        + "      processedActual = '%s'",
-                numberChecker.getClass().getCanonicalName(), numberChecker.getExpected(), rawActual,
-                numberChecker.getProcessedExpected(),
-                processedActual);
+        return numberChecker.getComparisonDescription();
     }
 
 }

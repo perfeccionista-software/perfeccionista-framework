@@ -13,6 +13,13 @@ public class DefaultTimeouts implements Timeouts {
 
     private final Map<Class<? extends TimeoutsType>, Duration> timeouts = new HashMap<>();
 
+    public DefaultTimeouts() {
+        timeouts.put(CheckTimeout.class, Duration.ofSeconds(7L));
+        timeouts.put(CheckDelayTimeout.class, Duration.ofMillis(10L));
+        timeouts.put(LogicTimeout.class, Duration.ofSeconds(30L));
+        timeouts.put(LogicDelayTimeout.class, Duration.ofMillis(10L));
+    }
+
     @Override
     public @NotNull Duration getTimeout(@NotNull Class<? extends TimeoutsType> timeoutType) {
         if (timeouts.containsKey(timeoutType)) {
@@ -22,7 +29,7 @@ public class DefaultTimeouts implements Timeouts {
     }
 
     @Override
-    public DefaultTimeouts setTimeout(@NotNull Class<? extends TimeoutsType> timeoutType, @NotNull Duration duration) {
+    public @NotNull DefaultTimeouts setTimeout(@NotNull Class<? extends TimeoutsType> timeoutType, @NotNull Duration duration) {
         timeouts.put(timeoutType, duration);
         return this;
     }

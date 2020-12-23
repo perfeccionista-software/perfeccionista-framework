@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LABEL_DOES_NOT_CONTAIN_EXPECTED_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_TEXT_CONTAINS_EXPECTED_VALUE;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LABEL_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_TEXT_LABEL_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_HAVE_TEXT_LABEL_METHOD;
 
@@ -28,13 +28,12 @@ public class GetLabelNumberValueMatcher implements GetLabelAvailableMatcher {
     @Override
     public void check(@NotNull GetLabelAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue)
-                : InvocationName.of(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue);
+                ? assertInvocation(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue)
+                : assertInvocation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    String actualLabel = element.getActionImplementation(GET_LABEL_METHOD, String.class)
-                            .execute(element);
+                    String actualLabel = element.getLabel();
                     if (positive) {
                         shouldHaveLabel(element, actualLabel);
                     } else {

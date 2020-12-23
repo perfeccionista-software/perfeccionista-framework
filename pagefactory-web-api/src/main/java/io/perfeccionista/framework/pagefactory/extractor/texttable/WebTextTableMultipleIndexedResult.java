@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.extractor.texttable;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
@@ -11,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_EXTRACTED_VALUES_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SIZE_ELEMENTS_METHOD;
@@ -20,11 +20,11 @@ public class WebTextTableMultipleIndexedResult<T> implements WebMultipleIndexedR
 
     private final WebTextTable element;
     private final WebTextTableFilterBuilder filterBuilder;
-    private final WebTextTableCellValueExtractor<T> extractor;
+    private final WebTextTableValueExtractor<T> extractor;
 
     private WebTextTableMultipleIndexedResult(WebTextTable element,
                                               WebTextTableFilterBuilder filterBuilder,
-                                              WebTextTableCellValueExtractor<T> extractor) {
+                                              WebTextTableValueExtractor<T> extractor) {
         this.element = element;
         this.filterBuilder = filterBuilder;
         this.extractor = extractor;
@@ -32,12 +32,12 @@ public class WebTextTableMultipleIndexedResult<T> implements WebMultipleIndexedR
 
     public static <T> WebTextTableMultipleIndexedResult<T> of(@NotNull WebTextTable element,
                                                               @NotNull WebTextTableFilterBuilder filterBuilder,
-                                                              @NotNull WebTextTableCellValueExtractor<T> extractor) {
+                                                              @NotNull WebTextTableValueExtractor<T> extractor) {
         return new WebTextTableMultipleIndexedResult<>(element, filterBuilder, extractor);
     }
 
     public static <T> WebTextTableMultipleIndexedResult<T> of(@NotNull WebTextTable element,
-                                                              @NotNull WebTextTableCellValueExtractor<T> extractor) {
+                                                              @NotNull WebTextTableValueExtractor<T> extractor) {
         return new WebTextTableMultipleIndexedResult<>(element, emptyWebTextTableFilter(), extractor);
     }
 
@@ -48,14 +48,14 @@ public class WebTextTableMultipleIndexedResult<T> implements WebMultipleIndexedR
 
     @Override
     public Map<Integer, T> getValues() {
-        return runCheck(element.getEnvironment(), InvocationName.of(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
+        return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
                 () -> extractor.extractValues(filterBuilder.build(element)));
     }
 
     @Override
     public int getSize() {
         WebTextTableFilter webTextTableFilter = filterBuilder.build(element);
-        return runCheck(element.getEnvironment(), InvocationName.of(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
+        return runCheck(element.getEnvironment(), getterInvocation(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
                 () -> webTextTableFilter.getFilterResult().getIndexes().size());
     }
 

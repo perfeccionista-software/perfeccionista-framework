@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_DISABLED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_ENABLED;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ENABLED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_BE_DISABLED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_BE_ENABLED_METHOD;
 
@@ -25,13 +25,12 @@ public class IsEnabledMatcher implements IsEnabledAvailableMatcher {
     @Override
     public void check(@NotNull IsEnabledAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_BE_ENABLED_METHOD, element)
-                : InvocationName.of(SHOULD_BE_DISABLED_METHOD, element);
+                ? assertInvocation(SHOULD_BE_ENABLED_METHOD, element)
+                : assertInvocation(SHOULD_BE_DISABLED_METHOD, element);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    boolean enabled = element.getActionImplementation(IS_ENABLED_METHOD, Boolean.class)
-                            .execute(element);
+                    boolean enabled = element.isEnabled();
                     if (positive) {
                         shouldBeEnabled(element, enabled);
                     } else {

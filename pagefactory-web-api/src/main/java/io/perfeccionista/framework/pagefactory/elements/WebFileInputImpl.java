@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
@@ -20,6 +19,8 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLEAR_METHOD;
@@ -33,7 +34,7 @@ public class WebFileInputImpl extends AbstractWebChildElement implements WebFile
 
     @Override
     public WebFileInput setFileName(@NotNull String filePath) {
-        runCheck(getEnvironment(), InvocationName.of(SET_FILENAME_METHOD, this, filePath),
+        runCheck(getEnvironment(), actionInvocation(SET_FILENAME_METHOD, this, filePath),
                 () -> getActionImplementation(SET_FILENAME_METHOD, Void.class).execute(this, filePath));
         return this;
     }
@@ -148,7 +149,7 @@ public class WebFileInputImpl extends AbstractWebChildElement implements WebFile
 
     @Override
     public WebFileInput clear() {
-        runCheck(getEnvironment(), InvocationName.of(CLEAR_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(CLEAR_METHOD, this),
                 () -> getActionImplementation(CLEAR_METHOD, Void.class).execute(this));
         return this;
     }
@@ -157,7 +158,7 @@ public class WebFileInputImpl extends AbstractWebChildElement implements WebFile
 
     @Override
     public WebFileInput click() {
-        runCheck(getEnvironment(), InvocationName.of(CLICK_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
                 () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
         return this;
     }
@@ -166,7 +167,7 @@ public class WebFileInputImpl extends AbstractWebChildElement implements WebFile
 
     @Override
     public @Nullable String getLabel() {
-        return runCheck(getEnvironment(), InvocationName.of(GET_LABEL_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(GET_LABEL_METHOD, this),
                 () -> getActionImplementation(GET_LABEL_METHOD, String.class).execute(this));
     }
 
@@ -174,7 +175,7 @@ public class WebFileInputImpl extends AbstractWebChildElement implements WebFile
 
     @Override
     public @Nullable String getText() {
-        return runCheck(getEnvironment(), InvocationName.of(GET_TEXT_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(GET_TEXT_METHOD, this),
                 () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
@@ -190,7 +191,7 @@ public class WebFileInputImpl extends AbstractWebChildElement implements WebFile
 
     @Override
     public boolean isEnabled() {
-        return runCheck(getEnvironment(), InvocationName.of(IS_ENABLED_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(IS_ENABLED_METHOD, this),
                 () -> getActionImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this));
     }
 

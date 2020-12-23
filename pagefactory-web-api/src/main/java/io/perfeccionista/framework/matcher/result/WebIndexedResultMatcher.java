@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_DOES_NOT_CONTAIN_EXPECTED_RESULT;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_EXPECTED_RESULT_METHOD;
 
@@ -23,7 +24,7 @@ public class WebIndexedResultMatcher<T> implements WebMultipleIndexedResultMatch
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<T, ? extends WebChildElement> result) {
-        InvocationName invocationName = InvocationName.of(SHOULD_HAVE_EXPECTED_RESULT_METHOD, this);
+        InvocationName invocationName = assertInvocation(SHOULD_HAVE_EXPECTED_RESULT_METHOD, this);
 
         WebChildElement element = result.getElement();
 

@@ -10,8 +10,9 @@ public enum UtilsMessages implements Messages {
     FIELD_READING_ERROR("Can't read field with name %s"),
     FIELD_WRITING_ERROR("Can't write field with name %s"),
     FILE_EXISTS("File '%s' exists"),
-    FILE_NOT_EXISTS("File '%s' not exists"),
+    FILE_NOT_EXIST("File '%s' is not exist"),
     METHOD_NOT_FOUND("Method with name %s is not declared for element"),
+    REQUIRED_ARGUMENT_NOT_FOUND("Required argument is not found"),
     JSON_OBJECT_PARSE_ERROR("Json object parse error"),
     JSON_STRING_PARSE_ERROR("Json string parse error"),
     ;

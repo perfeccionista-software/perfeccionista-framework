@@ -7,6 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_OPEN;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_BE_OPEN_METHOD;
 
@@ -14,7 +15,7 @@ public class IsClosedMatcher implements IsOpenAvailableMatcher {
 
     @Override
     public void check(@NotNull IsOpenAvailable element) {
-        InvocationName invocationName = InvocationName.of(SHOULD_BE_OPEN_METHOD, element);
+        InvocationName invocationName = assertInvocation(SHOULD_BE_OPEN_METHOD, element);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {

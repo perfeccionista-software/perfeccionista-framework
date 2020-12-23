@@ -86,8 +86,7 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
 
     @Override
     public WebTable should(@NotNull WebIndexesMatcher matcher) {
-        WebTableMultipleIndexedResult<Integer> indexesResult = WebTableMultipleIndexedResult.of(this, rowIndex());
-        matcher.check(indexesResult);
+        matcher.check(WebTableMultipleIndexedResult.of(this, rowIndex()));
         return this;
     }
 

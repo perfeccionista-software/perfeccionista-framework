@@ -57,7 +57,7 @@ public class WebListBlockElementPropertyStringValueCondition implements WebListB
         return this;
     }
 
-    public WebListBlockElementPropertyStringValueCondition notContainsProperty() {
+    public WebListBlockElementPropertyStringValueCondition notContainProperty() {
         return this.inverse();
     }
 

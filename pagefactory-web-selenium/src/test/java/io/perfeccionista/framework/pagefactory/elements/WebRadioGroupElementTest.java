@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
@@ -22,7 +23,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("WebRadioGroup")
+@Tag("WebElement") @Tag("WebRadioGroup")
 class WebRadioGroupElementTest extends AbstractUiTest {
 
     @Test
@@ -82,7 +82,7 @@ class WebRadioGroupElementTest extends AbstractUiTest {
         assertNotNull(radioGroup.getWebBrowserDispatcher());
         assertNotNull(radioGroup.getOptionalLocator(ROOT));
         // WebChildElement
-        assertNotNull(radioGroup.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(radioGroup.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(radioGroup.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(radioGroup.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(radioGroup.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -101,7 +101,7 @@ class WebRadioGroupElementTest extends AbstractUiTest {
         assertEquals("radioGroup", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("Radio group"));
         assertFalse(elementIdentifier.isNameDeprecated("Radio group"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebRadioGroup radioGroupElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("Radio group", WebRadioGroup.class);
         assertNotNull(radioGroupElement);
@@ -125,7 +125,7 @@ class WebRadioGroupElementTest extends AbstractUiTest {
                 .hoverTo(true)
                 .should(haveDimensions(Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(330d, 713.4d).setInaccuracy(0.2d)))
-                .should(haveColor("border-color", WebColor.of(33, 37, 41, 1.0d)))
+                .should(haveColor("border-color", Color.of(33, 37, 41, 1.0d)))
                 .should(haveSize(3))
                 .should(haveSize(value.intEquals(3)))
                 .should(notHaveSize(2))
@@ -135,7 +135,7 @@ class WebRadioGroupElementTest extends AbstractUiTest {
         assertFalse(radioGroup.isInFocus());
         assertEquals(Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT));
         assertEquals(Location.absolute(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getLocation(ROOT));
-        assertEquals(WebColor.of(33, 37, 41, 1.0d), radioGroup.getColor(ROOT, "border-color"));
+        assertEquals(Color.of(33, 37, 41, 1.0d), radioGroup.getColor(ROOT, "border-color"));
         assertEquals(3, radioGroup.filter(emptyWebRadioButtonFilter()).extractAll(element()).getSize());
         assertEquals(Point.of(412.5d, 12d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT).getCenter());
     }
@@ -167,7 +167,7 @@ class WebRadioGroupElementTest extends AbstractUiTest {
                 () -> radioGroup.should(haveLocation(ROOT, elementLocation.offset(15d, 1d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> radioGroup.should(notHaveLocation(ROOT, elementLocation)));
-        WebColor elementColor = WebColor.of(33, 37, 41, 1.0d);
+        Color elementColor = Color.of(33, 37, 41, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> radioGroup.should(notHaveColor(ROOT, "border-color", elementColor)));
         assertThrows(WebElementPropertyNotFoundException.class,

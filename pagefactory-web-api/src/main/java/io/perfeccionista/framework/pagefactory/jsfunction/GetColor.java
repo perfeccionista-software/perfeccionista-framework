@@ -3,7 +3,6 @@ package io.perfeccionista.framework.pagefactory.jsfunction;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.color.Color;
-import io.perfeccionista.framework.color.WebColor;
 
 import java.util.function.Function;
 
@@ -22,7 +21,7 @@ public class GetColor implements JsFunction<Color> {
     public Function<Object, Color> getConverter() {
         return object -> {
             JsonNode colorNode = parseJsonNode(object.toString());
-            return WebColor.of(
+            return Color.of(
                     colorNode.get("r").asInt(),
                     colorNode.get("g").asInt(),
                     colorNode.get("b").asInt(),

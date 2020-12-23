@@ -15,7 +15,7 @@ public class PlaceholderAttributeExtractor implements WebElementPropertyExtracto
     @Override
     public JsOperation<String> getJsOperation(@NotNull WebChildElementBase element, Optional<WebLocatorHolder> locatorHolder) {
         WebLocatorChain locatorChain = element.getLocatorChain();
-        locatorHolder.ifPresent(locatorChain::addFirstLocator);
+        locatorHolder.ifPresent(locatorChain::addLastLocator);
         return JsOperation.of(locatorChain, new GetAttribute("placeholder"));
     }
 

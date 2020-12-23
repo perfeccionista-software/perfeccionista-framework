@@ -33,7 +33,7 @@ public class GetWebElementTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             JsOperation<WebElement> getLinkWebElementOperation = JsOperation.of(linkLocatorChain, new GetWebElement());
             chrome.executor()
                     .executeOperation(getLinkWebElementOperation)
@@ -45,8 +45,8 @@ public class GetWebElementTest {
         });
         String text = runCheck(env, () -> {
             WebLocatorChain listElementLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
-                    .addFirstLocator(WebLocatorHolder.of("LI", TEXT, "Ливан")
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
+                    .addLastLocator(WebLocatorHolder.of("LI", TEXT, "Ливан")
                             .addInvokedOnCallFunction(new ScrollTo()));
             JsOperation<WebElement> getListWebElementOperation = JsOperation.of(listElementLocatorChain, new GetWebElement());
             return chrome.executor()

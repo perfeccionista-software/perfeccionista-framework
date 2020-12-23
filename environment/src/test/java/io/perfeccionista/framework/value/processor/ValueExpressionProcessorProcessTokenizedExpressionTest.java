@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironmentConfiguration(TestValueEnvironmentConfiguration.class)
-public class ValueExpressionProcessorProcessTokenizedExpressionTest extends SimpleParallelTest {
+class ValueExpressionProcessorProcessTokenizedExpressionTest extends SimpleParallelTest {
 
     @Test
     void processSimpleStringExpression(Environment environment) {

@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
@@ -23,6 +22,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
 import org.jetbrains.annotations.NotNull;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLEAR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SEND_KEYS_EVENTS_METHOD;
@@ -158,7 +158,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
 
     @Override
     public WebAutocomplete clear() {
-        runCheck(getEnvironment(), InvocationName.of(CLEAR_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(CLEAR_METHOD, this),
                 () -> getActionImplementation(CLEAR_METHOD, Void.class).execute(this));
         return this;
     }
@@ -207,14 +207,14 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
 
     @Override
     public WebAutocomplete sendKeys(@NotNull String keys) {
-        runCheck(getEnvironment(), InvocationName.of(SEND_KEYS_METHOD, this, keys),
+        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_METHOD, this, keys),
                 () -> getActionImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys));
         return this;
     }
 
     @Override
     public WebAutocomplete sendKeys(@NotNull KeysEventChain keyEvents) {
-        runCheck(getEnvironment(), InvocationName.of(SEND_KEYS_EVENTS_METHOD, this, keyEvents),
+        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_EVENTS_METHOD, this, keyEvents),
                 () -> getActionImplementation(SEND_KEYS_EVENTS_METHOD, Void.class).execute(this, keyEvents));
         return this;
     }

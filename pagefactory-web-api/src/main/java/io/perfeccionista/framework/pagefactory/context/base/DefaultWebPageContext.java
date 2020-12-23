@@ -78,6 +78,7 @@ public class DefaultWebPageContext implements WebPageContext {
         pageInstance.setWebBrowserDispatcher(dispatcher);
         pageInstance.setEnvironment(environment);
         activeWebPage = pageInstance;
+        pageInstance.validatePageOpen();
         return pageInstance;
     }
 
@@ -87,12 +88,14 @@ public class DefaultWebPageContext implements WebPageContext {
         pageInstance.setWebBrowserDispatcher(dispatcher);
         pageInstance.setEnvironment(environment);
         activeWebPage = pageInstance;
+        pageInstance.validatePageOpen();
         return pageInstance;
     }
 
     @Override
     public @NotNull WebPage getActivePage() {
         if (Objects.nonNull(activeWebPage)) {
+            activeWebPage.validatePageOpen();
             return activeWebPage;
         }
         throw WebPageNotInitialized.exception(PAGE_NOT_INITIALIZED.getMessage());

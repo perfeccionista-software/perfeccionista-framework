@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementInFocus.WebElementInFocusAssertionError;
@@ -26,7 +27,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -79,7 +79,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("Checkbox")
+@Tag("WebElement") @Tag("WebCheckbox")
 class WebCheckboxElementTest extends AbstractUiTest {
 
     @Test
@@ -99,7 +99,7 @@ class WebCheckboxElementTest extends AbstractUiTest {
         assertNotNull(checkboxOne.getActionImplementation(IS_SELECTED_METHOD, Boolean.class));
         assertNotNull(checkboxOne.getActionImplementation(IS_ENABLED_METHOD, Boolean.class));
         // WebChildElement
-        assertNotNull(checkboxOne.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(checkboxOne.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(checkboxOne.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(checkboxOne.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(checkboxOne.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -118,7 +118,7 @@ class WebCheckboxElementTest extends AbstractUiTest {
         assertEquals("checkboxOne", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("Checkbox one"));
         assertFalse(elementIdentifier.isNameDeprecated("Checkbox one"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebCheckbox firstCheckboxElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("Checkbox one", WebCheckbox.class);
         assertNotNull(firstCheckboxElement);
@@ -147,7 +147,7 @@ class WebCheckboxElementTest extends AbstractUiTest {
                 .scrollTo()
                 .should(haveDimensions(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(345.0d, 673.4d).setInaccuracy(0.2d)))
-                .should(haveColor(LABEL, "color", WebColor.of(33, 37, 41, 1.0d)))
+                .should(haveColor(LABEL, "color", Color.of(33, 37, 41, 1.0d)))
                 .hoverTo(true) // 280 ms
                 .should(haveLabel("Label 1"))
                 .should(notHaveLabel(value.stringContains("Label 2")))
@@ -171,7 +171,7 @@ class WebCheckboxElementTest extends AbstractUiTest {
         assertFalse(checkboxOne.isInFocus());
         assertEquals(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d), checkboxOne.getDimensions(ROOT));
         assertEquals(Location.absolute(345.0d, 673.4d).setInaccuracy(0.2d), checkboxOne.getLocation(ROOT));
-        assertEquals(WebColor.of(33, 37, 41, 1.0d), checkboxOne.getColor(LABEL, "color"));
+        assertEquals(Color.of(33, 37, 41, 1.0d), checkboxOne.getColor(LABEL, "color"));
         Screenshot screenshot = checkboxOne.getScreenshot(ROOT); // 400 ms
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(3500).check(screenshot.getRaw().length));
@@ -219,7 +219,7 @@ class WebCheckboxElementTest extends AbstractUiTest {
                 () -> checkboxOne.should(haveLocation(elementLocation.offset(12d, 10d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> checkboxOne.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(33, 37, 41, 1.0d);
+        Color elementColor = Color.of(33, 37, 41, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> checkboxOne.should(notHaveColor(LABEL, "color", elementColor)));
         assertThrows(WebElementLabelValueAssertionError.class,

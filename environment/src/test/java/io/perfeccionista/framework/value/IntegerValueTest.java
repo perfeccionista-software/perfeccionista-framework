@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(PerfeccionistaExtension.class)
-public class IntegerValueTest extends SimpleParallelTest {
+class IntegerValueTest extends SimpleParallelTest {
 
     @Test
     void integerValuePositiveTest(ValueService value) {

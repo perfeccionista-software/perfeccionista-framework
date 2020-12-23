@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
@@ -24,7 +25,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.utils.FileUtils;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
@@ -81,7 +81,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("FileInput")
+@Tag("WebElement") @Tag("WebFileInput")
 class WebFileInputElementTest extends AbstractUiTest {
 
     @Test
@@ -103,7 +103,7 @@ class WebFileInputElementTest extends AbstractUiTest {
         assertNotNull(fileInput.getActionImplementation(GET_TEXT_METHOD, String.class));
         assertNotNull(fileInput.getActionImplementation(GET_LABEL_METHOD, String.class));
         // WebChildElement
-        assertNotNull(fileInput.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(fileInput.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(fileInput.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(fileInput.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(fileInput.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -122,7 +122,7 @@ class WebFileInputElementTest extends AbstractUiTest {
         assertEquals("fileInput", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("File input"));
         assertFalse(elementIdentifier.isNameDeprecated("File input"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebFileInput fileInputElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("File input", WebFileInput.class);
         assertNotNull(fileInputElement);
@@ -158,7 +158,7 @@ class WebFileInputElementTest extends AbstractUiTest {
                 .scrollTo()
                 .should(haveDimensions(Dimensions.of(382.5d, 38.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(345.0d, 753.4d).setInaccuracy(0.2d)))
-                .should(haveColor(LABEL, "border-color", WebColor.of(220, 53, 69, 1.0d)))
+                .should(haveColor(LABEL, "border-color", Color.of(220, 53, 69, 1.0d)))
                 .hoverTo(true)
                 .should(haveText(value.stringEmpty()))
                 .should(notHaveText(value.stringContains("input")))
@@ -166,13 +166,13 @@ class WebFileInputElementTest extends AbstractUiTest {
                 .should(notHaveLabel("Choose a word"))
                 // Метод loadFile(Path filePath)
                 .setFileName(this.getClass().getClassLoader().getResource("test.data.properties").getPath())
-                .should(haveColor(LABEL, "border-color", WebColor.of(40, 167, 69, 1.0d)))
+                .should(haveColor(LABEL, "border-color", Color.of(40, 167, 69, 1.0d)))
                 .should(haveText(value.stringContains("test.data.properties")));
         fileInputText
                 .should(haveText("test.data.properties"));
         fileInput.clear()
                 .should(haveText(value.stringEmpty()))
-                .should(haveColor(LABEL, "border-color", WebColor.of(220, 53, 69, 1.0d)));
+                .should(haveColor(LABEL, "border-color", Color.of(220, 53, 69, 1.0d)));
         fileInputText
                 .should(haveText(value.stringEmpty()));
         fileInput
@@ -184,7 +184,7 @@ class WebFileInputElementTest extends AbstractUiTest {
         assertTrue(fileInput.isEnabled());
         assertEquals(Dimensions.of(382.5d, 38.0d).setInaccuracy(0.2d), fileInput.getDimensions(ROOT));
         assertEquals(Location.absolute(345.0d, 753.4d).setInaccuracy(0.2d), fileInput.getLocation(ROOT));
-        assertEquals(WebColor.of(220, 53, 69, 1.0d), fileInput.getColor(LABEL, "border-color"));
+        assertEquals(Color.of(220, 53, 69, 1.0d), fileInput.getColor(LABEL, "border-color"));
         Screenshot screenshot = fileInput.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(4500).check(screenshot.getRaw().length));
@@ -218,7 +218,7 @@ class WebFileInputElementTest extends AbstractUiTest {
         Location elementLocation = Location.relative(345.0d, 753.4d).setInaccuracy(0.2d);
         assertThrows(WebElementLocationAssertionError.class,
                 () -> fileInput.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(220, 53, 69, 1.0d);
+        Color elementColor = Color.of(220, 53, 69, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> fileInput.should(notHaveColor(LABEL, "border-color", elementColor)));
         assertThrows(WebElementTextValueAssertionError.class,
@@ -241,13 +241,13 @@ class WebFileInputElementTest extends AbstractUiTest {
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         String separator = System.getProperty("file.separator");
         String downloadFile = System.getProperty("user.home") + separator + "Downloads" + separator + "LICENSE.txt";
-        FileUtils.deleteIgnoreExceptions(Path.of(downloadFile));
+        FileUtils.deleteFileIgnoreExceptions(Path.of(downloadFile));
         elementsPage.fileDownloadLink()
                 .should(beDisplayed())
                 .click()
                 .should((WebLinkMatcher) element -> {
-                    runCheck(element.getEnvironment(), InvocationName.of(SHOULD_FILE_EXIST_METHOD, element),
-                            () -> FileUtils.shouldExist(Path.of(downloadFile)));
+                    runCheck(element.getEnvironment(), InvocationName.assertInvocation(SHOULD_FILE_EXIST_METHOD, element),
+                            () -> FileUtils.fileShouldExist(Path.of(downloadFile)));
                 });
     }
 

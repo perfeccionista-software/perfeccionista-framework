@@ -50,7 +50,7 @@ class WebListBlockContextLimiterTest extends AbstractUiTest {
                     contextBlock.shortName()
                             .scrollTo()
                             .should(haveText(stringStartsWith("М")));
-                }, selectWebListBlocks("List of countries", with(containsText("Short name", stringStartsWith("М"))), 17));
+                }, selectWebListBlocks("List of countries", with(containsText("Country name", stringStartsWith("М"))), 17));
     }
 
     @Test
@@ -79,7 +79,7 @@ class WebListBlockContextLimiterTest extends AbstractUiTest {
                             .scrollTo()
                             .should(haveText(stringStartsWith("М")));
                 }, selectWebListBlock("List of continents", with(containsText("Continent name", "Eurasia"))),
-                selectWebListBlocks("List of countries", with(containsText("Short name", stringStartsWith("М"))), 7));
+                selectWebListBlocks("List of countries", with(containsText("Country name", stringStartsWith("М"))), 7));
     }
 
 }

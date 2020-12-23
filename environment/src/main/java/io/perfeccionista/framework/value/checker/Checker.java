@@ -1,22 +1,28 @@
 package io.perfeccionista.framework.value.checker;
 
+import io.perfeccionista.framework.value.transformer.ValueTransformer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.function.UnaryOperator;
-
 public interface Checker<T> {
+
+    boolean check();
 
     T getExpected();
 
     T getProcessedExpected();
 
-    boolean check(@NotNull T actual);
+    @NotNull T getActual();
 
-    boolean isProcessExpectedStatement();
+    @NotNull T getProcessedActual();
+
+    void setActual(@NotNull T actual);
+
+    void addTransformer(@NotNull ValueTransformer<T> transformer);
 
     void setProcessExpectedStatement(boolean processExpectedStatement);
 
-    void setTransformers(Collection<UnaryOperator<T>> transformers);
+    boolean isProcessExpectedStatement();
+
+    @NotNull String getComparisonDescription();
 
 }

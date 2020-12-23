@@ -43,7 +43,7 @@ public class WebTextTableRowTextCondition implements WebTextTableRowCondition {
         return this;
     }
 
-    public WebTextTableRowTextCondition notContainsTextCell() {
+    public WebTextTableRowTextCondition notContainTextCell() {
         return this.inverse();
     }
 

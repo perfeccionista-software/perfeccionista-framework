@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_SELECTED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_SELECTED;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_BE_SELECTED_METHOD;
 
@@ -25,13 +25,12 @@ public class IsSelectedMatcher implements IsSelectedAvailableMatcher {
     @Override
     public void check(@NotNull IsSelectedAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_BE_SELECTED_METHOD, element)
-                : InvocationName.of(SHOULD_NOT_BE_SELECTED_METHOD, element);
+                ? assertInvocation(SHOULD_BE_SELECTED_METHOD, element)
+                : assertInvocation(SHOULD_NOT_BE_SELECTED_METHOD, element);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    boolean selected = element.getActionImplementation(IS_SELECTED_METHOD, Boolean.class)
-                            .execute(element);
+                    boolean selected = element.isSelected();
                     if (positive) {
                         shouldBeSelected(element, selected);
                     } else {

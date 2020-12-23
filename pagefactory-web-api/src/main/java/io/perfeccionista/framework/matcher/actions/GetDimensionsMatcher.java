@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_DIMENSIONS_ARE_EQUAL_EXPECTED_DIMENSIONS;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_DIMENSIONS_ARE_NOT_EQUAL_EXPECTED_DIMENSIONS;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_DIMENSIONS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_DIMENSIONS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_HAVE_DIMENSIONS_METHOD;
 
@@ -30,13 +30,12 @@ public class GetDimensionsMatcher implements GetDimensionsAvailableMatcher {
     @Override
     public void check(@NotNull GetDimensionsAvailable element) {
         InvocationName invocationName = positive
-                ? InvocationName.of(SHOULD_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions)
-                : InvocationName.of(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions);
+                ? assertInvocation(SHOULD_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions)
+                : assertInvocation(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions);
 
         runCheck(element.getEnvironment(), invocationName,
                 () -> {
-                    Dimensions actualDimensions = element.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)
-                            .execute(element, componentName);
+                    Dimensions actualDimensions = element.getDimensions(componentName);
                     if (positive) {
                         shouldHaveDimensions(element, actualDimensions, expectedDimensions, componentName);
                     } else {

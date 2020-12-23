@@ -36,7 +36,7 @@ public class ScrollToTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
@@ -44,8 +44,8 @@ public class ScrollToTest {
         });
         runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
-                    .addFirstLocator(WebLocatorHolder.of("LI", TEXT, "Ливан"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
+                    .addLastLocator(WebLocatorHolder.of("LI", TEXT, "Ливан"));
             JsOperation<Void> scrollToOperation = JsOperation.of(scrollToLocatorChain, new ScrollTo()
                     // Чтобы было видно результат прокрутки
                     .setDelay(Duration.ofSeconds(2)));
@@ -64,15 +64,15 @@ public class ScrollToTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
-                    .addFirstLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
+                    .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
                             .setSingle(false));
             JsOperation<Void> scrollToOperation = JsOperation.of(scrollToLocatorChain, new ScrollTo()
                     .setDelay(Duration.ofMillis(50)));
@@ -91,15 +91,15 @@ public class ScrollToTest {
 
         runCheck(env, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
+                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
             chrome.executor()
                     .executeOperation(clickOperation);
         });
         runCheck(env, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
-                    .addFirstLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
-                    .addFirstLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
+                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
+                    .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
                             .setSingle(false).setIndexes(Set.of(4, 65, 78, 170)));
             JsOperation<Void> scrollToOperation = JsOperation.of(scrollToLocatorChain, new ScrollTo()
                     .setDelay(Duration.ofMillis(100)));

@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
@@ -22,7 +23,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TextTablePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ import static io.perfeccionista.framework.pagefactory.elements.actions.WebElemen
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextTableFilter;
-import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_NAME;
+import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_COUNTRY_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -65,7 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("WebTextTable")
+@Tag("WebElement") @Tag("WebTextTable")
 class WebTextTableElementTest extends AbstractUiTest {
 
     @Test
@@ -80,7 +80,7 @@ class WebTextTableElementTest extends AbstractUiTest {
         assertNotNull(textTable.getWebBrowserDispatcher());
         assertNotNull(textTable.getOptionalLocator(ROOT));
         // WebChildElement
-        assertNotNull(textTable.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(textTable.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(textTable.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(textTable.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(textTable.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -97,13 +97,13 @@ class WebTextTableElementTest extends AbstractUiTest {
         WebElementIdentifier elementIdentifier = textTable.getElementIdentifier();
         assertEquals("textTable", elementIdentifier.getElementMethod().getName());
         assertEquals("textTable", elementIdentifier.getLastUsedName());
-        assertTrue(elementIdentifier.containsName("Text table of countries"));
-        assertFalse(elementIdentifier.isNameDeprecated("Text table of countries"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertTrue(elementIdentifier.containsName("Simple table of countries"));
+        assertFalse(elementIdentifier.isNameDeprecated("Simple table of countries"));
+        assertEquals(2, elementIdentifier.names().size());
         WebTextTable textTableElement = textTablePage.getElementRegistry()
-                .getRequiredElementByPath("Text table of countries", WebTextTable.class);
+                .getRequiredElementByPath("Simple table of countries", WebTextTable.class);
         assertNotNull(textTableElement);
-        assertEquals("Text table of countries", elementIdentifier.getLastUsedName());
+        assertEquals("Simple table of countries", elementIdentifier.getLastUsedName());
         assertNotNull(textTable.toString());
         // Смотрим описание элемента
         System.out.println( textTable.toString() );
@@ -123,15 +123,15 @@ class WebTextTableElementTest extends AbstractUiTest {
                 .hoverTo(true)
                 .should(haveDimensions(Dimensions.of(795.0d, 10014.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(345d, -4568d).setInaccuracy(0.2d)))
-                .should(haveColor("border-color", WebColor.of(222, 226, 230, 1.0d)))
+                .should(haveColor("border-color", Color.of(222, 226, 230, 1.0d)))
                 .should(haveSize(195));
         assertTrue(textTable.isPresent());
         assertTrue(textTable.isDisplayed());
         assertFalse(textTable.isInFocus());
         assertEquals(Dimensions.of(795.0d, 10014.0d).setInaccuracy(0.2d), textTable.getDimensions(ROOT));
         assertEquals(Location.absolute(345d, 173d).setInaccuracy(0.2d), textTable.getLocation(ROOT));
-        assertEquals(WebColor.of(222, 226, 230, 1.0d), textTable.getColor(ROOT, "border-color"));
-        assertEquals(195, textTable.filter(emptyWebTextTableFilter()).extractRows(SHORT_NAME).getSize());
+        assertEquals(Color.of(222, 226, 230, 1.0d), textTable.getColor(ROOT, "border-color"));
+        assertEquals(195, textTable.filter(emptyWebTextTableFilter()).extractRows(SHORT_COUNTRY_NAME).getSize());
         assertEquals(Point.of(397.5d, 5007d).setInaccuracy(0.2d), textTable.getDimensions(ROOT).getCenter());
     }
 
@@ -162,7 +162,7 @@ class WebTextTableElementTest extends AbstractUiTest {
                 () -> textTable.should(haveLocation(elementLocation.offset(15d, 1d))));
         assertThrows(WebElementLocationAssertionError.class,
                 () -> textTable.should(notHaveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(222, 226, 230, 1.0d);
+        Color elementColor = Color.of(222, 226, 230, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> textTable.should(notHaveColor("border-color", elementColor)));
         assertThrows(WebElementPropertyNotFoundException.class,

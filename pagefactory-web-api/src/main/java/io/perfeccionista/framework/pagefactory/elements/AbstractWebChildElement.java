@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.exceptions.WebElementInteractionNotFound;
 import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
 import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
@@ -32,6 +31,8 @@ import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_INTERACTION_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.DISPLAYED;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.PRESENTED;
@@ -68,7 +69,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     }
 
     public WebChildElement executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
-        runCheck(getEnvironment(), InvocationName.of(EXECUTE_INTERACTION, this, name, other, args), () -> {
+        runCheck(getEnvironment(), actionInvocation(EXECUTE_INTERACTION, this, name, other, args), () -> {
             getInteractionImplementation(name)
                     .execute(this, other, args);
         });
@@ -153,7 +154,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public @NotNull Color getColor(@NotNull String componentName, @NotNull String cssProperty) {
-        return runCheck(getEnvironment(), InvocationName.of(GET_COLOR_METHOD, this, componentName, cssProperty),
+        return runCheck(getEnvironment(), getterInvocation(GET_COLOR_METHOD, this, componentName, cssProperty),
                 () -> getActionImplementation(GET_COLOR_METHOD, Color.class).execute(this, componentName, cssProperty));
     }
 
@@ -161,7 +162,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public @NotNull Dimensions getDimensions(@NotNull String componentName) {
-        return runCheck(getEnvironment(), InvocationName.of(GET_DIMENSIONS_METHOD, this, componentName),
+        return runCheck(getEnvironment(), getterInvocation(GET_DIMENSIONS_METHOD, this, componentName),
                 () -> getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class).execute(this, componentName));
     }
 
@@ -169,7 +170,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public @NotNull Location getLocation(@NotNull String componentName) {
-        return runCheck(getEnvironment(), InvocationName.of(GET_LOCATION_METHOD, this, componentName),
+        return runCheck(getEnvironment(), getterInvocation(GET_LOCATION_METHOD, this, componentName),
                 () -> getActionImplementation(GET_LOCATION_METHOD, Location.class).execute(this, componentName));
     }
 
@@ -177,7 +178,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public @NotNull Screenshot getScreenshot(@NotNull String componentName) {
-        return runCheck(getEnvironment(), InvocationName.of(GET_SCREENSHOT_METHOD, this, componentName),
+        return runCheck(getEnvironment(), getterInvocation(GET_SCREENSHOT_METHOD, this, componentName),
                 () -> getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class).execute(this, componentName));
     }
 
@@ -185,7 +186,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public WebChildElement hoverTo(boolean withOutOfBounds) {
-        runCheck(getEnvironment(), InvocationName.of(HOVER_TO_METHOD, this, withOutOfBounds),
+        runCheck(getEnvironment(), actionInvocation(HOVER_TO_METHOD, this, withOutOfBounds),
                 () -> getActionImplementation(HOVER_TO_METHOD, Void.class).execute(this, withOutOfBounds));
         return this;
     }
@@ -194,7 +195,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public boolean isDisplayed() {
-        return runCheck(getEnvironment(), InvocationName.of(IS_DISPLAYED_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(IS_DISPLAYED_METHOD, this),
                 () -> getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class).execute(this, DISPLAYED));
     }
 
@@ -202,7 +203,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public boolean isInFocus() {
-        return runCheck(getEnvironment(), InvocationName.of(IS_IN_FOCUS_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(IS_IN_FOCUS_METHOD, this),
                 () -> getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class).execute(this));
     }
 
@@ -210,7 +211,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public boolean isOnTheScreen() {
-        return runCheck(getEnvironment(), InvocationName.of(IS_ON_THE_SCREEN_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(IS_ON_THE_SCREEN_METHOD, this),
                 () -> getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class).execute(this));
     }
 
@@ -218,7 +219,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public boolean isPresent() {
-        return runCheck(getEnvironment(), InvocationName.of(IS_PRESENT_METHOD, this),
+        return runCheck(getEnvironment(), getterInvocation(IS_PRESENT_METHOD, this),
                 () -> getActionImplementation(IS_PRESENT_METHOD, Boolean.class).execute(this, PRESENTED));
     }
 
@@ -226,7 +227,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public WebChildElement scrollTo() {
-        runCheck(getEnvironment(), InvocationName.of(SCROLL_TO_METHOD, this),
+        runCheck(getEnvironment(), actionInvocation(SCROLL_TO_METHOD, this),
                 () -> getActionImplementation(SCROLL_TO_METHOD, Void.class).execute(this));
         return this;
     }
@@ -235,13 +236,13 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
 
     @Override
     public boolean isComponentPresent(@NotNull String componentName) {
-        return runCheck(getEnvironment(), InvocationName.of(IS_COMPONENT_PRESENT_METHOD, this, componentName),
+        return runCheck(getEnvironment(), getterInvocation(IS_COMPONENT_PRESENT_METHOD, this, componentName),
                 () -> getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class).execute(this, componentName));
     }
 
     @Override
     public boolean isComponentDisplayed(@NotNull String componentName) {
-        return runCheck(getEnvironment(), InvocationName.of(IS_COMPONENT_DISPLAYED_METHOD, this, componentName),
+        return runCheck(getEnvironment(), getterInvocation(IS_COMPONENT_DISPLAYED_METHOD, this, componentName),
                 () -> getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class).execute(this, componentName));
     }
 
@@ -256,7 +257,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     public @Nullable String getPropertyValue(@NotNull String propertyName) {
         WebElementPropertyHolder propertyHolder = getProperty(propertyName)
                 .orElseThrow(() -> WebElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName)));
-        return runCheck(getEnvironment(), InvocationName.of(GET_PROPERTY_VALUE_METHOD, this, propertyName),
+        return runCheck(getEnvironment(), getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyName),
                 () -> getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class).execute(this, propertyHolder));
     }
 

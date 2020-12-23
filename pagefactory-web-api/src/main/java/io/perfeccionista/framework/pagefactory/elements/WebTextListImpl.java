@@ -80,8 +80,7 @@ public class WebTextListImpl extends AbstractWebChildElement implements WebTextL
 
     @Override
     public WebTextList should(@NotNull WebIndexesMatcher matcher) {
-        WebTextListMultipleIndexedResult<Integer> indexesResult = WebTextListMultipleIndexedResult.of(this, textBlockIndex());
-        matcher.check(indexesResult);
+        matcher.check(WebTextListMultipleIndexedResult.of(this, textBlockIndex()));
         return this;
     }
 

@@ -60,7 +60,7 @@ public class WebTableCellElementTextStringValueCondition implements WebTableRowC
         return this;
     }
 
-    public WebTableCellElementTextStringValueCondition notContainsText() {
+    public WebTableCellElementTextStringValueCondition notContainText() {
         return this.inverse();
     }
 

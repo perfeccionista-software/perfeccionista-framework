@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementInFocus.WebElementInFocusAssertionError;
@@ -26,7 +27,6 @@ import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.color.WebColor;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -78,7 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-@Tag("Element") @Tag("WebTextInput")
+@Tag("WebElement") @Tag("WebTextInput")
 class WebTextInputElementTest extends AbstractUiTest {
 
     @Test
@@ -100,7 +100,7 @@ class WebTextInputElementTest extends AbstractUiTest {
         assertNotNull(simpleInput.getActionImplementation(GET_TEXT_METHOD, String.class));
         assertNotNull(simpleInput.getActionImplementation(GET_LABEL_METHOD, String.class));
         // WebChildElement
-        assertNotNull(simpleInput.getActionImplementation(GET_COLOR_METHOD, WebColor.class));
+        assertNotNull(simpleInput.getActionImplementation(GET_COLOR_METHOD, Color.class));
         assertNotNull(simpleInput.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
         assertNotNull(simpleInput.getActionImplementation(GET_LOCATION_METHOD, Location.class));
         assertNotNull(simpleInput.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
@@ -119,7 +119,7 @@ class WebTextInputElementTest extends AbstractUiTest {
         assertEquals("simpleInput", elementIdentifier.getLastUsedName());
         assertTrue(elementIdentifier.containsName("Simple input"));
         assertFalse(elementIdentifier.isNameDeprecated("Simple input"));
-        assertEquals(1, elementIdentifier.names().size());
+        assertEquals(2, elementIdentifier.names().size());
         WebTextInput simpleInputElement = elementsPage.getElementRegistry()
                 .getRequiredElementByPath("Simple input", WebTextInput.class);
         assertNotNull(simpleInputElement);
@@ -162,10 +162,10 @@ class WebTextInputElementTest extends AbstractUiTest {
                 .scrollTo()
                 .should(haveDimensions(Dimensions.of(382.5d, 38.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(551.3d, 517.4d).setInaccuracy(0.2d)))
-                .should(haveColor("border-color", WebColor.of(206, 212, 218, 1.0d)))
+                .should(haveColor("border-color", Color.of(206, 212, 218, 1.0d)))
                 .hoverTo(true)
                 .click()
-                .should(haveColor("border-color", WebColor.of(128, 189, 255, 1.0d)))
+                .should(haveColor("border-color", Color.of(128, 189, 255, 1.0d)))
                 .should(haveText(value.stringEmpty()))
                 .should(notHaveText(value.stringContains("input")))
                 .should(havePropertyValue("placeholder", "Enter text"))
@@ -194,7 +194,7 @@ class WebTextInputElementTest extends AbstractUiTest {
         assertFalse(simpleInput.isEnabled());
         assertEquals(Dimensions.of(382.5d, 38.0d).setInaccuracy(0.2d), simpleInput.getDimensions(ROOT));
         assertEquals(Location.absolute(551.3d, 517.4d).setInaccuracy(0.2d), simpleInput.getLocation(ROOT));
-        assertEquals(WebColor.of(206, 212, 218, 1.0d), simpleInput.getColor(ROOT, "border-color"));
+        assertEquals(Color.of(206, 212, 218, 1.0d), simpleInput.getColor(ROOT, "border-color"));
         Screenshot screenshot = simpleInput.getScreenshot(ROOT);
         assertNotNull(screenshot);
         assertTrue(value.intGreaterThan(4500).check(screenshot.getRaw().length));
@@ -228,7 +228,7 @@ class WebTextInputElementTest extends AbstractUiTest {
         Location elementLocation = Location.relative(551.3d, 517.4d).setInaccuracy(0.2d).offset(10d, 10d);
         assertThrows(WebElementLocationAssertionError.class,
                 () -> simpleInput.should(haveLocation(elementLocation)));
-        WebColor elementColor = WebColor.of(206, 212, 218, 1.0d);
+        Color elementColor = Color.of(206, 212, 218, 1.0d);
         assertThrows(WebElementColorAssertionError.class,
                 () -> simpleInput.should(notHaveColor("border-color", elementColor)));
         assertThrows(WebElementTextValueAssertionError.class,
@@ -276,10 +276,10 @@ class WebTextInputElementTest extends AbstractUiTest {
                 .scrollTo()
                 .should(haveDimensions(Dimensions.of(382.5d, 86.0d).setInaccuracy(0.2d)))
                 .should(haveLocation(Location.relative(551.3d, 571.4d).setInaccuracy(0.2d)))
-                .should(haveColor("border-color", WebColor.of(206, 212, 218, 1.0d)))
+                .should(haveColor("border-color", Color.of(206, 212, 218, 1.0d)))
                 .hoverTo(true)
                 .click()
-                .should(haveColor("border-color", WebColor.of(128, 189, 255, 1.0d)))
+                .should(haveColor("border-color", Color.of(128, 189, 255, 1.0d)))
                 .should(haveText(value.stringEmpty()))
                 .should(notHaveText(value.stringContains("input")))
                 .should(havePropertyValue("placeholder", "Enter text"))

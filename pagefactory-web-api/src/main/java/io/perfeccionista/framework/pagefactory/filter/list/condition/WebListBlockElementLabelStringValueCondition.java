@@ -50,7 +50,7 @@ public class WebListBlockElementLabelStringValueCondition implements WebListBloc
         return this;
     }
 
-    public WebListBlockElementLabelStringValueCondition notContainsLabel() {
+    public WebListBlockElementLabelStringValueCondition notContainLabel() {
         return this.inverse();
     }
 

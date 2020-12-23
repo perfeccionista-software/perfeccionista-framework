@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(PerfeccionistaExtension.class)
-public class BigDecimalValueTest extends SimpleParallelTest {
+class BigDecimalValueTest extends SimpleParallelTest {
 
     @Test
     void bigDecimalValuePositiveTest(ValueService value) {

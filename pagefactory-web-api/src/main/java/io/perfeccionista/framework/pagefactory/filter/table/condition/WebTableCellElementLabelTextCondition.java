@@ -59,7 +59,7 @@ public class WebTableCellElementLabelTextCondition implements WebTableRowConditi
         return this;
     }
 
-    public WebTableCellElementLabelTextCondition notContainsLabel() {
+    public WebTableCellElementLabelTextCondition notContainLabel() {
         return this.inverse();
     }
 

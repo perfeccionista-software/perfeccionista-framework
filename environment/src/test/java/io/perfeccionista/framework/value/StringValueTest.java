@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(PerfeccionistaExtension.class)
-public class StringValueTest extends SimpleParallelTest {
+class StringValueTest extends SimpleParallelTest {
 
     @Test
     void stringValuePositiveTest(ValueService value) {
