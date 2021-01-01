@@ -9,7 +9,6 @@ import java.util.Deque;
 public abstract class AbstractNumberChecker<T extends Number> implements NumberChecker<T> {
 
     protected Deque<ValueTransformer<T>> transformers = new ArrayDeque<>();
-    protected boolean processExpectedStatement = true;
 
     protected T actual;
 
@@ -31,16 +30,6 @@ public abstract class AbstractNumberChecker<T extends Number> implements NumberC
     @Override
     public void addTransformer(@NotNull ValueTransformer<T> transformer) {
         transformers.addLast(transformer);
-    }
-
-    @Override
-    public void setProcessExpectedStatement(boolean processExpectedStatement) {
-        this.processExpectedStatement = processExpectedStatement;
-    }
-
-    @Override
-    public boolean isProcessExpectedStatement() {
-        return this.processExpectedStatement;
     }
 
     protected T applyTransformersToActual(T actual) {

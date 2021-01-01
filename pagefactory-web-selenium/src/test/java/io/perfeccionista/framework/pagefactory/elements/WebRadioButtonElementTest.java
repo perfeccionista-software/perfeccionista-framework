@@ -14,9 +14,10 @@ import io.perfeccionista.framework.exceptions.WebElementLabelValue.WebElementLab
 import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocationAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotSelected.WebElementNotSelectedAssertionError;
-import io.perfeccionista.framework.invocation.timeouts.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
+import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
@@ -27,7 +28,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -71,6 +71,11 @@ import static io.perfeccionista.framework.pagefactory.elements.actions.WebElemen
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.value.Values.intGreaterThan;
+import static io.perfeccionista.framework.value.Values.stringContains;
+import static io.perfeccionista.framework.value.Values.stringContainsAll;
+import static io.perfeccionista.framework.value.Values.stringEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -79,59 +84,64 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @Tag("WebElement") @Tag("WebRadioButton")
-class WebRadioButtonElementTest  extends AbstractUiTest {
+class WebRadioButtonElementTest  extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webRadioButtonInitializationTest(Environment env) {
+    void webRadioButtonInitializationTest(Environment environment) {
         WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebPageFactoryPreferences());
         ElementsPage elementsPage = (ElementsPage) pageFactory.createWebPage(ElementsPage.class);
-        elementsPage.setEnvironment(env);
+        elementsPage.setEnvironment(environment);
         elementsPage.setWebBrowserDispatcher(mock(WebBrowserDispatcher.class));
         WebRadioButton radioButtonOne = elementsPage.radioButtonOne();
-        assertNotNull(radioButtonOne.getEnvironment());
-        assertNotNull(radioButtonOne.getLocatorChain());
-        assertNotNull(radioButtonOne.getWebBrowserDispatcher());
-        assertNotNull(radioButtonOne.getOptionalLocator(ROOT));
-        // WebCheckbox
-        assertNotNull(radioButtonOne.getActionImplementation(CLICK_METHOD, Void.class));
-        assertNotNull(radioButtonOne.getActionImplementation(GET_LABEL_METHOD, String.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_SELECTED_METHOD, Boolean.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_ENABLED_METHOD, Boolean.class));
-        // WebChildElement
-        assertNotNull(radioButtonOne.getActionImplementation(GET_COLOR_METHOD, Color.class));
-        assertNotNull(radioButtonOne.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
-        assertNotNull(radioButtonOne.getActionImplementation(GET_LOCATION_METHOD, Location.class));
-        assertNotNull(radioButtonOne.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
-        assertNotNull(radioButtonOne.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class));
-        assertNotNull(radioButtonOne.getActionImplementation(HOVER_TO_METHOD, Void.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class));
-        assertNotNull(radioButtonOne.getActionImplementation(IS_PRESENT_METHOD, Boolean.class));
-        assertNotNull(radioButtonOne.getActionImplementation(SCROLL_TO_METHOD, Void.class));
-        // Identifier
         WebElementIdentifier elementIdentifier = radioButtonOne.getElementIdentifier();
-        assertEquals("radioButtonOne", elementIdentifier.getElementMethod().getName());
-        assertEquals("radioButtonOne", elementIdentifier.getLastUsedName());
-        assertTrue(elementIdentifier.containsName("RadioButton one"));
-        assertFalse(elementIdentifier.isNameDeprecated("RadioButton one"));
-        assertEquals(2, elementIdentifier.names().size());
-        WebRadioButton radioButtonOneElement = elementsPage.getElementRegistry()
-                .getRequiredElementByPath("RadioButton one", WebRadioButton.class);
-        assertNotNull(radioButtonOneElement);
-        assertEquals("RadioButton one", elementIdentifier.getLastUsedName());
-        assertNotNull(radioButtonOne.toString());
-        // Смотрим описание элемента
-        System.out.println(radioButtonOne.toString());
+        assertAll(
+                () -> assertNotNull(radioButtonOne.getEnvironment()),
+                () -> assertNotNull(radioButtonOne.getLocatorChain()),
+                () -> assertNotNull(radioButtonOne.getWebBrowserDispatcher()),
+                () -> assertNotNull(radioButtonOne.getOptionalLocator(ROOT)),
+                // WebCheckbox
+                () -> assertNotNull(radioButtonOne.getActionImplementation(CLICK_METHOD, Void.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(GET_LABEL_METHOD, String.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_SELECTED_METHOD, Boolean.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_ENABLED_METHOD, Boolean.class)),
+                // WebChildElement
+                () -> assertNotNull(radioButtonOne.getActionImplementation(GET_COLOR_METHOD, Color.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(GET_LOCATION_METHOD, Location.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(HOVER_TO_METHOD, Void.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(IS_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(radioButtonOne.getActionImplementation(SCROLL_TO_METHOD, Void.class)),
+                // Identifier
+                () -> assertEquals("radioButtonOne", elementIdentifier.getElementMethod().getName()),
+                () -> assertEquals("radioButtonOne", elementIdentifier.getLastUsedName()),
+                () -> assertTrue(elementIdentifier.containsName("RadioButton one")),
+                () -> assertFalse(elementIdentifier.isNameDeprecated("RadioButton one")),
+                () -> assertEquals(2, elementIdentifier.names().size()),
+                () -> {
+                    WebRadioButton radioButtonOneByName = elementsPage.getElementRegistry()
+                            .getRequiredElementByPath("RadioButton one", WebRadioButton.class);
+                    assertAll(
+                            () -> assertNotNull(radioButtonOneByName),
+                            () -> assertEquals("RadioButton one", elementIdentifier.getLastUsedName()),
+                            () -> assertNotNull(radioButtonOneByName.toString())
+                    );
+                }
+        );
     }
 
     @Test
-    void webRadioButtonPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webRadioButtonPositiveTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebTextBlock radioButtonText = elementsPage.radioButtonText()
                 .should(bePresent())
@@ -149,72 +159,92 @@ class WebRadioButtonElementTest  extends AbstractUiTest {
                 .should(haveColor(LABEL, "color", Color.of(33, 37, 41, 1.0d)))
                 .hoverTo(true) // 280 ms
                 .should(haveLabel("Label 1"))
-                .should(notHaveLabel(value.stringContains("Label 2")))
+                .should(notHaveLabel(stringContains("Label 2")))
                 .should(havePropertyValue("name","RadioButton 1"))
                 .click()
                 .should(beInFocus())
                 .should(beSelected());
         radioButtonText
-                .should(haveText(value.stringEquals("Label 1")));
-        assertTrue(radioButtonOne.isPresent());
-        assertTrue(radioButtonOne.isDisplayed());
-        assertTrue(radioButtonOne.isInFocus());
-        assertEquals(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d), radioButtonOne.getDimensions(ROOT));
-        assertEquals(Location.absolute(345.0d, 713.4d).setInaccuracy(0.2d), radioButtonOne.getLocation(ROOT));
-        assertEquals(Color.of(33, 37, 41, 1.0d), radioButtonOne.getColor(LABEL, "color"));
-        Screenshot screenshot = radioButtonOne.getScreenshot(ROOT); // 400 ms
-        assertNotNull(screenshot);
-        assertTrue(value.intGreaterThan(3500).check(screenshot.getRaw().length));
-        radioButtonText.should(haveText(value.stringContainsAll("Label 1")));
+                .should(haveText(stringEquals("Label 1")));
+        assertAll(
+                () -> assertTrue(radioButtonOne.isPresent()),
+                () -> assertTrue(radioButtonOne.isDisplayed()),
+                () -> assertTrue(radioButtonOne.isInFocus()),
+                () -> assertEquals(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d), radioButtonOne.getDimensions(ROOT)),
+                () -> assertEquals(Location.absolute(345.0d, 713.4d).setInaccuracy(0.2d), radioButtonOne.getLocation(ROOT)),
+                () -> assertEquals(Color.of(33, 37, 41, 1.0d), radioButtonOne.getColor(LABEL, "color")),
+                () -> {
+                    Screenshot screenshot = radioButtonOne.getScreenshot(ROOT); // 400 ms
+                    assertAll(
+                            () -> assertNotNull(screenshot),
+                            () -> assertTrue(intGreaterThan(3500).check(screenshot.getRaw().length))
+                    );
+                }
+        );
+        radioButtonText
+                .should(haveText(stringContainsAll("Label 1")));
         assertEquals(Point.of(88.1d, 12d).setInaccuracy(0.2d), radioButtonOne.getDimensions(ROOT).getCenter());
     }
 
     @Test
-    void webRadioButtonNegativeTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webRadioButtonNegativeTest(Environment environment) {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebRadioButton radioButtonOne = elementsPage.radioButtonOne();
         // Выполнение этого метода показывает завершение загрузки страницы
         radioButtonOne
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
-        env.getEnvironmentConfiguration().getTimeouts()
+        environment.getService(TimeoutsService.class)
                 .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
-        assertThrows(WebElementIsPresentAssertionError.class,
-                () -> radioButtonOne.should(notBePresent()));
-        assertThrows(WebElementIsDisplayedAssertionError.class,
-                () -> radioButtonOne.should(notBeDisplayed()));
-        assertThrows(WebElementNotInFocusAssertionError.class,
-                () -> radioButtonOne.should(beInFocus()));
-        assertThrows(WebElementIsEnabledAssertionError.class,
-                () -> radioButtonOne.should(beDisabled()));
-        assertThrows(WebElementNotSelectedAssertionError.class,
-                () -> radioButtonOne.should(beSelected()));
-        Dimensions elementDimensions = Dimensions.of(176.3d, 26.0d).setInaccuracy(0.2d);
-        assertThrows(WebElementDimensionsAssertionError.class,
-                () -> radioButtonOne.should(haveDimensions(elementDimensions)));
-        Location elementLocation = Location.relative(345.0d, 713.4d).setInaccuracy(0.2d);
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> radioButtonOne.should(haveLocation(elementLocation.offset(12d, 10d))));
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> radioButtonOne.should(notHaveLocation(elementLocation)));
-        Color elementColor = Color.of(33, 37, 41, 1.0d);
-        assertThrows(WebElementColorAssertionError.class,
-                () -> radioButtonOne.should(notHaveColor(LABEL, "color", elementColor)));
-        assertThrows(WebElementLabelValueAssertionError.class,
-                () -> radioButtonOne.should(notHaveLabel("Label 1")));
-        assertThrows(WebElementLabelValueAssertionError.class,
-                () -> radioButtonOne.should(haveLabel("Label unknown")));
+        assertAll(
+                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                        () -> radioButtonOne.should(notBePresent())),
+                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                        () -> radioButtonOne.should(notBeDisplayed())),
+                () -> assertThrows(WebElementNotInFocusAssertionError.class,
+                        () -> radioButtonOne.should(beInFocus())),
+                () -> assertThrows(WebElementIsEnabledAssertionError.class,
+                        () -> radioButtonOne.should(beDisabled())),
+                () -> assertThrows(WebElementNotSelectedAssertionError.class,
+                        () -> radioButtonOne.should(beSelected())),
+                () -> {
+                    Dimensions elementDimensions = Dimensions.of(176.3d, 26.0d).setInaccuracy(0.2d);
+                    assertThrows(WebElementDimensionsAssertionError.class,
+                            () -> radioButtonOne.should(haveDimensions(elementDimensions)));
+                },
+                () -> {
+                    Location elementLocation = Location.relative(345.0d, 713.4d).setInaccuracy(0.2d);
+                    assertAll(
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> radioButtonOne.should(haveLocation(elementLocation.offset(12d, 10d)))),
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> radioButtonOne.should(notHaveLocation(elementLocation)))
+                    );
+                },
+                () -> {
+                    Color elementColor = Color.of(33, 37, 41, 1.0d);
+                    assertThrows(WebElementColorAssertionError.class,
+                            () -> radioButtonOne.should(notHaveColor(LABEL, "color", elementColor)));
+                },
+                () -> assertThrows(WebElementLabelValueAssertionError.class,
+                        () -> radioButtonOne.should(notHaveLabel("Label 1"))),
+                () -> assertThrows(WebElementLabelValueAssertionError.class,
+                        () -> radioButtonOne.should(haveLabel("Label unknown")))
+        );
         radioButtonOne
                 .click();
-        assertThrows(WebElementIsSelectedAssertionError.class,
-                () -> radioButtonOne.should(notBeSelected()));
-        assertThrows(WebElementInFocusAssertionError.class,
-                () -> radioButtonOne.should(notBeInFocus()));
-        assertThrows(WebElementIsDisabledAssertionError.class,
-                () -> elementsPage.checkboxThree().should(beEnabled()));
+        assertAll(
+                () -> assertThrows(WebElementIsSelectedAssertionError.class,
+                        () -> radioButtonOne.should(notBeSelected())),
+                () -> assertThrows(WebElementInFocusAssertionError.class,
+                        () -> radioButtonOne.should(notBeInFocus())),
+                () -> assertThrows(WebElementIsDisabledAssertionError.class,
+                        () -> elementsPage.checkboxThree().should(beEnabled()))
+        );
     }
 
 }

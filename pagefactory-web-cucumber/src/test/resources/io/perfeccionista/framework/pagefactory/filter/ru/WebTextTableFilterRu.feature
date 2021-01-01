@@ -1,13 +1,11 @@
 # language:ru
 
-@UseEnvironmentConfiguration(io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration)
 Функционал: Функционал проверки фильтров WebTextTable
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableRowEmptyCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -21,11 +19,10 @@
     * текстовая таблица "Простая таблица стран" содержит "195" строк, где
       | нет фильтра |
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableRowIndexCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -40,11 +37,10 @@
     * текстовая таблица "Простая таблица стран" содержит "100" строк, где
       | индекс не "[больше или равен]100" |
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableRowTextCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -76,11 +72,10 @@
   #   Multiple conditions
   #############################
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableFilterMultipleConditions_AND
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -95,11 +90,10 @@
       | индекс "[меньше]127"           | и |
       | индекс "[больше]112"           | и |
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableFilterMultipleConditions_OR
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -114,11 +108,10 @@
       | индекс "[меньше]27"            | или |
       | индекс "65"                    | или |
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableFilterMultipleConditions_ADD
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -133,11 +126,10 @@
       | индекс "[меньше]27"            | + |
       | индекс "65"                    | + |
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableFilterMultipleConditions_SUBTRACT
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -152,11 +144,10 @@
       | индекс "[меньше]27"            | - |
       | индекс "65"                    | - |
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableFilterMultipleConditions_WITH
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -172,11 +163,10 @@
       | индекс "[больше]150"           |  -  |
       | индекс "[меньше]15"            | или |
 
-  @Disabled
   @WebElement @WebTextTable @Filter
   Сценарий: Положительный сценарий для WebTextTableFilterMultipleConditions_WITHOUT
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где

@@ -10,9 +10,10 @@ import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocat
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound.WebElementPropertyNotFoundException;
 import io.perfeccionista.framework.exceptions.WebElementSize.WebElementSizeAssertionError;
-import io.perfeccionista.framework.invocation.timeouts.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
+import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
@@ -23,7 +24,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +60,10 @@ import static io.perfeccionista.framework.pagefactory.elements.actions.WebElemen
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.element;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebRadioButtonFilter;
+import static io.perfeccionista.framework.value.Values.intEquals;
+import static io.perfeccionista.framework.value.Values.intGreaterThan;
+import static io.perfeccionista.framework.value.Values.stringEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,54 +72,59 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @Tag("WebElement") @Tag("WebRadioGroup")
-class WebRadioGroupElementTest extends AbstractUiTest {
+class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webRadioGroupInitializationTest(Environment env) {
+    void webRadioGroupInitializationTest(Environment environment) {
         WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebPageFactoryPreferences());
         ElementsPage elementsPage = (ElementsPage) pageFactory.createWebPage(ElementsPage.class);
-        elementsPage.setEnvironment(env);
+        elementsPage.setEnvironment(environment);
         elementsPage.setWebBrowserDispatcher(mock(WebBrowserDispatcher.class));
         WebRadioGroup radioGroup = elementsPage.radioGroup();
-        assertNotNull(radioGroup.getEnvironment());
-        assertNotNull(radioGroup.getLocatorChain());
-        assertNotNull(radioGroup.getWebBrowserDispatcher());
-        assertNotNull(radioGroup.getOptionalLocator(ROOT));
-        // WebChildElement
-        assertNotNull(radioGroup.getActionImplementation(GET_COLOR_METHOD, Color.class));
-        assertNotNull(radioGroup.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
-        assertNotNull(radioGroup.getActionImplementation(GET_LOCATION_METHOD, Location.class));
-        assertNotNull(radioGroup.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
-        assertNotNull(radioGroup.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class));
-        assertNotNull(radioGroup.getActionImplementation(HOVER_TO_METHOD, Void.class));
-        assertNotNull(radioGroup.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(radioGroup.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class));
-        assertNotNull(radioGroup.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(radioGroup.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class));
-        assertNotNull(radioGroup.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class));
-        assertNotNull(radioGroup.getActionImplementation(IS_PRESENT_METHOD, Boolean.class));
-        assertNotNull(radioGroup.getActionImplementation(SCROLL_TO_METHOD, Void.class));
-        // Identifier
         WebElementIdentifier elementIdentifier = radioGroup.getElementIdentifier();
-        assertEquals("radioGroup", elementIdentifier.getElementMethod().getName());
-        assertEquals("radioGroup", elementIdentifier.getLastUsedName());
-        assertTrue(elementIdentifier.containsName("Radio group"));
-        assertFalse(elementIdentifier.isNameDeprecated("Radio group"));
-        assertEquals(2, elementIdentifier.names().size());
-        WebRadioGroup radioGroupElement = elementsPage.getElementRegistry()
-                .getRequiredElementByPath("Radio group", WebRadioGroup.class);
-        assertNotNull(radioGroupElement);
-        assertEquals("Radio group", elementIdentifier.getLastUsedName());
-        assertNotNull(radioGroup.toString());
-        // Смотрим описание элемента
-        System.out.println( radioGroup.toString() );
+        assertAll(
+                () -> assertNotNull(radioGroup.getEnvironment()),
+                () -> assertNotNull(radioGroup.getLocatorChain()),
+                () -> assertNotNull(radioGroup.getWebBrowserDispatcher()),
+                () -> assertNotNull(radioGroup.getOptionalLocator(ROOT)),
+                // WebChildElement
+                () -> assertNotNull(radioGroup.getActionImplementation(GET_COLOR_METHOD, Color.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(GET_LOCATION_METHOD, Location.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(HOVER_TO_METHOD, Void.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(IS_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getActionImplementation(SCROLL_TO_METHOD, Void.class)),
+                // Identifier
+                () -> assertEquals("radioGroup", elementIdentifier.getElementMethod().getName()),
+                () -> assertEquals("radioGroup", elementIdentifier.getLastUsedName()),
+                () -> assertTrue(elementIdentifier.containsName("Radio group")),
+                () -> assertFalse(elementIdentifier.isNameDeprecated("Radio group")),
+                () -> assertEquals(2, elementIdentifier.names().size()),
+                () -> {
+                    WebRadioGroup radioGroupElement = elementsPage.getElementRegistry()
+                            .getRequiredElementByPath("Radio group", WebRadioGroup.class);
+                    assertAll(
+                            () -> assertNotNull(radioGroupElement),
+                            () -> assertEquals("Radio group", elementIdentifier.getLastUsedName()),
+                            () -> assertNotNull(radioGroup.toString())
+                    );
+                }
+        );
     }
 
     @Test
-    void webRadioGroupPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webRadioGroupPositiveTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebRadioGroup radioGroup = elementsPage.radioGroup();
         radioGroup.should(bePresent())
@@ -127,53 +136,66 @@ class WebRadioGroupElementTest extends AbstractUiTest {
                 .should(haveLocation(Location.relative(330d, 713.4d).setInaccuracy(0.2d)))
                 .should(haveColor("border-color", Color.of(33, 37, 41, 1.0d)))
                 .should(haveSize(3))
-                .should(haveSize(value.intEquals(3)))
+                .should(haveSize(intEquals(3)))
                 .should(notHaveSize(2))
-                .should(notHaveSize(value.intGreaterThan(3)));
-        assertTrue(radioGroup.isPresent());
-        assertTrue(radioGroup.isDisplayed());
-        assertFalse(radioGroup.isInFocus());
-        assertEquals(Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT));
-        assertEquals(Location.absolute(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getLocation(ROOT));
-        assertEquals(Color.of(33, 37, 41, 1.0d), radioGroup.getColor(ROOT, "border-color"));
-        assertEquals(3, radioGroup.filter(emptyWebRadioButtonFilter()).extractAll(element()).getSize());
-        assertEquals(Point.of(412.5d, 12d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT).getCenter());
+                .should(notHaveSize(intGreaterThan(3)));
+        assertAll(
+                () -> assertTrue(radioGroup.isPresent()),
+                () -> assertTrue(radioGroup.isDisplayed()),
+                () -> assertFalse(radioGroup.isInFocus()),
+                () -> assertEquals(Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT)),
+                () -> assertEquals(Location.absolute(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getLocation(ROOT)),
+                () -> assertEquals(Color.of(33, 37, 41, 1.0d), radioGroup.getColor(ROOT, "border-color")),
+                () -> assertEquals(3, radioGroup.filter(emptyWebRadioButtonFilter()).extractAll(element()).getSize()),
+                () -> assertEquals(Point.of(412.5d, 12d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT).getCenter())
+        );
     }
 
     @Test
-    void webRadioGroupNegativeTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webRadioGroupNegativeTest(Environment environment) {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebRadioGroup radioGroup = elementsPage.radioGroup();
         // Выполнение этого метода показывает завершение загрузки страницы
         radioGroup
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
-        env.getEnvironmentConfiguration().getTimeouts()
+        environment.getService(TimeoutsService.class)
                 .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
-        assertThrows(WebElementIsPresentAssertionError.class,
-                () -> radioGroup.should(notBePresent()));
-        assertThrows(WebElementIsDisplayedAssertionError.class,
-                () -> radioGroup.should(notBeDisplayed()));
-        assertThrows(WebElementNotInFocusAssertionError.class,
-                () -> radioGroup.should(beInFocus()));
-        Dimensions elementDimensions = Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d);
-        assertThrows(WebElementDimensionsAssertionError.class,
-                () -> radioGroup.should(notHaveDimensions(ROOT, elementDimensions)));
-        Location elementLocation = Location.relative(330d, 713.4d).setInaccuracy(0.2d);
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> radioGroup.should(haveLocation(ROOT, elementLocation.offset(15d, 1d))));
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> radioGroup.should(notHaveLocation(ROOT, elementLocation)));
-        Color elementColor = Color.of(33, 37, 41, 1.0d);
-        assertThrows(WebElementColorAssertionError.class,
-                () -> radioGroup.should(notHaveColor(ROOT, "border-color", elementColor)));
-        assertThrows(WebElementPropertyNotFoundException.class,
-                () -> radioGroup.should(notHavePropertyValue("unknown property", value.stringEquals("Some value"))));
-        assertThrows(WebElementSizeAssertionError.class,
-                () -> radioGroup.should(haveSize(value.intEquals(4))));
+        assertAll(
+                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                        () -> radioGroup.should(notBePresent())),
+                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                        () -> radioGroup.should(notBeDisplayed())),
+                () -> assertThrows(WebElementNotInFocusAssertionError.class,
+                        () -> radioGroup.should(beInFocus())),
+                () -> {
+                    Dimensions elementDimensions = Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d);
+                    assertThrows(WebElementDimensionsAssertionError.class,
+                            () -> radioGroup.should(notHaveDimensions(ROOT, elementDimensions)));
+                },
+                () -> {
+                    Location elementLocation = Location.relative(330d, 713.4d).setInaccuracy(0.2d);
+                    assertAll(
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> radioGroup.should(haveLocation(ROOT, elementLocation.offset(15d, 1d)))),
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> radioGroup.should(notHaveLocation(ROOT, elementLocation)))
+                    );
+                },
+                () -> {
+                    Color elementColor = Color.of(33, 37, 41, 1.0d);
+                    assertThrows(WebElementColorAssertionError.class,
+                            () -> radioGroup.should(notHaveColor(ROOT, "border-color", elementColor)));
+                },
+                () -> assertThrows(WebElementPropertyNotFoundException.class,
+                        () -> radioGroup.should(notHavePropertyValue("unknown property", stringEquals("Some value")))),
+                () -> assertThrows(WebElementSizeAssertionError.class,
+                        () -> radioGroup.should(haveSize(intEquals(4))))
+        );
     }
 
 }

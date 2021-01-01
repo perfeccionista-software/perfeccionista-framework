@@ -3,21 +3,29 @@ package io.perfeccionista.framework.datasource.implementations;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.datasource.DataStorage;
-import io.perfeccionista.framework.datasource.implementations.entities.User;
+import io.perfeccionista.framework.datasource.entities.User;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleDataStorage implements DataStorage<String, User> {
 
     private Map<String, User> users;
 
+    public SimpleDataStorage() {
+        Map<String, User> users = new HashMap<>();
+        users.put("Jack", new User("Jack", "Black"));
+        this.users = users;
+    }
+
     public SimpleDataStorage(Map<String, User> users) {
         this.users = users;
     }
 
     @Override
-    public void put(@NotNull String key, @Nullable User value) {
+    public DataStorage<String, User> put(@NotNull String key, @Nullable User value) {
         users.put(key, value);
+        return this;
     }
 
     @Override

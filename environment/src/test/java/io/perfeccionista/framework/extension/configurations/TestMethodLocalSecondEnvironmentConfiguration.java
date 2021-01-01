@@ -1,35 +1,32 @@
 package io.perfeccionista.framework.extension.configurations;
 
-import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
-import io.perfeccionista.framework.invocation.timeouts.Timeouts;
+import io.perfeccionista.framework.DefaultEnvironmentConfiguration;
 import io.perfeccionista.framework.extension.services.TestService1;
 import io.perfeccionista.framework.extension.services.TestService2;
 import io.perfeccionista.framework.extension.services.configurations.TestServiceConfiguration1;
 import io.perfeccionista.framework.extension.services.configurations.TestServiceConfiguration3;
-import io.perfeccionista.framework.repeater.RepeatPolicy;
-import io.perfeccionista.framework.service.UseService;
+import io.perfeccionista.framework.service.ConfiguredServiceHolder;
+import io.perfeccionista.framework.service.Service;
+import org.jetbrains.annotations.NotNull;
 
-import static org.mockito.Mockito.mock;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@UseService(service = TestService1.class, configuration = TestServiceConfiguration1.class)
-@UseService(service = TestService2.class, configuration = TestServiceConfiguration3.class, disabled = true, order = 89)
-public class TestMethodLocalSecondEnvironmentConfiguration implements EnvironmentConfiguration {
-
-    @Override
-    public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
-        return mock(InvocationRunnerConfiguration.class);
-    }
+public class TestMethodLocalSecondEnvironmentConfiguration extends DefaultEnvironmentConfiguration {
 
     @Override
-    public @NotNull RepeatPolicy getRepeatPolicy() {
-        return mock(RepeatPolicy.class);
-    }
+    public @NotNull Map<Class<? extends Service>, ConfiguredServiceHolder> getServices() {
+        ConfiguredServiceHolder testService1 = ConfiguredServiceHolder.of(TestService1.class, TestServiceConfiguration1.class);
+        ConfiguredServiceHolder testService2 = ConfiguredServiceHolder.of(TestService2.class, TestServiceConfiguration3.class)
+                .setOrder(89)
+                .disable();
 
-    @Override
-    public @NotNull Timeouts getTimeouts() {
-        return mock(Timeouts.class);
+        return Stream.of(
+                Map.entry(TestService1.class, testService1),
+                Map.entry(TestService2.class, testService2)
+        ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
 }

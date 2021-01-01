@@ -16,7 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.INCORRECT_WEB_DRIVER_URL;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.INCORRECT_REMOTE_WEB_DRIVER_INSTANCE_URL;
 
 // TODO: Добавить в жавадоки описание этих капабилитис
 public class RemoteWebBrowserSeleniumDispatcher extends AbstractWebBrowserSeleniumDispatcher<RemoteWebDriver, MutableCapabilities> {
@@ -40,7 +40,7 @@ public class RemoteWebBrowserSeleniumDispatcher extends AbstractWebBrowserSeleni
             this.instance = new RemoteWebDriver(httpCommandExecutor, this.options);
             this.instance.setFileDetector(new LocalFileDetector());
         } catch (MalformedURLException e) {
-            throw SeleniumWebDriverInstantiation.exception(INCORRECT_WEB_DRIVER_URL.getMessage(remoteUrl), e);
+            throw SeleniumWebDriverInstantiation.exception(INCORRECT_REMOTE_WEB_DRIVER_INSTANCE_URL.getMessage(remoteUrl), e);
         }
         setTimeouts();
         return this;

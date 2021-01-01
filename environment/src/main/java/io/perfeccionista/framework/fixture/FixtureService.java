@@ -3,6 +3,7 @@ package io.perfeccionista.framework.fixture;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.FixtureNotFound;
 import io.perfeccionista.framework.exceptions.FixtureNotParametrized;
+import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
@@ -19,6 +20,7 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_PARAMETRIZED;
 
+@DefaultServiceConfiguration(DefaultFixtureServiceConfiguration.class)
 public class FixtureService implements Service {
 
     protected Environment environment;
@@ -28,10 +30,10 @@ public class FixtureService implements Service {
     protected Deque<Fixture<?, ?>> executedFixtures = new ArrayDeque<>();
 
     @Override
-    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration serviceConfiguration) {
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
         this.environment = environment;
-        this.configuration = validate(serviceConfiguration);
-        this.fixtureClasses = configuration.getFixtureClasses();
+        this.configuration = validate(configuration);
+        this.fixtureClasses = this.configuration.getFixtureClasses();
     }
 
     public <S, T> @NotNull Fixture<S, T> getFixture(@NotNull String fixtureName) {
@@ -74,8 +76,7 @@ public class FixtureService implements Service {
     }
 
     public Stream<Class<? extends Fixture<?, ?>>> stream() {
-        return fixtureClasses.values().stream()
-                .distinct();
+        return fixtureClasses.values().stream().distinct();
     }
 
     @Override

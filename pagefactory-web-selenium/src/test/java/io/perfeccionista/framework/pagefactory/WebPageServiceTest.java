@@ -1,17 +1,12 @@
 package io.perfeccionista.framework.pagefactory;
 
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.UseEnvironmentConfiguration;
-import io.perfeccionista.framework.extension.PerfeccionistaExtension;
-import io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(PerfeccionistaExtension.class)
-@UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
-public class WebPageServiceTest {
+class WebPageServiceTest extends AbstractWebSeleniumParallelTest {
 
     @Test
     void singleElementTest(Environment env, ValueService val) {

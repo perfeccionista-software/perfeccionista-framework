@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_CONTAINS_NON_NULL_RESULT;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_NULL_RESULT_METHOD;
 import static java.util.Objects.nonNull;
 

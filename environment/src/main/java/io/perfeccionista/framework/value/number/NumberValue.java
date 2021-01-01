@@ -15,8 +15,6 @@ public interface NumberValue<T extends Number> extends Value<T> {
 
     NumberValue<T> addTransformer(@NotNull NumberValueTransformer<T> transformer);
 
-    NumberValue<T> withoutProcessing();
-
     boolean checkString(@Nullable String actual);
 
 

@@ -1,33 +1,23 @@
 package io.perfeccionista.framework.pagefactory.browser.executor;
 
-import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.UseEnvironmentConfiguration;
-import io.perfeccionista.framework.extension.PerfeccionistaExtension;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
-import io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetAttribute;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetInnerText;
 import io.perfeccionista.framework.pagefactory.jsfunction.ScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.time.Duration;
 import java.util.Set;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TAG_NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.XPATH;
-import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
-@ExtendWith(PerfeccionistaExtension.class)
-@UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
-public class SeleniumOperationExecutorTest {
+class SeleniumOperationExecutorTest extends AbstractWebSeleniumParallelTest {
 
     @Test
     void loadJsFunctionsTest() {
@@ -35,13 +25,8 @@ public class SeleniumOperationExecutorTest {
     }
 
     @Test
-    void executeOperationTest(Environment env, ValueService val) {
-        WebBrowserDispatcher chrome = env.getService(WebBrowserService.class)
-                .createDispatcher(val.stringProcess("${[props]browser}"))
-                .launch();
-        chrome.tabs()
-                .openUrl(val.stringProcess("${[props]start_url}"));
-
+    void executeOperationTest() {
+        WebBrowserDispatcher browser = openDefaultBrowser();
 
         // TODO: Написать реальные локаторы на:
         //  один элемент
@@ -64,19 +49,15 @@ public class SeleniumOperationExecutorTest {
                 .addFirstLocator(textLocator);
         JsOperation<String> operation = JsOperation.of(webLocatorChain, new GetInnerText());
 
-        chrome.executor()
+        browser.executor()
                 .executeOperation(operation);
 
-        chrome.close();
+        browser.close();
     }
 
     @Test
-    void scriptLoadingTest(Environment env) {
-        WebBrowserDispatcher chrome = env.getService(WebBrowserService.class)
-                .createDispatcher("WdmChrome")
-                .launch();
-        chrome.tabs()
-                .openUrl("http://localhost:8084");
+    void scriptLoadingTest() {
+        WebBrowserDispatcher browser = openDefaultBrowser();
 
         // TODO: Вынести тесты в соответствующие пакеты
 
@@ -106,18 +87,18 @@ public class SeleniumOperationExecutorTest {
 
         JsOperation<String> operation = JsOperation.of(webLocatorChain, new GetAttribute("placeholder"));
 
-        sleep(Duration.ofSeconds(1));
+//        sleep(Duration.ofSeconds(1));
 
 //        long start = System.nanoTime();
 //        for (int i = 0; i < 1000; i++) {
-        chrome.executor()
+        browser.executor()
                 .executeOperation(operation);
 //        }
 //        System.out.println((System.nanoTime() - start)/1_000_000);
 
-        sleep(Duration.ofSeconds(1));
+//        sleep(Duration.ofSeconds(1));
 
-        chrome.close();
+        browser.close();
     }
 
 }

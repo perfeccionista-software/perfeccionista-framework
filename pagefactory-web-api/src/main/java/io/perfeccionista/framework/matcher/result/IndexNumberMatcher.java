@@ -13,7 +13,7 @@ import java.util.Collection;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_CONTAINS_INDEX;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_DOES_NOT_CONTAIN_INDEX;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_HAVE_INDEX_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SHOULD_NOT_HAVE_INDEX_METHOD;
 import static java.util.stream.Collectors.joining;

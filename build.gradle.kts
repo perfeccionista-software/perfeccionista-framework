@@ -8,9 +8,9 @@ repositories {
 
 plugins {
     java
+    jacoco
     checkstyle
     `java-gradle-plugin`
-    jacoco
     `maven-publish`
     id("com.github.kt3k.coveralls") version "2.9.0"
     id("org.sonarqube") version "2.8"
@@ -67,7 +67,14 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         compile(group = "com.fasterxml.jackson.core", name = "jackson-annotations", version = jacksonVersion)
         compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
 
-        testCompile(group = "org.mockito", name = "mockito-core", version = "3.0.0")
+        testImplementation(group = "io.qameta.allure", name = "allure-java-commons", version = allureVersion)
+        testImplementation(group = "io.qameta.allure", name = "allure-junit5", version = allureVersion)
+        testImplementation(group = "org.mockito", name = "mockito-core", version = "3.0.0")
+    }
+
+    allure {
+        autoconfigure = true
+        version = allureVersion
     }
 
 //    checkstyle {

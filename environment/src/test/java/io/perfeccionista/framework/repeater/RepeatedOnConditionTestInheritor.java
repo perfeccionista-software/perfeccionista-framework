@@ -7,11 +7,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-final class RepeatedOnConditionTestInheritor extends RepeatedOnConditionTest {
+class RepeatedOnConditionTestInheritor extends RepeatedOnConditionTest {
 
     private static final AtomicInteger testRepeatCounterForInheritor = new AtomicInteger(0);
 
     @Disabled
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     @TestRepeatedOnCondition(TestRepeatPolicy.class)
     void repeatedTestWithCustomRepeatPolicy() {
         while (testRepeatCounterForInheritor.getAndIncrement() < 6) {

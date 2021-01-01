@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.cucumber.parameters;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.datasource.DataSourceService;
 import io.perfeccionista.framework.datasource.DataStorage;
-import io.perfeccionista.framework.datasource.NamedDataSourceService;
 import org.jetbrains.annotations.NotNull;
 
 public class DataStorageParameterImpl<K, V> implements DataStorageParameter<K, V> {
@@ -17,7 +17,7 @@ public class DataStorageParameterImpl<K, V> implements DataStorageParameter<K, V
 
     @Override
     public @NotNull DataStorage<K, V> get() {
-        return environment.getService(NamedDataSourceService.class).get(rawInput);
+        return environment.getService(DataSourceService.class).get(rawInput);
     }
 
     @Override

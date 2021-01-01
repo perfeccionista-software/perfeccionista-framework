@@ -3,6 +3,7 @@ package io.perfeccionista.framework.exceptions.messages;
 public enum UtilsMessages implements Messages {
 
     CANT_CAST_OBJECT("Class %s can't be casted to type %s"),
+    CANT_LOAD_CLASS("Class %s is not found"),
     CONSTRUCTOR_NOT_FOUND("Constructor for class %s with parameters %s not found"),
     CLIPBOARD_VALUE_NOT_AVAILABLE("Clipboard value not available"),
     EMPTY_PATH("Path is empty"),

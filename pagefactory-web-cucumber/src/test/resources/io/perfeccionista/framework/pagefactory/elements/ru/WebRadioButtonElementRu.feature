@@ -1,13 +1,11 @@
 # language:ru
 
-@UseEnvironmentConfiguration(io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration)
 Функционал: Функционал проверки WebRadioButton
 
-  @Disabled
   @WebElement @WebRadioButton
   Сценарий: Положительный сценарий WebRadioButton
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где

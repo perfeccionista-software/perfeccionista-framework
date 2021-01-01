@@ -1,13 +1,11 @@
 # language:ru
 
-@UseEnvironmentConfiguration(io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration)
 Функционал: Функционал проверки фильтров WebRadioGroup
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonEmptyCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -21,11 +19,10 @@
     * в радио-группе "Радио группа" содержится "3" кнопки, где
       | без фильтра |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonIndexCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -40,11 +37,10 @@
     * в радио-группе "Радио группа" содержится "1" кнопка, где
       | индекс не "[больше или равен]1" |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonEnabledCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -59,11 +55,10 @@
     * в радио-группе "Радио группа" содержится "1" кнопка, где
       | кнопка недоступна |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonSelectedCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -78,11 +73,10 @@
     * в радио-группе "Радио группа" содержится "2" кнопки, где
       | кнопка не выделена |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonLabelCondition
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -105,11 +99,10 @@
   #   Multiple conditions
   #############################
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_AND
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -124,11 +117,10 @@
       | индекс "[больше]1"     | и |
       | индекс "[меньше]4"     | и |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_OR
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -143,11 +135,10 @@
       | индекс "1"     | или |
       | индекс "2"     | или |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_ADD
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -162,11 +153,10 @@
       | индекс "1"     |  +  |
       | индекс "2"     |  +  |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_SUBTRACT
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -180,11 +170,10 @@
       | индекс "[больше]1"     |  -  |
       | индекс "[меньше]1"     |  -  |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_WITH
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где
@@ -199,11 +188,10 @@
       | индекс "1"     | или |
       | индекс "1"     |  -  |
 
-  @Disabled
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_WITHOUT
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
     * пользователь выбирает в списке "Левое меню" блоки, где

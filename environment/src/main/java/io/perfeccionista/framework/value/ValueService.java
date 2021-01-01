@@ -1,94 +1,224 @@
 package io.perfeccionista.framework.value;
 
+import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
+import io.perfeccionista.framework.service.ServiceConfiguration;
+import io.perfeccionista.framework.value.checker.number.BigDecimalEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalGreaterNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalGreaterOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalLessNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalLessOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.BigDecimalNotEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleGreaterNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleGreaterOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleLessNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleLessOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.DoubleNotEqualNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerGreaterNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerGreaterOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerLessNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerLessOrEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.number.IntegerNotEqualsNumberChecker;
+import io.perfeccionista.framework.value.checker.object.ObjectEqualsChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsAllChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsAnyChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsChecker;
+import io.perfeccionista.framework.value.checker.string.StringContainsIgnoreCaseChecker;
+import io.perfeccionista.framework.value.checker.string.StringEmptyValueChecker;
+import io.perfeccionista.framework.value.checker.string.StringEndsWithChecker;
+import io.perfeccionista.framework.value.checker.string.StringEqualsChecker;
+import io.perfeccionista.framework.value.checker.string.StringEqualsIgnoreCaseChecker;
+import io.perfeccionista.framework.value.checker.string.StringLengthChecker;
+import io.perfeccionista.framework.value.checker.string.StringRegularExpressionChecker;
+import io.perfeccionista.framework.value.checker.string.StringStartsWithChecker;
+import io.perfeccionista.framework.value.number.DefaultBigDecimalValue;
+import io.perfeccionista.framework.value.number.DefaultDoubleValue;
+import io.perfeccionista.framework.value.number.DefaultIntegerValue;
 import io.perfeccionista.framework.value.number.NumberValue;
+import io.perfeccionista.framework.value.object.DefaultObjectValue;
+import io.perfeccionista.framework.value.object.ObjectValue;
+import io.perfeccionista.framework.value.processor.ValueExpressionProcessor;
+import io.perfeccionista.framework.value.string.DefaultStringValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
-public interface ValueService extends Service {
+@DefaultServiceConfiguration(DefaultValueServiceConfiguration.class)
+public class ValueService implements Service {
 
-    // TODO: Object
-    // ObjectValue objectEquals(String dataSourceExpression) {}
+    protected Environment environment;
+    protected ServiceConfiguration configuration = null;
+
+    @Override
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
+        this.environment = environment;
+        this.configuration = configuration;
+    }
+
+    // Inverse
+
+    public ObjectValue not(@NotNull ObjectValue objectValue) {
+        return objectValue.inverse();
+    }
+
+    public StringValue not(@NotNull StringValue stringValue) {
+        return stringValue.inverse();
+    }
 
     // Object
 
-    Object objectProcess(@NotNull String expression);
+    public ObjectValue objectEquals(@NotNull Object expected) {
+        return new DefaultObjectValue(new ObjectEqualsChecker(environment, expected));
+    }
+
+    public Object objectProcess(@NotNull String expression) {
+        return new ValueExpressionProcessor(environment).processExpression(expression);
+    }
 
     // String
 
-    StringValue stringEmpty();
+    public StringValue stringEmpty() {
+        return new DefaultStringValue(new StringEmptyValueChecker(environment));
+    }
 
-    StringValue stringEquals(@NotNull String expected);
+    public StringValue stringEquals(@NotNull String expected) {
+        return new DefaultStringValue(new StringEqualsChecker(environment, expected));
+    }
 
-    StringValue stringEqualsIgnoreCase(@NotNull String expected);
+    public StringValue stringEqualsIgnoreCase(@NotNull String expected) {
+        return new DefaultStringValue(new StringEqualsIgnoreCaseChecker(environment, expected));
+    }
 
-    StringValue stringContains(@NotNull String expected);
+    public StringValue stringContains(@NotNull String expected) {
+        return new DefaultStringValue(new StringContainsChecker(environment, expected));
+    }
 
-    StringValue stringContainsIgnoreCase(@NotNull String expected);
+    public StringValue stringContainsIgnoreCase(@NotNull String expected) {
+        return new DefaultStringValue(new StringContainsIgnoreCaseChecker(environment, expected));
+    }
 
-    StringValue stringContainsAll(@NotNull String... expectedValues);
+    public StringValue stringContainsAll(@NotNull String... expectedValues) {
+        return new DefaultStringValue(new StringContainsAllChecker(environment, Set.of(expectedValues)));
+    }
 
-    StringValue stringContainsAny(@NotNull String... expectedValues);
+    public StringValue stringContainsAny(@NotNull String... expectedValues) {
+        return new DefaultStringValue(new StringContainsAnyChecker(environment, Set.of(expectedValues)));
+    }
 
-    StringValue stringStartsWith(@NotNull String expected);
+    public StringValue stringStartsWith(@NotNull String expected) {
+        return new DefaultStringValue(new StringStartsWithChecker(environment, expected));
+    }
 
-    StringValue stringEndsWith(@NotNull String expected);
+    public StringValue stringEndsWith(@NotNull String expected) {
+        return new DefaultStringValue(new StringEndsWithChecker(environment, expected));
+    }
 
-    StringValue stringMatches(@Language("RegExp") @NotNull String expected);
+    public StringValue stringMatches(@Language("RegExp") @NotNull String expected) {
+        return new DefaultStringValue(new StringRegularExpressionChecker(environment, expected));
+    }
 
-    StringValue stringLength(int expectedLength);
+    public StringValue stringLength(int expectedLength) {
+        return new DefaultStringValue(new StringLengthChecker(environment, expectedLength));
+    }
 
-    String stringProcess(@NotNull String expression);
+    public String stringProcess(@NotNull String expression) {
+        return new ValueExpressionProcessor(environment).processExpression(expression).toString();
+    }
 
     // Integer
 
-    NumberValue<Integer> intEquals(int expected);
+    public NumberValue<Integer> intEquals(int expected) {
+        return new DefaultIntegerValue(new IntegerEqualsNumberChecker(expected));
+    }
 
-    NumberValue<Integer> intNotEquals(int expected);
+    public NumberValue<Integer> intNotEquals(int expected) {
+        return new DefaultIntegerValue(new IntegerNotEqualsNumberChecker(expected));
+    }
 
-    NumberValue<Integer> intGreaterThan(int expected);
+    public NumberValue<Integer> intGreaterThan(int expected) {
+        return new DefaultIntegerValue(new IntegerGreaterNumberChecker(expected));
+    }
 
-    NumberValue<Integer> intGreaterThanOrEqual(int expected);
+    public NumberValue<Integer> intGreaterThanOrEqual(int expected) {
+        return new DefaultIntegerValue(new IntegerGreaterOrEqualsNumberChecker(expected));
+    }
 
-    NumberValue<Integer> intLessThan(int expected);
+    public NumberValue<Integer> intLessThan(int expected) {
+        return new DefaultIntegerValue(new IntegerLessNumberChecker(expected));
+    }
 
-    NumberValue<Integer> intLessThanOrEqual(int expected);
+    public NumberValue<Integer> intLessThanOrEqual(int expected) {
+        return new DefaultIntegerValue(new IntegerLessOrEqualsNumberChecker(expected));
+    }
 
-    int intProcess(@NotNull String expression);
+    public int intProcess(@NotNull String expression) {
+        return Integer.parseInt(new ValueExpressionProcessor(environment).processExpression(expression).toString());
+    }
 
     // Double
 
-    NumberValue<Double> doubleEquals(double expected);
+    public NumberValue<Double> doubleEquals(double expected) {
+        return new DefaultDoubleValue(new DoubleEqualsNumberChecker(expected));
+    }
 
-    NumberValue<Double> doubleNotEquals(double expected);
+    public NumberValue<Double> doubleNotEquals(double expected) {
+        return new DefaultDoubleValue(new DoubleNotEqualNumberChecker(expected));
+    }
 
-    NumberValue<Double> doubleGreaterThan(double expected);
+    public NumberValue<Double> doubleGreaterThan(double expected) {
+        return new DefaultDoubleValue(new DoubleGreaterNumberChecker(expected));
+    }
 
-    NumberValue<Double> doubleGreaterThanOrEqual(double expected);
+    public NumberValue<Double> doubleGreaterThanOrEqual(double expected) {
+        return new DefaultDoubleValue(new DoubleGreaterOrEqualsNumberChecker(expected));
+    }
 
-    NumberValue<Double> doubleLessThan(double expected);
+    public NumberValue<Double> doubleLessThan(double expected) {
+        return new DefaultDoubleValue(new DoubleLessNumberChecker(expected));
+    }
 
-    NumberValue<Double> doubleLessThanOrEqual(double expected);
+    public NumberValue<Double> doubleLessThanOrEqual(double expected) {
+        return new DefaultDoubleValue(new DoubleLessOrEqualsNumberChecker(expected));
+    }
 
-    double doubleProcess(@NotNull String expression);
+    public double doubleProcess(@NotNull String expression) {
+        return Double.parseDouble(new ValueExpressionProcessor(environment).processExpression(expression).toString());
+    }
 
     // BigDecimal
 
-    NumberValue<BigDecimal> bigDecimalEquals(@NotNull BigDecimal expected);
+    public NumberValue<BigDecimal> bigDecimalEquals(@NotNull BigDecimal expected) {
+        return new DefaultBigDecimalValue(new BigDecimalEqualsNumberChecker(expected));
+    }
 
-    NumberValue<BigDecimal> bigDecimalNotEquals(@NotNull BigDecimal expected);
+    public NumberValue<BigDecimal> bigDecimalNotEquals(@NotNull BigDecimal expected) {
+        return new DefaultBigDecimalValue(new BigDecimalNotEqualsNumberChecker(expected));
+    }
 
-    NumberValue<BigDecimal> bigDecimalGreaterThan(@NotNull BigDecimal expected);
+    public NumberValue<BigDecimal> bigDecimalGreaterThan(@NotNull BigDecimal expected) {
+        return new DefaultBigDecimalValue(new BigDecimalGreaterNumberChecker(expected));
+    }
 
-    NumberValue<BigDecimal> bigDecimalGreaterThanOrEqual(@NotNull BigDecimal expected);
+    public NumberValue<BigDecimal> bigDecimalGreaterThanOrEqual(@NotNull BigDecimal expected) {
+        return new DefaultBigDecimalValue(new BigDecimalGreaterOrEqualsNumberChecker(expected));
+    }
 
-    NumberValue<BigDecimal> bigDecimalLessThan(@NotNull BigDecimal expected);
+    public NumberValue<BigDecimal> bigDecimalLessThan(@NotNull BigDecimal expected) {
+        return new DefaultBigDecimalValue(new BigDecimalLessNumberChecker(expected));
+    }
 
-    NumberValue<BigDecimal> bigDecimalLessThanOrEqual(@NotNull BigDecimal expected);
+    public NumberValue<BigDecimal> bigDecimalLessThanOrEqual(@NotNull BigDecimal expected) {
+        return new DefaultBigDecimalValue(new BigDecimalLessOrEqualsNumberChecker(expected));
+    }
 
-    BigDecimal bigDecimalProcess(@NotNull String expression);
+    public BigDecimal bigDecimalProcess(@NotNull String expression) {
+        return new BigDecimal(new ValueExpressionProcessor(environment).processExpression(expression).toString());
+    }
 
 }

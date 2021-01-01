@@ -2,12 +2,12 @@ package io.perfeccionista.framework.invocation.runner;
 
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
-import io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType;
+import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.invocation.timeouts.CheckDelayTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.CheckDelayTimeout;
 import io.perfeccionista.framework.exceptions.base.ExceptionCollector;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 
@@ -70,8 +70,7 @@ public class CheckInvocationRunner implements InvocationRunner {
     }
 
     protected Duration getDelayTimeout(Environment environment) {
-        return environment.getEnvironmentConfiguration()
-                .getTimeouts()
+        return environment.getService(TimeoutsService.class)
                 .getTimeout(CheckDelayTimeout.class);
     }
 

@@ -36,12 +36,6 @@ public abstract class AbstractNumberValue<T extends Number> implements NumberVal
     }
 
     @Override
-    public AbstractNumberValue<T> withoutProcessing() {
-        numberChecker.setProcessExpectedStatement(false);
-        return this;
-    }
-
-    @Override
     public @NotNull T get() {
         return numberChecker.getProcessedExpected();
     }

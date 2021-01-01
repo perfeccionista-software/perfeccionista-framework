@@ -22,6 +22,9 @@ import io.perfeccionista.framework.cucumber.DefaultCucumberServiceConfiguration;
 import io.perfeccionista.framework.cucumber.stepdefinitions.CucumberStepDefinitions;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.service.Service;
+import io.perfeccionista.framework.utils.EnvironmentConfigurationResolver;
+import io.perfeccionista.framework.utils.FileUtils;
+import io.perfeccionista.framework.utils.ReflectionUtils;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.support.ReflectionSupport;
@@ -32,9 +35,12 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveEnvironmentConfiguration;
+import static io.perfeccionista.framework.utils.ReflectionUtils.loadClass;
 import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
 
 
@@ -71,7 +77,7 @@ import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
 public class PerfeccionistaCucumber6Plugin implements ConcurrentEventListener {
     private static final Logger log = LoggerFactory.getLogger(PerfeccionistaCucumber6Plugin.class);
 
-    protected static final Pattern ENVIRONMENT_CONFIGURATION_TAG_PATTERN = Pattern.compile("^@UseEnvironmentConfiguration\\((?<file>.*?)\\)$");
+    protected static final Pattern ENVIRONMENT_CONFIGURATION_TAG_PATTERN = Pattern.compile("^@UseEnvironmentConfiguration\\((?<class>.*?)\\)$");
 
     private final EventHandler<TestRunStarted> testRunStartedHandler = this::handleTestRunStartedHandler;
     private final EventHandler<TestSourceRead> featureStartedHandler = this::handleFeatureStartedHandler;
@@ -128,30 +134,19 @@ public class PerfeccionistaCucumber6Plugin implements ConcurrentEventListener {
         for (String tag : event.getTestCase().getTags()) {
             Matcher matcher = ENVIRONMENT_CONFIGURATION_TAG_PATTERN.matcher(tag);
             if (matcher.find()) {
-                String fileName = matcher.group("file");
-                // TODO: Загружать класс по короткому имени файла, а не по полному
-                environmentConfigurationClass = ReflectionSupport.tryToLoadClass(fileName)
-                        .toOptional()
-                        .filter(EnvironmentConfiguration.class::isAssignableFrom)
-                        .map(processedClass -> (Class<? extends EnvironmentConfiguration>) processedClass)
-                        .orElse(null);
+                String fileName = matcher.group("class");
+                environmentConfigurationClass = ReflectionUtils.loadClass(fileName, EnvironmentConfiguration.class);
             }
         }
-
         Environment environment;
         if (Objects.isNull(environmentConfigurationClass)) {
-            environment = new Environment(newInstance(DefaultEnvironmentConfiguration.class))
-                    .setEnvironmentForCurrentThread();
+            environment = new Environment(resolveEnvironmentConfiguration());
         } else {
-            environment = new Environment(newInstance(environmentConfigurationClass))
-                    .setEnvironmentForCurrentThread();
+            environment = new Environment(resolveEnvironmentConfiguration(environmentConfigurationClass));
         }
-
-        if (!environment.getServiceClasses().contains(CucumberService.class)) {
-            CucumberService cucumberServiceInstance = newInstance(CucumberService.class);
-            cucumberServiceInstance.init(environment, newInstance(DefaultCucumberServiceConfiguration.class));
-            environment.register(CucumberService.class, cucumberServiceInstance);
-        }
+        environment.setEnvironmentForCurrentThread()
+                .init();
+        environment.getServices().forEach(Service::beforeTest);
 
     }
 

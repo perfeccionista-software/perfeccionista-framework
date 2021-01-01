@@ -1,10 +1,10 @@
 package io.perfeccionista.framework.value.implementations;
 
+import io.perfeccionista.framework.datasource.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.datasource.DataSource;
 import io.perfeccionista.framework.name.Name;
-import io.perfeccionista.framework.value.implementations.entities.User;
 
 @Name("user")
 public class UserDataSource implements DataSource<String, User> {

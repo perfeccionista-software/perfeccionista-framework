@@ -11,9 +11,10 @@ import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocat
 import io.perfeccionista.framework.exceptions.WebElementNotDisplayed.WebElementNotDisplayedAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementTextValue.WebElementTextValueAssertionError;
-import io.perfeccionista.framework.invocation.timeouts.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
+import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
@@ -24,7 +25,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +60,9 @@ import static io.perfeccionista.framework.pagefactory.elements.actions.WebElemen
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_IN_FOCUS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.value.Values.intGreaterThan;
+import static io.perfeccionista.framework.value.Values.stringContains;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,64 +71,67 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @Tag("WebElement") @Tag("WebLink")
-class WebLinkElementTest extends AbstractUiTest {
+class WebLinkElementTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webLinkInitializationTest(Environment env) {
+    void webLinkInitializationTest(Environment environment) {
         WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebPageFactoryPreferences());
         ElementsPage elementsPage = (ElementsPage) pageFactory.createWebPage(ElementsPage.class);
-        elementsPage.setEnvironment(env);
+        elementsPage.setEnvironment(environment);
         elementsPage.setWebBrowserDispatcher(mock(WebBrowserDispatcher.class));
         WebLink simpleLink = elementsPage.simpleLink();
-        assertNotNull(simpleLink.getEnvironment());
-        assertNotNull(simpleLink.getLocatorChain());
-        assertNotNull(simpleLink.getWebBrowserDispatcher());
-        assertNotNull(simpleLink.getOptionalLocator(ROOT));
-        // WebButton
-        assertNotNull(simpleLink.getActionImplementation(CLICK_METHOD, Void.class));
-        assertNotNull(simpleLink.getActionImplementation(GET_TEXT_METHOD, String.class));
-        // WebChildElement
-        assertNotNull(simpleLink.getActionImplementation(GET_COLOR_METHOD, Color.class));
-        assertNotNull(simpleLink.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
-        assertNotNull(simpleLink.getActionImplementation(GET_LOCATION_METHOD, Location.class));
-        assertNotNull(simpleLink.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
-        assertNotNull(simpleLink.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class));
-        assertNotNull(simpleLink.getActionImplementation(HOVER_TO_METHOD, Void.class));
-        assertNotNull(simpleLink.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(simpleLink.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class));
-        assertNotNull(simpleLink.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(simpleLink.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class));
-        assertNotNull(simpleLink.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class));
-        assertNotNull(simpleLink.getActionImplementation(IS_PRESENT_METHOD, Boolean.class));
-        assertNotNull(simpleLink.getActionImplementation(SCROLL_TO_METHOD, Void.class));
-        // Identifier
         WebElementIdentifier elementIdentifier = simpleLink.getElementIdentifier();
-        assertEquals("simpleLink", elementIdentifier.getElementMethod().getName());
-        assertEquals("simpleLink", elementIdentifier.getLastUsedName());
-        assertTrue(elementIdentifier.containsName("Simple link"));
-        assertFalse(elementIdentifier.isNameDeprecated("Simple link"));
-        assertEquals(2, elementIdentifier.names().size());
-        WebLink simpleLinkElement = elementsPage.getElementRegistry()
-                .getRequiredElementByPath("Simple link", WebLink.class);
-        assertNotNull(simpleLinkElement);
-        assertEquals("Simple link", elementIdentifier.getLastUsedName());
-        assertNotNull(simpleLink.toString());
-        // Смотрим описание элемента
-        System.out.println( simpleLink.toString() );
+        assertAll(
+                () -> assertNotNull(simpleLink.getEnvironment()),
+                () -> assertNotNull(simpleLink.getLocatorChain()),
+                () -> assertNotNull(simpleLink.getWebBrowserDispatcher()),
+                () -> assertNotNull(simpleLink.getOptionalLocator(ROOT)),
+                // WebButton
+                () -> assertNotNull(simpleLink.getActionImplementation(CLICK_METHOD, Void.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(GET_TEXT_METHOD, String.class)),
+                // WebChildElement
+                () -> assertNotNull(simpleLink.getActionImplementation(GET_COLOR_METHOD, Color.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(GET_LOCATION_METHOD, Location.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(HOVER_TO_METHOD, Void.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(IS_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleLink.getActionImplementation(SCROLL_TO_METHOD, Void.class)),
+                // Identifier
+                () -> assertEquals("simpleLink", elementIdentifier.getElementMethod().getName()),
+                () -> assertEquals("simpleLink", elementIdentifier.getLastUsedName()),
+                () -> assertTrue(elementIdentifier.containsName("Simple link")),
+                () -> assertFalse(elementIdentifier.isNameDeprecated("Simple link")),
+                () -> assertEquals(2, elementIdentifier.names().size()),
+                () -> {
+                    WebLink simpleLinkByName = elementsPage.getElementRegistry()
+                            .getRequiredElementByPath("Simple link", WebLink.class);
+                    assertAll(
+                            () -> assertNotNull(simpleLinkByName),
+                            () -> assertEquals("Simple link", elementIdentifier.getLastUsedName()),
+                            () -> assertNotNull(simpleLinkByName.toString())
+                    );
+                }
+        );
     }
 
     /**
      * Case: Проверяем что присутствует левое меню
      *  Проверяем текст заголовка
      *  Проверяем основной текст
-     * @param env - Экземпляр окружения теста
-     * @param value - Экземпляр сервиса значений
      */
     @Test
-    void webLinkPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webLinkPositiveTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebLink simpleLink = elementsPage.simpleLink();
         // Check Simple button
@@ -140,17 +146,23 @@ class WebLinkElementTest extends AbstractUiTest {
                 .hoverTo(true)
                 .should(haveColor("color", Color.of(0, 86, 179, 1.0d)))
                 .should(haveText("Simple Link"))
-                .should(haveText(value.stringContains("Link")))
-                .should(notHaveText(value.stringContains("button")));
-        assertTrue(simpleLink.isPresent());
-        assertTrue(simpleLink.isDisplayed());
-        assertFalse(simpleLink.isInFocus());
-        assertEquals(Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d), simpleLink.getDimensions(ROOT));
-        assertEquals(Location.absolute(392.2d, 478.4d).setInaccuracy(0.2d), simpleLink.getLocation(ROOT));
-        assertEquals(Color.of(0, 86, 179, 1.0d), simpleLink.getColor(ROOT, "color"));
-        Screenshot screenshot = simpleLink.getScreenshot(ROOT);
-        assertNotNull(screenshot);
-        assertTrue(value.intGreaterThan(2500).check(screenshot.getRaw().length));
+                .should(haveText(stringContains("Link")))
+                .should(notHaveText(stringContains("button")));
+        assertAll(
+                () -> assertTrue(simpleLink.isPresent()),
+                () -> assertTrue(simpleLink.isDisplayed()),
+                () -> assertFalse(simpleLink.isInFocus()),
+                () -> assertEquals(Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d), simpleLink.getDimensions(ROOT)),
+                () -> assertEquals(Location.absolute(392.2d, 478.4d).setInaccuracy(0.2d), simpleLink.getLocation(ROOT)),
+                () -> assertEquals(Color.of(0, 86, 179, 1.0d), simpleLink.getColor(ROOT, "color")),
+                () -> {
+                    Screenshot screenshot = simpleLink.getScreenshot(ROOT);
+                    assertAll(
+                            () -> assertNotNull(screenshot),
+                            () -> assertTrue(intGreaterThan(2500).check(screenshot.getRaw().length))
+                    );
+                }
+        );
         // Check Simple button text
         WebTextBlock simpleLinkText = elementsPage.simpleLinkText();
         simpleLinkText
@@ -171,51 +183,64 @@ class WebLinkElementTest extends AbstractUiTest {
     }
 
     @Test
-    void webLinkNegativeTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webLinkNegativeTest(Environment environment) {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebLink simpleLink = elementsPage.simpleLink();
+        WebTextBlock simpleLinkText = elementsPage.simpleLinkText();
         // Выполнение этого метода показывает завершение загрузки страницы
         simpleLink
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
-        env.getEnvironmentConfiguration().getTimeouts()
+        environment.getService(TimeoutsService.class)
                 .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
-        assertThrows(WebElementIsPresentAssertionError.class,
-                () -> simpleLink.should(notBePresent()));
-        assertThrows(WebElementIsDisplayedAssertionError.class,
-                () -> simpleLink.should(notBeDisplayed()));
-        assertThrows(WebElementNotInFocusAssertionError.class,
-                () -> simpleLink.should(beInFocus()));
-        Dimensions elementDimensions = Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d);
-        assertThrows(WebElementDimensionsAssertionError.class,
-                () -> simpleLink.should(notHaveDimensions(elementDimensions)));
-        Location elementLocation = Location.relative(392.2d, 478.4d).setInaccuracy(0.2d);
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> simpleLink.should(haveLocation(elementLocation.offset(54d, -4d))));
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> simpleLink.should(notHaveLocation(elementLocation)));
-        Color elementColor = Color.of(0, 123, 255, 1.0d);
-        assertThrows(WebElementColorAssertionError.class,
-                () -> simpleLink.should(notHaveColor("color", elementColor)));
-        assertThrows(WebElementTextValueAssertionError.class,
-                () -> simpleLink.should(notHaveText("Simple Link")));
-        assertThrows(WebElementTextValueAssertionError.class,
-                () -> simpleLink.should(haveText("Simple Button")));
-        WebTextBlock simpleLinkText = elementsPage.simpleLinkText();
-        assertThrows(WebElementIsPresentAssertionError.class,
-                () -> simpleLinkText.should(notBePresent()));
-        assertThrows(WebElementNotDisplayedAssertionError.class,
-                () -> simpleLinkText.should(beDisplayed()));
+        assertAll(
+                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                        () -> simpleLink.should(notBePresent())),
+                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                        () -> simpleLink.should(notBeDisplayed())),
+                () -> assertThrows(WebElementNotInFocusAssertionError.class,
+                        () -> simpleLink.should(beInFocus())),
+                () -> {
+                    Dimensions elementDimensions = Dimensions.of(81.8d, 22.0d).setInaccuracy(0.2d);
+                    assertThrows(WebElementDimensionsAssertionError.class,
+                            () -> simpleLink.should(notHaveDimensions(elementDimensions)));
+                },
+                () -> {
+                    Location elementLocation = Location.relative(392.2d, 478.4d).setInaccuracy(0.2d);
+                    assertAll(
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> simpleLink.should(haveLocation(elementLocation.offset(54d, -4d)))),
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> simpleLink.should(notHaveLocation(elementLocation)))
+                    );
+                },
+                () -> {
+                    Color elementColor = Color.of(0, 123, 255, 1.0d);
+                    assertThrows(WebElementColorAssertionError.class,
+                            () -> simpleLink.should(notHaveColor("color", elementColor)));
+                },
+                () -> assertThrows(WebElementTextValueAssertionError.class,
+                        () -> simpleLink.should(notHaveText("Simple Link"))),
+                () -> assertThrows(WebElementTextValueAssertionError.class,
+                        () -> simpleLink.should(haveText("Simple Button"))),
+                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                        () -> simpleLinkText.should(notBePresent())),
+                () -> assertThrows(WebElementNotDisplayedAssertionError.class,
+                        () -> simpleLinkText.should(beDisplayed()))
+        );
         simpleLink.click();
-        assertThrows(WebElementInFocusAssertionError.class,
-                () -> simpleLink.should(notBeInFocus()));
-        assertThrows(WebElementIsPresentAssertionError.class,
-                () -> simpleLinkText.should(notBePresent()));
-        assertThrows(WebElementIsDisplayedAssertionError.class,
-                () -> simpleLinkText.should(notBeDisplayed()));
+        assertAll(
+                () -> assertThrows(WebElementInFocusAssertionError.class,
+                        () -> simpleLink.should(notBeInFocus())),
+                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                        () -> simpleLinkText.should(notBePresent())),
+                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                        () -> simpleLinkText.should(notBeDisplayed()))
+        );
     }
 
 }

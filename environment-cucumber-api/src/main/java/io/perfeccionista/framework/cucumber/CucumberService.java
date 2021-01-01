@@ -5,11 +5,11 @@ import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolver;
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolverPriority;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
+import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.platform.commons.util.ClassFilter;
 import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.lang.reflect.Modifier;
@@ -22,36 +22,31 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
+import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
+import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
 
+@DefaultServiceConfiguration(DefaultCucumberServiceConfiguration.class)
 public class CucumberService implements Service {
 
     protected List<CucumberResolver<?>> cucumberResolvers = new ArrayList<>();
+    // TODO: Implement
+    protected Set<Class<?>> comparators = new HashSet<>();
 
     private CucumberServiceConfiguration configuration;
     private Environment environment;
 
     @Override
-    public void init(@NotNull Environment environment, @Nullable ServiceConfiguration configuration) {
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
         this.environment = environment;
         this.configuration = validate(configuration);
 
-        Set<Class<?>> cucumberResolverClasses = new HashSet<>();
-        Set<Class<?>> comparators = new HashSet<>();
-
-        ClassFilter conditionClassFilter = ClassFilter.of(processedClass ->
-                CucumberResolver.class.isAssignableFrom(processedClass)
-                        && !processedClass.isInterface()
-                        && !Modifier.isAbstract(processedClass.getModifiers()));
-
-        long start = System.nanoTime();
-
-        this.configuration.scanPackages()
-                .forEach(packageName -> {
-                    cucumberResolverClasses.addAll(ReflectionUtils.findAllClassesInPackage(packageName, conditionClassFilter));
-//                    comparators.addAll();
-                });
-
-        System.out.println(" -----------------> " + (System.nanoTime() - start)/1_000_000 + " ms");
+        Set<String> scanPackages = validatePackageSet(this.configuration.scanPackages());
+        Set<Class<? extends CucumberResolver>> cucumberResolverClasses = findAllClasses(scanPackages, CucumberResolver.class)
+                .stream()
+                .filter(cucumberResolverClass -> !Modifier.isAbstract(cucumberResolverClass.getModifiers())
+                        && !cucumberResolverClass.isInterface()
+                        && !cucumberResolverClass.isEnum())
+                .collect(Collectors.toSet());
 
         cucumberResolvers = cucumberResolverClasses.stream()
                 .map(processedClass -> (Class<? extends CucumberResolver<?>>) processedClass)
@@ -72,10 +67,6 @@ public class CucumberService implements Service {
                 })
                 .sorted((o1, o2) -> o2.getPriority() - o1.getPriority())
                 .collect(Collectors.toList());
-
-//        comparators.stream()
-
-        System.out.println(" -----------------> " + (System.nanoTime() - start)/1_000_000 + " ms");
     }
 
     public <T> Optional<T> resolveFirst(@NotNull Class<? extends CucumberResolver<T>> conditionResolverType,

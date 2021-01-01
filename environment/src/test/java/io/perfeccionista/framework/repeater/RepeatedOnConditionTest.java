@@ -1,25 +1,26 @@
 package io.perfeccionista.framework.repeater;
 
+import io.perfeccionista.framework.AbstractParallelTestWithEnvironment;
+import io.perfeccionista.framework.repeater.policy.RepeatCondition;
+import io.perfeccionista.framework.repeater.policy.RepeatMode;
+import io.perfeccionista.framework.repeater.policy.RepeatPolicy;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.platform.engine.TestExecutionResult.Status;
-import io.perfeccionista.framework.extension.PerfeccionistaExtension;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Execution(ExecutionMode.SAME_THREAD)
-@ExtendWith(PerfeccionistaExtension.class)
-class RepeatedOnConditionTest {
+class RepeatedOnConditionTest extends AbstractParallelTestWithEnvironment {
 
     private static final AtomicInteger testRepeatCounterForParent = new AtomicInteger(0);
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     @Disabled
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     @TestRepeatedOnCondition(TestRepeatPolicy.class)
     void repeatedTestWithCustomRepeatPolicy() {
         while (testRepeatCounterForParent.getAndIncrement() < 6) {
@@ -37,7 +38,7 @@ class RepeatedOnConditionTest {
         }
 
         @Override
-        public RepeatCondition getRepeatCondition() {
+        public @NotNull RepeatCondition getRepeatCondition() {
             return testResults -> testResults.removeLast().getStatus() != Status.SUCCESSFUL;
         }
 

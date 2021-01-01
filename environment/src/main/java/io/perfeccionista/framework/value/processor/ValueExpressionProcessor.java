@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.value.processor;
 
+import io.perfeccionista.framework.datasource.DataConverterService;
+import io.perfeccionista.framework.datasource.DataSourceService;
 import io.perfeccionista.framework.exceptions.StringValueParse;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,8 +11,6 @@ import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
 import io.perfeccionista.framework.datasource.DataConverter;
 import io.perfeccionista.framework.datasource.DataSource;
-import io.perfeccionista.framework.datasource.NamedDataConverterService;
-import io.perfeccionista.framework.datasource.NamedDataSourceService;
 
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
@@ -232,7 +232,7 @@ public class ValueExpressionProcessor {
 
     private Object resolveDataSourceExpression(String stringContent, Object objectContent) {
         DataSourceDeclaration dataSourceDeclaration = extractDataSourceDeclaration(stringContent);
-        NamedDataSourceService dataSourceService = environment.getService(NamedDataSourceService.class);
+        DataSourceService dataSourceService = environment.getService(DataSourceService.class);
         DataSource<?, ?> dataSource;
         String stringKey;
         if (dataSourceDeclaration.getName().isPresent()) {
@@ -290,7 +290,7 @@ public class ValueExpressionProcessor {
 
     private Object resolveDataConverterExpression(String stringContent, Object objectContent) {
         DataConverterDeclaration dataConverterDeclaration = extractDataConverterDeclaration(stringContent);
-        NamedDataConverterService dataConverterService = environment.getService(NamedDataConverterService.class);
+        DataConverterService dataConverterService = environment.getService(DataConverterService.class);
         DataConverter<?, ?> dataConverter = dataConverterService.get(dataConverterDeclaration.getName());
         String stringKey = stringContent.replace(dataConverterDeclaration.getDeclaration(), "").trim();
         if (null != objectContent && StringUtils.isNotBlank(stringKey)) {

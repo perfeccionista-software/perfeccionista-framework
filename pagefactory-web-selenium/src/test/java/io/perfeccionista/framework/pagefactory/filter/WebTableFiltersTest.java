@@ -1,8 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
-import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.WebLocatorNotFound.WebLocatorNotFoundException;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
@@ -13,7 +12,6 @@ import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryN
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.FullCountryNameWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.PopulationWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryNameWebBlock;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -47,16 +45,21 @@ import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.FULL
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.NUMBER;
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.POPULATION;
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_COUNTRY_NAME;
+import static io.perfeccionista.framework.value.Values.intEquals;
+import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
+import static io.perfeccionista.framework.value.Values.stringEquals;
+import static io.perfeccionista.framework.value.Values.stringStartsWith;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Tag("WebElement") @Tag("WebTable")
-class WebTableFiltersTest extends AbstractUiTest {
+class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webTableFilterEmptyConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterEmptyConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -66,25 +69,27 @@ class WebTableFiltersTest extends AbstractUiTest {
     }
 
     @Test
-    void webTableFilterRowIndexConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterRowIndexConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
 
-        table.filter(with(rowIndex(value.intGreaterThanOrEqual(100))))
+        table.filter(with(rowIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(95));
-        table.filter(without(rowIndex(value.intGreaterThanOrEqual(100))))
+        table.filter(without(rowIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(100));
     }
 
     @Test
-    void webTableFilterElementTextConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementTextConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -92,83 +97,84 @@ class WebTableFiltersTest extends AbstractUiTest {
         // By Element
         table.filter(with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия")))
                 .should(haveSize(1));
-        table.filter(with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), value.stringStartsWith("М"))))
+        table.filter(with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(17));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), value.stringEquals("Финляндия"))))
+        table.filter(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), value.stringStartsWith("М"))))
+        table.filter(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(178));
 
         table.filter(without(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия")))
                 .should(haveSize(194));
-        table.filter(without(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), value.stringStartsWith("М"))))
+        table.filter(without(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(178));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), value.stringEquals("Финляндия"))))
+        table.filter(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), value.stringStartsWith("М"))))
+        table.filter(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(17));
 
-        table.filter(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intEquals(77))))
+        table.filter(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intGreaterThanOrEqual(124))))
+        table.filter(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intEquals(77))))
+        table.filter(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intGreaterThanOrEqual(124))))
+        table.filter(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intEquals(77))))
+        table.filter(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intGreaterThanOrEqual(124))))
+        table.filter(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intEquals(77))))
+        table.filter(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), value.intGreaterThanOrEqual(124))))
+        table.filter(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
 
         // By Element name
-        table.filter(with(containsText(SHORT_COUNTRY_NAME, "Country name", value.stringEquals("Финляндия"))))
+        table.filter(with(containsText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        table.filter(with(containsText(SHORT_COUNTRY_NAME, "Country name", value.stringStartsWith("М"))))
+        table.filter(with(containsText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(17));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, "Country name", value.stringEquals("Финляндия"))))
+        table.filter(with(notContainText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, "Country name", value.stringStartsWith("М"))))
+        table.filter(with(notContainText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(178));
 
-        table.filter(without(containsText(SHORT_COUNTRY_NAME, "Country name", value.stringEquals("Финляндия"))))
+        table.filter(without(containsText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        table.filter(without(containsText(SHORT_COUNTRY_NAME, "Country name", value.stringStartsWith("М"))))
+        table.filter(without(containsText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(178));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, "Country name", value.stringEquals("Финляндия"))))
+        table.filter(without(notContainText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, "Country name", value.stringStartsWith("М"))))
+        table.filter(without(notContainText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(17));
 
-        table.filter(with(containsText(NUMBER, "Number", value.intEquals(77))))
+        table.filter(with(containsText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsText(NUMBER, "Number", value.intGreaterThanOrEqual(124))))
+        table.filter(with(containsText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainText(NUMBER, "Number", value.intEquals(77))))
+        table.filter(with(notContainText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(NUMBER, "Number", value.intGreaterThanOrEqual(124))))
+        table.filter(with(notContainText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsText(NUMBER, "Number", value.intEquals(77))))
+        table.filter(without(containsText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsText(NUMBER, "Number", value.intGreaterThanOrEqual(124))))
+        table.filter(without(containsText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainText(NUMBER, "Number", value.intEquals(77))))
+        table.filter(without(notContainText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(NUMBER, "Number", value.intGreaterThanOrEqual(124))))
+        table.filter(without(notContainText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
     }
 
     @Test
-    void webTableFilterElementPropertyConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementPropertyConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -176,131 +182,133 @@ class WebTableFiltersTest extends AbstractUiTest {
         // By Element
         table.filter(with(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", "Финляндская Республика")))
                 .should(haveSize(1));
-        table.filter(with(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
+        table.filter(with(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика"))))
+        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
+        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
 
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика"))))
+        table.filter(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
+        table.filter(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", value.stringEquals("Финляндская Республика"))))
+        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", value.stringStartsWith("М"))))
+        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
 
         // By Element name
-        table.filter(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringEquals("Финляндская Республика"))))
+        table.filter(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filter(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringStartsWith("М"))))
+        table.filter(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringEquals("Финляндская Республика"))))
+        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringStartsWith("М"))))
+        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
 
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringEquals("Финляндская Республика"))))
+        table.filter(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringStartsWith("М"))))
+        table.filter(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringEquals("Финляндская Республика"))))
+        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", value.stringStartsWith("М"))))
+        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
     }
 
     @Test
-    void webTableFilterElementLabelConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementLabelConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringEquals("86"))))
+        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringStartsWith("15"))))
+        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(11));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringEquals("86"))))
+        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringStartsWith("15"))))
+        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(184));
 
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringEquals("86"))))
+        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringStartsWith("15"))))
+        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(184));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringEquals("86"))))
+        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.stringStartsWith("15"))))
+        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(11));
 
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intEquals(77))))
+        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intGreaterThanOrEqual(124))))
+        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intEquals(77))))
+        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intGreaterThanOrEqual(124))))
+        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intEquals(77))))
+        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intGreaterThanOrEqual(124))))
+        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intEquals(77))))
+        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), value.intGreaterThanOrEqual(124))))
+        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
 
         // By Element name
-        table.filter(with(containsLabel(CHECKBOX, "Select", value.stringEquals("86"))))
+        table.filter(with(containsLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, "Select", value.stringStartsWith("15"))))
+        table.filter(with(containsLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(11));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", value.stringEquals("86"))))
+        table.filter(with(notContainLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", value.stringStartsWith("15"))))
+        table.filter(with(notContainLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(184));
 
-        table.filter(without(containsLabel(CHECKBOX, "Select", value.stringEquals("86"))))
+        table.filter(without(containsLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, "Select", value.stringStartsWith("15"))))
+        table.filter(without(containsLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(184));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", value.stringEquals("86"))))
+        table.filter(without(notContainLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", value.stringStartsWith("15"))))
+        table.filter(without(notContainLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(11));
 
-        table.filter(with(containsLabel(CHECKBOX, "Select", value.intEquals(77))))
+        table.filter(with(containsLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124))))
+        table.filter(with(containsLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", value.intEquals(77))))
+        table.filter(with(notContainLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124))))
+        table.filter(with(notContainLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsLabel(CHECKBOX, "Select", value.intEquals(77))))
+        table.filter(without(containsLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124))))
+        table.filter(without(containsLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", value.intEquals(77))))
+        table.filter(without(notContainLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", value.intGreaterThanOrEqual(124))))
+        table.filter(without(notContainLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
     }
 
     @Test
-    void webTableFilterElementEnabledConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementEnabledConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -329,10 +337,11 @@ class WebTableFiltersTest extends AbstractUiTest {
     }
 
     @Test
-    void webTableFilterElementSelectedConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementSelectedConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -361,10 +370,11 @@ class WebTableFiltersTest extends AbstractUiTest {
     }
 
     @Test
-    void webTableFilterElementPresentConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementPresentConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -393,10 +403,11 @@ class WebTableFiltersTest extends AbstractUiTest {
     }
 
     @Test
-    void webTableFilterElementDisplayedConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementDisplayedConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -449,10 +460,11 @@ class WebTableFiltersTest extends AbstractUiTest {
     }
 
     @Test
-    void webTableFilterElementComponentPresentConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementComponentPresentConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());
@@ -485,10 +497,11 @@ class WebTableFiltersTest extends AbstractUiTest {
     }
 
     @Test
-    void webTableFilterElementComponentDisplayedConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableFilterElementComponentDisplayedConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
+
         TablePage tablePage = context.getPage(TablePage.class);
         WebTable table = tablePage.table()
                 .should(beDisplayed());

@@ -78,7 +78,7 @@ public class WebElementInitializer {
     public @NotNull WebChildElement initWebChildElement(@NotNull Class<? extends WebChildElement> webChildElementClass) {
         // Если возвращаемый тип - не интерфейс, а имплементация
         if (!isInterface(webChildElementClass.getModifiers())) {
-            if (isAbstract(webChildElementClass.getModifiers())) {
+            if (isAbstract(webChildElementClass.getModifiers()) || webChildElementClass.isEnum()) {
                 throw WebElementImplementationNotFound.exception(ABSTRACT_WEB_CHILD_ELEMENT_IMPLEMENTATION_NOT_ALLOWED
                         .getMessage(webChildElementClass.getCanonicalName()));
             }
