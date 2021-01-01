@@ -1,12 +1,10 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
-import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -23,15 +21,20 @@ import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebRadioButtonFilter;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
+import static io.perfeccionista.framework.value.Values.intEquals;
+import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
+import static io.perfeccionista.framework.value.Values.stringEquals;
+import static io.perfeccionista.framework.value.Values.stringStartsWith;
 
 @Tag("WebElement") @Tag("WebRadioGroup")
-class WebRadioGroupFiltersTest extends AbstractUiTest {
+class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webRadioGroupFilterEmptyConditionTest(Environment env, ValueService value) {
-        var context = initWebPageContext(env, value);
+    void webRadioGroupFilterEmptyConditionTest() {
+        var context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select(stringEquals("Elements"));
+
         var elementsPage = context.getPage(ElementsPage.class);
         var radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());
@@ -39,29 +42,31 @@ class WebRadioGroupFiltersTest extends AbstractUiTest {
         radioGroup.filter(emptyWebRadioButtonFilter())
                 .should(haveSize(3));
         radioGroup.filter(emptyWebRadioButtonFilter().subtract(allRadioButtons()))
-                .should(haveSize(value.intEquals(0)));
+                .should(haveSize(intEquals(0)));
     }
 
     @Test
-    void webRadioGroupFilterRadioButtonIndexConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webRadioGroupFilterRadioButtonIndexConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebRadioGroup radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());
 
-        radioGroup.filter(with(radioButtonIndex(value.intGreaterThanOrEqual(1))))
+        radioGroup.filter(with(radioButtonIndex(intGreaterThanOrEqual(1))))
                 .should(haveSize(2));
-        radioGroup.filter(without(radioButtonIndex(value.intGreaterThanOrEqual(1))))
-                .should(haveSize(value.intEquals(1)));
+        radioGroup.filter(without(radioButtonIndex(intGreaterThanOrEqual(1))))
+                .should(haveSize(intEquals(1)));
     }
 
     @Test
-    void webRadioGroupFilterRadioButtonSelectedConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webRadioGroupFilterRadioButtonSelectedConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebRadioGroup radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());
@@ -73,17 +78,17 @@ class WebRadioGroupFiltersTest extends AbstractUiTest {
                 .should(haveSize(2));
 
         radioGroup.filter(without(selected()))
-                .should(haveSize(value.intEquals(2)));
+                .should(haveSize(intEquals(2)));
         radioGroup.filter(without(notSelected()))
-                .should(haveSize(value.intEquals(1)));
+                .should(haveSize(intEquals(1)));
     }
 
     @Test
-    void webRadioGroupFilterElementLabelConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("Elements"));
+    void webRadioGroupFilterElementLabelConditionTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebRadioGroup radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());
@@ -91,29 +96,29 @@ class WebRadioGroupFiltersTest extends AbstractUiTest {
         // By Element
         radioGroup.filter(with(containsLabel("Label 3")))
                 .should(haveSize(1));
-        radioGroup.filter(with(containsLabel(value.stringStartsWith("Label"))))
+        radioGroup.filter(with(containsLabel(stringStartsWith("Label"))))
                 .should(haveSize(3));
         radioGroup.filter(with(notContainLabel("Label 3")))
                 .should(haveSize(2));
-        radioGroup.filter(with(notContainLabel(value.stringStartsWith("Label"))))
+        radioGroup.filter(with(notContainLabel(stringStartsWith("Label"))))
                 .should(haveSize(0));
 
-        radioGroup.filter(without(containsLabel(value.stringEquals("Label 3"))))
-                .should(haveSize(value.intEquals(2)));
-        radioGroup.filter(without(containsLabel(value.stringStartsWith("Label"))))
-                .should(haveSize(value.intEquals(0)));
-        radioGroup.filter(without(notContainLabel(value.stringEquals("Label 3"))))
-                .should(haveSize(value.intEquals(1)));
-        radioGroup.filter(without(notContainLabel(value.stringStartsWith("Label"))))
-                .should(haveSize(value.intEquals(3)));
+        radioGroup.filter(without(containsLabel(stringEquals("Label 3"))))
+                .should(haveSize(intEquals(2)));
+        radioGroup.filter(without(containsLabel(stringStartsWith("Label"))))
+                .should(haveSize(intEquals(0)));
+        radioGroup.filter(without(notContainLabel(stringEquals("Label 3"))))
+                .should(haveSize(intEquals(1)));
+        radioGroup.filter(without(notContainLabel(stringStartsWith("Label"))))
+                .should(haveSize(intEquals(3)));
     }
 
     @Test
-    void webRadioGroupFilterElementEnabledConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
-        context.getPage(HomePage.class)
-                .leftMenu()
-                .select(value.stringEquals("Elements"));
+    void webRadioGroupFilterElementEnabledConditionTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebRadioGroup radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());

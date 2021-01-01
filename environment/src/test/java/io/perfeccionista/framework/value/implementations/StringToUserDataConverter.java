@@ -1,12 +1,12 @@
 package io.perfeccionista.framework.value.implementations;
 
+import io.perfeccionista.framework.datasource.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.datasource.DataConverter;
 import io.perfeccionista.framework.name.Name;
-import io.perfeccionista.framework.value.implementations.entities.User;
 
-@Name("user name to user")
+@Name("userName to user")
 public class StringToUserDataConverter implements DataConverter<String, User> {
 
     @Override

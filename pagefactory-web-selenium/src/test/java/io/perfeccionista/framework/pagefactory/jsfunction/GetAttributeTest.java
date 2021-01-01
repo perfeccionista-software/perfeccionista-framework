@@ -1,56 +1,43 @@
 package io.perfeccionista.framework.pagefactory.jsfunction;
 
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.UseEnvironmentConfiguration;
-import io.perfeccionista.framework.extension.PerfeccionistaExtension;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
-import io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.value.ValueService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.IOException;
-
-import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TEXT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(PerfeccionistaExtension.class)
-@UseEnvironmentConfiguration(TestEnvironmentConfiguration.class)
-class GetAttributeTest {
+class GetAttributeTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void singleElementTest(Environment env, ValueService val) throws IOException {
-        WebBrowserDispatcher chrome = env.getService(WebBrowserService.class)
-                .createDispatcher(val.stringProcess("${[props]browser}"))
-                .launch();
-        chrome.tabs()
-                .openUrl(val.stringProcess("${[props]start_url}"));
+    void singleElementTest(Environment environment) {
+        WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(env, () -> {
+        runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
-            chrome.executor()
+            browser.executor()
                     .executeOperation(clickOperation);
         });
-        String placeholderValue = runCheck(env, () -> {
+        String placeholderValue = runCheck(environment, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-input"));
             JsOperation<String> getAttributeOperation = JsOperation.of(scrollToLocatorChain, new GetAttribute("placeholder"));
-            return chrome.executor()
+            return browser.executor()
                     .executeOperation(getAttributeOperation)
                     .ifException(e -> {
                         throw e;
                     })
                     .getResult();
         });
-        Assertions.assertEquals("Enter text", placeholderValue);
+        assertEquals("Enter text", placeholderValue);
     }
 
 }

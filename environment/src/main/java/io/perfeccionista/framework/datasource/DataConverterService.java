@@ -1,10 +1,10 @@
 package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.DataConverterNotFound;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
-import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 
@@ -14,39 +14,51 @@ import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_CONVERTER_NOT_FOUND_BY_CLASS;
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_CONVERTER_REGISTER_BY_CLASS_DUPLICATE;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_CONVERTER_NOT_FOUND_BY_NAME;
 
+@DefaultServiceConfiguration(DefaultDataConverterServiceConfiguration.class)
 public class DataConverterService implements Service {
 
     protected DataConverterServiceConfiguration validatedConfiguration;
-    protected Map<Class<? extends DataConverter>, DataConverter<?, ?>> dataConvertersByClass = new HashMap<>();
+    protected Map<String, DataConverter<?, ?>> dataConvertersByName = new HashMap<>();
 
     @Override
-    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration serviceConfiguration) {
-        DataConverterServiceConfiguration validatedConfiguration = validate(serviceConfiguration);
-        validatedConfiguration.getDataConverters().forEach(dataConverter -> {
-            Class<? extends DataConverter> dataConverterClass = dataConverter.getClass();
-            if (dataConvertersByClass.containsKey(dataConverterClass)) {
-                throw RegisterDuplicate.exception(DATA_CONVERTER_REGISTER_BY_CLASS_DUPLICATE.getMessage(dataConverterClass.getCanonicalName()));
-            }
-            dataConvertersByClass.put(dataConverterClass, dataConverter);
-        });
-    }
-
-    public boolean contains(Class<? extends DataConverter> dataConverterClass) {
-        return dataConvertersByClass.containsKey(dataConverterClass);
-    }
-
-    public <T extends DataConverter> T get(Class<T> dataConverterClass) {
-        DataConverter<?, ?> dataConverter = dataConvertersByClass.get(dataConverterClass);
-        if (null == dataConverter) {
-            throw DataConverterNotFound.exception(DATA_CONVERTER_NOT_FOUND_BY_CLASS.getMessage(dataConverterClass.getCanonicalName()));
-        }
-        return (T) dataConvertersByClass.get(dataConverterClass);
+    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
+        validatedConfiguration = validate(configuration);
+        dataConvertersByName = validatedConfiguration.getDataConverters();
     }
 
     public Stream<DataConverter<?, ?>> stream() {
-        return dataConvertersByClass.values().stream();
+        return dataConvertersByName.values().stream().distinct();
+    }
+
+    public Stream<String> names() {
+        return dataConvertersByName.keySet().stream();
+    }
+
+    public boolean contains(Class<? extends DataConverter> dataConverterClass) {
+        return dataConvertersByName.values().stream()
+                .anyMatch(dataConverter -> dataConverterClass.isAssignableFrom(dataConverter.getClass()));
+    }
+
+    public boolean contains(String dataConverterName) {
+        return dataConvertersByName.containsKey(dataConverterName);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends DataConverter> T get(Class<T> dataConverterClass) {
+        return (T) dataConvertersByName.values().stream()
+                .filter(dataConverter -> dataConverterClass.equals(dataConverter.getClass()))
+                .findFirst()
+                .orElseThrow(() -> DataConverterNotFound.exception(DATA_CONVERTER_NOT_FOUND_BY_CLASS.getMessage(dataConverterClass.getCanonicalName())));
+    }
+
+    public <T extends DataConverter> T get(String dataConverterName) {
+        DataConverter<?, ?> dataConverter = dataConvertersByName.get(dataConverterName);
+        if (null == dataConverter) {
+            throw DataConverterNotFound.exception(DATA_CONVERTER_NOT_FOUND_BY_NAME.getMessage(dataConverterName));
+        }
+        return (T) dataConvertersByName.get(dataConverterName);
     }
 
     protected DataConverterServiceConfiguration validate(ServiceConfiguration configuration) {

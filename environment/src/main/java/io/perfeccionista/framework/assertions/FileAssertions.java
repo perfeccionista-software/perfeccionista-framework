@@ -7,7 +7,7 @@ import java.time.Duration;
 
 import static io.perfeccionista.framework.Environment.getCurrent;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.utils.FileUtils.fileShouldBeMissing;
 import static io.perfeccionista.framework.utils.FileUtils.fileShouldExist;
 

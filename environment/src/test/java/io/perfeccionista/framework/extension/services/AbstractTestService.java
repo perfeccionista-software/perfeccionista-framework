@@ -4,8 +4,9 @@ import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
+import org.jetbrains.annotations.Nullable;
 
-public class AbstractTestService implements Service {
+public abstract class AbstractTestService implements Service {
 
     private long initializationTime = 0;
 
@@ -14,7 +15,7 @@ public class AbstractTestService implements Service {
     protected boolean afterTestExecuted = false;
 
     @Override
-    public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
+    public void init(@NotNull Environment environment, @Nullable ServiceConfiguration configuration) {
         initialized = true;
         initializationTime = System.nanoTime();
     }

@@ -10,6 +10,9 @@ import java.util.function.UnaryOperator;
 //  так и actual значения, а так же результат сравнения
 public interface StringValue extends Value<String> {
 
+    @Override
+    @NotNull String get();
+
     StringValue transformExpected(@NotNull UnaryOperator<String> transformFunction);
 
     StringValue transformActual(@NotNull UnaryOperator<String> transformFunction);

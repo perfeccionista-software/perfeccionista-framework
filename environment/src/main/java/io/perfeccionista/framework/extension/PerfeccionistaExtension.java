@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.extension;
 
-import io.perfeccionista.framework.DefaultEnvironmentConfiguration;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
+import io.perfeccionista.framework.repeater.RepeatPolicyService;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -20,13 +20,13 @@ import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.TestExecutionResult;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.UseEnvironmentConfiguration;
+import io.perfeccionista.framework.UseEnvironment;
 import io.perfeccionista.framework.exceptions.EnvironmentNotConfigured;
 import io.perfeccionista.framework.exceptions.RepeatPolicyInitialization;
 import io.perfeccionista.framework.exceptions.TestClassNotFound;
 import io.perfeccionista.framework.exceptions.TestMethodNotFound;
-import io.perfeccionista.framework.repeater.NoRepeatPolicy;
-import io.perfeccionista.framework.repeater.RepeatPolicy;
+import io.perfeccionista.framework.repeater.policy.NoRepeatPolicy;
+import io.perfeccionista.framework.repeater.policy.RepeatPolicy;
 import io.perfeccionista.framework.repeater.TestRepeatedOnCondition;
 import io.perfeccionista.framework.repeater.iterators.NoRepeatTestTemplateIterator;
 import io.perfeccionista.framework.repeater.iterators.RepeatIfTestTemplateIterator;
@@ -45,6 +45,7 @@ import java.util.Optional;
 import java.util.Spliterator;
 import java.util.stream.Stream;
 
+import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveEnvironmentConfiguration;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
@@ -80,19 +81,23 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         Method testMethod = context.getTestMethod()
                 .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getMessage()));
         // Ищем конфигурацию для Environment для тестового метода
-        Optional<Class<? extends EnvironmentConfiguration>> testMethodConfiguration = findEnvironmentConfiguration(testMethod);
-        if (testMethodConfiguration.isPresent()) {
-            Class<? extends EnvironmentConfiguration> configurationForTestMethod = testMethodConfiguration.get();
+        Optional<Class<? extends EnvironmentConfiguration>> optionalTestMethodConfiguration = findEnvironmentConfiguration(testMethod);
+        if (optionalTestMethodConfiguration.isPresent()) {
+            Class<? extends EnvironmentConfiguration> testMethodConfiguration = optionalTestMethodConfiguration.get();
             // Находим или создаем и устанавливаем Environment для конфигурации установленной над тестовым методом
-            resolveActiveEnvironmentForTestMethod(configurationForTestMethod, testClass);
-        } else {
-            // Смотрим была ли для класса
-            Optional<Class<? extends EnvironmentConfiguration>> testClassConfiguration = findEnvironmentConfiguration(testClass);
-            // Находим или создаем и устанавливаем Environment для конфигурации установленной над тестовым классом
-            testClassConfiguration
-                    .ifPresentOrElse(configurationForTestClass -> resolveActiveEnvironmentForTestMethod(configurationForTestClass, testClass),
-                            () -> resolveActiveEnvironmentForTestMethod(DefaultEnvironmentConfiguration.class, testClass));
+            resolveActiveEnvironmentForTestMethod(testMethodConfiguration);
+            return;
         }
+        // Смотрим была ли для класса
+        Optional<Class<? extends EnvironmentConfiguration>> optionalTestClassConfiguration = findEnvironmentConfiguration(testClass);
+        if (optionalTestClassConfiguration.isPresent()) {
+            Class<? extends EnvironmentConfiguration> testClassConfiguration = optionalTestClassConfiguration.get();
+            // Находим или создаем и устанавливаем Environment для конфигурации установленной над тестовым классом
+            resolveActiveEnvironmentForTestMethod(testClassConfiguration);
+            return;
+        }
+        // Используем дефолтную
+        resolveActiveEnvironmentForTestMethod();
     }
 
     @Override
@@ -154,7 +159,11 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
         Optional<Environment> optionalEnvironment = getActiveEnvironment();
         if (optionalEnvironment.isPresent()) {
-            repeatPolicy = optionalEnvironment.get().getEnvironmentConfiguration().getRepeatPolicy();
+            Environment environment = optionalEnvironment.get();
+            Optional<RepeatPolicyService> optionalRepeatPolicyService = environment.getOptionalService(RepeatPolicyService.class);
+            if (optionalRepeatPolicyService.isPresent()) {
+                repeatPolicy = optionalRepeatPolicyService.get().getRepeatPolicy();
+            }
         }
 
         Optional<TestRepeatedOnCondition> optionalAnnotation = context.getTestMethod()
@@ -238,7 +247,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     protected Optional<Class<? extends EnvironmentConfiguration>> findEnvironmentConfiguration(Class<?> testClass) {
         Class<?> processedClass = testClass;
         while (!Object.class.equals(processedClass)) {
-            Optional<UseEnvironmentConfiguration> optionalAnnotation = findAnnotation(processedClass, UseEnvironmentConfiguration.class);
+            Optional<UseEnvironment> optionalAnnotation = findAnnotation(processedClass, UseEnvironment.class);
             if (optionalAnnotation.isPresent()) {
                 return Optional.of(optionalAnnotation.get().value());
             }
@@ -253,22 +262,21 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      */
     @SuppressWarnings("WeakerAccess")
     protected Optional<Class<? extends EnvironmentConfiguration>> findEnvironmentConfiguration(Method testMethod) {
-        return findAnnotation(testMethod, UseEnvironmentConfiguration.class).map(UseEnvironmentConfiguration::value);
+        return findAnnotation(testMethod, UseEnvironment.class).map(UseEnvironment::value);
     }
 
     /**
      * Создаем экземпляр {@link Environment} используя полученную конфигурацию и тестовый класс
      * @param environmentConfiguration экземпляр конфигурации {@link Environment}
-     * @param testClass тестовый класс для которого создается {@link Environment}
      * @param <T> тип {@link Environment}
      * @return экземпляр {@link Environment}
      */
     @SuppressWarnings("WeakerAccess")
-    protected <T extends Environment> T createEnvironment(@NotNull Class<?> testClass, @NotNull EnvironmentConfiguration environmentConfiguration) {
+    protected <T extends Environment> T createEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
         Constructor<? extends Environment> constructor = ReflectionUtils
-                .getConstructor(environmentConfiguration.getEnvironmentClass(), Class.class, EnvironmentConfiguration.class);
+                .getConstructor(environmentConfiguration.getEnvironmentClass(), EnvironmentConfiguration.class);
         // noinspection unchecked
-        return (T) newInstance(constructor, testClass, environmentConfiguration);
+        return (T) newInstance(constructor, environmentConfiguration);
     }
 
     /**
@@ -277,11 +285,21 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      * то он устанавливается в качестве активного, иначе создается новый экземпляр.
      * Выполняем beforeEach() для заданного теста
      */
-    protected void resolveActiveEnvironmentForTestMethod(Class<? extends EnvironmentConfiguration> configurationClass, Class<?> testClass) {
-        EnvironmentConfiguration environmentConfiguration = newInstance(configurationClass);
-        // Создаем новый экземпляр Environment для теста
-        Environment environmentInstance = createEnvironment(testClass, environmentConfiguration)
-                .setEnvironmentForCurrentThread();
+    protected void resolveActiveEnvironmentForTestMethod(Class<? extends EnvironmentConfiguration> configurationClass) {
+        Environment environmentInstance = createEnvironment(resolveEnvironmentConfiguration(configurationClass))
+                .setEnvironmentForCurrentThread()
+                .init();
+        activeEnvironment.set(environmentInstance);
+        environmentInstance.getServices().forEach(Service::beforeTest);
+    }
+
+    /**
+     * Устанавливает для теста сконфигурированный экземпляр Environment, если он не зада явно над тестовым классом или методом
+     */
+    protected void resolveActiveEnvironmentForTestMethod() {
+        Environment environmentInstance = createEnvironment(resolveEnvironmentConfiguration())
+                .setEnvironmentForCurrentThread()
+                .init();
         activeEnvironment.set(environmentInstance);
         environmentInstance.getServices().forEach(Service::beforeTest);
     }

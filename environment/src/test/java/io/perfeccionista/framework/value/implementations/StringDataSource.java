@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.datasource.DataSource;
 import io.perfeccionista.framework.name.Name;
 
-@Name("user name")
+@Name("userName")
 public class StringDataSource implements DataSource<String, String> {
 
     @Override

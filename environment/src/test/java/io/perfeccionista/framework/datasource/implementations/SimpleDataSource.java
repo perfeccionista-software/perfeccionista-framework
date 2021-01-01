@@ -3,8 +3,8 @@ package io.perfeccionista.framework.datasource.implementations;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.datasource.DataSource;
-import io.perfeccionista.framework.datasource.implementations.entities.Professional;
-import io.perfeccionista.framework.datasource.implementations.entities.User;
+import io.perfeccionista.framework.datasource.entities.Professional;
+import io.perfeccionista.framework.datasource.entities.User;
 
 public class SimpleDataSource implements DataSource<String, User> {
 

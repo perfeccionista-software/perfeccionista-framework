@@ -19,10 +19,6 @@ public interface Checker<T> {
 
     void addTransformer(@NotNull ValueTransformer<T> transformer);
 
-    void setProcessExpectedStatement(boolean processExpectedStatement);
-
-    boolean isProcessExpectedStatement();
-
     @NotNull String getComparisonDescription();
 
 }

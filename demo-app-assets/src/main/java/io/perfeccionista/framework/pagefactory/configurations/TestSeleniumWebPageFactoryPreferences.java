@@ -1,6 +1,0 @@
-package io.perfeccionista.framework.pagefactory.configurations;
-
-import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
-
-public class TestSeleniumWebPageFactoryPreferences extends DefaultSeleniumWebPageFactoryPreferences {
-}

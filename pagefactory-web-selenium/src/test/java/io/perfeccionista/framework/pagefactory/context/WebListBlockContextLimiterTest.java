@@ -1,14 +1,12 @@
 package io.perfeccionista.framework.pagefactory.context;
 
-import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.pageobjects.ContextListElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.ContinentBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBlock;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -23,11 +21,11 @@ import static io.perfeccionista.framework.value.Values.stringStartsWith;
 
 // TODO: Попробовать разные сценарии выборки (по индексу, отображаению элемента и т.п.)
 @Tag("Context") @Tag("WebList")
-class WebListBlockContextLimiterTest extends AbstractUiTest {
+class WebListBlockContextLimiterTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webListSingleLimiterPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webListSingleLimiterPositiveTest() {
+        WebPageContext context = initWebPageContext();
 
         context.getPage(HomePage.class).leftMenu()
                 .select("List Elements");
@@ -54,8 +52,8 @@ class WebListBlockContextLimiterTest extends AbstractUiTest {
     }
 
     @Test
-    void webListDoubleLimiterPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webListDoubleLimiterPositiveTest() {
+        WebPageContext context = initWebPageContext();
 
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements (List Context)");

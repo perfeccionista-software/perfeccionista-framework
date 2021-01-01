@@ -1,11 +1,14 @@
 package io.perfeccionista.framework.utils;
 
 import io.perfeccionista.framework.exceptions.ClassCast;
+import io.perfeccionista.framework.exceptions.ClassNotFound;
 import io.perfeccionista.framework.exceptions.FieldAccess;
 import io.perfeccionista.framework.exceptions.FieldNotFound;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.ConstructorNotFound;
 import org.jetbrains.annotations.Nullable;
+import org.junit.platform.commons.support.ReflectionSupport;
+import org.junit.platform.commons.util.ClassFilter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -15,19 +18,62 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_CAST_OBJECT;
+import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_LOAD_CLASS;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CONSTRUCTOR_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FIELD_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FIELD_READING_ERROR;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FIELD_WRITING_ERROR;
+import static org.junit.platform.commons.util.ReflectionUtils.findAllClassesInPackage;
 
 // TODO: Отредактировать утилитные классы и джавадоки
 public final class ReflectionUtils {
 
+    private static final Map<String, List<Class<?>>> classesHash = new ConcurrentHashMap<>();
+
     private ReflectionUtils() {
+    }
+
+    public static Class<?> loadClass(@NotNull String classPath) {
+        return ReflectionSupport.tryToLoadClass(classPath)
+                .getOrThrow(exception -> ClassNotFound.exception(CANT_LOAD_CLASS.getMessage(classPath), exception));
+    }
+
+    public static <T> Class<? extends T> loadClass(String classPath, Class<T> type) {
+        Class<?> loadedClass = loadClass(classPath);
+        if (type.isAssignableFrom(loadedClass)) {
+            return (Class<? extends T>) loadedClass;
+        }
+        throw ClassCast.exception(CANT_CAST_OBJECT.getMessage(loadedClass.getCanonicalName(), type.getCanonicalName()));
+    }
+
+    /**
+     *
+     * @param packages
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T> Set<Class<? extends T>> findAllClasses(@NotNull Set<String> packages, @NotNull Class<T> type) {
+        //noinspection unchecked
+        return new HashSet<>(packages.stream()
+                .map(packageName -> {
+                    fillClassesHashForPackage(packageName);
+                    return classesHash.get(packageName).stream()
+                            .filter(type::isAssignableFrom)
+                            .map(processedClass -> (Class<T>) processedClass)
+                            .collect(Collectors.toList());
+                })
+                .reduce(new ArrayList<>(), (lastClassesSet, processedClassesSet) -> {
+                    lastClassesSet.addAll(processedClassesSet);
+                    return lastClassesSet;
+                }));
     }
 
     /**
@@ -257,6 +303,12 @@ public final class ReflectionUtils {
         ASC,
         DESC
 
+    }
+
+    private static synchronized void fillClassesHashForPackage(String packageName) {
+        if (!classesHash.containsKey(packageName)) {
+            classesHash.put(packageName, findAllClassesInPackage(packageName, ClassFilter.of(processedClass -> true)));
+        }
     }
 
 }

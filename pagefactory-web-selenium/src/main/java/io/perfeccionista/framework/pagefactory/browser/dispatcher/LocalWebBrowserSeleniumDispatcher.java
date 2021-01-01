@@ -22,7 +22,7 @@ public class LocalWebBrowserSeleniumDispatcher<T extends RemoteWebDriver, C exte
         super(environment, webDriverType);
         this.binaryResolver = binaryResolver;
         // TODO: Убрать после отладки
-        withTimeouts(new WebDriverTimeouts().setScriptTimeout(1200_000));
+        withTimeouts(new WebDriverTimeouts().setScriptTimeout(30_000));
     }
 
     @Override

@@ -18,6 +18,14 @@ public class StringUtils {
     private StringUtils() {
     }
 
+    public static boolean isBlank(@Nullable String string) {
+        return (Objects.isNull(string) || string.trim().isEmpty());
+    }
+
+    public static boolean isNotBlank(@Nullable String string) {
+        return !isBlank(string);
+    }
+
     public static String[] splitPathByArrow(@NotNull String path) {
         String trimmedElementPath = path.trim();
         if (isBlank(trimmedElementPath)) {

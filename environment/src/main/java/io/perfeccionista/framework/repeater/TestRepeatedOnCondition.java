@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.repeater;
 
+import io.perfeccionista.framework.repeater.policy.RepeatPolicy;
 import org.junit.jupiter.api.TestTemplate;
 
 import java.lang.annotation.Documented;

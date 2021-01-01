@@ -1,5 +1,19 @@
 package io.perfeccionista.framework.value.object;
 
-// TODO: Implement
-public interface ObjectValue {
+import io.perfeccionista.framework.value.Value;
+import io.perfeccionista.framework.value.transformer.object.ObjectValueTransformer;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.UnaryOperator;
+
+public interface ObjectValue extends Value<Object> {
+
+    ObjectValue transformExpected(@NotNull UnaryOperator<Object> transformFunction);
+
+    ObjectValue transformActual(@NotNull UnaryOperator<Object> transformFunction);
+
+    ObjectValue addTransformer(@NotNull ObjectValueTransformer transformer);
+
+    ObjectValue inverse();
+
 }

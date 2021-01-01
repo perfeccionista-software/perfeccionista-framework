@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.context;
 
-import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
 import io.perfeccionista.framework.pagefactory.pageobjects.ContextTableElementsPage;
@@ -9,7 +8,6 @@ import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.ContinentNameWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryNameWebBlock;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -26,11 +24,11 @@ import static io.perfeccionista.framework.value.Values.stringStartsWith;
 
 // TODO: Попробовать разные сценарии выборки (по индексу, отображаению элемента и т.п.)
 @Tag("Context") @Tag("WebTable")
-public class WebTableRowContextLimiterTest extends AbstractUiTest {
+class WebTableRowContextLimiterTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webTableRowSingleLimiterPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTableRowSingleLimiterPositiveTest() {
+        WebPageContext context = initWebPageContext();
 
         context.getPage(HomePage.class).leftMenu()
                 .select("Table Element");
@@ -56,8 +54,8 @@ public class WebTableRowContextLimiterTest extends AbstractUiTest {
     }
 
     @Test
-    void webListDoubleLimiterPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webListDoubleLimiterPositiveTest() {
+        WebPageContext context = initWebPageContext();
 
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements (Table Context)");

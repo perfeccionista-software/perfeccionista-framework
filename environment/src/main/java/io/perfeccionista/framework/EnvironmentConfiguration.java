@@ -1,11 +1,13 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.service.ConfiguredServiceHolder;
+import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.invocation.runner.InvocationRunner;
-import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
-import io.perfeccionista.framework.invocation.timeouts.Timeouts;
-import io.perfeccionista.framework.repeater.RepeatPolicy;
-import io.perfeccionista.framework.repeater.TestRepeatedOnCondition;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Базовый интерфейс для конфигурирования {@link Environment}.
@@ -67,31 +69,26 @@ public interface EnvironmentConfiguration {
      * запуске всех тестов внутри аннотированного тестового класса.
      * @see Environment
      */
-    @NotNull
-    default Class<? extends Environment> getEnvironmentClass() {
+    default @NotNull Class<? extends Environment> getEnvironmentClass() {
         return Environment.class;
     }
 
     /**
-     * @return конфигурацию для используемых в проекте {@link InvocationRunner}.
-     * Она НЕ должна быть null.
-     * @see InvocationRunnerConfiguration
-     * @see InvocationRunner
+     *
+     * @param systemProperties
+     * @param perfeccionistaProperties
      */
-    @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration();
+    EnvironmentConfiguration init(@Nullable Properties systemProperties, @Nullable Properties perfeccionistaProperties);
 
     /**
-     * @return используемую политику перезапусков тестов,
-     * которые используются в проекте по умолчанию. Она НЕ должна быть null.
-     * @see RepeatPolicy
-     * @see TestRepeatedOnCondition
+     * Набор сервисов и конфигураций для замены дефолных сервисов
+     * @return
      */
-    @NotNull RepeatPolicy getRepeatPolicy();
+    @NotNull Map<Class<? extends Service>, ConfiguredServiceHolder> getServices();
 
     /**
-     * @return конфигурацию используемых в проекте таймаутов. Она НЕ должна быть null.
-     * @see Timeouts
+     * @return набор переменных, использующихся в тестах.
      */
-    @NotNull Timeouts getTimeouts();
+    @NotNull Set<String> getScanPackages();
 
 }

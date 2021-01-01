@@ -2,7 +2,7 @@ package io.perfeccionista.framework.repeater.iterators;
 
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import io.perfeccionista.framework.extension.PerfeccionistaExtension;
-import io.perfeccionista.framework.repeater.RepeatPolicy;
+import io.perfeccionista.framework.repeater.policy.RepeatPolicy;
 import io.perfeccionista.framework.repeater.RepeaterInvocationContext;
 
 import java.lang.reflect.Method;

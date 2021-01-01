@@ -1,41 +1,47 @@
 package io.perfeccionista.framework.extension;
 
+import io.perfeccionista.framework.AbstractParallelTestWithEnvironment;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.UseEnvironmentConfiguration;
+import io.perfeccionista.framework.UseEnvironment;
 import io.perfeccionista.framework.extension.configurations.TestClassLocalEnvironmentConfiguration;
 import io.perfeccionista.framework.service.Service;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-@ExtendWith(PerfeccionistaExtension.class)
-@UseEnvironmentConfiguration(TestClassLocalEnvironmentConfiguration.class)
-public class PerfeccionistaExtension_BeforeAndAfterHooksTest {
+@UseEnvironment(TestClassLocalEnvironmentConfiguration.class)
+class PerfeccionistaExtension_BeforeAndAfterHooksTest extends AbstractParallelTestWithEnvironment {
 
     @BeforeEach
     void setUp(Environment environment) {
-        Assertions.assertNotNull(environment);
+        assertNotNull(environment);
         Service beforeMethodService = mock(BeforeMethodService.class);
         environment.register(BeforeMethodService.class, beforeMethodService);
+        assertNotNull(environment.getService(BeforeMethodService.class));
     }
 
     @Test
     void environmentInjectionTest(Environment environment) {
-        Assertions.assertNotNull(environment);
-        Assertions.assertNotNull(environment.getService(BeforeMethodService.class));
+        assertAll(
+                () -> assertNotNull(environment),
+                () -> assertNotNull(environment.getService(BeforeMethodService.class))
+        );
         Service testMethodService = mock(TestMethodService.class);
         environment.register(TestMethodService.class, testMethodService);
+        assertNotNull(environment.getService(TestMethodService.class));
     }
 
     @AfterEach
     void tearDown(Environment environment) {
-        Assertions.assertNotNull(environment);
-        Assertions.assertNotNull(environment.getService(BeforeMethodService.class));
-        Assertions.assertNotNull(environment.getService(TestMethodService.class));
+        assertAll(
+                () -> assertNotNull(environment),
+                () -> assertNotNull(environment.getService(BeforeMethodService.class)),
+                () -> assertNotNull(environment.getService(TestMethodService.class))
+        );
     }
 
     private abstract static class BeforeMethodService implements Service {}

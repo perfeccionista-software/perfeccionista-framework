@@ -1,13 +1,11 @@
 # language:en
 
-@UseEnvironmentConfiguration(io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration)
 Feature: WebCheckbox element feature
 
-  @Disabled
-  @WebCheckbox @WebElement
+  @WebElement @WebCheckbox
   Scenario: WebCheckbox positive scenario
-    * user launch browser "${[props] browser}"
-    * user enters the URL "${[props] start_url}" in the browser and clicks 'Enter'
+    * user launch browser "${[config] browser}"
+    * user enters the URL "${[config] start_url}" in the browser and clicks 'Enter'
 
     * page "Home page" opens
     * user chooses in the list "Left menu" blocks with

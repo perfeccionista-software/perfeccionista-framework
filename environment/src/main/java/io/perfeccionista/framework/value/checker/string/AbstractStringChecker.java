@@ -17,7 +17,7 @@ public abstract class AbstractStringChecker implements StringChecker {
 
     protected String actual;
 
-    public AbstractStringChecker(@NotNull Environment environment) {
+    protected AbstractStringChecker(@NotNull Environment environment) {
         this.environment = environment;
     }
 

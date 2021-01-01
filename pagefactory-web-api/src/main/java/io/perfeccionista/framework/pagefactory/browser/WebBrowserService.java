@@ -6,6 +6,7 @@ import io.perfeccionista.framework.exceptions.WebBrowserConfigurationNotFound;
 import io.perfeccionista.framework.exceptions.WebBrowserDispatcherNotStarted;
 import io.perfeccionista.framework.exceptions.WebBrowserExceptionMapperNotFound;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
+import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +50,7 @@ public class WebBrowserService implements Service {
     public @NotNull WebBrowserDispatcher createDispatcher(@NotNull String webBrowserConfigurationName) {
         WebBrowserDispatcher webBrowserDispatcher = Optional.ofNullable(configuration.getWebBrowserConfigurations().get(webBrowserConfigurationName))
                 .orElseThrow(() -> WebBrowserConfigurationNotFound.exception(WEB_BROWSER_CONFIGURATION_NOT_FOUND.getMessage(webBrowserConfigurationName)))
-                .get(environment);
+                .get();
         webBrowserDispatchers.add(webBrowserDispatcher);
         this.activeWebBrowserDispatcher = webBrowserDispatcher;
         return webBrowserDispatcher;
@@ -58,7 +59,7 @@ public class WebBrowserService implements Service {
     public @NotNull WebBrowserDispatcher createDispatcher(@NotNull String webBrowserConfigurationName, @NotNull String webBrowserDispatcherName) {
         WebBrowserDispatcher webBrowserDispatcher = Optional.ofNullable(configuration.getWebBrowserConfigurations().get(webBrowserConfigurationName))
                 .orElseThrow(() -> WebBrowserConfigurationNotFound.exception(WEB_BROWSER_CONFIGURATION_NOT_FOUND.getMessage(webBrowserConfigurationName)))
-                .get(environment);
+                .get();
         webBrowserDispatchersByName.put(webBrowserDispatcherName, webBrowserDispatcher);
         this.activeWebBrowserDispatcher = webBrowserDispatcher;
         return webBrowserDispatcher;

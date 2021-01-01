@@ -1,10 +1,6 @@
 package io.perfeccionista.framework.extension.configurations;
 
-import io.perfeccionista.framework.value.ValueService;
-import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
-import io.perfeccionista.framework.invocation.timeouts.Timeouts;
+import io.perfeccionista.framework.DefaultEnvironmentConfiguration;
 import io.perfeccionista.framework.extension.services.TestService1;
 import io.perfeccionista.framework.extension.services.TestService2;
 import io.perfeccionista.framework.extension.services.TestService3;
@@ -12,31 +8,37 @@ import io.perfeccionista.framework.extension.services.TestService4;
 import io.perfeccionista.framework.extension.services.configurations.TestServiceConfiguration1;
 import io.perfeccionista.framework.extension.services.configurations.TestServiceConfiguration2;
 import io.perfeccionista.framework.extension.services.configurations.TestServiceConfiguration3;
-import io.perfeccionista.framework.repeater.RepeatPolicy;
-import io.perfeccionista.framework.service.UseService;
+import io.perfeccionista.framework.service.ConfiguredServiceHolder;
+import io.perfeccionista.framework.service.Service;
+import io.perfeccionista.framework.value.ValueService;
+import org.jetbrains.annotations.NotNull;
 
-import static org.mockito.Mockito.mock;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@UseService(service = ValueService.class, disabled = true)
-@UseService(service = TestService1.class, configuration = TestServiceConfiguration1.class, order = -100)
-@UseService(service = TestService2.class, configuration = TestServiceConfiguration2.class)
-@UseService(service = TestService3.class, configuration = TestServiceConfiguration3.class, order = 2)
-@UseService(service = TestService4.class, configuration = TestServiceConfiguration2.class, disabled = true, order = 400)
-public class TestClassLocalEnvironmentConfiguration implements EnvironmentConfiguration {
-
-    @Override
-    public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
-        return mock(InvocationRunnerConfiguration.class);
-    }
+public class TestClassLocalEnvironmentConfiguration extends DefaultEnvironmentConfiguration {
 
     @Override
-    public @NotNull RepeatPolicy getRepeatPolicy() {
-        return mock(RepeatPolicy.class);
-    }
+    public @NotNull Map<Class<? extends Service>, ConfiguredServiceHolder> getServices() {
+        ConfiguredServiceHolder valueService = ConfiguredServiceHolder.disabled(ValueService.class);
+        ConfiguredServiceHolder testService1 = ConfiguredServiceHolder.of(TestService1.class, TestServiceConfiguration1.class)
+                .setOrder(-100);
+        ConfiguredServiceHolder testService2 = ConfiguredServiceHolder.of(TestService2.class, TestServiceConfiguration2.class);
+        ConfiguredServiceHolder testService3 = ConfiguredServiceHolder.of(TestService3.class, TestServiceConfiguration3.class)
+                .setOrder(2);
+        ConfiguredServiceHolder testService4 = ConfiguredServiceHolder.of(TestService4.class, TestServiceConfiguration2.class)
+                .setOrder(400)
+                .disable();
 
-    @Override
-    public @NotNull Timeouts getTimeouts() {
-        return mock(Timeouts.class);
+        return Stream.of(
+                Map.entry(ValueService.class, valueService),
+                Map.entry(TestService1.class, testService1),
+                Map.entry(TestService2.class, testService2),
+                Map.entry(TestService3.class, testService3),
+                Map.entry(TestService4.class, testService4)
+        ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
 }

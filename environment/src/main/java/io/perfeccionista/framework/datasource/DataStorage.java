@@ -22,7 +22,7 @@ public interface DataStorage<K, V> extends DataSource<K, V> {
      * @param key ключ по которому сохраняется значение {@param additions}
      * @param value значение, сохраняемое по ключу {@param key}
      */
-    void put(@NotNull K key, @Nullable V value);
+    DataStorage<K, V> put(@NotNull K key, @Nullable V value);
 
     /**
      * Метод сохраняет значение {@param additions} по ключу {@param key}. Реализация

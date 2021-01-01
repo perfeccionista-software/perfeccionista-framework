@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLOSE;
 import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.OPEN;

@@ -1,9 +1,13 @@
 package io.perfeccionista.framework.pagefactory.browser.tabs;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.exceptions.SeleniumWebDriverOpenUrl;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
 import io.perfeccionista.framework.value.Value;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_CAN_NOT_OPEN_URL_ERROR;
 
 public class SeleniumTabsDispatcher implements TabsDispatcher {
 
@@ -39,8 +43,12 @@ public class SeleniumTabsDispatcher implements TabsDispatcher {
 
     @Override
     public TabsDispatcher openUrl(String url) {
-        // TODO: Обернуть тут ошибку: Некорректный URL с выводом некорректного значения, вместо штатной IncorrectArgument
-        instance.get(url);
+        try {
+            instance.get(url);
+        } catch (WebDriverException e) {
+            throw SeleniumWebDriverOpenUrl.exception(WEB_DRIVER_CAN_NOT_OPEN_URL_ERROR.getMessage(url), e)
+                    .setProcessed(true);
+        }
         return this;
     }
 

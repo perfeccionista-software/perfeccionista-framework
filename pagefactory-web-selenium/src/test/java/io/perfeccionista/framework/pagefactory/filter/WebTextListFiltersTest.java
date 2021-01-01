@@ -1,12 +1,10 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
-import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TextListElementsPage;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +16,19 @@ import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextListFilter;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
+import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
+import static io.perfeccionista.framework.value.Values.stringEquals;
+import static io.perfeccionista.framework.value.Values.stringStartsWith;
 
 @Tag("WebElement") @Tag("WebTextList")
-class WebTextListFiltersTest extends AbstractUiTest {
+class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webTextListFilterEmptyConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTextListFilterEmptyConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Text List Elements"));
+                .select(stringEquals("Text List Elements"));
+
         TextListElementsPage textListElementsPage = context.getPage(TextListElementsPage.class);
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
@@ -36,25 +38,27 @@ class WebTextListFiltersTest extends AbstractUiTest {
     }
 
     @Test
-    void webTextListFilterRowIndexConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTextListFilterRowIndexConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Text List Elements"));
+                .select(stringEquals("Text List Elements"));
+
         TextListElementsPage textListElementsPage = context.getPage(TextListElementsPage.class);
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
 
-        textList.filter(with(textBlockIndex(value.intGreaterThanOrEqual(100))))
+        textList.filter(with(textBlockIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(95));
-        textList.filter(without(textBlockIndex(value.intGreaterThanOrEqual(100))))
+        textList.filter(without(textBlockIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(100));
     }
 
     @Test
-    void webTextListFilterElementTextConditionTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webTextListFilterElementTextConditionTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Text List Elements"));
+                .select(stringEquals("Text List Elements"));
+
         TextListElementsPage textListElementsPage = context.getPage(TextListElementsPage.class);
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
@@ -62,20 +66,20 @@ class WebTextListFiltersTest extends AbstractUiTest {
         // By Element
         textList.filter(with(containsTextBlock("Финляндия")))
                 .should(haveSize(1));
-        textList.filter(with(containsTextBlock(value.stringStartsWith("М"))))
+        textList.filter(with(containsTextBlock(stringStartsWith("М"))))
                 .should(haveSize(17));
-        textList.filter(with(notContainTextBlock(value.stringEquals("Финляндия"))))
+        textList.filter(with(notContainTextBlock(stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        textList.filter(with(notContainTextBlock(value.stringStartsWith("М"))))
+        textList.filter(with(notContainTextBlock(stringStartsWith("М"))))
                 .should(haveSize(178));
 
         textList.filter(without(containsTextBlock("Финляндия")))
                 .should(haveSize(194));
-        textList.filter(without(containsTextBlock(value.stringStartsWith("М"))))
+        textList.filter(without(containsTextBlock(stringStartsWith("М"))))
                 .should(haveSize(178));
         textList.filter(without(notContainTextBlock("Финляндия")))
                 .should(haveSize(1));
-        textList.filter(without(notContainTextBlock(value.stringStartsWith("М"))))
+        textList.filter(without(notContainTextBlock(stringStartsWith("М"))))
                 .should(haveSize(17));
     }
 

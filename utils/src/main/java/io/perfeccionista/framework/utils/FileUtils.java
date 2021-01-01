@@ -7,12 +7,20 @@ import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_EXISTS;
@@ -86,19 +94,58 @@ public class FileUtils {
     }
 
     public static String readFile(@NotNull URL url, @NotNull Charset charset) {
-        StringBuilder scriptBuilder = new StringBuilder();
-        File jsFile = new File(url.getFile());
-        if (!jsFile.isFile()) {
+        StringBuilder stringBuilder = new StringBuilder();
+        File file = new File(url.getFile());
+        if (!file.isFile()) {
             // TODO: Бросаем эксепшн о том, что это не файл
             throw new RuntimeException("Used path is not jsFile");
         }
-        try (Stream<String> stream = Files.lines( jsFile.toPath(), charset)) {
-            stream.forEach(s -> scriptBuilder.append(s).append("\n"));
+        try (Stream<String> stream = Files.lines(file.toPath(), charset)) {
+            stream.forEach(s -> stringBuilder.append(s).append("\n"));
         } catch (IOException e) {
             // TODO: Бросаем эксепшн о том, что не можем прочитать файл
             throw new RuntimeException("Can't read File", e);
         }
-        return scriptBuilder.toString();
+        return stringBuilder.toString();
+    }
+
+    public static Properties readPropertyFile(@NotNull String propertyFileName) {
+        try (InputStream fileInputStream = new FileInputStream(propertyFileName)) {
+            Properties properties = new Properties();
+            properties.load(fileInputStream);
+            return properties;
+        } catch (IOException e) {
+            // TODO: Бросаем эксепшн о том, что не можем прочитать файл
+            throw new RuntimeException("Can't read File", e);
+        }
+    }
+
+    public static Optional<Properties> readOptionalPropertyFile(@NotNull String propertyFileName) {
+        URL resource = FileUtils.class.getClassLoader().getResource(propertyFileName);
+        if (Objects.isNull(resource)) {
+            return Optional.empty();
+        }
+        try (InputStream fileInputStream = resource.openStream()) {
+            Properties properties = new Properties();
+            properties.load(fileInputStream);
+            return Optional.of(properties);
+        } catch (IOException e) {
+            return Optional.empty();
+        }
+    }
+
+    public static Map<String, String> readPropertyFileAsMap(@NotNull URL url) {
+        return readPropertyFileAsMap(url, StandardCharsets.UTF_8);
+    }
+
+    public static Map<String, String> readPropertyFileAsMap(@NotNull URL url, @NotNull Charset charset) {
+        return readFile(url, charset)
+                .lines()
+                .filter(line -> line.contains("="))
+                .map(line -> {
+                    int delimiterIndex = line.indexOf("=");
+                    return Map.entry(line.substring(0, delimiterIndex).trim(), line.substring(delimiterIndex + 1).trim());
+                }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     public static boolean isFileExecutable(@NotNull Path path) {

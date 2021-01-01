@@ -1,15 +1,13 @@
 # language:ru
 
-@UseEnvironmentConfiguration(io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration)
 Функционал: Функционал проверки WebButton
 
-  @Disabled
   @WebElement @WebButton
   Сценарий: Положительный сценарий WebButton
 
     * шаг "Открытие браузера"
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * шаг "Переход на страницу проверок"
     * открывается страница "Домашняя страница"
@@ -65,13 +63,12 @@
 
     * пользователь закрывает браузер
 
-  @Disabled
-  @WebButton @WebElement
+  @WebElement @WebButton
   Сценарий: Положительный сценарий WebButton со спиннером
 
     * шаг "Открытие браузера"
-    * пользователь запускает браузер "${[props] browser}"
-    * пользователь вводит URL "${[props] start_url}" в браузер и нажимает 'Enter'
+    * пользователь запускает браузер "${[config] browser}"
+    * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * шаг "Переход на страницу проверок"
     * открывается страница "Домашняя страница"

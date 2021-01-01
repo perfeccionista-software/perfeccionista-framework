@@ -1,13 +1,11 @@
 # language:en
 
-@UseEnvironmentConfiguration(io.perfeccionista.framework.pagefactory.configurations.TestEnvironmentConfiguration)
 Feature: WebButton element feature
 
-  @Disabled
-  @WebButton @WebElement
+  @WebElement @WebButton
   Scenario: WebButton positive scenario
-    * user launch browser "${[props] browser}"
-    * user enters the URL "${[props] start_url}" in the browser and clicks 'Enter'
+    * user launch browser "${[config] browser}"
+    * user enters the URL "${[config] start_url}" in the browser and clicks 'Enter'
 
     * page "Home page" opens
     * user chooses in the list "Left menu" blocks with
@@ -62,11 +60,10 @@ Feature: WebButton element feature
 
     * user close the browser
 
-  @Disabled
-  @WebButton @WebElement
+  @WebElement @WebButton
   Scenario: WebButton with spinner positive scenario
-    * user launch browser "${[props] browser}"
-    * user enters the URL "${[props] start_url}" in the browser and clicks 'Enter'
+    * user launch browser "${[config] browser}"
+    * user enters the URL "${[config] start_url}" in the browser and clicks 'Enter'
 
     * page "Home page" opens
     * user chooses in the list "Left menu" blocks with

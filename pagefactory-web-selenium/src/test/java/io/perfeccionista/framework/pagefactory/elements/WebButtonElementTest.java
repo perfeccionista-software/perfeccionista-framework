@@ -12,9 +12,10 @@ import io.perfeccionista.framework.exceptions.WebElementNotDisplayed.WebElementN
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotPresent.WebElementNotPresentAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementTextValue.WebElementTextValueAssertionError;
-import io.perfeccionista.framework.invocation.timeouts.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
+import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
-import io.perfeccionista.framework.pagefactory.AbstractUiTest;
+import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
@@ -25,7 +26,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.screenshots.Screenshot;
-import io.perfeccionista.framework.value.ValueService;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -61,6 +61,11 @@ import static io.perfeccionista.framework.pagefactory.elements.actions.WebElemen
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_IN_FOCUS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.value.Values.intGreaterThan;
+import static io.perfeccionista.framework.value.Values.stringContains;
+import static io.perfeccionista.framework.value.Values.stringEmpty;
+import static io.perfeccionista.framework.value.Values.stringEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -69,67 +74,71 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @Tag("WebElement") @Tag("WebButton")
-class WebButtonElementTest extends AbstractUiTest {
+class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
 
     @Test
-    void webButtonInitializationTest(Environment env) {
+    void webButtonInitializationTest(Environment environment) {
         WebPageFactory pageFactory = new WebPageFactory(new DefaultSeleniumWebPageFactoryPreferences());
         ElementsPage elementsPage = (ElementsPage) pageFactory.createWebPage(ElementsPage.class);
-        elementsPage.setEnvironment(env);
+        elementsPage.setEnvironment(environment);
         elementsPage.setWebBrowserDispatcher(mock(WebBrowserDispatcher.class));
+
         WebButton simpleButton = elementsPage.simpleButton();
-        assertNotNull(simpleButton.getEnvironment());
-        assertNotNull(simpleButton.getLocatorChain());
-        assertNotNull(simpleButton.getWebBrowserDispatcher());
-        assertNotNull(simpleButton.getRequiredLocator(ROOT));
-        // WebButton
-        assertNotNull(simpleButton.getActionImplementation(CLICK_METHOD, Void.class));
-        assertNotNull(simpleButton.getActionImplementation(GET_TEXT_METHOD, String.class));
-        // WebChildElement
-        assertNotNull(simpleButton.getActionImplementation(GET_COLOR_METHOD, Color.class));
-        assertNotNull(simpleButton.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class));
-        assertNotNull(simpleButton.getActionImplementation(GET_LOCATION_METHOD, Location.class));
-        assertNotNull(simpleButton.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class));
-        assertNotNull(simpleButton.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class));
-        assertNotNull(simpleButton.getActionImplementation(HOVER_TO_METHOD, Void.class));
-        assertNotNull(simpleButton.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(simpleButton.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class));
-        assertNotNull(simpleButton.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class));
-        assertNotNull(simpleButton.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class));
-        assertNotNull(simpleButton.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class));
-        assertNotNull(simpleButton.getActionImplementation(IS_PRESENT_METHOD, Boolean.class));
-        assertNotNull(simpleButton.getActionImplementation(SCROLL_TO_METHOD, Void.class));
-        // Identifier
         WebElementIdentifier elementIdentifier = simpleButton.getElementIdentifier();
-        assertEquals("simpleButton", elementIdentifier.getElementMethod().getName());
-        assertEquals("simpleButton", elementIdentifier.getLastUsedName());
-        assertTrue(elementIdentifier.containsName("Simple button"));
-        assertFalse(elementIdentifier.isNameDeprecated("Simple button"));
-        assertEquals(2, elementIdentifier.names().size());
-        WebButton simpleButtonElement = elementsPage.getElementRegistry()
-                .getRequiredElementByPath("Simple button", WebButton.class);
-        assertNotNull(simpleButtonElement);
-        assertEquals("Simple button", elementIdentifier.getLastUsedName());
-        assertNotNull(simpleButton.toString());
-        // Смотрим описание элемента
-        System.out.println(simpleButton.toString());
+        assertAll(
+                () -> assertNotNull(simpleButton.getEnvironment()),
+                () -> assertNotNull(simpleButton.getLocatorChain()),
+                () -> assertNotNull(simpleButton.getWebBrowserDispatcher()),
+                () -> assertNotNull(simpleButton.getRequiredLocator(ROOT)),
+                // WebButton
+                () -> assertNotNull(simpleButton.getActionImplementation(CLICK_METHOD, Void.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(GET_TEXT_METHOD, String.class)),
+                // WebChildElement
+                () -> assertNotNull(simpleButton.getActionImplementation(GET_COLOR_METHOD, Color.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(GET_LOCATION_METHOD, Location.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(HOVER_TO_METHOD, Void.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(IS_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(simpleButton.getActionImplementation(SCROLL_TO_METHOD, Void.class)),
+                // Identifier
+                () -> assertEquals("simpleButton", elementIdentifier.getElementMethod().getName()),
+                () -> assertEquals("simpleButton", elementIdentifier.getLastUsedName()),
+                () -> assertTrue(elementIdentifier.containsName("Simple button")),
+                () -> assertFalse(elementIdentifier.isNameDeprecated("Simple button")),
+                () -> assertEquals(2, elementIdentifier.names().size()),
+                () -> {
+                    WebButton simpleButtonByName = elementsPage.getElementRegistry()
+                            .getRequiredElementByPath("Simple button", WebButton.class);
+                    assertAll(
+                            () -> assertNotNull(simpleButtonByName),
+                            () -> assertEquals("Simple button", elementIdentifier.getLastUsedName()),
+                            () -> assertNotNull(simpleButtonByName.toString())
+                    );
+                }
+        );
     }
 
     /**
      * Case: Проверяем что присутствует левое меню
      *  Проверяем текст заголовка
      *  Проверяем основной текст
-     * @param env - Экземпляр окружения теста
-     * @param value - Экземпляр сервиса значений
      */
     @Test
-    void webButtonPositiveTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webButtonPositiveTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
-                .select(value.stringEquals("Elements"));
+                .select(stringEquals("Elements"));
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebButton simpleButton = elementsPage.simpleButton();
-        // Check Simple button
+        // Check Simple button with inner asserts
         simpleButton
                 .should(bePresent())
                 .should(beDisplayed())
@@ -142,25 +151,34 @@ class WebButtonElementTest extends AbstractUiTest {
                 .hoverTo(true)
                 .should(haveColor( "background-color", Color.of(0, 105, 217, 1.0d)))
                 .should(haveText("Simple Button"))
-                .should(haveText(value.stringContains("Button")))
-                .should(notHaveText(value.stringContains("link")));
-        assertTrue(simpleButton.isPresent());
-        assertTrue(simpleButton.isDisplayed());
-        assertFalse(simpleButton.isInFocus());
-        assertEquals(Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d), simpleButton.getDimensions(ROOT));
-        assertEquals(Location.absolute(369.3d, 314.3d).setInaccuracy(0.2d), simpleButton.getLocation(ROOT));
-        assertEquals(Color.of(0, 105, 217, 1.0d), simpleButton.getColor(ROOT, "background-color"));
-        Screenshot screenshot = simpleButton.getScreenshot(ROOT);
-        assertNotNull(screenshot);
-        assertTrue(value.intGreaterThan(4500).check(screenshot.getRaw().length));
+                .should(haveText(stringContains("Button")))
+                .should(notHaveText(stringContains("link")));
+        // Check Simple button with junit asserts
+        assertAll(
+                () -> assertTrue(simpleButton.isPresent()),
+                () -> assertTrue(simpleButton.isDisplayed()),
+                () -> assertFalse(simpleButton.isInFocus()),
+                () -> assertEquals(Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d), simpleButton.getDimensions(ROOT)),
+                () -> assertEquals(Location.absolute(369.3d, 314.3d).setInaccuracy(0.2d), simpleButton.getLocation(ROOT)),
+                () -> assertEquals(Color.of(0, 105, 217, 1.0d), simpleButton.getColor(ROOT, "background-color")),
+                () -> {
+                    Screenshot screenshot = simpleButton.getScreenshot(ROOT);
+                    assertAll(
+                            () -> assertNotNull(screenshot),
+                            () -> assertTrue(intGreaterThan(4500).check(screenshot.getRaw().length))
+                    );
+                }
+        );
         // Check Simple button text
         WebTextBlock simpleButtonText = elementsPage.simpleButtonText();
         simpleButtonText
                 .should(notBePresent())
                 .should(notBeDisplayed());
-        assertFalse(simpleButtonText.isPresent());
-        assertFalse(simpleButtonText.isDisplayed());
-        assertEquals(Point.of(63.8d, 19d).setInaccuracy(0.2d), simpleButton.getDimensions(ROOT).getCenter());
+        assertAll(
+                () -> assertFalse(simpleButtonText.isPresent()),
+                () -> assertFalse(simpleButtonText.isDisplayed()),
+                () -> assertEquals(Point.of(63.8d, 19d).setInaccuracy(0.2d), simpleButton.getDimensions(ROOT).getCenter())
+        );
         // Simple button click
         simpleButton
                 .click()
@@ -173,57 +191,71 @@ class WebButtonElementTest extends AbstractUiTest {
     }
 
     @Test
-    void webButtonNegativeTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webButtonNegativeTest(Environment environment) {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebButton simpleButton = elementsPage.simpleButton();
+        WebTextBlock simpleButtonText = elementsPage.simpleButtonText();
         // Выполнение этого метода показывает завершение загрузки страницы
         simpleButton.should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
-        env.getEnvironmentConfiguration().getTimeouts()
+        environment.getService(TimeoutsService.class)
                 .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
-        assertThrows(WebElementIsPresentAssertionError.class,
-                () -> simpleButton.should(notBePresent()));
-        assertThrows(WebElementIsDisplayedAssertionError.class,
-                () -> simpleButton.should(notBeDisplayed()));
-        assertThrows(WebElementNotInFocusAssertionError.class,
-                () -> simpleButton.should(beInFocus()));
-        Dimensions elementDimensions = Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d);
-        assertThrows(WebElementDimensionsAssertionError.class,
-                () -> simpleButton.should(notHaveDimensions(elementDimensions)));
-        Location elementLocation = Location.relative(369.3d, 314.3d).setInaccuracy(0.2d);
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> simpleButton.should(haveLocation(elementLocation.offset(12d, 10d))));
-        assertThrows(WebElementLocationAssertionError.class,
-                () -> simpleButton.should(notHaveLocation(elementLocation)));
-        Color elementColor = Color.of(0, 123, 255, 1.0d);
-        assertThrows(WebElementColorAssertionError.class,
-                () -> simpleButton.should(notHaveColor("background-color", elementColor)));
-        assertThrows(WebElementTextValueAssertionError.class,
-                () -> simpleButton.should(notHaveText("Simple Button")));
-        assertThrows(WebElementTextValueAssertionError.class,
-                () -> simpleButton.should(haveText("Simple Link")));
-        WebTextBlock simpleButtonText = elementsPage.simpleButtonText();
-        assertThrows(WebElementNotPresentAssertionError.class,
-                () -> simpleButtonText.should(bePresent()));
-        assertThrows(WebElementNotDisplayedAssertionError.class,
-                () -> simpleButtonText.should(beDisplayed()));
+        assertAll(
+                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                        () -> simpleButton.should(notBePresent())),
+                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                        () -> simpleButton.should(notBeDisplayed())),
+                () -> assertThrows(WebElementNotInFocusAssertionError.class,
+                        () -> simpleButton.should(beInFocus())),
+                () -> {
+                    Dimensions elementDimensions = Dimensions.of(127.6d, 38.0d).setInaccuracy(0.2d);
+                    assertThrows(WebElementDimensionsAssertionError.class,
+                            () -> simpleButton.should(notHaveDimensions(elementDimensions)));
+                },
+                () -> {
+                    Location elementLocation = Location.relative(369.3d, 314.3d).setInaccuracy(0.2d);
+                    assertAll(
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> simpleButton.should(haveLocation(elementLocation.offset(12d, 10d)))),
+                            () -> assertThrows(WebElementLocationAssertionError.class,
+                                    () -> simpleButton.should(notHaveLocation(elementLocation)))
+                    );
+                },
+                () -> {
+                    Color elementColor = Color.of(0, 123, 255, 1.0d);
+                    assertThrows(WebElementColorAssertionError.class,
+                            () -> simpleButton.should(notHaveColor("background-color", elementColor)));
+                },
+                () -> assertThrows(WebElementTextValueAssertionError.class,
+                        () -> simpleButton.should(notHaveText("Simple Button"))),
+                () -> assertThrows(WebElementTextValueAssertionError.class,
+                        () -> simpleButton.should(haveText("Simple Link"))),
+                () -> assertThrows(WebElementNotPresentAssertionError.class,
+                        () -> simpleButtonText.should(bePresent())),
+                () -> assertThrows(WebElementNotDisplayedAssertionError.class,
+                        () -> simpleButtonText.should(beDisplayed()))
+        );
         simpleButton.click();
-        assertThrows(WebElementInFocusAssertionError.class,
-                () -> simpleButton.should(notBeInFocus()));
-        assertThrows(WebElementIsPresentAssertionError.class,
-                () -> simpleButtonText.should(notBePresent()));
-        assertThrows(WebElementIsDisplayedAssertionError.class,
-                () -> simpleButtonText.should(notBeDisplayed()));
+        assertAll(
+                () -> assertThrows(WebElementInFocusAssertionError.class,
+                        () -> simpleButton.should(notBeInFocus())),
+                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                        () -> simpleButtonText.should(notBePresent())),
+                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                        () -> simpleButtonText.should(notBeDisplayed()))
+        );
     }
 
     @Test
-    void webButtonWithHoverTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webButtonWithHoverTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         elementsPage.buttonForHover()
                 .should(beDisplayed());
@@ -232,7 +264,7 @@ class WebButtonElementTest extends AbstractUiTest {
                 .should(notBeDisplayed());
         elementsPage.visibleLinkText()
                 .should(beDisplayed())
-                .should(haveText(value.stringEmpty()));
+                .should(haveText(stringEmpty()));
         elementsPage.buttonForHover()
                 .hoverTo(true);
         elementsPage.visibleLink()
@@ -247,10 +279,11 @@ class WebButtonElementTest extends AbstractUiTest {
     }
 
     @Test
-    void webButtonForSpinnerTest(Environment env, ValueService value) {
-        WebPageContext context = initWebPageContext(env, value);
+    void webButtonForSpinnerTest() {
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Elements");
+
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         elementsPage.buttonWithSpinner()
                 .should(beDisplayed());

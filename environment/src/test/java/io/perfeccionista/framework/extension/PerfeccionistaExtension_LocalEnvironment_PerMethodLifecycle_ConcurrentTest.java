@@ -1,16 +1,12 @@
 package io.perfeccionista.framework.extension;
 
+import io.perfeccionista.framework.AbstractParallelTestWithEnvironment;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.UseEnvironmentConfiguration;
+import io.perfeccionista.framework.UseEnvironment;
 import io.perfeccionista.framework.extension.configurations.TestClassLocalEnvironmentConfiguration;
 import io.perfeccionista.framework.extension.configurations.TestMethodLocalFirstEnvironmentConfiguration;
 import io.perfeccionista.framework.extension.configurations.TestMethodLocalSecondEnvironmentConfiguration;
@@ -21,16 +17,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestInstance(Lifecycle.PER_METHOD)
-@Execution(ExecutionMode.CONCURRENT)
-@ExtendWith(PerfeccionistaExtension.class)
-@UseEnvironmentConfiguration(TestClassLocalEnvironmentConfiguration.class)
-final class PerfeccionistaExtension_LocalEnvironment_PerMethodLifecycle_ConcurrentTest {
+@UseEnvironment(TestClassLocalEnvironmentConfiguration.class)
+class PerfeccionistaExtension_LocalEnvironment_PerMethodLifecycle_ConcurrentTest extends AbstractParallelTestWithEnvironment {
 
-    private static Map<Long, Set<Environment>> instances = new HashMap<>();
-    private static Map<Class<? extends EnvironmentConfiguration>, AtomicInteger> environmentConfigurationUsageCount = new HashMap<>();
+    private static final Map<Long, Set<Environment>> instances = new HashMap<>();
+    private static final Map<Class<? extends EnvironmentConfiguration>, AtomicInteger> environmentConfigurationUsageCount = new HashMap<>();
 
     @BeforeAll
     static void setUp() {
@@ -52,7 +46,7 @@ final class PerfeccionistaExtension_LocalEnvironment_PerMethodLifecycle_Concurre
     }
 
     @Test
-    @UseEnvironmentConfiguration(TestMethodLocalFirstEnvironmentConfiguration.class)
+    @UseEnvironment(TestMethodLocalFirstEnvironmentConfiguration.class)
     void testThree(Environment environment) {
         assertEquals(TestMethodLocalFirstEnvironmentConfiguration.class, environment.getEnvironmentConfiguration().getClass());
         calculate(environment);
@@ -65,7 +59,7 @@ final class PerfeccionistaExtension_LocalEnvironment_PerMethodLifecycle_Concurre
     }
 
     @Test
-    @UseEnvironmentConfiguration(TestMethodLocalSecondEnvironmentConfiguration.class)
+    @UseEnvironment(TestMethodLocalSecondEnvironmentConfiguration.class)
     void testFive(Environment environment) {
         assertEquals(TestMethodLocalSecondEnvironmentConfiguration.class, environment.getEnvironmentConfiguration().getClass());
         calculate(environment);
@@ -78,14 +72,14 @@ final class PerfeccionistaExtension_LocalEnvironment_PerMethodLifecycle_Concurre
     }
 
     @Test
-    @UseEnvironmentConfiguration(TestMethodLocalFirstEnvironmentConfiguration.class)
+    @UseEnvironment(TestMethodLocalFirstEnvironmentConfiguration.class)
     void testSeven(Environment environment) {
         assertEquals(TestMethodLocalFirstEnvironmentConfiguration.class, environment.getEnvironmentConfiguration().getClass());
         calculate(environment);
     }
 
     @Test
-    @UseEnvironmentConfiguration(TestMethodLocalSecondEnvironmentConfiguration.class)
+    @UseEnvironment(TestMethodLocalSecondEnvironmentConfiguration.class)
     void testEight(Environment environment) {
         assertEquals(TestMethodLocalSecondEnvironmentConfiguration.class, environment.getEnvironmentConfiguration().getClass());
         calculate(environment);
@@ -105,10 +99,12 @@ final class PerfeccionistaExtension_LocalEnvironment_PerMethodLifecycle_Concurre
 
     @AfterAll
     static void tearDown() {
-        assertEquals(6, environmentConfigurationUsageCount.get(TestClassLocalEnvironmentConfiguration.class).get());
-        assertEquals(2, environmentConfigurationUsageCount.get(TestMethodLocalFirstEnvironmentConfiguration.class).get());
-        assertEquals(2, environmentConfigurationUsageCount.get(TestMethodLocalSecondEnvironmentConfiguration.class).get());
-        assertEquals(10, instances.values().stream().map(Set::size).reduce(0, Integer::sum));
+        assertAll(
+                () -> assertEquals(6, environmentConfigurationUsageCount.get(TestClassLocalEnvironmentConfiguration.class).get()),
+                () -> assertEquals(2, environmentConfigurationUsageCount.get(TestMethodLocalFirstEnvironmentConfiguration.class).get()),
+                () -> assertEquals(2, environmentConfigurationUsageCount.get(TestMethodLocalSecondEnvironmentConfiguration.class).get()),
+                () -> assertEquals(10, instances.values().stream().map(Set::size).reduce(0, Integer::sum))
+        );
     }
 
     private static synchronized void calculate(Environment environment) {

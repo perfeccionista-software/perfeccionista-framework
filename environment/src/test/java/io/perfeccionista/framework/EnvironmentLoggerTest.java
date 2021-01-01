@@ -1,34 +1,23 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.Environment.EnvironmentLogger;
-import org.jetbrains.annotations.NotNull;
+import io.perfeccionista.framework.utils.EnvironmentLogger;
 import org.junit.jupiter.api.Test;
-import io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration;
-import io.perfeccionista.framework.invocation.timeouts.Timeouts;
-import io.perfeccionista.framework.repeater.RepeatPolicy;
-import io.perfeccionista.framework.service.Service;
-import io.perfeccionista.framework.service.ServiceConfiguration;
-import io.perfeccionista.framework.service.UseService;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
-class EnvironmentLoggerTest extends SimpleParallelTest {
+class EnvironmentLoggerTest extends AbstractParallelTest {
 
     @Test
     void initializationSuccessTest() {
-        EnvironmentLogger environmentLogger = EnvironmentLogger.of(new TestEnvironmentConfiguration());
-        environmentLogger.addServiceRecord(TestEnvironmentConfiguration.class.getAnnotation(UseService.class));
+        EnvironmentLogger environmentLogger = EnvironmentLogger.of(new DefaultEnvironmentConfiguration());
         String environmentDescription = environmentLogger.toString();
-
-        assertNotNull(environmentDescription);
-
-        assertTrue(environmentDescription.contains("io.perfeccionista.framework.Environment"));
-        assertTrue(environmentDescription.contains("io.perfeccionista.framework.invocation.runner.InvocationRunnerConfiguration"));
-        assertTrue(environmentDescription.contains("io.perfeccionista.framework.repeater.RepeatPolicy"));
-        assertTrue(environmentDescription.contains("io.perfeccionista.framework.invocation.timeouts.Timeouts"));
+        assertAll(
+                () -> assertNotNull(environmentDescription),
+                () -> assertTrue(environmentDescription.contains("io.perfeccionista.framework.Environment"))
+        );
      }
 
     @Test
@@ -38,28 +27,8 @@ class EnvironmentLoggerTest extends SimpleParallelTest {
 
     @Test
     void notNullArgumentsTest() {
-        EnvironmentLogger environmentLogger = EnvironmentLogger.of(new TestEnvironmentConfiguration());
-        assertThrows(IllegalArgumentException.class, () -> environmentLogger.addServiceRecord(null));
-    }
-
-    @UseService(service = Service.class, configuration = ServiceConfiguration.class)
-    static class TestEnvironmentConfiguration implements EnvironmentConfiguration {
-
-        @Override
-        public @NotNull InvocationRunnerConfiguration getInvocationRunnerConfiguration() {
-            return mock(InvocationRunnerConfiguration.class);
-        }
-
-        @Override
-        public @NotNull RepeatPolicy getRepeatPolicy() {
-            return mock(RepeatPolicy.class);
-        }
-
-        @Override
-        public @NotNull Timeouts getTimeouts() {
-            return mock(Timeouts.class);
-        }
-
+        EnvironmentLogger environmentLogger = EnvironmentLogger.of(new DefaultEnvironmentConfiguration());
+        assertThrows(IllegalArgumentException.class, () -> environmentLogger.addServiceRecord(null, 0, 0));
     }
 
 }

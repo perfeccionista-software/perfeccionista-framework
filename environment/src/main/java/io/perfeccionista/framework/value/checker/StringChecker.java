@@ -10,4 +10,8 @@ public interface StringChecker extends Checker<String> {
     @Override
     @NotNull String getProcessedExpected();
 
+    void setProcessExpectedStatement(boolean processExpectedStatement);
+
+    boolean isProcessExpectedStatement();
+
 }

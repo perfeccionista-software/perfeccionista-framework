@@ -1,24 +1,22 @@
 package io.perfeccionista.framework.invocation.wrapper;
 
+import io.perfeccionista.framework.AbstractWebParallelTest;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
-import io.perfeccionista.framework.invocation.wrapper.configuration.TestClassLocalEnvironmentConfiguration;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.UseEnvironmentConfiguration;
-import io.perfeccionista.framework.extension.PerfeccionistaExtension;
 
 import java.time.Duration;
 
-import static io.perfeccionista.framework.invocation.wrappers.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.invocation.wrappers.LogicInvocationWrapper.runLogic;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.LogicInvocationWrapper.runLogic;
 
-@ExtendWith(PerfeccionistaExtension.class)
-@UseEnvironmentConfiguration(TestClassLocalEnvironmentConfiguration.class)
-public class LogicActionWrapperTest {
+/**
+ * TODO: Implement checks
+ */
+class LogicActionWrapperTest extends AbstractWebParallelTest {
 
     @Test
-    public void test(Environment environment) {
+    void test(Environment environment) {
         runLogic(environment, InvocationName.assertInvocation("First logic action in this test"),  () -> {
             runCheck(environment, InvocationName.assertInvocation("First check in first logic action"), () -> {
                 // There is execution code
