@@ -25,7 +25,7 @@
                 </b-col>
                 <b-col cols="9">
                     <b-dropdown id="text-drop-down-list" class="dropdown-popup" variant="outline-primary" block :text="dropDownSelectedValue ? dropDownSelectedValue : 'Select country'" menu-class="w-100">
-                        <b-dropdown-item itemid="text-drop-down-list-item" v-for="country in countriesData" :key="country.name" v-on:click="dropDownSelectedValue=country.name">
+                        <b-dropdown-item itemid="text-drop-down-list-item" v-for="(country, i) in countriesData" :key="'ddl' + i" v-on:click="dropDownSelectedValue=country.name">
                             <b-row>
                                 <b-col cols="12">
                                     <span itemid="name">{{ country.name }}</span>
@@ -40,7 +40,7 @@
             <b-row class="mb-3 text-center" align-v="center">
                 <b-col cols="12">
                     <b-list-group id="text-list">
-                        <b-list-group-item itemid="text-list-item" v-for="country in countriesData" :key="country.name">
+                        <b-list-group-item itemid="text-list-item" v-for="(country, i) in countriesData" :key="'l' + i">
                             <b-row>
                                 <b-col cols="12">
                                     <span itemid="name">{{ country.name }}</span>

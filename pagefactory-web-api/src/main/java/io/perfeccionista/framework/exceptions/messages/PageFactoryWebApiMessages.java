@@ -34,12 +34,35 @@ public enum PageFactoryWebApiMessages implements Messages {
     ELEMENT_TABLE_COLUMN_LOCATOR_NOT_DECLARED("Element column locator for column %s is not declared"),
     ELEMENT_PROPERTY_NOT_FOUND("Element property %s is not found"),
 
+    // WEB BROWSER
 
+    WEB_BROWSER_DIMENSIONS_FORMAT_UNSUPPORTED("Web browser's dimensions format is unsupported '%s'"),
+
+    WEB_BROWSER_HAS_NO_TAB_WITH_TITLE("Web browser has no tab with title '%s'"),
+    WEB_BROWSER_HAS_NO_TAB_WITH_URL("Web browser has no tab with url '%s'"),
+    WEB_BROWSER_HAS_NO_EXPECTED_TABS_COUNT("Web browser has a different number of tabs than expected"),
     WEB_BROWSER_CONFIGURATION_NOT_FOUND("Web browser configuration with name %s is not found"),
     WEB_BROWSER_SERVICE_CONFIGURATION_NOT_DECLARED("Web browser service configuration not declared"),
     WEB_BROWSER_EXCEPTION_MAPPER_BY_CLASS_NOT_FOUND("Exception mapper for class %s is not found"),
     NO_ACTIVE_WEB_BROWSER_DISPATCHER_FOUND("No active web browser dispatcher found"),
     NO_ACTIVE_WEB_BROWSER_DISPATCHER_WITH_NAME_FOUND("No active web browser dispatcher with name %s found"),
+
+    WEB_BROWSER_ACTIVE_TAB_TITLE_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE("Web browser's active tab title does not contain expected value"),
+    WEB_BROWSER_ACTIVE_TAB_TITLE_TEXT_CONTAINS_EXPECTED_VALUE("Web browser's active tab title contains expected value but should not"),
+    WEB_BROWSER_ACTIVE_TAB_URL_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE("Web browser's active tab url does not contain expected value"),
+    WEB_BROWSER_ACTIVE_TAB_URL_TEXT_CONTAINS_EXPECTED_VALUE("Web browser's active tab url contains expected value but should not"),
+
+    WEB_BROWSER_DOES_NOT_CONTAIN_TAB_WITH_EXPECTED_TITLE("Web browser does not contain tab with expected title"),
+    WEB_BROWSER_CONTAINS_TAB_WITH_EXPECTED_TITLE("Web browser contains tab with expected title but should not"),
+    WEB_BROWSER_DOES_NOT_CONTAIN_TAB_WITH_EXPECTED_URL("Web browser does not contain tab with expected url"),
+    WEB_BROWSER_CONTAINS_TAB_WITH_EXPECTED_URL("Web browser contains tab with expected url but should not"),
+
+
+    WEB_BROWSER_TAB_COUNT_DOES_NOT_CONTAIN_EXPECTED_VALUE("Web browser does not contain expected count of tabs"),
+    WEB_BROWSER_TAB_COUNT_CONTAINS_EXPECTED_VALUE("Web browser contains expected count of tabs but should not"),
+
+
+
 
     WEB_LOCATOR_PROCESSING_RESULT_NOT_FOUND("Processing result for locator is not found"),
     WEB_LOCATOR_HASH_NOT_CALCULATED("Hash for locator is not calculated"),
@@ -110,6 +133,10 @@ public enum PageFactoryWebApiMessages implements Messages {
     REQUESTED_NODE_HASH_NOT_CALCULATED("Requested node hash not calculated"),
     SCREENSHOT_MIME_TYPE_NOT_SUPPORTED("Screenshot mime type %s is not supported"),
 
+    COOKIES_DOMAIN_CONTAINS_PORT("Cookie's domain contains a port but should not"),
+    COOKIES_NAME_EMPTY("Cookie's name is empty but should not"),
+    COOKIES_NAME_INCORRECT("Cookie's name contains ';' but should not"),
+
     WEB_ELEMENT_NAME_NOT_FOUND("WebElement doesn't contain name %s"),
     WEB_ELEMENT_METHOD_NOT_IMPLEMENTED("WebElement method %s not implemented"),
 
@@ -128,6 +155,8 @@ public enum PageFactoryWebApiMessages implements Messages {
     WEB_MAPPED_BLOCK_INCORRECT_TYPE("Mapped block must inherit %s"),
 
     MAPPED_WEB_BLOCK_CALLED_BY_METHOD("Mapped WebBlock instance hasn't method. It's declared by mapped class"),
+
+
     ;
 
     private String key;

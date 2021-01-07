@@ -2,6 +2,9 @@ package io.perfeccionista.framework.pagefactory.browser.logs;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
+import org.jetbrains.annotations.NotNull;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.logging.Level;
@@ -20,13 +23,24 @@ public class SeleniumLogsDispatcher implements LogsDispatcher {
     }
 
     @Override
-    public Stream<String> getEntries() {
-        return null;
+    public @NotNull Stream<String> getEntries() {
+        return exceptionMapper.map(() -> instance.manage()
+                .logs().get(LogType.BROWSER)
+                .getAll().stream()
+                .map(LogEntry::toString))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult();
     }
 
     @Override
-    public LogsDispatcher setLogLevel(Level level) {
-        return null;
+    public SeleniumLogsDispatcher setLogLevel(@NotNull Level level) {
+        exceptionMapper.map(() -> instance.setLogLevel(level))
+                .ifException(exception -> {
+                    throw exception;
+                });
+        return this;
     }
 
 }

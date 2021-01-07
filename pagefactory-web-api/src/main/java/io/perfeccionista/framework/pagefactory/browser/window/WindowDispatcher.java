@@ -5,15 +5,17 @@ import io.perfeccionista.framework.measurements.Dimensions;
 
 public interface WindowDispatcher {
 
-    Dimensions getWindowSize();
+    Dimensions getInnerWindowSize();
 
-    WindowDispatcher setWindowSize(int width, int height);
+    Dimensions getOuterWindowSize();
 
-    Location getLocation();
+    WindowDispatcher setOuterWindowSize(int width, int height);
 
-    WindowDispatcher setLocation(Location location);
+    Location getAbsoluteLocation();
 
-    WindowDispatcher fullscreen(boolean fullscreen);
+    WindowDispatcher setAbsoluteLocation(int absoluteX, int absoluteY);
+
+    WindowDispatcher fullscreen();
 
     WindowDispatcher maximize();
 

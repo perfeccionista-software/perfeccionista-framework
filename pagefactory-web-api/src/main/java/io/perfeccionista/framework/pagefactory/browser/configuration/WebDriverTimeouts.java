@@ -7,7 +7,7 @@ public class WebDriverTimeouts {
 
     private long implicitlyTimeout = 0;
     private long pageLoadTimeout = 30_000;
-    private long scriptTimeout = 10_000;
+    private long scriptTimeout = 30_000;
 
     public WebDriverTimeouts() {}
 

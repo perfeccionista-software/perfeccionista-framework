@@ -136,7 +136,7 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertTrue(list.isDisplayed()),
                 () -> assertFalse(list.isInFocus()),
                 () -> assertEquals(Dimensions.of(795.0d, 10295.0d).setInaccuracy(0.2d), list.getDimensions(ROOT)),
-                () -> assertEquals(Location.absolute(345d, 335d).setInaccuracy(0.2d), list.getLocation(ROOT)),
+                () -> assertEquals(Location.absolute(345d, 227d).setInaccuracy(0.2d), list.getLocation(ROOT)),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), list.getColor(ROOT, "border-color")),
                 () -> assertEquals(195, list.extractAll(block()).getSize()),
                 () -> assertEquals(Point.of(397.5d, 5147.5d).setInaccuracy(0.2d), list.getDimensions(ROOT).getCenter())
@@ -169,7 +169,7 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
                             () -> list.should(notHaveDimensions(elementDimensions)));
                 },
                 () -> {
-                    Location elementLocation = Location.relative(345d, 335d).setInaccuracy(0.2d);
+                    Location elementLocation = Location.relative(345d, 227d).setInaccuracy(0.2d);
                     assertAll(
                             () -> assertThrows(WebElementLocationAssertionError.class,
                                     () -> list.should(haveLocation(elementLocation.offset(15d, 1d)))),

@@ -37,12 +37,10 @@ public abstract class AbstractWebSeleniumParallelTest {
         WebBrowserDispatcher webBrowserDispatcher = environment.getService(WebBrowserService.class)
                 .createDispatcher(browserName)                      // создаем диспетчер для вебдрайвера
                 .launch();                                          // запускаем браузер
-        webBrowserDispatcher
-                .tabs()
+        webBrowserDispatcher.window()
+                .setOuterWindowSize(1200, 1000);           // Возвращаем контекст страницы для активного браузера
+        webBrowserDispatcher.tabs()
                 .openUrl(startUrl);                                 // открываем ссылку
-        webBrowserDispatcher
-                .window()
-                .setWindowSize(1200, 1000);           // Возвращаем контекст страницы для активного браузера
         return webBrowserDispatcher;
     }
 
