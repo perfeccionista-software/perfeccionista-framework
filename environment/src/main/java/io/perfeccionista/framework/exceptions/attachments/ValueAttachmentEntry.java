@@ -24,6 +24,11 @@ public class ValueAttachmentEntry extends StringAttachmentEntry {
                 + String.format("               All actual values = '%s'\n", allActualValues));
     }
 
+    public static ValueAttachmentEntry of(int expectedNumber, int actualNumber) {
+        return new ValueAttachmentEntry(String.format("             Expected = '%s'\n"
+                + "               Actual = '%s'\n", expectedNumber, actualNumber));
+    }
+
     public static <T extends Number> ValueAttachmentEntry of(@NotNull NumberValue<T> expectedNumberValue) {
         return new ValueAttachmentEntry(expectedNumberValue.toString());
     }

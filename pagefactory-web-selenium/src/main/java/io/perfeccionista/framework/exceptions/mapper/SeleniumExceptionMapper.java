@@ -20,8 +20,8 @@ import org.openqa.selenium.ElementNotSelectableException;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchSessionException;
-import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.UnsupportedCommandException;
@@ -37,6 +37,8 @@ import java.util.regex.Pattern;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_DISABLED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_DISPLAYED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_CAN_NOT_EXECUTE_OPERATION_ON_EMPTY_TAB;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_CONNECTION_REFUSED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_NOT_AVAILABLE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_INITIALIZATION_FAILED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_INTERNAL_ERROR;
@@ -68,6 +70,8 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
             .compile("(wait: http(s)*://\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d{1,5} does not respond in \\d+s)+");
     protected static final Pattern LOCAL_STORAGE_PROPERTY_NOT_AVAILABLE_PATTERN = Pattern
             .compile("(Failed to read the 'localStorage' property from 'Window')+");
+    protected static final Pattern ERROR_CONNECTION_REFUSED = Pattern
+            .compile("(unknown error: net::ERR_CONNECTION_REFUSED)+");
 
     @Override
     public @NotNull<T> ExceptionMapperResult<T> map(@NotNull Supplier<T> supplier, String... exceptionMessageOptionalArgs) {
@@ -94,7 +98,7 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
             return WebElementNotClickable.exception(WEB_ELEMENT_CLICK_INTERCEPTED.getMessage(getArg(args, 0)), e)
                     .setProcessed(true);
         } else if (e instanceof ElementNotVisibleException
-                || e instanceof NotFoundException) {
+                || e instanceof NoSuchElementException) {
             return WebElementNotDisplayed.exception(ELEMENT_NOT_DISPLAYED.getMessage(getArg(args, 0)), e)
                     .setProcessed(true);
         } else if (e instanceof ElementNotInteractableException
@@ -169,7 +173,10 @@ public class SeleniumExceptionMapper implements ExceptionMapper {
             return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception)
                     .setService(true);
         } else if (LOCAL_STORAGE_PROPERTY_NOT_AVAILABLE_PATTERN.matcher(message).find()) {
-            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_NOT_AVAILABLE.getMessage(), exception)
+            return SeleniumWebDriverInstanceNotAvailable.exception(WEB_DRIVER_CAN_NOT_EXECUTE_OPERATION_ON_EMPTY_TAB.getMessage(), exception)
+                    .setService(true);
+        } else if (ERROR_CONNECTION_REFUSED.matcher(message).find()) {
+            return SeleniumWebDriverInstance.exception(WEB_DRIVER_CONNECTION_REFUSED.getMessage(), exception)
                     .setService(true);
         }
         return SeleniumWebDriverInstance.exception(exception.getMessage(), exception)

@@ -62,6 +62,7 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         compile(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
         compile(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
         compile(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junitVersion)
+        compile(group = "org.junit.jupiter", name = "junit-jupiter-params", version = junitVersion)
 
         compile(group = "com.fasterxml.jackson.core", name = "jackson-core", version = jacksonVersion)
         compile(group = "com.fasterxml.jackson.core", name = "jackson-annotations", version = jacksonVersion)

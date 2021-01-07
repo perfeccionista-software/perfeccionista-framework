@@ -1,7 +1,6 @@
-package io.perfeccionista.framework.pagefactory.browser.executor;
+package io.perfeccionista.framework.pagefactory.browser;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.jsfunction.GetAttribute;
@@ -17,7 +16,7 @@ import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocat
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TAG_NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.XPATH;
 
-class SeleniumOperationExecutorTest extends AbstractWebSeleniumParallelTest {
+class OperationExecutorTest extends AbstractWebSeleniumParallelTest {
 
     @Test
     void loadJsFunctionsTest() {

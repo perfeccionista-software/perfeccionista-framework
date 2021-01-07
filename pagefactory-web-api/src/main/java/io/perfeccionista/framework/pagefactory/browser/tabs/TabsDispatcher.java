@@ -1,43 +1,47 @@
 package io.perfeccionista.framework.pagefactory.browser.tabs;
 
+import io.perfeccionista.framework.matcher.browser.TabsDispatcherMatcher;
 import io.perfeccionista.framework.value.Value;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public interface TabsDispatcher {
 
+    int getTabCount();
+
+    @NotNull String getActiveTabTitle();
+
+    @NotNull String getActiveTabUrl();
+
+    @NotNull List<String> getAllTabTitles();
+
+    @NotNull List<String> getAllTabUrls();
+
     TabsDispatcher newTab();
 
-    TabsDispatcher newTab(String url);
+    TabsDispatcher newTab(@NotNull String url);
 
     TabsDispatcher refresh();
 
     TabsDispatcher back();
 
-    TabsDispatcher openUrl(String url);
+    TabsDispatcher openUrl(@NotNull String url);
 
     TabsDispatcher closeActiveTab();
 
-    TabsDispatcher closeTabWithTitle(Value<String> tabTitle);
+    TabsDispatcher closeTabWithTitle(@NotNull Value<String> tabTitle);
 
-    TabsDispatcher closeTabWithUrl(Value<String> tabUrl);
+    TabsDispatcher closeTabWithUrl(@NotNull Value<String> tabUrl);
 
-    TabsDispatcher switchToTabWithTitle(Value<String> tabTitle);
+    TabsDispatcher switchToTabWithTitle(@NotNull Value<String> tabTitle);
 
-    TabsDispatcher switchToTabWithUrl(Value<String> tabUrl);
+    TabsDispatcher switchToTabWithUrl(@NotNull Value<String> tabUrl);
 
-    TabsDispatcher activeTabShouldHaveTitle(Value<String> tabTitle);
+    TabsDispatcher should(@NotNull TabsDispatcherMatcher matcher);
 
-    TabsDispatcher activeTabShouldNotHaveTitle(Value<String> tabTitle);
+    @NotNull String getActiveTabPageSource();
 
-    TabsDispatcher activeTabShouldHaveUrl(Value<String> tabUrl);
-
-    TabsDispatcher activeTabShouldNotHaveUrl(Value<String> tabUrl);
-
-    TabsDispatcher shouldHaveTabWithTitle(Value<String> tabTitle);
-
-    TabsDispatcher shouldNotHaveTabWithTitle(Value<String> tabTitle);
-
-    TabsDispatcher shouldHaveTabWithUrl(Value<String> tabUrl);
-
-    TabsDispatcher shouldNotHaveTabWithUrl(Value<String> tabUrl);
+    @NotNull String getDescription();
 
 }

@@ -18,6 +18,13 @@ public class ChromeLocal implements WebBrowserConfiguration {
     @Override
     public WebBrowserDispatcher get() {
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-software-rasterizer");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-default-apps");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.setAcceptInsecureCerts(true);
         String chromeBinaryPath = stringProcess("${[config] perfeccionista.browser.chrome.binary}");
         if (isNotBlank(chromeBinaryPath)) {
             options.setBinary(chromeBinaryPath);

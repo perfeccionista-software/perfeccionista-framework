@@ -12,11 +12,16 @@ public class ChromeWdmHeadless implements WebBrowserConfiguration {
     @Override
     public WebBrowserDispatcher get() {
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-software-rasterizer");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-default-apps");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
         options.addArguments("--headless");
+        options.setAcceptInsecureCerts(true);
         return new WdmWebBrowserSeleniumDispatcher<>(Environment.getCurrent(), new ChromeType())
                 .withOptions(options);
     }
-
-
 
 }

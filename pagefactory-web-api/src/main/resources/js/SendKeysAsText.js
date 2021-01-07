@@ -3,7 +3,7 @@
 
     debugger;
 
-    let valueToInput = options.value;
+    let valueToInput = options.valueToInput;
     let delay = options.delay;
 
     if (valueToInput === undefined || valueToInput === null) {

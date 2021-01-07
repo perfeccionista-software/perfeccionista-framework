@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.pagefactory.browser.logs;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
@@ -11,8 +13,8 @@ public interface LogsDispatcher {
      * TODO: Добавить метод, который возвращает JSON вместо стринги
      * @return
      */
-    Stream<String> getEntries();
+    @NotNull Stream<String> getEntries();
 
-    LogsDispatcher setLogLevel(Level level);
+    LogsDispatcher setLogLevel(@NotNull Level level);
 
 }

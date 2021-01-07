@@ -12,112 +12,35 @@
                 </b-col>
             </b-row>
 
-            <!-- Autocomplete -->
-            <b-row class="mb-3 text-center" align-v="center">
-                <b-col cols="12">
-                    <cool-select v-model="autocompleteSelectedValue" :items="countriesData" :placeholder="autocompleteSelectedValue ? '' : 'Select country'" item-value="name" item-text="name">
-                        <!-- slot for each item in the menu -->
-                        <template slot="item" slot-scope="{ item: country }">
-                            <div style="display: block; align-items: center">
-                                <b-row>
-                                    <b-col cols="1">
-                                        <b-checkbox itemid="checkbox" :id="country.name" :checked="country.selected" :disabled="!country.enabled"></b-checkbox>
-                                    </b-col>
-                                    <b-col cols="1">
-                                        <span itemid="number">{{ country.number }}</span>
-                                    </b-col>
-                                    <b-col cols="3">
-                                        <b-link itemid="name" class="mr-2" v-b-tooltip.hover :title="country.name" :href="country.wikiLink">{{ formatName(country.name, 22) }}</b-link>
-                                    </b-col>
-                                    <b-col cols="5">
-                                    <span itemid="full-name" class="mr-2" v-b-tooltip.hover :title="country.fullName">{{ formatName(country.fullName, 38) }}
-                                        <!-- Not present -->
-                                        <b-badge class="ml-2" itemid="sng" v-if="country.sng">СНГ</b-badge>
-                                    </span>
-                                    </b-col>
-                                    <b-col cols="2">
-                                        <!-- Not present -->
-                                        <span itemid="population-number" v-if="country.population">{{ formatPopulation(country.population) }}</span>
-                                        <!-- Not displayed -->
-                                        <span itemid="population-unit" v-show="country.population">&nbsp;тыс</span>
-                                    </b-col>
-                                </b-row>
-                            </div>
-                        </template>
-                        <!-- slot for the selected item (in the text field) -->
-                        <template slot="selection" slot-scope="{ item: country }">
-                            <div style="display: block; align-items: center">
-                                <b-row>
-                                    <b-col cols="12">
-                                        <b-link itemid="name" class="mr-2" v-b-tooltip.hover :title="country.name" :href="country.wikiLink">{{ formatName(country.name, 22) }}</b-link>
-                                    </b-col>
-                                </b-row>
-                            </div>
-                        </template>
-                    </cool-select>
-                </b-col>
-            </b-row>
-
-            <!-- DropDown list -->
-            <b-row class="mb-3 text-center" align-v="center">
-                <b-col cols="12">
-                    <b-dropdown class="dropdown-popup" id="drop-down-countries-list" variant="outline-primary" block :text="dropDownSelectedValue ? dropDownSelectedValue : 'Select country'">
-                        <b-dropdown-item itemid="countries-list-item" v-for="country in countriesData" :key="country.name" v-on:click="dropDownSelectedValue=country.name">
-                            <b-row>
-                                <b-col cols="1">
-                                    <b-checkbox itemid="checkbox" :id="country.name" :checked="country.selected" :disabled="!country.enabled"></b-checkbox>
-                                </b-col>
-                                <b-col cols="1">
-                                    <span itemid="number">{{ country.number }}</span>
-                                </b-col>
-                                <b-col cols="3">
-                                    <b-link itemid="name" class="mr-2" v-b-tooltip.hover :title="country.name" :href="country.wikiLink">{{
-                                        formatName(country.name, 22) }}</b-link>
-                                </b-col>
-                                <b-col cols="5">
-                                    <span itemid="full-name" class="mr-2" v-b-tooltip.hover :title="country.fullName">{{ formatName(country.fullName, 38) }}
-                                        <!-- Not present -->
-                                        <b-badge class="ml-2" itemid="sng" v-if="country.sng">СНГ</b-badge>
-                                    </span>
-                                </b-col>
-                                <b-col cols="2">
-                                    <!-- Not present -->
-                                    <span itemid="population-number" v-if="country.population">{{ formatPopulation(country.population) }}</span>
-                                    <!-- Not displayed -->
-                                    <span itemid="population-unit" v-show="country.population">&nbsp;тыс</span>
-                                </b-col>
-                            </b-row>
-                        </b-dropdown-item>
-                    </b-dropdown>
-                </b-col>
-            </b-row>
-
             <!-- List -->
             <b-row class="mb-3 text-center" align-v="center">
                 <b-col cols="12">
                     <b-list-group id="countries-list">
-                        <b-list-group-item itemid="countries-list-item" v-for="country in countriesData" :key="country.name">
+                        <b-list-group-item itemid="countries-list-item" v-for="(country_l, i) in countriesData" :key="'l' + i">
                             <b-row>
                                 <b-col cols="1">
-                                    <b-checkbox itemid="checkbox" :id="country.name" :checked="country.selected" :disabled="!country.enabled">{{ country.number}}</b-checkbox>
+                                    <b-checkbox itemid="checkbox" :id="'l' + country_l.name" :checked="country_l.selected" :disabled="!country_l.enabled">{{ country_l.number}}</b-checkbox>
                                 </b-col>
                                 <b-col cols="1">
-                                    <span itemid="number">{{ country.number }}</span>
+                                    <span itemid="number">{{ country_l.number }}</span>
                                 </b-col>
                                 <b-col cols="3">
-                                    <b-link itemid="country-name" class="mr-2" v-b-tooltip.hover :title="country.name" :href="country.wikiLink" v-if="country.wikiLink!==null">{{ country.name }}</b-link>
+                                    <b-link itemid="country-name" class="mr-2" v-b-tooltip.hover :title="country_l.name" :href="country_l.wikiLink" v-if="country_l.wikiLink!==null">
+                                        {{ formatName(country_l.name, 250) }}
+                                    </b-link>
                                 </b-col>
                                 <b-col cols="5">
-                                    <span itemid="country-full-name" class="mr-2" v-b-tooltip.hover :title="country.fullName">{{ country.fullName }}
+<!--                                    <span itemid="country-full-name" class="mr-2" v-b-tooltip.hover :title="country_l.fullName">{{ formatName(country_l.fullName, 250) }}-->
+                                    <span itemid="country-full-name" class="mr-2" :title="country_l.fullName">{{ formatName(country_l.fullName, 250) }}
                                         <!-- Not present -->
-                                        <b-badge class="ml-2" itemid="sng" v-if="country.sng">СНГ</b-badge>
+                                        <b-badge class="ml-2" itemid="sng" v-if="country_l.sng">СНГ</b-badge>
                                     </span>
                                 </b-col>
                                 <b-col cols="2">
                                     <!-- Not present -->
-                                    <span itemid="population-number" v-if="country.population">{{ formatPopulation(country.population) }}</span>
+                                    <span itemid="population-number" v-if="country_l.population">{{ formatPopulation(country_l.population) }}</span>
                                     <!-- Not displayed -->
-                                    <span itemid="population-unit" v-show="country.population">&nbsp;тыс</span>
+                                    <span itemid="population-unit" v-show="country_l.population">&nbsp;тыс</span>
                                 </b-col>
                             </b-row>
                         </b-list-group-item>
@@ -130,17 +53,11 @@
 </template>
 
 <script>
-    import { CoolSelect } from "vue-cool-select";
     export default {
-        components: {
-            CoolSelect
-        },
         data: function() {
             return {
-                pageTitle: 'Списки',
+                pageTitle: 'Список',
 
-                autocompleteSelectedValue: null,
-                dropDownSelectedValue: null,
                 toastCount: 0,
                 countriesData: [
                     {

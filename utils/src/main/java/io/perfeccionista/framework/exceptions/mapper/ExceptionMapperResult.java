@@ -1,15 +1,15 @@
 package io.perfeccionista.framework.exceptions.mapper;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
 public class ExceptionMapperResult<T> {
 
-    protected final PerfeccionistaRuntimeException exception;
-    protected final T result;
+    protected PerfeccionistaRuntimeException exception;
+    protected T result;
 
     private ExceptionMapperResult(PerfeccionistaRuntimeException exception, T result) {
         this.exception = exception;
@@ -20,7 +20,7 @@ public class ExceptionMapperResult<T> {
         return new ExceptionMapperResult<>(null, null);
     }
 
-    public static <T> ExceptionMapperResult<T> success(@NotNull T result) {
+    public static <T> ExceptionMapperResult<T> success(@Nullable T result) {
         return new ExceptionMapperResult<>(null, result);
     }
 
@@ -31,6 +31,13 @@ public class ExceptionMapperResult<T> {
     public ExceptionMapperResult<T> ifException(Consumer<PerfeccionistaRuntimeException> exceptionConsumer) {
         if (exception != null) {
             exceptionConsumer.accept(exception);
+        }
+        return this;
+    }
+
+    public ExceptionMapperResult<T> setResultIfException(T alternativeResult) {
+        if (exception != null) {
+            result = alternativeResult;
         }
         return this;
     }

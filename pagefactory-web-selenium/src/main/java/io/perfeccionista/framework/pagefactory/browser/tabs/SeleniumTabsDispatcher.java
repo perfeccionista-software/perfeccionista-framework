@@ -1,14 +1,43 @@
 package io.perfeccionista.framework.pagefactory.browser.tabs;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.SeleniumWebDriverOpenUrl;
+import io.perfeccionista.framework.exceptions.WebBrowserTabNotFound;
+import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
+import io.perfeccionista.framework.matcher.browser.TabsDispatcherMatcher;
 import io.perfeccionista.framework.value.Value;
-import org.openqa.selenium.WebDriverException;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_CAN_NOT_OPEN_URL_ERROR;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_HAS_NO_TAB_WITH_TITLE;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_HAS_NO_TAB_WITH_URL;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_BACK_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_CLOSE_ACTIVE_TAB_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_CLOSE_TAB_WITH_TITLE_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_CLOSE_TAB_WITH_URL_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_GET_ACTIVE_TAB_TITLE_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_GET_ACTIVE_TAB_URL_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_GET_ALL_TAB_TITLES_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_GET_ALL_TAB_URLS_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_GET_TAB_COUNT_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_OPEN_URL_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_REFRESH_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_SWITCH_TO_TAB_WITH_TITLE_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.BROWSER_SWITCH_TO_TAB_WITH_URL_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.OPEN_EMPTY_TAB_METHOD;
+import static io.perfeccionista.framework.pagefactory.browser.WebBrowserActionNames.OPEN_TAB_WITH_URL_METHOD;
+import static java.util.stream.Collectors.toList;
+
+// TODO: Эти манипуляции скорее всего можно сделать через JS проще
 public class SeleniumTabsDispatcher implements TabsDispatcher {
 
     protected final Environment environment;
@@ -22,99 +51,288 @@ public class SeleniumTabsDispatcher implements TabsDispatcher {
     }
 
     @Override
-    public TabsDispatcher newTab() {
-        return null;
+    public int getTabCount() {
+        return runCheck(environment, getterInvocation(BROWSER_GET_TAB_COUNT_METHOD), () ->
+                exceptionMapper.map(() -> instance.getWindowHandles().size()))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult();
     }
 
     @Override
-    public TabsDispatcher newTab(String url) {
-        return null;
+    public @NotNull String getActiveTabTitle() {
+        return runCheck(environment, getterInvocation(BROWSER_GET_ACTIVE_TAB_TITLE_METHOD), () ->
+                exceptionMapper.map(instance::getTitle))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult();
     }
 
     @Override
-    public TabsDispatcher refresh() {
-        return null;
+    public @NotNull String getActiveTabUrl() {
+        return runCheck(environment, getterInvocation(BROWSER_GET_ACTIVE_TAB_URL_METHOD), () ->
+                exceptionMapper.map(instance::getCurrentUrl))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult();
     }
 
     @Override
-    public TabsDispatcher back() {
-        return null;
+    public @NotNull List<String> getAllTabTitles() {
+        return runCheck(environment, getterInvocation(BROWSER_GET_ALL_TAB_TITLES_METHOD), () ->
+                exceptionMapper.map(() -> instance.getWindowHandles().stream()
+                        .map(windowHandle -> {
+                            instance.switchTo().window(windowHandle);
+                            return instance.getTitle();
+                        }).collect(toList())))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult();
     }
 
     @Override
-    public TabsDispatcher openUrl(String url) {
-        try {
-            instance.get(url);
-        } catch (WebDriverException e) {
-            throw SeleniumWebDriverOpenUrl.exception(WEB_DRIVER_CAN_NOT_OPEN_URL_ERROR.getMessage(url), e)
-                    .setProcessed(true);
-        }
+    public @NotNull List<String> getAllTabUrls() {
+        return runCheck(environment, getterInvocation(BROWSER_GET_ALL_TAB_URLS_METHOD), () ->
+                exceptionMapper.map(() -> instance.getWindowHandles().stream()
+                        .map(windowHandle -> {
+                            instance.switchTo().window(windowHandle);
+                            return instance.getCurrentUrl();
+                        }).collect(toList())))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult();
+    }
+
+    @Override
+    public SeleniumTabsDispatcher newTab() {
+        runCheck(environment, actionInvocation(OPEN_EMPTY_TAB_METHOD), () -> {
+            exceptionMapper.map(() -> {
+                instance.executeScript("window.open();");
+                List<String> tabs = new ArrayList<>(instance.getWindowHandles());
+                instance.switchTo().window(tabs.get(tabs.size() - 1));
+            }).ifException(exception -> {
+                throw exception;
+            });
+        });
         return this;
     }
 
     @Override
-    public TabsDispatcher closeActiveTab() {
-        return null;
+    public SeleniumTabsDispatcher newTab(@NotNull String url) {
+        runCheck(environment, actionInvocation(OPEN_TAB_WITH_URL_METHOD), () -> {
+            exceptionMapper.map(() -> {
+                instance.executeScript("window.open('" + url + "','_blank');");
+                List<String> tabs = new ArrayList<>(instance.getWindowHandles());
+                instance.switchTo().window(tabs.get(tabs.size() - 1));
+            }).ifException(exception -> {
+                throw exception;
+            });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher closeTabWithTitle(Value<String> tabTitle) {
-        return null;
+    public SeleniumTabsDispatcher refresh() {
+        runCheck(environment, actionInvocation(BROWSER_REFRESH_METHOD), () -> {
+            exceptionMapper.map(() -> instance.navigate().refresh())
+                    .ifException(exception -> {
+                        throw exception;
+                    });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher closeTabWithUrl(Value<String> tabUrl) {
-        return null;
+    public SeleniumTabsDispatcher back() {
+        runCheck(environment, actionInvocation(BROWSER_BACK_METHOD), () -> {
+            exceptionMapper.map(() -> instance.navigate().back())
+                    .ifException(exception -> {
+                        throw exception;
+                    });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher switchToTabWithTitle(Value<String> tabTitle) {
-        return null;
+    public SeleniumTabsDispatcher openUrl(@NotNull String url) {
+        runCheck(environment, actionInvocation(BROWSER_OPEN_URL_METHOD), () -> {
+            exceptionMapper.map(() -> instance.get(url))
+                    .ifException(exception -> {
+                        throw exception;
+                    });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher switchToTabWithUrl(Value<String> tabUrl) {
-        return null;
+    public SeleniumTabsDispatcher closeActiveTab() {
+        runCheck(environment, actionInvocation(BROWSER_CLOSE_ACTIVE_TAB_METHOD), () -> {
+            exceptionMapper.map(() -> {
+                Set<String> windowHandles = instance.getWindowHandles();
+                String currentHandle = instance.getWindowHandle();
+                instance.close();
+                windowHandles.stream()
+                        .filter(handle -> !currentHandle.equals(handle))
+                        .findFirst()
+                        .ifPresent(handle -> instance.switchTo().window(handle));
+            }).ifException(exception -> {
+                throw exception;
+            });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher activeTabShouldHaveTitle(Value<String> tabTitle) {
-        return null;
+    public SeleniumTabsDispatcher closeTabWithTitle(@NotNull Value<String> tabTitle) {
+        runCheck(environment, actionInvocation(BROWSER_CLOSE_TAB_WITH_TITLE_METHOD), () -> {
+            exceptionMapper.map(() -> {
+                String currentHandle = instance.getWindowHandle();
+                Set<String> windowHandles = instance.getWindowHandles();
+                Set<String> windowTitles = new HashSet<>();
+                String targetHandle = windowHandles.stream()
+                        .filter(windowHandle -> {
+                            instance.switchTo().window(windowHandle);
+                            String currentTabTitle = instance.getTitle();
+                            windowTitles.add(currentTabTitle);
+                            return tabTitle.check(currentTabTitle);
+                        })
+                        .findFirst()
+                        .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_TITLE.getMessage(tabTitle.get()))
+                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab titles", windowTitles)));
+                if (windowHandles.size() == 1) {
+                    instance.close();
+                    return;
+                }
+                instance.switchTo().window(targetHandle);
+                instance.close();
+                if (instance.getWindowHandles().contains(currentHandle)) {
+                    instance.switchTo().window(currentHandle);
+                }
+            }).ifException(exception -> {
+                throw exception;
+            });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher activeTabShouldNotHaveTitle(Value<String> tabTitle) {
-        return null;
+    public SeleniumTabsDispatcher closeTabWithUrl(@NotNull Value<String> tabUrl) {
+        runCheck(environment, actionInvocation(BROWSER_CLOSE_TAB_WITH_URL_METHOD), () -> {
+            exceptionMapper.map(() -> {
+                String currentHandle = instance.getWindowHandle();
+                Set<String> windowHandles = instance.getWindowHandles();
+                Set<String> windowUrls = new HashSet<>();
+                String targetHandle = windowHandles.stream()
+                        .filter(windowHandle -> {
+                            instance.switchTo().window(windowHandle);
+                            String currentTabUrl = instance.getCurrentUrl();
+                            windowUrls.add(currentTabUrl);
+                            return tabUrl.check(currentTabUrl);
+                        })
+                        .findFirst()
+                        .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_URL.getMessage(tabUrl.get()))
+                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab urls", windowUrls)));
+                if (windowHandles.size() == 1) {
+                    instance.close();
+                    return;
+                }
+                instance.switchTo().window(targetHandle);
+                instance.close();
+                if (instance.getWindowHandles().contains(currentHandle)) {
+                    instance.switchTo().window(currentHandle);
+                }
+            }).ifException(exception -> {
+                throw exception;
+            });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher activeTabShouldHaveUrl(Value<String> tabUrl) {
-        return null;
+    public SeleniumTabsDispatcher switchToTabWithTitle(@NotNull Value<String> tabTitle) {
+        runCheck(environment, actionInvocation(BROWSER_SWITCH_TO_TAB_WITH_TITLE_METHOD), () -> {
+            exceptionMapper.map(() -> {
+                Set<String> windowHandles = instance.getWindowHandles();
+                Set<String> windowTitles = new HashSet<>();
+                String targetHandle = windowHandles.stream()
+                        .filter(windowHandle -> {
+                            instance.switchTo().window(windowHandle);
+                            String currentTabTitle = instance.getTitle();
+                            windowTitles.add(currentTabTitle);
+                            return tabTitle.check(currentTabTitle);
+                        })
+                        .findFirst()
+                        .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_TITLE.getMessage(tabTitle.get()))
+                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab titles", windowTitles)));
+                instance.switchTo().window(targetHandle);
+            }).ifException(exception -> {
+                throw exception;
+            });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher activeTabShouldNotHaveUrl(Value<String> tabUrl) {
-        return null;
+    public SeleniumTabsDispatcher switchToTabWithUrl(@NotNull Value<String> tabUrl) {
+        runCheck(environment, actionInvocation(BROWSER_SWITCH_TO_TAB_WITH_URL_METHOD), () -> {
+            exceptionMapper.map(() -> {
+                Set<String> windowHandles = instance.getWindowHandles();
+                Set<String> windowUrls = new HashSet<>();
+                String targetHandle = windowHandles.stream()
+                        .filter(windowHandle -> {
+                            instance.switchTo().window(windowHandle);
+                            String currentTabUrl = instance.getCurrentUrl();
+                            windowUrls.add(currentTabUrl);
+                            return tabUrl.check(currentTabUrl);
+                        })
+                        .findFirst()
+                        .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_URL.getMessage(tabUrl.get()))
+                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab urls", windowUrls)));
+                instance.switchTo().window(targetHandle);
+            }).ifException(exception -> {
+                throw exception;
+            });
+        });
+        return this;
     }
 
     @Override
-    public TabsDispatcher shouldHaveTabWithTitle(Value<String> tabTitle) {
-        return null;
+    public SeleniumTabsDispatcher should(@NotNull TabsDispatcherMatcher matcher) {
+        matcher.check(this);
+        return this;
     }
 
     @Override
-    public TabsDispatcher shouldNotHaveTabWithTitle(Value<String> tabTitle) {
-        return null;
+    public @NotNull String getActiveTabPageSource() {
+        return runCheck(environment, getterInvocation(BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD), () ->
+                exceptionMapper.map(instance::getPageSource))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult();
     }
 
     @Override
-    public TabsDispatcher shouldHaveTabWithUrl(Value<String> tabUrl) {
-        return null;
-    }
-
-    @Override
-    public TabsDispatcher shouldNotHaveTabWithUrl(Value<String> tabUrl) {
-        return null;
+    public @NotNull String getDescription() {
+        return exceptionMapper.map(() -> {
+            StringBuilder sb = new StringBuilder();
+            instance.getWindowHandles().forEach(windowHandle -> {
+                        instance.switchTo().window(windowHandle);
+                        String currentTabTitle = instance.getTitle();
+                        String currentTabUrl = instance.getCurrentUrl();
+                        sb.append(currentTabTitle)
+                                .append("\n")
+                                .append(currentTabUrl)
+                                .append("\n");
+                    });
+            return sb.toString();
+        }).setResultIfException("unavailable")
+                .getResult();
     }
 
 }

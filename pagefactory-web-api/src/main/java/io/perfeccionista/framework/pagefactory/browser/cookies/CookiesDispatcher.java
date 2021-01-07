@@ -1,19 +1,22 @@
 package io.perfeccionista.framework.pagefactory.browser.cookies;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.stream.Stream;
 
 public interface CookiesDispatcher {
 
-	Cookie getCookieByName(String name);
+	@Nullable Cookie getCookieByName(@NotNull String name);
 
-	Stream<Cookie> getCookies();
+	@NotNull Stream<Cookie> getCookies();
 
-	CookiesDispatcher addCookie(Cookie cookie);
+	CookiesDispatcher addCookie(@NotNull Cookie cookie);
 
 	CookiesDispatcher cleanCookies();
 
-	CookiesDispatcher deleteCookie(Cookie cookie);
+	CookiesDispatcher deleteCookie(@NotNull Cookie cookie);
 
-	CookiesDispatcher deleteCookieByName(String name);
+	CookiesDispatcher deleteCookieByName(@NotNull String name);
 
 }

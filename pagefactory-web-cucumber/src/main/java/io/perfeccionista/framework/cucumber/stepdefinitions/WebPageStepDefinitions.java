@@ -5,6 +5,15 @@ import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.ValueStringParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebPageParameter;
 
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabHaveTitle;
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabHaveUrl;
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabNotHaveTitle;
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabNotHaveUrl;
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.haveTabWithTitle;
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.haveTabWithUrl;
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.notHaveTabWithTitle;
+import static io.perfeccionista.framework.matcher.WebBrowserAssertions.notHaveTabWithUrl;
+
 // TODO: Wrap runLogic()
 // TODO: Add step categories
 // TODO: Как сделать снятие скриншотов конфигурируемым из проекта (для каждого метода)
@@ -82,7 +91,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("активная вкладка содержит заголовок {stringValue}")
     public void activeTabContainTitle(ValueStringParameter tabTitle) {
         getWebBrowserDispatcher().tabs()
-                .activeTabShouldHaveTitle(tabTitle.getValue());
+                .should(activeTabHaveTitle(tabTitle.getValue()));
     }
 
     /**
@@ -93,7 +102,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("активная вкладка не содержит заголовок {stringValue}")
     public void activeTabDoesNotContainTitle(ValueStringParameter tabTitle) {
         getWebBrowserDispatcher().tabs()
-                .activeTabShouldNotHaveTitle(tabTitle.getValue());
+                .should(activeTabNotHaveTitle(tabTitle.getValue()));
     }
 
     /**
@@ -104,7 +113,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("активная вкладка содержит URL {stringValue}")
     public void activeTabContainUrl(ValueStringParameter tabUrl) {
         getWebBrowserDispatcher().tabs()
-                .activeTabShouldHaveUrl(tabUrl.getValue());
+                .should(activeTabHaveUrl(tabUrl.getValue()));
     }
 
     /**
@@ -115,7 +124,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("активная вкладка не содержит URL {stringValue}")
     public void activeTabDoesNotContainUrl(ValueStringParameter tabUrl) {
         getWebBrowserDispatcher().tabs()
-                .activeTabShouldNotHaveUrl(tabUrl.getValue());
+                .should(activeTabNotHaveUrl(tabUrl.getValue()));
     }
 
     /**
@@ -126,7 +135,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("в браузере присутствует вкладка с заголовком {stringValue}")
     public void tabWithTitleExists(ValueStringParameter tabTitle) {
         getWebBrowserDispatcher().tabs()
-                .shouldHaveTabWithTitle(tabTitle.getValue());
+                .should(haveTabWithTitle(tabTitle.getValue()));
     }
 
     /**
@@ -137,7 +146,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("в браузере отсутствует вкладка с заголовком {stringValue}")
     public void tabWithTitleAbsent(ValueStringParameter tabTitle) {
         getWebBrowserDispatcher().tabs()
-                .shouldNotHaveTabWithTitle(tabTitle.getValue());
+                .should(notHaveTabWithTitle(tabTitle.getValue()));
     }
 
     /**
@@ -148,7 +157,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("в браузере присутствует вкладка с URL {stringValue}")
     public void tabWithUrlExists(ValueStringParameter tabUrl) {
         getWebBrowserDispatcher().tabs()
-                .shouldHaveTabWithUrl(tabUrl.getValue());
+                .should(haveTabWithUrl(tabUrl.getValue()));
     }
 
     /**
@@ -159,7 +168,7 @@ public class WebPageStepDefinitions implements WebStepDefinitions {
     @Дано("в браузере отсутствует вкладка с URL {stringValue}")
     public void tabWithUrlAbsent(ValueStringParameter tabUrl) {
         getWebBrowserDispatcher().tabs()
-                .shouldNotHaveTabWithUrl(tabUrl.getValue());
+                .should(notHaveTabWithUrl(tabUrl.getValue()));
     }
 
     /**

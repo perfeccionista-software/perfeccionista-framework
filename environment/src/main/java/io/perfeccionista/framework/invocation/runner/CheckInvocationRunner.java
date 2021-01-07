@@ -34,22 +34,24 @@ public class CheckInvocationRunner implements InvocationRunner {
         // We need this for one attempt if timeout = 0
         long currentTime = System.nanoTime();
         long deadline = currentTime + timeout.toNanos();
-        if (name.isNotEmpty() && GETTER != name.getType()) {
-            logger.info(name::toString);
-        }
         logger.debug(() -> format("Check action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));
+
+        long invocationStartTime = 0;
 
         while (deadline >= currentTime) {
             try {
+                invocationStartTime = System.nanoTime();
                 T result = supplier.get();
-                logger.debug(() -> "Check action finished");
+                logInvocationExecution(name, invocationStartTime, "SUCCESS");
                 return result;
             } catch (final PerfeccionistaRuntimeException | PerfeccionistaAssertionError e) {
+                logInvocationExecution(name, invocationStartTime, "EXCEPTION");
                 processException(e);
                 if (!e.isProcessed()) {
                     break;
                 }
             } catch (final Exception e) {
+                logInvocationExecution(name, invocationStartTime, "UNEXPECTED EXCEPTION");
                 logger.error(() -> format("Check action cycle finished with unexpected exception: %s", e));
                 throw e;
             }
@@ -60,6 +62,10 @@ public class CheckInvocationRunner implements InvocationRunner {
         logger.error(() -> "Check action finished with exception");
         exceptionCollector.throwIfSingleException();
         throw exceptionCollector.getExceptionSequence();
+    }
+
+    protected void logInvocationExecution(InvocationName name, long invocationStartTime, String status) {
+        logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> [" + status + "]");
     }
 
     protected void processException(PerfeccionistaException exception) {

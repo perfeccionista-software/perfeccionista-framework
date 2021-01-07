@@ -79,7 +79,7 @@ public class WebBrowserStepDefinitions implements WebStepDefinitions {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
                 .window()
-                .setWindowSize(width.getProcessedValue(), height.getProcessedValue());
+                .setOuterWindowSize(width.getProcessedValue(), height.getProcessedValue());
     }
 
 }
