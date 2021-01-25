@@ -3,7 +3,9 @@ package io.perfeccionista.framework.exceptions.base;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * TODO: Implement logic
@@ -13,11 +15,13 @@ public class PerfeccionistaExceptionSequence extends PerfeccionistaRuntimeExcept
 
     private static final long serialVersionUID = 1L;
 
-    protected final Deque<PerfeccionistaException> exceptions;
+    protected final List<PerfeccionistaException> exceptions;
+    protected final String exceptionMessage;
 
-    public PerfeccionistaExceptionSequence(@NotNull Deque<PerfeccionistaException> exceptions, @NotNull String exceptionMessage) {
+    public PerfeccionistaExceptionSequence(@NotNull List<PerfeccionistaException> exceptions, @NotNull String exceptionMessage) {
         super(exceptionMessage);
-        this.exceptions = new ArrayDeque<>(exceptions);
+        this.exceptions = new ArrayList<>(exceptions);
+        this.exceptionMessage = exceptionMessage;
     }
 
     /**
@@ -27,6 +31,11 @@ public class PerfeccionistaExceptionSequence extends PerfeccionistaRuntimeExcept
     @NotNull
     public Deque<PerfeccionistaException> getCollectedExceptions() {
         return new ArrayDeque<>(exceptions);
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getCanonicalName() + ":\n" + exceptionMessage + this.getClass().getCanonicalName();
     }
 
 }

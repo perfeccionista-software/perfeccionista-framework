@@ -5,6 +5,7 @@ Feature: WebButton element feature
   @WebElement @WebButton
   Scenario: WebButton positive scenario
     * user launch browser "${[config] browser}"
+    * user set browser's window size "${[config] browser_width}" x "${[config] browser_height}"
     * user enters the URL "${[config] start_url}" in the browser and clicks 'Enter'
 
     * page "Home page" opens
@@ -63,6 +64,7 @@ Feature: WebButton element feature
   @WebElement @WebButton
   Scenario: WebButton with spinner positive scenario
     * user launch browser "${[config] browser}"
+    * user set browser's window size "${[config] browser_width}" x "${[config] browser_height}"
     * user enters the URL "${[config] start_url}" in the browser and clicks 'Enter'
 
     * page "Home page" opens

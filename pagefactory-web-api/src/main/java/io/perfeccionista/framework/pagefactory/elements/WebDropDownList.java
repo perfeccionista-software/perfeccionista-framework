@@ -1,42 +1,44 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOpenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebDropDownAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.element.WebDropDownListMatcher;
 import io.perfeccionista.framework.matcher.element.WebListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
+import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.measurements.HorizontalDirection;
+import io.perfeccionista.framework.measurements.VerticalDirection;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.CloseAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
+import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import org.jetbrains.annotations.NotNull;
 
 public interface WebDropDownList extends WebList,
-        ClickAvailable, GetTextAvailable, GetLabelAvailable, IsOpenAvailable, OpenAvailable, CloseAvailable {
+        WebClickAvailable, WebGetTextAvailable, WebGetLabelAvailable, WebDropDownAvailable, WebChildElement {
 
     // Actions
     @Override
     WebDropDownList executeAction(@NotNull String name, Object... args);
-    @Override
-    WebDropDownList executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
     WebDropDownList should(@NotNull WebDropDownListMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
     @Override
     WebDropDownList should(@NotNull WebListMatcher matcher);
     @Override
@@ -44,37 +46,39 @@ public interface WebDropDownList extends WebList,
     @Override
     WebDropDownList should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull GetColorAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull GetDimensionsAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull GetLocationAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull GetScreenshotAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull IsDisplayedAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull IsInFocusAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull IsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebDropDownList should(@NotNull IsPresentAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
     WebDropDownList should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
     WebDropDownList should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull GetLabelAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebElementStateAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull GetTextAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebGetLabelAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull IsOpenAvailableMatcher matcher);
+    WebDropDownList should(@NotNull WebGetTextAvailableMatcher matcher);
+    @Override
+    WebDropDownList should(@NotNull WebDropDownAvailableMatcher matcher);
 
     // Click
     @Override
     WebDropDownList click();
 
-    // Close
+    // DropDown
+    @Override
+    WebDropDownList open();
     @Override
     WebDropDownList close();
 
@@ -82,12 +86,12 @@ public interface WebDropDownList extends WebList,
     @Override
     WebDropDownList hoverTo(boolean withOutOfBounds);
 
-    // Open
-    @Override
-    WebDropDownList open();
-
     // ScrollTo
     @Override
     WebDropDownList scrollTo();
+//    @Override
+//    WebDropDownList scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebListFilterBuilder filterBuilder);
+//    @Override
+//    WebDropDownList scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebListFilterBuilder filterBuilder);
 
 }

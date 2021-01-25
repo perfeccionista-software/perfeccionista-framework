@@ -1,16 +1,19 @@
 package io.perfeccionista.framework.pagefactory.filter.table.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementIsPresentOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsPresentOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,11 +23,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.PRESENTED;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PRESENTED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebTableCellElementPresentCondition implements WebTableRowCondition {
 
@@ -44,7 +47,7 @@ public class WebTableCellElementPresentCondition implements WebTableRowCondition
     }
 
     public WebTableCellElementPresentCondition(@NotNull String columnName,
-                                               @NotNull IsPresentAvailable elementFrame) {
+                                               @NotNull WebIsPresentAvailable elementFrame) {
         this.columnName = columnName;
         this.elementPath = null;
         this.elementFrame = (WebChildElement) elementFrame;
@@ -76,7 +79,7 @@ public class WebTableCellElementPresentCondition implements WebTableRowCondition
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebTable element, @Nullable String hash) {
         WebTableFrame<WebBlock> webTableRegistry = element.getWebTableFrame();
 
         // Цепочка от корня страницы до WebTable column body
@@ -100,16 +103,17 @@ public class WebTableCellElementPresentCondition implements WebTableRowCondition
         }
 
         // Добавляем в цепочку локаторов операции локаторы до ячейки таблицы
-        JsOperation<Boolean> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(IS_PRESENT_METHOD, Boolean.class)
-                .getJsOperation(elementToFilter, PRESENTED);
-        jsOperation.getLocatorChain()
+        WebGetIsPresentOperationType isPresentOperationType = WebGetIsPresentOperationType.of(elementToFilter);
+        WebElementOperation<Boolean> operation = WebElementIsPresentOperationHandler.of(elementToFilter, isPresentOperationType, PRESENTED)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(tableLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -119,7 +123,7 @@ public class WebTableCellElementPresentCondition implements WebTableRowCondition
         Set<Integer> matches = getMatches(presentValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, Boolean> presentValues) {

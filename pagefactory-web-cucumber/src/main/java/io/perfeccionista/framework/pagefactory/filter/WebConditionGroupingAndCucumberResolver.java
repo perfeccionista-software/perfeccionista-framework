@@ -31,11 +31,11 @@ public class WebConditionGroupingAndCucumberResolver implements WebConditionGrou
     }
 
     @Override
-    public Optional<WebConditionGrouping> tryResolve(@NotNull String expression, @Nullable Object... args) {
+    public Optional<ConditionGrouping> tryResolve(@NotNull String expression, @Nullable Object... args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression.toLowerCase());
             if (matcher.find()) {
-                return Optional.of(WebConditionGrouping.AND);
+                return Optional.of(ConditionGrouping.AND);
             }
         }
         return Optional.empty();

@@ -4,7 +4,7 @@ import io.perfeccionista.framework.pagefactory.WebPageService;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +22,7 @@ public class WebListBlockExtractor<T extends WebBlock> implements WebListBlockVa
 
     @Override
     public Map<Integer, T> extractValues(@NotNull WebListFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         WebList element = filter.getElement();
 
         WebPageFactory webPageFactory = element.getEnvironment()

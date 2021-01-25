@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.pagefactory.filter.list.condition;
 
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,23 +16,23 @@ public interface WebListBlockCondition {
 
     Deque<WebListBlockConditionHolder> getChildConditions();
 
-    @NotNull WebFilterResult process(@NotNull WebList element, @Nullable String hash);
+    @NotNull FilterResult process(@NotNull WebList element, @Nullable String hash);
 
     class WebListBlockConditionHolder {
 
-        private final WebConditionGrouping usage;
+        private final ConditionGrouping usage;
         private final WebListBlockCondition condition;
 
-        private WebListBlockConditionHolder(WebConditionGrouping usage, WebListBlockCondition condition) {
+        private WebListBlockConditionHolder(ConditionGrouping usage, WebListBlockCondition condition) {
             this.usage = usage;
             this.condition = condition;
         }
 
-        public static WebListBlockConditionHolder of(WebConditionGrouping usage, WebListBlockCondition condition) {
+        public static WebListBlockConditionHolder of(ConditionGrouping usage, WebListBlockCondition condition) {
             return new WebListBlockConditionHolder(usage, condition);
         }
 
-        public WebConditionGrouping getUsage() {
+        public ConditionGrouping getUsage() {
             return usage;
         }
 

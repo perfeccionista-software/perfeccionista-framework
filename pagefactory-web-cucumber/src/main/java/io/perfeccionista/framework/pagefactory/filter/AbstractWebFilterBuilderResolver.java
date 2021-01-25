@@ -16,14 +16,14 @@ public abstract class AbstractWebFilterBuilderResolver {
     protected final Environment environment;
     protected final DataTable dataTable;
 
-    protected WebFilterResultGrouping currentFilterGrouping = null;
+    protected FilterResultGrouping currentFilterGrouping = null;
 
     protected AbstractWebFilterBuilderResolver(Environment environment, DataTable dataTable) {
         this.environment = environment;
         this.dataTable = dataTable;
     }
 
-    protected Optional<WebConditionGrouping> tryResolveWebConditionGrouping(@Nullable String operator) {
+    protected Optional<ConditionGrouping> tryResolveWebConditionGrouping(@Nullable String operator) {
         if (Objects.isNull(operator)) {
             return Optional.empty();
         }
@@ -31,9 +31,9 @@ public abstract class AbstractWebFilterBuilderResolver {
         return cucumberService.resolveFirst(WebConditionGroupingCucumberResolver.class, operator);
     }
 
-    protected WebFilterResultGrouping resolveWebFilterResultGrouping(@Nullable String operator) {
+    protected FilterResultGrouping resolveWebFilterResultGrouping(@Nullable String operator) {
         if (Objects.isNull(operator)) {
-            return WebFilterResultGrouping.ADD;
+            return FilterResultGrouping.ADD;
         }
         CucumberService cucumberService = environment.getService(CucumberService.class);
         return cucumberService.resolveFirst(WebFilterResultGroupingCucumberResolver.class, operator)

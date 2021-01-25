@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentCucumberApiMessages.INTEGER_VALUE_CONDITION_NOT_RESOLVED;
 import static io.perfeccionista.framework.value.Values.intEquals;
+import static io.perfeccionista.framework.value.Values.stringProcess;
 
 public class IntegerValueResolver {
     public static final Pattern STRING_VALUE_RESOLVER_PATTERN = Pattern.compile("^\\[(?<condition>.*?)]");
@@ -37,10 +38,10 @@ public class IntegerValueResolver {
         Matcher matcher = STRING_VALUE_RESOLVER_PATTERN.matcher(stringValueToResolve);
         if (matcher.find()) {
             this.integerValueCondition = matcher.group("condition");
-            this.integerValue = Integer.parseInt(stringValueToResolve.replaceAll(STRING_VALUE_RESOLVER_PATTERN.pattern(), ""));
+            this.integerValue = Integer.parseInt(stringProcess(stringValueToResolve.replaceAll(STRING_VALUE_RESOLVER_PATTERN.pattern(), "")));
             return;
         }
-        this.integerValue = Integer.parseInt(stringValueToResolve);
+        this.integerValue = Integer.parseInt(stringProcess(stringValueToResolve));
     }
 
     protected NumberValue<Integer> resolveIntegerValueCondition() {

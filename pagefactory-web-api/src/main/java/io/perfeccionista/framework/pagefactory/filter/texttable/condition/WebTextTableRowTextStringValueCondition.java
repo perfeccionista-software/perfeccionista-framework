@@ -1,15 +1,18 @@
 package io.perfeccionista.framework.pagefactory.filter.texttable.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,10 +23,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebTextTableRowTextStringValueCondition  implements WebTextTableRowCondition {
 
@@ -66,7 +70,7 @@ public class WebTextTableRowTextStringValueCondition  implements WebTextTableRow
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebTextTable element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebTextTable element, @Nullable String hash) {
         WebTableFrame<DefaultWebTextBlock> webTableRegistry = element.getWebTextTableFrame();
 
         // Цепочка от корня страницы до WebTable column body
@@ -81,16 +85,17 @@ public class WebTextTableRowTextStringValueCondition  implements WebTextTableRow
         WebLink elementToFilter = webTableRegistry.getRequiredBodyMappedBlock(columnName).textLink();
 
         // Добавляем в цепочку локаторов операции локаторы до ячейки таблицы
-        JsOperation<String> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(GET_TEXT_METHOD, String.class)
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        WebGetTextOperationType operationType = WebGetTextOperationType.of(elementToFilter);
+        WebElementOperation<String> operation = WebElementOperationHandler.of(elementToFilter, operationType, TEXT)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(tableLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -100,7 +105,7 @@ public class WebTextTableRowTextStringValueCondition  implements WebTextTableRow
         Set<Integer> matches = getMatches(textValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, String> textValues) {

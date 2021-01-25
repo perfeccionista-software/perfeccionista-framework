@@ -15,6 +15,7 @@ import io.perfeccionista.framework.datasource.DataSource;
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -204,6 +205,9 @@ public class ValueExpressionProcessor {
             } else if (DATA_SOURCE_OPEN == tokenType || DATA_CONVERTER_OPEN == tokenType) {
                 TokenizedExpressionResult expressionResult = processTokenizedExpression(TokenizedExpression.of(tokenType, rawTokens));
                 rawTokens = expressionResult.getRawTokens();
+                if (Objects.nonNull(objectContent)) {
+                    stringContent = stringContent.concat(objectContent.toString());
+                }
                 objectContent = expressionResult.getResult();
             } else {
                 throw StringValueParse.exception(STRING_VALUE_PROCESSING_FAILED.getMessage(expression))

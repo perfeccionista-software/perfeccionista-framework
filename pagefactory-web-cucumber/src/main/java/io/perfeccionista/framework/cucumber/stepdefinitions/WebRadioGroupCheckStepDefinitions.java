@@ -11,18 +11,7 @@ import io.perfeccionista.framework.cucumber.parameters.WebRadioButtonValueExtrac
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilder;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisabled;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beEnabled;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beSelected;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLabel;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeSelected;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.beSorted;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveIndex;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.element;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.radioButtonIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intEquals;
 
 // TODO: Wrap runLogic()
@@ -102,7 +91,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filter(with(containsLabel(labelValue.getValue())))
                         .extractOne(element())
-                        .getNotNullValue()
+                        .getNotNullResult()
                         .should(beSelected()));
     }
 
@@ -119,7 +108,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filter(with(containsLabel(labelValue.getValue())))
                         .extractOne(element())
-                        .getNotNullValue()
+                        .getNotNullResult()
                         .should(notBeSelected()));
     }
 
@@ -136,7 +125,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filter(with(containsLabel(labelValue.getValue())))
                         .extractOne(element())
-                        .getNotNullValue()
+                        .getNotNullResult()
                         .should(beEnabled()));
     }
 
@@ -153,7 +142,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filter(with(containsLabel(labelValue.getValue())))
                         .extractOne(element())
-                        .getNotNullValue()
+                        .getNotNullResult()
                         .should(beDisabled()));
     }
 
@@ -217,7 +206,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filter(with(radioButtonIndex(indexValue.getValue())))
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .should(beSelected()));
     }
 
@@ -234,7 +223,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filter(with(radioButtonIndex(indexValue.getValue())))
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .should(notBeSelected()));
     }
 
@@ -251,7 +240,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filter(with(radioButtonIndex(indexValue.getValue())))
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .should(beEnabled()));
     }
 
@@ -268,7 +257,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filter(with(radioButtonIndex(indexValue.getValue())))
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .should(beDisabled()));
     }
 
@@ -287,7 +276,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filter(with(radioButtonIndex(indexValue.getValue())))
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .should(haveLabel(labelValue.getValue())));
     }
 

@@ -1,13 +1,16 @@
 package io.perfeccionista.framework.pagefactory.filter.radio.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsEnabledOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,10 +20,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ENABLED_METHOD;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebRadioButtonEnabledCondition implements WebRadioButtonCondition {
 
@@ -54,7 +57,7 @@ public class WebRadioButtonEnabledCondition implements WebRadioButtonCondition {
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebRadioGroup element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebRadioGroup element, @Nullable String hash) {
         WebRadioButton webRadioButton = element.getWebRadioGroupFrame()
                 .getMappedBlockFrame()
                 .radioButton();
@@ -67,16 +70,17 @@ public class WebRadioButtonEnabledCondition implements WebRadioButtonCondition {
         radioGroupLocatorChain.addLastLocator(element.getRequiredLocator(RADIO));
 
         // Добавляем в цепочку локаторов операции локаторы до блока RadioButtonBlock
-        JsOperation<Boolean> jsOperation = webRadioButton
-                .getJsOperationActionImplementation(IS_ENABLED_METHOD, Boolean.class)
-                .getJsOperation(webRadioButton);
-        jsOperation.getLocatorChain()
+        WebGetIsEnabledOperationType operationType = WebGetIsEnabledOperationType.of(webRadioButton);
+        WebElementOperation<Boolean> operation = WebElementOperationHandler.of(webRadioButton, operationType, ENABLED)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(radioGroupLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -86,7 +90,7 @@ public class WebRadioButtonEnabledCondition implements WebRadioButtonCondition {
         Set<Integer> matches = getMatches(enabledValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, Boolean> enabledValues) {

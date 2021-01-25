@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.factory.handlers;
 
-import io.perfeccionista.framework.exceptions.WebMappedBlockIncorrectType;
+import io.perfeccionista.framework.exceptions.MappedBlockIncorrectType;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
@@ -12,9 +12,10 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Optional;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_MAPPED_BLOCK_INCORRECT_TYPE;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.MAPPED_BLOCK_IMPLEMENTATION_INCORRECT_TYPE;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findFirstAnnotationInHierarchy;
 import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
@@ -41,15 +42,18 @@ public class UseMappedWebTextBlockAnnotationHandler {
             webMappedBlockClass = optionalMethodAnnotation.get().value();
         }
 
-        if (!isSubtypeOf(webMappedBlockClass, DefaultWebTextBlock.class)) {
-            throw WebMappedBlockIncorrectType
-                    .exception(WEB_MAPPED_BLOCK_INCORRECT_TYPE.getMessage(DefaultWebTextBlock.class.getCanonicalName()));
+        DefaultWebTextBlock webTextListBlock = null;
+
+        if (Objects.nonNull(webMappedBlockClass)) {
+            if (!isSubtypeOf(webMappedBlockClass, DefaultWebTextBlock.class)) {
+                throw MappedBlockIncorrectType
+                        .exception(MAPPED_BLOCK_IMPLEMENTATION_INCORRECT_TYPE.getMessage(DefaultWebTextBlock.class.getCanonicalName()));
+            }
+            webTextListBlock = (DefaultWebTextBlock) webPageFactory
+                    .createMappedWebBlock(webTextList, webMappedBlockClass);
         }
 
-        DefaultWebTextBlock webTextListBlock = (DefaultWebTextBlock) webPageFactory
-                .createMappedWebBlock(webTextList, webMappedBlockClass);
-
-        return new WebListFrame<>(webTextListBlock);
+        return new WebListFrame<>(webTextList, webTextListBlock);
     }
 
 }

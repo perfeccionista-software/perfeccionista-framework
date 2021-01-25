@@ -9,7 +9,7 @@ import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBloc
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder.WebListBlockFilterResultGroupingHolder;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,10 +17,10 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.blockIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.*;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping.*;
+import static io.perfeccionista.framework.Web.blockIndex;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.*;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.*;
 
 public class WebListFilterImpl implements WebListFilter {
 
@@ -28,7 +28,7 @@ public class WebListFilterImpl implements WebListFilter {
     private final WebListFilterBuilder filterBuilder;
 
     private String initialHash = null;
-    private WebFilterResult filterResult = null;
+    private FilterResult filterResult = null;
 
     private WebListFilterImpl(WebList element, WebListFilterBuilder filterBuilder) {
         this.element = element;
@@ -56,10 +56,8 @@ public class WebListFilterImpl implements WebListFilter {
     }
 
     @Override
-    public @NotNull WebFilterResult getFilterResult() {
-        if (filterResult == null) {
-            executeFilter(element, filterBuilder);
-        }
+    public @NotNull FilterResult getFilterResult() {
+        executeFilter(element, filterBuilder);
         return filterResult;
     }
 
@@ -82,7 +80,7 @@ public class WebListFilterImpl implements WebListFilter {
         String calculatedHash = initialHash;
         for (WebListBlockFilterResultGroupingHolder conditionHolder : conditions) {
             WebListBlockCondition condition = conditionHolder.getCondition();
-            WebFilterResult conditionResult = processConditions(element, condition, calculatedHash);
+            FilterResult conditionResult = processConditions(element, condition, calculatedHash);
             calculatedHash = conditionResult.getHash();
             if (ADD == conditionHolder.getUsage()) {
                 indexes.addAll(conditionResult.getIndexes());
@@ -91,11 +89,11 @@ public class WebListFilterImpl implements WebListFilter {
                 indexes.removeAll(conditionResult.getIndexes());
             }
         }
-        filterResult = WebFilterResult.of(indexes, calculatedHash);
+        filterResult = FilterResult.of(indexes, calculatedHash);
     }
 
-    private static WebFilterResult processConditions(WebList element, WebListBlockCondition condition, String hash) {
-        WebFilterResult conditionResult = condition.process(element, hash);
+    private static FilterResult processConditions(WebList element, WebListBlockCondition condition, String hash) {
+        FilterResult conditionResult = condition.process(element, hash);
         Deque<WebListBlockConditionHolder> childConditions = condition.getChildConditions();
         if (childConditions.isEmpty()) {
             return conditionResult;
@@ -104,7 +102,7 @@ public class WebListFilterImpl implements WebListFilter {
         Set<Integer> indexes = conditionResult.getIndexes();
         for (WebListBlockConditionHolder childConditionHolder : childConditions) {
             WebListBlockCondition childCondition = childConditionHolder.getCondition();
-            WebFilterResult childConditionResult = processConditions(element, childCondition, calculatedHash);
+            FilterResult childConditionResult = processConditions(element, childCondition, calculatedHash);
             calculatedHash = childConditionResult.getHash();
             if (AND == childConditionHolder.getUsage()) {
                 Set<Integer> overallIndexes = new HashSet<>();
@@ -119,7 +117,7 @@ public class WebListFilterImpl implements WebListFilter {
                 indexes.addAll(childConditionResult.getIndexes());
             }
         }
-        return WebFilterResult.of(indexes, calculatedHash);
+        return FilterResult.of(indexes, calculatedHash);
     }
 
 }

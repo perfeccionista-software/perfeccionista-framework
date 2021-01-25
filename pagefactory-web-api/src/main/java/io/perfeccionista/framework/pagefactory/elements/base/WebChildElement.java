@@ -1,70 +1,66 @@
 package io.perfeccionista.framework.pagefactory.elements.base;
 
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
-import io.perfeccionista.framework.pagefactory.elements.interactions.base.WebElementInteractionImplementation;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsOnTheScreenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetColorAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetDimensionsAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLocationAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetScreenshotAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.HoverToAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsDisplayedAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsInFocusAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToAvailable;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebElementStateAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetElementBoundsAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsOnTheScreenAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetColorAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetScreenshotAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebHoverToAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsDisplayedAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsInFocusAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebScrollToAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebComponentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebElementPropertyAvailable;
 import org.jetbrains.annotations.NotNull;
 
-public interface WebChildElement extends WebChildElementBase, WebComponentAvailable, WebElementPropertyAvailable,
-        IsPresentAvailable, IsDisplayedAvailable, IsOnTheScreenAvailable, IsInFocusAvailable,
-        HoverToAvailable, ScrollToAvailable,
-        GetDimensionsAvailable, GetLocationAvailable, GetScreenshotAvailable, GetColorAvailable {
-
-    @NotNull WebElementInteractionImplementation getInteractionImplementation(@NotNull String interactionName);
-
-    WebChildElement executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
+public interface WebChildElement extends WebChildElementBase, WebComponentAvailable,
+        WebElementPropertyAvailable, WebElementStateAvailable,
+        WebIsPresentAvailable, WebIsDisplayedAvailable, WebIsOnTheScreenAvailable, WebIsInFocusAvailable,
+        WebHoverToAvailable, WebScrollToAvailable,
+        WebGetElementBoundsAvailable, WebGetScreenshotAvailable, WebGetColorAvailable {
 
     WebChildElement should(@NotNull WebChildElementMatcher matcher);
 
     @Override
-    WebChildElement should(@NotNull GetColorAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebGetColorAvailableMatcher matcher);
 
     @Override
-    WebChildElement should(@NotNull GetDimensionsAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
 
     @Override
-    WebChildElement should(@NotNull GetLocationAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebGetScreenshotAvailableMatcher matcher);
 
     @Override
-    WebChildElement should(@NotNull GetScreenshotAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebIsDisplayedAvailableMatcher matcher);
 
     @Override
-    WebChildElement should(@NotNull IsDisplayedAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebIsInFocusAvailableMatcher matcher);
 
     @Override
-    WebChildElement should(@NotNull IsInFocusAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
 
     @Override
-    WebChildElement should(@NotNull IsOnTheScreenAvailableMatcher matcher);
-
-    @Override
-    WebChildElement should(@NotNull IsPresentAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebIsPresentAvailableMatcher matcher);
 
     @Override
     WebChildElement should(@NotNull WebComponentAvailableMatcher matcher);
 
     @Override
     WebChildElement should(@NotNull WebElementPropertyAvailableMatcher matcher);
+
+    @Override
+    WebChildElement should(@NotNull WebElementStateAvailableMatcher matcher);
 
 }

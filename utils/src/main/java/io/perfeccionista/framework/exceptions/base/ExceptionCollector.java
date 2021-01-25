@@ -5,8 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static java.lang.String.format;
@@ -18,17 +20,18 @@ import static java.lang.String.format;
 public class ExceptionCollector {
 
     private final DateTimeFormatter formatter;
-    private final Deque<PerfeccionistaException> exceptions = new ArrayDeque<>();
+    private final List<PerfeccionistaException> exceptions = new ArrayList<>();
+
     private final Set<String> uniqueExceptionKeys = new HashSet<>();
 
     public ExceptionCollector(@NotNull PerfeccionistaException initialException) {
         formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        exceptions.addFirst(initialException);
+        exceptions.add(initialException);
     }
 
     public ExceptionCollector(@NotNull PerfeccionistaException initialException, @NotNull DateTimeFormatter messageDateTimeFormatter) {
         formatter = messageDateTimeFormatter;
-        exceptions.addFirst(initialException);
+        exceptions.add(initialException);
     }
 
     /**
@@ -36,8 +39,8 @@ public class ExceptionCollector {
      * @param exception не null
      */
     public void processException(@NotNull PerfeccionistaException exception) {
-        exceptions.addLast(exception);
         uniqueExceptionKeys.add(exception.getClass().getCanonicalName() + ": " + exception.getLocalizedMessage());
+        exceptions.add(exception);
     }
 
     /**
@@ -45,7 +48,7 @@ public class ExceptionCollector {
      */
     public void throwIfSingleException() {
         if (uniqueExceptionKeys.size() == 1) {
-            PerfeccionistaException exception = exceptions.getLast();
+            PerfeccionistaException exception = exceptions.get(exceptions.size() - 1);
             if (exception instanceof PerfeccionistaAssertionError) {
                 throw (PerfeccionistaAssertionError) exception;
             }
@@ -71,42 +74,75 @@ public class ExceptionCollector {
      * @return
      */
     @NotNull
-    protected String generateExceptionSequenceMessage(@NotNull Deque<PerfeccionistaException> exceptions) {
-        StringBuilder sb = new StringBuilder("PerfeccionistaExceptionSequence:\n");
+    protected String generateExceptionSequenceMessage(@NotNull List<PerfeccionistaException> exceptions) {
+        StringBuilder sb = new StringBuilder();
+        List<String> exceptionDescriptions = new ArrayList<>();
 
-        PerfeccionistaException firstException = exceptions.removeFirst();
+        PerfeccionistaException firstException = exceptions.get(0);
 
-        Class<? extends PerfeccionistaException> exceptionClass = firstException.getClass();
-        String lastExceptionMessage = firstException.getMessage();
+        Class<? extends PerfeccionistaException> processedExceptionClass = firstException.getClass();
+        String processedExceptionMessage = firstException.getMessage();
+        String processedExceptionDescription = getExceptionDescription(firstException);
+
         int sameExceptionMessageCount = 1;
         LocalDateTime firstSameExceptionTimestamp = firstException.getExceptionTimestamp();
         LocalDateTime lastSameExceptionTimestamp = firstException.getExceptionTimestamp();
 
-        for (PerfeccionistaException exception : exceptions) {
-            if (exceptionClass.equals(exception.getClass()) && lastExceptionMessage.equals(exception.getMessage())) {
+        for (int i = 1; i < exceptions.size(); i++) {
+            PerfeccionistaException currentException = exceptions.get(i);
+
+            // Если ошибки идентичны
+            if (processedExceptionClass.equals(currentException.getClass())
+                    && processedExceptionMessage.equals(currentException.getMessage())) {
                 sameExceptionMessageCount++;
-                lastSameExceptionTimestamp = exception.getExceptionTimestamp();
+                lastSameExceptionTimestamp = currentException.getExceptionTimestamp();
+                processedExceptionDescription = getExceptionDescription(currentException);
+
+            // Если ошибки различаются
             } else {
                 sb.append(format("%1$10s", sameExceptionMessageCount)).append(" ")
                         .append(firstSameExceptionTimestamp.format(formatter)).append(" - ")
                         .append(lastSameExceptionTimestamp.format(formatter)).append(" ")
-                        .append(exceptionClass.getSimpleName()).append(": ")
-                        .append(lastExceptionMessage).append("\n");
-                exceptionClass = exception.getClass();
-                lastExceptionMessage = exception.getMessage();
+                        .append(processedExceptionClass.getSimpleName()).append(": ")
+                        .append(processedExceptionMessage).append("\n");
+
+                exceptionDescriptions.add(processedExceptionDescription);
+
+                processedExceptionClass = currentException.getClass();
+                processedExceptionMessage = currentException.getMessage();
                 sameExceptionMessageCount = 1;
-                firstSameExceptionTimestamp = exception.getExceptionTimestamp();
-                lastSameExceptionTimestamp = exception.getExceptionTimestamp();
+                firstSameExceptionTimestamp = currentException.getExceptionTimestamp();
+                lastSameExceptionTimestamp = currentException.getExceptionTimestamp();
+                processedExceptionDescription = getExceptionDescription(currentException);
             }
+
         }
 
         sb.append(format("%1$10s", sameExceptionMessageCount)).append(" ")
                 .append(firstSameExceptionTimestamp.format(formatter)).append(" - ")
                 .append(lastSameExceptionTimestamp.format(formatter)).append(" ")
-                .append(exceptionClass.getSimpleName()).append(": ")
-                .append(lastExceptionMessage).append("\n");
+                .append(processedExceptionClass.getSimpleName()).append(": ")
+                .append(processedExceptionMessage).append("\n\n");
+        exceptionDescriptions.add(processedExceptionDescription);
+
+        exceptionDescriptions.forEach(sb::append);
 
         return sb.toString();
+    }
+
+    protected String getExceptionDescription(PerfeccionistaException exception) {
+        String exceptionID = exception.getClass().getCanonicalName() + ": " + exception.getMessage();
+        int length = !exceptionID.contains("\n") ? exceptionID.length() : exceptionID.indexOf("\n");
+        StringBuilder exceptionDescription = new StringBuilder()
+                .append(getDelimiter(length)).append("\n")
+                .append(exception.getClass().getCanonicalName()).append(": ").append(exception.getMessage())
+                .append(exception.stacktraceToString()).append("\n")
+                .append(getDelimiter(length));
+        return exceptionDescription.toString();
+    }
+
+    protected String getDelimiter(int length) {
+        return "=".repeat(length + 2) + "\n";
     }
 
 }

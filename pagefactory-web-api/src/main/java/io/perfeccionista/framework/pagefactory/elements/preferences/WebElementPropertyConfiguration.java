@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements.preferences;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound;
+import io.perfeccionista.framework.exceptions.ElementPropertyNotFound;
 import io.perfeccionista.framework.json.JsonSerializable;
 import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyHolder;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebElementPropertyConfiguration implements JsonSerializable {
@@ -56,7 +56,7 @@ public class WebElementPropertyConfiguration implements JsonSerializable {
 
     public WebElementPropertyHolder getPropertyHolder(@NotNull String propertyName) {
         return Optional.ofNullable(properties.get(propertyName))
-                .orElseThrow(() -> WebElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName)));
+                .orElseThrow(() -> ElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName)));
     }
 
     public Map<String, WebElementPropertyHolder> asMap() {

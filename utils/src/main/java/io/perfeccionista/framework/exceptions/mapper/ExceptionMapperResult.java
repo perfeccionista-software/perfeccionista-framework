@@ -4,6 +4,7 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeExceptio
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ExceptionMapperResult<T> {
@@ -28,6 +29,14 @@ public class ExceptionMapperResult<T> {
         return new ExceptionMapperResult<>(exception, null);
     }
 
+    public boolean isSuccess() {
+        return Objects.isNull(exception);
+    }
+
+    public boolean isException() {
+        return Objects.nonNull(exception);
+    }
+
     public ExceptionMapperResult<T> ifException(Consumer<PerfeccionistaRuntimeException> exceptionConsumer) {
         if (exception != null) {
             exceptionConsumer.accept(exception);
@@ -42,8 +51,12 @@ public class ExceptionMapperResult<T> {
         return this;
     }
 
-    public T getResult() {
+    public @Nullable T getResult() {
         return result;
+    }
+
+    public @Nullable PerfeccionistaRuntimeException getException() {
+        return exception;
     }
 
 }

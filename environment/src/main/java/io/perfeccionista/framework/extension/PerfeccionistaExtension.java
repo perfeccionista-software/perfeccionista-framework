@@ -230,9 +230,9 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-        if (throwable instanceof PerfeccionistaException) {
-            log.error(((PerfeccionistaException) throwable)::getAttachmentDescription);
-        }
+//        if (throwable instanceof PerfeccionistaException) {
+//            log.error(((PerfeccionistaException) throwable)::getAttachmentDescription);
+//        }
         throw throwable;
     }
 

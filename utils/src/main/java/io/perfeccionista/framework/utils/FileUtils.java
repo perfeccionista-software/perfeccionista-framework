@@ -72,6 +72,8 @@ public class FileUtils {
 
     public static void writeBinaryFile(@NotNull Path path, byte[] raw) {
         try {
+            // TODO: Проверить корректность выполнения
+            Files.createFile(path);
             Files.write(path, raw);
         } catch (IOException e) {
             // TODO: Бросаем эксепшн о том, что не можем записать файл

@@ -3,5 +3,5 @@
 
     debugger;
 
-    return element.value= "";
+    return element.value="";
 });

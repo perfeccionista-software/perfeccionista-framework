@@ -26,6 +26,26 @@ public class StringUtils {
         return !isBlank(string);
     }
 
+    public static String toUpperCaseCharAfterBlanks(@NotNull String string) {
+        boolean isPreviousBlank = true;
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < string.length(); i++) {
+            char currentChar = string.charAt(i);
+            if(!Character.isLetterOrDigit(currentChar)) {
+                result.append(currentChar);
+                isPreviousBlank = true;
+            } else {
+                if (isPreviousBlank) {
+                    result.append(Character.toUpperCase(currentChar));
+                    isPreviousBlank = false;
+                } else {
+                    result.append(currentChar);
+                }
+            }
+        }
+        return result.toString();
+    }
+
     public static String[] splitPathByArrow(@NotNull String path) {
         String trimmedElementPath = path.trim();
         if (isBlank(trimmedElementPath)) {
@@ -46,6 +66,10 @@ public class StringUtils {
         return Objects.isNull(objects) ? "null" : Arrays.stream(objects)
                 .map(arg -> arg == null ? "null" : arg.toString())
                 .collect(joining(","));
+    }
+
+    public static String[] stringArray(String... stringArguments) {
+        return stringArguments;
     }
 
 

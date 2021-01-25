@@ -27,8 +27,8 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTableImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextAutocomplete;
 import io.perfeccionista.framework.pagefactory.elements.WebTextAutocompleteImpl;
-import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebTextBlockImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebText;
+import io.perfeccionista.framework.pagefactory.elements.WebTextImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextDropDownList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextDropDownListImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
@@ -37,106 +37,102 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextListImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTableImpl;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetColor;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetDimensions;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsDisplayed;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsEnabled;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsInFocus;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsOnTheScreenCompletely;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsPresent;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetIsSelected;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetLabel;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetLocation;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetPropertyValue;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetScreenshot;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetText;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsGetTextFromValue;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsSaveImageToFile;
-import io.perfeccionista.framework.pagefactory.elements.actions.JsScrollTo;
-import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumClear;
-import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumClick;
-import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumHoverTo;
-import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumSendKeyEvents;
-import io.perfeccionista.framework.pagefactory.elements.actions.SeleniumSendKeys;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
-import io.perfeccionista.framework.pagefactory.elements.interactions.JsDragAndDropInteraction;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.CloseAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetColorAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetDimensionsAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLocationAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetScreenshotAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.HoverToAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsDisplayedAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsInFocusAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsOnTheScreenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.WebComponentAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebElementPropertyAvailable;
-import io.perfeccionista.framework.pagefactory.elements.properties.HrefAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.elements.properties.PlaceholderAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.elements.properties.SrcAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyHolder;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebElementStateAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetColorAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetElementBoundsAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetScreenshotAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebHoverToAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsDisplayedAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsInFocusAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsOnTheScreenAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsSelectedAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebScrollToAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebInputTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebComponentAvailable;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckBooleanAttributeValue;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsImage;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckStringAttributeValue;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetAttributeValue;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetColor;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetElementBounds;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetIsDisplayed;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetIsEnabled;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetIsInFocus;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetIsOnTheScreen;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetIsPresent;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetIsSelected;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetScreenshot;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetText;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetValueAttributeValue;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsSaveImageToFile;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsScrollTo;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsTypeText;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumClear;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumClick;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumHoverTo;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumReplaceText;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumSendKeyEvents;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumTypeText;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLEAR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLOSE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_COLOR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_DIMENSIONS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LABEL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LOCATION_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SCREENSHOT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.HOVER_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ENABLED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_IN_FOCUS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ON_THE_SCREEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_SELECTED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SAVE_TO_FILE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SEND_KEYS_EVENTS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SEND_KEYS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SET_FILENAME_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLEAR;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ENABLED;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.INPUT;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.SELECTED;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TEXT;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.UL;
-import static io.perfeccionista.framework.pagefactory.elements.interactions.WebElementInteractionNames.DRAG_AND_DROP;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CHECK_IS_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CHECK_STRING_ATTRIBUTE_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLEAR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLICK_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLOSE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ELEMENT_BOUNDS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_SCREENSHOT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_STRING_ATTRIBUTE_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HOVER_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_COMPONENT_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_COMPONENT_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_ENABLED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_IMAGE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_ON_THE_SCREEN_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_OPEN_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_SELECTED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.OPEN_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.REPLACE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SAVE_IMAGE_TO_FILE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SEND_KEY_EVENTS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.TYPE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SET_FILENAME_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLEAR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.FOCUS;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.UL;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CSS;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.XPATH;
-import static io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyNames.IMAGE_SOURCE;
-import static io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyNames.LINK;
-import static io.perfeccionista.framework.pagefactory.elements.properties.WebElementPropertyNames.PLACEHOLDER;
 
 public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFactoryPreferences {
 
@@ -145,7 +141,6 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
         setWebMappedBlocks(getWebMappedBlocks());
         setWebElementImplementations(getWebElementImplementations());
         setWebElementActionConfigurations(getWebElementActionConfigurations());
-        setWebElementInteractionConfigurations(getWebElementInteractionConfigurations());
         setWebElementPropertyConfigurations(getWebElementPropertyConfigurations());
         setWebLocatorConfigurations(getWebLocatorConfigurations());
     }
@@ -173,7 +168,7 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
         implementations.put(WebRadioGroup.class, WebRadioGroupImpl.class);
         implementations.put(WebTable.class, WebTableImpl.class);
         implementations.put(WebTextAutocomplete.class, WebTextAutocompleteImpl.class);
-        implementations.put(WebTextBlock.class, WebTextBlockImpl.class);
+        implementations.put(WebText.class, WebTextImpl.class);
         implementations.put(WebTextDropDownList.class, WebTextDropDownListImpl.class);
         implementations.put(WebTextInput.class, WebTextInputImpl.class);
         implementations.put(WebTextList.class, WebTextListImpl.class);
@@ -181,92 +176,75 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
         return implementations;
     }
 
-    protected Map<Class<? extends WebChildElementBase>, WebElementActionConfiguration> getWebElementActionConfigurations() {
-        Map<Class<? extends WebChildElementBase>, WebElementActionConfiguration> actionConfigurations = new HashMap<>();
+    protected Map<Class<? extends WebChildElementBase>, WebEndpointHandlerConfiguration> getWebElementActionConfigurations() {
+        Map<Class<? extends WebChildElementBase>, WebEndpointHandlerConfiguration> actionConfigurations = new HashMap<>();
         // Elements
-        actionConfigurations.put(WebAutocomplete.class, WebElementActionConfiguration.builder()
-                .set(GET_TEXT_METHOD, new JsGetTextFromValue()));
-        actionConfigurations.put(WebImage.class, WebElementActionConfiguration.builder()
-                .set(SAVE_TO_FILE_METHOD, new JsSaveImageToFile()));
-        actionConfigurations.put(WebFileInput.class, WebElementActionConfiguration.builder()
-                .set(GET_TEXT_METHOD, new JsGetTextFromValue())
-                .set(SET_FILENAME_METHOD, new SeleniumSendKeys()));                                 // SeleniumImpl
-        actionConfigurations.put(WebTextAutocomplete.class, WebElementActionConfiguration.builder()
-                .set(GET_TEXT_METHOD, new JsGetTextFromValue()));
-        actionConfigurations.put(WebTextInput.class, WebElementActionConfiguration.builder()
-                .set(GET_TEXT_METHOD, new JsGetTextFromValue()));
+        actionConfigurations.put(WebAutocomplete.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_TEXT_METHOD, JsGetValueAttributeValue.class));
+        actionConfigurations.put(WebImage.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_IMAGE_METHOD, JsCheckIsImage.class)
+                .set(SAVE_IMAGE_TO_FILE_METHOD, JsSaveImageToFile.class));
+        actionConfigurations.put(WebFileInput.class, WebEndpointHandlerConfiguration.builder()
+                .set(CLEAR_METHOD, SeleniumClear.class)
+                .set(GET_TEXT_METHOD, JsGetValueAttributeValue.class)
+                .set(REPLACE_TEXT_METHOD, SeleniumReplaceText.class)
+                .set(SET_FILENAME_METHOD, JsTypeText.class));                                       // SeleniumImpl
+        actionConfigurations.put(WebTextAutocomplete.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_TEXT_METHOD, JsGetValueAttributeValue.class));
+        actionConfigurations.put(WebTextInput.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_TEXT_METHOD, JsGetValueAttributeValue.class));
         // Interfaces
-        actionConfigurations.put(ClearAvailable.class, WebElementActionConfiguration.builder()
-                .set(CLEAR_METHOD, new SeleniumClear()));                                           // SeleniumImpl
-        actionConfigurations.put(ClickAvailable.class, WebElementActionConfiguration.builder()
-                .set(CLICK_METHOD, new SeleniumClick()));                                           // SeleniumImpl
-        actionConfigurations.put(CloseAvailable.class, WebElementActionConfiguration.builder()
-                .set(CLOSE_METHOD, new SeleniumClick()));                                           // SeleniumImpl
-        actionConfigurations.put(GetColorAvailable.class, WebElementActionConfiguration.builder()
-                .set(GET_COLOR_METHOD, new JsGetColor()));
-        actionConfigurations.put(GetDimensionsAvailable.class, WebElementActionConfiguration.builder()
-                .set(GET_DIMENSIONS_METHOD, new JsGetDimensions()));
-        actionConfigurations.put(GetLabelAvailable.class, WebElementActionConfiguration.builder()
-                .set(GET_LABEL_METHOD, new JsGetLabel()));
-        actionConfigurations.put(GetLocationAvailable.class, WebElementActionConfiguration.builder()
-                .set(GET_LOCATION_METHOD, new JsGetLocation()));
-        actionConfigurations.put(GetScreenshotAvailable.class, WebElementActionConfiguration.builder()
-                .set(GET_SCREENSHOT_METHOD, new JsGetScreenshot()));
-        actionConfigurations.put(GetTextAvailable.class, WebElementActionConfiguration.builder()
-                .set(GET_TEXT_METHOD, new JsGetText()));
-        actionConfigurations.put(HoverToAvailable.class, WebElementActionConfiguration.builder()
-                .set(HOVER_TO_METHOD, new SeleniumHoverTo()));                                      // SeleniumImpl
-        actionConfigurations.put(IsDisplayedAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_DISPLAYED_METHOD, new JsGetIsDisplayed()));
-        actionConfigurations.put(IsEnabledAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_ENABLED_METHOD, new JsGetIsEnabled()));
-        actionConfigurations.put(IsInFocusAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_IN_FOCUS_METHOD, new JsGetIsInFocus()));
-        actionConfigurations.put(IsOnTheScreenAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_ON_THE_SCREEN_METHOD, new JsGetIsOnTheScreenCompletely()));
-        actionConfigurations.put(IsOpenAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_OPEN_METHOD, new JsGetIsDisplayed()));
-        actionConfigurations.put(IsPresentAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_PRESENT_METHOD, new JsGetIsPresent()));
-        actionConfigurations.put(IsSelectedAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_SELECTED_METHOD, new JsGetIsSelected()));
-        actionConfigurations.put(OpenAvailable.class, WebElementActionConfiguration.builder()
-                .set(OPEN_METHOD, new SeleniumClick()));                                            // SeleniumImpl
-        actionConfigurations.put(ScrollToAvailable.class, WebElementActionConfiguration.builder()
-                .set(SCROLL_TO_METHOD, new JsScrollTo()));
-        actionConfigurations.put(SendKeysAvailable.class, WebElementActionConfiguration.builder()
-                .set(SEND_KEYS_METHOD, new SeleniumSendKeys())                                      // SeleniumImpl
-                .set(SEND_KEYS_EVENTS_METHOD, new SeleniumSendKeyEvents()));                        // SeleniumImpl
-        actionConfigurations.put(WebComponentAvailable.class, WebElementActionConfiguration.builder()
-                .set(IS_COMPONENT_PRESENT_METHOD, new JsGetIsPresent())
-                .set(IS_COMPONENT_DISPLAYED_METHOD, new JsGetIsDisplayed()));
-        actionConfigurations.put(WebElementPropertyAvailable.class, WebElementActionConfiguration.builder()
-                .set(GET_PROPERTY_VALUE_METHOD, new JsGetPropertyValue()));
+        actionConfigurations.put(WebClickAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(CLICK_METHOD, SeleniumClick.class));                                           // SeleniumImpl
+        actionConfigurations.put(WebGetColorAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_COLOR_METHOD, JsGetColor.class));
+        actionConfigurations.put(WebGetLabelAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_LABEL_METHOD, JsGetText.class));
+        actionConfigurations.put(WebGetElementBoundsAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_ELEMENT_BOUNDS_METHOD, JsGetElementBounds.class));
+        actionConfigurations.put(WebGetScreenshotAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_SCREENSHOT_METHOD, JsGetScreenshot.class));
+        actionConfigurations.put(WebGetTextAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_TEXT_METHOD, JsGetText.class));
+        actionConfigurations.put(WebHoverToAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(HOVER_TO_METHOD, SeleniumHoverTo.class));                                      // SeleniumImpl
+        actionConfigurations.put(WebIsDisplayedAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_DISPLAYED_METHOD, JsGetIsDisplayed.class));
+        actionConfigurations.put(WebIsEnabledAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_ENABLED_METHOD, JsGetIsEnabled.class));
+        actionConfigurations.put(WebIsInFocusAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_IN_FOCUS_METHOD, JsGetIsInFocus.class));
+        actionConfigurations.put(WebIsOnTheScreenAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_ON_THE_SCREEN_METHOD, JsGetIsOnTheScreen.class));
+        actionConfigurations.put(WebDropDownAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_OPEN_METHOD, JsGetIsDisplayed.class)
+                .set(OPEN_METHOD, SeleniumClick.class)
+                .set(CLOSE_METHOD, SeleniumClick.class));
+        actionConfigurations.put(WebIsPresentAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_PRESENT_METHOD, JsGetIsPresent.class));
+        actionConfigurations.put(WebIsSelectedAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_SELECTED_METHOD, JsGetIsSelected.class));
+        actionConfigurations.put(WebScrollToAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(SCROLL_TO_METHOD, JsScrollTo.class));
+        actionConfigurations.put(WebInputTextAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(CLEAR_METHOD, SeleniumClear.class)                                             // SeleniumImpl
+                .set(TYPE_TEXT_METHOD, SeleniumTypeText.class)                                      // SeleniumImpl
+                .set(REPLACE_TEXT_METHOD, SeleniumReplaceText.class)                                // SeleniumImpl
+                .set(SEND_KEY_EVENTS_METHOD, SeleniumSendKeyEvents.class));                         // SeleniumImpl
+        actionConfigurations.put(WebComponentAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(IS_COMPONENT_PRESENT_METHOD, JsGetIsPresent.class)
+                .set(IS_COMPONENT_DISPLAYED_METHOD, JsGetIsDisplayed.class));
+        actionConfigurations.put(WebElementPropertyAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(GET_STRING_ATTRIBUTE_VALUE_METHOD, JsGetAttributeValue.class));
+        actionConfigurations.put(WebElementStateAvailable.class, WebEndpointHandlerConfiguration.builder()
+                .set(CHECK_IS_DISPLAYED_METHOD, JsCheckIsDisplayed.class)
+                .set(CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD, JsCheckBooleanAttributeValue.class)
+                .set(CHECK_STRING_ATTRIBUTE_VALUE_METHOD, JsCheckStringAttributeValue.class));
         return actionConfigurations;
-    }
-
-    protected Map<Class<? extends WebChildElementBase>, WebElementInteractionConfiguration> getWebElementInteractionConfigurations() {
-        Map<Class<? extends WebChildElementBase>, WebElementInteractionConfiguration> interactionConfigurations = new HashMap<>();
-        interactionConfigurations.put(WebChildElement.class, WebElementInteractionConfiguration.builder()
-                .set(DRAG_AND_DROP, new JsDragAndDropInteraction()));
-        return interactionConfigurations;
     }
 
     protected Map<Class<? extends WebChildElementBase>, WebElementPropertyConfiguration> getWebElementPropertyConfigurations() {
         Map<Class<? extends WebChildElementBase>, WebElementPropertyConfiguration> properties = new HashMap<>();
-        properties.put(WebImage.class, WebElementPropertyConfiguration.builder()
-                .set(IMAGE_SOURCE, WebElementPropertyHolder.of(IMAGE_SOURCE, null, new SrcAttributeExtractor())));
-        properties.put(WebButton.class, WebElementPropertyConfiguration.builder()
-                .set(LINK, WebElementPropertyHolder.of(LINK, null, new HrefAttributeExtractor())));
-        properties.put(WebLink.class, WebElementPropertyConfiguration.builder()
-                .set(LINK, WebElementPropertyHolder.of(LINK, null, new HrefAttributeExtractor())));
-        WebLocatorHolder inputLocatorHolder = WebLocatorHolder.of(INPUT, CSS, "input[placeholder]");
-        properties.put(WebAutocomplete.class, WebElementPropertyConfiguration.builder()
-                .set(PLACEHOLDER, WebElementPropertyHolder.of(PLACEHOLDER, inputLocatorHolder, new PlaceholderAttributeExtractor())));
-        properties.put(WebTextAutocomplete.class, WebElementPropertyConfiguration.builder()
-                .set(PLACEHOLDER, WebElementPropertyHolder.of(PLACEHOLDER, inputLocatorHolder, new PlaceholderAttributeExtractor())));
-        properties.put(WebTextInput.class, WebElementPropertyConfiguration.builder()
-                .set(PLACEHOLDER, WebElementPropertyHolder.of(PLACEHOLDER, inputLocatorHolder, new PlaceholderAttributeExtractor())));
         return properties;
     }
 

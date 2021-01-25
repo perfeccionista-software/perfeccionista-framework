@@ -2,8 +2,8 @@ package io.perfeccionista.framework.pagefactory.configurations;
 
 import io.perfeccionista.framework.DefaultEnvironmentConfiguration;
 import io.perfeccionista.framework.pagefactory.WebPageService;
-import io.perfeccionista.framework.pagefactory.browser.DefaultSeleniumWebBrowserServiceConfiguration;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
+import io.perfeccionista.framework.pagefactory.dispatcher.configuration.DefaultSeleniumWebBrowserServiceConfiguration;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserService;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;

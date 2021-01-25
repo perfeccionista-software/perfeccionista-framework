@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.properties.base;
 
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.properties.StringAttributeWebElementPropertyExtractor;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -22,8 +23,10 @@ public @interface WebElementProperty {
 
     String name();
 
-    WebLocator webLocator() default @WebLocator; // локатор по умолчанию указывает на родительский элемент
+    WebLocator locator() default @WebLocator; // локатор по умолчанию указывает на родительский элемент
 
-    Class<? extends WebElementPropertyExtractor> extractor();
+    Class<? extends WebElementPropertyExtractor> extractor() default StringAttributeWebElementPropertyExtractor.class;
+
+    String[] params() default {};
 
 }

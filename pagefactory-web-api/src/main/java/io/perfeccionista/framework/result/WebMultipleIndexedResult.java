@@ -13,7 +13,7 @@ public interface WebMultipleIndexedResult<T, E extends WebChildElement> {
 
     @NotNull E getElement();
 
-    Map<Integer, T> getValues();
+    Map<Integer, T> getResults();
 
     int getSize();
 

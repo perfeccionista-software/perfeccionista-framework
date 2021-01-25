@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements.locators;
 
-import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
-import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
+import io.perfeccionista.framework.pagefactory.elements.ElementComponents;
+import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
+import org.intellij.lang.annotations.Language;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -22,13 +23,19 @@ import java.lang.annotation.Target;
 @Repeatable(WebLocators.class)
 public @interface WebLocator {
 
-    String component() default WebComponents.ROOT;
+    String component() default ElementComponents.ROOT;
 
+    @Language("selenium-id")
     String id() default "";
+    @Language("CSS")
     String css() default "";
+    @Language("XPath")
     String xpath() default "";
+    @Language("selenium-class")
     String className() default "";
+    @Language("selenium-html-tag")
     String tagName() default "";
+    @Language("selenium-name")
     String name() default "";
     String text() default "";
     String containsText() default "";
@@ -36,6 +43,6 @@ public @interface WebLocator {
     boolean single() default true;
     boolean strictSearch() default true;
     boolean onlyWithinParent() default true;
-    Class<? extends JsFunction<Void>>[] invokeOnCall() default {};
+    Class<? extends EndpointHandler<Void>>[] invokeOnCall() default {};
 
 }

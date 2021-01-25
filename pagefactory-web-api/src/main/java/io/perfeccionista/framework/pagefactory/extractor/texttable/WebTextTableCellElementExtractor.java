@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,7 @@ public class WebTextTableCellElementExtractor implements WebTextTableValueExtrac
 
     @Override
     public Map<Integer, WebLink> extractValues(@NotNull WebTextTableFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         WebTextTable element = filter.getElement();
 
         Map<Integer, WebLink> extractedElements = new HashMap<>();

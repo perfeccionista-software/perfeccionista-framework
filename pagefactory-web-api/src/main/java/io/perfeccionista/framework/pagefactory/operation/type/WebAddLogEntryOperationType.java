@@ -1,0 +1,44 @@
+package io.perfeccionista.framework.pagefactory.operation.type;
+
+import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.pagefactory.elements.WebPage;
+import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Constructor;
+import java.util.logging.Level;
+
+import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.ADD_LOG_ENTRY_METHOD;
+import static org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
+import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+
+public class WebAddLogEntryOperationType implements WebElementOperationType<Void> {
+
+    private final WebPage page;
+    private final Level logLevel;
+    private final String message;
+
+    private WebAddLogEntryOperationType(WebPage page, Level logLevel, String message) {
+        this.page = page;
+        this.logLevel = logLevel;
+        this.message = message;
+    }
+
+    public static WebAddLogEntryOperationType of(@NotNull WebPage page, @NotNull Level logLevel, @NotNull String message) {
+        return new WebAddLogEntryOperationType(page, logLevel, message);
+    }
+
+    @Override
+    public @NotNull InvocationName getInvocationName() {
+        return actionInvocation(ADD_LOG_ENTRY_METHOD, page, logLevel, message);
+    }
+
+    @Override
+    public @NotNull EndpointHandler<Void> getEndpointHandler() {
+        Class<? extends EndpointHandler<Void>> endpointHandlerClass = page.getEndpointHandler(ADD_LOG_ENTRY_METHOD, Void.class);
+        Constructor<? extends EndpointHandler<Void>> constructor = getDeclaredConstructor(endpointHandlerClass);
+        return newInstance(constructor, logLevel, message);
+    }
+
+}

@@ -4,15 +4,14 @@ import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
-import io.perfeccionista.framework.pagefactory.elements.components.WebComponents;
+import io.perfeccionista.framework.pagefactory.elements.WebText;
+import io.perfeccionista.framework.pagefactory.elements.ElementComponents;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
 import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
-import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
-import io.perfeccionista.framework.pagefactory.elements.properties.AltAttributeExtractor;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
+import static io.perfeccionista.framework.Web.beDisplayed;
 
 @Name("Home page")
 @Name("Домашняя страница")
@@ -20,37 +19,37 @@ public interface HomePage extends AbstractWebPage {
 
     @Name("Title")
     @Name("Заголовок")
-    @WebLocator(css = ".page-title", invokeOnCall = {CheckIsDisplayed.class})
-    WebTextBlock contentTitle();
+    @WebLocator(css = ".page-title", invokeOnCall = JsCheckIsDisplayed.class)
+    WebText contentTitle();
 
     @Name("First text block")
     @Name("Первый текстовый блок")
     @WebLocator(containsText = "На данный момент в состав Организации Объединённых Наций")
-    WebTextBlock firstTextBlock();
+    WebText firstTextBlock();
 
     @Name("First flag block")
     @Name("Первый блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-first-group']")
-    @WebLocator(component = WebComponents.LI, tagName = "img")
+    @WebLocator(component = ElementComponents.LI, tagName = "img")
     @UseMappedWebBlock(FlagBlock.class)
     WebList flagsFirstGroup();
 
     @Name("Second text block")
     @Name("Второй текстовый блок")
     @WebLocator(containsText = "Около десятка государственных образований")
-    WebTextBlock secondTextBlock();
+    WebText secondTextBlock();
 
     @Name("Second flag block")
     @Name("Второй блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-second-group']")
-    @WebLocator(component = WebComponents.LI, tagName = "img")
+    @WebLocator(component = ElementComponents.LI, tagName = "img")
     @UseMappedWebBlock(FlagBlock.class)
     WebList flagsSecondGroup();
 
     @Name("Third text block")
     @Name("Третий текстовый блок")
     @WebLocator(containsText = "Во многих частях света существуют регионы")
-    WebTextBlock thirdTextBlock();
+    WebText thirdTextBlock();
 
 
     String vvv();
@@ -72,7 +71,7 @@ public interface HomePage extends AbstractWebPage {
         @Name("Flag image")
         @Name("картинка Флага")
         @WebLocator(css = ".img-thumbnail")
-        @WebElementProperty(name = "подсказка", extractor = AltAttributeExtractor.class)
+        @WebElementProperty(name = "подсказка", params = "alt")
         WebImage russianFlag();
 
     }

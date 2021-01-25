@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.factory;
 
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.factory.proxy.UnimplementedMethodInvocationHandler;
+import io.perfeccionista.framework.pagefactory.factory.proxy.UnimplementedWebElementMethodInvocationHandler;
 import io.perfeccionista.framework.pagefactory.factory.proxy.WebParentElementInvocationHandler;
 import io.perfeccionista.framework.pagefactory.factory.proxy.frame.WebBlockElementFrame;
 import io.perfeccionista.framework.pagefactory.factory.proxy.frame.WebChildElementFrame;
@@ -22,7 +22,7 @@ public class WebElementFrameInitializer {
         Enhancer enhancer = new Enhancer();
         enhancer.setInterfaces(new Class[] {webMappedBlockClass});
         enhancer.setSuperclass(WebBlockElementFrame.class);
-        enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new WebParentElementInvocationHandler(), new UnimplementedMethodInvocationHandler()});
+        enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new WebParentElementInvocationHandler(), new UnimplementedWebElementMethodInvocationHandler()});
         enhancer.setCallbackFilter(new WebParentElementFrameCallbackFilter(WebBlockElementFrame.class));
         return (T) enhancer.create();
     }
@@ -31,7 +31,7 @@ public class WebElementFrameInitializer {
         Enhancer enhancer = new Enhancer();
         enhancer.setInterfaces(new Class[] {webChildElementClass});
         enhancer.setSuperclass(WebChildElementFrame.class);
-        enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new UnimplementedMethodInvocationHandler()});
+        enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new UnimplementedWebElementMethodInvocationHandler()});
         enhancer.setCallbackFilter(new WebChildElementFrameCallbackFilter(WebChildElementFrame.class));
         return (WebChildElement) enhancer.create();
     }

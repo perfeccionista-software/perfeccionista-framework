@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.pagefactory.filter.table.condition;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,23 +16,23 @@ public interface WebTableRowCondition {
 
     Deque<WebTableRowConditionHolder> getChildConditions();
 
-    @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash);
+    @NotNull FilterResult process(@NotNull WebTable element, @Nullable String hash);
 
     class WebTableRowConditionHolder {
 
-        private final WebConditionGrouping usage;
+        private final ConditionGrouping usage;
         private final WebTableRowCondition condition;
 
-        private WebTableRowConditionHolder(WebConditionGrouping usage, WebTableRowCondition condition) {
+        private WebTableRowConditionHolder(ConditionGrouping usage, WebTableRowCondition condition) {
             this.usage = usage;
             this.condition = condition;
         }
 
-        public static WebTableRowConditionHolder of(WebConditionGrouping usage, WebTableRowCondition condition) {
+        public static WebTableRowConditionHolder of(ConditionGrouping usage, WebTableRowCondition condition) {
             return new WebTableRowConditionHolder(usage, condition);
         }
 
-        public WebConditionGrouping getUsage() {
+        public ConditionGrouping getUsage() {
             return usage;
         }
 

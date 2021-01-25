@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBlock;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
 @Name("Page with list of countries")
 @Name("Страница со списком стран")

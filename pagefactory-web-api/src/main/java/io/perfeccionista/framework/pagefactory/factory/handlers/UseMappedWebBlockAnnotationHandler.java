@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.factory.handlers;
 
-import io.perfeccionista.framework.exceptions.WebMappedBlockNotFound;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -14,7 +13,6 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_MAPPED_BLOCK_NOT_FOUND;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findFirstAnnotationInHierarchy;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 
@@ -42,13 +40,13 @@ public class UseMappedWebBlockAnnotationHandler {
             webMappedBlockClass = optionalMethodAnnotation.get().value();
         }
 
-        if (Objects.isNull(webMappedBlockClass)) {
-            throw WebMappedBlockNotFound.exception(WEB_MAPPED_BLOCK_NOT_FOUND.getMessage(webChildElementType.getCanonicalName()));
+        WebBlock webListBlock = null;
+
+        if (Objects.nonNull(webMappedBlockClass)) {
+            webListBlock = webPageFactory.createMappedWebBlock(webList, webMappedBlockClass);
         }
 
-        WebBlock webListBlock = webPageFactory.createMappedWebBlock(webList, webMappedBlockClass);
-
-        return new WebListFrame<>(webListBlock);
+        return new WebListFrame<>(webList, webListBlock);
     }
 
 }

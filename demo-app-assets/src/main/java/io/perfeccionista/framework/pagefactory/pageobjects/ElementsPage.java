@@ -8,20 +8,15 @@ import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
-import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebText;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
-import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementAction;
-import io.perfeccionista.framework.pagefactory.elements.interactions.base.WebElementInteraction;
+import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.properties.PlaceholderAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.elements.properties.SrcAttributeExtractor;
 import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
-import io.perfeccionista.framework.pagefactory.elements.properties.AltAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.elements.properties.NameAttributeExtractor;
-import io.perfeccionista.framework.pagefactory.elements.interactions.JsDragAndDropInteraction;
-import io.perfeccionista.framework.pagefactory.pageobjects.implementations.DoubleClickActionImplementation;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsDragAndDrop;
+import io.perfeccionista.framework.pagefactory.pageobjects.handlers.SeleniumDoubleClickHandler;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.FOCUS;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.FOCUS;
 
 // TODO: @PageActs("ElementsPage feature name")
 @Name("Elements page")
@@ -32,8 +27,8 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Карта мира")
     @WebLocator(id = "simple-image")
     @WebLocator(component = "Image border", xpath = "self::node()[@class = 'img-thumbnail']")
-    @WebElementProperty(name = "prompt", extractor = AltAttributeExtractor.class)
-    @WebElementProperty(name = "source", extractor = SrcAttributeExtractor.class)
+    @WebElementProperty(name = "prompt", params = "alt")
+    @WebElementProperty(name = "source", params = "src")
     WebImage worldMap();
 
 
@@ -45,7 +40,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Simple button text")
     @Name("текстовый блок Простой кнопки")
     @WebLocator(id = "simple-button-text")
-    WebTextBlock simpleButtonText();
+    WebText simpleButtonText();
 
 
     @Name("Button for hover")
@@ -61,7 +56,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Visible link text")
     @Name("текстовый блок Появляющейся ссылки")
     @WebLocator(id = "visible-link-text")
-    WebTextBlock visibleLinkText();
+    WebText visibleLinkText();
 
 
     @Name("Button with spinner")
@@ -77,7 +72,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Button with spinner text")
     @Name("текстовый блок Кнопки со спиннером")
     @WebLocator(id = "button-with-spinner-text")
-    WebTextBlock buttonWithSpinnerText();
+    WebText buttonWithSpinnerText();
 
 
     @Name("Simple link")
@@ -88,7 +83,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Simple link text")
     @Name("текстовый блок Простой ссылки")
     @WebLocator(id = "simple-link-text")
-    WebTextBlock simpleLinkText();
+    WebText simpleLinkText();
 
 
     @Name("Simple input button")
@@ -101,13 +96,13 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Simple input")
     @Name("Простое поле ввода")
     @WebLocator(id = "simple-input")
-    @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
+    @WebElementProperty(name = "placeholder", params = "placeholder")
     WebTextInput simpleInput();
 
     @Name("Simple input text")
     @Name("текстовый блок Простого поля ввода")
     @WebLocator(id = "simple-input-text")
-    WebTextBlock simpleInputText();
+    WebText simpleInputText();
 
 
     @Name("Area input button")
@@ -120,46 +115,46 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Area input")
     @Name("Многострочное поле ввода")
     @WebLocator(id = "area-input")
-    @WebElementProperty(name = "placeholder", extractor = PlaceholderAttributeExtractor.class)
+    @WebElementProperty(name = "placeholder", params = "placeholder")
     WebTextInput areaInput();
 
     @Name("Area input text")
     @Name("текстовый блок Многострочного поля ввода")
     @WebLocator(id = "area-input-text")
-    WebTextBlock areaInputText();
+    WebText areaInputText();
 
 
     @Name("Checkbox one")
     @Name("Первый чекбокс")
     @WebLocator(xpath = ".//*[@id = 'checkbox-one']/parent::node()")
     @WebLocator(component = FOCUS, xpath = ".//input")
-    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "checkbox-one"))
+    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "checkbox-one"))
     WebCheckbox checkboxOne();
 
     @Name("Checkbox two")
     @Name("Второй чекбокс")
     @WebLocator(xpath = ".//*[@id = 'checkbox-two']/parent::node()")
     @WebLocator(component = FOCUS, xpath = ".//input")
-    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "checkbox-two"))
+    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "checkbox-two"))
     WebCheckbox checkboxTwo();
 
     @Name("Checkbox three")
     @Name("Третий чекбокс")
     @WebLocator(xpath = ".//*[@id = 'checkbox-three']/parent::node()")
     @WebLocator(component = FOCUS, xpath = ".//input")
-    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "checkbox-three"))
+    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "checkbox-three"))
     WebCheckbox checkboxThree();
 
     @Name("Checkbox text")
     @Name("текстовый блок Чекбокса")
     @WebLocator(id = "checkbox-text")
-    WebTextBlock checkboxText();
+    WebText checkboxText();
 
 
     @Name("RadioButton one")
     @Name("Первая радио-кнопка")
     @WebLocator(xpath = ".//*[@id = 'radio-one']/parent::node()")
-    @WebElementProperty(name = "name", extractor = NameAttributeExtractor.class, webLocator = @WebLocator(id = "radio-one"))
+    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "radio-one"))
     WebRadioButton radioButtonOne();
 
     @Name("Radio group")
@@ -169,7 +164,7 @@ public interface ElementsPage extends AbstractWebPage {
 
     @Name("текстовый блок Радио группы")
     @WebLocator(id = "radio-text")
-    WebTextBlock radioButtonText();
+    WebText radioButtonText();
 
 
     @Name("File input")
@@ -180,7 +175,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("File input text")
     @Name("текстовый блок поля Загрузки файла")
     @WebLocator(id = "file-input-file-name")
-    WebTextBlock fileInputText();
+    WebText fileInputText();
 
     @Name("File download")
     @Name("ссылка Скачать файл")
@@ -191,30 +186,30 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Drag&Drop source")
     @Name("Перетаскиваемый блок")
     @WebLocator(id = "drag-and-drop-source")
-    @WebElementInteraction(name = "Drag and Drop", implementation = JsDragAndDropInteraction.class)
-    WebTextBlock sourceBlock();
+    @WebElementAction(name = "Drag and Drop", handler = JsDragAndDrop.class)
+    WebText sourceBlock();
 
     @Name("Drag&Drop target")
     @Name("Целевой блок")
     @WebLocator(id = "drag-and-drop-target")
-    WebTextBlock targetBlock();
+    WebText targetBlock();
 
     @Name("Drag&Drop text")
     @Name("текстовый блок для Drag&Drop")
     @WebLocator(id = "drag-and-drop-text")
-    WebTextBlock dragAndDropText();
+    WebText dragAndDropText();
 
 
     @Name("Double click button")
     @Name("Кнопка с двойным кликом")
     @WebLocator(id = "double-click-button")
-    @WebElementAction(name = "Double click", implementation = DoubleClickActionImplementation.class)
+    @WebElementAction(name = "Double click", handler = SeleniumDoubleClickHandler.class)
     WebButton doubleClickButton();
 
     @Name("Double click button text")
     @Name("текстовый блок для Кнопки с двойным кликом")
     @WebLocator(id = "double-click-text")
-    WebTextBlock doubleClickText();
+    WebText doubleClickText();
 
 //
 //

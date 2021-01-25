@@ -5,6 +5,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableRowEmptyCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -22,6 +23,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableRowIndexCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -40,6 +42,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementTextValueCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -80,6 +83,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementPropertyValueCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -102,6 +106,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementLabelValueCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -133,6 +138,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementEnabledCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -151,6 +157,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementSelectedCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -169,6 +176,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementPresentCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -187,6 +195,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementDisplayedCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -210,6 +219,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementComponentPresentCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -228,6 +238,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableCellElementComponentDisplayedCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -250,6 +261,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableFilterMultipleConditions_AND
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -268,6 +280,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableFilterMultipleConditions_OR
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -286,6 +299,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableFilterMultipleConditions_ADD
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -304,6 +318,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableFilterMultipleConditions_SUBTRACT
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -322,6 +337,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableFilterMultipleConditions_WITH
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -341,6 +357,7 @@
   @WebElement @WebTable @Filter
   Сценарий: Положительный сценарий для WebTableFilterMultipleConditions_WITHOUT
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"

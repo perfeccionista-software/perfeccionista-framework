@@ -3,12 +3,11 @@ package io.perfeccionista.framework.pagefactory.elements.registry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.exceptions.WebElementNotFound;
-import io.perfeccionista.framework.exceptions.WebElementSearch;
+import io.perfeccionista.framework.exceptions.ElementNotFound;
+import io.perfeccionista.framework.exceptions.ElementPathNotResolved;
 import io.perfeccionista.framework.exceptions.MethodNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.json.JsonSerializable;
-import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
@@ -22,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.INCORRECT_PARENT_ELEMENT;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_PATH_NOT_RESOLVED;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.METHOD_NOT_FOUND;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
@@ -42,6 +41,8 @@ public class WebElementRegistry implements JsonSerializable {
     protected WebElementRegistry(List<WebChildElement> webChildElements) {
         webChildElements
                 .forEach(webChildElement -> webChildElement.getElementIdentifier()
+                        // Заполняем реджистри из инициализированных данных элемента,
+                        // находящихся в элементе (чтобы не вызывать рефлексию несколько раз)
                         .addElementsByMethodName(elementsByMethodName, webChildElement)
                         .addElementsByMethod(elementsByMethod, webChildElement)
                         .addElementsByName(elementsByName, webChildElement));
@@ -93,7 +94,7 @@ public class WebElementRegistry implements JsonSerializable {
         if (optionalLookupElement.isPresent()) {
             return optionalLookupElement.get();
         }
-        throw WebElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(method.getName()));
+        throw ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(method.getName()));
     }
 
     public <T extends WebChildElement> T getRequiredElementByMethod(@NotNull Method method, @NotNull Class<T> elementClass) {
@@ -101,7 +102,7 @@ public class WebElementRegistry implements JsonSerializable {
         if (optionalLookupElement.isPresent()) {
             return optionalLookupElement.get();
         }
-        throw WebElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(method.getName()));
+        throw ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(method.getName()));
     }
 
     protected Optional<WebChildElement> getElementByMethodName(String methodName) {
@@ -144,7 +145,7 @@ public class WebElementRegistry implements JsonSerializable {
                 intermediateResult = getElementByName(elementName);
             } else {
                 if (!isSubtypeOf(lookupElement, WebParentElement.class)) {
-                    throw WebElementSearch.exception(INCORRECT_PARENT_ELEMENT.getMessage(lookupElement.getClass().getCanonicalName()))
+                    throw ElementPathNotResolved.exception(ELEMENT_PATH_NOT_RESOLVED.getMessage(elementPath, lookupElement.getClass().getSimpleName()))
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(lookupElement));
                 }
                 intermediateResult = ((WebParentElement) lookupElement).getElementRegistry().getElementByName(elementName);
@@ -172,7 +173,7 @@ public class WebElementRegistry implements JsonSerializable {
         if (optionalLookupElement.isPresent()) {
             return optionalLookupElement.get();
         }
-        throw WebElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(elementPath));
+        throw ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(elementPath));
     }
 
     public <T extends WebChildElement> T getRequiredElementByPath(@NotNull String elementPath, @NotNull Class<T> elementClass) {
@@ -181,7 +182,7 @@ public class WebElementRegistry implements JsonSerializable {
             WebChildElement lookupElement = optionalLookupElement.get();
             return castWebChildElement(lookupElement, elementClass);
         }
-        throw WebElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(elementPath));
+        throw ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(elementPath));
     }
 
 

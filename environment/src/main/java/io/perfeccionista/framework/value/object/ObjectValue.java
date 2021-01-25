@@ -8,6 +8,9 @@ import java.util.function.UnaryOperator;
 
 public interface ObjectValue extends Value<Object> {
 
+    @Override
+    ObjectValue shouldMatch(Object actual);
+
     ObjectValue transformExpected(@NotNull UnaryOperator<Object> transformFunction);
 
     ObjectValue transformActual(@NotNull UnaryOperator<Object> transformFunction);

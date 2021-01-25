@@ -5,7 +5,8 @@ import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.ValueIntegerParameter;
 import io.perfeccionista.framework.cucumber.parameters.ValueStringParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebBrowserParameter;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
+import io.perfeccionista.framework.measurements.Dimensions2D;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserService;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -79,7 +80,7 @@ public class WebBrowserStepDefinitions implements WebStepDefinitions {
         getEnvironment().getService(WebBrowserService.class)
                 .getActiveDispatcher()
                 .window()
-                .setOuterWindowSize(width.getProcessedValue(), height.getProcessedValue());
+                .setOuterWindowSize(Dimensions2D.of(width.getProcessedValue(), height.getProcessedValue()));
     }
 
 }

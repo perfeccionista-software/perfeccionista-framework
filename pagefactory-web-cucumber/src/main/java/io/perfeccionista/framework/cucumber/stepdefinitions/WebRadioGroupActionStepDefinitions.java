@@ -8,9 +8,7 @@ import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilder;
 
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.element;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.radioButtonIndex;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilderImpl.webRadioGroupFilterBuilder;
 
 // TODO: Wrap runLogic()
@@ -31,7 +29,7 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                 .filter(webRadioGroupFilterBuilder()
                                         .add(radioButtonIndex(radioButtonIndex.getValue())))
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .click());
     }
 
@@ -49,7 +47,7 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                 .filter(webRadioGroupFilterBuilder()
                                         .add(containsLabel(radioButtonLabel.getValue())))
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .click());
     }
 
@@ -66,7 +64,7 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filter(itemFilter)
                                 .extractOne(element())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .scrollTo());
     }
 

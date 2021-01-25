@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.cucumber.stepdefinitions;
 
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserService;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 
 public interface WebStepDefinitions extends CucumberStepDefinitions {
 

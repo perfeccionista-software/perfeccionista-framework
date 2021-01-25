@@ -99,6 +99,17 @@ class ValueExpressionProcessorProcessTokenizedExpressionTest extends AbstractPar
     }
 
     @Test
+    void processValidStringFromTwoDataSourcesExpression(Environment environment) {
+        ValueExpressionProcessor expressionProcessor = new ValueExpressionProcessor(environment);
+        Object result1 = expressionProcessor.processExpression("${[userName]John}${[userName]John}");
+        assertAll(
+                () -> assertNotNull(result1),
+                () -> assertEquals(String.class, result1.getClass()),
+                () -> assertEquals("John SmithJohn Smith", result1.toString())
+        );
+    }
+
+    @Test
     void processValidUserDataSourceExpression(Environment environment) {
         ValueExpressionProcessor expressionProcessor = new ValueExpressionProcessor(environment);
         assertAll(

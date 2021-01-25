@@ -2,10 +2,13 @@ package io.perfeccionista.framework.pagefactory.jsfunction;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetScreenshot;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsScrollTo;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumClick;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import org.junit.jupiter.api.Test;
 
@@ -29,22 +32,22 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
+            WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
-                    .executeOperation(clickOperation);
+                    .executeWebElementOperation(clickOperation);
         });
         deleteFileIgnoreExceptions(Path.of(getHome() + "/Downloads/images/simple-button.png"));
         Screenshot screenshot = runCheck(environment, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-button")
-                            .addInvokedOnCallFunction(new ScrollTo()
+                            .addInvokedOnCallFunction(new JsScrollTo()
                                     // Без задержки скриншот снимается до того, как браузер успеет отрисовать элемент
                                     .setDelay(Duration.ofSeconds(1))));
-            JsOperation<Screenshot> getScreenshotOperation = JsOperation.of(scrollToLocatorChain, new GetScreenshot("image/png"));
+            WebElementOperation<Screenshot> getScreenshotOperation = WebElementOperation.of(scrollToLocatorChain, new JsGetScreenshot().setMimeType("image/png"));
             return browser.executor()
-                    .executeOperation(getScreenshotOperation)
-                    .ifException(e -> {
-                        throw e;
+                    .executeWebElementOperation(getScreenshotOperation)
+                    .ifException((exceptionMapper, exception) -> {
+                        throw exceptionMapper.map(exception);
                     })
                     .getResult();
         });
@@ -58,9 +61,9 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
+            WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
-                    .executeOperation(clickOperation);
+                    .executeWebElementOperation(clickOperation);
         });
         Set<Integer> indexes = Set.of(7, 56, 125, 170, 171);
         indexes.forEach(index -> {
@@ -70,11 +73,11 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item").setIndexes(indexes));
-            JsOperation<Screenshot> getScreenshotOperation = JsOperation.of(scrollToLocatorChain, new GetScreenshot("image/jpeg"));
+            WebElementOperation<Screenshot> getScreenshotOperation = WebElementOperation.of(scrollToLocatorChain, new JsGetScreenshot().setMimeType("image/jpeg"));
             return browser.executor()
-                    .executeOperation(getScreenshotOperation)
-                    .ifException(e -> {
-                        throw e;
+                    .executeWebElementOperation(getScreenshotOperation)
+                    .ifException((exceptionMapper, exception) -> {
+                        throw exceptionMapper.map(exception);
                     })
                     .getResults();
         });

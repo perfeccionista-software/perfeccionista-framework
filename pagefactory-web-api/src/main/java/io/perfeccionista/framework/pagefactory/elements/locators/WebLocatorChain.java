@@ -3,7 +3,6 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
@@ -28,6 +27,10 @@ public class WebLocatorChain {
         // TODO: Implement Проверить что множественный локатор только 0 или 1 на цепочку
         //  заполнены либо single = true и index, либо false и indexes
         return this;
+    }
+
+    public boolean isEmpty() {
+        return locatorSequence.isEmpty();
     }
 
     public WebLocatorChain addFirstLocator(@NotNull WebLocatorHolder locator) {
@@ -83,8 +86,6 @@ public class WebLocatorChain {
     public Deque<WebLocatorHolder> getAllLocators() {
         return new ArrayDeque<>(locatorSequence);
     }
-
-
 
     public ObjectNode toJson() {
         ObjectNode rootNode = createObjectNode();

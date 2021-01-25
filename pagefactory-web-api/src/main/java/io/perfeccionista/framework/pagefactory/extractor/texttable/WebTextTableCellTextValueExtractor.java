@@ -1,25 +1,28 @@
 package io.perfeccionista.framework.pagefactory.extractor.texttable;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
 
 public class WebTextTableCellTextValueExtractor implements WebTextTableValueExtractor<String> {
 
@@ -33,7 +36,7 @@ public class WebTextTableCellTextValueExtractor implements WebTextTableValueExtr
 
     @Override
     public Map<Integer, String> extractValues(@NotNull WebTextTableFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         Set<Integer> indexes = filterResult.getIndexes();
         String hash = filterResult.getHash();
         WebTextTable element = filter.getElement();
@@ -76,16 +79,17 @@ public class WebTextTableCellTextValueExtractor implements WebTextTableValueExtr
         WebLink elementToExtractValue = tableCellBlock.textLink();
 
         // Добавляем в цепочку локаторов операции локаторы до блока WebListBlock
-        JsOperation<String> jsOperation = elementToExtractValue
-                .getJsOperationActionImplementation(GET_TEXT_METHOD, String.class)
-                .getJsOperation(elementToExtractValue);
-        jsOperation.getLocatorChain()
+        WebGetTextOperationType operationType = WebGetTextOperationType.of(elementToExtractValue);
+        WebElementOperation<String> operation = WebElementOperationHandler.of(elementToExtractValue, operationType, TEXT)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(tableLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 

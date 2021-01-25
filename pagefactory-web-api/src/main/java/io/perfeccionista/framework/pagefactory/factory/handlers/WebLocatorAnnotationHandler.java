@@ -4,23 +4,24 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.WebLocatorProcessing;
+import io.perfeccionista.framework.exceptions.LocatorProcessing;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
-import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
+import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_LOCATOR_STRATEGY_VALIDATION_FAILED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.LOCATOR_STRATEGY_VALIDATION_FAILED;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CONTAINS_TEXT;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CSS;
@@ -77,12 +78,12 @@ public class WebLocatorAnnotationHandler {
             webLocatorHolder.setSingle(webLocator.single());
             webLocatorHolder.setStrictSearch(webLocator.strictSearch());
             webLocatorHolder.setOnlyWithinParent(webLocator.onlyWithinParent());
-            for (Class<? extends JsFunction<Void>> jsFunctionClass : webLocator.invokeOnCall()) {
-                webLocatorHolder.addInvokedOnCallFunction(newInstance(jsFunctionClass));
+            for (Class<? extends EndpointHandler<Void>> endpointHandlerClass : webLocator.invokeOnCall()) {
+                webLocatorHolder.addInvokedOnCallFunction(newInstance(endpointHandlerClass));
             }
             return webLocatorHolder;
         }
-        throw WebLocatorProcessing.exception(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
+        throw LocatorProcessing.exception(LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
                 .addLastAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
     }
 
@@ -119,12 +120,21 @@ public class WebLocatorAnnotationHandler {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
             webLocatorHolder = WebLocatorHolder.of(webLocator.component(), CONTAINS_TEXT, webLocator.containsText());
         }
-        return Optional.ofNullable(webLocatorHolder);
+        if (Objects.isNull(webLocatorHolder)) {
+            return Optional.empty();
+        }
+        webLocatorHolder.setSingle(webLocator.single())
+                .setStrictSearch(webLocator.strictSearch())
+                .setOnlyWithinParent(webLocator.onlyWithinParent());
+        for (Class<? extends EndpointHandler<Void>> endpointHandlerClass : webLocator.invokeOnCall()) {
+            webLocatorHolder.addInvokedOnCallFunction(newInstance(endpointHandlerClass));
+        }
+        return Optional.of(webLocatorHolder);
     }
 
     private static void checkWebLocatorStrategyIsEmpty(@Nullable WebLocatorHolder webLocatorHolder, WebLocator webLocator) {
         if (webLocatorHolder != null) {
-            throw WebLocatorProcessing.exception(WEB_LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
+            throw LocatorProcessing.exception(LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));
         }
     }
@@ -144,7 +154,10 @@ public class WebLocatorAnnotationHandler {
                 .put("strictSearch", webLocator.strictSearch())
                 .put("onlyWithinParent", webLocator.onlyWithinParent());
         ArrayNode invokeOnCallNode = rootNode.putArray("invokeOnCall");
-        for (Class<? extends JsFunction<Void>> jsFunctionClass : webLocator.invokeOnCall()) {
+        for (Class<? extends EndpointHandler<Void>> jsFunctionClass : webLocator.invokeOnCall()) {
+
+
+
             invokeOnCallNode.add(jsFunctionClass.getCanonicalName());
         }
         return rootNode;

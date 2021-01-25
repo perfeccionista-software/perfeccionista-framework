@@ -1,16 +1,19 @@
 package io.perfeccionista.framework.pagefactory.filter.table.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsSelectedAvailable;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsSelectedOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,10 +23,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_SELECTED_METHOD;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebTableCellElementSelectedCondition implements WebTableRowCondition {
 
@@ -41,10 +44,10 @@ public class WebTableCellElementSelectedCondition implements WebTableRowConditio
         this.elementFrame = null;
     }
 
-    public WebTableCellElementSelectedCondition(@NotNull String columnName, @NotNull IsSelectedAvailable elementFrame) {
+    public WebTableCellElementSelectedCondition(@NotNull String columnName, @NotNull WebIsSelectedAvailable elementFrame) {
         this.columnName = columnName;
         this.elementPath = null;
-        this.elementFrame = (WebChildElement) elementFrame;
+        this.elementFrame = elementFrame;
     }
 
     public WebTableCellElementSelectedCondition selected() {
@@ -73,7 +76,7 @@ public class WebTableCellElementSelectedCondition implements WebTableRowConditio
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebTable element, @Nullable String hash) {
         WebTableFrame<WebBlock> webTableRegistry = element.getWebTableFrame();
 
         // Цепочка от корня страницы до WebTable column body
@@ -85,28 +88,29 @@ public class WebTableCellElementSelectedCondition implements WebTableRowConditio
                 .addLastLocator(webTableRegistry.getRequiredBodyLocator(columnName));
 
         // Находим необходимый элемент, заданный по пути или по методу
-        WebChildElement elementToFilter;
+        WebIsSelectedAvailable elementToFilter;
         if (elementPath != null) {
             elementToFilter = webTableRegistry.getRequiredBodyMappedBlock(columnName)
                     .getElementRegistry()
-                    .getRequiredElementByPath(elementPath, WebChildElement.class);
+                    .getRequiredElementByPath(elementPath, WebIsSelectedAvailable.class);
         } else {
             elementToFilter = webTableRegistry.getRequiredBodyMappedBlock(columnName)
                     .getElementRegistry()
-                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod(), elementFrame.getElementIdentifier().getElementType());
+                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod(), WebIsSelectedAvailable.class);
         }
 
         // Добавляем в цепочку локаторов операции локаторы до ячейки таблицы
-        JsOperation<Boolean> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(IS_SELECTED_METHOD, Boolean.class)
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        WebGetIsSelectedOperationType operationType = WebGetIsSelectedOperationType.of(elementToFilter);
+        WebElementOperation<Boolean> operation = WebElementOperationHandler.of(elementToFilter, operationType, SELECTED)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(tableLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -116,7 +120,7 @@ public class WebTableCellElementSelectedCondition implements WebTableRowConditio
         Set<Integer> matches = getMatches(selectedValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, Boolean> selectedValues) {

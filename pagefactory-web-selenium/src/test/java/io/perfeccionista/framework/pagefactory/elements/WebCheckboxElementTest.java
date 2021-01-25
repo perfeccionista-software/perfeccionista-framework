@@ -6,10 +6,10 @@ import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAss
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementInFocus.WebElementInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementIsDisabled.WebElementIsDisabledAssertionError;
-import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
+import io.perfeccionista.framework.exceptions.ElementIsDisplayed.ElementIsDisplayedAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementIsEnabled.WebElementIsEnabledAssertionError;
-import io.perfeccionista.framework.exceptions.WebElementIsPresent.WebElementIsPresentAssertionError;
-import io.perfeccionista.framework.exceptions.WebElementIsSelected.WebElementIsSelectedAssertionError;
+import io.perfeccionista.framework.exceptions.ElementIsPresent.ElementIsPresentAssertionError;
+import io.perfeccionista.framework.exceptions.ElementIsSelected.ElementIsSelectedAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementLabelValue.WebElementLabelValueAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocationAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
@@ -19,11 +19,10 @@ import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
-import io.perfeccionista.framework.measurements.Dimensions;
-import io.perfeccionista.framework.measurements.Location;
-import io.perfeccionista.framework.measurements.Point;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
+import io.perfeccionista.framework.measurements.Dimensions2D;
+import io.perfeccionista.framework.measurements.Point2D;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -33,45 +32,24 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisabled;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beEnabled;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beInFocus;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.bePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beSelected;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveColor;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveDimensions;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLabel;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLocation;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.havePropertyValue;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveText;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeInFocus;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeSelected;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveColor;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveDimensions;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveLabel;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveLocation;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ON_THE_SCREEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LABEL;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_COLOR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_DIMENSIONS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LABEL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LOCATION_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SCREENSHOT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.HOVER_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ENABLED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_IN_FOCUS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_SELECTED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
+import static io.perfeccionista.framework.Web.*;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ELEMENT_BOUNDS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_ON_THE_SCREEN_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLICK_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_SCREENSHOT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HOVER_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_COMPONENT_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_COMPONENT_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_ENABLED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_SELECTED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.value.Values.intGreaterThan;
 import static io.perfeccionista.framework.value.Values.stringContains;
 import static io.perfeccionista.framework.value.Values.stringContainsAll;
@@ -103,24 +81,22 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(checkboxOne.getWebBrowserDispatcher()),
                 () -> assertNotNull(checkboxOne.getRequiredLocator(ROOT)),
                 // WebCheckbox
-                () -> assertNotNull(checkboxOne.getActionImplementation(CLICK_METHOD, Void.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(GET_LABEL_METHOD, String.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_SELECTED_METHOD, Boolean.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_ENABLED_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(CLICK_METHOD, Void.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(GET_LABEL_METHOD, String.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_SELECTED_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_ENABLED_METHOD, Boolean.class)),
                 // WebChildElement
-                () -> assertNotNull(checkboxOne.getActionImplementation(GET_COLOR_METHOD, Color.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(GET_LOCATION_METHOD, Location.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(HOVER_TO_METHOD, Void.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(IS_PRESENT_METHOD, Boolean.class)),
-                () -> assertNotNull(checkboxOne.getActionImplementation(SCROLL_TO_METHOD, Void.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(GET_COLOR_METHOD, Color.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(GET_ELEMENT_BOUNDS_METHOD, ElementBounds.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(GET_SCREENSHOT_METHOD, Screenshot.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(HOVER_TO_METHOD, Void.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_IN_FOCUS_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(IS_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(checkboxOne.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("checkboxOne", elementIdentifier.getElementMethod().getName()),
                 () -> assertEquals("checkboxOne", elementIdentifier.getLastUsedName()),
@@ -146,7 +122,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 .select("Elements");
 
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
-        WebTextBlock checkboxText = elementsPage.checkboxText()
+        WebText checkboxText = elementsPage.checkboxText()
                 .should(bePresent())
                 .should(beDisplayed())
                 .should(haveText(stringEmpty()));
@@ -157,8 +133,8 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 .should(notBeSelected())
                 .should(notBeInFocus())
                 .scrollTo()
-                .should(haveDimensions(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d)))
-                .should(haveLocation(Location.relative(345.0d, 673.4d).setInaccuracy(0.2d)))
+                .should(haveDimensions(Dimensions2D.of(176.3d, 24.0d).setInaccuracy(0.2d)))
+                .should(haveScreenLocation(Point2D.of(345.0d, 673.4d).setInaccuracy(0.2d)))
                 .should(haveColor(LABEL, "color", Color.of(33, 37, 41, 1.0d)))
                 .hoverTo(true) // 280 ms
                 .should(haveLabel("Label 1"))
@@ -182,11 +158,11 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertTrue(checkboxOne.isPresent()),
                 () -> assertTrue(checkboxOne.isDisplayed()),
                 () -> assertFalse(checkboxOne.isInFocus()),
-                () -> assertEquals(Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d), checkboxOne.getDimensions(ROOT)),
-                () -> assertEquals(Location.absolute(345.0d, 673.4d).setInaccuracy(0.2d), checkboxOne.getLocation(ROOT)),
+                () -> assertEquals(Dimensions2D.of(176.3d, 24.0d).setInaccuracy(0.2d), checkboxOne.getElementBounds().getDimensions()),
+                () -> assertEquals(Point2D.of(345.0d, 673.4d).setInaccuracy(0.2d), checkboxOne.getElementBounds().getAbsoluteLocation()),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), checkboxOne.getColor(LABEL, "color")),
                 () -> {
-                    Screenshot screenshot = checkboxOne.getScreenshot(ROOT); // 400 ms
+                    Screenshot screenshot = checkboxOne.getScreenshot(); // 400 ms
                     assertAll(
                             () -> assertNotNull(screenshot),
                             () -> assertTrue(intGreaterThan(3500).check(screenshot.getRaw().length))
@@ -203,7 +179,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beSelected());
         checkboxText
                 .should(haveText(stringContainsAll("Label 1", "Label 2")));
-        assertEquals(Point.of(88.1d, 12d).setInaccuracy(0.2d), checkboxOne.getDimensions(ROOT).getCenter());
+        assertEquals(Point2D.of(433.2d, 685.4d).setInaccuracy(0.2d), checkboxOne.getElementBounds().getCenter());
     }
 
     @Test
@@ -221,9 +197,9 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
         environment.getService(TimeoutsService.class)
                 .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
         assertAll(
-                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> checkboxOne.should(notBePresent())),
-                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                () -> assertThrows(ElementIsDisplayedAssertionError.class,
                         () -> checkboxOne.should(notBeDisplayed())),
                 () -> assertThrows(WebElementNotInFocusAssertionError.class,
                         () -> checkboxOne.should(beInFocus())),
@@ -232,17 +208,17 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertThrows(WebElementNotSelectedAssertionError.class,
                         () -> checkboxOne.should(beSelected())),
                 () -> {
-                    Dimensions elementDimensions = Dimensions.of(176.3d, 24.0d).setInaccuracy(0.2d);
+                    Dimensions2D elementDimensions = Dimensions2D.of(176.3d, 24.0d).setInaccuracy(0.2d);
                     assertThrows(WebElementDimensionsAssertionError.class,
                             () -> checkboxOne.should(notHaveDimensions(elementDimensions)));
                 },
                 () -> {
-                    Location elementLocation = Location.relative(345.0d, 673.4d).setInaccuracy(0.2d);
+                    Point2D elementLocation = Point2D.of(345.0d, 673.4d).setInaccuracy(0.2d);
                     assertAll(
                             () -> assertThrows(WebElementLocationAssertionError.class,
-                                    () -> checkboxOne.should(haveLocation(elementLocation.offset(12d, 10d)))),
+                                    () -> checkboxOne.should(haveScreenLocation(elementLocation.offset(12d, 10d)))),
                             () -> assertThrows(WebElementLocationAssertionError.class,
-                                    () -> checkboxOne.should(notHaveLocation(elementLocation)))
+                                    () -> checkboxOne.should(notHaveScreenLocation(elementLocation)))
                     );
                 },
                 () -> {
@@ -258,7 +234,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
         checkboxOne
                 .click();
         assertAll(
-                () -> assertThrows(WebElementIsSelectedAssertionError.class,
+                () -> assertThrows(ElementIsSelectedAssertionError.class,
                         () -> checkboxOne.should(notBeSelected())),
                 () -> assertThrows(WebElementInFocusAssertionError.class,
                         () -> checkboxOne.should(notBeInFocus())),

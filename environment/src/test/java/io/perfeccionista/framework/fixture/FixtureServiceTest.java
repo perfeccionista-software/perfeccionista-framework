@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FixtureServiceTest extends AbstractParallelTestWithEnvironment {
 
@@ -28,16 +27,16 @@ class FixtureServiceTest extends AbstractParallelTestWithEnvironment {
                     FixtureSetUpResult<Integer> testFixtureOneSetUpResult = fixtureService
                             .executeFixture("Test fixture one");
                     assertAll(
-                            () -> assertTrue(testFixtureOneSetUpResult.getResult().isPresent()),
-                            () -> assertEquals(777, testFixtureOneSetUpResult.getResult().get())
+                            () -> assertNotNull(testFixtureOneSetUpResult.getResult()),
+                            () -> assertEquals(777, testFixtureOneSetUpResult.getNotNullResult())
                     );
                 },
                 () -> {
                     FixtureSetUpResult<String> testFixtureTwoSetUpResult = fixtureService
                             .executeFixture("Test fixture two");
                     assertAll(
-                            () -> assertTrue(testFixtureTwoSetUpResult.getResult().isPresent()),
-                            () -> assertEquals("Success", testFixtureTwoSetUpResult.getResult().get())
+                            () -> assertNotNull(testFixtureTwoSetUpResult.getResult()),
+                            () -> assertEquals("Success", testFixtureTwoSetUpResult.getNotNullResult())
                     );
                 }
         );
@@ -51,8 +50,8 @@ class FixtureServiceTest extends AbstractParallelTestWithEnvironment {
         FixtureSetUpResult<Long> testFixtureThreeSetUpResult = fixtureService
                 .executeFixture("Test fixture three", fixtureParameters);
         assertAll(
-                () -> assertTrue(testFixtureThreeSetUpResult.getResult().isPresent()),
-                () -> assertEquals(45746L, testFixtureThreeSetUpResult.getResult().get())
+                () -> assertNotNull(testFixtureThreeSetUpResult.getResult()),
+                () -> assertEquals(45746L, testFixtureThreeSetUpResult.getResult())
         );
     }
 

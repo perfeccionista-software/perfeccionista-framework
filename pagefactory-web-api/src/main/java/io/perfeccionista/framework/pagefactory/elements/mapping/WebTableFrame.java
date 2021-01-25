@@ -2,8 +2,8 @@ package io.perfeccionista.framework.pagefactory.elements.mapping;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.exceptions.WebLocatorNotFound;
-import io.perfeccionista.framework.exceptions.WebMappedBlockNotFound;
+import io.perfeccionista.framework.exceptions.LocatorNotFound;
+import io.perfeccionista.framework.exceptions.MappedBlockNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.json.JsonSerializable;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
@@ -17,12 +17,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATOR_FOR_COLUMN_BODY_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATOR_FOR_COLUMN_FOOTER_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATOR_FOR_COLUMN_HEADER_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.TABLE_MAPPED_BLOCK_FOR_COLUMN_BODY_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.TABLE_MAPPED_BLOCK_FOR_COLUMN_FOOTER_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.TABLE_MAPPED_BLOCK_FOR_COLUMN_HEADER_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.TABLE_ELEMENT_LOCATOR_FOR_COLUMN_BODY_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.TABLE_ELEMENT_LOCATOR_FOR_COLUMN_FOOTER_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.TABLE_ELEMENT_LOCATOR_FOR_COLUMN_HEADER_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.TABLE_MAPPED_BLOCK_FOR_COLUMN_BODY_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.TABLE_MAPPED_BLOCK_FOR_COLUMN_FOOTER_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.TABLE_MAPPED_BLOCK_FOR_COLUMN_HEADER_NOT_FOUND;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 // TODO: Добавить методы для получения экземпляра строки заголовка, тела, футера и потом их просто клонить
@@ -73,22 +73,22 @@ public class WebTableFrame<T extends WebBlock> implements JsonSerializable {
 
     public @NotNull WebLocatorHolder getRequiredHeaderLocator(@NotNull String columnName) {
         return getHeaderLocator(columnName)
-                .orElseThrow(() -> WebLocatorNotFound
-                        .exception(ELEMENT_LOCATOR_FOR_COLUMN_HEADER_NOT_FOUND.getMessage(columnName))
+                .orElseThrow(() -> LocatorNotFound
+                        .exception(TABLE_ELEMENT_LOCATOR_FOR_COLUMN_HEADER_NOT_FOUND.getMessage(columnName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
     }
 
     public @NotNull WebLocatorHolder getRequiredBodyLocator(@NotNull String columnName) {
         return getBodyLocator(columnName)
-                .orElseThrow(() -> WebLocatorNotFound
-                        .exception(ELEMENT_LOCATOR_FOR_COLUMN_BODY_NOT_FOUND.getMessage(columnName))
+                .orElseThrow(() -> LocatorNotFound
+                        .exception(TABLE_ELEMENT_LOCATOR_FOR_COLUMN_BODY_NOT_FOUND.getMessage(columnName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
     }
 
     public @NotNull WebLocatorHolder getRequiredFooterLocator(@NotNull String columnName) {
         return getFooterLocator(columnName)
-                .orElseThrow(() -> WebLocatorNotFound
-                        .exception(ELEMENT_LOCATOR_FOR_COLUMN_FOOTER_NOT_FOUND.getMessage(columnName))
+                .orElseThrow(() -> LocatorNotFound
+                        .exception(TABLE_ELEMENT_LOCATOR_FOR_COLUMN_FOOTER_NOT_FOUND.getMessage(columnName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
     }
 
@@ -108,21 +108,21 @@ public class WebTableFrame<T extends WebBlock> implements JsonSerializable {
 
     public @NotNull T getRequiredHeaderMappedBlock(@NotNull String columnName) {
         return getHeaderMappedBlock(columnName)
-                .orElseThrow(() -> WebMappedBlockNotFound
+                .orElseThrow(() -> MappedBlockNotFound
                         .exception(TABLE_MAPPED_BLOCK_FOR_COLUMN_HEADER_NOT_FOUND.getMessage(columnName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
     }
 
     public @NotNull T getRequiredBodyMappedBlock(@NotNull String columnName) {
         return getBodyMappedBlock(columnName)
-                .orElseThrow(() -> WebMappedBlockNotFound
+                .orElseThrow(() -> MappedBlockNotFound
                         .exception(TABLE_MAPPED_BLOCK_FOR_COLUMN_BODY_NOT_FOUND.getMessage(columnName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
     }
 
     public @NotNull T getRequiredFooterMappedBlock(@NotNull String columnName) {
         return getFooterMappedBlock(columnName)
-                .orElseThrow(() -> WebMappedBlockNotFound
+                .orElseThrow(() -> MappedBlockNotFound
                         .exception(TABLE_MAPPED_BLOCK_FOR_COLUMN_FOOTER_NOT_FOUND.getMessage(columnName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
     }

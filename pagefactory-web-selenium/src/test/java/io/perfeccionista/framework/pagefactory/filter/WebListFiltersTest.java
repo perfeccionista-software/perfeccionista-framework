@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
-import io.perfeccionista.framework.exceptions.WebLocatorNotFound.WebLocatorNotFoundException;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
+import io.perfeccionista.framework.exceptions.LocatorNotFound.LocatorNotFoundException;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -11,31 +11,8 @@ import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBl
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.blockIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.componentDisplayed;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.componentNotDisplayed;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.componentNotPresent;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.componentPresent;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsProperty;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsText;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.disabled;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.displayed;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.enabled;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainProperty;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainText;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notDisplayed;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notPresent;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notSelected;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.present;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.selected;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebListFilter;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
 import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
@@ -493,7 +470,7 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(haveSize(193));
 
         WebListFilter filter = list.filter(with(componentPresent(frame(CountryBlock.class).shortName(), "Unknown")));
-        assertThrows(WebLocatorNotFoundException.class, () -> filter.should(haveSize(200)));
+        assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 
     @Test
@@ -529,7 +506,7 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(haveSize(186));
 
         WebListFilter filter = list.filter(with(componentDisplayed(frame(CountryBlock.class).shortName(), "Unknown")));
-        assertThrows(WebLocatorNotFoundException.class, () -> filter.should(haveSize(200)));
+        assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 
 }

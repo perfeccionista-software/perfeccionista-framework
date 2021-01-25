@@ -1,7 +1,7 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 plugins {
-    id("com.bmuschko.docker-remote-api") version "6.1.3"
+    id("com.bmuschko.docker-remote-api") version "6.7.0"
 }
 
 tasks.create("buildImage", DockerBuildImage::class) {

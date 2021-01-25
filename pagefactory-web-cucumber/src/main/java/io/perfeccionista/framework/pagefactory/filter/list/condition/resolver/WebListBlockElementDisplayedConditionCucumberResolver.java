@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.displayed;
+import static io.perfeccionista.framework.Web.displayed;
 import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("{webElement} is displayed")

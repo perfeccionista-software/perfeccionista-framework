@@ -51,4 +51,6 @@ public interface PerfeccionistaException {
 
     String getMessage();
 
+    String stacktraceToString();
+
 }

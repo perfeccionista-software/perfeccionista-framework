@@ -42,7 +42,7 @@ public class StringContainsAllChecker extends AbstractStringChecker {
         return String.format("Compare parameters:\n"
                         + "          rawExpected: '%s'\n"
                         + "            rawActual: '%s'\n"
-                        + "              checker: %s\n}"
+                        + "              checker: %s\n"
                         + "               method: %s\n"
                         + "    processedExpected: '%s'\n"
                         + "      processedActual: '%s'",

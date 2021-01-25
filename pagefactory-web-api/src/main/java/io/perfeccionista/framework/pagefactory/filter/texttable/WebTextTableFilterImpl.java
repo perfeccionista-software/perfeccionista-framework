@@ -4,14 +4,14 @@ import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatche
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder.WebTextTableRowFilterResultGroupingHolder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowCondition;
 import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowCondition.WebTextTableRowConditionHolder;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,8 +19,9 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textCellValue;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textRowIndex;
+import static io.perfeccionista.framework.Web.textCellValue;
+import static io.perfeccionista.framework.Web.textRowIndex;
+
 
 // TODO: Implement: public Map<String, SingleResult<String>> extractOne(Set<String> columnNames)
 // TODO: Implement: public Map<String, MultipleResult<String>> extractAll(Set<String> columnNames)
@@ -30,7 +31,7 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
     private final WebTextTableFilterBuilder filterBuilder;
 
     private String initialHash = null;
-    private WebFilterResult filterResult = null;
+    private FilterResult filterResult = null;
 
     private WebTextTableFilterImpl(WebTextTable element, WebTextTableFilterBuilder filterBuilder) {
         this.element = element;
@@ -78,10 +79,8 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
     }
 
     @Override
-    public @NotNull WebFilterResult getFilterResult() {
-        if (filterResult == null) {
-            executeFilter(element, filterBuilder);
-        }
+    public @NotNull FilterResult getFilterResult() {
+        executeFilter(element, filterBuilder);
         return filterResult;
     }
 
@@ -104,20 +103,20 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
         String calculatedHash = initialHash;
         for (WebTextTableRowFilterResultGroupingHolder conditionHolder : conditions) {
             WebTextTableRowCondition condition = conditionHolder.getCondition();
-            WebFilterResult conditionResult = processConditions(element, condition, calculatedHash);
+            FilterResult conditionResult = processConditions(element, condition, calculatedHash);
             calculatedHash = conditionResult.getHash();
-            if (WebFilterResultGrouping.ADD == conditionHolder.getUsage()) {
+            if (FilterResultGrouping.ADD == conditionHolder.getUsage()) {
                 indexes.addAll(conditionResult.getIndexes());
             }
-            if (WebFilterResultGrouping.SUBTRACT == conditionHolder.getUsage()) {
+            if (FilterResultGrouping.SUBTRACT == conditionHolder.getUsage()) {
                 indexes.removeAll(conditionResult.getIndexes());
             }
         }
-        filterResult = WebFilterResult.of(indexes, calculatedHash);
+        filterResult = FilterResult.of(indexes, calculatedHash);
     }
 
-    private WebFilterResult processConditions(WebTextTable element, WebTextTableRowCondition condition, String hash) {
-        WebFilterResult conditionResult = condition.process(element, hash);
+    private FilterResult processConditions(WebTextTable element, WebTextTableRowCondition condition, String hash) {
+        FilterResult conditionResult = condition.process(element, hash);
         Deque<WebTextTableRowConditionHolder> childConditions = condition.getChildConditions();
         if (childConditions.isEmpty()) {
             return conditionResult;
@@ -126,9 +125,9 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
         Set<Integer> indexes = conditionResult.getIndexes();
         for (WebTextTableRowConditionHolder childConditionHolder : childConditions) {
             WebTextTableRowCondition childCondition = childConditionHolder.getCondition();
-            WebFilterResult childConditionResult = processConditions(element, childCondition, calculatedHash);
+            FilterResult childConditionResult = processConditions(element, childCondition, calculatedHash);
             calculatedHash = childConditionResult.getHash();
-            if (WebConditionGrouping.AND == childConditionHolder.getUsage()) {
+            if (ConditionGrouping.AND == childConditionHolder.getUsage()) {
                 Set<Integer> overallIndexes = new HashSet<>();
                 for (int childConditionIndex : childConditionResult.getIndexes()) {
                     if (indexes.contains(childConditionIndex)) {
@@ -137,11 +136,11 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
                 }
                 indexes = overallIndexes;
             }
-            if (WebConditionGrouping.OR == childConditionHolder.getUsage()) {
+            if (ConditionGrouping.OR == childConditionHolder.getUsage()) {
                 indexes.addAll(childConditionResult.getIndexes());
             }
         }
-        return WebFilterResult.of(indexes, calculatedHash);
+        return FilterResult.of(indexes, calculatedHash);
     }
 
 }

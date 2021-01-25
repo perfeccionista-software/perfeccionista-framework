@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainTextBlock;
+import static io.perfeccionista.framework.Web.notContainTextBlock;
 import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("number is not {numberValue}")

@@ -34,7 +34,7 @@ public class LocationCucumberResolverImpl implements LocationCucumberResolver {
     }
 
     @Override
-    public Optional<Location> tryResolve(@NotNull String expression, @Nullable Object... args) {
+    public Optional<Point2D> tryResolve(@NotNull String expression, @Nullable Object... args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.find()) {
@@ -42,7 +42,7 @@ public class LocationCucumberResolverImpl implements LocationCucumberResolver {
                 double yCoordinate = extractCoordinate(matcher.group("yCoordinate"), expression);
                 double inaccuracy = extractInaccuracy(matcher.group("inaccuracy"), expression)
                         .orElse(0.5d);
-                return Optional.of(Location.center(xCoordinate, yCoordinate).setInaccuracy(inaccuracy));
+                return Optional.of(Point2D.of(xCoordinate, yCoordinate).setInaccuracy(inaccuracy));
             }
         }
         return Optional.empty();

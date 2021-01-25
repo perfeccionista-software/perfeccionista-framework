@@ -30,11 +30,11 @@ public class WebFilterResultGroupingSubtractCucumberResolver implements WebFilte
     }
 
     @Override
-    public Optional<WebFilterResultGrouping> tryResolve(@NotNull String expression, @Nullable Object... args) {
+    public Optional<FilterResultGrouping> tryResolve(@NotNull String expression, @Nullable Object... args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.find()) {
-                return Optional.of(WebFilterResultGrouping.SUBTRACT);
+                return Optional.of(FilterResultGrouping.SUBTRACT);
             }
         }
         return Optional.empty();

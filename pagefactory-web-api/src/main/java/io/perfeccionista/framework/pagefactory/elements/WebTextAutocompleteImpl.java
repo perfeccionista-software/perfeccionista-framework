@@ -1,32 +1,38 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOpenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebDropDownAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextAutocompleteMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextDropDownListMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
+import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
+import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
+import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.type.WebClearOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebReplaceTextOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebSendKeyEventsOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebTypeTextOperationType;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLEAR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SEND_KEYS_EVENTS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SEND_KEYS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLEAR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 
 public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements WebTextAutocomplete {
 
@@ -35,12 +41,6 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     @Override
     public WebTextAutocomplete executeAction(@NotNull String actionName, Object... args) {
         super.executeAction(actionName, args);
-        return this;
-    }
-
-    @Override
-    public WebTextAutocomplete executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(interactionName, other, args);
         return this;
     }
 
@@ -54,6 +54,12 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
 
     @Override
     public WebTextAutocomplete should(@NotNull WebTextDropDownListMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
         super.should(matcher);
         return this;
     }
@@ -77,49 +83,43 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebTextAutocomplete should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -137,29 +137,32 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull GetLabelAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebElementStateAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull GetTextAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebGetLabelAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete should(@NotNull IsOpenAvailableMatcher matcher) {
+    public WebTextAutocomplete should(@NotNull WebGetTextAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
-    // Clear
+    @Override
+    public WebTextAutocomplete should(@NotNull WebDropDownAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
 
     @Override
-    public WebTextAutocomplete clear() {
-        runCheck(getEnvironment(), actionInvocation(CLEAR_METHOD, this),
-                () -> getActionImplementation(CLEAR_METHOD, Boolean.class).execute(this));
+    public WebTextAutocomplete select(@NotNull WebTextListBlockCondition filterCondition) {
+        super.select(filterCondition);
         return this;
     }
 
@@ -171,7 +174,13 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
         return this;
     }
 
-    // Close
+    // DropDown
+
+    @Override
+    public WebTextAutocomplete open() {
+        super.open();
+        return this;
+    }
 
     @Override
     public WebTextAutocomplete close() {
@@ -187,11 +196,37 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
         return this;
     }
 
-    // Open
+    // InputText
 
     @Override
-    public WebTextAutocomplete open() {
-        super.open();
+    public WebTextAutocomplete clear() {
+        WebClearOperationType operationType = WebClearOperationType.of(this);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete typeText(@NotNull String text) {
+        WebTypeTextOperationType operationType = WebTypeTextOperationType.of(this, text);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete replaceText(@NotNull String text) {
+        WebReplaceTextOperationType operationType = WebReplaceTextOperationType.of(this, text);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
+        WebSendKeyEventsOperationType operationType = WebSendKeyEventsOperationType.of(this, keyEvents);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
 
@@ -200,22 +235,6 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     @Override
     public WebTextAutocomplete scrollTo() {
         super.scrollTo();
-        return this;
-    }
-
-    // SendKeys
-
-    @Override
-    public WebTextAutocomplete sendKeys(@NotNull String keys) {
-        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_METHOD, this, keys),
-                () -> getActionImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys));
-        return this;
-    }
-
-    @Override
-    public WebTextAutocomplete sendKeys(@NotNull KeysEventChain keyEvents) {
-        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_EVENTS_METHOD, this, keyEvents),
-                () -> getActionImplementation(SEND_KEYS_EVENTS_METHOD, Void.class).execute(this, keyEvents));
         return this;
     }
 

@@ -5,6 +5,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonEmptyCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -22,6 +23,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonIndexCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -40,6 +42,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonEnabledCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -58,6 +61,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonSelectedCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -76,6 +80,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioButtonLabelCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -102,6 +107,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_AND
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -120,6 +126,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_OR
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -138,6 +145,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_ADD
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -156,6 +164,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_SUBTRACT
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -173,6 +182,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_WITH
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -191,6 +201,7 @@
   @WebElement @WebRadioGroup @Filter
   Сценарий: Положительный сценарий для WebRadioGroupFilterMultipleConditions_WITHOUT
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"

@@ -1,40 +1,54 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOpenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebDropDownAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextDropDownListMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.operation.WebElementIsDisplayedOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebCloseOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsDisplayedOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsOpenOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetLabelOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebOpenOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.Web.textBlock;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLOSE;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.OPEN;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLOSE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LABEL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.OPEN_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLOSE;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.OPEN;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.UL;
 
 public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextDropDownList {
+
+    @Override
+    public WebTextDropDownList select(@NotNull WebTextListBlockCondition filterCondition) {
+        filter(filterCondition)
+                .extractOne(textBlock()).getNotNullResult().textLink()
+                .click();
+        return this;
+    }
 
     // Actions
 
@@ -44,17 +58,17 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
         return this;
     }
 
-    @Override
-    public WebTextDropDownList executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(interactionName, other, args);
-        return this;
-    }
-
     // Asserts
 
     @Override
     public WebTextDropDownList should(@NotNull WebTextDropDownListMatcher matcher) {
         matcher.check(this);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
+        super.should(matcher);
         return this;
     }
 
@@ -77,49 +91,43 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebTextDropDownList should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -137,19 +145,25 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull GetLabelAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebElementStateAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList should(@NotNull WebGetLabelAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull GetTextAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebGetTextAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebTextDropDownList should(@NotNull IsOpenAvailableMatcher matcher) {
+    public WebTextDropDownList should(@NotNull WebDropDownAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
@@ -158,8 +172,9 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
 
     @Override
     public WebTextDropDownList click() {
-        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
-                () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
+        WebClickOperationType operationType = WebClickOperationType.of(this);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
 
@@ -167,13 +182,13 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
 
     @Override
     public WebTextDropDownList close() {
-        runCheck(getEnvironment(), actionInvocation(CLOSE_METHOD, this),
+        WebGetIsOpenOperationType isOpenOperationType = WebGetIsOpenOperationType.of(this);
+        WebCloseOperationType closeOperationType = WebCloseOperationType.of(this);
+        runCheck(getEnvironment(), closeOperationType.getInvocationName(),
                 () -> {
-                    boolean isOpen = getActionImplementation(IS_OPEN_METHOD, Boolean.class)
-                            .execute(this);
+                    boolean isOpen = WebElementOperationHandler.of(this, isOpenOperationType, UL).executeGetter();
                     if (isOpen) {
-                        getActionImplementation(CLOSE_METHOD, Void.class)
-                                .execute(this, CLOSE);
+                        WebElementOperationHandler.of(this, closeOperationType, CLOSE).executeAction();
                     }
                 });
         return this;
@@ -183,16 +198,18 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
 
     @Override
     public @Nullable String getLabel() {
-        return runCheck(getEnvironment(), getterInvocation(GET_LABEL_METHOD, this),
-                () -> getActionImplementation(GET_LABEL_METHOD, String.class).execute(this));
+        WebGetLabelOperationType operationType = WebGetLabelOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
     // Get Text
 
     @Override
     public @Nullable String getText() {
-        return runCheck(getEnvironment(), getterInvocation(GET_TEXT_METHOD, this),
-                () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
+        WebGetTextOperationType operationType = WebGetTextOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 
     // HoverTo
@@ -207,21 +224,22 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
 
     @Override
     public boolean isOpen() {
-        return runCheck(getEnvironment(), getterInvocation(IS_OPEN_METHOD, this),
-                () -> getActionImplementation(IS_OPEN_METHOD, Boolean.class).execute(this));
+        WebGetIsDisplayedOperationType operationType = WebGetIsDisplayedOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementIsDisplayedOperationHandler.of(this, operationType, UL).executeGetter());
     }
 
     // Open
 
     @Override
     public WebTextDropDownList open() {
-        runCheck(getEnvironment(), actionInvocation(OPEN_METHOD, this),
+        WebGetIsDisplayedOperationType isOpenOperationType = WebGetIsDisplayedOperationType.of(this);
+        WebOpenOperationType openOperationType = WebOpenOperationType.of(this);
+        runCheck(getEnvironment(), openOperationType.getInvocationName(),
                 () -> {
-                    boolean isOpen = getActionImplementation(IS_OPEN_METHOD, Boolean.class)
-                            .execute(this);
+                    boolean isOpen = WebElementIsDisplayedOperationHandler.of(this, isOpenOperationType, UL).executeGetter();
                     if (!isOpen) {
-                        getActionImplementation(OPEN_METHOD, Void.class)
-                                .execute(this, OPEN);
+                        WebElementOperationHandler.of(this, openOperationType, OPEN).executeAction();
                     }
                 });
         return this;

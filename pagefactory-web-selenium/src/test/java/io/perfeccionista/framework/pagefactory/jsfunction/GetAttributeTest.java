@@ -2,10 +2,12 @@ package io.perfeccionista.framework.pagefactory.jsfunction;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetAttributeValue;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumClick;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.junit.jupiter.api.Test;
 
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
@@ -22,18 +24,18 @@ class GetAttributeTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
+            WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
-                    .executeOperation(clickOperation);
+                    .executeWebElementOperation(clickOperation);
         });
         String placeholderValue = runCheck(environment, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-input"));
-            JsOperation<String> getAttributeOperation = JsOperation.of(scrollToLocatorChain, new GetAttribute("placeholder"));
+            WebElementOperation<String> getAttributeOperation = WebElementOperation.of(scrollToLocatorChain, new JsGetAttributeValue("placeholder"));
             return browser.executor()
-                    .executeOperation(getAttributeOperation)
-                    .ifException(e -> {
-                        throw e;
+                    .executeWebElementOperation(getAttributeOperation)
+                    .ifException((exceptionMapper, exception) -> {
+                        throw exceptionMapper.map(exception);
                     })
                     .getResult();
         });

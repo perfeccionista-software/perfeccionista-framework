@@ -3,37 +3,33 @@ package io.perfeccionista.framework.pagefactory.elements;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.WebElementActionNotFound;
-import io.perfeccionista.framework.exceptions.WebLocatorNotFound;
+import io.perfeccionista.framework.exceptions.LocatorNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.name.WebElementIdentifier;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementActionImplementation;
-import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementActionRegistry;
-import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementJsOperationActionImplementation;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.EndpointHandlerRegistry;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
+import io.perfeccionista.framework.pagefactory.operation.type.WebActionOperationType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_ACTION_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_JS_OPERATION_ACTION_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATOR_NOT_FOUND;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_LOCATOR_NOT_FOUND;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.EXECUTE_ACTION;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class AbstractWebChildElementBase implements WebChildElementBase {
 
     protected WebParentHolder parentHolder;
     protected WebLocatorRegistry locatorRegistry;
-    protected WebElementActionRegistry actionRegistry;
+    protected EndpointHandlerRegistry actionRegistry;
 
     protected WebElementIdentifier elementIdentifier;
 
@@ -48,7 +44,7 @@ public class AbstractWebChildElementBase implements WebChildElementBase {
     @Override
     public @NotNull WebLocatorHolder getRequiredLocator(@NotNull String componentName) {
         return locatorRegistry.getOptionalLocator(componentName)
-                .orElseThrow(() -> WebLocatorNotFound.exception(ELEMENT_LOCATOR_NOT_FOUND.getMessage(componentName))
+                .orElseThrow(() -> LocatorNotFound.exception(ELEMENT_LOCATOR_NOT_FOUND.getMessage(componentName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(this)));
     }
 
@@ -85,25 +81,17 @@ public class AbstractWebChildElementBase implements WebChildElementBase {
     }
 
     @Override
-    public @NotNull <R> WebElementJsOperationActionImplementation<R> getJsOperationActionImplementation(@NotNull String actionName, @NotNull Class<R> returnType) {
-        return actionRegistry.getJsOperationAction(actionName, returnType)
-                .orElseThrow(() -> WebElementActionNotFound.exception(ELEMENT_JS_OPERATION_ACTION_NOT_FOUND.getMessage(actionName)));
-    }
-
-    @Override
-    public @NotNull <T> WebElementActionImplementation<T> getActionImplementation(@NotNull String actionName, @NotNull Class<T> returnType) {
-        return actionRegistry.getAction(actionName, returnType)
-                .orElseThrow(() -> WebElementActionNotFound.exception(ELEMENT_ACTION_NOT_FOUND.getMessage(actionName)));
+    public @NotNull <T> Class<? extends EndpointHandler<T>> getEndpointHandler(@NotNull String actionName, @NotNull Class<T> returnType) {
+        return actionRegistry.getEndpointHandler(actionName, returnType);
     }
 
     // Actions
 
     @Override
     public WebChildElementBase executeAction(@NotNull String name, Object... args) {
-        runCheck(getEnvironment(), actionInvocation(EXECUTE_ACTION, this, name, args), () -> {
-            getActionImplementation(name, Void.class)
-                    .execute(this, args);
-        });
+        WebActionOperationType operationType = WebActionOperationType.of(this, name, args);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }
 

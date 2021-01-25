@@ -1,6 +1,6 @@
 dependencies {
-    compile(project(":pagefactory-mobile-appium")) {
-        because("pagefactory-mobile-appium module contains api for current module")
+    api(project(":pagefactory-mobile-api")) {
+        because("pagefactory-mobile-api module contains api for current module")
     }
 
     val cucumberVersion : String by rootProject

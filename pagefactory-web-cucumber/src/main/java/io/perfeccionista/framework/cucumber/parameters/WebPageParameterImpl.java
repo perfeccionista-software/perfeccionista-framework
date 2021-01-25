@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.cucumber.parameters;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserService;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import org.jetbrains.annotations.NotNull;
 

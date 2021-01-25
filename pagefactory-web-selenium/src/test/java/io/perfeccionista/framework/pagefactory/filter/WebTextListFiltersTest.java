@@ -1,21 +1,14 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TextListElementsPage;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsTextBlock;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainTextBlock;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.textBlockIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextListFilter;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;

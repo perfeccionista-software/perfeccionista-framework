@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.factory.handlers;
 
-import io.perfeccionista.framework.exceptions.WebMappedBlockIncorrectType;
+import io.perfeccionista.framework.exceptions.MappedBlockIncorrectType;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
@@ -12,9 +12,10 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Optional;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_MAPPED_BLOCK_INCORRECT_TYPE;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.MAPPED_BLOCK_IMPLEMENTATION_INCORRECT_TYPE;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findFirstAnnotationInHierarchy;
 import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
@@ -42,15 +43,18 @@ public class UseMappedWebRadioButtonBlockAnnotationHandler {
             webMappedBlockClass = optionalMethodAnnotation.get().value();
         }
 
-        if (!isSubtypeOf(webMappedBlockClass, DefaultWebRadioButtonBlock.class)) {
-            throw WebMappedBlockIncorrectType
-                    .exception(WEB_MAPPED_BLOCK_INCORRECT_TYPE.getMessage(DefaultWebRadioButtonBlock.class.getCanonicalName()));
+        DefaultWebRadioButtonBlock webRadioButtonBlock = null;
+
+        if (Objects.nonNull(webMappedBlockClass)) {
+            if (!isSubtypeOf(webMappedBlockClass, DefaultWebRadioButtonBlock.class)) {
+                throw MappedBlockIncorrectType
+                        .exception(MAPPED_BLOCK_IMPLEMENTATION_INCORRECT_TYPE.getMessage(DefaultWebRadioButtonBlock.class.getCanonicalName()));
+            }
+            webRadioButtonBlock = (DefaultWebRadioButtonBlock) webPageFactory
+                    .createMappedWebBlock(webRadioGroup, webMappedBlockClass);
         }
 
-        DefaultWebRadioButtonBlock webRadioButtonBlock = (DefaultWebRadioButtonBlock) webPageFactory
-                .createMappedWebBlock(webRadioGroup, webMappedBlockClass);
-
-        return new WebRadioGroupFrame<>(webRadioButtonBlock);
+        return new WebRadioGroupFrame<>(webRadioGroup, webRadioButtonBlock);
     }
 
 }

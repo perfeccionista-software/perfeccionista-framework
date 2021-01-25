@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements.preferences;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.exceptions.WebLocatorNotFound;
+import io.perfeccionista.framework.exceptions.LocatorNotFound;
 import io.perfeccionista.framework.json.JsonSerializable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATOR_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_LOCATOR_NOT_FOUND;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebLocatorConfiguration implements JsonSerializable {
@@ -54,9 +54,9 @@ public class WebLocatorConfiguration implements JsonSerializable {
         return this;
     }
 
-    public WebLocatorHolder getActionImplementation(@NotNull String locatorName) {
+    public WebLocatorHolder getLocatorHolder(@NotNull String locatorName) {
         return Optional.ofNullable(webLocatorHolders.get(locatorName))
-                .orElseThrow(() -> WebLocatorNotFound.exception(ELEMENT_LOCATOR_NOT_FOUND.getMessage(locatorName)));
+                .orElseThrow(() -> LocatorNotFound.exception(ELEMENT_LOCATOR_NOT_FOUND.getMessage(locatorName)));
     }
 
     public Map<String, WebLocatorHolder> asMap() {

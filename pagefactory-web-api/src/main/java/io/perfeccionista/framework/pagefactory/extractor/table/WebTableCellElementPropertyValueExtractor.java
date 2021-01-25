@@ -1,26 +1,29 @@
 package io.perfeccionista.framework.pagefactory.extractor.table;
 
-import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyHolder;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetStringAttributeValueOperationType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
 
 public class WebTableCellElementPropertyValueExtractor implements WebTableValueExtractor<String> {
 
@@ -51,7 +54,7 @@ public class WebTableCellElementPropertyValueExtractor implements WebTableValueE
 
     @Override
     public Map<Integer, String> extractValues(@NotNull WebTableFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         Set<Integer> indexes = filterResult.getIndexes();
         String hash = filterResult.getHash();
         WebTable element = filter.getElement();
@@ -103,18 +106,23 @@ public class WebTableCellElementPropertyValueExtractor implements WebTableValueE
         }
 
         // Добавляем в цепочку локаторов операции локаторы до блока WebListBlock
-        JsOperation<String> jsOperation = elementToExtractValue
-                .getProperty(propertyName)
-                .orElseThrow(() -> WebElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName))
-                        .addLastAttachmentEntry(WebElementAttachmentEntry.of(elementToExtractValue)))
-                .getJsOperation(elementToExtractValue);
-        jsOperation.getLocatorChain()
+        Optional<WebElementPropertyHolder> optionalPropertyHolder = elementToExtractValue.getProperty(propertyName);
+        WebElementOperation<String> operation;
+        if (optionalPropertyHolder.isPresent()) {
+            WebElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
+            operation = propertyHolder.getOperation(elementToExtractValue);
+        } else {
+            WebGetStringAttributeValueOperationType operationType = WebGetStringAttributeValueOperationType.of(elementToExtractValue, propertyName);
+            operation = WebElementOperationHandler.of(elementToExtractValue, operationType, propertyName).getOperation();
+        }
+        operation.getLocatorChain()
                 .addFirstLocators(tableLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 

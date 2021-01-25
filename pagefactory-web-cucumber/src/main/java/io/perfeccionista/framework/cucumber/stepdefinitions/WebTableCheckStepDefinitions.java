@@ -16,9 +16,8 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.beSorted;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textCellValue;
+import static io.perfeccionista.framework.Web.*;
+
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories

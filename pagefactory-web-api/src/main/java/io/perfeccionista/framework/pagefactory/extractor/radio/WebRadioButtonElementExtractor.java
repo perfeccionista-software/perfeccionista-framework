@@ -4,7 +4,7 @@ import io.perfeccionista.framework.pagefactory.WebPageService;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +14,7 @@ public class WebRadioButtonElementExtractor implements WebRadioButtonValueExtrac
 
     @Override
     public Map<Integer, WebRadioButton> extractValues(@NotNull WebRadioGroupFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         WebRadioGroup element = filter.getElement();
 
         WebPageFactory webPageFactory = element.getEnvironment()

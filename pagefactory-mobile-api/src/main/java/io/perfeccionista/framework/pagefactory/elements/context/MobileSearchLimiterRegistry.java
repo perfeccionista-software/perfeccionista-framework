@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.context;
 
-import io.perfeccionista.framework.pagefactory.elements.MobileParentElement;
+import io.perfeccionista.framework.pagefactory.elements.base.MobileParentElement;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -42,6 +42,7 @@ public class MobileSearchLimiterRegistry {
     }
 
     public <T extends MobileParentElement> T getContext(Class<T> contextClass) {
+        // TODO: Проверить совместимость классов
         return (T) getContext();
     }
 

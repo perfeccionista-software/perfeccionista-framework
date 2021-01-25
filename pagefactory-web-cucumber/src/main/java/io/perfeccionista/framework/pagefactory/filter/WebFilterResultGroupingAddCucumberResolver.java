@@ -30,11 +30,11 @@ public class WebFilterResultGroupingAddCucumberResolver implements WebFilterResu
     }
 
     @Override
-    public Optional<WebFilterResultGrouping> tryResolve(@NotNull String expression, @Nullable Object... args) {
+    public Optional<FilterResultGrouping> tryResolve(@NotNull String expression, @Nullable Object... args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.find()) {
-                return Optional.of(WebFilterResultGrouping.ADD);
+                return Optional.of(FilterResultGrouping.ADD);
             }
         }
         return Optional.empty();

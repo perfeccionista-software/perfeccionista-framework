@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentCucumberApiMessages.BIG_DECIMAL_VALUE_CONDITION_NOT_RESOLVED;
 import static io.perfeccionista.framework.value.Values.bigDecimalEquals;
+import static io.perfeccionista.framework.value.Values.stringProcess;
 
 public class BigDecimalValueResolver {
     public static final Pattern STRING_VALUE_RESOLVER_PATTERN = Pattern.compile("^\\[(?<condition>.*?)]");
@@ -38,10 +39,10 @@ public class BigDecimalValueResolver {
         Matcher matcher = STRING_VALUE_RESOLVER_PATTERN.matcher(stringValueToResolve);
         if (matcher.find()) {
             this.bigDecimalValueCondition = matcher.group("condition");
-            this.bigDecimalValue = new BigDecimal(stringValueToResolve.replaceAll(STRING_VALUE_RESOLVER_PATTERN.pattern(), ""));
+            this.bigDecimalValue = new BigDecimal(stringProcess(stringValueToResolve.replaceAll(STRING_VALUE_RESOLVER_PATTERN.pattern(), "")));
             return;
         }
-        this.bigDecimalValue = new BigDecimal(stringValueToResolve);
+        this.bigDecimalValue = new BigDecimal(stringProcess(stringValueToResolve));
     }
 
     protected NumberValue<BigDecimal> resolveBigDecimalValueCondition() {

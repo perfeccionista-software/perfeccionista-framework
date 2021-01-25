@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ public class WebTextTableRowExtractor implements WebTextTableValueExtractor<WebB
 
     @Override
     public Map<Integer, WebBlock> extractValues(@NotNull WebTextTableFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         WebTextTable element = filter.getElement();
 
         WebPageFactory webPageFactory = element.getEnvironment()

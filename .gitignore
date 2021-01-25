@@ -1,4 +1,5 @@
 # Folders
+/.allure
 /.idea
 /.gradle
 **/out
@@ -6,3 +7,5 @@
 **/build
 **/node_modules
 **/allure-results
+# Files
+!/.idea/icon.png

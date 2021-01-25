@@ -4,12 +4,11 @@ import io.cucumber.datatable.DataTable;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.cucumber.CucumberService;
 import io.perfeccionista.framework.pagefactory.filter.AbstractWebFilterBuilderResolver;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
 import io.perfeccionista.framework.pagefactory.filter.list.condition.resolver.WebListBlockConditionCucumberResolver;
 import io.perfeccionista.framework.exceptions.IncorrectDataTableFormat;
 import io.perfeccionista.framework.exceptions.WebFilterConditionNotResolved;
-import io.perfeccionista.framework.pagefactory.filter.WebFilters;
 import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.perfeccionista.framework.Web.with;
+import static io.perfeccionista.framework.Web.without;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebCucumberApiMessages.INCORRECT_WEB_LIST_FILTER_BUILDER_DATA_TABLE_FORMAT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebCucumberApiMessages.WEB_FILTER_CONDITION_NOT_RESOLVED;
 
@@ -40,7 +41,7 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
         if (dataTableAsLists.size() == 1 && dataTableAsLists.get(0).size() == 1) {
             List<String> stringEntries = dataTableAsLists.get(0);
             if (stringEntries.size() <= 2) {
-                return WebFilters.with(resolveStringEntry(stringEntries.get(0)));
+                return with(resolveStringEntry(stringEntries.get(0)));
             } else {
                 throw IncorrectDataTableFormat.exception(INCORRECT_WEB_LIST_FILTER_BUILDER_DATA_TABLE_FORMAT.getMessage());
             }
@@ -54,7 +55,7 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
             WebListBlockCondition processedCondition = resolveStringEntry(dataTableRow.get(0));
             String operator = dataTableRow.get(1);
             // если группировка кондишенов
-            Optional<WebConditionGrouping> optionalWebConditionGrouping = tryResolveWebConditionGrouping(operator);
+            Optional<ConditionGrouping> optionalWebConditionGrouping = tryResolveWebConditionGrouping(operator);
             if (optionalWebConditionGrouping.isPresent()) {
                 processConditionGrouping(processedCondition, optionalWebConditionGrouping.get());
                 continue;
@@ -72,7 +73,7 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
         return filterBuilder;
     }
 
-    protected void processConditionGrouping(WebListBlockCondition processed, WebConditionGrouping grouping) {
+    protected void processConditionGrouping(WebListBlockCondition processed, ConditionGrouping grouping) {
         if (Objects.isNull(currentCondition)) {
             currentCondition = processed;
             return;
@@ -92,12 +93,12 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
 
     protected void processFilterResultGrouping() {
         if (Objects.isNull(currentFilterGrouping)) {
-            currentFilterGrouping = WebFilterResultGrouping.ADD;
+            currentFilterGrouping = FilterResultGrouping.ADD;
         }
         switch (currentFilterGrouping) {
             case ADD: {
                 if (Objects.isNull(filterBuilder)) {
-                    filterBuilder = WebFilters.with(currentCondition);
+                    filterBuilder = with(currentCondition);
                 } else {
                     filterBuilder.add(currentCondition);
                 }
@@ -105,7 +106,7 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
             }
             case SUBTRACT: {
                 if (Objects.isNull(filterBuilder)) {
-                    filterBuilder = WebFilters.without(currentCondition);
+                    filterBuilder = without(currentCondition);
                 } else {
                     filterBuilder.subtract(currentCondition);
                 }
