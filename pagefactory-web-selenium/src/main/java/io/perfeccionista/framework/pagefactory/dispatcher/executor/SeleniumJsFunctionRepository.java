@@ -3,6 +3,7 @@ package io.perfeccionista.framework.pagefactory.dispatcher.executor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.perfeccionista.framework.exceptions.base.UnclassifiedPerfeccionistaException;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import io.perfeccionista.framework.pagefactory.operation.handler.base.ExecuteOperation;
 import io.perfeccionista.framework.pagefactory.operation.handler.base.LoadJsFunctions;
@@ -10,14 +11,18 @@ import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-import static io.perfeccionista.framework.utils.FileUtils.readFile;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 import static io.perfeccionista.framework.utils.JsonUtils.toPrettyJson;
 
@@ -75,16 +80,19 @@ public class SeleniumJsFunctionRepository {
 
     // TODO: минифицировать скрипт перед загрузкой и
     protected String getScript(@NotNull String resourcePath) {
-        URL url = getClass().getClassLoader().getResource(resourcePath);
-        if (url == null) {
+        try (final InputStream is = SeleniumJsFunctionRepository.class.getClassLoader().getResourceAsStream(resourcePath)) {
+            if (Objects.isNull(is)) {
+                // TODO: Сделать корректное исключение
+                throw new UnclassifiedPerfeccionistaException("Required js script is not found");
+            }
+            try (final BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
+                return reader.lines().collect(Collectors.joining("\n"));
+            }
+        } catch (IOException e) {
             // TODO: Сделать корректное исключение
-            throw new RuntimeException();
+            throw new UnclassifiedPerfeccionistaException(e.getMessage(), e);
         }
-        return readFile(url);
     }
-
-
-
 
     protected void addScriptToCache(@NotNull EndpointHandler<?> endpointHandler) {
         JsonNode functionInvocation = endpointHandler.toJson();
