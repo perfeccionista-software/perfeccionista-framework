@@ -9,6 +9,9 @@ import java.util.function.UnaryOperator;
 
 public interface NumberValue<T extends Number> extends Value<T> {
 
+    @Override
+    NumberValue<T> shouldMatch(T actual);
+
     NumberValue<T> transformExpected(@NotNull UnaryOperator<T> transformFunction);
 
     NumberValue<T> transformActual(@NotNull UnaryOperator<T> transformFunction);
@@ -16,6 +19,5 @@ public interface NumberValue<T extends Number> extends Value<T> {
     NumberValue<T> addTransformer(@NotNull NumberValueTransformer<T> transformer);
 
     boolean checkString(@Nullable String actual);
-
 
 }

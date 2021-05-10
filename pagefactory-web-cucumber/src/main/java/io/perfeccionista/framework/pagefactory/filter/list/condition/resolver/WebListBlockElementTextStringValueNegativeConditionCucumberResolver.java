@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter.list.condition.resolver;
 
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterConditions;
 import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
 import io.perfeccionista.framework.value.string.StringValue;
 import io.perfeccionista.framework.value.string.StringValueResolver;
@@ -12,7 +11,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainText;
+import static io.perfeccionista.framework.Web.*;
 import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("{webElement} does not contain {stringValue}")
@@ -30,7 +29,7 @@ public class WebListBlockElementTextStringValueNegativeConditionCucumberResolver
                     return Optional.empty();
                 }
                 StringValue resolvedStringValue = new StringValueResolver(environment, stringValue).getStringValue();
-                return Optional.of(WebFilterConditions.notContainText(elementPath, resolvedStringValue));
+                return Optional.of(notContainText(elementPath, resolvedStringValue));
             }
         }
         return Optional.empty();

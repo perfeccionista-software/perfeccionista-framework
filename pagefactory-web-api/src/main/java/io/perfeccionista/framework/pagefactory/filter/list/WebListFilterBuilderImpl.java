@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping.ADD;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping.SUBTRACT;
+import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.ADD;
+import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.SUBTRACT;
 
 public class WebListFilterBuilderImpl implements WebListFilterBuilder {
 

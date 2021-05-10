@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_INITIALIZED;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_SERVICE_INITIALIZING_FAILED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_NOT_FOUND;
 import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_ARGUMENT_MUST_NOT_BE_NULL;
@@ -231,12 +232,19 @@ public class Environment {
 
     protected void initService(@NotNull Class<? extends Service> serviceClass,
                                @NotNull ServiceConfiguration serviceConfiguration) {
-        Optional<Class<? extends Service>> customImplementation = serviceConfiguration.getImplementation();
-        // TODO: Проверить соответствие провайдера и конфигурации и привести их к <T>
-        Class<? extends Service> serviceImplementation = customImplementation.orElse(serviceClass);
-        Service serviceInstance = newInstance(serviceImplementation);
-        serviceInstance.init(this, serviceConfiguration);
-        register(serviceClass, serviceInstance);
+        try {
+            Optional<Class<? extends Service>> customImplementation = serviceConfiguration.getImplementation();
+            // TODO: Проверить соответствие провайдера и конфигурации и привести их к <T>
+            Class<? extends Service> serviceImplementation = customImplementation.orElse(serviceClass);
+            Service serviceInstance = newInstance(serviceImplementation);
+            serviceInstance.init(this, serviceConfiguration);
+            register(serviceClass, serviceInstance);
+        } catch (Exception ex) {
+           throw EnvironmentNotInitialized.exception(
+                   ENVIRONMENT_SERVICE_INITIALIZING_FAILED.getMessage(serviceClass.getCanonicalName()),
+                   ex
+           );
+        }
     }
 
 }

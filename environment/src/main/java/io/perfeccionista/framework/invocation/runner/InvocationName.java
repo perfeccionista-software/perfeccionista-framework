@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.ACTION;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.ASSERT;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.CUSTOM;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.EMPTY;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.GETTER;
 import static org.junit.platform.commons.util.StringUtils.isNotBlank;
@@ -20,16 +21,20 @@ public class InvocationName {
         this.args = args;
     }
 
-    public static InvocationName assertInvocation(String format, Object... args) {
-        return new InvocationName(ASSERT, format, args);
+    public static InvocationName assertInvocation(String message, Object... args) {
+        return new InvocationName(ASSERT, message, args);
     }
 
-    public static InvocationName actionInvocation(String format, Object... args) {
-        return new InvocationName(ACTION, format, args);
+    public static InvocationName actionInvocation(String message, Object... args) {
+        return new InvocationName(ACTION, message, args);
     }
 
-    public static InvocationName getterInvocation(String format, Object... args) {
-        return new InvocationName(GETTER, format, args);
+    public static InvocationName getterInvocation(String message, Object... args) {
+        return new InvocationName(GETTER, message, args);
+    }
+
+    public static InvocationName customOperationInvocation(String message, Object... args) {
+        return new InvocationName(CUSTOM, message, args);
     }
 
     public static InvocationName empty() {
@@ -63,7 +68,8 @@ public class InvocationName {
         EMPTY,
         ASSERT,
         ACTION,
-        GETTER
+        GETTER,
+        CUSTOM
 
     }
 

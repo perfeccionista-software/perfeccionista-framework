@@ -1,15 +1,15 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebBlockMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -35,12 +35,6 @@ public class WebTableRowImpl extends MappedWebBlockImpl implements WebTableRow {
         return this;
     }
 
-    @Override
-    public WebTableRow executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(name, other, args);
-        return this;
-    }
-
     // Asserts
 
     @Override
@@ -56,49 +50,43 @@ public class WebTableRowImpl extends MappedWebBlockImpl implements WebTableRow {
     }
 
     @Override
-    public WebTableRow should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebTableRow should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTableRow should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebTableRow should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTableRow should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebTableRow should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTableRow should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebTableRow should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTableRow should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebTableRow should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTableRow should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebTableRow should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTableRow should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebTableRow should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebTableRow should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -111,6 +99,12 @@ public class WebTableRowImpl extends MappedWebBlockImpl implements WebTableRow {
 
     @Override
     public WebTableRow should(@NotNull WebElementPropertyAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebTableRow should(@NotNull WebElementStateAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }

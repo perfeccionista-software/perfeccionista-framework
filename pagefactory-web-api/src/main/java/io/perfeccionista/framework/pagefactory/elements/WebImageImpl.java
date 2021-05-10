@@ -1,32 +1,41 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.element.WebImageMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebIsImageOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebSaveImageToFileOperationType;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SAVE_TO_FILE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
 
 public class WebImageImpl extends AbstractWebChildElement implements WebImage {
 
     @Override
+    public boolean isImage() {
+        WebIsImageOperationType operationType = WebIsImageOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType).executeGetter());
+    }
+
+    @Override
     public WebImage saveToFile(@NotNull String filePath) {
-        runCheck(getEnvironment(), actionInvocation(SAVE_TO_FILE_METHOD, this, filePath),
-                () -> getActionImplementation(SAVE_TO_FILE_METHOD, Void.class).execute(this, filePath));
+        WebSaveImageToFileOperationType operationType = WebSaveImageToFileOperationType.of(this, filePath);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }
 
@@ -35,12 +44,6 @@ public class WebImageImpl extends AbstractWebChildElement implements WebImage {
     @Override
     public WebImage executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
-        return this;
-    }
-
-    @Override
-    public WebImage executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(name, other, args);
         return this;
     }
 
@@ -59,49 +62,43 @@ public class WebImageImpl extends AbstractWebChildElement implements WebImage {
     }
 
     @Override
-    public WebImage should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebImage should(@NotNull WebGetColorAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebImage should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebImage should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebImage should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebImage should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebImage should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebImage should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebImage should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebImage should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebImage should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebImage should(@NotNull IsInFocusAvailableMatcher matcher) {
-        matcher.check(this);
-        return this;
-    }
-
-    @Override
-    public WebImage should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        matcher.check(this);
-        return this;
-    }
-
-    @Override
-    public WebImage should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebImage should(@NotNull WebIsPresentAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
@@ -118,12 +115,19 @@ public class WebImageImpl extends AbstractWebChildElement implements WebImage {
         return this;
     }
 
+    @Override
+    public WebImage should(@NotNull WebElementStateAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
     // Click
 
     @Override
     public WebImage click() {
-        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
-                () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
+        WebClickOperationType operationType = WebClickOperationType.of(this);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
 

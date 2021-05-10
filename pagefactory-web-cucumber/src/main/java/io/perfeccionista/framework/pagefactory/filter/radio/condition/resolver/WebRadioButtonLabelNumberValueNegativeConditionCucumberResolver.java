@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainLabel;
+import static io.perfeccionista.framework.Web.notContainLabel;
 import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("label does not contain number {numberValue}")

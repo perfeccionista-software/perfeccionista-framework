@@ -5,14 +5,7 @@ import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.ValueStringParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebPageParameter;
 
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabHaveTitle;
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabHaveUrl;
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabNotHaveTitle;
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.activeTabNotHaveUrl;
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.haveTabWithTitle;
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.haveTabWithUrl;
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.notHaveTabWithTitle;
-import static io.perfeccionista.framework.matcher.WebBrowserAssertions.notHaveTabWithUrl;
+import static io.perfeccionista.framework.Web.*;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories

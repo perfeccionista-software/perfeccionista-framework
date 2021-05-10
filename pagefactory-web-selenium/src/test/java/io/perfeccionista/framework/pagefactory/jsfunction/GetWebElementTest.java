@@ -2,10 +2,12 @@ package io.perfeccionista.framework.pagefactory.jsfunction;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsScrollTo;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumGetWebElement;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 
@@ -22,11 +24,11 @@ class GetWebElementTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
-            JsOperation<WebElement> getLinkWebElementOperation = JsOperation.of(linkLocatorChain, new GetWebElement());
+            WebElementOperation<WebElement> getLinkWebElementOperation = WebElementOperation.of(linkLocatorChain, new SeleniumGetWebElement());
             chrome.executor()
-                    .executeOperation(getLinkWebElementOperation)
-                    .ifException(e -> {
-                        throw e;
+                    .executeWebElementOperation(getLinkWebElementOperation)
+                    .ifException((exceptionMapper, exception) -> {
+                        throw exceptionMapper.map(exception);
                     })
                     .getResult()
                     .click();
@@ -35,12 +37,12 @@ class GetWebElementTest extends AbstractWebSeleniumParallelTest {
             WebLocatorChain listElementLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", TEXT, "Ливан")
-                            .addInvokedOnCallFunction(new ScrollTo()));
-            JsOperation<WebElement> getListWebElementOperation = JsOperation.of(listElementLocatorChain, new GetWebElement());
+                            .addInvokedOnCallFunction(new JsScrollTo()));
+            WebElementOperation<WebElement> getListWebElementOperation = WebElementOperation.of(listElementLocatorChain, new SeleniumGetWebElement());
             return chrome.executor()
-                    .executeOperation(getListWebElementOperation)
-                    .ifException(e -> {
-                        throw e;
+                    .executeWebElementOperation(getListWebElementOperation)
+                    .ifException((exceptionMapper, exception) -> {
+                        throw exceptionMapper.map(exception);
                     })
                     .getResult()
                     .getText();

@@ -2,10 +2,12 @@ package io.perfeccionista.framework.pagefactory.jsfunction;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsScrollTo;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumClick;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -25,20 +27,20 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
+            WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
-                    .executeOperation(clickOperation);
+                    .executeWebElementOperation(clickOperation);
 
         });
         runCheck(environment, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", TEXT, "Ливан"));
-            JsOperation<Void> scrollToOperation = JsOperation.of(scrollToLocatorChain, new ScrollTo()
+            WebElementOperation<Void> scrollToOperation = WebElementOperation.of(scrollToLocatorChain, new JsScrollTo()
                     // Чтобы было видно результат прокрутки
                     .setDelay(Duration.ofSeconds(2)));
             browser.executor()
-                    .executeOperation(scrollToOperation);
+                    .executeWebElementOperation(scrollToOperation);
         });
     }
 
@@ -49,19 +51,19 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
+            WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
-                    .executeOperation(clickOperation);
+                    .executeWebElementOperation(clickOperation);
         });
         runCheck(environment, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
                             .setSingle(false));
-            JsOperation<Void> scrollToOperation = JsOperation.of(scrollToLocatorChain, new ScrollTo()
+            WebElementOperation<Void> scrollToOperation = WebElementOperation.of(scrollToLocatorChain, new JsScrollTo()
                     .setDelay(Duration.ofMillis(50)));
             browser.executor()
-                    .executeOperation(scrollToOperation);
+                    .executeWebElementOperation(scrollToOperation);
         });
     }
 
@@ -72,19 +74,19 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
+            WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
-                    .executeOperation(clickOperation);
+                    .executeWebElementOperation(clickOperation);
         });
         runCheck(environment, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
                             .setSingle(false).setIndexes(Set.of(4, 65, 78, 170)));
-            JsOperation<Void> scrollToOperation = JsOperation.of(scrollToLocatorChain, new ScrollTo()
+            WebElementOperation<Void> scrollToOperation = WebElementOperation.of(scrollToLocatorChain, new JsScrollTo()
                     .setDelay(Duration.ofMillis(100)));
             browser.executor()
-                    .executeOperation(scrollToOperation);
+                    .executeWebElementOperation(scrollToOperation);
         });
     }
 

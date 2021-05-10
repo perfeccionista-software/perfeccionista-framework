@@ -1,26 +1,14 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.allRadioButtons;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.disabled;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.enabled;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notSelected;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.radioButtonIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.selected;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebRadioButtonFilter;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;

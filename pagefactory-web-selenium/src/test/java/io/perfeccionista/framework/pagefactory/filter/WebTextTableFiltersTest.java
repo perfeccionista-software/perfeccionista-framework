@@ -1,21 +1,14 @@
 package io.perfeccionista.framework.pagefactory.filter;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TextTablePage;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsTextCell;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainTextCell;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.textRowIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextTableFilter;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.without;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.NUMBER;
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.SHORT_COUNTRY_NAME;
 import static io.perfeccionista.framework.value.Values.intEquals;

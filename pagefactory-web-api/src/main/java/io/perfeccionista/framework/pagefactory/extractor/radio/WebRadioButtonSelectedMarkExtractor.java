@@ -1,25 +1,28 @@
 package io.perfeccionista.framework.pagefactory.extractor.radio;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilter;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsSelectedOperationType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SELECTED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
 
 public class WebRadioButtonSelectedMarkExtractor implements WebRadioButtonValueExtractor<Boolean> {
 
     @Override
     public Map<Integer, Boolean> extractValues(@NotNull WebRadioGroupFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         String hash = filterResult.getHash();
         WebRadioGroup element = filter.getElement();
         WebRadioButton webRadioButton = element.getWebRadioGroupFrame().getMappedBlockFrame().radioButton();
@@ -31,15 +34,16 @@ public class WebRadioButtonSelectedMarkExtractor implements WebRadioButtonValueE
                 .addLastLocator(element.getRequiredLocator(RADIO));
 
         // Добавляем в цепочку локаторов операции локаторы до блока RadioButtonBlock
-        JsOperation<Boolean> jsOperation = webRadioButton
-                .getJsOperationActionImplementation(GET_SELECTED_METHOD, Boolean.class)
-                .getJsOperation(webRadioButton)
+        WebGetIsSelectedOperationType operationType = WebGetIsSelectedOperationType.of(webRadioButton);
+        WebElementOperation<Boolean> operation = WebElementOperationHandler.of(webRadioButton, operationType, SELECTED)
+                .getOperation()
                 .updateLocatorChain(locatorChain -> locatorChain.addFirstLocators(radioGroupLocatorChain));
 
         // Выполняем операцию
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 

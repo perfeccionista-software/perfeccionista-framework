@@ -200,6 +200,38 @@ class ValueExpressionProcessorTokenizeTest extends AbstractParallelTestWithEnvir
     }
 
     @Test
+    void tokenizeExpressionWithTwoDataSources() {
+        ValueExpressionProcessor expressionProcessor = new ValueExpressionProcessor(mock(Environment.class));
+        Deque<Token> tokenizedExpression1 = expressionProcessor.tokenize("${dataSource key}${dataSource key}");
+        assertAll(
+                () -> assertNotNull(tokenizedExpression1),
+                () -> assertEquals(6, tokenizedExpression1.size()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_OPEN, 0), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.VALUE, "dataSource key", 2), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_CLOSED, 16), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_OPEN, 17), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.VALUE, "dataSource key", 19), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_CLOSED, 33), tokenizedExpression1.pollFirst())
+        );
+    }
+
+    @Test
+    void tokenizeExpressionWithTwoNamedDataSources() {
+        ValueExpressionProcessor expressionProcessor = new ValueExpressionProcessor(mock(Environment.class));
+        Deque<Token> tokenizedExpression1 = expressionProcessor.tokenize("${[dataSource] dataSource key}${[dataSource]dataSource key}");
+        assertAll(
+                () -> assertNotNull(tokenizedExpression1),
+                () -> assertEquals(6, tokenizedExpression1.size()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_OPEN, 0), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.VALUE, "[dataSource] dataSource key", 2), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_CLOSED, 29), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_OPEN, 30), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.VALUE, "[dataSource]dataSource key", 32), tokenizedExpression1.pollFirst()),
+                () -> assertEquals(Token.of(TokenType.DATA_SOURCE_CLOSED, 58), tokenizedExpression1.pollFirst())
+        );
+    }
+
+    @Test
     void tokenizeExpressionWithDataSourceAndDataConverter() {
         ValueExpressionProcessor expressionProcessor = new ValueExpressionProcessor(mock(Environment.class));
         Deque<Token> tokenizedExpression1 = expressionProcessor.tokenize("expression with ${dataSource key} and @{dataConverter key}.");

@@ -1,12 +1,10 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
-import io.perfeccionista.framework.pagefactory.elements.WebTextAutocomplete;
-import io.perfeccionista.framework.pagefactory.elements.WebTextDropDownList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
 @Name("Page with simple list of countries")
 @Name("Страница с простым списком стран")

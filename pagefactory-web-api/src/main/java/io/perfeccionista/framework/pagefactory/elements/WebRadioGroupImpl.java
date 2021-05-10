@@ -2,35 +2,31 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebRadioGroupMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebRadioGroupFrame;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioGroupMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
+import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonCondition;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilter;
 
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.element;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.index;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsLabel;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.radioButtonIndex;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.selected;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
+import static io.perfeccionista.framework.Web.*;
 
 public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRadioGroup {
 
@@ -55,6 +51,11 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
         return filterBuilder.build(this);
     }
 
+    @Override
+    public @NotNull WebRadioGroupFilter filter(@NotNull WebRadioButtonCondition filterCondition) {
+        return with(filterCondition).build(this);
+    }
+
     // Button Extractors
 
     @Override
@@ -62,7 +63,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
         //noinspection ConstantConditions
         return WebRadioGroupMultipleIndexedResult.of(this, with(selected()), element())
                 .singleResult()
-                .getValue();
+                .getResult();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
         //noinspection ConstantConditions
         return WebRadioGroupMultipleIndexedResult.of(this, with(radioButtonIndex(expectedIndex)), element())
                 .singleResult()
-                .getValue();
+                .getResult();
     }
 
     @Override
@@ -78,7 +79,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
         //noinspection ConstantConditions
         return WebRadioGroupMultipleIndexedResult.of(this, with(containsLabel(expectedText)), element())
                 .singleResult()
-                .getValue();
+                .getResult();
     }
 
     // Actions
@@ -89,13 +90,13 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
         return this;
     }
 
+    // Asserts
+
     @Override
-    public WebRadioGroup executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(interactionName, other, args);
+    public WebRadioGroup should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
+        filter(allRadioButtons()).should(matcher);
         return this;
     }
-
-    // Asserts
 
     @Override
     public WebRadioGroup should(@NotNull WebRadioGroupMatcher matcher) {
@@ -116,49 +117,43 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
     }
 
     @Override
-    public WebRadioGroup should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebRadioGroup should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebRadioGroup should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebRadioGroup should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebRadioGroup should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebRadioGroup should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebRadioGroup should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebRadioGroup should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebRadioGroup should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebRadioGroup should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebRadioGroup should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebRadioGroup should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebRadioGroup should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebRadioGroup should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebRadioGroup should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -171,6 +166,12 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
 
     @Override
     public WebRadioGroup should(@NotNull WebElementPropertyAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebRadioGroup should(@NotNull WebElementStateAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }

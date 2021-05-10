@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.texttable;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
 import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,12 +20,12 @@ public class WebTextTableFilterBuilderImpl implements WebTextTableFilterBuilder 
     }
 
     public WebTextTableFilterBuilder add(@NotNull WebTextTableRowCondition condition) {
-        this.conditions.addLast(new WebTextTableRowFilterResultGroupingHolder(WebFilterResultGrouping.ADD, condition));
+        this.conditions.addLast(new WebTextTableRowFilterResultGroupingHolder(FilterResultGrouping.ADD, condition));
         return this;
     }
 
     public WebTextTableFilterBuilder subtract(@NotNull WebTextTableRowCondition condition) {
-        this.conditions.addLast(new WebTextTableRowFilterResultGroupingHolder(WebFilterResultGrouping.SUBTRACT, condition));
+        this.conditions.addLast(new WebTextTableRowFilterResultGroupingHolder(FilterResultGrouping.SUBTRACT, condition));
         return this;
     }
 

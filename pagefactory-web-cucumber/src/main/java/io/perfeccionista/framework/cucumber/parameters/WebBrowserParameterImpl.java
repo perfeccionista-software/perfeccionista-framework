@@ -2,7 +2,7 @@ package io.perfeccionista.framework.cucumber.parameters;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.IncorrectStringValueResult;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserService;
 import io.perfeccionista.framework.value.ValueService;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;

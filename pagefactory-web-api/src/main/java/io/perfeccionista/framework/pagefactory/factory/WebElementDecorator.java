@@ -7,9 +7,7 @@ import io.perfeccionista.framework.name.WebPageIdentifier;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlock;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
-import io.perfeccionista.framework.pagefactory.elements.actions.base.WebElementActionRegistry;
-import io.perfeccionista.framework.pagefactory.elements.interactions.base.WebElementInteractionRegistry;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.EndpointHandlerRegistry;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebRadioGroupFrame;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
@@ -25,11 +23,11 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
 import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyRegistry;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
+import io.perfeccionista.framework.pagefactory.elements.states.base.WebElementStateRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebBlockAnnotationHandler.createWebListFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebRadioButtonBlockAnnotationHandler.createWebRadioGroupFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebTableColumnAnnotationHandler.createWebTableFrame;
@@ -37,8 +35,8 @@ import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMapped
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebTextTableColumnAnnotationHandler.createWebTextTableFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementNameHandler.extractNames;
-import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementInteractionAnnotationHandler.createWebElementInteractionRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementPropertyAnnotationHandler.createWebElementPropertyRegistryFor;
+import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementStateAnnotationHandler.createWebElementStateRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createWebLocatorRegistryFor;
 import static io.perfeccionista.framework.utils.ReflectionUtils.*;
 
@@ -53,9 +51,8 @@ public class WebElementDecorator {
     public static final String ACTION_REGISTRY_FIELD = "actionRegistry";
     public static final String ELEMENT_REGISTRY_FIELD = "elementRegistry";
     public static final String LOCATOR_REGISTRY_FIELD = "locatorRegistry";
+    public static final String STATE_REGISTRY_FIELD = "stateRegistry";
     public static final String PROPERTY_REGISTRY_FIELD = "propertyRegistry";
-    public static final String INTERACTION_REGISTRY_FIELD = "interactionRegistry";
-
     public static final String WEB_RADIO_GROUP_FRAME_FIELD = "webRadioGroupFrame";
     public static final String WEB_LIST_FRAME_FIELD = "webListFrame";
     public static final String WEB_TEXT_LIST_FRAME_FIELD = "webTextListFrame";
@@ -76,16 +73,16 @@ public class WebElementDecorator {
                                                                           @NotNull WebParentHolder webParentHolder) {
         writeField(PARENT_HOLDER_FIELD, webMappedBlockInstance, webParentHolder);
         writeField(ELEMENT_REGISTRY_FIELD, webMappedBlockInstance, webElementRegistry);
-        WebElementActionRegistry actionRegistry = createWebElementActionRegistryFor(webMappedBlockInstance, configuration);
+        EndpointHandlerRegistry actionRegistry = createWebElementActionRegistryFor(webMappedBlockInstance, configuration);
         writeField(ACTION_REGISTRY_FIELD, webMappedBlockInstance, actionRegistry);
         WebLocatorRegistry locatorRegistry = createWebLocatorRegistryFor(webMappedBlockInstance, configuration);
         writeField(LOCATOR_REGISTRY_FIELD, webMappedBlockInstance, locatorRegistry);
         WebElementPropertyRegistry propertyRegistry = createWebElementPropertyRegistryFor(webMappedBlockInstance, configuration);
         writeField(PROPERTY_REGISTRY_FIELD, webMappedBlockInstance, propertyRegistry);
+        WebElementStateRegistry stateRegistry = createWebElementStateRegistryFor(webMappedBlockInstance, configuration);
+        writeField(STATE_REGISTRY_FIELD, webMappedBlockInstance, stateRegistry);
         WebElementIdentifier elementIdentifier = MappedWebBlockIdentifier.of(webMappedBlockClass);
         writeField(ELEMENT_IDENTIFIER_FIELD, webMappedBlockInstance, elementIdentifier);
-        WebElementInteractionRegistry interactionRegistry = createWebElementInteractionRegistryFor(webMappedBlockInstance, configuration);
-        writeField(INTERACTION_REGISTRY_FIELD, webMappedBlockInstance, interactionRegistry);
         return webMappedBlockInstance;
     }
 
@@ -112,16 +109,16 @@ public class WebElementDecorator {
                                                                     @NotNull WebParentHolder webParentHolder,
                                                                     @NotNull Method webChildElementMethod) {
         writeField(PARENT_HOLDER_FIELD, webChildElementInstance, webParentHolder);
-        WebElementActionRegistry actionRegistry = createWebElementActionRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
+        EndpointHandlerRegistry actionRegistry = createWebElementActionRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
         writeField(ACTION_REGISTRY_FIELD, webChildElementInstance, actionRegistry);
         WebLocatorRegistry locatorRegistry = createWebLocatorRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
         writeField(LOCATOR_REGISTRY_FIELD, webChildElementInstance, locatorRegistry);
         WebElementPropertyRegistry propertyRegistry = createWebElementPropertyRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
         writeField(PROPERTY_REGISTRY_FIELD, webChildElementInstance, propertyRegistry);
+        WebElementStateRegistry stateRegistry = createWebElementStateRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
+        writeField(STATE_REGISTRY_FIELD, webChildElementInstance, stateRegistry);
         WebElementIdentifier elementIdentifier = WebChildElementIdentifier.of(extractNames(webChildElementInstance, webChildElementMethod), webChildElementMethod);
         writeField(ELEMENT_IDENTIFIER_FIELD, webChildElementInstance, elementIdentifier);
-        WebElementInteractionRegistry interactionRegistry = createWebElementInteractionRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
-        writeField(INTERACTION_REGISTRY_FIELD, webChildElementInstance, interactionRegistry);
         if (webChildElementInstance instanceof WebRadioGroup) {
             decorateWebRadioGroupInstance((WebRadioGroup) webChildElementInstance, webChildElementMethod);
         }

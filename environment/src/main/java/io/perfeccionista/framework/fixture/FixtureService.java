@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_PARAMETRIZED;
 
@@ -41,6 +41,7 @@ public class FixtureService implements Service {
         if (Objects.isNull(fixtureClass)) {
             throw FixtureNotFound.exception(FIXTURE_NOT_FOUND.getMessage(fixtureName));
         }
+
         Fixture<?, ?> fixtureInstance = ReflectionUtils.newInstance(fixtureClass);
         // TODO: Check fixture parametrized types
         return (Fixture<S, T>) fixtureInstance;
@@ -71,6 +72,19 @@ public class FixtureService implements Service {
         return executeFixture(getParametrizedFixture(fixtureName, fixtureParameters));
     }
 
+    public <S, T> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Class<? extends Fixture<S, T>> fixtureClass) {
+        Fixture<S, T> fixtureInstance = ReflectionUtils.newInstance(fixtureClass);
+        return executeFixture(fixtureInstance);
+    }
+
+    public <S, T> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Class<? extends ParametrizedFixture<S, T>> fixtureClass,
+                                                                @NotNull FixtureParameters fixtureParameters) {
+        // TODO Validate required parameters
+        ParametrizedFixture<S, T> fixtureInstance = ReflectionUtils.newInstance(fixtureClass)
+                .withParameters(fixtureParameters);
+            return executeFixture(fixtureInstance);
+    }
+
     public boolean containsName(@NotNull String fixtureName) {
         return fixtureClasses.containsKey(fixtureName);
     }
@@ -83,6 +97,10 @@ public class FixtureService implements Service {
     public void afterTest() {
         if (configuration.isRevertFixtures()) {
             while (!executedFixtures.isEmpty()) {
+                // TODO Подумать над эксклюзивной блокировкой при откате фикстур.
+                //  Например соединение, которое открывается по требованию любой фикстурой,
+                //  не должно закрываться до отката первой фикстуры которая, соответственно, откатывается в последнюю очередь
+                //  FixtureTearDownLockedResult.of(lockObject)
                 executedFixtures.pop()
                         .tearDown()
                         .process();
@@ -95,7 +113,7 @@ public class FixtureService implements Service {
             return (FixtureServiceConfiguration) configuration;
         }
         throw IncorrectServiceConfiguration.exception(
-                CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
+                SERVICE_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
 }

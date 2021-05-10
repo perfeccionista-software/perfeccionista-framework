@@ -1,16 +1,18 @@
 package io.perfeccionista.framework.pagefactory.filter.table.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetLabelOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,10 +22,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LABEL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebTableCellElementLabelTextCondition implements WebTableRowCondition {
 
@@ -31,7 +33,7 @@ public class WebTableCellElementLabelTextCondition implements WebTableRowConditi
 
     private final String columnName;
     private final String elementPath;
-    private final WebChildElement elementFrame;
+    private final WebGetLabelAvailable elementFrame;
 
     private final String expectedText;
 
@@ -47,11 +49,11 @@ public class WebTableCellElementLabelTextCondition implements WebTableRowConditi
     }
 
     public WebTableCellElementLabelTextCondition(@NotNull String columnName,
-                                                 @NotNull GetLabelAvailable elementFrame,
+                                                 @NotNull WebGetLabelAvailable elementFrame,
                                                  @NotNull String expectedText) {
         this.columnName = columnName;
         this.elementPath = null;
-        this.elementFrame = (WebChildElement) elementFrame;
+        this.elementFrame = elementFrame;
         this.expectedText = expectedText;
     }
 
@@ -81,7 +83,7 @@ public class WebTableCellElementLabelTextCondition implements WebTableRowConditi
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebTable element, @Nullable String hash) {
         WebTableFrame<WebBlock> webTableRegistry = element.getWebTableFrame();
 
         // Цепочка от корня страницы до WebTable column body
@@ -93,28 +95,29 @@ public class WebTableCellElementLabelTextCondition implements WebTableRowConditi
                 .addLastLocator(webTableRegistry.getRequiredBodyLocator(columnName));
 
         // Находим необходимый элемент, заданный по пути или по методу
-        WebChildElement elementToFilter;
+        WebGetLabelAvailable elementToFilter;
         if (elementPath != null) {
             elementToFilter = webTableRegistry.getRequiredBodyMappedBlock(columnName)
                     .getElementRegistry()
-                    .getRequiredElementByPath(elementPath, WebChildElement.class);
+                    .getRequiredElementByPath(elementPath, WebGetLabelAvailable.class);
         } else {
             elementToFilter = webTableRegistry.getRequiredBodyMappedBlock(columnName)
                     .getElementRegistry()
-                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod(), elementFrame.getElementIdentifier().getElementType());
+                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod(), WebGetLabelAvailable.class);
         }
 
         // Добавляем в цепочку локаторов операции локаторы до ячейки таблицы
-        JsOperation<String> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(GET_LABEL_METHOD, String.class)
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        WebGetLabelOperationType operationType = WebGetLabelOperationType.of(elementToFilter);
+        WebElementOperation<String> operation = WebElementOperationHandler.of(elementToFilter, operationType, LABEL)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(tableLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -124,7 +127,7 @@ public class WebTableCellElementLabelTextCondition implements WebTableRowConditi
         Set<Integer> matches = getMatches(labelValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, String> textValues) {

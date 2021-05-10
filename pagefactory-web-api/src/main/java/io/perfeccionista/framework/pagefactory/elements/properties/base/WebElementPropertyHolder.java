@@ -2,18 +2,19 @@ package io.perfeccionista.framework.pagefactory.elements.properties.base;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.perfeccionista.framework.json.JsonSerializable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.PROPERTY;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PROPERTY;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
-public class WebElementPropertyHolder {
+public class WebElementPropertyHolder implements JsonSerializable {
 
     private final String name;
     private final WebLocatorHolder locatorHolder;
@@ -45,15 +46,17 @@ public class WebElementPropertyHolder {
         return propertyExtractor;
     }
 
-    public JsOperation<String> getJsOperation(WebChildElementBase element) {
-        return propertyExtractor.getJsOperation(element, getLocatorHolder());
+    public WebElementOperation<String> getOperation(WebChildElementBase element) {
+        return propertyExtractor.getOperation(element, getLocatorHolder());
     }
 
-    public JsonNode toJson() {
+    @Override
+    public @NotNull JsonNode toJson() {
         ObjectNode rootNode = createObjectNode()
                 .put("name", name);
         rootNode.set("locator", locatorHolder == null ? null : locatorHolder.setLocatorComponent(PROPERTY).toJson());
         rootNode.put("extractor", propertyExtractor.getClass().getCanonicalName());
         return rootNode;
     }
+
 }

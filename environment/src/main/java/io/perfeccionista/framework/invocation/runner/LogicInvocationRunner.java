@@ -57,7 +57,7 @@ public class LogicInvocationRunner implements InvocationRunner {
             currentTime = System.nanoTime();
         }
 
-        logger.error(() -> "Logic action finished with exception");
+        logger.error(() -> format("Logic action %s finished with exception in %s", name, getFormattedDuration(Duration.ofNanos(System.nanoTime() - deadline + timeout.toNanos()))));
         exceptionCollector.throwIfSingleException();
         throw exceptionCollector.getExceptionSequence();
     }

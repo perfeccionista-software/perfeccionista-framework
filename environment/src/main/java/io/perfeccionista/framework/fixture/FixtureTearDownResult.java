@@ -5,36 +5,51 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class FixtureTearDownResult<T> {
 
     private final T result;
-    private final Exception exception;
+    private final RuntimeException exception;
     private Consumer<T> resultProcessor = null;
-    private Consumer<Exception> exceptionProcessor = null;
+    private Consumer<RuntimeException> exceptionProcessor = null;
 
-    private FixtureTearDownResult(T result, Exception exception) {
+    private FixtureTearDownResult(T result, RuntimeException exception) {
         this.result = result;
         this.exception = exception;
+    }
+
+    public static <T> FixtureTearDownResult<T> of(@NotNull Supplier<T> resultSupplier) {
+        T result;
+        try {
+            result = resultSupplier.get();
+            return FixtureTearDownResult.of(result);
+        } catch (RuntimeException exception) {
+            return FixtureTearDownResult.exception(exception);
+        }
     }
 
     public static <T> FixtureTearDownResult<T> of(@Nullable T result) {
         return new FixtureTearDownResult<>(result, null);
     }
 
-    public static <T> FixtureTearDownResult<T> of(@Nullable T result, @NotNull Exception exception) {
+    public static <T> FixtureTearDownResult<T> of(@Nullable T result, @NotNull RuntimeException exception) {
         return new FixtureTearDownResult<>(result, exception);
     }
 
-    public static <T> FixtureTearDownResult<T> exception(@NotNull Exception exception) {
+    public static <T> FixtureTearDownResult<T> exception(@NotNull RuntimeException exception) {
         return new FixtureTearDownResult<>(null, exception);
+    }
+
+    public static <T> FixtureTearDownResult<T> empty() {
+        return new FixtureTearDownResult<>(null, null);
     }
 
     public Optional<T> getResult() {
         return Optional.ofNullable(result);
     }
 
-    public Optional<Exception> getException() {
+    public Optional<RuntimeException> getException() {
         return Optional.ofNullable(exception);
     }
 
@@ -43,7 +58,7 @@ public class FixtureTearDownResult<T> {
         return this;
     }
 
-    public FixtureTearDownResult<T> setExceptionProcessor(@NotNull Consumer<Exception> exceptionProcessor) {
+    public FixtureTearDownResult<T> setExceptionProcessor(@NotNull Consumer<RuntimeException> exceptionProcessor) {
         this.exceptionProcessor = exceptionProcessor;
         return this;
     }

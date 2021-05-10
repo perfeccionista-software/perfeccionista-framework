@@ -1,58 +1,53 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
-import io.perfeccionista.framework.matcher.element.WebButtonMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
 import org.jetbrains.annotations.NotNull;
 
-public interface WebButton extends WebChildElement,
-        ClickAvailable, GetTextAvailable {
+public interface WebButton extends WebLink {
 
     // Actions
     @Override
     WebButton executeAction(@NotNull String name, Object... args);
-    @Override
-    WebButton executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
-    WebButton should(@NotNull WebButtonMatcher matcher);
+    WebButton should(@NotNull WebTextMatcher matcher);
     @Override
     WebButton should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebButton should(@NotNull GetColorAvailableMatcher matcher);
+    WebButton should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebButton should(@NotNull GetDimensionsAvailableMatcher matcher);
+    WebButton should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebButton should(@NotNull GetLocationAvailableMatcher matcher);
+    WebButton should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebButton should(@NotNull GetScreenshotAvailableMatcher matcher);
+    WebButton should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebButton should(@NotNull IsDisplayedAvailableMatcher matcher);
+    WebButton should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebButton should(@NotNull IsInFocusAvailableMatcher matcher);
+    WebButton should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebButton should(@NotNull IsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebButton should(@NotNull IsPresentAvailableMatcher matcher);
+    WebButton should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
     WebButton should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
     WebButton should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebButton should(@NotNull GetTextAvailableMatcher matcher);
+    WebButton should(@NotNull WebElementStateAvailableMatcher matcher);
+    @Override
+    WebButton should(@NotNull WebGetTextAvailableMatcher matcher);
 
     // Click
     @Override

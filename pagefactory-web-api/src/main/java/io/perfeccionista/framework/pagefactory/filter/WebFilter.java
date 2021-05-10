@@ -12,7 +12,7 @@ public interface WebFilter<E extends WebChildElement> {
     @NotNull E getElement();
 
     @API(status = Status.INTERNAL)
-    @NotNull WebFilterResult getFilterResult();
+    @NotNull FilterResult getFilterResult();
 
     WebFilter<E> should(WebMultipleIndexedResultMatcher<Integer> matcher);
 

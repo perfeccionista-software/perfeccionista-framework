@@ -1,15 +1,18 @@
 package io.perfeccionista.framework.pagefactory.filter.list.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementIsPresentOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsPresentOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,9 +22,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.PRESENTED;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PRESENTED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
 
 public class WebListBlockElementPresentCondition implements WebListBlockCondition {
 
@@ -37,7 +40,7 @@ public class WebListBlockElementPresentCondition implements WebListBlockConditio
         this.elementFrame = null;
     }
 
-    public WebListBlockElementPresentCondition(@NotNull IsPresentAvailable elementFrame) {
+    public WebListBlockElementPresentCondition(@NotNull WebIsPresentAvailable elementFrame) {
         this.elementPath = null;
         this.elementFrame = (WebChildElement) elementFrame;
     }
@@ -52,13 +55,13 @@ public class WebListBlockElementPresentCondition implements WebListBlockConditio
 
     @Override
     public WebListBlockCondition and(@NotNull WebListBlockCondition condition) {
-        childConditions.add(WebListBlockConditionHolder.of(WebConditionGrouping.AND, condition));
+        childConditions.add(WebListBlockConditionHolder.of(ConditionGrouping.AND, condition));
         return this;
     }
 
     @Override
     public WebListBlockCondition or(@NotNull WebListBlockCondition condition) {
-        childConditions.add(WebListBlockConditionHolder.of(WebConditionGrouping.OR, condition));
+        childConditions.add(WebListBlockConditionHolder.of(ConditionGrouping.OR, condition));
         return this;
     }
 
@@ -68,7 +71,7 @@ public class WebListBlockElementPresentCondition implements WebListBlockConditio
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebList element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebList element, @Nullable String hash) {
 
         // Цепочка от корня страницы до WebListBlock
         WebLocatorChain listLocatorChain = element.getLocatorChain();
@@ -92,16 +95,17 @@ public class WebListBlockElementPresentCondition implements WebListBlockConditio
         }
 
         // Добавляем в цепочку локаторов операции локаторы до блока WebListBlock
-        JsOperation<Boolean> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(IS_PRESENT_METHOD, Boolean.class)
-                .getJsOperation(elementToFilter, PRESENTED);
-        jsOperation.getLocatorChain()
+        WebGetIsPresentOperationType isPresentOperationType = WebGetIsPresentOperationType.of(elementToFilter);
+        WebElementOperation<Boolean> operation = WebElementIsPresentOperationHandler.of(elementToFilter, isPresentOperationType, PRESENTED)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(listLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -111,7 +115,7 @@ public class WebListBlockElementPresentCondition implements WebListBlockConditio
         Set<Integer> matches = getMatches(displayedValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, Boolean> presentValues) {

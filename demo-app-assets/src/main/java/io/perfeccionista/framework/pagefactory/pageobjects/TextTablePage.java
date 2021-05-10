@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTextTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTextTableColumns;
-import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 
 @Name("Page with simple table of countries")
 @Name("Страница с простой таблицей стран")
@@ -18,7 +18,7 @@ public interface TextTablePage extends AbstractWebPage {
 
     @Name("Simple table of countries")
     @Name("Простая таблица стран")
-    @WebLocator(tagName = "table", invokeOnCall = {CheckIsDisplayed.class})
+    @WebLocator(tagName = "table", invokeOnCall = JsCheckIsDisplayed.class)
     @UseMappedWebTextTableColumns({
             @UseMappedWebTextTableColumn(name = NUMBER,
                     headerLocator = @WebLocator(xpath = ".//th[1]"),

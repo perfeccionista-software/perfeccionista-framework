@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.radio;
 
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.filter.WebFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,19 +21,19 @@ public interface WebRadioGroupFilterBuilder extends WebFilterBuilder<WebRadioGro
 
     class WebRadioButtonFilterResultGroupingHolder {
 
-        private final WebFilterResultGrouping usage;
+        private final FilterResultGrouping usage;
         private final WebRadioButtonCondition condition;
 
-        private WebRadioButtonFilterResultGroupingHolder(WebFilterResultGrouping usage, WebRadioButtonCondition condition) {
+        private WebRadioButtonFilterResultGroupingHolder(FilterResultGrouping usage, WebRadioButtonCondition condition) {
             this.usage = usage;
             this.condition = condition;
         }
 
-        public static WebRadioButtonFilterResultGroupingHolder of(WebFilterResultGrouping usage, WebRadioButtonCondition condition) {
+        public static WebRadioButtonFilterResultGroupingHolder of(FilterResultGrouping usage, WebRadioButtonCondition condition) {
             return new WebRadioButtonFilterResultGroupingHolder(usage, condition);
         }
 
-        public WebFilterResultGrouping getUsage() {
+        public FilterResultGrouping getUsage() {
             return usage;
         }
 

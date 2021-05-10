@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.extractor.radio;
 
-import io.perfeccionista.framework.exceptions.WebResultVerification;
-import io.perfeccionista.framework.exceptions.WebSingleResult;
+import io.perfeccionista.framework.exceptions.ResultVerification;
+import io.perfeccionista.framework.exceptions.SingleResultCreating;
 import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
@@ -16,14 +16,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE;
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SINGLE_RESULT_HAS_NO_VALUE;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_CONTAINS_NULL_RESULT;
+import static io.perfeccionista.framework.Web.emptyWebRadioButtonFilter;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.FILTERED_ELEMENT_CONTAINS_NULL_RESULT;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SINGLE_RESULT_HAS_NO_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_EXTRACTED_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_INDEX_METHOD;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebRadioButtonFilter;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_EXTRACTED_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_INDEX_METHOD;
 import static io.perfeccionista.framework.utils.StringUtils.indexesToString;
 
 public class WebRadioGroupSingleIndexedResult<T> implements WebSingleIndexedResult<T, WebRadioGroup> {
@@ -57,43 +57,43 @@ public class WebRadioGroupSingleIndexedResult<T> implements WebSingleIndexedResu
     }
 
     @Override
-    public @Nullable T getValue() {
+    public @Nullable T getResult() {
         WebRadioGroupFilter webRadioGroupFilter = filterBuilder.build(element);
         return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webRadioGroupFilter);
             if (extractedValues.size() > 1) {
-                throw WebSingleResult.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
+                throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
                         .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             return extractedValues.values().stream()
                     .findFirst()
-                    .orElseThrow(() -> WebSingleResult.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
                             .setProcessed(true)
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
         });
     }
 
     @Override
-    public @NotNull T getNotNullValue() {
+    public @NotNull T getNotNullResult() {
         WebRadioGroupFilter webRadioGroupFilter = filterBuilder.build(element);
         return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webRadioGroupFilter);
             if (extractedValues.size() > 1) {
-                throw WebSingleResult.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
+                throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
                         .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             Entry<Integer, T> extractedEntry = extractedValues.entrySet().stream()
                     .findFirst()
-                    .orElseThrow(() -> WebSingleResult.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
                             .setProcessed(true)
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
             T maybeNullValue = extractedEntry.getValue();
             if (Objects.isNull(maybeNullValue)) {
-                throw WebResultVerification.assertionError(FILTERED_ELEMENT_CONTAINS_NULL_RESULT.getMessage(extractedEntry.getKey()))
+                throw ResultVerification.assertionError(FILTERED_ELEMENT_CONTAINS_NULL_RESULT.getMessage(extractedEntry.getKey()))
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
             }
@@ -107,14 +107,14 @@ public class WebRadioGroupSingleIndexedResult<T> implements WebSingleIndexedResu
         return runCheck(element.getEnvironment(), getterInvocation(GET_INDEX_METHOD, element, filterBuilder, extractor), () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webRadioGroupFilter);
             if (extractedValues.size() > 1) {
-                throw WebSingleResult.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
+                throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
                         .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             return extractedValues.keySet().stream()
                     .findFirst()
-                    .orElseThrow(() -> WebSingleResult.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
                             .setProcessed(true)
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
         });

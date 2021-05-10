@@ -3,6 +3,7 @@ package io.perfeccionista.framework.pagefactory.elements.preferences;
 import io.perfeccionista.framework.pagefactory.elements.MappedWebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTableRowImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -28,9 +29,10 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
     protected Map<Class<? extends WebChildElement>, Class<? extends WebChildElement>> webElementImplementations = new HashMap<>();
     protected Map<Class<? extends WebChildElement>, Class<? extends WebBlock>> webMappedBlocks = new HashMap<>();
 
-    protected Map<Class<? extends WebChildElementBase>, WebElementActionConfiguration> webElementActionConfigurations = new HashMap<>();
-    protected Map<Class<? extends WebChildElementBase>, WebElementInteractionConfiguration> webElementInteractionConfigurations = new HashMap<>();
+    protected Map<Class<? extends WebPage>, WebEndpointHandlerConfiguration> webPageActionConfigurations = new HashMap<>();
+    protected Map<Class<? extends WebChildElementBase>, WebEndpointHandlerConfiguration> webElementActionConfigurations = new HashMap<>();
     protected Map<Class<? extends WebChildElementBase>, WebElementPropertyConfiguration> webElementPropertyConfigurations = new HashMap<>();
+    protected Map<Class<? extends WebChildElementBase>, WebElementStateConfiguration> webElementStateConfigurations = new HashMap<>();
     protected Map<Class<? extends WebChildElementBase>, WebLocatorConfiguration> webLocatorConfigurations = new HashMap<>();
 
     @Override
@@ -110,16 +112,41 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
     }
 
     @Override
-    public @NotNull WebElementActionConfiguration getWebElementActionConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation) {
+    public @NotNull WebEndpointHandlerConfiguration getWebPageActionConfiguration(@NotNull Class<? extends WebPage> webPageImplementation) {
 
         // Проверяем, задана ли конфигурация для элемента
-        WebElementActionConfiguration cachedWebElementActionConfiguration = webElementActionConfigurations.get(webElementImplementation);
+        WebEndpointHandlerConfiguration cachedMobilePageActionConfiguration = webPageActionConfigurations.get(webPageImplementation);
+        if (null != cachedMobilePageActionConfiguration) {
+            return cachedMobilePageActionConfiguration;
+        }
+
+        // Собираем конфигурацию для элемента и добавляем ее в хранилище
+        WebEndpointHandlerConfiguration webPageActionConfiguration = WebEndpointHandlerConfiguration.builder();
+        Deque<Class<? extends WebPage>> elementInterfaces = getInheritedInterfaces(WebPage.class, webPageImplementation, DESC);
+        elementInterfaces.forEach(inheritedInterface ->
+                webPageActionConfiguration.setFromIfNotPresent(getWebPageActionConfiguration(inheritedInterface)));
+
+        webPageActionConfigurations.put(webPageImplementation, webPageActionConfiguration);
+        return webPageActionConfiguration;
+    }
+
+    @Override
+    public WebPageFactoryPreferences setWebPageActionConfigurations(@NotNull Map<Class<? extends WebPage>, WebEndpointHandlerConfiguration> webPageActionConfigurations) {
+        this.webPageActionConfigurations = webPageActionConfigurations;
+        return this;
+    }
+
+    @Override
+    public @NotNull WebEndpointHandlerConfiguration getWebElementActionConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation) {
+
+        // Проверяем, задана ли конфигурация для элемента
+        WebEndpointHandlerConfiguration cachedWebElementActionConfiguration = webElementActionConfigurations.get(webElementImplementation);
         if (null != cachedWebElementActionConfiguration) {
             return cachedWebElementActionConfiguration;
         }
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
-        WebElementActionConfiguration webElementActionConfiguration = WebElementActionConfiguration.builder();
+        WebEndpointHandlerConfiguration webElementActionConfiguration = WebEndpointHandlerConfiguration.builder();
         Deque<Class<? extends WebChildElementBase>> elementInterfaces = getInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 webElementActionConfiguration.setFromIfNotPresent(getWebElementActionConfiguration(inheritedInterface)));
@@ -129,32 +156,8 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
     }
 
     @Override
-    public WebPageFactoryPreferences setWebElementActionConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementActionConfiguration> webElementActionConfigurations) {
+    public WebPageFactoryPreferences setWebElementActionConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebEndpointHandlerConfiguration> webElementActionConfigurations) {
         this.webElementActionConfigurations = webElementActionConfigurations;
-        return this;
-    }
-
-    @Override
-    public @NotNull WebElementInteractionConfiguration getWebElementInteractionConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation) {
-        // Проверяем, задана ли конфигурация для элемента
-        WebElementInteractionConfiguration cachedWebElementInteractionConfiguration = webElementInteractionConfigurations.get(webElementImplementation);
-        if (null != cachedWebElementInteractionConfiguration) {
-            return cachedWebElementInteractionConfiguration;
-        }
-
-        // Собираем конфигурацию для элемента и добавляем ее в хранилище
-        WebElementInteractionConfiguration webElementInteractionConfiguration = WebElementInteractionConfiguration.builder();
-        Deque<Class<? extends WebChildElementBase>> elementInterfaces = getInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
-        elementInterfaces.forEach(inheritedInterface ->
-                webElementInteractionConfiguration.setFromIfNotPresent(getWebElementInteractionConfiguration(inheritedInterface)));
-
-        webElementInteractionConfigurations.put(webElementImplementation, webElementInteractionConfiguration);
-        return webElementInteractionConfiguration;
-    }
-
-    @Override
-    public WebPageFactoryPreferences setWebElementInteractionConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementInteractionConfiguration> webElementInteractionConfigurations) {
-        this.webElementInteractionConfigurations = webElementInteractionConfigurations;
         return this;
     }
 
@@ -180,6 +183,31 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
     @Override
     public WebPageFactoryPreferences setWebElementPropertyConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementPropertyConfiguration> webElementPropertyConfigurations) {
         this.webElementPropertyConfigurations = webElementPropertyConfigurations;
+        return this;
+    }
+
+    @Override
+    public @NotNull WebElementStateConfiguration getWebElementStateConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation) {
+
+        // Проверяем, задана ли конфигурация для элемента
+        WebElementStateConfiguration cachedWebElementStateConfiguration = webElementStateConfigurations.get(webElementImplementation);
+        if (null != cachedWebElementStateConfiguration) {
+            return cachedWebElementStateConfiguration;
+        }
+
+        // Собираем конфигурацию для элемента и добавляем ее в хранилище
+        WebElementStateConfiguration webElementStateConfiguration = WebElementStateConfiguration.builder();
+        Deque<Class<? extends WebChildElementBase>> elementInterfaces = getInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
+        elementInterfaces.forEach(inheritedInterface ->
+                webElementStateConfiguration.setFromIfNotPresent(getWebElementStateConfiguration(inheritedInterface)));
+
+        webElementStateConfigurations.put(webElementImplementation, webElementStateConfiguration);
+        return webElementStateConfiguration;
+    }
+
+    @Override
+    public WebPageFactoryPreferences setWebElementStateConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementStateConfiguration> webElementStateConfigurations) {
+        this.webElementStateConfigurations = webElementStateConfigurations;
         return this;
     }
 

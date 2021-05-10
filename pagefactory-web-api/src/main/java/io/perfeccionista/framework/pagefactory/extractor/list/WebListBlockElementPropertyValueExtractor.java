@@ -1,21 +1,24 @@
 package io.perfeccionista.framework.pagefactory.extractor.list;
 
-import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyHolder;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetStringAttributeValueOperationType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
 public class WebListBlockElementPropertyValueExtractor implements WebListBlockValueExtractor<String> {
 
@@ -37,7 +40,7 @@ public class WebListBlockElementPropertyValueExtractor implements WebListBlockVa
 
     @Override
     public Map<Integer, String> extractValues(@NotNull WebListFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         Set<Integer> indexes = filterResult.getIndexes();
         String hash = filterResult.getHash();
         WebList element = filter.getElement();
@@ -62,18 +65,23 @@ public class WebListBlockElementPropertyValueExtractor implements WebListBlockVa
         }
 
         // Формируем операцию по извлечению значения свойства
-        JsOperation<String> jsOperation = elementToFilter
-                .getProperty(propertyName)
-                .orElseThrow(() -> WebElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName))
-                        .addLastAttachmentEntry(WebElementAttachmentEntry.of(elementToFilter)))
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        Optional<WebElementPropertyHolder> optionalPropertyHolder = elementToFilter.getProperty(propertyName);
+        WebElementOperation<String> operation;
+        if (optionalPropertyHolder.isPresent()) {
+            WebElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
+            operation = propertyHolder.getOperation(elementToFilter);
+        } else {
+            WebGetStringAttributeValueOperationType operationType = WebGetStringAttributeValueOperationType.of(elementToFilter, propertyName);
+            operation = WebElementOperationHandler.of(elementToFilter, operationType, propertyName).getOperation();
+        }
+        operation.getLocatorChain()
                 .addFirstLocators(listLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 

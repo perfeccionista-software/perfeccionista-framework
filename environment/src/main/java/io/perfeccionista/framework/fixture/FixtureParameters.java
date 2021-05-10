@@ -7,24 +7,26 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_CAST_OBJECT;
 import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
 
 public class FixtureParameters {
 
-    private final Map<String, Object> parameters;
+    protected final Map<String, Object> parameters;
 
-    private FixtureParameters(Map<String, Object> parameters) {
+    protected FixtureParameters() {
+        this.parameters = new HashMap<>();
+    }
+
+    protected FixtureParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
     }
 
     public static FixtureParameters builder() {
-        return new FixtureParameters(new HashMap<>());
-    }
-
-    public static FixtureParameters of(@NotNull Map<String, Object> parameters) {
-        return new FixtureParameters(parameters);
+        return new FixtureParameters();
     }
 
     public FixtureParameters addParameter(@NotNull String parameterName, @Nullable Object parameter) {
@@ -41,6 +43,25 @@ public class FixtureParameters {
             return (T) parameter;
         }
         throw ClassCast.exception(CANT_CAST_OBJECT.getMessage(parameter.getClass().getCanonicalName(), parameterType.getCanonicalName()));
+    }
+
+    @NotNull
+    public final Set<String> getNamesSet() {
+        return parameters.keySet();
+    }
+
+    public final boolean contains(@NotNull String name) {
+        return parameters.containsKey(name);
+    }
+
+    @Override
+    public String toString() {
+        return "Fixture parameters = {\n"
+                + "Type: " + this.getClass().getCanonicalName() + "\n"
+                + "Parameters: \n"
+                + parameters.entrySet().stream()
+                .map(entry -> entry.getKey() + " = " + entry.getValue())
+                .collect(Collectors.joining("\n")) + "\n}";
     }
 
 }

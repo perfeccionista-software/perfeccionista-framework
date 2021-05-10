@@ -8,4 +8,6 @@ public interface Value<T> {
 
     boolean check(@Nullable T actual);
 
+    Value<T> shouldMatch(T actual);
+
 }

@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
-import io.perfeccionista.framework.exceptions.WebElementImplementationNotFound;
+import io.perfeccionista.framework.exceptions.ElementImplementationNotFound;
 import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
 import io.perfeccionista.framework.pagefactory.elements.WebTableRowImpl;
@@ -9,7 +9,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
-import io.perfeccionista.framework.pagefactory.factory.proxy.UnimplementedMethodInvocationHandler;
+import io.perfeccionista.framework.pagefactory.factory.proxy.UnimplementedWebElementMethodInvocationHandler;
 import io.perfeccionista.framework.pagefactory.factory.proxy.WebChildElementCallbackFilter;
 import io.perfeccionista.framework.pagefactory.factory.proxy.WebParentElementCallbackFilter;
 import io.perfeccionista.framework.pagefactory.factory.proxy.WebParentElementInvocationHandler;
@@ -21,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Deque;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ABSTRACT_WEB_CHILD_ELEMENT_IMPLEMENTATION_NOT_ALLOWED;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_CHILD_ELEMENT_IMPLEMENTATION_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IMPLEMENTATION_CANT_BE_ABSTRACT;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IMPLEMENTATION_NOT_FOUND;
 import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
 import static java.lang.reflect.Modifier.isAbstract;
 import static java.lang.reflect.Modifier.isInterface;
@@ -79,7 +79,7 @@ public class WebElementInitializer {
         // Если возвращаемый тип - не интерфейс, а имплементация
         if (!isInterface(webChildElementClass.getModifiers())) {
             if (isAbstract(webChildElementClass.getModifiers()) || webChildElementClass.isEnum()) {
-                throw WebElementImplementationNotFound.exception(ABSTRACT_WEB_CHILD_ELEMENT_IMPLEMENTATION_NOT_ALLOWED
+                throw ElementImplementationNotFound.exception(ELEMENT_IMPLEMENTATION_CANT_BE_ABSTRACT
                         .getMessage(webChildElementClass.getCanonicalName()));
             }
             return newInstance(webChildElementClass);
@@ -95,7 +95,7 @@ public class WebElementInitializer {
         Enhancer enhancer = new Enhancer();
         enhancer.setInterfaces(new Class[] {webChildElementClass});
         enhancer.setSuperclass(interfaceImplementationClass);
-        enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new UnimplementedMethodInvocationHandler()});
+        enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new UnimplementedWebElementMethodInvocationHandler()});
         enhancer.setCallbackFilter(new WebChildElementCallbackFilter(interfaceImplementationClass));
         return (WebChildElement) enhancer.create();
     }
@@ -108,7 +108,7 @@ public class WebElementInitializer {
                 return elementImplementation;
             }
         }
-        throw WebElementImplementationNotFound.exception(WEB_CHILD_ELEMENT_IMPLEMENTATION_NOT_FOUND
+        throw ElementImplementationNotFound.exception(ELEMENT_IMPLEMENTATION_NOT_FOUND
                 .getMessage(webChildElementClass.getCanonicalName()));
     }
 

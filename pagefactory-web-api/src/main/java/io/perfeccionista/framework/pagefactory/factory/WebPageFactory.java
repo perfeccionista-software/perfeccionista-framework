@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
-import io.perfeccionista.framework.exceptions.WebElementNotFound;
+import io.perfeccionista.framework.exceptions.ElementNotFound;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlock;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
@@ -22,7 +22,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
@@ -33,12 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_FOUND;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_FOUND;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
 import static io.perfeccionista.framework.utils.WebElementUtils.getWebChildElementMethods;
 import static java.util.stream.Collectors.toList;
 
@@ -92,7 +92,7 @@ public class WebPageFactory {
     }
 
     public Map<Integer, WebRadioButton> createWebRadioButtons(@NotNull WebRadioGroup webRadioGroup,
-                                                              @NotNull WebFilterResult filterResult) {
+                                                              @NotNull FilterResult filterResult) {
         Map<Integer, WebRadioButton> webRadioButtons = new HashMap<>();
 
         String hash = filterResult.getHash();
@@ -111,7 +111,7 @@ public class WebPageFactory {
                 .filter(method -> method.getParameterCount() == 0)
                 .filter(method -> WebRadioButton.class.isAssignableFrom(method.getReturnType()))
                 .findFirst()
-                .orElseThrow(() -> WebElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(RADIO_BUTTON_METHOD_NAME)));
+                .orElseThrow(() -> ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(RADIO_BUTTON_METHOD_NAME)));
 
         for (int index : indexes) {
             DefaultWebRadioButtonBlock webMappedBlockInstance = initializer.initMappedWebBlock(mappedBlockClass);
@@ -134,7 +134,7 @@ public class WebPageFactory {
     }
 
     public Map<Integer, WebBlock> createWebListBlocks(@NotNull WebList webList,
-                                                      @NotNull WebFilterResult filterResult) {
+                                                      @NotNull FilterResult filterResult) {
         Map<Integer, WebBlock> webMappedBlocks = new HashMap<>();
 
         String hash = filterResult.getHash();
@@ -168,7 +168,7 @@ public class WebPageFactory {
     }
 
     public Map<Integer, DefaultWebTextBlock> createWebTextListBlocks(@NotNull WebTextList webList,
-                                                                     @NotNull WebFilterResult filterResult) {
+                                                                     @NotNull FilterResult filterResult) {
         Map<Integer, DefaultWebTextBlock> webMappedBlocks = new HashMap<>();
 
         String hash = filterResult.getHash();
@@ -204,7 +204,7 @@ public class WebPageFactory {
     public Map<Integer, WebBlock> createWebTableCells(@NotNull WebTable webTable,
                                                       @NotNull String columnName,
                                                       @NotNull TableSection tableSection,
-                                                      @NotNull WebFilterResult filterResult) {
+                                                      @NotNull FilterResult filterResult) {
         Map<Integer, WebBlock> webMappedCells = new HashMap<>();
 
         String hash = filterResult.getHash();
@@ -280,7 +280,7 @@ public class WebPageFactory {
     public Map<Integer, DefaultWebTextBlock> createWebTextTableCells(@NotNull WebTextTable webTextTable,
                                                                      @NotNull String columnName,
                                                                      @NotNull TableSection tableSection,
-                                                                     @NotNull WebFilterResult filterResult) {
+                                                                     @NotNull FilterResult filterResult) {
         Map<Integer, DefaultWebTextBlock> webMappedCells = new HashMap<>();
 
         String hash = filterResult.getHash();
@@ -355,7 +355,7 @@ public class WebPageFactory {
 
     public Map<Integer, WebTableRow> createWebTableRows(@NotNull WebTable webTable,
                                                         @NotNull TableSection tableSection,
-                                                        @NotNull WebFilterResult filterResult) {
+                                                        @NotNull FilterResult filterResult) {
         Map<Integer, WebTableRow> webMappedRows = new HashMap<>();
 
         String hash = filterResult.getHash();
@@ -470,7 +470,7 @@ public class WebPageFactory {
 
     public Map<Integer, WebBlock> createWebTextTableRows(@NotNull WebTextTable webTextTable,
                                                          @NotNull TableSection tableSection,
-                                                         @NotNull WebFilterResult filterResult) {
+                                                         @NotNull FilterResult filterResult) {
         Map<Integer, WebBlock> webMappedRows = new HashMap<>();
 
         String hash = filterResult.getHash();

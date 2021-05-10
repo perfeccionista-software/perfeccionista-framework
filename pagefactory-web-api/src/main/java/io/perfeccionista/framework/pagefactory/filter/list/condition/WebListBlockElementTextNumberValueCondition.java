@@ -1,15 +1,17 @@
 package io.perfeccionista.framework.pagefactory.filter.list.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,15 +22,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 
 public class WebListBlockElementTextNumberValueCondition implements WebListBlockCondition {
 
     private final Deque<WebListBlockConditionHolder> childConditions = new ArrayDeque<>();
 
     private final String elementPath;
-    private final WebChildElement elementFrame;
+    private final WebGetTextAvailable elementFrame;
 
     private final NumberValue<?> expectedNumberValue;
 
@@ -40,9 +42,9 @@ public class WebListBlockElementTextNumberValueCondition implements WebListBlock
         this.expectedNumberValue = expectedNumberValue;
     }
 
-    public WebListBlockElementTextNumberValueCondition(@NotNull GetTextAvailable elementFrame, @NotNull NumberValue<?> expectedNumberValue) {
+    public WebListBlockElementTextNumberValueCondition(@NotNull WebGetTextAvailable elementFrame, @NotNull NumberValue<?> expectedNumberValue) {
         this.elementPath = null;
-        this.elementFrame = (WebChildElement) elementFrame;
+        this.elementFrame = elementFrame;
         this.expectedNumberValue = expectedNumberValue;
     }
 
@@ -56,13 +58,13 @@ public class WebListBlockElementTextNumberValueCondition implements WebListBlock
 
     @Override
     public WebListBlockCondition and(@NotNull WebListBlockCondition condition) {
-        childConditions.add(WebListBlockConditionHolder.of(WebConditionGrouping.AND, condition));
+        childConditions.add(WebListBlockConditionHolder.of(ConditionGrouping.AND, condition));
         return this;
     }
 
     @Override
     public WebListBlockCondition or(@NotNull WebListBlockCondition condition) {
-        childConditions.add(WebListBlockConditionHolder.of(WebConditionGrouping.OR, condition));
+        childConditions.add(WebListBlockConditionHolder.of(ConditionGrouping.OR, condition));
         return this;
     }
 
@@ -72,7 +74,7 @@ public class WebListBlockElementTextNumberValueCondition implements WebListBlock
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebList element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebList element, @Nullable String hash) {
 
         // Цепочка от корня страницы до WebListBlock
         WebLocatorChain listLocatorChain = element.getLocatorChain();
@@ -82,30 +84,31 @@ public class WebListBlockElementTextNumberValueCondition implements WebListBlock
         listLocatorChain.addLastLocator(element.getRequiredLocator(LI));
 
         // Находим необходимый элемент, заданный по пути или по методу
-        WebChildElement elementToFilter;
+        WebGetTextAvailable elementToFilter;
         if (elementPath != null) {
             elementToFilter = element.getWebListFrame()
                     .getMappedBlockFrame()
                     .getElementRegistry()
-                    .getRequiredElementByPath(elementPath, WebChildElement.class);
+                    .getRequiredElementByPath(elementPath, WebGetTextAvailable.class);
         } else {
             elementToFilter = element.getWebListFrame()
                     .getMappedBlockFrame()
                     .getElementRegistry()
-                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod(), elementFrame.getElementIdentifier().getElementType());
+                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod(), WebGetTextAvailable.class);
         }
 
         // Добавляем в цепочку локаторов операции локаторы до блока WebListBlock
-        JsOperation<String> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(GET_TEXT_METHOD, String.class)
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        WebGetTextOperationType operationType = WebGetTextOperationType.of(elementToFilter);
+        WebElementOperation<String> operation = WebElementOperationHandler.of(elementToFilter, operationType, TEXT)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(listLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -115,7 +118,7 @@ public class WebListBlockElementTextNumberValueCondition implements WebListBlock
         Set<Integer> matches = getMatches(textValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, String> textValues) {

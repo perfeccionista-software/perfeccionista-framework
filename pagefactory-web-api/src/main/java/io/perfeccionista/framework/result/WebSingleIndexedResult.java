@@ -9,9 +9,9 @@ public interface WebSingleIndexedResult<T, E extends WebChildElement> {
 
     @NotNull E getElement();
 
-    @Nullable T getValue();
+    @Nullable T getResult();
 
-    @NotNull T getNotNullValue();
+    @NotNull T getNotNullResult();
 
     int getIndex();
 

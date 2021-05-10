@@ -34,7 +34,7 @@ public class DimensionsCucumberResolverImpl implements DimensionsCucumberResolve
     }
 
     @Override
-    public Optional<Dimensions> tryResolve(@NotNull String expression, @Nullable Object... args) {
+    public Optional<Dimensions2D> tryResolve(@NotNull String expression, @Nullable Object... args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.find()) {
@@ -42,7 +42,7 @@ public class DimensionsCucumberResolverImpl implements DimensionsCucumberResolve
                 double height = extractDimension(matcher.group("height"), expression);
                 double inaccuracy = extractInaccuracy(matcher.group("inaccuracy"), expression)
                         .orElse(0.5d);
-                return Optional.of(Dimensions.of(width, height).setInaccuracy(inaccuracy));
+                return Optional.of(Dimensions2D.of(width, height).setInaccuracy(inaccuracy));
             }
         }
         return Optional.empty();

@@ -14,7 +14,6 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import java.time.Duration;
 import java.util.function.Supplier;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.GETTER;
 import static java.lang.String.format;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
@@ -34,7 +33,7 @@ public class CheckInvocationRunner implements InvocationRunner {
         // We need this for one attempt if timeout = 0
         long currentTime = System.nanoTime();
         long deadline = currentTime + timeout.toNanos();
-        logger.debug(() -> format("Check action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));
+        logger.debug(() -> format("Check action %s started. Timeout = %s. Delay = %s.", name, getFormattedDuration(timeout), getFormattedDuration(delay)));
 
         long invocationStartTime = 0;
 
@@ -59,7 +58,7 @@ public class CheckInvocationRunner implements InvocationRunner {
             currentTime = System.nanoTime();
         }
 
-        logger.error(() -> "Check action finished with exception");
+        logger.error(() -> format("Check action %s finished with exception in %s", name, getFormattedDuration(Duration.ofNanos(System.nanoTime() - deadline + timeout.toNanos()))));
         exceptionCollector.throwIfSingleException();
         throw exceptionCollector.getExceptionSequence();
     }

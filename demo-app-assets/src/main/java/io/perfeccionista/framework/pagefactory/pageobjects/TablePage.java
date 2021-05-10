@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumns;
-import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CheckboxWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryNumberWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.FullCountryNameWebBlock;
@@ -25,7 +25,7 @@ public interface TablePage extends AbstractWebPage {
 
     @Name("Table of countries")
     @Name("Таблица стран")
-    @WebLocator(tagName = "table", invokeOnCall = {CheckIsDisplayed.class})
+    @WebLocator(tagName = "table", invokeOnCall = JsCheckIsDisplayed.class)
     @UseMappedWebTableColumns({
             @UseMappedWebTableColumn(name = CHECKBOX,
                     headerClass = HeaderWebBlock.class, headerLocator = @WebLocator(xpath = ".//th[1]"),

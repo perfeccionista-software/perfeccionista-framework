@@ -15,7 +15,7 @@
 
     // EnvironmentBlock
     let withLogs = operation.withLogs !== undefined;
-    let withOuterHtml = operation.withOuterHtml !== undefined;
+    let withPageSource = operation.withPageSource !== undefined;
     let dateTimeFormatter = new Intl.DateTimeFormat('ru', {
         day: 'numeric',
         month: '2-digit',
@@ -114,6 +114,9 @@
         if (parentFunctionInvocations !== undefined && parentFunctionInvocations.length > 0) {
             await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
         }
+        // if (locator.onlyWithinParent === false) {
+        //     parentElement = document.documentElement;
+        // }
         let foundElements = findElements(parentElement, locator);
         let foundElementEntries = [];
         let size = foundElements.length;
@@ -126,8 +129,10 @@
                 addSearchHistoryEntry(locator, foundElementEntries);
                 return foundElementEntries;
             }
-        }
-        if (size > 1) {
+        } else if (size === 1) {
+            foundElementEntries.push(createElementEntry(foundElements[0], locator));
+            addSearchHistoryEntry(locator, foundElementEntries);
+        } else {
             let elementIndex = locator.index;
             if (elementIndex === undefined || elementIndex === null) {
                 addLocatorErrorAttachment(locator);
@@ -147,8 +152,6 @@
             addSearchHistoryEntry(locator, foundElementEntries);
             return foundElementEntries;
         }
-        foundElementEntries.push(createElementEntry(foundElements[0], locator));
-        addSearchHistoryEntry(locator, foundElementEntries);
         return foundElementEntries;
     }
 
@@ -165,6 +168,9 @@
         if (undefined !== parentFunctionInvocations && parentFunctionInvocations.length > 0) {
             await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
         }
+        // if (locator.onlyWithinParent === false) {
+        //     parentElement = document.documentElement;
+        // }
         let foundElements = findElements(parentElement, locator);
         let foundElementEntries = [];
         let size = foundElements.length;
@@ -178,7 +184,7 @@
                 return foundElementEntries;
             }
         }
-        if (locator.indexes.length === 0) {
+        if (locator.indexes == undefined) {
             for (let i = 0; i < foundElements.length; i++) {
                 let elementEntry = createElementEntry(foundElements[i], locator);
                 elementEntry.index = i;
@@ -216,7 +222,7 @@
             if (undefined !== parentFunctionInvocations && parentFunctionInvocations.length > 0) {
                 await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
             }
-            let elementIndex = parentElementEntry.index;
+            let parentIndex = parentElementEntry.index;
             let foundElements = findElements(parentElement, locator);
             let size = foundElements.length;
             if (size === 0) {
@@ -226,12 +232,15 @@
                     throw new ElementSearchError('No elements found');
                 } else {
                     let elementEntry = createElementEntry(null, locator);
-                    elementEntry.index = elementIndex;
+                    elementEntry.index = parentIndex;
                     foundElementEntries.push(elementEntry);
-                    continue;
                 }
-            }
-            if (size > 1) {
+            } else if (size === 1) {
+                let elementEntry = createElementEntry(foundElements[0], locator);
+                elementEntry.index = parentIndex;
+                foundElementEntries.push(elementEntry);
+            } else {
+                let elementIndex = locator.index;
                 if (elementIndex === undefined || elementIndex === null) {
                     addLocatorErrorAttachment(locator);
                     addParentElementErrorAttachment(parentElement);
@@ -247,10 +256,8 @@
                 let elementEntry = createElementEntry(foundElements[elementIndex], locator);
                 elementEntry.index = elementIndex;
                 foundElementEntries.push(elementEntry);
+                addSearchHistoryEntry(locator, foundElementEntries);
             }
-            let elementEntry = createElementEntry(foundElements[0], locator);
-            elementEntry.index = elementIndex;
-            foundElementEntries.push(elementEntry);
         }
         addSearchHistoryEntry(locator, foundElementEntries);
         return foundElementEntries;
@@ -493,7 +500,7 @@
         if (withLogs) {
             result.logs = JSON.stringify(logs);
         }
-        if (withOuterHtml) {
+        if (withPageSource) {
             result.outerHtml = document.documentElement.outerHTML;
         }
         return result;

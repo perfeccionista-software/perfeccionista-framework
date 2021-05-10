@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainProperty;
+import static io.perfeccionista.framework.Web.*;
 import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("in column {columnName} property {propertyName} of element {webElement} does not contain number {numberValue}")

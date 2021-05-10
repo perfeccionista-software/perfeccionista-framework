@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.value.string;
 
+import io.perfeccionista.framework.exceptions.StringValueNotMatch;
+import io.perfeccionista.framework.exceptions.attachments.ValueAttachmentEntry;
 import io.perfeccionista.framework.value.checker.StringChecker;
 import io.perfeccionista.framework.value.transformer.string.ActualStringValueTransformer;
 import io.perfeccionista.framework.value.transformer.string.ExpectedStringValueTransformer;
@@ -8,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.UnaryOperator;
+
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.STRING_VALUE_NOT_MATCH;
 
 public class DefaultStringValue implements StringValue {
 
@@ -64,6 +68,15 @@ public class DefaultStringValue implements StringValue {
             return !stringChecker.check();
         }
         return stringChecker.check();
+    }
+
+    @Override
+    public StringValue shouldMatch(String actual) {
+        if (check(actual)) {
+            return this;
+        }
+        throw StringValueNotMatch.assertionError(STRING_VALUE_NOT_MATCH.getMessage())
+                .addLastAttachmentEntry(ValueAttachmentEntry.of(this));
     }
 
     @Override

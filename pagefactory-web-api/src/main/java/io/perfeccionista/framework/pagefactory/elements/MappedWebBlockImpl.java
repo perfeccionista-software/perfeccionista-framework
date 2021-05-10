@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 
 public class MappedWebBlockImpl extends WebBlockImpl {
 

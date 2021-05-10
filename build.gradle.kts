@@ -1,8 +1,8 @@
 import io.qameta.allure.gradle.task.AllureReport
 
 repositories {
-    mavenLocal()
     google()
+    mavenLocal()
     maven("https://plugins.gradle.org/m2/")
 }
 
@@ -12,9 +12,15 @@ plugins {
     checkstyle
     `java-gradle-plugin`
     `maven-publish`
-    id("com.github.kt3k.coveralls") version "2.9.0"
-    id("org.sonarqube") version "2.8"
+    id("com.github.kt3k.coveralls") version "2.11.0"
+    id("org.sonarqube") version "3.1.1"
     id("io.qameta.allure") version "2.8.1"
+    id("com.github.ben-manes.versions") version "0.38.0" apply false
+}
+// Global registry workaround https://github.com/ben-manes/gradle-versions-plugin
+// until https://github.com/ben-manes/gradle-versions-plugin/pull/504 approved
+if (!project.plugins.hasPlugin("com.github.ben-manes.versions")) {
+    apply(plugin = "com.github.ben-manes.versions")
 }
 
 rootProject.apply {
@@ -57,20 +63,20 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     }
 
     dependencies {
-        compile(group = "org.jetbrains", name = "annotations", version = "17.0.0")
+        implementation(group = "org.jetbrains", name = "annotations", version = "20.1.0")
 
-        compile(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
-        compile(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
-        compile(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junitVersion)
-        compile(group = "org.junit.jupiter", name = "junit-jupiter-params", version = junitVersion)
+        api(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
+        api(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
+        api(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junitVersion)
+        api(group = "org.junit.jupiter", name = "junit-jupiter-params", version = junitVersion)
 
-        compile(group = "com.fasterxml.jackson.core", name = "jackson-core", version = jacksonVersion)
-        compile(group = "com.fasterxml.jackson.core", name = "jackson-annotations", version = jacksonVersion)
-        compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-core", version = jacksonVersion)
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations", version = jacksonVersion)
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
 
         testImplementation(group = "io.qameta.allure", name = "allure-java-commons", version = allureVersion)
         testImplementation(group = "io.qameta.allure", name = "allure-junit5", version = allureVersion)
-        testImplementation(group = "org.mockito", name = "mockito-core", version = "3.0.0")
+        testImplementation(group = "org.mockito", name = "mockito-core", version = "3.9.0")
     }
 
     allure {
@@ -128,14 +134,14 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 
     if (project.name !in notToPublish) {
         apply(plugin = "org.gradle.maven-publish")
-        val sourcesJar = task<org.gradle.api.tasks.bundling.Jar>("sourcesJar") {
+        val sourcesJar = task<Jar>("sourcesJar") {
             from(sourceSets["main"].allSource)
             archiveClassifier.set("sources")
         }
 
         publishing {
             publications {
-                create<org.gradle.api.publish.maven.MavenPublication>(project.name) {
+                create<MavenPublication>(project.name) {
                     from(components["java"])
                     artifacts {
                         artifact(sourcesJar)
@@ -154,11 +160,11 @@ tasks.test {
     jacocoSubprojects.forEach { dependsOn("${it.name}:jacocoTestReport") }
     finalizedBy("jacocoRootReport")
     useJUnitPlatform {
-        excludeTags = kotlin.collections.setOf("local-test")
+        excludeTags = setOf("local-test")
     }
 }
 
-tasks.register<org.gradle.testing.jacoco.tasks.JacocoMerge>("jacocoMergeTest") {
+tasks.register<JacocoMerge>("jacocoMergeTest") {
     destinationFile = file(allTestsCoverageFile)
     executionData = project.fileTree("${rootDir}") {
         include("**/build/jacoco/test.exec")
@@ -169,7 +175,7 @@ tasks.register("jacocoRootMerge") {
     dependsOn("jacocoMergeTest")
 }
 
-tasks.register<org.gradle.testing.jacoco.tasks.JacocoReport>("jacocoRootReport") {
+tasks.register<JacocoReport>("jacocoRootReport") {
     group = "verification"
     dependsOn("jacocoRootMerge")
     reports {

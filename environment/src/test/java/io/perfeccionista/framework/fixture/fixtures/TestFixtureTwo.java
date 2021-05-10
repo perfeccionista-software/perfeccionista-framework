@@ -16,6 +16,7 @@ public class TestFixtureTwo implements Fixture<String, Void> {
 
     @Override
     public @NotNull FixtureTearDownResult<Void> tearDown() {
-        return FixtureTearDownResult.of(null);
+        return FixtureTearDownResult.empty();
     }
+
 }

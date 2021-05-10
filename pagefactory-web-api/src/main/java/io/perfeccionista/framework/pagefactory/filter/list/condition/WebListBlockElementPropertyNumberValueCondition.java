@@ -1,15 +1,18 @@
 package io.perfeccionista.framework.pagefactory.filter.list.condition;
 
-import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyHolder;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetStringAttributeValueOperationType;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,10 +21,10 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
 public class WebListBlockElementPropertyNumberValueCondition implements WebListBlockCondition {
 
@@ -63,13 +66,13 @@ public class WebListBlockElementPropertyNumberValueCondition implements WebListB
 
     @Override
     public WebListBlockCondition and(@NotNull WebListBlockCondition condition) {
-        childConditions.add(WebListBlockConditionHolder.of(WebConditionGrouping.AND, condition));
+        childConditions.add(WebListBlockConditionHolder.of(ConditionGrouping.AND, condition));
         return this;
     }
 
     @Override
     public WebListBlockCondition or(@NotNull WebListBlockCondition condition) {
-        childConditions.add(WebListBlockConditionHolder.of(WebConditionGrouping.OR, condition));
+        childConditions.add(WebListBlockConditionHolder.of(ConditionGrouping.OR, condition));
         return this;
     }
 
@@ -79,7 +82,7 @@ public class WebListBlockElementPropertyNumberValueCondition implements WebListB
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebList element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebList element, @Nullable String hash) {
 
         // Цепочка от корня страницы до WebListBlock
         WebLocatorChain listLocatorChain = element.getLocatorChain();
@@ -103,18 +106,23 @@ public class WebListBlockElementPropertyNumberValueCondition implements WebListB
         }
 
         // Формируем операцию по извлечению значения свойства
-        JsOperation<String> jsOperation = elementToFilter
-                .getProperty(propertyName)
-                .orElseThrow(() -> WebElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName))
-                        .addLastAttachmentEntry(WebElementAttachmentEntry.of(elementToFilter)))
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        Optional<WebElementPropertyHolder> optionalPropertyHolder = elementToFilter.getProperty(propertyName);
+        WebElementOperation<String> operation;
+        if (optionalPropertyHolder.isPresent()) {
+            WebElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
+            operation = propertyHolder.getOperation(elementToFilter);
+        } else {
+            WebGetStringAttributeValueOperationType operationType = WebGetStringAttributeValueOperationType.of(elementToFilter, propertyName);
+            operation = WebElementOperationHandler.of(elementToFilter, operationType, propertyName).getOperation();
+        }
+        operation.getLocatorChain()
                 .addFirstLocators(listLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -124,7 +132,7 @@ public class WebListBlockElementPropertyNumberValueCondition implements WebListB
         Set<Integer> matches = getMatches(textValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, String> textValues) {

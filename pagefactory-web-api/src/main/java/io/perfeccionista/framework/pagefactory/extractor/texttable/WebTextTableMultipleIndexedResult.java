@@ -10,11 +10,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+import static io.perfeccionista.framework.Web.emptyWebTextTableFilter;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_EXTRACTED_VALUES_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SIZE_ELEMENTS_METHOD;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebTextTableFilter;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_EXTRACTED_VALUES_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_SIZE_ELEMENTS_METHOD;
 
 public class WebTextTableMultipleIndexedResult<T> implements WebMultipleIndexedResult<T, WebTextTable> {
 
@@ -47,7 +47,7 @@ public class WebTextTableMultipleIndexedResult<T> implements WebMultipleIndexedR
     }
 
     @Override
-    public Map<Integer, T> getValues() {
+    public Map<Integer, T> getResults() {
         return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
                 () -> extractor.extractValues(filterBuilder.build(element)));
     }

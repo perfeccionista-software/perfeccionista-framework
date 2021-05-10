@@ -5,20 +5,23 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.matcher.element.WebPageMatcher;
 import io.perfeccionista.framework.name.WebPageIdentifier;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.elements.actions.base.EndpointHandlerRegistry;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
+import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebPageImpl implements WebPage {
 
+    protected EndpointHandlerRegistry actionRegistry;
     protected WebLocatorRegistry locatorRegistry;
     protected WebElementRegistry elementRegistry;
     protected WebPageIdentifier pageIdentifier;
@@ -59,6 +62,11 @@ public class WebPageImpl implements WebPage {
     }
 
     @Override
+    public @NotNull <R> Class<? extends EndpointHandler<R>> getEndpointHandler(@NotNull String actionName, @NotNull Class<R> returnType) {
+        return actionRegistry.getEndpointHandler(actionName, returnType);
+    }
+
+    @Override
     public WebPage should(@NotNull WebPageMatcher matcher) {
         matcher.check(this);
         return this;
@@ -92,6 +100,7 @@ public class WebPageImpl implements WebPage {
         rootNode.set("pageIdentifier", this.pageIdentifier.toJson());
         rootNode.set("locators", this.locatorRegistry.toJson());
         rootNode.set("elements", this.elementRegistry.toJson());
+        rootNode.set("endpointHandlers", this.actionRegistry.toJson());
         return rootNode;
     }
 

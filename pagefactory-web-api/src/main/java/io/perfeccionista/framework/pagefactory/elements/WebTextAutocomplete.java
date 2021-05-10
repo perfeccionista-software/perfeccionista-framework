@@ -1,42 +1,43 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOpenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebDropDownAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextAutocompleteMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextDropDownListMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
+import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
-import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebInputTextAvailable;
+import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
+import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
 import org.jetbrains.annotations.NotNull;
 
 public interface WebTextAutocomplete extends WebTextDropDownList,
-        SendKeysAvailable, ClearAvailable {
+        WebInputTextAvailable, WebChildElement {
 
     // Actions
     @Override
     WebTextAutocomplete executeAction(@NotNull String name, Object... args);
-    @Override
-    WebTextAutocomplete executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
     WebTextAutocomplete should(@NotNull WebTextAutocompleteMatcher matcher);
     @Override
     WebTextAutocomplete should(@NotNull WebTextDropDownListMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
     @Override
     WebTextAutocomplete should(@NotNull WebTextListMatcher matcher);
     @Override
@@ -44,41 +45,52 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     @Override
     WebTextAutocomplete should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull GetColorAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull GetDimensionsAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull GetLocationAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull GetScreenshotAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull IsDisplayedAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull IsInFocusAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull IsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebTextAutocomplete should(@NotNull IsPresentAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
     WebTextAutocomplete should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
     WebTextAutocomplete should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull GetLabelAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebElementStateAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull GetTextAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebGetLabelAvailableMatcher matcher);
     @Override
-    WebTextAutocomplete should(@NotNull IsOpenAvailableMatcher matcher);
+    WebTextAutocomplete should(@NotNull WebGetTextAvailableMatcher matcher);
+    @Override
+    WebTextAutocomplete should(@NotNull WebDropDownAvailableMatcher matcher);
 
-    // Clear
     @Override
-    WebTextAutocomplete clear();
+    WebTextAutocomplete select(@NotNull WebTextListBlockCondition filterCondition);
 
     // Click
     @Override
     WebTextAutocomplete click();
 
-    // Close
+    // InputText
+    @Override
+    WebTextAutocomplete clear();
+    @Override
+    WebTextAutocomplete typeText(@NotNull String keys);
+    @Override
+    WebTextAutocomplete replaceText(@NotNull String keys);
+    @Override
+    WebTextAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents);
+
+    // DropDown
+    @Override
+    WebTextAutocomplete open();
     @Override
     WebTextAutocomplete close();
 
@@ -86,18 +98,8 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     @Override
     WebTextAutocomplete hoverTo(boolean withOutOfBounds);
 
-    // Open
-    @Override
-    WebTextAutocomplete open();
-
     // ScrollTo
     @Override
     WebTextAutocomplete scrollTo();
-
-    // SendKeys
-    @Override
-    WebTextAutocomplete sendKeys(@NotNull String keys);
-    @Override
-    WebTextAutocomplete sendKeys(@NotNull KeysEventChain keyEvents);
 
 }

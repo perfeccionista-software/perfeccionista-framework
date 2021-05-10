@@ -1,32 +1,34 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsEnabledAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsSelectedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsEnabledAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsSelectedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebCheckboxMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsEnabledOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsSelectedOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetLabelOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LABEL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ENABLED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_SELECTED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
 
 public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheckbox {
 
@@ -35,12 +37,6 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
     @Override
     public WebCheckbox executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
-        return this;
-    }
-
-    @Override
-    public WebCheckbox executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(name, other, args);
         return this;
     }
 
@@ -59,49 +55,43 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
     }
 
     @Override
-    public WebCheckbox should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebCheckbox should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -119,19 +109,25 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
     }
 
     @Override
-    public WebCheckbox should(@NotNull GetLabelAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebElementStateAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebCheckbox should(@NotNull WebGetLabelAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull IsEnabledAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebIsEnabledAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebCheckbox should(@NotNull IsSelectedAvailableMatcher matcher) {
+    public WebCheckbox should(@NotNull WebIsSelectedAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
@@ -140,8 +136,9 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
 
     @Override
     public WebCheckbox click() {
-        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
-                () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
+        WebClickOperationType operationType = WebClickOperationType.of(this);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
 
@@ -149,8 +146,9 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
 
     @Override
     public @Nullable String getLabel() {
-        return runCheck(getEnvironment(), getterInvocation(GET_LABEL_METHOD, this),
-                () -> getActionImplementation(GET_LABEL_METHOD, String.class).execute(this));
+        WebGetLabelOperationType operationType = WebGetLabelOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
     // HoverTo
@@ -165,16 +163,18 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
 
     @Override
     public boolean isEnabled() {
-        return runCheck(getEnvironment(), getterInvocation(IS_ENABLED_METHOD, this),
-                () -> getActionImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this));
+        WebGetIsEnabledOperationType operationType = WebGetIsEnabledOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, ENABLED).executeGetter());
     }
 
     // IsSelected
 
     @Override
     public boolean isSelected() {
-        return runCheck(getEnvironment(), getterInvocation(IS_SELECTED_METHOD, this),
-                () -> getActionImplementation(IS_SELECTED_METHOD, Boolean.class).execute(this));
+        WebGetIsSelectedOperationType operationType = WebGetIsSelectedOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, SELECTED).executeGetter());
     }
 
     // ScrollTo

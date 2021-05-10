@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.context;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.pageobjects.ContextListElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
@@ -10,13 +10,8 @@ import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBl
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveText;
-import static io.perfeccionista.framework.pagefactory.context.WebContextLimiters.selectWebListBlock;
-import static io.perfeccionista.framework.pagefactory.context.WebContextLimiters.selectWebListBlocks;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.containsText;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.with;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
 
 // TODO: Попробовать разные сценарии выборки (по индексу, отображаению элемента и т.п.)

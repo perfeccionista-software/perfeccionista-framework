@@ -4,13 +4,13 @@ import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatche
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioGroupMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping;
+import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonCondition.WebRadioButtonConditionHolder;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilder.WebRadioButtonFilterResultGroupingHolder;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,9 +18,9 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.index;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping.ADD;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping.SUBTRACT;
+import static io.perfeccionista.framework.Web.index;
+import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.ADD;
+import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.SUBTRACT;
 
 public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
 
@@ -28,7 +28,7 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
     private final WebRadioGroupFilterBuilder filterBuilder;
 
     private String initialHash = null;
-    private WebFilterResult filterResult = null;
+    private FilterResult filterResult = null;
 
     private WebRadioGroupFilterImpl(WebRadioGroup element, WebRadioGroupFilterBuilder filterBuilder) {
         this.element = element;
@@ -56,10 +56,8 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
     }
 
     @Override
-    public @NotNull WebFilterResult getFilterResult() {
-        if (filterResult == null) {
-            executeFilter(element, filterBuilder);
-        }
+    public @NotNull FilterResult getFilterResult() {
+        executeFilter(element, filterBuilder);
         return filterResult;
     }
 
@@ -82,7 +80,7 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
         String calculatedHash = initialHash;
         for (WebRadioButtonFilterResultGroupingHolder conditionHolder : conditions) {
             WebRadioButtonCondition condition = conditionHolder.getCondition();
-            WebFilterResult conditionResult = processConditions(element, condition, calculatedHash);
+            FilterResult conditionResult = processConditions(element, condition, calculatedHash);
             calculatedHash = conditionResult.getHash();
             if (ADD == conditionHolder.getUsage()) {
                 indexes.addAll(conditionResult.getIndexes());
@@ -91,11 +89,11 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
                 indexes.removeAll(conditionResult.getIndexes());
             }
         }
-        filterResult = WebFilterResult.of(indexes, calculatedHash);
+        filterResult = FilterResult.of(indexes, calculatedHash);
     }
 
-    private static WebFilterResult processConditions(WebRadioGroup element, WebRadioButtonCondition condition, String hash) {
-        WebFilterResult conditionResult = condition.process(element, hash);
+    private static FilterResult processConditions(WebRadioGroup element, WebRadioButtonCondition condition, String hash) {
+        FilterResult conditionResult = condition.process(element, hash);
         Deque<WebRadioButtonConditionHolder> childConditions = condition.getChildConditions();
         if (childConditions.isEmpty()) {
             return conditionResult;
@@ -104,9 +102,9 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
         Set<Integer> indexes = conditionResult.getIndexes();
         for (WebRadioButtonConditionHolder childConditionHolder : childConditions) {
             WebRadioButtonCondition childCondition = childConditionHolder.getCondition();
-            WebFilterResult childConditionResult = processConditions(element, childCondition, calculatedHash);
+            FilterResult childConditionResult = processConditions(element, childCondition, calculatedHash);
             calculatedHash = childConditionResult.getHash();
-            if (WebConditionGrouping.AND == childConditionHolder.getUsage()) {
+            if (ConditionGrouping.AND == childConditionHolder.getUsage()) {
                 Set<Integer> overallIndexes = new HashSet<>();
                 for (int childConditionIndex : childConditionResult.getIndexes()) {
                     if (indexes.contains(childConditionIndex)) {
@@ -115,11 +113,11 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
                 }
                 indexes = overallIndexes;
             }
-            if (WebConditionGrouping.OR == childConditionHolder.getUsage()) {
+            if (ConditionGrouping.OR == childConditionHolder.getUsage()) {
                 indexes.addAll(childConditionResult.getIndexes());
             }
         }
-        return WebFilterResult.of(indexes, calculatedHash);
+        return FilterResult.of(indexes, calculatedHash);
     }
 
 }

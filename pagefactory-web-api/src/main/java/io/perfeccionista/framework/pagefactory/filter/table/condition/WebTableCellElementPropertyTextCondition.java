@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.table.condition;
 
-import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -9,9 +9,12 @@ import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebElementPropertyAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyHolder;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetStringAttributeValueOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,12 +22,12 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_PROPERTY_NOT_FOUND;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebTableCellElementPropertyTextCondition implements WebTableRowCondition {
 
@@ -87,7 +90,7 @@ public class WebTableCellElementPropertyTextCondition implements WebTableRowCond
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebTable element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebTable element, @Nullable String hash) {
         WebTableFrame<WebBlock> webTableRegistry = element.getWebTableFrame();
 
         // Цепочка от корня страницы до WebTable column body
@@ -111,18 +114,23 @@ public class WebTableCellElementPropertyTextCondition implements WebTableRowCond
         }
 
         // Формируем операцию по извлечению значения свойства
-        JsOperation<String> jsOperation = elementToFilter
-                .getProperty(propertyName)
-                .orElseThrow(() -> WebElementPropertyNotFound.exception(ELEMENT_PROPERTY_NOT_FOUND.getMessage(propertyName))
-                        .addLastAttachmentEntry(WebElementAttachmentEntry.of(elementToFilter)))
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        Optional<WebElementPropertyHolder> optionalPropertyHolder = elementToFilter.getProperty(propertyName);
+        WebElementOperation<String> operation;
+        if (optionalPropertyHolder.isPresent()) {
+            WebElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
+            operation = propertyHolder.getOperation(elementToFilter);
+        } else {
+            WebGetStringAttributeValueOperationType operationType = WebGetStringAttributeValueOperationType.of(elementToFilter, propertyName);
+            operation = WebElementOperationHandler.of(elementToFilter, operationType, propertyName).getOperation();
+        }
+        operation.getLocatorChain()
                 .addFirstLocators(tableLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<String> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -132,7 +140,7 @@ public class WebTableCellElementPropertyTextCondition implements WebTableRowCond
         Set<Integer> matches = getMatches(propertyValues);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Map<Integer, String> textValues) {

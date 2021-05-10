@@ -2,6 +2,7 @@ package io.perfeccionista.framework.exceptions.messages;
 
 public enum PageFactoryWebSeleniumMessages implements Messages {
 
+
     WEB_DRIVER_NOT_AVAILABLE("WebDriver instance not available"),
     WEB_DRIVER_INITIALIZATION_FAILED("WebDriver initialization failed"),
     WEB_DRIVER_INSTANCE_NOT_STARTED("WebDriver instance not started"),
@@ -11,7 +12,9 @@ public enum PageFactoryWebSeleniumMessages implements Messages {
     WEB_DRIVER_CONNECTION_REFUSED("WebDriver's connection refused. Requested resource is not available"),
 
     WEB_ELEMENT_CLICK_INTERCEPTED("Click on element '%s' was intercepted by another element"),
-    WEB_ELEMENT_NOT_INTRACTABLE("Selenium WebElement '%s' is not intractable"),
+    ELEMENT_IS_NOT_INTRACTABLE("Element '%s' is not intractable"),
+
+    WEB_BROWSER_ENVIRONMENT_IS_STALE("WebBrowser environment is stale. Function 'executeOperation' is not loaded"),
     WEB_ELEMENT_IS_STALE("Element '%s' has stale WebElement reference"),
 
 

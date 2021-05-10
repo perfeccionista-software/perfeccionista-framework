@@ -5,14 +5,14 @@ import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumn;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTableColumns;
-import io.perfeccionista.framework.pagefactory.jsfunction.CheckIsDisplayed;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.ContinentNameWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountriesTableWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.HeaderWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.TotalCountriesWebBlock;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
 
 @Name("Page for Table context")
 @Name("Страница для контекста в таблицах")
@@ -27,7 +27,7 @@ public interface ContextTableElementsPage extends AbstractWebPage {
     //  и все будет ломаться
     @Name("Table of continents")
     @Name("Таблица континентов")
-    @WebLocator(id = "continents-table", invokeOnCall = {CheckIsDisplayed.class})
+    @WebLocator(id = "continents-table", invokeOnCall = JsCheckIsDisplayed.class)
     @WebLocator(component = THEAD_ROW, xpath = "./thead/tr")
     @WebLocator(component = TBODY_ROW, xpath = "./tbody/tr", single = false)
     @UseMappedWebTableColumns({

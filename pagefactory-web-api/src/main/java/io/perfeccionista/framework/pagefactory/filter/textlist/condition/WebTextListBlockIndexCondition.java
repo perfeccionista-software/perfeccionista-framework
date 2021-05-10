@@ -1,13 +1,14 @@
 package io.perfeccionista.framework.pagefactory.filter.textlist.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsPresentOperationType;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,9 +18,9 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebTextListBlockIndexCondition implements WebTextListBlockCondition {
 
@@ -51,13 +52,13 @@ public class WebTextListBlockIndexCondition implements WebTextListBlockCondition
     @Override
     public WebTextListBlockIndexCondition and(@NotNull WebTextListBlockCondition condition) {
         childConditions.add(WebTextListBlockConditionHolder.of(AND, condition));
-        return null;
+        return this;
     }
 
     @Override
     public WebTextListBlockIndexCondition or(@NotNull WebTextListBlockCondition condition) {
         childConditions.add(WebTextListBlockConditionHolder.of(OR, condition));
-        return null;
+        return this;
     }
 
     @Override
@@ -66,7 +67,7 @@ public class WebTextListBlockIndexCondition implements WebTextListBlockCondition
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebTextList element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebTextList element, @Nullable String hash) {
 
         // Формируем полную цепочку локаторов до WebTextListBlock
         WebLocatorChain listLocatorChain = element.getLocatorChain();
@@ -76,10 +77,12 @@ public class WebTextListBlockIndexCondition implements WebTextListBlockCondition
         listLocatorChain.addLastLocator(element.getRequiredLocator(LI));
 
         // Формируем и выполняем операцию
-        JsOperation<Boolean> jsOperation = JsOperation.of(listLocatorChain, new GetIsPresent());
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebGetIsPresentOperationType operationType = WebGetIsPresentOperationType.of(element);
+        WebElementOperation<Boolean> operation = WebElementOperation.of(listLocatorChain, operationType);
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -89,7 +92,7 @@ public class WebTextListBlockIndexCondition implements WebTextListBlockCondition
         Set<Integer> matches = getMatches(indexes);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Set<Integer> indexes) {

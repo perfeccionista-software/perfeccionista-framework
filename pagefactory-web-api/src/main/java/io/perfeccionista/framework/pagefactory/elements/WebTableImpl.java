@@ -2,30 +2,31 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebTableMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.table.WebTableMultipleIndexedResult;
+import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableRowCondition;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.rowIndex;
+import static io.perfeccionista.framework.Web.*;
 
 public class WebTableImpl extends AbstractWebChildElement implements WebTable {
 
@@ -62,6 +63,11 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
         return filterBuilder.build(this);
     }
 
+    @Override
+    public @NotNull WebTableFilter filter(@NotNull WebTableRowCondition filterCondition) {
+        return with(filterCondition).build(this);
+    }
+
     // Actions
 
     @Override
@@ -70,13 +76,13 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
         return this;
     }
 
+    // Asserts
+
     @Override
-    public WebTable executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(interactionName, other, args);
+    public WebTable should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
+        filter(allRows()).should(matcher);
         return this;
     }
-
-    // Asserts
 
     @Override
     public WebTable should(@NotNull WebTableMatcher matcher) {
@@ -97,49 +103,43 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
     }
 
     @Override
-    public WebTable should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebTable should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTable should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebTable should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTable should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebTable should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTable should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebTable should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTable should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebTable should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTable should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebTable should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTable should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebTable should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebTable should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -152,6 +152,12 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
 
     @Override
     public WebTable should(@NotNull WebElementPropertyAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebTable should(@NotNull WebElementStateAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }

@@ -5,6 +5,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementEmptyCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -22,6 +23,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockIndexCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -41,6 +43,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementTextValueCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -82,6 +85,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementPropertyValueCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -105,6 +109,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementLabelValueCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -137,6 +142,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementEnabledCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -161,6 +167,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementSelectedCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -180,6 +187,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementPresentCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -199,6 +207,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementDisplayedCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -223,6 +232,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementComponentPresentCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -242,6 +252,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListBlockElementComponentDisplayedCondition
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -265,6 +276,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListFilterMultipleConditions_AND
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -283,6 +295,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListFilterMultipleConditions_OR
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -301,6 +314,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListFilterMultipleConditions_ADD
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -319,6 +333,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListFilterMultipleConditions_SUBTRACT
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -337,6 +352,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListFilterMultipleConditions_WITH
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"
@@ -356,6 +372,7 @@
   @WebElement @WebList @Filter
   Сценарий: Положительный сценарий для WebListFilterMultipleConditions_WITHOUT
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"

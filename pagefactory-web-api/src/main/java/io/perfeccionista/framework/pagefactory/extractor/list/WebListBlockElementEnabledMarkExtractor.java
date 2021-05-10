@@ -1,40 +1,42 @@
 package io.perfeccionista.framework.pagefactory.extractor.list;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsEnabledOperationType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ENABLED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
 public class WebListBlockElementEnabledMarkExtractor implements WebListBlockValueExtractor<Boolean> {
 
     private final String elementPath;
-    private final WebChildElement elementFrame;
+    private final WebIsEnabledAvailable elementFrame;
 
     public WebListBlockElementEnabledMarkExtractor(@NotNull String elementPath) {
         this.elementPath = elementPath;
         this.elementFrame = null;
     }
 
-    public WebListBlockElementEnabledMarkExtractor(@NotNull IsEnabledAvailable elementFrame) {
+    public WebListBlockElementEnabledMarkExtractor(@NotNull WebIsEnabledAvailable elementFrame) {
         this.elementPath = null;
-        this.elementFrame = (WebChildElement) elementFrame;
+        this.elementFrame = elementFrame;
     }
 
     @Override
     public Map<Integer, Boolean> extractValues(@NotNull WebListFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         Set<Integer> indexes = filterResult.getIndexes();
         String hash = filterResult.getHash();
         WebList element = filter.getElement();
@@ -47,28 +49,29 @@ public class WebListBlockElementEnabledMarkExtractor implements WebListBlockValu
                 .updateLastLocator(locator -> locator.setIndexes(indexes));
 
         // Находим необходимый элемент, заданный по пути или по методу
-        WebChildElement elementToFilter;
+        WebIsEnabledAvailable elementToFilter;
         if (elementPath != null) {
             elementToFilter = element.getWebListFrame().getMappedBlockFrame()
                     .getElementRegistry()
-                    .getRequiredElementByPath(elementPath, WebChildElement.class);
+                    .getRequiredElementByPath(elementPath, WebIsEnabledAvailable.class);
         } else {
             elementToFilter = element.getWebListFrame().getMappedBlockFrame()
                     .getElementRegistry()
-                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod());
+                    .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod(), WebIsEnabledAvailable.class);
         }
 
         // Добавляем в цепочку локаторов операции локаторы до блока WebListBlock
-        JsOperation<Boolean> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(IS_ENABLED_METHOD, Boolean.class)
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        WebGetIsEnabledOperationType operationType = WebGetIsEnabledOperationType.of(elementToFilter);
+        WebElementOperation<Boolean> operation = WebElementOperationHandler.of(elementToFilter, operationType, ENABLED)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(listLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 

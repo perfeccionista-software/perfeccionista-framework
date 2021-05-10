@@ -13,6 +13,9 @@ public interface StringValue extends Value<String> {
     @Override
     @NotNull String get();
 
+    @Override
+    StringValue shouldMatch(String actual);
+
     StringValue transformExpected(@NotNull UnaryOperator<String> transformFunction);
 
     StringValue transformActual(@NotNull UnaryOperator<String> transformFunction);

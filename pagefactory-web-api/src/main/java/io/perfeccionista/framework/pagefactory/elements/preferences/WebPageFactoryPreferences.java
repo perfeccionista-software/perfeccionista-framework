@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements.preferences;
 
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
+import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTableRowImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -38,16 +39,19 @@ public interface WebPageFactoryPreferences {
     WebPageFactoryPreferences setWebMappedBlocks(@NotNull Map<Class<? extends WebChildElement>, Class<? extends WebBlock>> webMappedBlocks);
 
     // GetActions
-    @NotNull WebElementActionConfiguration getWebElementActionConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation);
-    WebPageFactoryPreferences setWebElementActionConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementActionConfiguration> webElementActionConfigurations);
+    @NotNull WebEndpointHandlerConfiguration getWebPageActionConfiguration(@NotNull Class<? extends WebPage> webPageImplementation);
+    WebPageFactoryPreferences setWebPageActionConfigurations(@NotNull Map<Class<? extends WebPage>, WebEndpointHandlerConfiguration> webPageActionConfigurations);
 
-    // GetInteractions
-    @NotNull WebElementInteractionConfiguration getWebElementInteractionConfiguration(@NotNull Class<? extends WebChildElementBase> webElementClass);
-    WebPageFactoryPreferences setWebElementInteractionConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementInteractionConfiguration> webElementInteractionConfigurations);
+    @NotNull WebEndpointHandlerConfiguration getWebElementActionConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation);
+    WebPageFactoryPreferences setWebElementActionConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebEndpointHandlerConfiguration> webElementActionConfigurations);
 
     // GetWebProperties
     @NotNull WebElementPropertyConfiguration getWebElementPropertyConfiguration(@NotNull Class<? extends WebChildElementBase> webElementClass);
     WebPageFactoryPreferences setWebElementPropertyConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementPropertyConfiguration> webElementPropertyConfigurations);
+
+    // GetWebStates
+    @NotNull WebElementStateConfiguration getWebElementStateConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation);
+    WebPageFactoryPreferences setWebElementStateConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementStateConfiguration> webElementStateConfigurations);
 
     // GetLocators
     @NotNull WebLocatorConfiguration getWebLocatorConfiguration(@NotNull Class<? extends WebChildElementBase> webElementClass);

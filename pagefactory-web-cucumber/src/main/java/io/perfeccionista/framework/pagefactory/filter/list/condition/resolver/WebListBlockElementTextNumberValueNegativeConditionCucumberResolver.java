@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter.list.condition.resolver;
 
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterConditions;
 import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
 import io.perfeccionista.framework.value.number.BigDecimalValueResolver;
 import io.perfeccionista.framework.value.number.IntegerValueResolver;
@@ -14,7 +13,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.perfeccionista.framework.pagefactory.filter.WebFilterConditions.notContainText;
+import static io.perfeccionista.framework.Web.*;
 import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("{webElement} does not contain number {numberValue}")
@@ -33,10 +32,10 @@ public class WebListBlockElementTextNumberValueNegativeConditionCucumberResolver
                 }
                 if (numberValue.contains(".")) {
                     NumberValue<BigDecimal> resolvedNumberValue = new BigDecimalValueResolver(environment, numberValue).getBigDecimalValue();
-                    return Optional.of(WebFilterConditions.notContainText(elementPath, resolvedNumberValue));
+                    return Optional.of(notContainText(elementPath, resolvedNumberValue));
                 }
                 NumberValue<Integer> resolvedNumberValue = new IntegerValueResolver(environment, numberValue).getIntegerValue();
-                return Optional.of(WebFilterConditions.notContainText(elementPath, resolvedNumberValue));
+                return Optional.of(notContainText(elementPath, resolvedNumberValue));
             }
         }
         return Optional.empty();

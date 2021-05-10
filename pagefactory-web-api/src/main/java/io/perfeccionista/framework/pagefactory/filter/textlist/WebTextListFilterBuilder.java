@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.textlist;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.filter.WebFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
 import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,19 +21,19 @@ public interface WebTextListFilterBuilder extends WebFilterBuilder<WebTextList, 
 
     class WebTextListBlockFilterResultGroupingHolder {
 
-        private final WebFilterResultGrouping usage;
+        private final FilterResultGrouping usage;
         private final WebTextListBlockCondition condition;
 
-        private WebTextListBlockFilterResultGroupingHolder(WebFilterResultGrouping usage, WebTextListBlockCondition condition) {
+        private WebTextListBlockFilterResultGroupingHolder(FilterResultGrouping usage, WebTextListBlockCondition condition) {
             this.usage = usage;
             this.condition = condition;
         }
 
-        public static WebTextListBlockFilterResultGroupingHolder of(WebFilterResultGrouping usage, WebTextListBlockCondition condition) {
+        public static WebTextListBlockFilterResultGroupingHolder of(FilterResultGrouping usage, WebTextListBlockCondition condition) {
             return new WebTextListBlockFilterResultGroupingHolder(usage, condition);
         }
 
-        public WebFilterResultGrouping getUsage() {
+        public FilterResultGrouping getUsage() {
             return usage;
         }
 

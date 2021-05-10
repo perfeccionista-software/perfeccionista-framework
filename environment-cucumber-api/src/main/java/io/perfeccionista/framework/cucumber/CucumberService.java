@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
 import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
 
@@ -107,7 +107,7 @@ public class CucumberService implements Service {
             return (CucumberServiceConfiguration) configuration;
         }
         throw IncorrectServiceConfiguration.exception(
-                CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
+                SERVICE_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
 }

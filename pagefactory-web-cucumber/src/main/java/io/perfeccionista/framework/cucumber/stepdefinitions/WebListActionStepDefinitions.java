@@ -6,17 +6,11 @@ import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextDropDownList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.elements.methods.CloseAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.OpenAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beClosed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beOpen;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveNotNullResults;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.block;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textBlock;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textBlockElement;
+import static io.perfeccionista.framework.Web.*;
 
 // TODO: Add step categories
 public class WebListActionStepDefinitions implements WebStepDefinitions {
@@ -27,9 +21,9 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
      */
     @Дано("пользователь открывает {webElement}")
     @Given("user opens {webElement}")
-    public void userOpensList(WebElementParameter<OpenAvailable> elementFinder) {
+    public void userOpensList(WebElementParameter<WebDropDownAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, OpenAvailable.class)
+                elementFinder.getElement(context, WebDropDownAvailable.class)
                         .open());
     }
 
@@ -39,9 +33,9 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
      */
     @Дано("пользователь закрывает {webElement}")
     @Given("user closes {webElement}")
-    public void userClosesList(WebElementParameter<CloseAvailable> elementFinder) {
+    public void userClosesList(WebElementParameter<WebDropDownAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, CloseAvailable.class)
+                elementFinder.getElement(context, WebDropDownAvailable.class)
                         .close());
     }
 
@@ -59,7 +53,7 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
                         .filter(itemFilter)
                         .extractOne(block())
                         .should(haveNotNullResults())
-                        .getNotNullValue()
+                        .getNotNullResult()
                         .scrollTo());
     }
 
@@ -79,7 +73,7 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
             element.filter(itemFilter)
                     .extractOne(textBlockElement())
                     .should(haveNotNullResults())
-                    .getNotNullValue()
+                    .getNotNullResult()
                     .click();
             element.close()
                     .should(beClosed());
@@ -100,7 +94,7 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
                         .filter(itemFilter)
                         .extractOne(textBlock())
                         .should(haveNotNullResults())
-                        .getNotNullValue()
+                        .getNotNullResult()
                         .scrollTo());
     }
 

@@ -5,7 +5,7 @@ import net.sf.cglib.proxy.CallbackFilter;
 
 import java.lang.reflect.Method;
 
-public class WebChildElementCallbackFilter  implements CallbackFilter {
+public class WebChildElementCallbackFilter implements CallbackFilter {
 
     private final Class<? extends WebChildElement> webChildElementImplementationClass;
 

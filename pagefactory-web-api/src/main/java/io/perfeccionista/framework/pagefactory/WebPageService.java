@@ -3,7 +3,7 @@ package io.perfeccionista.framework.pagefactory;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
 import io.perfeccionista.framework.exceptions.RegisterDuplicate;
-import io.perfeccionista.framework.exceptions.WebPageNotFound;
+import io.perfeccionista.framework.exceptions.PageNotFound;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
@@ -11,7 +11,6 @@ import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.util.AnnotationUtils;
-import org.junit.platform.commons.util.ClassFilter;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,12 +19,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NAME_DUPLICATE;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NOT_FOUND_BY_CLASS;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.PAGE_NOT_FOUND_BY_NAME;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NAME_DUPLICATE;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NOT_FOUND_BY_CLASS;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NOT_FOUND_BY_NAME;
 import static io.perfeccionista.framework.utils.ReflectionUtils.castObject;
-import static org.junit.platform.commons.util.ReflectionUtils.findAllClassesInPackage;
+import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
 
 /**
  * Сущность является пейджфактори, которая
@@ -49,10 +48,7 @@ public class WebPageService implements Service {
     public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
         this.environment = environment;
         this.configuration = validate(configuration);
-        this.configuration.getPageObjectPackages()
-                .forEach(pageObjectPackage -> findAllClassesInPackage(pageObjectPackage, ClassFilter.of(WebPage.class::isAssignableFrom))
-                .stream()
-                .map(webPageClass -> (Class<? extends WebPage>) webPageClass)
+        findAllClasses(this.configuration.getPageObjectPackages(), WebPage.class)
                 .forEach(webPageClass -> {
                     availablePageClasses.add(webPageClass);
                     List<Name> names = AnnotationUtils.findRepeatableAnnotations(webPageClass, Name.class);
@@ -62,7 +58,7 @@ public class WebPageService implements Service {
                         }
                         pageClassesByName.put(name, webPageClass);
                     });
-                }));
+                });
     }
 
     public WebPageServiceConfiguration getConfiguration() {
@@ -78,7 +74,7 @@ public class WebPageService implements Service {
 
     public <T extends WebPage> @NotNull T getPageInstanceByClass(@NotNull Class<T> pageClass) {
         if (!availablePageClasses.contains(pageClass)) {
-            throw WebPageNotFound.exception(PAGE_NOT_FOUND_BY_CLASS.getMessage(pageClass.getCanonicalName()));
+            throw PageNotFound.exception(PAGE_NOT_FOUND_BY_CLASS.getMessage(pageClass.getCanonicalName()));
         }
         if (!pageInstances.containsKey(pageClass)) {
             createInstance(pageClass);
@@ -89,7 +85,7 @@ public class WebPageService implements Service {
     public @NotNull WebPage getPageInstanceByName(@NotNull String pageName) {
         Class<? extends WebPage> pageClass = pageClassesByName.get(pageName);
         if (pageClass == null) {
-            throw WebPageNotFound.exception(PAGE_NOT_FOUND_BY_NAME.getMessage(pageName));
+            throw PageNotFound.exception(PAGE_NOT_FOUND_BY_NAME.getMessage(pageName));
         }
         if (!pageInstances.containsKey(pageClass)) {
             createInstance(pageClass);
@@ -102,7 +98,7 @@ public class WebPageService implements Service {
             return (WebPageServiceConfiguration) configuration;
         }
         throw IncorrectServiceConfiguration.exception(
-                CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
+                SERVICE_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
     protected void createInstance(@NotNull Class<? extends WebPage> pageClass) {

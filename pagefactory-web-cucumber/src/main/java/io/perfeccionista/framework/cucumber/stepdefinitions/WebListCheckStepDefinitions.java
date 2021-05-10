@@ -12,14 +12,11 @@ import io.perfeccionista.framework.cucumber.parameters.reference.SourceParameter
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsOpenAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beClosed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beOpen;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.beSorted;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
+import static io.perfeccionista.framework.Web.*;
 
 // TODO: Add step categories
 public class WebListCheckStepDefinitions implements WebStepDefinitions {
@@ -30,9 +27,9 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} раскрыт")
     @Given("element {webElement} is open")
-    public void listIsOpen(WebElementParameter<IsOpenAvailable> elementFinder) {
+    public void listIsOpen(WebElementParameter<WebDropDownAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, IsOpenAvailable.class)
+                elementFinder.getElement(context, WebDropDownAvailable.class)
                         .should(beOpen()));
     }
 
@@ -42,9 +39,9 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} закрыт")
     @Given("element {webElement} is closed")
-    public void listIsClosed(WebElementParameter<IsOpenAvailable> elementFinder) {
+    public void listIsClosed(WebElementParameter<WebDropDownAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, IsOpenAvailable.class)
+                elementFinder.getElement(context, WebDropDownAvailable.class)
                         .should(beClosed()));
     }
 

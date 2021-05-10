@@ -5,6 +5,7 @@
   @WebElement @WebTextInput
   Сценарий: Положительный сценарий WebTextInput
     * пользователь запускает браузер "${[config] browser}"
+    * пользователь устанавливает размер окна браузера "${[config] browser_width}" на "${[config] browser_height}"
     * пользователь вводит URL "${[config] start_url}" в браузер и нажимает 'Enter'
 
     * открывается страница "Домашняя страница"

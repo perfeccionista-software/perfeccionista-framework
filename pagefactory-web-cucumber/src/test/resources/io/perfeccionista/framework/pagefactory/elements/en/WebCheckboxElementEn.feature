@@ -5,6 +5,7 @@ Feature: WebCheckbox element feature
   @WebElement @WebCheckbox
   Scenario: WebCheckbox positive scenario
     * user launch browser "${[config] browser}"
+    * user set browser's window size "${[config] browser_width}" x "${[config] browser_height}"
     * user enters the URL "${[config] start_url}" in the browser and clicks 'Enter'
 
     * page "Home page" opens

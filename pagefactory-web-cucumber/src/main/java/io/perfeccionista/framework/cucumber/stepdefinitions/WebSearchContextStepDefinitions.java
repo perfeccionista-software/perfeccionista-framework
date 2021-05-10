@@ -4,18 +4,16 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebTableColumnParameter;
-import io.perfeccionista.framework.pagefactory.context.WebListBlockContextLimiter;
-import io.perfeccionista.framework.pagefactory.context.WebTableCellContextLimiter;
-import io.perfeccionista.framework.pagefactory.context.WebTableRowContextLimiter;
+import io.perfeccionista.framework.pagefactory.limiter.WebListBlockContextLimiter;
+import io.perfeccionista.framework.pagefactory.limiter.WebTableCellContextLimiter;
+import io.perfeccionista.framework.pagefactory.limiter.WebTableRowContextLimiter;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 
-import static io.perfeccionista.framework.pagefactory.context.WebContextLimiters.selectWebListBlocks;
-import static io.perfeccionista.framework.pagefactory.context.WebContextLimiters.selectWebTableCells;
-import static io.perfeccionista.framework.pagefactory.context.WebContextLimiters.selectWebTableRows;
+import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 
 // TODO: Wrap runLogic()

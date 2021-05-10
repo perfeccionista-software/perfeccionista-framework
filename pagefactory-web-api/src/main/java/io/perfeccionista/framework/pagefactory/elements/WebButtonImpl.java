@@ -1,30 +1,22 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
-import io.perfeccionista.framework.matcher.element.WebButtonMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
+import io.perfeccionista.framework.matcher.element.WebTextMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_TEXT_METHOD;
-
-public class WebButtonImpl extends AbstractWebChildElement implements WebButton {
+public class WebButtonImpl extends WebLinkImpl implements WebButton {
 
     // Actions
 
@@ -34,16 +26,10 @@ public class WebButtonImpl extends AbstractWebChildElement implements WebButton 
         return this;
     }
 
-    @Override
-    public WebButton executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(name, other, args);
-        return this;
-    }
-
     // Asserts
 
     @Override
-    public WebButton should(@NotNull WebButtonMatcher matcher) {
+    public WebButton should(@NotNull WebTextMatcher matcher) {
         matcher.check(this);
         return this;
     }
@@ -55,49 +41,43 @@ public class WebButtonImpl extends AbstractWebChildElement implements WebButton 
     }
 
     @Override
-    public WebButton should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebButton should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebButton should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebButton should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebButton should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebButton should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebButton should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebButton should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -115,7 +95,13 @@ public class WebButtonImpl extends AbstractWebChildElement implements WebButton 
     }
 
     @Override
-    public WebButton should(@NotNull GetTextAvailableMatcher matcher) {
+    public WebButton should(@NotNull WebElementStateAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebButton should(@NotNull WebGetTextAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
@@ -124,17 +110,8 @@ public class WebButtonImpl extends AbstractWebChildElement implements WebButton 
 
     @Override
     public WebButton click() {
-        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
-                () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
+        super.click();
         return this;
-    }
-
-    // Get Text
-
-    @Override
-    public @Nullable String getText() {
-        return runCheck(getEnvironment(), getterInvocation(GET_TEXT_METHOD, this),
-                () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
     }
 
     // HoverTo

@@ -1,10 +1,11 @@
 package io.perfeccionista.framework;
 
 import io.perfeccionista.framework.extension.PerfeccionistaExtension;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserService;
+import io.perfeccionista.framework.measurements.Dimensions2D;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserService;
 import io.perfeccionista.framework.pagefactory.configurations.PagefactoryWebSeleniumEnvironmentConfiguration;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -38,7 +39,7 @@ public abstract class AbstractWebSeleniumParallelTest {
                 .createDispatcher(browserName)                      // создаем диспетчер для вебдрайвера
                 .launch();                                          // запускаем браузер
         webBrowserDispatcher.window()
-                .setOuterWindowSize(1200, 1000);           // Возвращаем контекст страницы для активного браузера
+                .setOuterWindowSize(Dimensions2D.of(1200, 1000));           // Возвращаем контекст страницы для активного браузера
         webBrowserDispatcher.tabs()
                 .openUrl(startUrl);                                 // открываем ссылку
         return webBrowserDispatcher;

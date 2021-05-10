@@ -1,25 +1,25 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebImageMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: Сделать встроенную проверку того, что это изображение (по тегу src)
-// TODO: Добавить метод saveToFile(Path file); который сохранит изображение в указанный файл.
 public interface WebImage extends WebChildElement,
-        ClickAvailable {
+        WebClickAvailable {
+
+    boolean isImage();
 
     WebImage saveToFile(@NotNull String filePath);
 
@@ -27,33 +27,30 @@ public interface WebImage extends WebChildElement,
     @Override
     WebImage executeAction(@NotNull String name, Object... args);
 
-    @Override
-    WebImage executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
-
     // Asserts
     WebImage should(@NotNull WebImageMatcher matcher);
     @Override
     WebImage should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebImage should(@NotNull GetColorAvailableMatcher matcher);
+    WebImage should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebImage should(@NotNull GetDimensionsAvailableMatcher matcher);
+    WebImage should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebImage should(@NotNull GetLocationAvailableMatcher matcher);
+    WebImage should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebImage should(@NotNull GetScreenshotAvailableMatcher matcher);
+    WebImage should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebImage should(@NotNull IsDisplayedAvailableMatcher matcher);
+    WebImage should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebImage should(@NotNull IsInFocusAvailableMatcher matcher);
+    WebImage should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebImage should(@NotNull IsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebImage should(@NotNull IsPresentAvailableMatcher matcher);
+    WebImage should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
     WebImage should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
     WebImage should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    @Override
+    WebImage should(@NotNull WebElementStateAvailableMatcher matcher);
 
     // Click
     @Override

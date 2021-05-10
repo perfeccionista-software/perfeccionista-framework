@@ -14,24 +14,26 @@ public enum EnvironmentMessages implements Messages {
     DATA_SOURCE_REGISTER_BY_NAME_DUPLICATE("DataSource with name %s already registered"),
 
     FIXTURE_REGISTER_BY_NAME_DUPLICATE("Fixture with name %s already registered"),
+    REQUIRED_FIXTURE_RESULT_IS_NULL("Required fixture result is null but should not"),
 
     CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION("Can't create instance of RepeatPolicy class %s"),
 
     CHECK_ARGUMENT_MUST_NOT_BE_NULL("%s must not be null"),
     CHECK_ARRAY_MUST_NOT_BE_EMPTY("Array '%s' must not be empty"),
-    CHECK_CONFIGURATION_NOT_VALID("Configuration '%s' is not valid for '%s'"),
+    SERVICE_CONFIGURATION_NOT_VALID("Configuration '%s' is not valid for '%s'"),
 
 
     DEFAULT_DATA_SOURCE_NOT_DECLARED("Default DataSource is not configured for DataSourceService"),
     ENVIRONMENT_NOT_DECLARED("Environment is not configured for test class and test method"),
     ENVIRONMENT_NOT_INITIALIZED("Environment instance is not initialized for current thread"),
+    ENVIRONMENT_SERVICE_INITIALIZING_FAILED("Environment service %s failed to initialize"),
     FIXTURE_NOT_PARAMETRIZED("Fixture with name %s is not parametrized"),
 
-    SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE("WebSingleResult has more than one value after filter applying"),
-    SINGLE_RESULT_HAS_NO_VALUE("WebSingleResult has no value after filter applying"),
     NUMBER_VALUE_TO_BIG_DECIMAL_PARSING_FAILED("String '%s' parsing to BigDecimal failed"),
     NUMBER_VALUE_TO_DOUBLE_PARSING_FAILED("String '%s' parsing to Double failed"),
     NUMBER_VALUE_TO_INTEGER_PARSING_FAILED("String '%s' parsing to Integer failed"),
+    NUMBER_VALUE_NOT_MATCH("NumberValue does not match with actual value"),
+    OBJECT_VALUE_NOT_MATCH("ObjectValue does not match with actual value"),
     STRING_VALUE_DATA_CONVERTER_NAME_NOT_FOUND("StringValue '%s' processing failed. DataConverter name not found"),
     STRING_VALUE_DATA_CONVERTER_INCORRECT_KEY_TYPE("StringValue '%s' processing failed. Incorrect key type for DataConverter"),
     STRING_VALUE_DATA_SOURCE_INCORRECT_KEY_TYPE("StringValue '%s' processing failed. Incorrect key type for DataSource"),
@@ -39,6 +41,7 @@ public enum EnvironmentMessages implements Messages {
     STRING_VALUE_PROCESSING_FAILED("StringValue '%s' processing failed. Incorrect token"),
     STRING_VALUE_COMPOUND_DATA_SOURCE_KEY("StringValue '%s' processing failed. DataSource key must contain either a string or an object"),
     STRING_VALUE_COMPOUND_DATA_CONVERTER_KEY("StringValue '%s' processing failed. DataConverter key must contain either a string or an object"),
+    STRING_VALUE_NOT_MATCH("StringValue does not match with actual value"),
 
 
     // Not found exceptions

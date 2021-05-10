@@ -3,23 +3,23 @@ package io.perfeccionista.framework.pagefactory.pageobjects.blocks.list;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.WebTextBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebText;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
 public interface ContinentBlock extends WebBlock {
 
     @Name("Continent name")
     @Name("Название континента")
     @WebLocator(xpath = "self::node()//span[@itemid = 'continent-name']")
-    WebTextBlock continentName();
+    WebText continentName();
 
     @Name("Total countries")
     @Name("Всего стран")
     @WebLocator(xpath = "self::node()//span[@itemid = 'continent-total']")
-    WebTextBlock totalCountries();
+    WebText totalCountries();
 
     @Name("List of countries")
     @Name("Список стран")

@@ -2,24 +2,24 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.color.Color;
+import io.perfeccionista.framework.exceptions.ElementPropertyNotFound.ElementPropertyNotFoundException;
+import io.perfeccionista.framework.exceptions.SingleResultConversion.SingleResultConversionException;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
-import io.perfeccionista.framework.exceptions.WebElementIsDisplayed.WebElementIsDisplayedAssertionError;
-import io.perfeccionista.framework.exceptions.WebElementIsPresent.WebElementIsPresentAssertionError;
+import io.perfeccionista.framework.exceptions.ElementIsDisplayed.ElementIsDisplayedAssertionError;
+import io.perfeccionista.framework.exceptions.ElementIsPresent.ElementIsPresentAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocationAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
-import io.perfeccionista.framework.exceptions.WebElementPropertyNotFound.WebElementPropertyNotFoundException;
 import io.perfeccionista.framework.exceptions.WebElementSize.WebElementSizeAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.context.base.WebPageContext;
-import io.perfeccionista.framework.measurements.Dimensions;
-import io.perfeccionista.framework.measurements.Location;
-import io.perfeccionista.framework.measurements.Point;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
+import io.perfeccionista.framework.measurements.Dimensions2D;
+import io.perfeccionista.framework.measurements.Point2D;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.ElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -29,37 +29,19 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beInFocus;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.bePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveColor;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveDimensions;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLocation;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeInFocus;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveColor;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveDimensions;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveLocation;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHavePropertyValue;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.haveSize;
-import static io.perfeccionista.framework.matcher.WebMultipleResultAssertions.notHaveSize;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ON_THE_SCREEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.ROOT;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_COLOR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_DIMENSIONS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LOCATION_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_PROPERTY_VALUE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_SCREENSHOT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.HOVER_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_COMPONENT_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_IN_FOCUS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SCROLL_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.element;
-import static io.perfeccionista.framework.pagefactory.filter.WebFilters.emptyWebRadioButtonFilter;
+import static io.perfeccionista.framework.Web.*;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ELEMENT_BOUNDS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_ON_THE_SCREEN_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_COLOR_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_SCREENSHOT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HOVER_TO_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_COMPONENT_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_COMPONENT_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_IN_FOCUS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThan;
 import static io.perfeccionista.framework.value.Values.stringEquals;
@@ -88,19 +70,17 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(radioGroup.getWebBrowserDispatcher()),
                 () -> assertNotNull(radioGroup.getOptionalLocator(ROOT)),
                 // WebChildElement
-                () -> assertNotNull(radioGroup.getActionImplementation(GET_COLOR_METHOD, Color.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(GET_DIMENSIONS_METHOD, Dimensions.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(GET_LOCATION_METHOD, Location.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(GET_PROPERTY_VALUE_METHOD, String.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(GET_SCREENSHOT_METHOD, Screenshot.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(HOVER_TO_METHOD, Void.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(IS_DISPLAYED_METHOD, Boolean.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(IS_IN_FOCUS_METHOD, Boolean.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(IS_PRESENT_METHOD, Boolean.class)),
-                () -> assertNotNull(radioGroup.getActionImplementation(SCROLL_TO_METHOD, Void.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(GET_COLOR_METHOD, Color.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(GET_ELEMENT_BOUNDS_METHOD, ElementBounds.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(GET_SCREENSHOT_METHOD, Screenshot.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(HOVER_TO_METHOD, Void.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(IS_COMPONENT_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(IS_COMPONENT_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(IS_DISPLAYED_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(IS_IN_FOCUS_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(IS_ON_THE_SCREEN_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(IS_PRESENT_METHOD, Boolean.class)),
+                () -> assertNotNull(radioGroup.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("radioGroup", elementIdentifier.getElementMethod().getName()),
                 () -> assertEquals("radioGroup", elementIdentifier.getLastUsedName()),
@@ -132,8 +112,8 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                 .should(notBeInFocus())
                 .scrollTo()
                 .hoverTo(true)
-                .should(haveDimensions(Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d)))
-                .should(haveLocation(Location.relative(330d, 713.4d).setInaccuracy(0.2d)))
+                .should(haveDimensions(Dimensions2D.of(825.0d, 24.0d).setInaccuracy(0.2d)))
+                .should(haveScreenLocation(Point2D.of(330d, 713.4d).setInaccuracy(0.2d)))
                 .should(haveColor("border-color", Color.of(33, 37, 41, 1.0d)))
                 .should(haveSize(3))
                 .should(haveSize(intEquals(3)))
@@ -143,11 +123,11 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertTrue(radioGroup.isPresent()),
                 () -> assertTrue(radioGroup.isDisplayed()),
                 () -> assertFalse(radioGroup.isInFocus()),
-                () -> assertEquals(Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT)),
-                () -> assertEquals(Location.absolute(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getLocation(ROOT)),
-                () -> assertEquals(Color.of(33, 37, 41, 1.0d), radioGroup.getColor(ROOT, "border-color")),
+                () -> assertEquals(Dimensions2D.of(825.0d, 24.0d).setInaccuracy(0.2d), radioGroup.getElementBounds().getDimensions()),
+                () -> assertEquals(Point2D.of(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getElementBounds().getScreenLocation()),
+                () -> assertEquals(Color.of(33, 37, 41, 1.0d), radioGroup.getColor("border-color")),
                 () -> assertEquals(3, radioGroup.filter(emptyWebRadioButtonFilter()).extractAll(element()).getSize()),
-                () -> assertEquals(Point.of(412.5d, 12d).setInaccuracy(0.2d), radioGroup.getDimensions(ROOT).getCenter())
+                () -> assertEquals(Point2D.of(742.5d, 725.4d).setInaccuracy(0.2d), radioGroup.getElementBounds().getCenter())
         );
     }
 
@@ -166,32 +146,32 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
         environment.getService(TimeoutsService.class)
                 .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
         assertAll(
-                () -> assertThrows(WebElementIsPresentAssertionError.class,
+                () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> radioGroup.should(notBePresent())),
-                () -> assertThrows(WebElementIsDisplayedAssertionError.class,
+                () -> assertThrows(ElementIsDisplayedAssertionError.class,
                         () -> radioGroup.should(notBeDisplayed())),
                 () -> assertThrows(WebElementNotInFocusAssertionError.class,
                         () -> radioGroup.should(beInFocus())),
                 () -> {
-                    Dimensions elementDimensions = Dimensions.of(825.0d, 24.0d).setInaccuracy(0.2d);
+                    Dimensions2D elementDimensions = Dimensions2D.of(825.0d, 24.0d).setInaccuracy(0.2d);
                     assertThrows(WebElementDimensionsAssertionError.class,
-                            () -> radioGroup.should(notHaveDimensions(ROOT, elementDimensions)));
+                            () -> radioGroup.should(notHaveDimensions(elementDimensions)));
                 },
                 () -> {
-                    Location elementLocation = Location.relative(330d, 713.4d).setInaccuracy(0.2d);
+                    Point2D elementLocation = Point2D.of(330d, 713.4d).setInaccuracy(0.2d);
                     assertAll(
                             () -> assertThrows(WebElementLocationAssertionError.class,
-                                    () -> radioGroup.should(haveLocation(ROOT, elementLocation.offset(15d, 1d)))),
+                                    () -> radioGroup.should(haveScreenLocation(elementLocation.offset(15d, 1d)))),
                             () -> assertThrows(WebElementLocationAssertionError.class,
-                                    () -> radioGroup.should(notHaveLocation(ROOT, elementLocation)))
+                                    () -> radioGroup.should(notHaveScreenLocation(elementLocation)))
                     );
                 },
                 () -> {
                     Color elementColor = Color.of(33, 37, 41, 1.0d);
                     assertThrows(WebElementColorAssertionError.class,
-                            () -> radioGroup.should(notHaveColor(ROOT, "border-color", elementColor)));
+                            () -> radioGroup.should(notHaveColor("border-color", elementColor)));
                 },
-                () -> assertThrows(WebElementPropertyNotFoundException.class,
+                () -> assertThrows(SingleResultConversionException.class,
                         () -> radioGroup.should(notHavePropertyValue("unknown property", stringEquals("Some value")))),
                 () -> assertThrows(WebElementSizeAssertionError.class,
                         () -> radioGroup.should(haveSize(intEquals(4))))

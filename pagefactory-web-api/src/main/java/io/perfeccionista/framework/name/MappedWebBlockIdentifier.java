@@ -1,8 +1,7 @@
 package io.perfeccionista.framework.name;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.perfeccionista.framework.exceptions.MappedWebBlockIdentifierCall;
-import io.perfeccionista.framework.exceptions.WebElementNameNotFound;
+import io.perfeccionista.framework.exceptions.ElementNameNotFound;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +14,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.MAPPED_WEB_BLOCK_CALLED_BY_METHOD;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_ELEMENT_NAME_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NAME_NOT_FOUND;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class MappedWebBlockIdentifier implements WebElementIdentifier {
@@ -48,7 +46,7 @@ public class MappedWebBlockIdentifier implements WebElementIdentifier {
 
     @Override
     public @NotNull Method getElementMethod() {
-        throw MappedWebBlockIdentifierCall.exception(MAPPED_WEB_BLOCK_CALLED_BY_METHOD.getMessage());
+        throw new UnsupportedOperationException("MappedBlock can't be called by method because it's declared by annotation");
     }
 
     @Override
@@ -64,7 +62,7 @@ public class MappedWebBlockIdentifier implements WebElementIdentifier {
     @Override
     public boolean isNameDeprecated(@NotNull String name) {
         if (!names.containsKey(name)) {
-            throw WebElementNameNotFound.exception(WEB_ELEMENT_NAME_NOT_FOUND.getMessage(name));
+            throw ElementNameNotFound.exception(ELEMENT_NAME_NOT_FOUND.getMessage(name));
         }
         return names.get(name);
     }
@@ -93,19 +91,21 @@ public class MappedWebBlockIdentifier implements WebElementIdentifier {
 
     @Override
     public MappedWebBlockIdentifier addElementsByMethodName(@NotNull Map<String, WebChildElement> elementsByMethodName,
-                                                             @NotNull WebChildElement webChildElement) {
+                                                            @NotNull WebChildElement webChildElement) {
+        // Этот элемент задан как класс, а не как метод, поэтому у него нет имени метода
         return this;
     }
 
     @Override
     public MappedWebBlockIdentifier addElementsByMethod(@NotNull Map<Method, WebChildElement> elementsByMethod,
-                                                         @NotNull WebChildElement webChildElement) {
+                                                        @NotNull WebChildElement webChildElement) {
+        // Этот элемент задан как класс, а не как метод, поэтому у него нет метода
         return this;
     }
 
     @Override
     public MappedWebBlockIdentifier addElementsByName(@NotNull Map<String, WebChildElement> elementsByName,
-                                                       @NotNull WebChildElement webChildElement) {
+                                                      @NotNull WebChildElement webChildElement) {
         names.forEach((name, deprecated) -> elementsByName.put(name, webChildElement));
         return this;
     }

@@ -13,39 +13,13 @@ import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementPropertyParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementComponentParameter;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsSelectedAvailable;
 
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisabled;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beEnabled;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beInFocus;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.bePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.beSelected;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.componentBeDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.componentBePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.componentNotBeDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.componentNotBePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveColor;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveDimensions;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLabel;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveLocation;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.havePropertyValue;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.haveText;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.looksLike;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeDisplayed;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeInFocus;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBePresent;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notBeSelected;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveColor;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveDimensions;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveLabel;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveLocation;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHavePropertyValue;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notHaveText;
-import static io.perfeccionista.framework.matcher.WebElementAssertions.notLooksLike;
+import static io.perfeccionista.framework.Web.*;
+
 
 // TODO: Написать в доке, что не все методы доступны для использования во множественном контексте
 // TODO: Add to exception context limiter information
@@ -108,10 +82,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} содержит {stringValue}")
     @Given("element {webElement} contains {stringValue}")
-    public void elementContainsText(WebElementParameter<GetTextAvailable> elementFinder,
+    public void elementContainsText(WebElementParameter<WebGetTextAvailable> elementFinder,
                                     ValueStringParameter expectedText) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetTextAvailable.class)
+                elementFinder.getElement(context, WebGetTextAvailable.class)
                         .should(haveText(expectedText.getValue())));
     }
 
@@ -122,10 +96,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} не содержит {stringValue}")
     @Given("element {webElement} does not contain {stringValue}")
-    public void elementDoesNotContainText(WebElementParameter<GetTextAvailable> elementFinder,
+    public void elementDoesNotContainText(WebElementParameter<WebGetTextAvailable> elementFinder,
                                           ValueStringParameter expectedText) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetTextAvailable.class)
+                elementFinder.getElement(context, WebGetTextAvailable.class)
                         .should(notHaveText(expectedText.getValue())));
     }
 
@@ -136,10 +110,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} содержит число {numberValue}")
     @Given("element {webElement} contains number {numberValue}")
-    public void elementContainsNumber(WebElementParameter<GetTextAvailable> elementFinder,
+    public void elementContainsNumber(WebElementParameter<WebGetTextAvailable> elementFinder,
                                       ValueNumberParameter expectedNumber) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetTextAvailable.class)
+                elementFinder.getElement(context, WebGetTextAvailable.class)
                         .should(haveText(expectedNumber.getValue())));
     }
 
@@ -150,10 +124,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} не содержит число {numberValue}")
     @Given("element {webElement} does not contain number {numberValue}")
-    public void elementDoesNotContainNumber(WebElementParameter<GetTextAvailable> elementFinder,
+    public void elementDoesNotContainNumber(WebElementParameter<WebGetTextAvailable> elementFinder,
                                             ValueNumberParameter expectedNumber) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetTextAvailable.class)
+                elementFinder.getElement(context, WebGetTextAvailable.class)
                         .should(notHaveText(expectedNumber.getValue())));
     }
 
@@ -227,7 +201,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                    LocationParameter expectedLocation) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(haveLocation(expectedLocation.getLocation())));
+                        .should(haveScreenLocation(expectedLocation.getLocation())));
     }
 
     /**
@@ -241,7 +215,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                            LocationParameter expectedLocation) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(notHaveLocation(expectedLocation.getLocation())));
+                        .should(notHaveScreenLocation(expectedLocation.getLocation())));
     }
 
 
@@ -251,9 +225,9 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} доступен")
     @Given("element {webElement} is enabled")
-    public void elementIsEnabled(WebElementParameter<IsEnabledAvailable> elementFinder) {
+    public void elementIsEnabled(WebElementParameter<WebIsEnabledAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, IsEnabledAvailable.class)
+                elementFinder.getElement(context, WebIsEnabledAvailable.class)
                         .should(beEnabled()));
     }
 
@@ -263,9 +237,9 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} недоступен")
     @Given("element {webElement} is disabled")
-    public void elementIsDisabled(WebElementParameter<IsEnabledAvailable> elementFinder) {
+    public void elementIsDisabled(WebElementParameter<WebIsEnabledAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, IsEnabledAvailable.class)
+                elementFinder.getElement(context, WebIsEnabledAvailable.class)
                         .should(beDisabled()));
     }
 
@@ -275,9 +249,9 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} выделен")
     @Given("element {webElement} is selected")
-    public void elementIsSelected(WebElementParameter<IsSelectedAvailable> elementFinder) {
+    public void elementIsSelected(WebElementParameter<WebIsSelectedAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, IsSelectedAvailable.class)
+                elementFinder.getElement(context, WebIsSelectedAvailable.class)
                         .should(beSelected()));
     }
 
@@ -287,9 +261,9 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("элемент {webElement} не выделен")
     @Given("element {webElement} is not selected")
-    public void elementIsNotSelected(WebElementParameter<IsSelectedAvailable> elementFinder) {
+    public void elementIsNotSelected(WebElementParameter<WebIsSelectedAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, IsSelectedAvailable.class)
+                elementFinder.getElement(context, WebIsSelectedAvailable.class)
                         .should(notBeSelected()));
     }
 
@@ -324,10 +298,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("лейбл элемента {webElement} содержит {stringValue}")
     @Given("label of the element {webElement} contains {stringValue}")
-    public void labelOfTheElementContainText(WebElementParameter<GetLabelAvailable> elementFinder,
+    public void labelOfTheElementContainText(WebElementParameter<WebGetLabelAvailable> elementFinder,
                                              ValueStringParameter expectedText) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetLabelAvailable.class)
+                elementFinder.getElement(context, WebGetLabelAvailable.class)
                         .should(haveLabel(expectedText.getValue())));
     }
 
@@ -338,10 +312,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("лейбл элемента {webElement} не содержит {stringValue}")
     @Given("label of the element {webElement} does not contain {stringValue}")
-    public void labelOfTheElementDoesNotContainText(WebElementParameter<GetLabelAvailable> elementFinder,
+    public void labelOfTheElementDoesNotContainText(WebElementParameter<WebGetLabelAvailable> elementFinder,
                                                     ValueStringParameter expectedText) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetLabelAvailable.class)
+                elementFinder.getElement(context, WebGetLabelAvailable.class)
                         .should(notHaveLabel(expectedText.getValue())));
     }
 
@@ -352,10 +326,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("лейбл элемента {webElement} содержит число {numberValue}")
     @Given("label of the element {webElement} contains number {numberValue}")
-    public void labelOfTheElementContainNumber(WebElementParameter<GetLabelAvailable> elementFinder,
+    public void labelOfTheElementContainNumber(WebElementParameter<WebGetLabelAvailable> elementFinder,
                                               ValueNumberParameter expectedNumber) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetLabelAvailable.class)
+                elementFinder.getElement(context, WebGetLabelAvailable.class)
                         .should(haveLabel(expectedNumber.getValue())));
     }
 
@@ -366,10 +340,10 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
      */
     @Дано("лейбл элемента {webElement} не содержит число {numberValue}")
     @Given("label of the element {webElement} does not contain number {numberValue}")
-    public void labelOfTheElementDoesNotContainNumber(WebElementParameter<GetLabelAvailable> elementFinder,
+    public void labelOfTheElementDoesNotContainNumber(WebElementParameter<WebGetLabelAvailable> elementFinder,
                                                       ValueNumberParameter expectedNumber) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, GetLabelAvailable.class)
+                elementFinder.getElement(context, WebGetLabelAvailable.class)
                         .should(notHaveLabel(expectedNumber.getValue())));
     }
 
@@ -581,7 +555,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                             LocationParameter expectedLocation) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(haveLocation(elementComponent.getRaw(), expectedLocation.getLocation())));
+                        .should(haveScreenLocation(elementComponent.getRaw(), expectedLocation.getLocation())));
     }
 
 
@@ -598,7 +572,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                                     LocationParameter expectedLocation) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(notHaveLocation(elementComponent.getRaw(), expectedLocation.getLocation())));
+                        .should(notHaveScreenLocation(elementComponent.getRaw(), expectedLocation.getLocation())));
     }
 
     /**

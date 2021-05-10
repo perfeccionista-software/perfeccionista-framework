@@ -3,7 +3,7 @@ package io.perfeccionista.framework.name;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.exceptions.WebElementNameNotFound;
+import io.perfeccionista.framework.exceptions.ElementNameNotFound;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_ELEMENT_NAME_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NAME_NOT_FOUND;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebChildElementIdentifier implements WebElementIdentifier {
@@ -55,7 +55,7 @@ public class WebChildElementIdentifier implements WebElementIdentifier {
     @Override
     public boolean isNameDeprecated(@NotNull String name) {
         if (!names.containsKey(name)) {
-            throw WebElementNameNotFound.exception(WEB_ELEMENT_NAME_NOT_FOUND.getMessage(name));
+            throw ElementNameNotFound.exception(ELEMENT_NAME_NOT_FOUND.getMessage(name));
         }
         return names.get(name);
     }

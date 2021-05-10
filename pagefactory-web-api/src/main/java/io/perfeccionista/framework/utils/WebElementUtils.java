@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.utils;
 
-import io.perfeccionista.framework.exceptions.WebElementCast;
-import io.perfeccionista.framework.exceptions.WebElementNotFound;
+import io.perfeccionista.framework.exceptions.ElementCast;
+import io.perfeccionista.framework.exceptions.ElementNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -10,7 +10,6 @@ import io.perfeccionista.framework.pagefactory.factory.proxy.frame.WebChildEleme
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
@@ -18,8 +17,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.CANT_CAST_ELEMENT;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_FOUND;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_CANNOT_BE_CASTED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_FOUND;
 import static io.perfeccionista.framework.utils.ReflectionUtils.Order.DESC;
 import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
 import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
@@ -35,7 +34,7 @@ public class WebElementUtils {
         if (isSubtypeOf(elementToCast, castType)) {
             return castType.cast(elementToCast);
         }
-        throw WebElementCast.exception(CANT_CAST_ELEMENT.getMessage(castType.getCanonicalName()))
+        throw ElementCast.exception(ELEMENT_CANNOT_BE_CASTED.getMessage(castType.getCanonicalName()))
                 .addFirstAttachmentEntry(WebElementAttachmentEntry.of(elementToCast));
     }
 
@@ -43,7 +42,7 @@ public class WebElementUtils {
         if (isSubtypeOf(elementToCast, WebChildElementFrame.class)) {
             return WebChildElementFrame.class.cast(elementToCast);
         }
-        throw WebElementCast.exception(CANT_CAST_ELEMENT.getMessage(WebChildElementFrame.class.getCanonicalName()))
+        throw ElementCast.exception(ELEMENT_CANNOT_BE_CASTED.getMessage(WebChildElementFrame.class.getCanonicalName()))
                 .addFirstAttachmentEntry(WebElementAttachmentEntry.of(elementToCast));
     }
 
@@ -54,7 +53,7 @@ public class WebElementUtils {
                 .filter(method -> methodName.equals(method.getName()))
                 .filter(method -> methodReturnType.isAssignableFrom(method.getReturnType()))
                 .findFirst()
-                .orElseThrow(() -> WebElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(methodName)));
+                .orElseThrow(() -> ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(methodName)));
     }
 
     public static List<Method> getWebChildElementMethods(@NotNull Class<? extends WebParentElement> processedClass) {

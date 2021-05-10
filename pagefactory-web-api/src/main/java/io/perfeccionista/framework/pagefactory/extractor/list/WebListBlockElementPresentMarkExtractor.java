@@ -1,21 +1,24 @@
 package io.perfeccionista.framework.pagefactory.extractor.list;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsPresentAvailable;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementIsPresentOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsPresentOperationType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PRESENTED;
 
 public class WebListBlockElementPresentMarkExtractor implements WebListBlockValueExtractor<Boolean> {
 
@@ -27,14 +30,14 @@ public class WebListBlockElementPresentMarkExtractor implements WebListBlockValu
         this.elementFrame = null;
     }
 
-    public WebListBlockElementPresentMarkExtractor(@NotNull IsPresentAvailable elementFrame) {
+    public WebListBlockElementPresentMarkExtractor(@NotNull WebIsPresentAvailable elementFrame) {
         this.elementPath = null;
         this.elementFrame = (WebChildElement) elementFrame;
     }
 
     @Override
     public Map<Integer, Boolean> extractValues(@NotNull WebListFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         Set<Integer> indexes = filterResult.getIndexes();
         String hash = filterResult.getHash();
         WebList element = filter.getElement();
@@ -59,16 +62,17 @@ public class WebListBlockElementPresentMarkExtractor implements WebListBlockValu
         }
 
         // Добавляем в цепочку локаторов операции локаторы до блока WebListBlock
-        JsOperation<Boolean> jsOperation = elementToFilter
-                .getJsOperationActionImplementation(IS_PRESENT_METHOD, Boolean.class)
-                .getJsOperation(elementToFilter);
-        jsOperation.getLocatorChain()
+        WebGetIsPresentOperationType isPresentOperationType = WebGetIsPresentOperationType.of(elementToFilter);
+        WebElementOperation<Boolean> operation = WebElementIsPresentOperationHandler.of(elementToFilter, isPresentOperationType, PRESENTED)
+                .getOperation();
+        operation.getLocatorChain()
                 .addFirstLocators(listLocatorChain);
 
         // Выполняем операцию
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 

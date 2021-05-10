@@ -1,36 +1,39 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsEnabledAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsEnabledAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextInputMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.keys.KeysEventChain;
+import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
+import io.perfeccionista.framework.pagefactory.operation.type.WebClearOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsEnabledOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetLabelOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebReplaceTextOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebSendKeyEventsOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebTypeTextOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.CLICK;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLEAR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_LABEL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.GET_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.IS_ENABLED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SEND_KEYS_EVENTS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.actions.WebElementActionNames.SEND_KEYS_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 
 public class WebTextInputImpl extends AbstractWebChildElement implements WebTextInput {
 
@@ -39,12 +42,6 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public WebTextInput executeAction(@NotNull String actionName, Object... args) {
         super.executeAction(actionName, args);
-        return this;
-    }
-
-    @Override
-    public WebTextInput executeInteraction(@NotNull String interactionName, @NotNull WebChildElement other, Object... args) {
-        super.executeInteraction(interactionName, other, args);
         return this;
     }
 
@@ -63,49 +60,43 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     }
 
     @Override
-    public WebTextInput should(@NotNull GetColorAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull GetDimensionsAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull GetLocationAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull GetScreenshotAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull IsDisplayedAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull IsInFocusAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull IsOnTheScreenAvailableMatcher matcher) {
-        super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebTextInput should(@NotNull IsPresentAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -123,29 +114,26 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     }
 
     @Override
-    public WebTextInput should(@NotNull GetLabelAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebElementStateAvailableMatcher matcher) {
+        super.should(matcher);
+        return this;
+    }
+
+    @Override
+    public WebTextInput should(@NotNull WebGetLabelAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull GetTextAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebGetTextAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebTextInput should(@NotNull IsEnabledAvailableMatcher matcher) {
+    public WebTextInput should(@NotNull WebIsEnabledAvailableMatcher matcher) {
         matcher.check(this);
-        return this;
-    }
-
-    // Clear
-
-    @Override
-    public WebTextInput clear() {
-        runCheck(getEnvironment(), actionInvocation(CLEAR_METHOD, this),
-                () -> getActionImplementation(CLEAR_METHOD, Void.class).execute(this));
         return this;
     }
 
@@ -153,8 +141,9 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public WebTextInput click() {
-        runCheck(getEnvironment(), actionInvocation(CLICK_METHOD, this),
-                () -> getActionImplementation(CLICK_METHOD, Void.class).execute(this, CLICK));
+        WebClickOperationType operationType = WebClickOperationType.of(this);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
 
@@ -162,16 +151,18 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
 
     @Override
     public @Nullable String getLabel() {
-        return runCheck(getEnvironment(), getterInvocation(GET_LABEL_METHOD, this),
-                () -> getActionImplementation(GET_LABEL_METHOD, String.class).execute(this));
+        WebGetLabelOperationType operationType = WebGetLabelOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
     // Get Text
 
     @Override
     public @Nullable String getText() {
-        return runCheck(getEnvironment(), getterInvocation(GET_TEXT_METHOD, this),
-                () -> getActionImplementation(GET_TEXT_METHOD, String.class).execute(this));
+        WebGetTextOperationType operationType = WebGetTextOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 
     // HoverTo
@@ -182,12 +173,47 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
         return this;
     }
 
+    // InputText
+
+    @Override
+    public WebTextInput clear() {
+        WebClearOperationType operationType = WebClearOperationType.of(this);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
+    @Override
+    public WebTextInput typeText(@NotNull String text) {
+        WebTypeTextOperationType operationType = WebTypeTextOperationType.of(this, text);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
+    @Override
+    public WebTextInput replaceText(@NotNull String text) {
+        WebReplaceTextOperationType operationType = WebReplaceTextOperationType.of(this, text);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
+    @Override
+    public WebTextInput sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
+        WebSendKeyEventsOperationType operationType = WebSendKeyEventsOperationType.of(this, keyEvents);
+        runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
     // IsEnabled
 
     @Override
     public boolean isEnabled() {
-        return runCheck(getEnvironment(), getterInvocation(IS_ENABLED_METHOD, this),
-                () -> getActionImplementation(IS_ENABLED_METHOD, Boolean.class).execute(this));
+        WebGetIsEnabledOperationType operationType = WebGetIsEnabledOperationType.of(this);
+        return runCheck(getEnvironment(), operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, ENABLED).executeGetter());
     }
 
     // ScrollTo
@@ -195,22 +221,6 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public WebTextInput scrollTo() {
         super.scrollTo();
-        return this;
-    }
-
-    // SendKeys
-
-    @Override
-    public WebTextInput sendKeys(@NotNull String keys) {
-        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_METHOD, this, keys),
-                () -> getActionImplementation(SEND_KEYS_METHOD, Void.class).execute(this, keys));
-        return this;
-    }
-
-    @Override
-    public WebTextInput sendKeys(@NotNull KeysEventChain keyEvents) {
-        runCheck(getEnvironment(), actionInvocation(SEND_KEYS_EVENTS_METHOD, this, keyEvents),
-                () -> getActionImplementation(SEND_KEYS_EVENTS_METHOD, Void.class).execute(this, keyEvents));
         return this;
     }
 

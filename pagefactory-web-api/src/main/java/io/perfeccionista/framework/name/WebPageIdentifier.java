@@ -33,6 +33,8 @@ public class WebPageIdentifier implements JsonSerializable {
         Set<String> urls = new HashSet<>();
 
         // TODO: Implement
+        //  вытащить имена и сохранить
+        //  вытащить ссылки и сохранить
 
         return new WebPageIdentifier(names, urls);
     }

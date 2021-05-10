@@ -2,11 +2,13 @@ package io.perfeccionista.framework.pagefactory.jsfunction;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.pagefactory.browser.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
+import io.perfeccionista.framework.pagefactory.elements.ElementBounds;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.measurements.Dimensions;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
+import io.perfeccionista.framework.pagefactory.operation.handler.JsGetElementBounds;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumClick;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.junit.jupiter.api.Test;
 
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
@@ -22,18 +24,18 @@ class GetDimensionsTest extends AbstractWebSeleniumParallelTest {
         runCheck(environment, () -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
-            JsOperation<Void> clickOperation = JsOperation.of(linkLocatorChain, new MouseClickLeftButton());
+            WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
-                    .executeOperation(clickOperation);
+                    .executeWebElementOperation(clickOperation);
         });
-        Dimensions dimensions = runCheck(environment, () -> {
+        ElementBounds dimensions = runCheck(environment, () -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
-            JsOperation<Dimensions> getDimensionsOperation = JsOperation.of(scrollToLocatorChain, new GetDimensions());
+            WebElementOperation<ElementBounds> getDimensionsOperation = WebElementOperation.of(scrollToLocatorChain, new JsGetElementBounds());
             return browser.executor()
-                    .executeOperation(getDimensionsOperation)
-                    .ifException(e -> {
-                        throw e;
+                    .executeWebElementOperation(getDimensionsOperation)
+                    .ifException((exceptionMapper, exception) -> {
+                        throw exceptionMapper.map(exception);
                     })
                     .getResult();
         });

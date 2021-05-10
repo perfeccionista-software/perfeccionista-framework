@@ -1,66 +1,64 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsEnabledAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsSelectedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsEnabledAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsSelectedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebCheckboxMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsSelectedAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsSelectedAvailable;
 import org.jetbrains.annotations.NotNull;
 
 public interface WebCheckbox extends WebChildElement,
-        ClickAvailable, IsSelectedAvailable, IsEnabledAvailable, GetLabelAvailable {
+        WebClickAvailable, WebIsSelectedAvailable, WebIsEnabledAvailable, WebGetLabelAvailable {
 
     // Actions
     @Override
     WebCheckbox executeAction(@NotNull String name, Object... args);
-    @Override
-    WebCheckbox executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
     WebCheckbox should(@NotNull WebCheckboxMatcher matcher);
     @Override
     WebCheckbox should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull GetColorAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull GetDimensionsAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull GetLocationAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull GetScreenshotAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull IsDisplayedAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull IsInFocusAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull IsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebCheckbox should(@NotNull IsPresentAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
     WebCheckbox should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
     WebCheckbox should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull GetLabelAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebElementStateAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull IsEnabledAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebGetLabelAvailableMatcher matcher);
     @Override
-    WebCheckbox should(@NotNull IsSelectedAvailableMatcher matcher);
+    WebCheckbox should(@NotNull WebIsEnabledAvailableMatcher matcher);
+    @Override
+    WebCheckbox should(@NotNull WebIsSelectedAvailableMatcher matcher);
 
     // Click
     @Override

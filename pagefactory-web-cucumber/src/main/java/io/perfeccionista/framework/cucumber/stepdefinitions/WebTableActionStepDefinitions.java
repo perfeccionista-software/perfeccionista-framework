@@ -8,8 +8,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
 
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.row;
-import static io.perfeccionista.framework.pagefactory.extractor.WebExtractors.textRow;
+import static io.perfeccionista.framework.Web.*;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -28,7 +27,7 @@ public class WebTableActionStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebTable.class)
                                 .filter(itemFilter)
                                 .extractRow(row())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .scrollTo());
     }
 
@@ -45,7 +44,7 @@ public class WebTableActionStepDefinitions implements WebStepDefinitions {
                         elementFinder.getElement(context, WebTextTable.class)
                                 .filter(itemFilter)
                                 .extractRow(textRow())
-                                .getNotNullValue()
+                                .getNotNullResult()
                                 .scrollTo());
     }
 

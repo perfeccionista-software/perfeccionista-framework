@@ -4,7 +4,7 @@ import io.perfeccionista.framework.pagefactory.WebPageService;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +14,7 @@ public class WebTextListBlockExtractor implements WebTextListBlockValueExtractor
 
     @Override
     public Map<Integer, DefaultWebTextBlock> extractValues(@NotNull WebTextListFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         WebTextList element = filter.getElement();
 
         WebPageFactory webPageFactory = element.getEnvironment()

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.textlist;
 
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
 import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,12 +20,12 @@ public class WebTextListFilterBuilderImpl implements WebTextListFilterBuilder {
     }
 
     public WebTextListFilterBuilder add(@NotNull WebTextListBlockCondition condition) {
-        this.conditions.addLast(WebTextListBlockFilterResultGroupingHolder.of(WebFilterResultGrouping.ADD, condition));
+        this.conditions.addLast(WebTextListBlockFilterResultGroupingHolder.of(FilterResultGrouping.ADD, condition));
         return this;
     }
 
     public WebTextListFilterBuilder subtract(@NotNull WebTextListBlockCondition condition) {
-        this.conditions.addLast(WebTextListBlockFilterResultGroupingHolder.of(WebFilterResultGrouping.SUBTRACT, condition));
+        this.conditions.addLast(WebTextListBlockFilterResultGroupingHolder.of(FilterResultGrouping.SUBTRACT, condition));
         return this;
     }
 

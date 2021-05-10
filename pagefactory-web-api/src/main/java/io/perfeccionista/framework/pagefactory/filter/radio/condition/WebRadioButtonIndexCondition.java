@@ -1,13 +1,14 @@
 package io.perfeccionista.framework.pagefactory.filter.radio.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
-import io.perfeccionista.framework.pagefactory.jsfunction.GetIsPresent;
-import io.perfeccionista.framework.pagefactory.operation.JsOperation;
-import io.perfeccionista.framework.pagefactory.operation.JsOperationResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
+import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
+import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsPresentOperationType;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,9 +18,9 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.components.WebComponents.RADIO;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.AND;
-import static io.perfeccionista.framework.pagefactory.filter.WebConditionGrouping.OR;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
+import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
 public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
 
@@ -66,7 +67,7 @@ public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
     }
 
     @Override
-    public @NotNull WebFilterResult process(@NotNull WebRadioGroup element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebRadioGroup element, @Nullable String hash) {
 
         // Формируем полную цепочку локаторов до WebRadioButtonBlock
         WebLocatorChain radioGroupLocatorChain = element.getLocatorChain();
@@ -76,10 +77,12 @@ public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
         radioGroupLocatorChain.addLastLocator(element.getRequiredLocator(RADIO));
 
         // Формируем и выполняем операцию
-        JsOperation<Boolean> jsOperation = JsOperation.of(radioGroupLocatorChain, new GetIsPresent());
-        JsOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
-                .executeOperation(jsOperation)
-                .ifException(exception -> {
+        WebGetIsPresentOperationType operationType = WebGetIsPresentOperationType.of(element);
+        WebElementOperation<Boolean> operation = WebElementOperation.of(radioGroupLocatorChain, operationType);
+        WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
+                .executeWebElementOperation(operation)
+                .ifException((exceptionMapper, originalException) -> {
+                    PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
                     throw exception.addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
                 });
 
@@ -89,7 +92,7 @@ public class WebRadioButtonIndexCondition implements WebRadioButtonCondition {
         Set<Integer> matches = getMatches(indexes);
 
         // Формируем ответ
-        return WebFilterResult.of(matches, calculatedHash);
+        return FilterResult.of(matches, calculatedHash);
     }
 
     private Set<Integer> getMatches(Set<Integer> indexes) {

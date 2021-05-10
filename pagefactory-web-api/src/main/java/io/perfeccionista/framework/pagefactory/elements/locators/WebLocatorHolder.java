@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.pagefactory.jsfunction.JsFunction;
+import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import io.perfeccionista.framework.utils.JsonUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +11,7 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public class WebLocatorHolder {
     protected boolean onlyWithinParent;
     protected boolean calculateHash;
     protected String expectedHash;
-    protected Deque<JsFunction<Void>> invokeOnCallFunctions;
+    protected Deque<EndpointHandler<Void>> invokeOnCallHandlers;
 
     protected WebLocatorHolder(String locatorComponent, WebLocatorStrategy locatorStrategy, String locatorValue) {
         // TODO: Нужно формировать из pageObjectId(пейдж + блоки + филд) + ComponentName -> md5 (чтобы он был одинаковый для перерасчета)
@@ -39,14 +40,14 @@ public class WebLocatorHolder {
         this.locatorComponent = locatorComponent;
         this.locatorStrategy = locatorStrategy;
         this.locatorValue = locatorValue;
-        this.indexes = new HashSet<>();
+        this.indexes = null;
         this.index = -1;
         this.single = true;
         this.strictSearch = true;
         this.onlyWithinParent = true;
         this.calculateHash = false;
         this.expectedHash = null;
-        this.invokeOnCallFunctions = new ArrayDeque<>();
+        this.invokeOnCallHandlers = new ArrayDeque<>();
     }
 
     public static WebLocatorHolder of(String locatorComponent, WebLocatorStrategy locatorStrategy, String locatorValue) {
@@ -63,8 +64,12 @@ public class WebLocatorHolder {
         return this;
     }
 
-    public WebLocatorHolder setIndexes(Collection<Integer> indexes) {
-        this.indexes = new HashSet<>(indexes);
+    public WebLocatorHolder setIndexes(@Nullable Collection<Integer> indexes) {
+        if (Objects.isNull(indexes)) {
+            this.indexes = null;
+        } else {
+            this.indexes = new HashSet<>(indexes);
+        }
         this.setSingle(false);
         return this;
     }
@@ -95,13 +100,13 @@ public class WebLocatorHolder {
     }
 
     // TODO: Проверять на наличие дубликатов, что такой функции тут нет, иначе игнорировать добавление
-    public WebLocatorHolder addInvokedOnCallFunction(JsFunction<Void> invokeOnCallFunction) {
-        this.invokeOnCallFunctions.add(invokeOnCallFunction);
+    public WebLocatorHolder addInvokedOnCallFunction(EndpointHandler<Void> invokeOnCallHandler) {
+        this.invokeOnCallHandlers.add(invokeOnCallHandler);
         return this;
     }
 
-    public WebLocatorHolder setInvokedOnCallFunctions(Deque<JsFunction<Void>> invokeOnCallFunctions) {
-        this.invokeOnCallFunctions = invokeOnCallFunctions;
+    public WebLocatorHolder setInvokedOnCallFunctions(Deque<EndpointHandler<Void>> invokeOnCallHandlers) {
+        this.invokeOnCallHandlers = invokeOnCallHandlers;
         return this;
     }
 
@@ -121,8 +126,8 @@ public class WebLocatorHolder {
         return locatorValue;
     }
 
-    public Set<Integer> getIndexes() {
-        return Set.copyOf(indexes);
+    public @Nullable Set<Integer> getIndexes() {
+        return Objects.isNull(indexes) ? null : Set.copyOf(indexes);
     }
 
     public boolean isSingle() {
@@ -145,8 +150,8 @@ public class WebLocatorHolder {
         return Optional.ofNullable(expectedHash);
     }
 
-    public Deque<JsFunction<Void>> getInvokeOnCallFunctions() {
-        return new ArrayDeque<>(invokeOnCallFunctions);
+    public Deque<EndpointHandler<Void>> getInvokeOnCallHandlers() {
+        return new ArrayDeque<>(invokeOnCallHandlers);
     }
 
     @Override
@@ -158,7 +163,7 @@ public class WebLocatorHolder {
                 .setOnlyWithinParent(this.onlyWithinParent)
                 .setCalculateHash(this.calculateHash)
                 .setExpectedHash(this.expectedHash)
-                .setInvokedOnCallFunctions(this.getInvokeOnCallFunctions());
+                .setInvokedOnCallFunctions(this.getInvokeOnCallHandlers());
     }
 
     public ObjectNode toJson() {
@@ -178,13 +183,15 @@ public class WebLocatorHolder {
             if (index != -1) {
                 locatorNode.put("index", index);
             }
-        } else  {
-            ArrayNode indexesNode = locatorNode.putArray("indexes");
-            indexes.stream().sorted().forEachOrdered(indexesNode::add);
+        } else {
+            if (Objects.nonNull(indexes)) {
+                ArrayNode indexesNode = locatorNode.putArray("indexes");
+                indexes.stream().sorted().forEachOrdered(indexesNode::add);
+            }
         }
-        if (!invokeOnCallFunctions.isEmpty()) {
+        if (!invokeOnCallHandlers.isEmpty()) {
             ArrayNode invokeOnCallNode = locatorNode.putArray("invokeOnCallFunctions");
-            invokeOnCallFunctions.forEach(jsFunction -> invokeOnCallNode.add(jsFunction.getJsFunctionInvocation()));
+            invokeOnCallHandlers.forEach(endpointHandler -> invokeOnCallNode.add(endpointHandler.toJson()));
         }
         return locatorNode;
     }

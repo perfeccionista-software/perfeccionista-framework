@@ -4,7 +4,7 @@ import io.perfeccionista.framework.pagefactory.WebPageService;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResult;
+import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ public class WebListBlockElementExtractor<T extends WebChildElement> implements 
 
     @Override
     public Map<Integer, T> extractValues(@NotNull WebListFilter filter) {
-        WebFilterResult filterResult = filter.getFilterResult();
+        FilterResult filterResult = filter.getFilterResult();
         WebList element = filter.getElement();
 
         Map<Integer, T> extractedElements = new HashMap<>();

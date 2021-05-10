@@ -1,27 +1,28 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.actions.GetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetDimensionsAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLabelAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetLocationAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.GetTextAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsEnabledAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.IsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.actions.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetLabelAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebGetTextAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsEnabledAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
+import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.element.WebFileInputMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetLabelAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.IsEnabledAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebInputTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
 
+import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -29,53 +30,56 @@ import org.jetbrains.annotations.NotNull;
  * поэтому тут удобнее объявлять корневым элементом родительский div
  */
 public interface WebFileInput extends WebChildElement,
-        ClearAvailable, ClickAvailable, IsEnabledAvailable, GetLabelAvailable, GetTextAvailable {
-
-    WebFileInput setFileName(@NotNull String filePath);
+        WebClickAvailable, WebIsEnabledAvailable, WebGetLabelAvailable, WebGetTextAvailable, WebInputTextAvailable {
 
     // Actions
     @Override
     WebFileInput executeAction(@NotNull String name, Object... args);
-    @Override
-    WebFileInput executeInteraction(@NotNull String name, @NotNull WebChildElement other, Object... args);
 
     // Asserts
     WebFileInput should(@NotNull WebFileInputMatcher matcher);
     @Override
     WebFileInput should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebFileInput should(@NotNull GetColorAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull GetDimensionsAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull GetLocationAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull GetScreenshotAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull IsDisplayedAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull IsInFocusAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull IsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebFileInput should(@NotNull IsPresentAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
     WebFileInput should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
     WebFileInput should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull GetLabelAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebElementStateAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull GetTextAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebGetLabelAvailableMatcher matcher);
     @Override
-    WebFileInput should(@NotNull IsEnabledAvailableMatcher matcher);
+    WebFileInput should(@NotNull WebGetTextAvailableMatcher matcher);
+    @Override
+    WebFileInput should(@NotNull WebIsEnabledAvailableMatcher matcher);
 
-    // Clear
-    @Override
-    WebFileInput clear();
-
+    // Click
     @Override
     WebFileInput click();
+
+    // InputText
+    @Override
+    WebFileInput clear();
+    @Override
+    WebFileInput typeText(@NotNull String keys);
+    @Override
+    WebFileInput replaceText(@NotNull String keys);
+    @Override
+    WebFileInput sendKeyEvents(@NotNull KeyEventsChain keyEvents);
 
     // HoverTo
     @Override

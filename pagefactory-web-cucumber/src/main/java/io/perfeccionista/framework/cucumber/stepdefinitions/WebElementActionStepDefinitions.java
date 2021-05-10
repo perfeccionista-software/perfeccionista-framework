@@ -10,12 +10,11 @@ import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementPropertyParameter;
 import io.perfeccionista.framework.pagefactory.elements.WebFileInput;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClearAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.ClickAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.GetTextAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.HoverToAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.ScrollToAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.SendKeysAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebHoverToAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebScrollToAvailable;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebInputTextAvailable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,19 +43,17 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
 
     /**
      *
-     * @param webElementInteraction -
      * @param elementSourceFinder -
      * @param elementTargetFinder -
      */
-    @Given("user on the {webElement} executes {webElementInteraction} to {webElement}")
-    @Дано("пользователь на {webElement} выполняет {webElementInteraction} к {webElement}")
+    @Given("user drag the {webElement} and drop to {webElement}")
+    @Дано("пользователь перетаскивает {webElement} на {webElement}")
     public void userExecutesWebElementInteractionOnTheElements(WebElementParameter<WebChildElement> elementSourceFinder,
-                                                               WebElementInteractionParameter webElementInteraction,
                                                                WebElementParameter<WebChildElement> elementTargetFinder) {
         getWebPageContext().execute(context -> {
             WebChildElement sourceElement = elementSourceFinder.getElement(context, WebChildElement.class);
             WebChildElement targetElement = elementTargetFinder.getElement(context, WebChildElement.class);
-            sourceElement.executeInteraction(webElementInteraction.getRaw(), targetElement);
+            sourceElement.executeAction("Drag and drop", targetElement.getElementBounds().getCenter());
         });
     }
 
@@ -66,9 +63,9 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user clicks on the {webElement}")
     @Дано("пользователь нажимает на {webElement}")
-    public void userClicksOnTheElement(WebElementParameter<ClickAvailable> elementFinder) {
+    public void userClicksOnTheElement(WebElementParameter<WebClickAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, ClickAvailable.class)
+                elementFinder.getElement(context, WebClickAvailable.class)
                         .click());
     }
 
@@ -78,9 +75,9 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user clears the text in the {webElement}")
     @Дано("пользователь очищает текст в {webElement}")
-    public void userClearsTheTextInTheElement(WebElementParameter<ClearAvailable> elementFinder) {
+    public void userClearsTheTextInTheElement(WebElementParameter<WebInputTextAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, ClearAvailable.class)
+                elementFinder.getElement(context, WebInputTextAvailable.class)
                         .clear());
     }
 
@@ -91,11 +88,11 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user enters in the {webElement} {stringValue}")
     @Дано("пользователь вводит в {webElement} {stringValue}")
-    public void userEnterTheTextInTheElement(WebElementParameter<SendKeysAvailable> elementFinder,
+    public void userEnterTheTextInTheElement(WebElementParameter<WebInputTextAvailable> elementFinder,
                                              ValueStringParameter textToEnter) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, SendKeysAvailable.class)
-                        .sendKeys(textToEnter.getNotNullProcessedValue()));
+                elementFinder.getElement(context, WebInputTextAvailable.class)
+                        .typeText(textToEnter.getNotNullProcessedValue()));
     }
 
     /**
@@ -109,7 +106,7 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
                                              ValueStringParameter fileName) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebFileInput.class)
-                        .setFileName(fileName.getNotNullProcessedValue()));
+                        .replaceText(fileName.getNotNullProcessedValue()));
     }
 
     /**
@@ -118,9 +115,9 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user scrolls the page to the {webElement}")
     @Дано("пользователь прокручивает страницу до {webElement}")
-    public void userScrollThePageToTheElement(WebElementParameter<ScrollToAvailable> elementFinder) {
+    public void userScrollThePageToTheElement(WebElementParameter<WebScrollToAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, ScrollToAvailable.class)
+                elementFinder.getElement(context, WebScrollToAvailable.class)
                         .scrollTo());
     }
 
@@ -130,9 +127,9 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user hovers the cursor over the {webElement}")
     @Дано("пользователь наводит курсор на {webElement}")
-    public void userHoversTheCursorOverTheElement(WebElementParameter<HoverToAvailable> elementFinder) {
+    public void userHoversTheCursorOverTheElement(WebElementParameter<WebHoverToAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, HoverToAvailable.class)
+                elementFinder.getElement(context, WebHoverToAvailable.class)
                         .hoverTo(true));
     }
 
@@ -142,11 +139,11 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user hovers the cursor sequentially to")
     @Дано("пользователь поочередно наводит курсор на")
-    public void userHoversTheCursorOverTheElement(List<WebElementParameter<HoverToAvailable>> elementFinders) {
+    public void userHoversTheCursorOverTheElement(List<WebElementParameter<WebHoverToAvailable>> elementFinders) {
         AtomicBoolean firstElementOfChain = new AtomicBoolean(true);
         getWebPageContext().execute(context -> {
             elementFinders.forEach(elementFinder -> {
-                HoverToAvailable element = elementFinder.getElement(context, HoverToAvailable.class);
+                WebHoverToAvailable element = elementFinder.getElement(context, WebHoverToAvailable.class);
                 if (firstElementOfChain.get()) {
                     element.hoverTo(true);
                     firstElementOfChain.set(false);
@@ -167,11 +164,11 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user saves text from the {webElement} to {dataStorage} by key {stringValue}")
     @Дано("пользователь сохраняет текст из {webElement} в {dataStorage} по ключу {stringValue}")
-    public void userSavesTextFromTheElementToDataStorage(WebElementParameter<GetTextAvailable> elementFinder,
+    public void userSavesTextFromTheElementToDataStorage(WebElementParameter<WebGetTextAvailable> elementFinder,
                                                          DataStorageParameter<String, String> dataStorage,
                                                          ValueStringParameter key) {
         getWebPageContext().execute(context -> {
-            GetTextAvailable element = elementFinder.getElement(context, GetTextAvailable.class);
+            WebGetTextAvailable element = elementFinder.getElement(context, WebGetTextAvailable.class);
             String textToSave = element.getText();
             dataStorage.get().put(key.getNotNullProcessedValue(), textToSave);
         });
@@ -204,9 +201,9 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user saves text from the {webElement} to the clipboard")
     @Дано("пользователь сохраняет текст из {webElement} в буфер обмена")
-    public void userSavesTextFromTheElementToTheClipboard(WebElementParameter<GetTextAvailable> elementFinder) {
+    public void userSavesTextFromTheElementToTheClipboard(WebElementParameter<WebGetTextAvailable> elementFinder) {
         getWebPageContext().execute(context -> {
-            GetTextAvailable element = elementFinder.getElement(context, GetTextAvailable.class);
+            WebGetTextAvailable element = elementFinder.getElement(context, WebGetTextAvailable.class);
             String textToCopy = element.getText();
             copyToClipboard(textToCopy);
         });
@@ -234,10 +231,10 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
      */
     @Given("user paste text from the clipboard to the {webElement}")
     @Дано("пользователь вставляет текст из буфера обмена в {webElement}")
-    public void userPasteTextFromTheClipboardToTheElement(WebElementParameter<SendKeysAvailable> elementFinder) {
+    public void userPasteTextFromTheClipboardToTheElement(WebElementParameter<WebInputTextAvailable> elementFinder) {
         getWebPageContext().execute(context ->
-                elementFinder.getElement(context, SendKeysAvailable.class)
-                        .sendKeys(getFromClipboard()));
+                elementFinder.getElement(context, WebInputTextAvailable.class)
+                        .typeText(getFromClipboard()));
     }
 
 }

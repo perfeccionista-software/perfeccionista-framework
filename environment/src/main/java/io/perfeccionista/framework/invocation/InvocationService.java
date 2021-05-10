@@ -9,7 +9,7 @@ import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_CONFIGURATION_NOT_VALID;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
 
 @DefaultServiceConfiguration(DefaultInvocationServiceConfiguration.class)
 public class InvocationService implements Service {
@@ -34,7 +34,7 @@ public class InvocationService implements Service {
             return (InvocationServiceConfiguration) configuration;
         }
         throw IncorrectServiceConfiguration.exception(
-                CHECK_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
+                SERVICE_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
 }

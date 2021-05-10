@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.radio;
 
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
-import io.perfeccionista.framework.pagefactory.filter.WebFilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonCondition;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,12 +20,12 @@ public class WebRadioGroupFilterBuilderImpl implements WebRadioGroupFilterBuilde
     }
 
     public WebRadioGroupFilterBuilder add(@NotNull WebRadioButtonCondition condition) {
-        this.conditions.addLast(WebRadioButtonFilterResultGroupingHolder.of(WebFilterResultGrouping.ADD, condition));
+        this.conditions.addLast(WebRadioButtonFilterResultGroupingHolder.of(FilterResultGrouping.ADD, condition));
         return this;
     }
 
     public WebRadioGroupFilterBuilder subtract(@NotNull WebRadioButtonCondition condition) {
-        this.conditions.addLast(WebRadioButtonFilterResultGroupingHolder.of(WebFilterResultGrouping.SUBTRACT, condition));
+        this.conditions.addLast(WebRadioButtonFilterResultGroupingHolder.of(FilterResultGrouping.SUBTRACT, condition));
         return this;
     }
 
