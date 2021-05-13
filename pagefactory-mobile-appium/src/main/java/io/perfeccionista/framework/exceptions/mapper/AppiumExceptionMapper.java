@@ -82,6 +82,9 @@ public class AppiumExceptionMapper implements MobileExceptionMapper {
                 || exception instanceof InvalidCoordinatesException) {
             return ElementNotIntractable.exception(ELEMENT_NOT_INTRACTABLE.getMessage(element.getElementIdentifier().getLastUsedName()), exception)
                     .setProcessed(true);
+        } else if (exception instanceof StaleElementReferenceException) {
+            return ElementStaleReference.exception(ELEMENT_IS_STALE.getMessage(element.getElementIdentifier().getLastUsedName()), exception)
+                    .setProcessed(true);
         }
 //        } else if (e instanceof StaleElementReferenceException) {
 //            return SeleniumStaleWebElementReference.exception(WEB_ELEMENT_IS_STALE.getMessage(getArg(args, 0)), e)

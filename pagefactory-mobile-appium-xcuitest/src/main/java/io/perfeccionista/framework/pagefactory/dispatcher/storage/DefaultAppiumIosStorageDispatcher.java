@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.mapper.MobileExceptionMapper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DefaultAppiumIosStorageDispatcher implements MobileDeviceStorageDispatcher {
 
@@ -40,5 +41,16 @@ public class DefaultAppiumIosStorageDispatcher implements MobileDeviceStorageDis
     @Override
     public byte[] getFolderFromDevice(@NotNull String fromFolderPath) {
         return new byte[0];
+    }
+
+    @Override
+    @Nullable
+    public String getClipboard() {
+        return null;
+    }
+
+    @Override
+    public void setClipboard(@NotNull String value) {
+
     }
 }

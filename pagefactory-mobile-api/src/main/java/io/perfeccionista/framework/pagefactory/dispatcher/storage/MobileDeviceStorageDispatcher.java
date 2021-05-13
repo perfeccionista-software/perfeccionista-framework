@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.dispatcher.storage;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface MobileDeviceStorageDispatcher {
 
@@ -18,5 +19,10 @@ public interface MobileDeviceStorageDispatcher {
     MobileDeviceStorageDispatcher saveFolderFromDevice(@NotNull String fromFolderPath, @NotNull String toFilePath);
 
     byte[] getFolderFromDevice(@NotNull String fromFolderPath);
+
+    @Nullable
+    String getClipboard();
+
+    void setClipboard(@NotNull String value);
 
 }
