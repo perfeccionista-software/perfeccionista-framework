@@ -1,12 +1,12 @@
 package io.perfeccionista.framework.exceptions.base;
 
+import io.perfeccionista.framework.exceptions.attachments.AttachmentProcessor;
+import io.perfeccionista.framework.exceptions.attachments.BigTextAttachmentEntry;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,35 +46,68 @@ public class ExceptionCollector {
     /**
      * Если у нас попадались эксепшены одного типа, то просто его и выбрасываем
      */
-    public void throwIfSingleException() {
-        if (uniqueExceptionKeys.size() == 1) {
-            PerfeccionistaException exception = exceptions.get(exceptions.size() - 1);
-            if (exception instanceof PerfeccionistaAssertionError) {
-                throw (PerfeccionistaAssertionError) exception;
+    public void throwLastException() {
+        PerfeccionistaException lastException = exceptions.get(exceptions.size() - 1);
+        if (lastException instanceof PerfeccionistaAssertionError) {
+            PerfeccionistaAssertionError assertionError = (PerfeccionistaAssertionError) lastException;
+            if (uniqueExceptionKeys.size() == 1) {
+                throw assertionError.prepareAttachmentDescription();
             }
-            if (exception instanceof PerfeccionistaRuntimeException) {
-                throw (PerfeccionistaRuntimeException) exception;
+            throw assertionError
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
+                    .prepareAttachmentDescription();
+        }
+        if (lastException instanceof PerfeccionistaRuntimeException) {
+            PerfeccionistaRuntimeException runtimeException = (PerfeccionistaRuntimeException) lastException;
+            if (uniqueExceptionKeys.size() == 1) {
+                throw runtimeException
+                        .prepareAttachmentDescription();
             }
+            throw runtimeException
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
+                    .prepareAttachmentDescription();
         }
     }
 
-    /**
-     * Генерируем необходимое исключение исходя их количества уникальных исключений
-     * @return
-     */
-    @NotNull
-    public PerfeccionistaExceptionSequence getExceptionSequence() {
-        return new PerfeccionistaExceptionSequence(exceptions, generateExceptionSequenceMessage(exceptions));
+    public void throwLastException(@NotNull AttachmentProcessor processor) {
+        PerfeccionistaException lastException = exceptions.get(exceptions.size() - 1);
+        if (lastException instanceof PerfeccionistaAssertionError) {
+            PerfeccionistaAssertionError assertionError = (PerfeccionistaAssertionError) lastException;
+            if (uniqueExceptionKeys.size() == 1) {
+                throw assertionError
+                        .setAttachmentProcessor(processor)
+                        .prepareAttachmentDescription();
+            }
+            throw assertionError
+                    .setAttachmentProcessor(processor)
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
+                    .prepareAttachmentDescription();
+        }
+        if (lastException instanceof PerfeccionistaRuntimeException) {
+            PerfeccionistaRuntimeException runtimeException = (PerfeccionistaRuntimeException) lastException;
+            if (uniqueExceptionKeys.size() == 1) {
+                throw runtimeException
+                        .setAttachmentProcessor(processor)
+                        .prepareAttachmentDescription();
+            }
+            throw runtimeException
+                    .setAttachmentProcessor(processor)
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
+                    .prepareAttachmentDescription();
+        }
     }
 
     /**
      * TODO: JavaDoc
      *  переделать на формирование сообщения их последнего эксепшена, а уникальный ключ
-     * @param exceptions
      * @return
      */
     @NotNull
-    protected String generateExceptionSequenceMessage(@NotNull List<PerfeccionistaException> exceptions) {
+    public String generateExceptionSequenceMessage() {
+        if (exceptions.isEmpty()) {
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
         List<String> exceptionDescriptions = new ArrayList<>();
 

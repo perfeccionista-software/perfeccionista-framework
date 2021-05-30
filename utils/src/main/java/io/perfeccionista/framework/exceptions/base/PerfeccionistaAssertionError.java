@@ -2,6 +2,8 @@ package io.perfeccionista.framework.exceptions.base;
 
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.AttachmentProcessor;
+import io.perfeccionista.framework.exceptions.attachments.DefaultAttachmentProcessor;
 import io.perfeccionista.framework.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,8 +12,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PerfeccionistaAssertionError extends AssertionError implements PerfeccionistaException {
 
@@ -19,7 +21,9 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
 
     private final LocalDateTime exceptionTimestamp;
 
+    private AttachmentProcessor processor = new DefaultAttachmentProcessor();
     private Attachment attachment = null;
+    private String attachmentsDescription = null;
     private boolean processed = false;
     private boolean service = false;
 
@@ -69,7 +73,7 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
     @Override
     public PerfeccionistaAssertionError addFirstAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
         if (getAttachment().isEmpty()) {
-            this.attachment = Attachment.of();
+            this.attachment = Attachment.with();
         }
         this.attachment.addFirstAttachmentEntry(attachmentEntry);
         return this;
@@ -78,7 +82,7 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
     @Override
     public PerfeccionistaAssertionError addLastAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
         if (getAttachment().isEmpty()) {
-            this.attachment = Attachment.of();
+            this.attachment = Attachment.with();
         }
         this.attachment.addLastAttachmentEntry(attachmentEntry);
         return this;
@@ -102,20 +106,29 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
         return this;
     }
 
+    @Override
+    public PerfeccionistaAssertionError setAttachmentProcessor(@NotNull AttachmentProcessor processor) {
+        this.processor = processor;
+        return this;
+    }
+
+    public PerfeccionistaAssertionError prepareAttachmentDescription() {
+        this.attachmentsDescription = processor.processAttachment(attachment);
+        return this;
+    }
+
     public LocalDateTime getExceptionTimestamp() {
         return exceptionTimestamp;
     }
 
     public String getAttachmentDescription() {
-        if (null == attachment) {
-            return "AssertionError has no attachment";
+        if (Objects.isNull(attachment)) {
+            return "";
         }
-        return "\n\nAssertionError attachments:\n\n" + attachment.getAttachmentEntries()
-                .map(attachmentEntry -> ATTACHMENT_SPLITTER
-                        + attachmentEntry.getName() + "\n"
-                        + ATTACHMENT_SPLITTER
-                        + attachmentEntry.getDescription() + "\n")
-                .collect(Collectors.joining("\n"));
+        if (Objects.isNull(attachmentsDescription)) {
+            attachmentsDescription = processor.processAttachment(attachment);
+        }
+        return attachmentsDescription;
     }
 
     @Override
@@ -123,10 +136,13 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
         StringBuilder exceptionDescription = new StringBuilder();
         String attachmentDescription = getAttachmentDescription();
         if (StringUtils.isNotBlank(attachmentDescription)) {
-            exceptionDescription.append(attachmentDescription).append("\n")
-                    .append("Exception timestamp: ").append(getExceptionTimestamp().format(DateTimeFormatter.ISO_DATE_TIME)).append("\n\n");
+            exceptionDescription.append(attachmentDescription);
         }
-        exceptionDescription.append(super.toString());
+        exceptionDescription
+                .append(processor.getDelimiter())
+                .append("Exception timestamp: ").append(getExceptionTimestamp().format(DateTimeFormatter.ISO_DATE_TIME)).append("\n")
+                .append(processor.getDelimiter())
+                .append(super.toString());
         return exceptionDescription.toString();
     }
 

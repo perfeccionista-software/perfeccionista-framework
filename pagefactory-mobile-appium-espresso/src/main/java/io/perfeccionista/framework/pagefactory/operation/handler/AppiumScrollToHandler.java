@@ -7,7 +7,7 @@ import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import io.perfeccionista.framework.exceptions.ElementNotOnTheScreen;
 import io.perfeccionista.framework.exceptions.ResponseFormatIsNotValid;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.measurements.Direction;
 import io.perfeccionista.framework.measurements.HorizontalDirection;
@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.interactions.PointerInput;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -200,9 +199,9 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
                     scrollVertically(UP, startPoint, length, screenBounds);
                     throw ElementNotOnTheScreen.exception(ELEMENT_NOT_ON_THE_SCREEN.getMessage(element.getElementIdentifier().getLastUsedName()))
                             .setProcessed(true)
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Start Position", startPoint.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Scroll Length", Integer.toString(length)));
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Start Position", startPoint.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Scroll Length", Integer.toString(length)));
                 }
             });
         }
@@ -216,9 +215,9 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
                     scrollVertically(DOWN, startPoint, length, screenBounds);
                     throw ElementNotOnTheScreen.exception(ELEMENT_NOT_ON_THE_SCREEN.getMessage(element.getElementIdentifier().getLastUsedName()))
                             .setProcessed(true)
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Start Position", startPoint.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Scroll Length", Integer.toString(length)));
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Start Position", startPoint.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Scroll Length", Integer.toString(length)));
                 }
             });
         }
@@ -232,9 +231,9 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
                     scrollHorizontally(LEFT, startPoint, length, screenBounds, instance);
                     throw ElementNotOnTheScreen.exception(ELEMENT_NOT_ON_THE_SCREEN.getMessage(element.getElementIdentifier().getLastUsedName()))
                             .setProcessed(true)
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Start Position", startPoint.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Scroll Length", Integer.toString(length)));
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Start Position", startPoint.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Scroll Length", Integer.toString(length)));
                 }
             });
         }
@@ -248,9 +247,9 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
                     scrollHorizontally(RIGHT, startPoint, length, screenBounds, instance);
                     throw ElementNotOnTheScreen.exception(ELEMENT_NOT_ON_THE_SCREEN.getMessage(element.getElementIdentifier().getLastUsedName()))
                             .setProcessed(true)
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Start Position", startPoint.toString()))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Scroll Length", Integer.toString(length)));
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Screen Bounds", screenBounds.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Start Position", startPoint.toString()))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Scroll Length", Integer.toString(length)));
                 }
             });
         }
@@ -273,8 +272,8 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
             return Point2D.of(elementCenterX, elementCenterY);
         }
         throw ResponseFormatIsNotValid.exception(RESPONSE_FORMAT_NOT_VALID.getMessage())
-                .addLastAttachmentEntry(StringAttachmentEntry.of("Response", bounds))
-                .addLastAttachmentEntry(StringAttachmentEntry.of("RegExp", BOUNDS_PATTERN.pattern()));
+                .addLastAttachmentEntry(TextAttachmentEntry.of("Response", bounds))
+                .addLastAttachmentEntry(TextAttachmentEntry.of("RegExp", BOUNDS_PATTERN.pattern()));
     }
 
     protected void scrollVertically(VerticalDirection scrollDirection, Point2D startPoint, int length, MobileScreenBounds screenBounds) {

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.matcher.methods.implementations;
 
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
@@ -52,8 +52,8 @@ public class WebShouldHaveColorMatcher implements WebGetColorAvailableMatcher {
             throw WebElementColor.assertionError(ELEMENT_COLOR_IS_NOT_EQUAL_EXPECTED_COLOR.getMessage(componentName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual color", actualColor.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected color", expectedColor.toString()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual color", actualColor.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected color", expectedColor.toString()));
         }
     }
 
@@ -62,8 +62,8 @@ public class WebShouldHaveColorMatcher implements WebGetColorAvailableMatcher {
             throw WebElementColor.assertionError(ELEMENT_COLOR_IS_EQUAL_EXPECTED_COLOR.getMessage(componentName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual color", actualColor.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected color", expectedColor.toString()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual color", actualColor.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected color", expectedColor.toString()));
         }
     }
 

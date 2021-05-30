@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.exceptions.ElementStateNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
-import io.perfeccionista.framework.exceptions.js.JsElementSearch;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
@@ -28,7 +26,6 @@ import io.perfeccionista.framework.pagefactory.operation.WebElementIsPresentOper
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
-import io.perfeccionista.framework.pagefactory.operation.WebLocatorProcessingResult;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetColorOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetElementBoundsOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsComponentDisplayedOperationType;

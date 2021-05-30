@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_TEXT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;

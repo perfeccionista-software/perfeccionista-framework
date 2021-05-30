@@ -1,28 +1,5 @@
 package io.perfeccionista.framework.pagefactory.operation;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.exceptions.LocatorProcessing;
-import io.perfeccionista.framework.exceptions.SingleResultConversion;
-import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.function.Consumer;
-
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.LOCATOR_HASH_NOT_CALCULATED;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.LOCATOR_PROCESSING_RESULT_NOT_FOUND;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.OPERATION_RESULT_HAS_MORE_THAN_ONE_VALUE;
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.OPERATION_RESULT_HAS_NO_VALUE;
-import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
-
 public class MobilePageOperationResult<T> {
 
 //    protected PerfeccionistaRuntimeException exception;

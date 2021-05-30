@@ -3,7 +3,7 @@ package io.perfeccionista.framework.pagefactory.operation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.SingleResultConversion;
 import io.perfeccionista.framework.exceptions.LocatorProcessing;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
@@ -123,7 +123,7 @@ public class WebElementOperationResult<T> {
     public @NotNull String getRequiredHash(@NotNull String locatorId) {
         WebLocatorProcessingResult locatorProcessingResult = getWebLocatorProcessingResult(locatorId)
                 .orElseThrow(() -> LocatorProcessing.exception(LOCATOR_PROCESSING_RESULT_NOT_FOUND.getMessage())
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Locator ID", locatorId)));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Locator ID", locatorId)));
         return locatorProcessingResult.getHash()
                 .orElseThrow(() -> LocatorProcessing.exception(LOCATOR_HASH_NOT_CALCULATED.getMessage())
                         .addLastAttachmentEntry(JsonAttachmentEntry.of("Locator Processing Result", locatorProcessingResult.toJson())));
@@ -141,7 +141,7 @@ public class WebElementOperationResult<T> {
         Map<Integer, WebLocatorProcessingResult> results = searchHistory.get(locatorId);
         if (results == null) {
             throw LocatorProcessing.exception(LOCATOR_PROCESSING_RESULT_NOT_FOUND.getMessage())
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Locator ID", locatorId));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Locator ID", locatorId));
         }
         return results;
     }

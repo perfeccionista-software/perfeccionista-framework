@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.exceptions.base;
 
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.AttachmentProcessor;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +43,8 @@ public interface PerfeccionistaException {
     PerfeccionistaException addLastAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry);
 
     PerfeccionistaException addSuppressedException(@NotNull Throwable throwable);
+
+    PerfeccionistaException setAttachmentProcessor(@NotNull AttachmentProcessor processor);
 
     LocalDateTime getExceptionTimestamp();
 

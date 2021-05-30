@@ -3,7 +3,7 @@ package io.perfeccionista.framework.matcher.methods.implementations;
 import io.perfeccionista.framework.exceptions.ElementDoesNotHaveExpectedState;
 import io.perfeccionista.framework.exceptions.ElementHasUnexpectedState;
 import io.perfeccionista.framework.exceptions.ElementStateNotFound;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
@@ -66,14 +66,14 @@ public class WebShouldHaveStateMatcher implements WebElementStateAvailableMatche
                 throw ElementDoesNotHaveExpectedState.assertionError(ELEMENT_DOES_NOT_HAVE_EXPECTED_STATE.getMessage(element.getElementIdentifier().getLastUsedName(), stateName))
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("PageSource", operationResult.getPageSource()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("PageSource", operationResult.getPageSource()));
             }
             return;
         }
         throw ElementDoesNotHaveExpectedState.assertionError(ELEMENT_DOES_NOT_HAVE_EXPECTED_STATE.getMessage(element.getElementIdentifier().getLastUsedName(), stateName))
                 .setProcessed(true)
                 .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
-                .addLastAttachmentEntry(StringAttachmentEntry.of("PageSource", operationResult.getPageSource()));
+                .addLastAttachmentEntry(TextAttachmentEntry.of("PageSource", operationResult.getPageSource()));
     }
 
     protected void shouldNotHaveState(WebElementStateAvailable element, WebElementStateHolder stateHolder) {
@@ -90,7 +90,7 @@ public class WebShouldHaveStateMatcher implements WebElementStateAvailableMatche
                 throw ElementHasUnexpectedState.assertionError(ELEMENT_HAS_UNEXPECTED_STATE.getMessage(element.getElementIdentifier().getLastUsedName(), stateName))
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("PageSource", operationResult.getPageSource()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("PageSource", operationResult.getPageSource()));
             }
             // проверка результата отрицательная - стейт не присутствует
         }

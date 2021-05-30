@@ -3,7 +3,7 @@ package io.perfeccionista.framework.exceptions.attachments;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class HtmlAttachmentEntry extends StringAttachmentEntry {
+public class HtmlAttachmentEntry extends FileAttachmentEntry<String> {
 
     protected HtmlAttachmentEntry(String name, String content) {
         super(name, content);
@@ -15,7 +15,12 @@ public class HtmlAttachmentEntry extends StringAttachmentEntry {
 
     @Override
     public String getDescription() {
-        return this.getContent().orElse("empty");
+        return this.getContent().orElse("");
+    }
+
+    @Override
+    public @NotNull String getFileExtension() {
+        return "html";
     }
 
 }

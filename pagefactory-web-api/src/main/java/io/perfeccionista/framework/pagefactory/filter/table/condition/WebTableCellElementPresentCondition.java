@@ -25,7 +25,6 @@ import java.util.Set;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PRESENTED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 

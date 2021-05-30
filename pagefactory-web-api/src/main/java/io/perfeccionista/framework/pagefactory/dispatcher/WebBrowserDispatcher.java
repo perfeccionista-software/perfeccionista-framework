@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.pagefactory.dispatcher;
 
-import io.perfeccionista.framework.exceptions.mapper.ExceptionMapper;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
 import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.dispatcher.cookies.WebBrowserCookiesDispatcher;

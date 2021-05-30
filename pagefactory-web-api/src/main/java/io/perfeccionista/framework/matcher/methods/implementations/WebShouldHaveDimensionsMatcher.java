@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.matcher.methods.implementations;
 
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.WebElementDimensions;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
@@ -51,8 +51,8 @@ public class WebShouldHaveDimensionsMatcher implements WebGetElementBoundsAvaila
             throw WebElementDimensions.assertionError(ELEMENT_DIMENSIONS_ARE_NOT_EQUAL_EXPECTED_DIMENSIONS.getMessage(componentName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual dimensions", actualDimensions.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected dimensions", expectedDimensions.toString()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual dimensions", actualDimensions.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected dimensions", expectedDimensions.toString()));
         }
     }
 
@@ -61,8 +61,8 @@ public class WebShouldHaveDimensionsMatcher implements WebGetElementBoundsAvaila
             throw WebElementDimensions.assertionError(ELEMENT_DIMENSIONS_ARE_EQUAL_EXPECTED_DIMENSIONS.getMessage(componentName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual dimensions", actualDimensions.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected dimensions", expectedDimensions.toString()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual dimensions", actualDimensions.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected dimensions", expectedDimensions.toString()));
         }
     }
 

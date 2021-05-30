@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.matcher.methods.implementations;
 
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.WebElementPropertyValue;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
@@ -50,8 +50,8 @@ public class WebShouldHavePropertyStringValueMatcher implements WebElementProper
             throw WebElementPropertyValue.assertionError(ELEMENT_PROPERTY_DOES_NOT_CONTAIN_EXPECTED_VALUE.getMessage(propertyName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected value", expectedStringValue.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual value", actualPropertyValue));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected value", expectedStringValue.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual value", actualPropertyValue));
         }
     }
 
@@ -60,8 +60,8 @@ public class WebShouldHavePropertyStringValueMatcher implements WebElementProper
             throw WebElementPropertyValue.assertionError(ELEMENT_PROPERTY_CONTAINS_EXPECTED_VALUE.getMessage(propertyName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected value", expectedStringValue.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual value", actualPropertyValue));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected value", expectedStringValue.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual value", actualPropertyValue));
         }
     }
 

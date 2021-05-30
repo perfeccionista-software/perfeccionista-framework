@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.dispatcher.cookies;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.exceptions.CookieValidation;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.json.JsonSerializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -105,7 +105,7 @@ public class Cookie implements JsonSerializable {
         }
         if (name.contains(";") || name.contains(" ") || name.contains("=") || name.contains(",")) {
             throw CookieValidation.exception(COOKIES_NAME_INCORRECT.getMessage())
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Cookie's name", name));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Cookie's name", name));
         }
         return name;
     }
@@ -117,7 +117,7 @@ public class Cookie implements JsonSerializable {
         String validatableDomain = domain.split(":")[0];
         if (validatableDomain.contains(":")) {
             throw CookieValidation.exception(COOKIES_DOMAIN_CONTAINS_PORT.getMessage())
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Cookie's domain", validatableDomain));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Cookie's domain", validatableDomain));
         }
         return validatableDomain;
     }

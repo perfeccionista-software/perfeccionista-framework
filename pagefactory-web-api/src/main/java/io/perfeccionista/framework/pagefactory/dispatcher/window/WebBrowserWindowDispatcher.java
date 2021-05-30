@@ -2,17 +2,20 @@ package io.perfeccionista.framework.pagefactory.dispatcher.window;
 
 import io.perfeccionista.framework.measurements.Dimensions2D;
 import io.perfeccionista.framework.measurements.Point2D;
+import io.perfeccionista.framework.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
 
 public interface WebBrowserWindowDispatcher {
 
-    Dimensions2D getInnerWindowSize();
+    @NotNull Screenshot getPageScreenshot();
 
-    Dimensions2D getOuterWindowSize();
+    @NotNull Dimensions2D getInnerWindowSize();
+
+    @NotNull Dimensions2D getOuterWindowSize();
 
     WebBrowserWindowDispatcher setOuterWindowSize(@NotNull Dimensions2D windowSize);
 
-    Point2D getAbsoluteLocation();
+    @NotNull Point2D getAbsoluteLocation();
 
     WebBrowserWindowDispatcher setAbsoluteLocation(@NotNull Point2D location);
 

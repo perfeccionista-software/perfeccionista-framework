@@ -15,7 +15,7 @@ final class AttachmentTest extends SimpleParallelTest {
 
     @Test
     void initializationSuccessTest() {
-        Attachment attachment = Attachment.of();
+        Attachment attachment = Attachment.empty();
         assertNotNull(attachment.getAttachmentEntries());
         assertEquals(0L, attachment.getAttachmentEntries().count());
         assertEquals(Optional.empty(), attachment.getAttachmentEntry(AttachmentEntry.class, "name"));
@@ -23,7 +23,7 @@ final class AttachmentTest extends SimpleParallelTest {
 
     @Test
     void notNullArgumentsTest() {
-        Attachment attachment = Attachment.of();
+        Attachment attachment = Attachment.empty();
         assertThrows(IllegalArgumentException.class, () -> attachment.addLastAttachmentEntry(null));
         assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntriesByType(null));
         assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntry(null, "name"));

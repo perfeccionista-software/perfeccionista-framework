@@ -22,6 +22,7 @@ public enum EnvironmentMessages implements Messages {
     CHECK_ARRAY_MUST_NOT_BE_EMPTY("Array '%s' must not be empty"),
     SERVICE_CONFIGURATION_NOT_VALID("Configuration '%s' is not valid for '%s'"),
 
+    INCORRECT_INVOCATION_RUNNER_LOGIC("Incorrect invocation runner logic"),
 
     DEFAULT_DATA_SOURCE_NOT_DECLARED("Default DataSource is not configured for DataSourceService"),
     ENVIRONMENT_NOT_DECLARED("Environment is not configured for test class and test method"),

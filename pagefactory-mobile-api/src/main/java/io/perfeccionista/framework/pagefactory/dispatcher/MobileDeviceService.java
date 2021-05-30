@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,6 +61,10 @@ public class MobileDeviceService implements Service {
         mobileDeviceDispatchersByName.put(mobileDeviceDispatcherName, mobileDeviceDispatcher);
         this.activeMobileDeviceDispatcher = mobileDeviceDispatcher;
         return mobileDeviceDispatcher;
+    }
+
+    public boolean isActiveDispatcherRunning() {
+        return Objects.nonNull(activeMobileDeviceDispatcher);
     }
 
     public @NotNull MobileDeviceDispatcher getActiveDispatcher() {

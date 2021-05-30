@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.matcher.result.implementations;
 
 import io.perfeccionista.framework.exceptions.WebResultSetNotSorted;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
@@ -52,7 +52,7 @@ public class WebShouldHaveSortedResultMatcher<T> implements WebMultipleIndexedRe
                 throw WebResultSetNotSorted.assertionError(FILTERED_ELEMENT_IS_NOT_SORTED.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Comparison result", comparisonResultsToString(detailComparisonResult)));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Comparison result", comparisonResultsToString(detailComparisonResult)));
             }
         });
     }
