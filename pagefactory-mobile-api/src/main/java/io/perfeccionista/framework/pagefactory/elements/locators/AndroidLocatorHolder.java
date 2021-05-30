@@ -17,6 +17,10 @@ public class AndroidLocatorHolder extends MobileLocatorHolder {
         return new AndroidLocatorHolder(locatorComponent, locatorStrategy, locatorValue);
     }
 
+    public static AndroidLocatorHolder selfNode(@NotNull String locatorComponent) {
+        return new AndroidLocatorHolder(locatorComponent, AndroidLocatorStrategy.SELF_NODE, "");
+    }
+
     @Override
     public AndroidLocatorHolder setLocatorComponent(@NotNull String locatorComponent) {
         super.setLocatorComponent(locatorComponent);

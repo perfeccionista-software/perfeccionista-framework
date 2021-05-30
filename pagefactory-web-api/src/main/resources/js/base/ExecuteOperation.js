@@ -277,6 +277,9 @@
             return foundElements;
         }
         switch (locator.locatorStrategy) {
+            case 'selfNode':
+                foundElements = new Array(parentElement);
+                break;
             case 'id':
                 foundElements = [document.getElementById(locator.locatorValue)];
                 break;
@@ -291,6 +294,10 @@
                 break;
             case 'tagName':
                 foundElements = collectionToArray(parentElement.getElementsByTagName(locator.locatorValue));
+                break;
+            case 'dti' :
+                let dtiXpathValue = './/*[@data-test-id="' + locator.locatorValue + '"]';
+                foundElements = findElementsByXpath(parentElement, dtiXpathValue);
                 break;
             case 'name' :
                 foundElements = collectionToArray(parentElement.getElementsByName(locator.locatorValue));

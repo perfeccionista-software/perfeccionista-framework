@@ -20,6 +20,7 @@ import org.junit.platform.commons.logging.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.EMPTY_ATTACHMENT_ENTRY;
@@ -93,9 +94,23 @@ public class WebAllureAttachmentProcessor extends DefaultAttachmentProcessor {
                 .map(entry -> DELIMITER + entry.getName() + "\n" + DELIMITER + entry.getDescription())
                 .orElse("");
 
-        addScreenshotAttachmentToAllure(environment);
+        String screenshotAttachmentDescription = takeScreenshot(environment)
+                .map(screenshot -> {
+                    String fileName = "Screenshot_" + createId() + ".png";
+                    Path filePath = Path.of(ATTACHMENT_DIR + File.separator + fileName);
+                    deleteFileIgnoreExceptions(filePath);
+                    writeBinaryFile(filePath, screenshot.getRaw());
+                    Allure.addAttachment("Web Browser Screenshot",
+                            "image/png",
+                            new ByteArrayInputStream(screenshot.getRaw()),
+                            "png");
+                    return "Screenshot " + filePath.toAbsolutePath().toString();
+                }).orElse("");
 
-        if (isBlank(fileAttachmentsDescription) && isBlank(stringAttachmentsDescription) && isBlank(mainAttachmentDescription)) {
+        if (isBlank(fileAttachmentsDescription)
+                && isBlank(stringAttachmentsDescription)
+                && isBlank(mainAttachmentDescription)
+                && isBlank(screenshotAttachmentDescription)) {
             return "";
         }
 
@@ -104,23 +119,20 @@ public class WebAllureAttachmentProcessor extends DefaultAttachmentProcessor {
                 + (isBlank(fileAttachmentsDescription) ? "" : fileAttachmentsDescription + "\n")
                 + (isBlank(stringAttachmentsDescription) ? "" : stringAttachmentsDescription + "\n")
                 + (isBlank(mainAttachmentDescription) ? "" : mainAttachmentDescription + "\n")
+                + (isBlank(screenshotAttachmentDescription) ? "" : screenshotAttachmentDescription + "\n")
                 + DELIMITER);
 
         return "";
     }
 
-    protected void addScreenshotAttachmentToAllure(@NotNull Environment environment) {
+    protected Optional<Screenshot> takeScreenshot(@NotNull Environment environment) {
         WebBrowserService webBrowserService = environment.getService(WebBrowserService.class);
         if (webBrowserService.isActiveDispatcherRunning()) {
-            Screenshot pageScreenshot = webBrowserService.getActiveDispatcher()
+            return Optional.of(webBrowserService.getActiveDispatcher()
                     .window()
-                    .getPageScreenshot();
-            Allure.addAttachment("Browser Window Screenshot",
-                    "image/png",
-                    new ByteArrayInputStream(pageScreenshot.getRaw()),
-                    "png"
-            );
+                    .getPageScreenshot());
         }
+        return Optional.empty();
     }
 
 }

@@ -9,6 +9,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.MobileIsDisplaye
 import io.perfeccionista.framework.pagefactory.elements.methods.MobileIsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.MobileIsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.MobileIsSelectedAvailable;
+import io.perfeccionista.framework.pagefactory.extractor.list.MobileListBlockElementExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.list.MobileListBlockExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.list.MobileListBlockIndexExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.table.MobileTableCellExtractor;
@@ -39,14 +40,14 @@ public class MobileExtractors {
         return new MobileListBlockExtractor<>(blockClass);
     }
 
-//    public static <T extends MobileChildElement> MobileListBlockElementExtractor<T> element(@NotNull T elementFrame) {
-//        return new MobileListBlockElementExtractor<>(elementFrame);
-//    }
-//
-//    public static <T extends MobileChildElement> MobileListBlockElementExtractor<T> element(@NotNull String elementPath, @NotNull Class<T> returnType) {
-//        return new MobileListBlockElementExtractor<>(elementPath, returnType);
-//    }
-//
+    public static <T extends MobileChildElement> MobileListBlockElementExtractor<T> element(@NotNull T elementFrame) {
+        return new MobileListBlockElementExtractor<>(elementFrame);
+    }
+
+    public static <T extends MobileChildElement> MobileListBlockElementExtractor<T> element(@NotNull String elementPath, @NotNull Class<T> returnType) {
+        return new MobileListBlockElementExtractor<>(elementPath, returnType);
+    }
+
 //    public static MobileListBlockElementDisplayedMarkExtractor displayedMark(@NotNull MobileIsDisplayedAvailable elementFrame) {
 //        return new MobileListBlockElementDisplayedMarkExtractor(elementFrame);
 //    }

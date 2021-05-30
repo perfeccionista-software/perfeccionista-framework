@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 
 public enum AndroidLocatorStrategy implements LocatorStrategy {
 
+    SELF_NODE("selfNode"),
     ID("id"),
     XPATH("xpath"),
     NAME("name"),

@@ -4,6 +4,7 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.exceptions.IncorrectMobileLocatorValue;
 import io.perfeccionista.framework.exceptions.LocatorProcessing;
 import io.perfeccionista.framework.exceptions.UnsupportedSearchLogic;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
@@ -34,6 +35,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.LOCATOR_STRATEGY_UNSUPPORTED;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.INCORRECT_MOBILE_LOCATOR_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PagefactoryMobileAppiumMessages.UNSUPPORTED_SEARCH_LOGIC;
 
 public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperationExecutor {
@@ -198,6 +200,7 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
 
     protected AndroidLocatorProcessingResult findSingleFromSingle(@NotNull AndroidLocatorProcessingResult previousResult,
                                                                   @NotNull MobileLocatorHolder locator) {
+        // TODO: Логика работает неправильно, если предыдущий элемент не найден (например, нет элементов списка)
         if (previousResult.size() == 0) {
             return findElementFromRoot(locator);
         } else {
@@ -212,6 +215,7 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
 
     protected AndroidLocatorProcessingResult findMultipleFromSingle(@NotNull AndroidLocatorProcessingResult previousResult,
                                                                     @NotNull MobileLocatorHolder locator) {
+        // TODO: Логика работает неправильно, если предыдущий элемент не найден (например, нет элементов списка)
         if (previousResult.size() == 0) {
             return findElementsFromRoot(locator);
         } else {
@@ -227,6 +231,8 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
         try {
             AndroidElement result;
             switch (locatorStrategy) {
+                case SELF_NODE:
+                    throw IncorrectMobileLocatorValue.exception(INCORRECT_MOBILE_LOCATOR_VALUE.getMessage());
                 case ID:
                     result = instance.findElementById(locatorValue);
                     break;
@@ -274,6 +280,8 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
         try {
             List<AndroidElement> results;
             switch (locatorStrategy) {
+                case SELF_NODE:
+                    throw IncorrectMobileLocatorValue.exception(INCORRECT_MOBILE_LOCATOR_VALUE.getMessage());
                 case ID:
                     results = instance.findElementsById(locatorValue);
                     break;
@@ -326,6 +334,8 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
         try {
             AndroidElement result;
             switch (locatorStrategy) {
+                case SELF_NODE:
+                    return parentResult;
                 case ID:
                     if (index > -1) {
                         List<MobileElement> foundedElements = parent.findElementsById(locatorValue);
@@ -341,31 +351,112 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
                     }
                     break;
                 case XPATH:
-                    result = (AndroidElement) parent.findElementByXPath(locatorValue);
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByXPath(locatorValue);
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByXPath(locatorValue);
+                    }
                     break;
                 case NAME:
-                    result = (AndroidElement) parent.findElementByName(locatorValue);
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByName(locatorValue);
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByName(locatorValue);
+                    }
                     break;
                 case TAG_NAME:
-                    result = (AndroidElement) parent.findElementByTagName(locatorValue);
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByTagName(locatorValue);
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByTagName(locatorValue);
+                    }
                     break;
                 case CLASS_NAME:
-                    result = (AndroidElement) parent.findElementByClassName(locatorValue);
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByClassName(locatorValue);
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementsByClassName(locatorValue);
+                    }
                     break;
                 case ACCESSIBILITY_ID:
-                    result = (AndroidElement) parent.findElementByAccessibilityId(locatorValue);
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByAccessibilityId(locatorValue);
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByAccessibilityId(locatorValue);
+                    }
                     break;
                 case TEXT:
-                    result = (AndroidElement) parent.findElementsByXPath(".//*[@text = '" + locatorValue + "']");
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByXPath(".//*[@text = '" + locatorValue + "']");
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByXPath(".//*[@text = '" + locatorValue + "']");
+                    }
                     break;
                 case CONTAINS_TEXT:
-                    result = (AndroidElement) parent.findElementsByXPath(".//*[contains(@text, '" + locatorValue + "']");
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByXPath(".//*[contains(@text, '" + locatorValue + "']");
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByXPath(".//*[contains(@text, '" + locatorValue + "']");
+                    }
                     break;
                 case ANDROID_VIEW_TAG:
-                    result = (AndroidElement) parent.findElementByAndroidViewTag(locatorValue);
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByAndroidViewTag(locatorValue);
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByAndroidViewTag(locatorValue);
+                    }
                     break;
                 case ANDROID_DATA_MATCHER:
-                    result = (AndroidElement) parent.findElementByAndroidDataMatcher(locatorValue);
+                    if (index > -1) {
+                        List<MobileElement> foundedElements = parent.findElementsByAndroidDataMatcher(locatorValue);
+                        if (foundedElements.size() > index) {
+                            result = (AndroidElement) foundedElements.get(index);
+                        } else {
+                            throw new NoSuchElementException("Element with index " + index + " not found");
+                        }
+                    } else {
+                        result = (AndroidElement) parent.findElementByAndroidDataMatcher(locatorValue);
+                    }
                     break;
                 default:
                     throw LocatorProcessing.exception(LOCATOR_STRATEGY_UNSUPPORTED.getMessage(locatorStrategy, AndroidDriver.class));
@@ -386,6 +477,8 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
         try {
             List<AndroidElement> results;
             switch (locatorStrategy) {
+                case SELF_NODE:
+                    return parentResult;
                 case ID:
                     results = parent.findElementsById(locatorValue).stream()
                             .map(element -> (AndroidElement) element).collect(Collectors.toList());
@@ -450,6 +543,9 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
             try {
                 AndroidElement result;
                 switch (locatorStrategy) {
+                    case SELF_NODE:
+                        result = parentEntry.getValue();
+                        break;
                     case ID:
                         result = (AndroidElement) parentEntry.getValue().findElementById(locatorValue);
                         break;

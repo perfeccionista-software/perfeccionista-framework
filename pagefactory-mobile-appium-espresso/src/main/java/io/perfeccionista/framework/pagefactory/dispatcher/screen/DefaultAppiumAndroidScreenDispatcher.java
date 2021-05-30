@@ -7,8 +7,11 @@ import io.perfeccionista.framework.exceptions.mapper.MobileExceptionMapper;
 import io.perfeccionista.framework.matcher.dispatcher.MobileDeviceScreenDispatcherMatcher;
 import io.perfeccionista.framework.measurements.Rotation3D;
 import io.perfeccionista.framework.pagefactory.dispatcher.driver.AndroidEspressoDriver;
+import io.perfeccionista.framework.screenshots.PngScreenshot;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
 import java.util.Map;
@@ -20,6 +23,7 @@ import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.RESP
 import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_GET_PAGE_SCREENSHOT;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_ON_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.GET_SCREEN_ORIENTATION_METHOD;
@@ -141,7 +145,12 @@ public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenD
 
     @Override
     public @NotNull Screenshot getPageScreenshot() {
-        return null;
+        return runCheck(environment, getterInvocation(DEVICE_GET_PAGE_SCREENSHOT), () -> exceptionMapper
+                .map(() -> PngScreenshot.from(((TakesScreenshot) instance).getScreenshotAs(OutputType.BYTES)))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult());
     }
 
     @Override

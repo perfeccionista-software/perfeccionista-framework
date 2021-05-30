@@ -28,6 +28,7 @@ public class MobileDeviceActionNames {
     public static final String DEVICE_PERFORM_TOUCH_ID_METHOD = "PerformTouchId";
     public static final String DEVICE_SEND_SMS_METHOD = "SendSms";
     public static final String DEVICE_CALL_METHOD = "Call";
+    public static final String DEVICE_GET_PAGE_SCREENSHOT = "DeviceGetPageScreenshot";
 
 
     public static final String MOBILE_DEVICE_SHOULD_BE_LOCKED_METHOD = "DeviceShouldBeLocked";

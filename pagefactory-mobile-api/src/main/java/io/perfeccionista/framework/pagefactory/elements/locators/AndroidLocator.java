@@ -39,6 +39,7 @@ public @interface AndroidLocator {
     String androidViewTag() default "";
     String androidDataMatcher() default "";
 
+    boolean selfNode() default false;
     boolean single() default true;
     boolean strictSearch() default true;
     boolean onlyWithinParent() default true;

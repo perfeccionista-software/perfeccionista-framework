@@ -37,9 +37,11 @@ public @interface WebLocator {
     String tagName() default "";
     @Language("selenium-name")
     String name() default "";
+    String dti() default "";
     String text() default "";
     String containsText() default "";
 
+    boolean selfNode() default false;
     boolean single() default true;
     boolean strictSearch() default true;
     boolean onlyWithinParent() default true;
