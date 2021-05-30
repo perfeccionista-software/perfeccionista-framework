@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.dispatcher.tabs;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.WebBrowserTabNotFound;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
 import io.perfeccionista.framework.matcher.dispatcher.WebBrowserTabsDispatcherMatcher;
 import io.perfeccionista.framework.value.Value;
@@ -202,7 +202,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
                         })
                         .findFirst()
                         .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_TITLE.getMessage(tabTitle.get()))
-                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab titles", windowTitles)));
+                                .addLastAttachmentEntry(TextAttachmentEntry.of("Browser tab titles", windowTitles)));
                 if (windowHandles.size() == 1) {
                     instance.close();
                     return;
@@ -235,7 +235,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
                         })
                         .findFirst()
                         .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_URL.getMessage(tabUrl.get()))
-                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab urls", windowUrls)));
+                                .addLastAttachmentEntry(TextAttachmentEntry.of("Browser tab urls", windowUrls)));
                 if (windowHandles.size() == 1) {
                     instance.close();
                     return;
@@ -267,7 +267,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
                         })
                         .findFirst()
                         .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_TITLE.getMessage(tabTitle.get()))
-                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab titles", windowTitles)));
+                                .addLastAttachmentEntry(TextAttachmentEntry.of("Browser tab titles", windowTitles)));
                 instance.switchTo().window(targetHandle);
             }).ifException(exception -> {
                 throw exception;
@@ -291,7 +291,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
                         })
                         .findFirst()
                         .orElseThrow(() -> WebBrowserTabNotFound.exception(WEB_BROWSER_HAS_NO_TAB_WITH_URL.getMessage(tabUrl.get()))
-                                .addLastAttachmentEntry(StringAttachmentEntry.of("Browser tab urls", windowUrls)));
+                                .addLastAttachmentEntry(TextAttachmentEntry.of("Browser tab urls", windowUrls)));
                 instance.switchTo().window(targetHandle);
             }).ifException(exception -> {
                 throw exception;

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.utils;
 
 import io.perfeccionista.framework.exceptions.CommandExecutionFailed;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -28,8 +28,8 @@ public class RuntimeUtils {
                 String output = new BufferedReader(new InputStreamReader(process.getInputStream()))
                         .lines().collect(Collectors.joining("\n"));
                 throw CommandExecutionFailed.exception(COMMAND_EXECUTION_FAILED_WITH_CODE.getMessage(exitVal))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("CommandLine", commandLine))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Output", output));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("CommandLine", commandLine))
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Output", output));
             }
         } catch (InterruptedException | IOException e) {
                 throw CommandExecutionFailed.exception(COMMAND_EXECUTION_FAILED.getMessage(), e);

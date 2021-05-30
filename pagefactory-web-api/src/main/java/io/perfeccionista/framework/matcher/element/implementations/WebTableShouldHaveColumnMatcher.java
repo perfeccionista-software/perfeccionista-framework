@@ -5,7 +5,7 @@ import io.perfeccionista.framework.exceptions.ElementNotDisplayed;
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.js.JsElementSearch;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
@@ -83,9 +83,9 @@ public class WebTableShouldHaveColumnMatcher implements WebTableMatcher {
                 throw ElementNotDisplayed.assertionError(COMPONENT_NOT_DISPLAYED.getMessage(componentName, element.getElementIdentifier().getLastUsedName()))
                         .setProcessed(true)
                         .addSuppressedException(exception)
-                        .setAttachment(exception.getAttachment().orElse(Attachment.of()))
+                        .setAttachment(exception.getAttachment().orElse(Attachment.with()))
                         .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
             }
             throw exception.addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
@@ -94,7 +94,7 @@ public class WebTableShouldHaveColumnMatcher implements WebTableMatcher {
             throw ElementNotDisplayed.assertionError(ELEMENT_NOT_DISPLAYED.getMessage(element.getElementIdentifier().getLastUsedName()))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
         }
     }
 

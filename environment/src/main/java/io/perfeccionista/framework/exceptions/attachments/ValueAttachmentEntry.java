@@ -5,7 +5,7 @@ import io.perfeccionista.framework.value.object.ObjectValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
-public class ValueAttachmentEntry extends StringAttachmentEntry {
+public class ValueAttachmentEntry extends TextAttachmentEntry {
 
     protected ValueAttachmentEntry(String content) {
         super("Value Comparison Result", content);

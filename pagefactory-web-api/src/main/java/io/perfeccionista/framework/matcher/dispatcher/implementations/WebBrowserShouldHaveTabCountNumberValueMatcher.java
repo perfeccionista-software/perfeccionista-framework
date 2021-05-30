@@ -2,7 +2,7 @@ package io.perfeccionista.framework.matcher.dispatcher.implementations;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.WebBrowserTabCount;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.ValueAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.dispatcher.WebBrowserTabsDispatcherMatcher;
@@ -48,7 +48,7 @@ public class WebBrowserShouldHaveTabCountNumberValueMatcher implements WebBrowse
         if (!expectedNumberValue.check(actualTabCount)) {
             throw WebBrowserTabCount.assertionError(WEB_BROWSER_TAB_COUNT_DOES_NOT_CONTAIN_EXPECTED_VALUE.getMessage())
                     .setProcessed(true)
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
                     .addLastAttachmentEntry(ValueAttachmentEntry.of(expectedNumberValue));
         }
     }
@@ -57,7 +57,7 @@ public class WebBrowserShouldHaveTabCountNumberValueMatcher implements WebBrowse
         if (expectedNumberValue.check(actualTabCount)) {
             throw WebBrowserTabCount.assertionError(WEB_BROWSER_TAB_COUNT_CONTAINS_EXPECTED_VALUE.getMessage())
                     .setProcessed(true)
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
                     .addLastAttachmentEntry(ValueAttachmentEntry.of(expectedNumberValue));
         }
     }

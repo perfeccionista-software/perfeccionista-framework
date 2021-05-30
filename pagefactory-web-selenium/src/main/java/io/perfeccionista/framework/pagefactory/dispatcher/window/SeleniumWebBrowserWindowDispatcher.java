@@ -5,9 +5,13 @@ import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
 import io.perfeccionista.framework.measurements.Point2D;
 import io.perfeccionista.framework.pagefactory.dispatcher.executor.WebBrowserOperationExecutor;
 import io.perfeccionista.framework.measurements.Dimensions2D;
+import io.perfeccionista.framework.screenshots.PngScreenshot;
+import io.perfeccionista.framework.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
@@ -15,6 +19,7 @@ import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrap
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_GET_ABSOLUTE_WINDOW_LOCATION_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_GET_INNER_WINDOW_SIZE_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_GET_OUTER_WINDOW_SIZE_METHOD;
+import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_GET_PAGE_SCREENSHOT;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SET_WINDOW_FULLSCREEN_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SET_ABSOLUTE_WINDOW_LOCATION_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SET_OUTER_WINDOW_SIZE_METHOD;
@@ -37,7 +42,17 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
     }
 
     @Override
-    public Dimensions2D getInnerWindowSize() {
+    public @NotNull Screenshot getPageScreenshot() {
+        return runCheck(environment, getterInvocation(BROWSER_GET_PAGE_SCREENSHOT), () -> exceptionMapper
+                .map(() -> PngScreenshot.from(((TakesScreenshot) instance).getScreenshotAs(OutputType.BYTES)))
+                .ifException(exception -> {
+                    throw exception;
+                })
+                .getResult());
+    }
+
+    @Override
+    public @NotNull Dimensions2D getInnerWindowSize() {
         return runCheck(environment, getterInvocation(BROWSER_GET_INNER_WINDOW_SIZE_METHOD), () -> exceptionMapper
                 .map(() -> {
                     String script = "return window.innerWidth + 'x' + window.innerHeight;";
@@ -50,7 +65,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
     }
 
     @Override
-    public Dimensions2D getOuterWindowSize() {
+    public @NotNull Dimensions2D getOuterWindowSize() {
         return runCheck(environment, getterInvocation(BROWSER_GET_OUTER_WINDOW_SIZE_METHOD), () -> exceptionMapper
                 .map(() -> {
                     String script = "return window.outerWidth + 'x' + window.outerHeight;";
@@ -73,7 +88,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
     }
 
     @Override
-    public Point2D getAbsoluteLocation() {
+    public @NotNull Point2D getAbsoluteLocation() {
         return runCheck(environment, getterInvocation(BROWSER_GET_ABSOLUTE_WINDOW_LOCATION_METHOD), () ->
                 exceptionMapper.map(() -> createPerfeccionistaLocation(instance.manage().window().getPosition()))
                         .ifException(exception -> {

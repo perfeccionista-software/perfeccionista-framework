@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.JsonParse;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +29,7 @@ public class JsonUtils {
             return objectMapper.readTree(content);
         } catch (JsonProcessingException e) {
             throw JsonParse.exception(JSON_STRING_PARSE_ERROR.getMessage())
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Json string", content));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Json string", content));
         }
     }
 

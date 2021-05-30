@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -62,6 +63,10 @@ public class WebBrowserService implements Service {
         return webBrowserDispatcher;
     }
 
+    public boolean isActiveDispatcherRunning() {
+        return Objects.nonNull(activeWebBrowserDispatcher);
+    }
+
     public @NotNull WebBrowserDispatcher getActiveDispatcher() {
         return Optional.ofNullable(activeWebBrowserDispatcher)
                 .orElseThrow(() -> WebBrowserDispatcherNotStarted.exception(NO_ACTIVE_WEB_BROWSER_DISPATCHER_FOUND.getMessage()));
@@ -78,10 +83,9 @@ public class WebBrowserService implements Service {
     }
 
     public WebBrowserService closeAll() {
-        webBrowserDispatchersByName.forEach((name, webBrowserDispatcher) -> {
-            webBrowserDispatcher.close();
-        });
+        webBrowserDispatchersByName.forEach((name, webBrowserDispatcher) -> webBrowserDispatcher.close());
         webBrowserDispatchers.forEach(WebBrowserDispatcher::close);
+        this.activeWebBrowserDispatcher = null;
         return this;
     }
 

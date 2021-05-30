@@ -14,6 +14,8 @@ public interface Screenshot {
 
     String getDescription();
 
+    String getFileExtension();
+
     String getMimeType();
 
     byte[] getRaw();

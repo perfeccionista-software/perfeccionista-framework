@@ -1,20 +1,22 @@
 package io.perfeccionista.framework.invocation.runner;
 
+import io.perfeccionista.framework.exceptions.IncorrectInvocationRunnerLogic;
+import io.perfeccionista.framework.exceptions.attachments.BigTextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
+import io.perfeccionista.framework.invocation.timeouts.type.CheckDelayTimeout;
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.invocation.timeouts.type.LogicDelayTimeout;
 import io.perfeccionista.framework.exceptions.base.ExceptionCollector;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 
 import java.time.Duration;
 import java.util.function.Supplier;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.GETTER;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.INCORRECT_INVOCATION_RUNNER_LOGIC;
 import static java.lang.String.format;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
@@ -34,15 +36,12 @@ public class LogicInvocationRunner implements InvocationRunner {
         // We need this for one attempt if timeout = 0
         long currentTime = System.nanoTime();
         long deadline = currentTime + timeout.toNanos();
-        if (name.isNotEmpty() && GETTER != name.getType()) {
-            logger.info(name::toString);
-        }
-        logger.debug(() -> format("Logic action started. Timeout = %s. Delay = %s.", getFormattedDuration(timeout), getFormattedDuration(delay)));
+        long invocationStartTime = 0;
 
         while (deadline >= currentTime) {
             try {
                 T result = supplier.get();
-                logger.debug(() -> "Logic action finished");
+//                logInvocationExecution(name, invocationStartTime, "SUCCESS");
                 return result;
             } catch (final PerfeccionistaRuntimeException | PerfeccionistaAssertionError e) {
                 processException(e);
@@ -50,28 +49,33 @@ public class LogicInvocationRunner implements InvocationRunner {
                     break;
                 }
             } catch (final Exception e) {
-                logger.error(() -> format("Logic action cycle finished with unexpected exception: %s", e));
+                logInvocationExecution(name, invocationStartTime, "UNEXPECTED EXCEPTION");
                 throw e;
             }
             sleep(delay);
             currentTime = System.nanoTime();
         }
 
-        logger.error(() -> format("Logic action %s finished with exception in %s", name, getFormattedDuration(Duration.ofNanos(System.nanoTime() - deadline + timeout.toNanos()))));
-        exceptionCollector.throwIfSingleException();
-        throw exceptionCollector.getExceptionSequence();
+        logInvocationExecution(name, invocationStartTime, "EXCEPTION");
+        exceptionCollector.throwLastException();
+        throw IncorrectInvocationRunnerLogic.exception(INCORRECT_INVOCATION_RUNNER_LOGIC.getMessage()).addLastAttachmentEntry(BigTextAttachmentEntry
+                .of("All Exception Messages", exceptionCollector.generateExceptionSequenceMessage()));
     }
 
-    private void processException(PerfeccionistaException exception) {
+    protected void logInvocationExecution(InvocationName name, long invocationStartTime, String status) {
+        logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> [" + status + "]");
+    }
+
+    protected void processException(PerfeccionistaException exception) {
         if (null == exceptionCollector) {
             exceptionCollector = new ExceptionCollector(exception);
         }
         exceptionCollector.processException(exception);
     }
 
-    private static Duration getDelayTimeout(Environment environment) {
+    protected Duration getDelayTimeout(Environment environment) {
         return environment.getService(TimeoutsService.class)
-                .getTimeout(LogicDelayTimeout.class);
+                .getTimeout(CheckDelayTimeout.class);
     }
 
     protected String getFormattedDuration(Duration duration) {

@@ -3,7 +3,7 @@ package io.perfeccionista.framework.exceptions.attachments;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 
-public class SizeAttachmentEntry extends StringAttachmentEntry {
+public class SizeAttachmentEntry extends TextAttachmentEntry {
 
     protected SizeAttachmentEntry(String content) {
         super("Size Comparison Result", content);

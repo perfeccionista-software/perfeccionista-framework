@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.DISPLAYED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;

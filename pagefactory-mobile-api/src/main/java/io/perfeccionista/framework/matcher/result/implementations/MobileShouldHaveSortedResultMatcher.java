@@ -2,7 +2,7 @@ package io.perfeccionista.framework.matcher.result.implementations;
 
 import io.perfeccionista.framework.exceptions.MobileResultSetNotSorted;
 import io.perfeccionista.framework.exceptions.attachments.MobileElementAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElement;
@@ -50,7 +50,7 @@ public class MobileShouldHaveSortedResultMatcher<T> implements MobileMultipleInd
                 throw MobileResultSetNotSorted.assertionError(FILTERED_ELEMENT_IS_NOT_SORTED.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(MobileElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Comparison result", comparisonResultsToString(detailComparisonResult)));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Comparison result", comparisonResultsToString(detailComparisonResult)));
             }
         });
     }

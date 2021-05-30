@@ -15,11 +15,13 @@ public class PngScreenshot implements Screenshot {
     private final String mimeType;
     private String name = null;
     private String description = null;
+    private String fileExtension = null;
 
     public PngScreenshot(byte[] raw) {
         this.created = LocalDateTime.now();
         this.raw = raw;
         this.mimeType = "image/png";
+        this.fileExtension = "png";
     }
 
     public static PngScreenshot from(byte[] raw) {
@@ -46,8 +48,18 @@ public class PngScreenshot implements Screenshot {
     }
 
     @Override
-    public byte[] getRaw() {
-        return raw;
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String getFileExtension() {
+        return fileExtension;
     }
 
     @Override
@@ -56,13 +68,8 @@ public class PngScreenshot implements Screenshot {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
+    public byte[] getRaw() {
+        return raw;
     }
 
     @Override

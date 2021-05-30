@@ -2,7 +2,7 @@ package io.perfeccionista.framework.matcher.methods.implementations;
 
 import io.perfeccionista.framework.exceptions.WebElementLocation;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
 import io.perfeccionista.framework.measurements.Point2D;
@@ -51,8 +51,8 @@ public class WebShouldHaveAbsoluteLocationMatcher implements WebGetElementBounds
             throw WebElementLocation.assertionError(ELEMENT_LOCATION_IS_NOT_EQUAL_EXPECTED_LOCATION.getMessage(componentName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual location", actualLocation.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected location", expectedLocation.toString()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual location", actualLocation.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected location", expectedLocation.toString()));
         }
     }
 
@@ -61,8 +61,8 @@ public class WebShouldHaveAbsoluteLocationMatcher implements WebGetElementBounds
             throw WebElementLocation.assertionError(ELEMENT_LOCATION_IS_EQUAL_EXPECTED_LOCATION.getMessage(componentName))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Actual location", actualLocation.toString()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Expected location", expectedLocation.toString()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Actual location", actualLocation.toString()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Expected location", expectedLocation.toString()));
         }
     }
 

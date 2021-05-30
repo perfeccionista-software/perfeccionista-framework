@@ -2,7 +2,7 @@ package io.perfeccionista.framework.matcher.dispatcher.implementations;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.WebBrowserTabTitle;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.ValueAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.dispatcher.WebBrowserTabsDispatcherMatcher;
@@ -52,7 +52,7 @@ public class WebBrowserShouldHaveTabWithTitleStringValueMatcher implements WebBr
         if (!match) {
             throw WebBrowserTabTitle.assertionError(WEB_BROWSER_DOES_NOT_CONTAIN_TAB_WITH_EXPECTED_TITLE.getMessage())
                     .setProcessed(true)
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
                     .addLastAttachmentEntry(ValueAttachmentEntry.of(expectedTextValue, String.join("', '", actualTabTitles)));
         }
     }
@@ -63,7 +63,7 @@ public class WebBrowserShouldHaveTabWithTitleStringValueMatcher implements WebBr
         if (match) {
             throw WebBrowserTabTitle.assertionError(WEB_BROWSER_CONTAINS_TAB_WITH_EXPECTED_TITLE.getMessage())
                     .setProcessed(true)
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Tabs", tabsDispatcher.getDescription()))
                     .addLastAttachmentEntry(ValueAttachmentEntry.of(expectedTextValue, String.join("', '", actualTabTitles)));
         }
     }

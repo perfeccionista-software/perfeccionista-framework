@@ -6,7 +6,7 @@ import io.perfeccionista.framework.exceptions.ElementNotPresent;
 import io.perfeccionista.framework.exceptions.ElementNotSelected;
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
@@ -59,9 +59,9 @@ public class MobileShouldBeSelectedAvailableMatcher implements MobileIsSelectedA
                 throw ElementNotDisplayed.assertionError(COMPONENT_NOT_DISPLAYED.getMessage(DISPLAYED, element.getElementIdentifier().getLastUsedName()), exception)
                         .setProcessed(true)
                         .addSuppressedException(exception)
-                        .setAttachment(exception.getAttachment().orElse(Attachment.of()))
+                        .setAttachment(exception.getAttachment().orElse(Attachment.empty()))
                         .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("PageSource", operationResult.getPageSource()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("PageSource", operationResult.getPageSource()));
             }
             throw exception.addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
@@ -76,7 +76,7 @@ public class MobileShouldBeSelectedAvailableMatcher implements MobileIsSelectedA
             throw error
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("PageSource", operationResult.getPageSource()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("PageSource", operationResult.getPageSource()));
         }
     }
 }

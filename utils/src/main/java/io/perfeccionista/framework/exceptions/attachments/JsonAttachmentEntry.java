@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
-public class JsonAttachmentEntry extends AttachmentEntry<JsonNode> {
+public class JsonAttachmentEntry extends FileAttachmentEntry<JsonNode> {
 
     protected JsonAttachmentEntry(String name, JsonNode content) {
         super(name, content);
@@ -21,6 +21,11 @@ public class JsonAttachmentEntry extends AttachmentEntry<JsonNode> {
         return this.getContent()
                 .orElse(createObjectNode())
                 .toPrettyString();
+    }
+
+    @Override
+    public @NotNull String getFileExtension() {
+        return "json";
     }
 
 }

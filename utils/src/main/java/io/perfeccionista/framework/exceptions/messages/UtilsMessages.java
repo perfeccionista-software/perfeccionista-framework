@@ -9,6 +9,7 @@ public enum UtilsMessages implements Messages {
     CONSTRUCTOR_NOT_FOUND("Constructor for class %s with parameters %s not found"),
     CLIPBOARD_VALUE_NOT_AVAILABLE("Clipboard value not available"),
     EMPTY_PATH("Path is empty"),
+    EMPTY_ATTACHMENT_ENTRY("Content of the attachment entry is empty"),
     EXCEPTION_MAPPER_FOR_CLASS_NOT_FOUND("Exception mapper for class %s is not found"),
     FIELD_NOT_FOUND("Class %s does not contain field with name %s"),
     FIELD_READING_ERROR("Can't read field with name %s"),

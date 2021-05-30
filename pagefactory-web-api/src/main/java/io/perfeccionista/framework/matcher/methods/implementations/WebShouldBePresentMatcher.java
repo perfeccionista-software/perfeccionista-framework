@@ -3,7 +3,7 @@ package io.perfeccionista.framework.matcher.methods.implementations;
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementIsPresent;
 import io.perfeccionista.framework.exceptions.ElementNotPresent;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
@@ -61,9 +61,9 @@ public class WebShouldBePresentMatcher implements WebIsPresentAvailableMatcher {
                 throw ElementNotPresent.assertionError(ELEMENT_NOT_PRESENT.getMessage(element.getElementIdentifier().getLastUsedName()))
                         .setProcessed(true)
                         .addSuppressedException(exception)
-                        .setAttachment(exception.getAttachment().orElse(Attachment.of()))
+                        .setAttachment(exception.getAttachment().orElse(Attachment.empty()))
                         .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
             }
             throw exception.addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });

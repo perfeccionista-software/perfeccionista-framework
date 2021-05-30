@@ -18,6 +18,7 @@ public class WebBrowserActionNames {
     public static final String BROWSER_DELETE_COOKIE_METHOD = "BrowserDeleteCookie";
     public static final String BROWSER_DELETE_COOKIE_BY_NAME_METHOD = "BrowserDeleteCookieByName";
 
+    public static final String BROWSER_GET_PAGE_SCREENSHOT = "BrowserGetPageScreenshot";
     public static final String BROWSER_GET_INNER_WINDOW_SIZE_METHOD = "BrowserGetInnerWindowSize";
     public static final String BROWSER_GET_OUTER_WINDOW_SIZE_METHOD = "BrowserGetOuterWindowSize";
     public static final String BROWSER_SET_OUTER_WINDOW_SIZE_METHOD = "BrowserSetOuterWindowSize";

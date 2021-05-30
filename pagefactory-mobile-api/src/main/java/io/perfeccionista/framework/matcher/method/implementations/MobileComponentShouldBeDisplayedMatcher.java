@@ -6,7 +6,7 @@ import io.perfeccionista.framework.exceptions.ElementNotPresent;
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.method.MobileComponentAvailableMatcher;
@@ -63,9 +63,9 @@ public class MobileComponentShouldBeDisplayedMatcher implements MobileComponentA
                 throw ElementNotDisplayed.assertionError(COMPONENT_NOT_DISPLAYED.getMessage(componentName, element.getElementIdentifier().getLastUsedName()), exception)
                         .setProcessed(true)
                         .addSuppressedException(exception)
-                        .setAttachment(exception.getAttachment().orElse(Attachment.of()))
+                        .setAttachment(exception.getAttachment().orElse(Attachment.empty()))
                         .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("PageSource", operationResult.getPageSource()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("PageSource", operationResult.getPageSource()));
             }
             throw exception.addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
@@ -74,7 +74,7 @@ public class MobileComponentShouldBeDisplayedMatcher implements MobileComponentA
             throw ElementNotDisplayed.assertionError(ELEMENT_NOT_DISPLAYED.getMessage(element.getElementIdentifier().getLastUsedName()))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("PageSource", operationResult.getPageSource()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("PageSource", operationResult.getPageSource()));
         }
     }
 

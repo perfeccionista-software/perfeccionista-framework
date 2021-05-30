@@ -24,7 +24,6 @@ import java.util.Set;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PRESENTED;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
 
 public class WebListBlockElementPresentCondition implements WebListBlockCondition {
 

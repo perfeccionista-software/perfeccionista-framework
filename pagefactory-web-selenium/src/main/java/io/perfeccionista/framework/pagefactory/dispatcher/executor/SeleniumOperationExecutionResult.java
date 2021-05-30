@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
@@ -115,7 +115,7 @@ class SeleniumOperationExecutionResult<T> {
         String errorName = errorNode.get("name").asText();
         String errorMessage = errorNode.get("message").asText();
         PerfeccionistaRuntimeException exception = exceptionMapper.createByName(errorName, errorMessage)
-                .addLastAttachmentEntry(StringAttachmentEntry.of("JavaScript error stacktrace", errorNode.get("stackTrace").asText()));
+                .addLastAttachmentEntry(TextAttachmentEntry.of("JavaScript error stacktrace", errorNode.get("stackTrace").asText()));
         for (JsonNode errorAttachmentEntry : errorNode.get("attachments")) {
             exception.addLastAttachmentEntry(resolveErrorAttachment(errorAttachmentEntry));
         }
@@ -129,7 +129,7 @@ class SeleniumOperationExecutionResult<T> {
         } else if ("text/html".equals(attachmentType)) {
             return HtmlAttachmentEntry.of(errorAttachmentEntry.get("name").asText(), errorAttachmentEntry.get("content").asText());
         }
-        return StringAttachmentEntry.of(errorAttachmentEntry.get("name").asText(), errorAttachmentEntry.get("content").asText());
+        return TextAttachmentEntry.of(errorAttachmentEntry.get("name").asText(), errorAttachmentEntry.get("content").asText());
     }
 
 }

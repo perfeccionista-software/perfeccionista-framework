@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_TEXT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 

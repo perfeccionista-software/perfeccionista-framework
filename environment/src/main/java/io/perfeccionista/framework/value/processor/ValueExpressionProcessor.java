@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.platform.commons.util.ReflectionUtils;
 import org.junit.platform.commons.util.StringUtils;
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.datasource.DataConverter;
 import io.perfeccionista.framework.datasource.DataSource;
 
@@ -135,7 +135,7 @@ public class ValueExpressionProcessor {
 
         if (!expressionContext.isEmpty()) {
             throw StringValueParse.exception(STRING_VALUE_PARSING_FAILED.getMessage(expression))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Token", expressionContext.getFirst().toString()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Token", expressionContext.getFirst().toString()));
         }
 
         if (escaped) {
@@ -211,8 +211,8 @@ public class ValueExpressionProcessor {
                 objectContent = expressionResult.getResult();
             } else {
                 throw StringValueParse.exception(STRING_VALUE_PROCESSING_FAILED.getMessage(expression))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Tokenized expression", tokenizedExpression.toString()))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Token", processedToken.toString()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Tokenized expression", tokenizedExpression.toString()))
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Token", processedToken.toString()));
             }
         }
 
@@ -249,9 +249,9 @@ public class ValueExpressionProcessor {
         }
         if (null != objectContent && StringUtils.isNotBlank(stringKey)) {
             throw StringValueParse.exception(STRING_VALUE_COMPOUND_DATA_SOURCE_KEY.getMessage(expression))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("DataSource", dataSource.getClass().getCanonicalName()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("String key content", stringContent))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("DataSource", dataSource.getClass().getCanonicalName()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("String key content", stringContent))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName()));
         }
         return getDataSourceValue(dataSource, null == objectContent ? stringKey : objectContent);
     }
@@ -286,8 +286,8 @@ public class ValueExpressionProcessor {
             return result;
         }
         throw StringValueParse.exception(STRING_VALUE_DATA_SOURCE_INCORRECT_KEY_TYPE.getMessage(expression))
-                .addLastAttachmentEntry(StringAttachmentEntry.of("DataSource class", dataSource.getClass().getCanonicalName()))
-                .addLastAttachmentEntry(StringAttachmentEntry.of("Key class", key.getClass().getCanonicalName()));
+                .addLastAttachmentEntry(TextAttachmentEntry.of("DataSource class", dataSource.getClass().getCanonicalName()))
+                .addLastAttachmentEntry(TextAttachmentEntry.of("Key class", key.getClass().getCanonicalName()));
     }
 
     // Process DataConverter
@@ -299,9 +299,9 @@ public class ValueExpressionProcessor {
         String stringKey = stringContent.replace(dataConverterDeclaration.getDeclaration(), "").trim();
         if (null != objectContent && StringUtils.isNotBlank(stringKey)) {
             throw StringValueParse.exception(STRING_VALUE_COMPOUND_DATA_CONVERTER_KEY.getMessage(expression))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("DataConverter", dataConverter.getClass().getCanonicalName()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("String key content", stringContent))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("DataConverter", dataConverter.getClass().getCanonicalName()))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("String key content", stringContent))
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("Object key content", objectContent.getClass().getCanonicalName()));
         }
         return getDataConverterValue(dataConverter, null == objectContent ? stringKey : objectContent, dataConverterDeclaration.getFormat());
     }
@@ -321,7 +321,7 @@ public class ValueExpressionProcessor {
             }
         }
         throw StringValueParse.exception(STRING_VALUE_DATA_CONVERTER_NAME_NOT_FOUND.getMessage(expression))
-                .addLastAttachmentEntry(StringAttachmentEntry.of("String key content", stringContent));
+                .addLastAttachmentEntry(TextAttachmentEntry.of("String key content", stringContent));
     }
 
     /**
@@ -347,8 +347,8 @@ public class ValueExpressionProcessor {
             return result;
         }
         throw StringValueParse.exception(STRING_VALUE_DATA_CONVERTER_INCORRECT_KEY_TYPE.getMessage(expression))
-                .addLastAttachmentEntry(StringAttachmentEntry.of("DataConverter class", dataConverter.getClass().getCanonicalName()))
-                .addLastAttachmentEntry(StringAttachmentEntry.of("Key class", key.getClass().getCanonicalName()));
+                .addLastAttachmentEntry(TextAttachmentEntry.of("DataConverter class", dataConverter.getClass().getCanonicalName()))
+                .addLastAttachmentEntry(TextAttachmentEntry.of("Key class", key.getClass().getCanonicalName()));
     }
 
     protected static class DataSourceDeclaration {

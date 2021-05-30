@@ -2,7 +2,7 @@ package io.perfeccionista.framework.matcher.methods.implementations;
 
 import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementIsDisplayed;
 import io.perfeccionista.framework.exceptions.ElementNotDisplayed;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
@@ -61,7 +61,7 @@ public class WebShouldBeDisplayedMatcher implements WebIsDisplayedAvailableMatch
                         .setProcessed(true)
                         .addSuppressedException(exception)
                         .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
             }
             throw exception.addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()));
         });
@@ -70,7 +70,7 @@ public class WebShouldBeDisplayedMatcher implements WebIsDisplayedAvailableMatch
             throw ElementNotDisplayed.assertionError(ELEMENT_NOT_DISPLAYED.getMessage(element.getElementIdentifier().getLastUsedName()))
                     .setProcessed(true)
                     .addLastAttachmentEntry(JsonAttachmentEntry.of("Element", element.toJson()))
-                    .addLastAttachmentEntry(StringAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
+                    .addLastAttachmentEntry(TextAttachmentEntry.of("OuterHtml", operationResult.getPageSource()));
         }
     }
 

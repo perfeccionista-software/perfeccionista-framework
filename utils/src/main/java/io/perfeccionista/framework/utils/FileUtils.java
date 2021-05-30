@@ -73,6 +73,7 @@ public class FileUtils {
     public static void writeBinaryFile(@NotNull Path path, byte[] raw) {
         try {
             // TODO: Проверить корректность выполнения
+            Files.createDirectories(path.getParent());
             Files.createFile(path);
             Files.write(path, raw);
         } catch (IOException e) {
@@ -88,6 +89,22 @@ public class FileUtils {
             // TODO: Бросаем эксепшн о том, что не можем прочитать файл
             e.printStackTrace();
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void writeTextFile(@NotNull Path path, String content) {
+        writeTextFile(path, content, StandardCharsets.UTF_8);
+    }
+
+    public static void writeTextFile(@NotNull Path path, String content, @NotNull Charset charset) {
+        try {
+            // TODO: Проверить корректность выполнения
+            Files.createDirectories(path.getParent());
+            Files.createFile(path);
+            Files.write(path, content.getBytes(charset));
+        } catch (IOException e) {
+            // TODO: Бросаем эксепшн о том, что не можем записать файл
+            e.printStackTrace();
         }
     }
 

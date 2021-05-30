@@ -3,7 +3,7 @@ package io.perfeccionista.framework.pagefactory.extractor.table;
 import io.perfeccionista.framework.exceptions.ResultVerification;
 import io.perfeccionista.framework.exceptions.SingleResultCreating;
 import io.perfeccionista.framework.exceptions.attachments.MobileElementAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.MobileTable;
 import io.perfeccionista.framework.pagefactory.filter.MobileFilters;
@@ -65,7 +65,7 @@ public class MobileTableSingleIndexedResult<T> implements MobileSingleIndexedRes
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(MobileElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             return extractedValues.values().stream()
                     .findFirst()
@@ -84,7 +84,7 @@ public class MobileTableSingleIndexedResult<T> implements MobileSingleIndexedRes
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(MobileElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             Entry<Integer, T> extractedEntry = extractedValues.entrySet().stream()
                     .findFirst()
@@ -110,7 +110,7 @@ public class MobileTableSingleIndexedResult<T> implements MobileSingleIndexedRes
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(MobileElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             return extractedValues.keySet().stream()
                     .findFirst()

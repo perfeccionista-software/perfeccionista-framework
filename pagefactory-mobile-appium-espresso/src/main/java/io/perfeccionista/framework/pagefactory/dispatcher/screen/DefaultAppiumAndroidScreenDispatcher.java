@@ -2,10 +2,9 @@ package io.perfeccionista.framework.pagefactory.dispatcher.screen;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.ResponseFormatIsNotValid;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.mapper.MobileExceptionMapper;
 import io.perfeccionista.framework.matcher.dispatcher.MobileDeviceScreenDispatcherMatcher;
-import io.perfeccionista.framework.measurements.Dimensions2D;
 import io.perfeccionista.framework.measurements.Rotation3D;
 import io.perfeccionista.framework.pagefactory.dispatcher.driver.AndroidEspressoDriver;
 import io.perfeccionista.framework.screenshots.Screenshot;
@@ -28,7 +27,6 @@ import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceAct
 import static io.perfeccionista.framework.pagefactory.dispatcher.screen.AppiumRotationConverter.createAppiumScreenOrientation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.screen.AppiumRotationConverter.createDeviceRotation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.screen.AppiumRotationConverter.createPerfeccionistaScreenOrientation;
-import static io.perfeccionista.framework.utils.RuntimeUtils.executeCommandAndGetOutput;
 
 public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenDispatcher {
 //    protected static final Pattern SCREEN_SIZE_PATTERN = Pattern.compile("^Physical size: (?<WIDTH>\\d+)x(?<HEIGHT>\\d+)$");
@@ -65,8 +63,8 @@ public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenD
                         return mobileScreenBounds;
                     }
                     throw ResponseFormatIsNotValid.exception(RESPONSE_FORMAT_NOT_VALID.getMessage())
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("Response", deviceScreenSize))
-                            .addLastAttachmentEntry(StringAttachmentEntry.of("RegExp", SCREEN_SIZE_PATTERN.pattern()));
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("Response", deviceScreenSize))
+                            .addLastAttachmentEntry(TextAttachmentEntry.of("RegExp", SCREEN_SIZE_PATTERN.pattern()));
                 })
                 .ifException(exception -> {
                     throw exception;

@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.invocation.runner;
 
+import io.perfeccionista.framework.exceptions.IncorrectInvocationRunnerLogic;
+import io.perfeccionista.framework.exceptions.attachments.BigTextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
@@ -14,6 +16,7 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import java.time.Duration;
 import java.util.function.Supplier;
 
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.INCORRECT_INVOCATION_RUNNER_LOGIC;
 import static java.lang.String.format;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
 
@@ -33,34 +36,31 @@ public class CheckInvocationRunner implements InvocationRunner {
         // We need this for one attempt if timeout = 0
         long currentTime = System.nanoTime();
         long deadline = currentTime + timeout.toNanos();
-        logger.debug(() -> format("Check action %s started. Timeout = %s. Delay = %s.", name, getFormattedDuration(timeout), getFormattedDuration(delay)));
-
         long invocationStartTime = 0;
 
         while (deadline >= currentTime) {
             try {
                 invocationStartTime = System.nanoTime();
                 T result = supplier.get();
-                logInvocationExecution(name, invocationStartTime, "SUCCESS");
+//                logInvocationExecution(name, invocationStartTime, "SUCCESS");
                 return result;
             } catch (final PerfeccionistaRuntimeException | PerfeccionistaAssertionError e) {
-                logInvocationExecution(name, invocationStartTime, "EXCEPTION");
                 processException(e);
                 if (!e.isProcessed()) {
                     break;
                 }
-            } catch (final Exception e) {
+            } catch (final Throwable e) {
                 logInvocationExecution(name, invocationStartTime, "UNEXPECTED EXCEPTION");
-                logger.error(() -> format("Check action cycle finished with unexpected exception: %s", e));
                 throw e;
             }
             sleep(delay);
             currentTime = System.nanoTime();
         }
 
-        logger.error(() -> format("Check action %s finished with exception in %s", name, getFormattedDuration(Duration.ofNanos(System.nanoTime() - deadline + timeout.toNanos()))));
-        exceptionCollector.throwIfSingleException();
-        throw exceptionCollector.getExceptionSequence();
+        logInvocationExecution(name, invocationStartTime, "EXCEPTION");
+        exceptionCollector.throwLastException();
+        throw IncorrectInvocationRunnerLogic.exception(INCORRECT_INVOCATION_RUNNER_LOGIC.getMessage()).addLastAttachmentEntry(BigTextAttachmentEntry
+                .of("All Exception Messages", exceptionCollector.generateExceptionSequenceMessage()));
     }
 
     protected void logInvocationExecution(InvocationName name, long invocationStartTime, String status) {

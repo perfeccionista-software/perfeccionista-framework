@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.extractor.textlist;
 
 import io.perfeccionista.framework.exceptions.ResultVerification;
 import io.perfeccionista.framework.exceptions.SingleResultCreating;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
@@ -65,7 +65,7 @@ public class WebTextListSingleIndexedResult<T> implements WebSingleIndexedResult
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             return extractedValues.values().stream()
                     .findFirst()
@@ -84,7 +84,7 @@ public class WebTextListSingleIndexedResult<T> implements WebSingleIndexedResult
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             Entry<Integer, T> extractedEntry = extractedValues.entrySet().stream()
                     .findFirst()
@@ -110,7 +110,7 @@ public class WebTextListSingleIndexedResult<T> implements WebSingleIndexedResult
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
-                        .addLastAttachmentEntry(StringAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
+                        .addLastAttachmentEntry(TextAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
             return extractedValues.keySet().stream()
                     .findFirst()

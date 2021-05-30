@@ -2,7 +2,7 @@ package io.perfeccionista.framework.fixture;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.RegisterDuplicate;
-import io.perfeccionista.framework.exceptions.attachments.StringAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.name.Name;
 
 import java.lang.reflect.Modifier;
@@ -36,9 +36,9 @@ public class DefaultFixtureServiceConfiguration implements FixtureServiceConfigu
                             String fixtureName = fixtureNameAnnotation.value();
                             if (fixtureClasses.containsKey(fixtureName)) {
                                 throw RegisterDuplicate.exception(FIXTURE_REGISTER_BY_NAME_DUPLICATE.getMessage(fixtureName))
-                                        .addLastAttachmentEntry(StringAttachmentEntry.of("First fixture class with name " + fixtureName,
+                                        .addLastAttachmentEntry(TextAttachmentEntry.of("First fixture class with name " + fixtureName,
                                                 processedClass.getCanonicalName()))
-                                        .addLastAttachmentEntry(StringAttachmentEntry.of("Second fixture class with name " + fixtureName,
+                                        .addLastAttachmentEntry(TextAttachmentEntry.of("Second fixture class with name " + fixtureName,
                                                 fixtureClasses.get(fixtureName).getCanonicalName()));
                             }
                             fixtureClasses.put(fixtureName, processedClass);
