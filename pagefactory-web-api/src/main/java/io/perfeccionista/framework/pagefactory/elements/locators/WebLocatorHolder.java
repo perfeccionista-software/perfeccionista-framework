@@ -54,6 +54,10 @@ public class WebLocatorHolder {
         return new WebLocatorHolder(locatorComponent, locatorStrategy, locatorValue);
     }
 
+    public static WebLocatorHolder selfNode(String locatorComponent) {
+        return new WebLocatorHolder(locatorComponent, WebLocatorStrategy.SELF_NODE, "");
+    }
+
     public WebLocatorHolder setLocatorComponent(@NotNull String locatorComponent) {
         this.locatorComponent = locatorComponent;
         return this;

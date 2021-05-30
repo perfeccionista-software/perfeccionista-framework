@@ -2,6 +2,8 @@ package io.perfeccionista.framework.exceptions.messages;
 
 public enum PageFactoryMobileApiMessages implements Messages {
 
+    INCORRECT_MOBILE_LOCATOR_VALUE("Mobile locator search strategy 'SelfNode' can't be used from root element"),
+
     MOBILE_DEVICE_LOCKED("Mobile device is locked"),
     MOBILE_DEVICE_UNLOCKED("Mobile device is unlocked"),
     MOBILE_DEVICE_ORIENTATION_NOT_MATCH("Mobile device orientation '%s' is not match with expected '%s'"),

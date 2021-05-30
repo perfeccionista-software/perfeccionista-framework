@@ -25,6 +25,7 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMess
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CONTAINS_TEXT;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CSS;
+import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.DTI;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TAG_NAME;
@@ -89,7 +90,11 @@ public class WebLocatorAnnotationHandler {
 
     public static Optional<WebLocatorHolder> createOptionalWebLocatorHolder(WebLocator webLocator) {
         WebLocatorHolder webLocatorHolder = null;
+        if (webLocator.selfNode()) {
+            webLocatorHolder = WebLocatorHolder.selfNode(webLocator.component());
+        }
         if (isNotBlank(webLocator.id())) {
+            checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
             webLocatorHolder = WebLocatorHolder.of(webLocator.component(), ID, webLocator.id());
         }
         if (isNotBlank(webLocator.css())) {
@@ -111,6 +116,9 @@ public class WebLocatorAnnotationHandler {
         if (isNotBlank(webLocator.name())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
             webLocatorHolder = WebLocatorHolder.of(webLocator.component(), NAME, webLocator.name());
+        }
+        if (isNotBlank(webLocator.dti())) {
+            webLocatorHolder = WebLocatorHolder.of(webLocator.component(), DTI, webLocator.dti());
         }
         if (isNotBlank(webLocator.text())) {
             checkWebLocatorStrategyIsEmpty(webLocatorHolder, webLocator);
@@ -147,17 +155,16 @@ public class WebLocatorAnnotationHandler {
                 .put("xpath", webLocator.xpath())
                 .put("className", webLocator.className())
                 .put("tagName", webLocator.tagName())
+                .put("dti", webLocator.dti())
                 .put("name", webLocator.name())
                 .put("text", webLocator.text())
                 .put("containsText", webLocator.containsText())
+                .put("selfNode", webLocator.selfNode())
                 .put("single", webLocator.single())
                 .put("strictSearch", webLocator.strictSearch())
                 .put("onlyWithinParent", webLocator.onlyWithinParent());
         ArrayNode invokeOnCallNode = rootNode.putArray("invokeOnCall");
         for (Class<? extends EndpointHandler<Void>> jsFunctionClass : webLocator.invokeOnCall()) {
-
-
-
             invokeOnCallNode.add(jsFunctionClass.getCanonicalName());
         }
         return rootNode;

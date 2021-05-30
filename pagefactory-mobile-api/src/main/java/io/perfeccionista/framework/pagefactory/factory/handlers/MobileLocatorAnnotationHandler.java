@@ -125,7 +125,11 @@ public class MobileLocatorAnnotationHandler {
 
     public static Optional<MobileLocatorHolder> createOptionalMobileLocatorHolder(@NotNull AndroidLocator mobileLocator) {
         MobileLocatorHolder mobileLocatorHolder = null;
+        if (mobileLocator.selfNode()) {
+            mobileLocatorHolder = AndroidLocatorHolder.selfNode(mobileLocator.component());
+        }
         if (isNotBlank(mobileLocator.id())) {
+            checkMobileLocatorStrategyIsEmpty(mobileLocatorHolder, mobileLocator);
             mobileLocatorHolder = AndroidLocatorHolder.of(mobileLocator.component(), ID, mobileLocator.id());
         }
         if (isNotBlank(mobileLocator.xpath())) {
@@ -242,6 +246,7 @@ public class MobileLocatorAnnotationHandler {
                 .put("containsText", mobileLocator.containsText())
                 .put("androidViewTag", mobileLocator.androidViewTag())
                 .put("androidDataMatcher", mobileLocator.androidDataMatcher())
+                .put("selfNode", mobileLocator.selfNode())
                 .put("single", mobileLocator.single())
                 .put("strictSearch", mobileLocator.strictSearch())
                 .put("onlyWithinParent", mobileLocator.onlyWithinParent());
