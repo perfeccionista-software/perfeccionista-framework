@@ -113,7 +113,9 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
     }
 
     public PerfeccionistaAssertionError prepareAttachmentDescription() {
-        this.attachmentsDescription = processor.processAttachment(attachment);
+        if (Objects.nonNull(attachment) && Objects.isNull(this.attachmentsDescription)) {
+            this.attachmentsDescription = processor.processAttachment(attachment);
+        }
         return this;
     }
 
