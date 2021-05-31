@@ -231,9 +231,12 @@
                     addParentElementErrorAttachment(parentElement);
                     throw new ElementSearchError('No elements found');
                 } else {
-                    let elementEntry = createElementEntry(null, locator);
-                    elementEntry.index = parentIndex;
-                    foundElementEntries.push(elementEntry);
+                    // TODO: Подумать - есть ли смысл возвращать индексы с null-результатами.
+                    //  По логике нет, но, возможно, их правильнее исключать на стороне клиента.
+                    //  Но тогда вопрос, как отличить не найденный элемент от null-результата endpoint-функции.
+                    // let elementEntry = createElementEntry(null, locator);
+                    // elementEntry.index = parentIndex;
+                    // foundElementEntries.push(elementEntry);
                 }
             } else if (size === 1) {
                 let elementEntry = createElementEntry(foundElements[0], locator);
