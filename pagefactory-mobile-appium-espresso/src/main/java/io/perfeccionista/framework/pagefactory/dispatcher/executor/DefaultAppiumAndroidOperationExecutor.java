@@ -395,7 +395,7 @@ public class DefaultAppiumAndroidOperationExecutor implements MobileDeviceOperat
                             throw new NoSuchElementException("Element with index " + index + " not found");
                         }
                     } else {
-                        result = (AndroidElement) parent.findElementsByClassName(locatorValue);
+                        result = (AndroidElement) parent.findElementByClassName(locatorValue);
                     }
                     break;
                 case ACCESSIBILITY_ID:
