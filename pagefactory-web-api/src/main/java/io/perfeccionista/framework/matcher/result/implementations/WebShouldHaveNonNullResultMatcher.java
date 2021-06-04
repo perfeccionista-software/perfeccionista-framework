@@ -22,7 +22,7 @@ public class WebShouldHaveNonNullResultMatcher<T> implements WebMultipleIndexedR
 
         WebChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             result.getResults().forEach((index, value) -> {
                 if (isNull(value)) {
                     throw ResultVerification.assertionError(FILTERED_ELEMENT_CONTAINS_NULL_RESULT.getMessage(index))

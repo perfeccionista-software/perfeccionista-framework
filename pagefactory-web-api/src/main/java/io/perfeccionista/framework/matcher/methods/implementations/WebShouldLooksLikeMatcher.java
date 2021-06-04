@@ -34,7 +34,7 @@ public class WebShouldLooksLikeMatcher implements WebGetScreenshotAvailableMatch
                 ? assertInvocation(SHOULD_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot)
                 : assertInvocation(SHOULD_NOT_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     Screenshot actualScreenshot = element.getScreenshot(componentName);
                     if (positive) {

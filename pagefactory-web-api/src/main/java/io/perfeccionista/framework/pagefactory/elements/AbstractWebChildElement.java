@@ -46,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_STATE_NOT_FOUND;
+import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HAS_STATE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.DISPLAYED;
@@ -140,14 +141,14 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public @NotNull Color getColor(@NotNull String cssProperty) {
         WebGetColorOperationType operationType = WebGetColorOperationType.of(this, ROOT, cssProperty);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull Color getColor(@NotNull String componentName, @NotNull String cssProperty) {
         WebGetColorOperationType operationType = WebGetColorOperationType.of(this, componentName, cssProperty);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -156,14 +157,14 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public @NotNull ElementBounds getElementBounds() {
         WebGetElementBoundsOperationType operationType = WebGetElementBoundsOperationType.of(this, ROOT);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull ElementBounds getElementBounds(@NotNull String componentName) {
         WebGetElementBoundsOperationType operationType = WebGetElementBoundsOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -172,14 +173,14 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public @NotNull Screenshot getScreenshot() {
         WebGetScreenshotOperationType operationType = WebGetScreenshotOperationType.of(this, ROOT);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull Screenshot getScreenshot(@NotNull String componentName) {
         WebGetScreenshotOperationType operationType = WebGetScreenshotOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -188,7 +189,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public WebChildElement hoverTo(boolean withOutOfBounds) {
         WebHoverToOperationType operationType = WebHoverToOperationType.of(this, withOutOfBounds);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, HOVER).executeAction());
         return this;
     }
@@ -198,7 +199,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public boolean isDisplayed() {
         WebGetIsDisplayedOperationType operationType = WebGetIsDisplayedOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementIsDisplayedOperationHandler.of(this, operationType, DISPLAYED).executeGetter());
     }
 
@@ -207,7 +208,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public boolean isInFocus() {
         WebGetIsInFocusOperationType operationType = WebGetIsInFocusOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, FOCUS).executeGetter());
     }
 
@@ -216,7 +217,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public boolean isOnTheScreen() {
         WebGetIsOnTheScreenOperationType operationType = WebGetIsOnTheScreenOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeGetter());
     }
 
@@ -225,7 +226,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public boolean isPresent() {
         WebGetIsPresentOperationType operationType = WebGetIsPresentOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementIsPresentOperationHandler.of(this, operationType, PRESENTED).executeGetter());
     }
 
@@ -234,7 +235,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public WebChildElement scrollTo() {
         WebScrollToOperationType operationType = WebScrollToOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }
@@ -244,14 +245,14 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
     @Override
     public boolean isComponentDisplayed(@NotNull String componentName) {
         WebGetIsComponentDisplayedOperationType operationType = WebGetIsComponentDisplayedOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
     @Override
     public boolean isComponentPresent(@NotNull String componentName) {
         WebGetIsComponentPresentOperationType operationType = WebGetIsComponentPresentOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -267,7 +268,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
         Optional<WebElementPropertyHolder> optionalPropertyHolder = getProperty(propertyName);
         if (optionalPropertyHolder.isPresent()) {
             WebElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
-            return runCheck(getEnvironment(), InvocationName.getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyHolder), () -> {
+            return runCheck(getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyHolder), () -> {
                 WebElementOperation<String> operation = propertyHolder.getOperation(this);
                 return getWebBrowserDispatcher()
                         .executor()
@@ -280,7 +281,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
         } else {
             // TODO: Если нет атрибута - выбрасывать эксепшн о том, что атрибут не найден
             WebGetStringAttributeValueOperationType operationType = WebGetStringAttributeValueOperationType.of(this, propertyName);
-            return runCheck(getEnvironment(), operationType.getInvocationName(),
+            return runCheck(operationType.getInvocationName(),
                     () -> WebElementOperationHandler.of(this, operationType, propertyName).executeGetter());
         }
     }
@@ -297,7 +298,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
         WebElementStateHolder stateHolder = getState(stateName)
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(this)));
-        return runCheck(getEnvironment(), InvocationName.getterInvocation(HAS_STATE_METHOD, this, stateHolder), () -> {
+        return runCheck(getterInvocation(HAS_STATE_METHOD, this, stateHolder), () -> {
             WebElementOperation<Boolean> operation = stateHolder.getOperation(this);
             WebElementOperationResult<Boolean> operationResult = getWebBrowserDispatcher()
                     .executor()

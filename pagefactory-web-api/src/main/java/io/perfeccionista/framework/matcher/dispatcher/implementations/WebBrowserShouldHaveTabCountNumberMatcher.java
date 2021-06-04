@@ -32,7 +32,7 @@ public class WebBrowserShouldHaveTabCountNumberMatcher implements WebBrowserTabs
                 ? assertInvocation(BROWSER_SHOULD_HAVE_TABS_COUNT_NUMBER_METHOD, this, expectedNumber)
                 : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TABS_COUNT_NUMBER_METHOD, this, expectedNumber);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     int actualTabCount = tabsDispatcher.getTabCount();
                     if (positive) {

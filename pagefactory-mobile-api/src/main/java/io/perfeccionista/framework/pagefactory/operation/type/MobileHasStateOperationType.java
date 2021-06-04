@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HAS_STATE_METHOD;
-import static org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class MobileHasStateOperationType implements MobileElementOperationType<Boolean> {
 

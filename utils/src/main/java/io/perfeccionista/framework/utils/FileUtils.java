@@ -2,9 +2,11 @@ package io.perfeccionista.framework.utils;
 
 import io.perfeccionista.framework.exceptions.FileExists;
 import io.perfeccionista.framework.exceptions.FileNotExist;
+import io.perfeccionista.framework.exceptions.FileReadingFailed;
+import io.perfeccionista.framework.exceptions.FileWritingFailed;
+import io.perfeccionista.framework.logging.Logger;
+import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,8 +25,11 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_READ_FILE;
+import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_WRITE_FILE;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_EXISTS;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_NOT_EXIST;
+import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.TARGET_IS_NOT_A_FILE;
 
 // TODO: Привести аргументы к одному виду Path вместо Path и URL.
 public class FileUtils {
@@ -66,7 +71,7 @@ public class FileUtils {
         try {
             deleteFile(path);
         } catch (IOException e) {
-            logger.error(e, () -> String.format("Exception when deleting file %s", path.toString()));
+            logger.error(() -> String.format("Exception occurred when deleting file '%s'", path), e);
         }
     }
 
@@ -77,8 +82,7 @@ public class FileUtils {
             Files.createFile(path);
             Files.write(path, raw);
         } catch (IOException e) {
-            // TODO: Бросаем эксепшн о том, что не можем записать файл
-            e.printStackTrace();
+            throw FileWritingFailed.exception(CANT_WRITE_FILE.getMessage(path), e);
         }
     }
 
@@ -86,9 +90,7 @@ public class FileUtils {
         try {
             return Files.readAllBytes(path);
         } catch (IOException e) {
-            // TODO: Бросаем эксепшн о том, что не можем прочитать файл
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throw FileReadingFailed.exception(CANT_READ_FILE.getMessage(path), e);
         }
     }
 
@@ -98,32 +100,28 @@ public class FileUtils {
 
     public static void writeTextFile(@NotNull Path path, String content, @NotNull Charset charset) {
         try {
-            // TODO: Проверить корректность выполнения
             Files.createDirectories(path.getParent());
             Files.createFile(path);
             Files.write(path, content.getBytes(charset));
         } catch (IOException e) {
-            // TODO: Бросаем эксепшн о том, что не можем записать файл
-            e.printStackTrace();
+            throw FileWritingFailed.exception(CANT_WRITE_FILE.getMessage(path), e);
         }
     }
 
-    public static String readFile(@NotNull URL url) {
-        return readFile(url, StandardCharsets.UTF_8);
+    public static String readTextFile(@NotNull URL url) {
+        return readTextFile(url, StandardCharsets.UTF_8);
     }
 
-    public static String readFile(@NotNull URL url, @NotNull Charset charset) {
+    public static String readTextFile(@NotNull URL url, @NotNull Charset charset) {
         StringBuilder stringBuilder = new StringBuilder();
         File file = new File(url.getFile());
         if (!file.isFile()) {
-            // TODO: Бросаем эксепшн о том, что это не файл
-            throw new RuntimeException("Used path is not jsFile");
+            throw FileReadingFailed.exception(TARGET_IS_NOT_A_FILE.getMessage(url));
         }
         try (Stream<String> stream = Files.lines(file.toPath(), charset)) {
             stream.forEach(s -> stringBuilder.append(s).append("\n"));
         } catch (IOException e) {
-            // TODO: Бросаем эксепшн о том, что не можем прочитать файл
-            throw new RuntimeException("Can't read File", e);
+            throw FileReadingFailed.exception(CANT_READ_FILE.getMessage(url), e);
         }
         return stringBuilder.toString();
     }
@@ -134,8 +132,7 @@ public class FileUtils {
             properties.load(fileInputStream);
             return properties;
         } catch (IOException e) {
-            // TODO: Бросаем эксепшн о том, что не можем прочитать файл
-            throw new RuntimeException("Can't read File", e);
+            throw FileReadingFailed.exception(CANT_READ_FILE.getMessage(propertyFileName), e);
         }
     }
 
@@ -144,8 +141,8 @@ public class FileUtils {
         if (Objects.isNull(resource)) {
             return Optional.empty();
         }
-        try (InputStream fileInputStream = resource.openStream()) {
-            Properties properties = new Properties();
+        try (var fileInputStream = resource.openStream()) {
+            var properties = new Properties();
             properties.load(fileInputStream);
             return Optional.of(properties);
         } catch (IOException e) {
@@ -158,7 +155,7 @@ public class FileUtils {
     }
 
     public static Map<String, String> readPropertyFileAsMap(@NotNull URL url, @NotNull Charset charset) {
-        return readFile(url, charset)
+        return readTextFile(url, charset)
                 .lines()
                 .filter(line -> line.contains("="))
                 .map(line -> {

@@ -13,7 +13,6 @@ import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
 
 

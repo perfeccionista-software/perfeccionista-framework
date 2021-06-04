@@ -41,7 +41,7 @@ public class MobileComponentShouldBeDisplayedMatcher implements MobileComponentA
                 ? assertInvocation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, element, componentName)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, element, componentName);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBeDisplayed(element, componentName);

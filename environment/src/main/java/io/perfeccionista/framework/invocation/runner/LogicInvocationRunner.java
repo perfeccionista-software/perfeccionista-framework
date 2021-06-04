@@ -6,9 +6,9 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import io.perfeccionista.framework.invocation.timeouts.type.CheckDelayTimeout;
+import io.perfeccionista.framework.logging.Logger;
+import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.base.ExceptionCollector;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
@@ -41,7 +41,7 @@ public class LogicInvocationRunner implements InvocationRunner {
         while (deadline >= currentTime) {
             try {
                 T result = supplier.get();
-//                logInvocationExecution(name, invocationStartTime, "SUCCESS");
+                logInvocationExecution(name, invocationStartTime, "SUCCESS");
                 return result;
             } catch (final PerfeccionistaRuntimeException | PerfeccionistaAssertionError e) {
                 processException(e);
@@ -63,7 +63,7 @@ public class LogicInvocationRunner implements InvocationRunner {
     }
 
     protected void logInvocationExecution(InvocationName name, long invocationStartTime, String status) {
-        logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> [" + status + "]");
+        logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> " + status + "");
     }
 
     protected void processException(PerfeccionistaException exception) {

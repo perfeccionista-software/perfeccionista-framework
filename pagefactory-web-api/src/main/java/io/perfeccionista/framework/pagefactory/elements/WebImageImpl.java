@@ -12,7 +12,6 @@ import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.element.WebImageMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebIsImageOperationType;
@@ -27,14 +26,14 @@ public class WebImageImpl extends AbstractWebChildElement implements WebImage {
     @Override
     public boolean isImage() {
         WebIsImageOperationType operationType = WebIsImageOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public WebImage saveToFile(@NotNull String filePath) {
         WebSaveImageToFileOperationType operationType = WebSaveImageToFileOperationType.of(this, filePath);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }
@@ -126,7 +125,7 @@ public class WebImageImpl extends AbstractWebChildElement implements WebImage {
     @Override
     public WebImage click() {
         WebClickOperationType operationType = WebClickOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }

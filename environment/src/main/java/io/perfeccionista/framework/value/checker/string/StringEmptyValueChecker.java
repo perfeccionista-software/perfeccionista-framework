@@ -2,7 +2,8 @@ package io.perfeccionista.framework.value.checker.string;
 
 import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.util.StringUtils;
+
+import static io.perfeccionista.framework.utils.StringUtils.isBlank;
 
 public class StringEmptyValueChecker extends AbstractStringChecker {
 
@@ -22,7 +23,7 @@ public class StringEmptyValueChecker extends AbstractStringChecker {
 
     @Override
     public boolean check() {
-        return StringUtils.isBlank(getProcessedActual());
+        return isBlank(getProcessedActual());
     }
 
     @Override

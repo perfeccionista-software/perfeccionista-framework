@@ -10,8 +10,8 @@ import java.lang.reflect.Constructor;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_LABEL_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
-import static org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class WebGetLabelOperationType implements WebElementOperationType<String> {
 

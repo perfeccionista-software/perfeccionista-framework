@@ -32,7 +32,7 @@ public class MobileShouldHaveSortedResultMatcher<T> implements MobileMultipleInd
 
         MobileChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             AtomicBoolean comparisonResult = new AtomicBoolean(true);
             Map<String, Integer> detailComparisonResult = new HashMap<>();
             result.getResults().entrySet().stream()

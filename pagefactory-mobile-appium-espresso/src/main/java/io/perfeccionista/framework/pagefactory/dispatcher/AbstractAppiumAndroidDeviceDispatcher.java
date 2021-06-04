@@ -110,7 +110,7 @@ public abstract class AbstractAppiumAndroidDeviceDispatcher implements MobileDev
 
     @Override
     public boolean isLocked() {
-        return runCheck(environment, getterInvocation(DEVICE_IS_LOCKED_METHOD), () ->
+        return runCheck(getterInvocation(DEVICE_IS_LOCKED_METHOD), () ->
                 exceptionMapper.map((instance::isDeviceLocked))
                         .ifException(exception -> {
                             throw exception;
@@ -120,7 +120,7 @@ public abstract class AbstractAppiumAndroidDeviceDispatcher implements MobileDev
 
     @Override
     public AbstractAppiumAndroidDeviceDispatcher lock() {
-        runCheck(environment, getterInvocation(DEVICE_LOCK_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_LOCK_METHOD), () ->
                 exceptionMapper.map((@NotNull Runnable) instance::lockDevice))
                 .ifException(exception -> {
                     throw exception;
@@ -130,7 +130,7 @@ public abstract class AbstractAppiumAndroidDeviceDispatcher implements MobileDev
 
     @Override
     public AbstractAppiumAndroidDeviceDispatcher unlock() {
-        runCheck(environment, getterInvocation(DEVICE_UNLOCK_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_UNLOCK_METHOD), () ->
                 exceptionMapper.map(instance::unlockDevice))
                 .ifException(exception -> {
                     throw exception;
@@ -140,7 +140,7 @@ public abstract class AbstractAppiumAndroidDeviceDispatcher implements MobileDev
 
     @Override
     public AbstractAppiumAndroidDeviceDispatcher performTouchId(boolean success) {
-        runCheck(environment, getterInvocation(DEVICE_PERFORM_TOUCH_ID_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_PERFORM_TOUCH_ID_METHOD), () ->
                 exceptionMapper.map(() -> {
                     throw new UnsupportedOperationException("Not implemented yet");
 //                    if (success) {
@@ -157,7 +157,7 @@ public abstract class AbstractAppiumAndroidDeviceDispatcher implements MobileDev
 
     @Override
     public AbstractAppiumAndroidDeviceDispatcher shake() {
-        runCheck(environment, getterInvocation(DEVICE_SHAKE_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_SHAKE_METHOD), () ->
                 exceptionMapper.map(() -> {
                     // do nothing for Android
                 }))
@@ -169,7 +169,7 @@ public abstract class AbstractAppiumAndroidDeviceDispatcher implements MobileDev
 
     @Override
     public AbstractAppiumAndroidDeviceDispatcher sendSms(@NotNull String phoneNumber, @NotNull String message) {
-        runCheck(environment, getterInvocation(DEVICE_SEND_SMS_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_SEND_SMS_METHOD), () ->
                 exceptionMapper.map(() -> instance.sendSMS(phoneNumber, message)))
                 .ifException(exception -> {
                     throw exception;
@@ -179,7 +179,7 @@ public abstract class AbstractAppiumAndroidDeviceDispatcher implements MobileDev
 
     @Override
     public AbstractAppiumAndroidDeviceDispatcher call(@NotNull String phoneNumber, @NotNull GsmCallAction callAction) {
-        runCheck(environment, getterInvocation(DEVICE_CALL_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_CALL_METHOD), () ->
                 exceptionMapper.map(() -> instance.makeGsmCall(phoneNumber, createAppiumGsmCallAction(callAction))))
                 .ifException(exception -> {
                     throw exception;

@@ -10,7 +10,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.nio.file.Path;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSeleniumMessages.WEB_DRIVER_BINARY_NOT_DECLARED;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class LocalWebBrowserSeleniumDispatcher<T extends RemoteWebDriver, C extends MutableCapabilities> extends AbstractWebBrowserSeleniumDispatcher<T, C> {
 

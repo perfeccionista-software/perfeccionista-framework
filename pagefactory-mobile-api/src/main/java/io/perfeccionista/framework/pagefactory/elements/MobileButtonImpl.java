@@ -125,7 +125,7 @@ public class MobileButtonImpl extends MobileTextImpl implements MobileButton {
     @Override
     public MobileButton tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -133,7 +133,7 @@ public class MobileButtonImpl extends MobileTextImpl implements MobileButton {
     @Override
     public MobileButton longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -141,7 +141,7 @@ public class MobileButtonImpl extends MobileTextImpl implements MobileButton {
     @Override
     public MobileButton doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

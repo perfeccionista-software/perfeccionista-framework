@@ -20,14 +20,14 @@ class GetInnerTextTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        String innerText = runCheck(environment, () -> {
+        String innerText = runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
             WebElementOperation<String> getInnerTextOperation = WebElementOperation.of(scrollToLocatorChain, new JsGetInnerText());

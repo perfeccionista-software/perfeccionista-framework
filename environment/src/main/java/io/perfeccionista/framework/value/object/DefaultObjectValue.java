@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.value.object;
 
-import io.perfeccionista.framework.exceptions.NumberValueNotMatch;
 import io.perfeccionista.framework.exceptions.ObjectValueNotMatch;
 import io.perfeccionista.framework.exceptions.attachments.ValueAttachmentEntry;
 import io.perfeccionista.framework.value.checker.ObjectChecker;
@@ -12,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.UnaryOperator;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.NUMBER_VALUE_NOT_MATCH;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.OBJECT_VALUE_NOT_MATCH;
 
 public class DefaultObjectValue implements ObjectValue {

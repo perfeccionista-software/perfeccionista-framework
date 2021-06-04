@@ -17,7 +17,6 @@ import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 import static io.perfeccionista.framework.utils.StringUtils.isBlank;
 
 public class DefaultAttachmentProcessor implements AttachmentProcessor {
-    protected static final String DELIMITER = "------------------------------------------------------------------------------------------------------------------------\n";
     protected static final String ATTACHMENT_DIR = "build" + File.separator + "attachments";
 
     @Override
@@ -53,11 +52,11 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
 
         String stringAttachmentsDescription = attachment.getAttachmentEntries()
                 .filter(entry -> entry instanceof TextAttachmentEntry)
-                .map(entry -> DELIMITER + entry.getName() + "\n" + DELIMITER + entry.getDescription())
+                .map(entry -> getDelimiter() + entry.getName() + "\n" + getDelimiter() + entry.getDescription())
                 .collect(Collectors.joining("\n"));
 
         String mainAttachmentDescription = attachment.getMainAttachmentEntry()
-                .map(entry -> DELIMITER + entry.getName() + "\n" + DELIMITER + entry.getDescription())
+                .map(entry -> getDelimiter() + entry.getName() + "\n" + getDelimiter() + entry.getDescription())
                 .orElse("");
 
         if (isBlank(fileAttachmentsDescription) && isBlank(stringAttachmentsDescription) && isBlank(mainAttachmentDescription)) {
@@ -65,7 +64,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
         }
 
         return "Attachments:\n"
-                + DELIMITER
+                + getDelimiter()
                 + (isBlank(fileAttachmentsDescription) ? "" : fileAttachmentsDescription + "\n")
                 + (isBlank(stringAttachmentsDescription) ? "" : stringAttachmentsDescription + "\n")
                 + (isBlank(mainAttachmentDescription) ? "" : mainAttachmentDescription + "\n");

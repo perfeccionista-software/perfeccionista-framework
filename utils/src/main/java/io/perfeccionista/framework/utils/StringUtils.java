@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.EMPTY_PATH;
 import static java.util.stream.Collectors.joining;
-import static org.junit.platform.commons.util.StringUtils.isBlank;
 
 public class StringUtils {
 
@@ -65,6 +64,12 @@ public class StringUtils {
     public static String objectsToString(@Nullable Object[] objects) {
         return Objects.isNull(objects) ? "null" : Arrays.stream(objects)
                 .map(arg -> arg == null ? "null" : arg.toString())
+                .collect(joining(","));
+    }
+
+    public static String objectTypesToString(@Nullable Object[] objects) {
+        return Objects.isNull(objects) ? "null" : Arrays.stream(objects)
+                .map(arg -> arg == null ? "null" : arg.getClass().getCanonicalName())
                 .collect(joining(","));
     }
 

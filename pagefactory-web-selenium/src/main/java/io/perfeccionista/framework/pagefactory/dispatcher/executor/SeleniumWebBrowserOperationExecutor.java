@@ -1,21 +1,21 @@
 package io.perfeccionista.framework.pagefactory.dispatcher.executor;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.exceptions.ClassCast;
+import io.perfeccionista.framework.exceptions.ClassCanNotBeCast;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
+import io.perfeccionista.framework.logging.Logger;
+import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
-import io.perfeccionista.framework.utils.ReflectionUtils;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.Objects;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_CAST_OBJECT;
+import static io.perfeccionista.framework.utils.CastUtils.isSubtypeOf;
 import static io.perfeccionista.framework.utils.JsonUtils.toPrettyJson;
 
 // TODO: Если не стоит флажок отладки, то минифицируем js. Или можно минифицировать скрипты в момент билда
@@ -90,10 +90,10 @@ public class SeleniumWebBrowserOperationExecutor implements WebBrowserOperationE
         return exceptionMapper
                 .map(() -> {
                     Object result = instance.executeScript(script, args);
-                    if (ReflectionUtils.isSubtypeOf(result, returnType)) {
+                    if (isSubtypeOf(result, returnType)) {
                         return (T) result;
                     }
-                    throw ClassCast.exception(CANT_CAST_OBJECT.getMessage(result.getClass().getCanonicalName(), returnType.getCanonicalName()));
+                    throw ClassCanNotBeCast.exception(CANT_CAST_OBJECT.getMessage(result.getClass().getCanonicalName(), returnType.getCanonicalName()));
                 })
                 .ifException(exception -> {
                     throw exception;

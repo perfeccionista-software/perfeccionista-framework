@@ -38,7 +38,7 @@ public class WebShouldHaveIndexNumberValueMatcher implements WebIndexesMatcher {
 
         WebChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             Collection<Integer> indexes = result.getResults().values();
             boolean actualValue = indexes.stream()
                     .anyMatch(expectedValue::check);

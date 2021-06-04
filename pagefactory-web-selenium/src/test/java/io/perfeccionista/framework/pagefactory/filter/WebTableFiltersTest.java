@@ -15,6 +15,9 @@ import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryN
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.util.logging.LogManager;
+
 import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.CHECKBOX;

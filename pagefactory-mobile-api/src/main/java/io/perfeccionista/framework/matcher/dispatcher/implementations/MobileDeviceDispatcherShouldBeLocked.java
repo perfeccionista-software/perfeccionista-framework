@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.matcher.dispatcher.implementations;
 
-import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.MobileDeviceIsLocked;
 import io.perfeccionista.framework.exceptions.MobileDeviceIsUnlocked;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
@@ -29,7 +28,7 @@ public class MobileDeviceDispatcherShouldBeLocked implements MobileDeviceDispatc
                 ? assertInvocation(MOBILE_DEVICE_SHOULD_BE_LOCKED_METHOD, this)
                 : assertInvocation(MOBILE_DEVICE_SHOULD_BE_UNLOCKED_METHOD, this);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     boolean actualLockedState = mobileDevice.isLocked();
                     if (positive) {

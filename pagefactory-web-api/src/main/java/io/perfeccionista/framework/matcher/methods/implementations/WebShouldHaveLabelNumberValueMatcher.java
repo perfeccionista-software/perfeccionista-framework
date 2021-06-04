@@ -32,7 +32,7 @@ public class WebShouldHaveLabelNumberValueMatcher implements WebGetLabelAvailabl
                 ? assertInvocation(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue)
                 : assertInvocation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     String actualLabel = element.getLabel();
                     if (positive) {

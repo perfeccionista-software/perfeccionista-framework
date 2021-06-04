@@ -19,11 +19,11 @@ import java.util.function.Predicate;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_CANNOT_BE_CASTED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_FOUND;
-import static io.perfeccionista.framework.utils.ReflectionUtils.Order.DESC;
-import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
-import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
+import static io.perfeccionista.framework.measurements.Order.DESC;
+import static io.perfeccionista.framework.utils.CastUtils.isSubtypeOf;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedInterfaces;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForMethods.findMethods;
 import static java.lang.reflect.Modifier.isStatic;
-import static org.junit.platform.commons.util.ReflectionUtils.findMethods;
 
 public class WebElementUtils {
 
@@ -69,7 +69,7 @@ public class WebElementUtils {
         Set<Method> methods = new HashSet<>();
         methods.addAll(findMethods(processedClass, methodPredicate));
         // Если наш блок наследуется от другого блока (или блоков), то нам нужно получить и их методы тоже
-        Deque<Class<? extends WebParentElement>> inheritedParentInterfaces = getInheritedInterfaces(WebParentElement.class, processedClass, DESC);
+        Deque<Class<? extends WebParentElement>> inheritedParentInterfaces = findInheritedInterfaces(WebParentElement.class, processedClass, DESC);
         for (Class<? extends WebParentElement> inheritedParentInterface : inheritedParentInterfaces) {
             methods.addAll(findMethods(inheritedParentInterface, methodPredicate));
         }

@@ -9,9 +9,9 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import io.perfeccionista.framework.invocation.timeouts.type.CheckDelayTimeout;
+import io.perfeccionista.framework.logging.Logger;
+import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 
 import java.time.Duration;
 import java.util.function.Supplier;
@@ -60,7 +60,7 @@ public class WebAllureCheckInvocationRunner implements InvocationRunner {
     }
 
     protected void logInvocationExecution(InvocationName name, long invocationStartTime, String status) {
-        logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> [" + status + "]");
+        logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> " + status);
     }
 
     protected void processException(PerfeccionistaException exception) {

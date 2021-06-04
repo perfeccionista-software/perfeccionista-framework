@@ -12,7 +12,6 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -24,8 +23,9 @@ import java.util.Optional;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_PATH_NOT_RESOLVED;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.METHOD_NOT_FOUND;
+import static io.perfeccionista.framework.utils.CastUtils.isSubtypeOf;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
-import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForMethods.invokeMethod;
 import static io.perfeccionista.framework.utils.StringUtils.splitPathByArrow;
 import static io.perfeccionista.framework.utils.WebElementUtils.castWebChildElement;
 
@@ -222,7 +222,7 @@ public class WebElementRegistry implements JsonSerializable {
         Method method = Optional.ofNullable(innerMethods.get(methodName))
                 .orElseThrow(() -> MethodNotFound.exception(METHOD_NOT_FOUND.getMessage(methodName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(targetElement)));
-        ReflectionUtils.invokeMethod(method, targetElement, args);
+        invokeMethod(method, targetElement, args);
     }
 
 

@@ -121,10 +121,11 @@ public class DefaultWebPageContext implements WebPageContext {
 
     @Override
     public @NotNull String getPageSource() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD), () ->
                 exceptionMapper.map(() -> {
                     RemoteWebDriver instance = dispatcher.getInstance(RemoteWebDriver.class);
-                    return instance.getPageSource();
+                    String pageSource = instance.getPageSource();
+                    return Objects.nonNull(pageSource) ? pageSource : "empty";
                 }))
                 .ifException(exception -> {
                     throw exception;

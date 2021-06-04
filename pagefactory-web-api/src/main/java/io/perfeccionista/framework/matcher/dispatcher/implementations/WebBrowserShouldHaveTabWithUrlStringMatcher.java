@@ -34,7 +34,7 @@ public class WebBrowserShouldHaveTabWithUrlStringMatcher implements WebBrowserTa
                 ? assertInvocation(BROWSER_SHOULD_HAVE_TAB_WITH_URL_METHOD, this, expectedText)
                 : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TAB_WITH_URL_METHOD, this, expectedText);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     List<String> actualTabUrls = tabsDispatcher.getAllTabUrls();
                     if (positive) {

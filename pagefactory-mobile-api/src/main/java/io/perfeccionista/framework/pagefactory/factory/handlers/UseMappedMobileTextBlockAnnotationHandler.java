@@ -16,9 +16,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.MAPPED_BLOCK_IMPLEMENTATION_INCORRECT_TYPE;
+import static io.perfeccionista.framework.utils.AnnotationUtils.findAnnotation;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findFirstAnnotationInHierarchy;
-import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
-import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
+import static io.perfeccionista.framework.utils.CastUtils.isSubtypeOf;
 
 public class UseMappedMobileTextBlockAnnotationHandler {
 

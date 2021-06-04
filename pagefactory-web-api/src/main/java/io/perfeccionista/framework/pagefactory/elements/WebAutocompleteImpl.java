@@ -191,7 +191,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     @Override
     public WebAutocomplete clear() {
         WebClearOperationType operationType = WebClearOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -199,7 +199,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     @Override
     public WebAutocomplete typeText(@NotNull String text) {
         WebTypeTextOperationType operationType = WebTypeTextOperationType.of(this, text);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -207,7 +207,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     @Override
     public WebAutocomplete replaceText(@NotNull String text) {
         WebReplaceTextOperationType operationType = WebReplaceTextOperationType.of(this, text);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -215,7 +215,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     @Override
     public WebAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
         WebSendKeyEventsOperationType operationType = WebSendKeyEventsOperationType.of(this, keyEvents);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }

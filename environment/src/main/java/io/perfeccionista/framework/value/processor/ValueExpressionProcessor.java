@@ -5,8 +5,6 @@ import io.perfeccionista.framework.datasource.DataSourceService;
 import io.perfeccionista.framework.exceptions.StringValueParse;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.platform.commons.util.ReflectionUtils;
-import org.junit.platform.commons.util.StringUtils;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.datasource.DataConverter;
@@ -29,6 +27,9 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.STRING_VALUE_DATA_SOURCE_INCORRECT_KEY_TYPE;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.STRING_VALUE_PARSING_FAILED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.STRING_VALUE_PROCESSING_FAILED;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForMethods.findMethods;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForMethods.invokeMethod;
+import static io.perfeccionista.framework.utils.StringUtils.isNotBlank;
 import static io.perfeccionista.framework.value.processor.TokenType.DATA_CONVERTER_CLOSED;
 import static io.perfeccionista.framework.value.processor.TokenType.DATA_CONVERTER_OPEN;
 import static io.perfeccionista.framework.value.processor.TokenType.DATA_SOURCE_CLOSED;
@@ -247,7 +248,7 @@ public class ValueExpressionProcessor {
             dataSource = dataSourceService.getDefault();
             stringKey = stringContent.trim();
         }
-        if (null != objectContent && StringUtils.isNotBlank(stringKey)) {
+        if (null != objectContent && isNotBlank(stringKey)) {
             throw StringValueParse.exception(STRING_VALUE_COMPOUND_DATA_SOURCE_KEY.getMessage(expression))
                     .addLastAttachmentEntry(TextAttachmentEntry.of("DataSource", dataSource.getClass().getCanonicalName()))
                     .addLastAttachmentEntry(TextAttachmentEntry.of("String key content", stringContent))
@@ -273,13 +274,13 @@ public class ValueExpressionProcessor {
      * @return значение после обработки
      */
     private Object getDataSourceValue(@NotNull DataSource<?, ?> dataSource, @NotNull Object key) {
-        Optional<Method> optionalMethod = ReflectionUtils.findMethods(dataSource.getClass(), method -> !method.isBridge()
+        Optional<Method> optionalMethod = findMethods(dataSource.getClass(), method -> !method.isBridge()
                 && "get".equals(method.getName())
                 && method.getParameterCount() == 1
                 && method.getParameterTypes()[0].isAssignableFrom(key.getClass())
         ).stream().findFirst();
         if (optionalMethod.isPresent()) {
-            Object result = ReflectionUtils.invokeMethod(optionalMethod.get(), dataSource, key);
+            Object result = invokeMethod(optionalMethod.get(), dataSource, key);
             if (null == result) {
                 throw StringValueParse.exception(DATA_SOURCE_VALUE_NOT_FOUND.getMessage(dataSource.getClass().getCanonicalName(), key.toString()));
             }
@@ -297,7 +298,7 @@ public class ValueExpressionProcessor {
         DataConverterService dataConverterService = environment.getService(DataConverterService.class);
         DataConverter<?, ?> dataConverter = dataConverterService.get(dataConverterDeclaration.getName());
         String stringKey = stringContent.replace(dataConverterDeclaration.getDeclaration(), "").trim();
-        if (null != objectContent && StringUtils.isNotBlank(stringKey)) {
+        if (null != objectContent && isNotBlank(stringKey)) {
             throw StringValueParse.exception(STRING_VALUE_COMPOUND_DATA_CONVERTER_KEY.getMessage(expression))
                     .addLastAttachmentEntry(TextAttachmentEntry.of("DataConverter", dataConverter.getClass().getCanonicalName()))
                     .addLastAttachmentEntry(TextAttachmentEntry.of("String key content", stringContent))
@@ -332,14 +333,14 @@ public class ValueExpressionProcessor {
      * @return значение после обработки
      */
     private Object getDataConverterValue(@NotNull DataConverter<?, ?> dataConverter, @NotNull Object key, @Nullable String format) {
-        Optional<Method> optionalMethod = ReflectionUtils.findMethods(dataConverter.getClass(), method -> !method.isBridge()
+        Optional<Method> optionalMethod = findMethods(dataConverter.getClass(), method -> !method.isBridge()
                 && "convert".equals(method.getName())
                 && method.getParameterCount() == 2
                 && method.getParameterTypes()[0].isAssignableFrom(key.getClass())
                 && method.getParameterTypes()[1].isAssignableFrom(String.class)
         ).stream().findFirst();
         if (optionalMethod.isPresent()) {
-            Object result = ReflectionUtils.invokeMethod(optionalMethod.get(), dataConverter, key, format);
+            Object result = invokeMethod(optionalMethod.get(), dataConverter, key, format);
             if (null == result) {
                 throw StringValueParse.exception(
                         DATA_CONVERTER_VALUE_NOT_FOUND.getMessage(dataConverter.getClass().getCanonicalName(), key.toString(), format));

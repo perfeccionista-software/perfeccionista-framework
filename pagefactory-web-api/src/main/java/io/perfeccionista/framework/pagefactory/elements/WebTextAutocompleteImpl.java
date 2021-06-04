@@ -201,7 +201,7 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     @Override
     public WebTextAutocomplete clear() {
         WebClearOperationType operationType = WebClearOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -209,7 +209,7 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     @Override
     public WebTextAutocomplete typeText(@NotNull String text) {
         WebTypeTextOperationType operationType = WebTypeTextOperationType.of(this, text);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -217,7 +217,7 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     @Override
     public WebTextAutocomplete replaceText(@NotNull String text) {
         WebReplaceTextOperationType operationType = WebReplaceTextOperationType.of(this, text);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -225,7 +225,7 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     @Override
     public WebTextAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
         WebSendKeyEventsOperationType operationType = WebSendKeyEventsOperationType.of(this, keyEvents);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }

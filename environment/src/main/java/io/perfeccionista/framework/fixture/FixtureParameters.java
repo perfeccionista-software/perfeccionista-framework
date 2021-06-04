@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.fixture;
 
-import io.perfeccionista.framework.exceptions.ClassCast;
+import io.perfeccionista.framework.exceptions.ClassCanNotBeCast;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT_CAST_OBJECT;
-import static io.perfeccionista.framework.utils.ReflectionUtils.isSubtypeOf;
+import static io.perfeccionista.framework.utils.CastUtils.isSubtypeOf;
 
 public class FixtureParameters {
 
@@ -42,7 +42,7 @@ public class FixtureParameters {
         if (isSubtypeOf(parameter, parameterType)) {
             return (T) parameter;
         }
-        throw ClassCast.exception(CANT_CAST_OBJECT.getMessage(parameter.getClass().getCanonicalName(), parameterType.getCanonicalName()));
+        throw ClassCanNotBeCast.exception(CANT_CAST_OBJECT.getMessage(parameter.getClass().getCanonicalName(), parameterType.getCanonicalName()));
     }
 
     @NotNull

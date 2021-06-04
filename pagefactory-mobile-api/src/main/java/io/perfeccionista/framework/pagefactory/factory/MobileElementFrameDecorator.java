@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 
 import static io.perfeccionista.framework.pagefactory.factory.handlers.MobileElementNameHandler.extractNames;
-import static io.perfeccionista.framework.utils.ReflectionUtils.writeField;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForFields.writeField;
 
 public class MobileElementFrameDecorator {
 

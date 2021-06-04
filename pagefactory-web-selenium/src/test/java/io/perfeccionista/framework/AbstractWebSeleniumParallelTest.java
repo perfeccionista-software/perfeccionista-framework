@@ -13,6 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import java.io.IOException;
+import java.util.logging.LogManager;
+
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringProcess;
 
@@ -21,6 +24,15 @@ import static io.perfeccionista.framework.value.Values.stringProcess;
 @ExtendWith(PerfeccionistaExtension.class)
 @UseEnvironment(PagefactoryWebSeleniumEnvironmentConfiguration.class)
 public abstract class AbstractWebSeleniumParallelTest {
+
+    // Вынести в экстеншн + написать свой форматтер для красивого вывода
+    static {
+        try {
+            LogManager.getLogManager().readConfiguration(AbstractWebSeleniumParallelTest.class.getClassLoader().getResourceAsStream("logging.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     protected WebPageContext initWebPageContext() {
         return openDefaultBrowser().getWebPageContext();                                  // Возвращаем контекст страницы для активного браузера

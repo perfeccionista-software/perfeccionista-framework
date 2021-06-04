@@ -36,7 +36,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public MobileApplicationState getApplicationState(@NotNull String bundleId) {
-        return runCheck(environment, getterInvocation(GET_MOBILE_APPLICATION_STATE_METHOD), () ->
+        return runCheck(getterInvocation(GET_MOBILE_APPLICATION_STATE_METHOD), () ->
                 exceptionMapper.map(() -> createMobileApplicationState(instance.queryAppState(stringProcess(bundleId))))
                         .ifException(exception -> {
                             throw exception;
@@ -46,7 +46,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public boolean isApplicationInstalled(@NotNull String bundleId) {
-        return runCheck(environment, getterInvocation(IS_MOBILE_APPLICATION_INSTALLED_METHOD), () ->
+        return runCheck(getterInvocation(IS_MOBILE_APPLICATION_INSTALLED_METHOD), () ->
                 exceptionMapper.map(() -> instance.isAppInstalled(stringProcess(bundleId)))
                         .ifException(exception -> {
                             throw exception;
@@ -56,7 +56,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public DefaultAppiumAndroidSystemDispatcher installApplication(@NotNull String pathToApplication) {
-        runCheck(environment, actionInvocation(INSTALL_MOBILE_APPLICATION_METHOD), () ->
+        runCheck(actionInvocation(INSTALL_MOBILE_APPLICATION_METHOD), () ->
                 exceptionMapper.map(() -> instance.installApp(stringProcess(pathToApplication), new AndroidInstallApplicationOptions().withAllowTestPackagesEnabled()))
                         .ifException(exception -> {
                             throw exception;
@@ -66,7 +66,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public DefaultAppiumAndroidSystemDispatcher removeApplication(@NotNull String bundleId) {
-        runCheck(environment, actionInvocation(REMOVE_MOBILE_APPLICATION_METHOD), () ->
+        runCheck(actionInvocation(REMOVE_MOBILE_APPLICATION_METHOD), () ->
                 exceptionMapper.map(() -> instance.removeApp(stringProcess(bundleId)))
                         .ifException(exception -> {
                             throw exception;
@@ -76,7 +76,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public DefaultAppiumAndroidSystemDispatcher activateApplication(@NotNull String bundleId) {
-        runCheck(environment, actionInvocation(ACTIVATE_MOBILE_APPLICATION_METHOD), () ->
+        runCheck(actionInvocation(ACTIVATE_MOBILE_APPLICATION_METHOD), () ->
                 exceptionMapper.map(() -> instance.activateApp(stringProcess(bundleId)))
                         .ifException(exception -> {
                             throw exception;
@@ -86,7 +86,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public DefaultAppiumAndroidSystemDispatcher terminateApplication(@NotNull String bundleId) {
-        runCheck(environment, actionInvocation(TERMINATE_MOBILE_APPLICATION_METHOD), () ->
+        runCheck(actionInvocation(TERMINATE_MOBILE_APPLICATION_METHOD), () ->
                 exceptionMapper.map(() -> instance.terminateApp(stringProcess(bundleId)))
                         .ifException(exception -> {
                             throw exception;
@@ -96,7 +96,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public DefaultAppiumAndroidSystemDispatcher sendApplicationToBackground(@NotNull Duration duration) {
-        runCheck(environment, actionInvocation(SEND_MOBILE_APPLICATION_TO_BACKGROUND_METHOD, duration), () ->
+        runCheck(actionInvocation(SEND_MOBILE_APPLICATION_TO_BACKGROUND_METHOD, duration), () ->
                 exceptionMapper.map(() -> instance.runAppInBackground(duration))
                         .ifException(exception -> {
                             throw exception;

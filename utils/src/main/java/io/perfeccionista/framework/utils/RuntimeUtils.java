@@ -19,7 +19,7 @@ public class RuntimeUtils {
 
     public static String executeCommandAndGetOutput(@NotNull String commandLine) {
         try {
-            Process process = Runtime.getRuntime().exec("adb shell wm size");
+            Process process = Runtime.getRuntime().exec(commandLine);
             int exitVal = process.waitFor();
             if (exitVal == 0) {
                 return new BufferedReader(new InputStreamReader(process.getInputStream()))

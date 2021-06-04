@@ -49,14 +49,14 @@ public class WebTextListMultipleIndexedResult<T> implements WebMultipleIndexedRe
     @Override
     public Map<Integer, T> getResults() {
         WebTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
+        return runCheck(getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
                 () -> extractor.extractValues(webTextListFilter));
     }
 
     @Override
     public int getSize() {
         WebTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(element.getEnvironment(), getterInvocation(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
+        return runCheck(getterInvocation(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
                 () -> webTextListFilter.getFilterResult().getIndexes().size());
     }
 

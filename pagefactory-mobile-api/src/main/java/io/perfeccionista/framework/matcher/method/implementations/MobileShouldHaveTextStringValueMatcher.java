@@ -32,7 +32,7 @@ public class MobileShouldHaveTextStringValueMatcher implements MobileGetTextAvai
                 ? assertInvocation(SHOULD_HAVE_TEXT_METHOD, this, expectedStringValue)
                 : assertInvocation(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedStringValue);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     String actualText = element.getText();
                     if (positive) {

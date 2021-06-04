@@ -143,7 +143,7 @@ public class MobileToggleButtonImpl extends MobileButtonImpl implements MobileTo
     @Override
     public boolean isSelected() {
         MobileGetIsSelectedOperationType operationType = MobileGetIsSelectedOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, SELECTED).executeGetter());
     }
 

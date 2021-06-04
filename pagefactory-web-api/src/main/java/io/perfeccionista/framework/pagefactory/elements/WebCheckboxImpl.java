@@ -137,7 +137,7 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
     @Override
     public WebCheckbox click() {
         WebClickOperationType operationType = WebClickOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
@@ -147,7 +147,7 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
     @Override
     public @Nullable String getLabel() {
         WebGetLabelOperationType operationType = WebGetLabelOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
@@ -164,7 +164,7 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
     @Override
     public boolean isEnabled() {
         WebGetIsEnabledOperationType operationType = WebGetIsEnabledOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, ENABLED).executeGetter());
     }
 
@@ -173,7 +173,7 @@ public class WebCheckboxImpl extends AbstractWebChildElement implements WebCheck
     @Override
     public boolean isSelected() {
         WebGetIsSelectedOperationType operationType = WebGetIsSelectedOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, SELECTED).executeGetter());
     }
 

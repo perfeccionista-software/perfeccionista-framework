@@ -36,7 +36,7 @@ public class WebShouldHaveColorMatcher implements WebGetColorAvailableMatcher {
                 ? assertInvocation(SHOULD_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor)
                 : assertInvocation(SHOULD_NOT_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     Color actualColor = element.getColor(componentName, cssProperty);
                     if (positive) {

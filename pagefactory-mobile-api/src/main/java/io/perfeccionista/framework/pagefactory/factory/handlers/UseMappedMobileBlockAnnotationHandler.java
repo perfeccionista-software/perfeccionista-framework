@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.Optional;
 
+import static io.perfeccionista.framework.utils.AnnotationUtils.findAnnotation;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findFirstAnnotationInHierarchy;
-import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 
 public class UseMappedMobileBlockAnnotationHandler {
 

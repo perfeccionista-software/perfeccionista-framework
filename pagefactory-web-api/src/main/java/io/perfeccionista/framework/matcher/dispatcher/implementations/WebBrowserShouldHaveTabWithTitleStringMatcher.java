@@ -34,7 +34,7 @@ public class WebBrowserShouldHaveTabWithTitleStringMatcher implements WebBrowser
                 ? assertInvocation(BROWSER_SHOULD_HAVE_TAB_WITH_TITLE_METHOD, this, expectedText)
                 : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TAB_WITH_TITLE_METHOD, this, expectedText);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     List<String> actualTabTitles = tabsDispatcher.getAllTabTitles();
                     if (positive) {

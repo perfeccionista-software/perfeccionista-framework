@@ -48,14 +48,14 @@ public class WebRadioGroupMultipleIndexedResult<T> implements WebMultipleIndexed
 
     @Override
     public Map<Integer, T> getResults() {
-        return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
+        return runCheck(getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
                 () -> extractor.extractValues(filterBuilder.build(element)));
     }
 
     @Override
     public int getSize() {
         WebRadioGroupFilter webRadioGroupFilter = filterBuilder.build(element);
-        return runCheck(element.getEnvironment(), getterInvocation(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
+        return runCheck(getterInvocation(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
                 () -> webRadioGroupFilter.getFilterResult().getIndexes().size());
     }
 

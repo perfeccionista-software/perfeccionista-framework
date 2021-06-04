@@ -38,7 +38,7 @@ import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElemen
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementPropertyAnnotationHandler.createWebElementPropertyRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementStateAnnotationHandler.createWebElementStateRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createWebLocatorRegistryFor;
-import static io.perfeccionista.framework.utils.ReflectionUtils.*;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForFields.writeField;
 
 // TODO: Добавить возможность принудительно переопределять в конфигурации методы для конкретных типов элементов
 // TODO: Добавить возможность переопределять конфигурации элементов над родительским классом (страницей или блоком)

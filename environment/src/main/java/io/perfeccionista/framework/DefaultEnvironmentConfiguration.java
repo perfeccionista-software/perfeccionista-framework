@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
-import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
-import static io.perfeccionista.framework.utils.ReflectionUtils.loadClass;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.loadClass;
 
 public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
 

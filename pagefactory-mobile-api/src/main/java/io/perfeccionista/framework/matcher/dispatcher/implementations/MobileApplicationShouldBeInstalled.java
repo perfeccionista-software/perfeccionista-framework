@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.matcher.dispatcher.implementations;
 
-import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.MobileApplicationIsInstalled;
 import io.perfeccionista.framework.exceptions.MobileApplicationIsNotInstalled;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
@@ -31,7 +30,7 @@ public class MobileApplicationShouldBeInstalled implements MobileDeviceSystemDis
                 ? assertInvocation(MOBILE_APPLICATION_SHOULD_BE_INSTALLED_METHOD, this)
                 : assertInvocation(MOBILE_APPLICATION_SHOULD_NOT_BE_INSTALLED_METHOD, this);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     boolean actualState = mobileDeviceSystemDispatcher.isApplicationInstalled(bundleId);
                     if (positive) {

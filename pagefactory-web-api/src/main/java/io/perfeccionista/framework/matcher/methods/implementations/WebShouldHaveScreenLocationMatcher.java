@@ -35,7 +35,7 @@ public class WebShouldHaveScreenLocationMatcher implements WebGetElementBoundsAv
                 ? assertInvocation(SHOULD_HAVE_SCREEN_LOCATION_METHOD, element, componentName, expectedLocation)
                 : assertInvocation(SHOULD_NOT_HAVE_SCREEN_LOCATION_METHOD, element, componentName, expectedLocation);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     ElementBounds actualElementBounds = element.getElementBounds(componentName);
                     if (positive) {

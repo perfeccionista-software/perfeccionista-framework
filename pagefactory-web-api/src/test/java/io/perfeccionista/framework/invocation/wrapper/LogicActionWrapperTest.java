@@ -16,25 +16,25 @@ import static io.perfeccionista.framework.invocation.wrapper.LogicInvocationWrap
 class LogicActionWrapperTest extends AbstractWebParallelTest {
 
     @Test
-    void test(Environment environment) {
-        runLogic(environment, InvocationName.assertInvocation("First logic action in this test"),  () -> {
-            runCheck(environment, InvocationName.assertInvocation("First check in first logic action"), () -> {
+    void test() {
+        runLogic(InvocationName.assertInvocation("First logic action in this test"),  () -> {
+            runCheck(InvocationName.assertInvocation("First check in first logic action"), () -> {
                 // There is execution code
             });
-            runCheck(environment, InvocationName.assertInvocation("Second check in first logic action with custom timeout"), () -> {
+            runCheck(InvocationName.assertInvocation("Second check in first logic action with custom timeout"), () -> {
                 // There is execution code
             }, Duration.ofMillis(750));
         });
         // There is execution code without reporting
-        runLogic(environment, InvocationName.assertInvocation("Second logic action with custom timeout in this test"), () -> {
-            runCheck(environment, InvocationName.assertInvocation("First check in second action"), () -> {
+        runLogic(InvocationName.assertInvocation("Second logic action with custom timeout in this test"), () -> {
+            runCheck(InvocationName.assertInvocation("First check in second action"), () -> {
                 // There is execution code
             });
-            runCheck(environment, InvocationName.assertInvocation("Second check in second action"), () -> {
+            runCheck(InvocationName.assertInvocation("Second check in second action"), () -> {
                 // There is execution code
             });
         }, Duration.ofSeconds(30));
-        runCheck(environment, InvocationName.assertInvocation("Single unwrapped check action"), () -> {
+        runCheck(InvocationName.assertInvocation("Single unwrapped check action"), () -> {
             // There is execution code
         });
     }

@@ -40,7 +40,7 @@ public class WebComponentShouldBePresentMatcher implements WebComponentAvailable
                 ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, element)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBePresent(element, componentName);

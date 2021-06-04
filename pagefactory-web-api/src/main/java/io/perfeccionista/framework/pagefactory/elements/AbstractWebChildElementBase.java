@@ -90,7 +90,7 @@ public class AbstractWebChildElementBase implements WebChildElementBase {
     @Override
     public WebChildElementBase executeAction(@NotNull String name, Object... args) {
         WebActionOperationType operationType = WebActionOperationType.of(this, name, args);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }

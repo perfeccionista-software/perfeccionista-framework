@@ -5,8 +5,8 @@ import io.perfeccionista.framework.EnvironmentConfiguration;
 
 import java.util.Properties;
 
-import static io.perfeccionista.framework.utils.ReflectionUtils.loadClass;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.loadClass;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class EnvironmentConfigurationResolver {
 

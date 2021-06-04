@@ -42,7 +42,7 @@ public class DefaultAppiumIosScreenDispatcher implements MobileDeviceScreenDispa
 
     @Override
     public DefaultAppiumIosScreenDispatcher rotateOn(@NotNull Rotation3D rotation) {
-        runCheck(environment, getterInvocation(DEVICE_ROTATE_ON_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_ROTATE_ON_METHOD), () ->
                 exceptionMapper.map(() -> instance.rotate(AppiumRotationConverter.createDeviceRotation(rotation))))
                 .ifException(exception -> {
                     throw exception;
@@ -52,7 +52,7 @@ public class DefaultAppiumIosScreenDispatcher implements MobileDeviceScreenDispa
 
     @Override
     public DefaultAppiumIosScreenDispatcher rotateTo(@NotNull ScreenOrientation screenOrientation) {
-        runCheck(environment, getterInvocation(DEVICE_ROTATE_TO_METHOD), () ->
+        runCheck(getterInvocation(DEVICE_ROTATE_TO_METHOD), () ->
                 exceptionMapper.map(() -> instance.rotate(AppiumRotationConverter.createAppiumScreenOrientation(screenOrientation))))
                 .ifException(exception -> {
                     throw exception;

@@ -13,7 +13,7 @@ import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_REGISTER_BY_NAME_DUPLICATE;
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
-import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
 
 public class DefaultFixtureServiceConfiguration implements FixtureServiceConfiguration {
 

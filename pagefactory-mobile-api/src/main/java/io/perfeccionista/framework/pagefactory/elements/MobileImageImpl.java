@@ -118,7 +118,7 @@ public class MobileImageImpl extends AbstractMobileChildElement implements Mobil
     @Override
     public MobileImage tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -127,7 +127,7 @@ public class MobileImageImpl extends AbstractMobileChildElement implements Mobil
     @Override
     public MobileImage longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -135,7 +135,7 @@ public class MobileImageImpl extends AbstractMobileChildElement implements Mobil
     @Override
     public MobileImage doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

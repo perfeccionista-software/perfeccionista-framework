@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.extension;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.repeater.RepeatPolicyService;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +31,7 @@ import io.perfeccionista.framework.repeater.iterators.NoRepeatTestTemplateIterat
 import io.perfeccionista.framework.repeater.iterators.RepeatIfTestTemplateIterator;
 import io.perfeccionista.framework.repeater.iterators.RepeatWhileTestTemplateIterator;
 import io.perfeccionista.framework.service.Service;
-import io.perfeccionista.framework.utils.ReflectionUtils;
+import io.perfeccionista.framework.utils.ReflectionUtilsForClasses;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -273,7 +272,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      */
     @SuppressWarnings("WeakerAccess")
     protected <T extends Environment> T createEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        Constructor<? extends Environment> constructor = ReflectionUtils
+        Constructor<? extends Environment> constructor = ReflectionUtilsForClasses
                 .getConstructor(environmentConfiguration.getEnvironmentClass(), EnvironmentConfiguration.class);
         // noinspection unchecked
         return (T) newInstance(constructor, environmentConfiguration);

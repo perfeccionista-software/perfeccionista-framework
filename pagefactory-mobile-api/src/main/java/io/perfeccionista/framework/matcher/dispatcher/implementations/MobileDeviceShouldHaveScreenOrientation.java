@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.matcher.dispatcher.implementations;
 
-import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.MobileDeviceOrientationNotMatch;
 import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.dispatcher.MobileDeviceScreenDispatcherMatcher;
@@ -25,7 +24,7 @@ public class MobileDeviceShouldHaveScreenOrientation implements MobileDeviceScre
     public void check(@NotNull MobileDeviceScreenDispatcher mobileDevice) {
         InvocationName invocationName = assertInvocation(MOBILE_DEVICE_SHOULD_HAVE_SCREEN_ORIENTATION_METHOD, this);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     ScreenOrientation actualOrientation = mobileDevice.getScreenOrientation();
                     if (expectedScreenOrientation != actualOrientation) {

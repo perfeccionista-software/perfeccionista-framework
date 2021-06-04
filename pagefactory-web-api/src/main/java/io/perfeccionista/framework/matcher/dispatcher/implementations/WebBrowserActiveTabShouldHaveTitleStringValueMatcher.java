@@ -33,7 +33,7 @@ public class WebBrowserActiveTabShouldHaveTitleStringValueMatcher implements Web
                 ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_TITLE_VALUE_METHOD, this, expectedStringValue)
                 : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_TITLE_VALUE_METHOD, this, expectedStringValue);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     String actualActiveTabTitleText = tabsDispatcher.getActiveTabTitle();
                     if (positive) {

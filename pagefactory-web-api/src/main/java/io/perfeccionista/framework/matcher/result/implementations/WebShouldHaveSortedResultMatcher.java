@@ -34,7 +34,7 @@ public class WebShouldHaveSortedResultMatcher<T> implements WebMultipleIndexedRe
 
         WebChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             AtomicBoolean comparisonResult = new AtomicBoolean(true);
             Map<String, Integer> detailComparisonResult = new HashMap<>();
             result.getResults().entrySet().stream()

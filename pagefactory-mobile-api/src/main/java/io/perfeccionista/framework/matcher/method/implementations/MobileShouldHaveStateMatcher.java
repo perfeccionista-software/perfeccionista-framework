@@ -31,7 +31,7 @@ public class MobileShouldHaveStateMatcher implements MobileElementStateAvailable
                 ? assertInvocation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, element, stateName)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, element, stateName);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     boolean actualState = element.hasState(stateName);
                     if (positive) {

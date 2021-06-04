@@ -29,7 +29,7 @@ public class WebShouldBeEnabledMatcher implements WebIsEnabledAvailableMatcher {
                 ? assertInvocation(SHOULD_BE_ENABLED_METHOD, element)
                 : assertInvocation(SHOULD_BE_DISABLED_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     boolean enabled = element.isEnabled();
                     if (positive) {

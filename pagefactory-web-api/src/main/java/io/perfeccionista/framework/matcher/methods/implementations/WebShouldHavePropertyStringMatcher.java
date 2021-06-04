@@ -33,7 +33,7 @@ public class WebShouldHavePropertyStringMatcher implements WebElementPropertyAva
                 ? assertInvocation(SHOULD_HAVE_PROPERTY_TEXT_METHOD, this, propertyName, expectedText)
                 : assertInvocation(SHOULD_NOT_HAVE_PROPERTY_TEXT_METHOD, this, propertyName, expectedText);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     String actualPropertyValue = element.getPropertyValue(propertyName);
                     if (positive) {

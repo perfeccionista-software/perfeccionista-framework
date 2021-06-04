@@ -1,11 +1,9 @@
 package io.perfeccionista.framework.cucumber.plugin;
 
-import io.cucumber.java.ru.Дано;
 import io.cucumber.plugin.ConcurrentEventListener;
 import io.cucumber.plugin.event.EmbedEvent;
 import io.cucumber.plugin.event.EventHandler;
 import io.cucumber.plugin.event.EventPublisher;
-import io.cucumber.plugin.event.TestCase;
 import io.cucumber.plugin.event.TestCaseFinished;
 import io.cucumber.plugin.event.TestCaseStarted;
 import io.cucumber.plugin.event.TestRunFinished;
@@ -14,34 +12,22 @@ import io.cucumber.plugin.event.TestSourceRead;
 import io.cucumber.plugin.event.TestStepFinished;
 import io.cucumber.plugin.event.TestStepStarted;
 import io.cucumber.plugin.event.WriteEvent;
-import io.perfeccionista.framework.DefaultEnvironmentConfiguration;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.cucumber.CucumberService;
-import io.perfeccionista.framework.cucumber.DefaultCucumberServiceConfiguration;
-import io.perfeccionista.framework.cucumber.stepdefinitions.CucumberStepDefinitions;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
+import io.perfeccionista.framework.logging.Logger;
+import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.service.Service;
-import io.perfeccionista.framework.utils.EnvironmentConfigurationResolver;
-import io.perfeccionista.framework.utils.FileUtils;
-import io.perfeccionista.framework.utils.ReflectionUtils;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
-import org.junit.platform.commons.support.ReflectionSupport;
+import io.perfeccionista.framework.utils.ReflectionUtilsForClasses;
 
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveEnvironmentConfiguration;
-import static io.perfeccionista.framework.utils.ReflectionUtils.loadClass;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
 
 
 /**
@@ -135,7 +121,7 @@ public class PerfeccionistaCucumber6Plugin implements ConcurrentEventListener {
             Matcher matcher = ENVIRONMENT_CONFIGURATION_TAG_PATTERN.matcher(tag);
             if (matcher.find()) {
                 String fileName = matcher.group("class");
-                environmentConfigurationClass = ReflectionUtils.loadClass(fileName, EnvironmentConfiguration.class);
+                environmentConfigurationClass = ReflectionUtilsForClasses.loadClass(fileName, EnvironmentConfiguration.class);
             }
         }
         Environment environment;
@@ -144,8 +130,7 @@ public class PerfeccionistaCucumber6Plugin implements ConcurrentEventListener {
         } else {
             environment = new Environment(resolveEnvironmentConfiguration(environmentConfigurationClass));
         }
-        environment.setEnvironmentForCurrentThread()
-                .init();
+        environment.setEnvironmentForCurrentThread();
         environment.getServices().forEach(Service::beforeTest);
 
     }

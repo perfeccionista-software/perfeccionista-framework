@@ -13,7 +13,6 @@ import io.perfeccionista.framework.pagefactory.factory.proxy.UnimplementedWebEle
 import io.perfeccionista.framework.pagefactory.factory.proxy.WebChildElementCallbackFilter;
 import io.perfeccionista.framework.pagefactory.factory.proxy.WebParentElementCallbackFilter;
 import io.perfeccionista.framework.pagefactory.factory.proxy.WebParentElementInvocationHandler;
-import io.perfeccionista.framework.utils.ReflectionUtils.Order;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
@@ -23,10 +22,11 @@ import java.util.Deque;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IMPLEMENTATION_CANT_BE_ABSTRACT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IMPLEMENTATION_NOT_FOUND;
-import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
+import static io.perfeccionista.framework.measurements.Order.DESC;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedInterfaces;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 import static java.lang.reflect.Modifier.isAbstract;
 import static java.lang.reflect.Modifier.isInterface;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
 
 public class WebElementInitializer {
 
@@ -101,7 +101,7 @@ public class WebElementInitializer {
     }
 
     protected @NotNull Class<? extends WebChildElement> findAncestorInterfaceImplementation(@NotNull Class<? extends WebChildElement> webChildElementClass) {
-        Deque<Class<? extends WebChildElement>> inheritedInterfaces = getInheritedInterfaces(WebChildElement.class, webChildElementClass, Order.DESC);
+        Deque<Class<? extends WebChildElement>> inheritedInterfaces = findInheritedInterfaces(WebChildElement.class, webChildElementClass, DESC);
         for (Class<? extends WebChildElement> inheritedInterface : inheritedInterfaces) {
             Class<? extends WebChildElement> elementImplementation = configuration.getWebElementImplementation(inheritedInterface);
             if (null != elementImplementation) {

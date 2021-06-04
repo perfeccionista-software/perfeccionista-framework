@@ -176,7 +176,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete clear() {
         MobileClearOperationType operationType = MobileClearOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, CLEAR).executeAction());
         return this;
     }
@@ -184,7 +184,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete typeText(@NotNull String keys) {
         MobileTypeTextOperationType operationType = MobileTypeTextOperationType.of(this, keys);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -192,7 +192,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete replaceText(@NotNull String keys) {
         MobileReplaceTextOperationType operationType = MobileReplaceTextOperationType.of(this, keys);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -200,7 +200,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
         MobileSendKeyEventsOperationType operationType = MobileSendKeyEventsOperationType.of(this, keyEvents);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }

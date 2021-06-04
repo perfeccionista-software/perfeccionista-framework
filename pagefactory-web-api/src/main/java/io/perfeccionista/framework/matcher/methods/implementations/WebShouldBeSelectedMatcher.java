@@ -29,7 +29,7 @@ public class WebShouldBeSelectedMatcher implements WebIsSelectedAvailableMatcher
                 ? assertInvocation(SHOULD_BE_SELECTED_METHOD, element)
                 : assertInvocation(SHOULD_NOT_BE_SELECTED_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     boolean selected = element.isSelected();
                     if (positive) {

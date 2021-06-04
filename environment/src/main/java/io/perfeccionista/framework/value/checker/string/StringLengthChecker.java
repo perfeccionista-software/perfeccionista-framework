@@ -36,7 +36,12 @@ public class StringLengthChecker extends AbstractStringChecker {
                         + "               method: %s\n"
                         + "    processedExpected: '%s'\n"
                         + "      processedActual: '%s'",
-                getExpected(), getActual(), this.getClass().getCanonicalName(), "string length", getProcessedExpected(), getProcessedActual());
+                getExpected(),
+                getActual().length() + "[" + getActual() + "]",
+                this.getClass().getCanonicalName(),
+                "string length",
+                getProcessedExpected(),
+                getProcessedActual().length() + "[" + getProcessedActual() + "]");
     }
 
 }
