@@ -24,7 +24,6 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_REGISTER_BY_CLASS_DUPLICATE;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_REGISTER_CLASS_CAST;
-import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveEnvironmentConfiguration;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 /**
@@ -59,16 +58,12 @@ public class Environment {
     protected final EnvironmentConfiguration configuration;
     protected final Map<Class<? extends Service>, Service> services = new HashMap<>();
 
-    public Environment() {
-        this(resolveEnvironmentConfiguration());
-    }
-
     /**
      * Экземпляр {@link Environment} создается во время инициализации
      * Наследники этого класса должны иметь такой же конструктор
      */
     public Environment(@NotNull Class<? extends EnvironmentConfiguration> configurationClass) {
-        this(resolveEnvironmentConfiguration(configurationClass));
+        this(newInstance(configurationClass));
     }
 
     /**
@@ -77,8 +72,9 @@ public class Environment {
      */
     public Environment(@NotNull EnvironmentConfiguration configuration) {
         this.configuration = configuration;
-        this.configuration.getLogger()
+        this.configuration.getLoggerClass()
                 .ifPresent(LoggerFactory::setLogger);
+        logger.config(() -> "Environment configuration check");
         checkEnvironmentConfiguration(this.configuration);
         logger.config(() -> "Environment configuration check success");
     }
@@ -86,7 +82,15 @@ public class Environment {
     public Environment init() {
         logger.debug(() -> "Environment configuration initialization");
         initEnvironment(configuration);
+        this.getServices().forEach(Service::beforeTest);
+        logger.debug(() -> "Environment configuration initialization success");
         return this;
+    }
+
+    public void shutdown() {
+        logger.debug(() -> "Environment shutdown");
+        this.getServices().forEach(Service::afterTest);
+        logger.debug(() -> "Environment shutdown success");
     }
 
     /**

@@ -30,7 +30,6 @@ import io.perfeccionista.framework.repeater.TestRepeatedOnCondition;
 import io.perfeccionista.framework.repeater.iterators.NoRepeatTestTemplateIterator;
 import io.perfeccionista.framework.repeater.iterators.RepeatIfTestTemplateIterator;
 import io.perfeccionista.framework.repeater.iterators.RepeatWhileTestTemplateIterator;
-import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.utils.ReflectionUtilsForClasses;
 
 import java.lang.reflect.Constructor;
@@ -59,7 +58,7 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 // TODO: Сделать возможным пробрасывать любой зарегистрированный в Enviroment сервис отдельным аргументом
 public class PerfeccionistaExtension implements ParameterResolver, TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback,
         TestTemplateInvocationContextProvider, TestExecutionExceptionHandler, TestWatcher {
-    private static final Logger log = LoggerFactory.getLogger(PerfeccionistaExtension.class);
+    private static final Logger logger = LoggerFactory.getLogger(PerfeccionistaExtension.class);
 
     protected ThreadLocal<Environment> activeEnvironment = new ThreadLocal<>();
     protected ThreadLocal<Map<Method, Deque<TestExecutionResult>>> threadLocalTestResults = new ThreadLocal<>();
@@ -103,7 +102,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     public void afterEach(ExtensionContext context) {
         Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
         environmentInstanceForCurrentThread.ifPresent(environment -> {
-            environment.getServices().forEach(Service::afterTest);
+            environment.shutdown();
             environment.removeEnvironmentForCurrentThread();
         });
         activeEnvironment.remove();
@@ -285,11 +284,10 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      * Выполняем beforeEach() для заданного теста
      */
     protected void resolveActiveEnvironmentForTestMethod(Class<? extends EnvironmentConfiguration> configurationClass) {
-        Environment environmentInstance = createEnvironment(resolveEnvironmentConfiguration(configurationClass))
+        Environment environmentInstance = createEnvironment(newInstance(configurationClass))
                 .setEnvironmentForCurrentThread()
                 .init();
         activeEnvironment.set(environmentInstance);
-        environmentInstance.getServices().forEach(Service::beforeTest);
     }
 
     /**
@@ -300,7 +298,6 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
                 .setEnvironmentForCurrentThread()
                 .init();
         activeEnvironment.set(environmentInstance);
-        environmentInstance.getServices().forEach(Service::beforeTest);
     }
 
     /**

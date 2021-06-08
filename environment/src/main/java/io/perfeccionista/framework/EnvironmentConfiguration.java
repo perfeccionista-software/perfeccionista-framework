@@ -76,13 +76,6 @@ public interface EnvironmentConfiguration {
     }
 
     /**
-     *
-     * @param systemProperties
-     * @param perfeccionistaProperties
-     */
-    EnvironmentConfiguration init(@Nullable Properties systemProperties, @Nullable Properties perfeccionistaProperties);
-
-    /**
      * Набор сервисов и конфигураций для замены дефолных сервисов
      * @return
      */
@@ -97,7 +90,7 @@ public interface EnvironmentConfiguration {
      * @return Возвращает кастомный логгер, который будет использоваться в тесте.
      * Если не задан, то используется логгер по умолчанию.
      */
-    default Optional<Logger> getLogger() {
+    default Optional<Class<? extends Logger>> getLoggerClass() {
         return Optional.empty();
     }
 

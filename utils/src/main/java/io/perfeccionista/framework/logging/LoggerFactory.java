@@ -6,9 +6,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
+
 public final class LoggerFactory {
 
-    private static final ThreadLocal<Logger> threadLocalLogger = new ThreadLocal<>();
+    private static final ThreadLocal<Class<? extends Logger>> threadLocalLoggerClass = new ThreadLocal<>();
 
     private LoggerFactory() {
         /* no-op */
@@ -23,15 +25,20 @@ public final class LoggerFactory {
      * @return the logger
      */
     public static Logger getLogger(@NotNull Class<?> clazz) {
-        return Optional.ofNullable(LoggerFactory.threadLocalLogger.get())
-                .orElse(new JulDelegatingLogger(clazz.getName()));
+        Optional<? extends Class<? extends Logger>> optionalLoggerClass = Optional.ofNullable(LoggerFactory.threadLocalLoggerClass.get());
+        if (optionalLoggerClass.isPresent()) {
+            Class<? extends Logger> loggerClass = optionalLoggerClass.get();
+            Logger logger = newInstance(loggerClass, clazz.getCanonicalName());
+            if (logger instanceof ListenableLogger) {
+                ((ListenableLogger) logger).addListeners(listeners);
+            }
+            return logger;
+        }
+        return new JulDelegatingLogger(clazz.getName());
     }
 
-    public static void setLogger(@NotNull Logger logger) {
-        if (logger instanceof ListenableLogger) {
-            ((ListenableLogger) logger).addListeners(listeners);
-        }
-        threadLocalLogger.set(logger);
+    public static void setLogger(@NotNull Class<? extends Logger> loggerClass) {
+        threadLocalLoggerClass.set(loggerClass);
     }
 
     /**

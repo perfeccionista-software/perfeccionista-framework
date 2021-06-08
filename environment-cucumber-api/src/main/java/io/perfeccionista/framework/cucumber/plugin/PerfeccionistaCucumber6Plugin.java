@@ -128,10 +128,10 @@ public class PerfeccionistaCucumber6Plugin implements ConcurrentEventListener {
         if (Objects.isNull(environmentConfigurationClass)) {
             environment = new Environment(resolveEnvironmentConfiguration());
         } else {
-            environment = new Environment(resolveEnvironmentConfiguration(environmentConfigurationClass));
+            environment = new Environment(environmentConfigurationClass);
         }
         environment.setEnvironmentForCurrentThread();
-        environment.getServices().forEach(Service::beforeTest);
+        environment.init();
 
     }
 
@@ -171,7 +171,7 @@ public class PerfeccionistaCucumber6Plugin implements ConcurrentEventListener {
 
         Optional<Environment> environmentInstanceForCurrentThread = Environment.get();
         environmentInstanceForCurrentThread.ifPresent(environment -> {
-            environment.getServices().forEach(Service::afterTest);
+            environment.shutdown();
             environment.removeEnvironmentForCurrentThread();
         });
 

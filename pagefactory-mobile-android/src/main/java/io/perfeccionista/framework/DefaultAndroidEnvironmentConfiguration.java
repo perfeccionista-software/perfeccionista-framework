@@ -25,7 +25,7 @@ import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.loadClass;
 
-public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
+public class DefaultAndroidEnvironmentConfiguration implements EnvironmentConfiguration {
 
     protected static final String PERFECCIONISTA_PROPERTIES_FILE = "perfeccionista.properties";
     protected static final String SERVICE_PROPERTY_PREFIX = "perfeccionista.service.";
@@ -36,7 +36,7 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
     protected Properties perfeccionistaProperties;
     protected Properties systemProperties;
 
-    public DefaultEnvironmentConfiguration() {
+    public DefaultAndroidEnvironmentConfiguration() {
         readProperties();
     }
 
@@ -84,7 +84,7 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
         return servicesWithDefaultConfiguration;
     }
 
-    protected DefaultEnvironmentConfiguration readProperties() {
+    protected DefaultAndroidEnvironmentConfiguration readProperties() {
         perfeccionistaProperties = FileUtils.readOptionalPropertyFile(PERFECCIONISTA_PROPERTIES_FILE)
                 .orElse(new Properties());
         systemProperties = System.getProperties();

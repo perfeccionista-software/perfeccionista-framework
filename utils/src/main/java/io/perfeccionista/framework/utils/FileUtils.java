@@ -7,6 +7,7 @@ import io.perfeccionista.framework.exceptions.FileWritingFailed;
 import io.perfeccionista.framework.logging.Logger;
 import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -34,6 +36,8 @@ import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.TARG
 // TODO: Привести аргументы к одному виду Path вместо Path и URL.
 public class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
+    private static final Map<String, Properties> propertiesCache = new HashMap<>();
 
     private FileUtils() {}
 
@@ -113,8 +117,8 @@ public class FileUtils {
     }
 
     public static String readTextFile(@NotNull URL url, @NotNull Charset charset) {
-        StringBuilder stringBuilder = new StringBuilder();
-        File file = new File(url.getFile());
+        var stringBuilder = new StringBuilder();
+        var file = new File(url.getFile());
         if (!file.isFile()) {
             throw FileReadingFailed.exception(TARGET_IS_NOT_A_FILE.getMessage(url));
         }
@@ -126,10 +130,15 @@ public class FileUtils {
         return stringBuilder.toString();
     }
 
-    public static Properties readPropertyFile(@NotNull String propertyFileName) {
+    public static Properties readRequiredPropertyFile(@NotNull String propertyFileName) {
+        if (propertiesCache.containsKey(propertyFileName)) {
+            return Optional.ofNullable(propertiesCache.get(propertyFileName))
+                    .orElseThrow(() -> FileNotExist.exception(FILE_NOT_EXIST.getMessage(propertyFileName)));
+        }
         try (InputStream fileInputStream = new FileInputStream(propertyFileName)) {
-            Properties properties = new Properties();
+            var properties = new Properties();
             properties.load(fileInputStream);
+            cachePropertyFile(propertyFileName, properties);
             return properties;
         } catch (IOException e) {
             throw FileReadingFailed.exception(CANT_READ_FILE.getMessage(propertyFileName), e);
@@ -137,15 +146,21 @@ public class FileUtils {
     }
 
     public static Optional<Properties> readOptionalPropertyFile(@NotNull String propertyFileName) {
+        if (propertiesCache.containsKey(propertyFileName)) {
+            return Optional.ofNullable(propertiesCache.get(propertyFileName));
+        }
         URL resource = FileUtils.class.getClassLoader().getResource(propertyFileName);
         if (Objects.isNull(resource)) {
+            cachePropertyFile(propertyFileName, null);
             return Optional.empty();
         }
         try (var fileInputStream = resource.openStream()) {
             var properties = new Properties();
             properties.load(fileInputStream);
+            cachePropertyFile(propertyFileName, properties);
             return Optional.of(properties);
         } catch (IOException e) {
+            cachePropertyFile(propertyFileName, null);
             return Optional.empty();
         }
     }
@@ -166,6 +181,10 @@ public class FileUtils {
 
     public static boolean isFileExecutable(@NotNull Path path) {
         return Files.isRegularFile(path) && Files.isReadable(path) && Files.isExecutable(path);
+    }
+
+    private static synchronized void cachePropertyFile(@NotNull String propertyFileName, @Nullable Properties propertyFile) {
+        propertiesCache.put(propertyFileName, propertyFile);
     }
 
 }

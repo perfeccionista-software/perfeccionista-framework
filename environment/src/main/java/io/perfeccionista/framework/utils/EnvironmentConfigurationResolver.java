@@ -17,9 +17,9 @@ public class EnvironmentConfigurationResolver {
     private static final String ENVIRONMENT_CONFIGURATION_PROPERTY_NAME = "perfeccionista.environment";
 
     public static EnvironmentConfiguration resolveEnvironmentConfiguration() {
-        Properties perfeccionistaProperties = FileUtils.readOptionalPropertyFile(PERFECCIONISTA_PROPERTIES_FILE)
+        var perfeccionistaProperties = FileUtils.readOptionalPropertyFile(PERFECCIONISTA_PROPERTIES_FILE)
                 .orElse(new Properties());
-        Properties systemProperties = System.getProperties();
+        var systemProperties = System.getProperties();
         Class<? extends EnvironmentConfiguration> environmentConfigurationClass;
         if (systemProperties.containsKey(ENVIRONMENT_CONFIGURATION_PROPERTY_NAME)) {
             String environmentConfigurationClassProperty = systemProperties.getProperty(ENVIRONMENT_CONFIGURATION_PROPERTY_NAME);
@@ -30,16 +30,7 @@ public class EnvironmentConfigurationResolver {
         } else {
             environmentConfigurationClass = DefaultEnvironmentConfiguration.class;
         }
-        return newInstance(environmentConfigurationClass)
-                .init(systemProperties, perfeccionistaProperties);
-    }
-
-    public static EnvironmentConfiguration resolveEnvironmentConfiguration(Class<? extends EnvironmentConfiguration> environmentConfigurationClass) {
-        Properties perfeccionistaProperties = FileUtils.readOptionalPropertyFile(PERFECCIONISTA_PROPERTIES_FILE)
-                .orElse(new Properties());
-        Properties systemProperties = System.getProperties();
-        return newInstance(environmentConfigurationClass)
-                .init(systemProperties, perfeccionistaProperties);
+        return newInstance(environmentConfigurationClass);
     }
 
 }
