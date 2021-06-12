@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 /**
  * Аннотация позволяет указывать конфигурацию для
  * экземпляра {@link Environment}.
- * Аннотация считывается {@link io.perfeccionista.framework.extension.PerfeccionistaExtension}
- * В момент инициализации {@link Environment}.
  * Приоритет конфигураций при инициализации выглядит так:
  * <UL>
  *     <li>Если есть аннотация над тестовым методом, то используется она и

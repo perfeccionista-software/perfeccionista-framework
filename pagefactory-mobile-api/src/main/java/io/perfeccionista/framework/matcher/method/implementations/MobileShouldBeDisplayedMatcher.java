@@ -39,7 +39,7 @@ public class MobileShouldBeDisplayedMatcher implements MobileIsDisplayedAvailabl
                 ? assertInvocation(SHOULD_BE_DISPLAYED_METHOD, element, DISPLAYED)
                 : assertInvocation(SHOULD_NOT_BE_DISPLAYED_METHOD, element, DISPLAYED);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBeDisplayed(element);

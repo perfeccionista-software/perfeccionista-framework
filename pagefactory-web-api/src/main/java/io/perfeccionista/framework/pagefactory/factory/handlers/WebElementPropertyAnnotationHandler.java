@@ -19,9 +19,9 @@ import java.util.Optional;
 
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createOptionalWebLocatorHolder;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
-import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
-import static org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.AnnotationUtils.findRepeatableAnnotations;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class WebElementPropertyAnnotationHandler {
 

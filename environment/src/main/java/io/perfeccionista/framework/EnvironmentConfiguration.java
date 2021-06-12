@@ -1,11 +1,13 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.logging.Logger;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
@@ -74,13 +76,6 @@ public interface EnvironmentConfiguration {
     }
 
     /**
-     *
-     * @param systemProperties
-     * @param perfeccionistaProperties
-     */
-    EnvironmentConfiguration init(@Nullable Properties systemProperties, @Nullable Properties perfeccionistaProperties);
-
-    /**
      * Набор сервисов и конфигураций для замены дефолных сервисов
      * @return
      */
@@ -90,5 +85,13 @@ public interface EnvironmentConfiguration {
      * @return набор переменных, использующихся в тестах.
      */
     @NotNull Set<String> getScanPackages();
+
+    /**
+     * @return Возвращает кастомный логгер, который будет использоваться в тесте.
+     * Если не задан, то используется логгер по умолчанию.
+     */
+    default Optional<Class<? extends Logger>> getLoggerClass() {
+        return Optional.empty();
+    }
 
 }

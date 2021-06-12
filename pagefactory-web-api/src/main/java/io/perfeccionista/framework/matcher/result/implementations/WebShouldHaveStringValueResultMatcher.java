@@ -33,7 +33,7 @@ public class WebShouldHaveStringValueResultMatcher implements WebMultipleIndexed
 
         WebChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             AtomicBoolean match = new AtomicBoolean(true);
             Map<Integer, String> results = result.getResults();
             results.forEach((index, value) -> {

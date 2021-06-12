@@ -142,7 +142,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public WebTextInput click() {
         WebClickOperationType operationType = WebClickOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
@@ -152,7 +152,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public @Nullable String getLabel() {
         WebGetLabelOperationType operationType = WebGetLabelOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
@@ -161,7 +161,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public @Nullable String getText() {
         WebGetTextOperationType operationType = WebGetTextOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 
@@ -178,7 +178,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public WebTextInput clear() {
         WebClearOperationType operationType = WebClearOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -186,7 +186,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public WebTextInput typeText(@NotNull String text) {
         WebTypeTextOperationType operationType = WebTypeTextOperationType.of(this, text);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -194,7 +194,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public WebTextInput replaceText(@NotNull String text) {
         WebReplaceTextOperationType operationType = WebReplaceTextOperationType.of(this, text);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -202,7 +202,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public WebTextInput sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
         WebSendKeyEventsOperationType operationType = WebSendKeyEventsOperationType.of(this, keyEvents);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -212,7 +212,7 @@ public class WebTextInputImpl extends AbstractWebChildElement implements WebText
     @Override
     public boolean isEnabled() {
         WebGetIsEnabledOperationType operationType = WebGetIsEnabledOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, ENABLED).executeGetter());
     }
 

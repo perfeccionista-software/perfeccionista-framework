@@ -3,7 +3,12 @@ package io.perfeccionista.framework.exceptions.messages;
 public enum UtilsMessages implements Messages {
 
     CANT_CAST_OBJECT("Class %s can't be casted to type %s"),
+    CANT_CREATE_OBJECT("Class %s can't be instantiated with args %s"),
+    CANT_CREATE_OBJECT_WITH_CONSTRUCTOR("Constructor %s can't be instantiated with args %s"),
     CANT_LOAD_CLASS("Class %s is not found"),
+    CANT_READ_FILE("File reading failed by path %s"),
+    CANT_WRITE_FILE("File writing failed by path %s"),
+    TARGET_IS_NOT_A_FILE("Target %s is not a file"),
     COMMAND_EXECUTION_FAILED_WITH_CODE("Command execution failed with code '%s'"),
     COMMAND_EXECUTION_FAILED("Command execution failed"),
     CONSTRUCTOR_NOT_FOUND("Constructor for class %s with parameters %s not found"),
@@ -17,6 +22,7 @@ public enum UtilsMessages implements Messages {
     FILE_EXISTS("File '%s' exists"),
     FILE_NOT_EXIST("File '%s' is not exist"),
     METHOD_NOT_FOUND("Method with name %s is not declared for element"),
+    METHOD_INVOCATION_FAILED("Method %s invocation failed"),
     REQUIRED_ARGUMENT_NOT_FOUND("Required argument is not found"),
     RESPONSE_FORMAT_NOT_VALID("Response format is not valid"),
     JSON_OBJECT_PARSE_ERROR("Json object parse error"),

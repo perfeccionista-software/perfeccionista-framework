@@ -29,7 +29,7 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
@@ -37,7 +37,7 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
                     .executeWebElementOperation(clickOperation);
         });
         deleteFileIgnoreExceptions(Path.of(getHome() + "/Downloads/images/simple-button.png"));
-        Screenshot screenshot = runCheck(environment, () -> {
+        Screenshot screenshot = runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-button")
                             .addInvokedOnCallFunction(new JsScrollTo()
@@ -58,7 +58,7 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
     void multipleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
@@ -69,7 +69,7 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
         indexes.forEach(index -> {
             deleteFileIgnoreExceptions(Path.of(getHome() + "/Downloads/images/" + index + "-list-item.jpg"));
         });
-        Map<Integer, Screenshot> screenshots = runCheck(environment, () -> {
+        Map<Integer, Screenshot> screenshots = runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item").setIndexes(indexes));

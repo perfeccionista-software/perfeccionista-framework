@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.extension;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.repeater.RepeatPolicyService;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +30,7 @@ import io.perfeccionista.framework.repeater.TestRepeatedOnCondition;
 import io.perfeccionista.framework.repeater.iterators.NoRepeatTestTemplateIterator;
 import io.perfeccionista.framework.repeater.iterators.RepeatIfTestTemplateIterator;
 import io.perfeccionista.framework.repeater.iterators.RepeatWhileTestTemplateIterator;
-import io.perfeccionista.framework.service.Service;
-import io.perfeccionista.framework.utils.ReflectionUtils;
+import io.perfeccionista.framework.utils.ReflectionUtilsForClasses;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -60,7 +58,7 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 // TODO: Сделать возможным пробрасывать любой зарегистрированный в Enviroment сервис отдельным аргументом
 public class PerfeccionistaExtension implements ParameterResolver, TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback,
         TestTemplateInvocationContextProvider, TestExecutionExceptionHandler, TestWatcher {
-    private static final Logger log = LoggerFactory.getLogger(PerfeccionistaExtension.class);
+    private static final Logger logger = LoggerFactory.getLogger(PerfeccionistaExtension.class);
 
     protected ThreadLocal<Environment> activeEnvironment = new ThreadLocal<>();
     protected ThreadLocal<Map<Method, Deque<TestExecutionResult>>> threadLocalTestResults = new ThreadLocal<>();
@@ -104,7 +102,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     public void afterEach(ExtensionContext context) {
         Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
         environmentInstanceForCurrentThread.ifPresent(environment -> {
-            environment.getServices().forEach(Service::afterTest);
+            environment.shutdown();
             environment.removeEnvironmentForCurrentThread();
         });
         activeEnvironment.remove();
@@ -273,7 +271,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      */
     @SuppressWarnings("WeakerAccess")
     protected <T extends Environment> T createEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        Constructor<? extends Environment> constructor = ReflectionUtils
+        Constructor<? extends Environment> constructor = ReflectionUtilsForClasses
                 .getConstructor(environmentConfiguration.getEnvironmentClass(), EnvironmentConfiguration.class);
         // noinspection unchecked
         return (T) newInstance(constructor, environmentConfiguration);
@@ -286,11 +284,10 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      * Выполняем beforeEach() для заданного теста
      */
     protected void resolveActiveEnvironmentForTestMethod(Class<? extends EnvironmentConfiguration> configurationClass) {
-        Environment environmentInstance = createEnvironment(resolveEnvironmentConfiguration(configurationClass))
+        Environment environmentInstance = createEnvironment(newInstance(configurationClass))
                 .setEnvironmentForCurrentThread()
                 .init();
         activeEnvironment.set(environmentInstance);
-        environmentInstance.getServices().forEach(Service::beforeTest);
     }
 
     /**
@@ -301,7 +298,6 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
                 .setEnvironmentForCurrentThread()
                 .init();
         activeEnvironment.set(environmentInstance);
-        environmentInstance.getServices().forEach(Service::beforeTest);
     }
 
     /**

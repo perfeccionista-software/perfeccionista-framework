@@ -13,7 +13,6 @@ import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
@@ -119,7 +118,7 @@ public class WebTextImpl extends AbstractWebChildElement implements WebText {
     @Override
     public WebText click() {
         WebClickOperationType operationType = WebClickOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
@@ -129,7 +128,7 @@ public class WebTextImpl extends AbstractWebChildElement implements WebText {
     @Override
     public @Nullable String getText() {
         WebGetTextOperationType operationType = WebGetTextOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 

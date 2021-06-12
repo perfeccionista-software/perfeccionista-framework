@@ -21,7 +21,7 @@ class GetWebElementTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher chrome = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             WebElementOperation<WebElement> getLinkWebElementOperation = WebElementOperation.of(linkLocatorChain, new SeleniumGetWebElement());
@@ -33,7 +33,7 @@ class GetWebElementTest extends AbstractWebSeleniumParallelTest {
                     .getResult()
                     .click();
         });
-        String text = runCheck(environment, () -> {
+        String text = runCheck(() -> {
             WebLocatorChain listElementLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", TEXT, "Ливан")

@@ -34,7 +34,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
     @Override
     public @Nullable
     Cookie getCookieByName(@NotNull String name) {
-        return runCheck(environment, getterInvocation(BROWSER_GET_COOKIE_BY_NAME_METHOD, name), () ->
+        return runCheck(getterInvocation(BROWSER_GET_COOKIE_BY_NAME_METHOD, name), () ->
                 exceptionMapper.map(() -> createPerfeccionistaCookie(instance.manage().getCookieNamed(name)))
                         .ifException(exception -> {
                             throw exception;
@@ -45,7 +45,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public @NotNull Stream<Cookie> getCookies() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_COOKIES_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_COOKIES_METHOD), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .getCookies().stream()
                         .map(SeleniumCookieConverter::createPerfeccionistaCookie))
@@ -57,7 +57,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher addCookie(@NotNull Cookie cookie) {
-        runCheck(environment, getterInvocation(BROWSER_ADD_COOKIE_METHOD, cookie), () ->
+        runCheck(getterInvocation(BROWSER_ADD_COOKIE_METHOD, cookie), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .addCookie(createSeleniumCookie(cookie)))
                         .ifException(exception -> {
@@ -68,7 +68,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher cleanCookies() {
-        runCheck(environment, getterInvocation(BROWSER_CLEAN_COOKIES_METHOD), () ->
+        runCheck(getterInvocation(BROWSER_CLEAN_COOKIES_METHOD), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .deleteAllCookies())
                         .ifException(exception -> {
@@ -79,7 +79,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher deleteCookie(@NotNull Cookie cookie) {
-        runCheck(environment, getterInvocation(BROWSER_DELETE_COOKIE_METHOD, cookie), () ->
+        runCheck(getterInvocation(BROWSER_DELETE_COOKIE_METHOD, cookie), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .deleteCookie(createSeleniumCookie(cookie)))
                         .ifException(exception -> {
@@ -90,7 +90,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher deleteCookieByName(@NotNull String name) {
-        runCheck(environment, getterInvocation(BROWSER_DELETE_COOKIE_BY_NAME_METHOD, name), () ->
+        runCheck(getterInvocation(BROWSER_DELETE_COOKIE_BY_NAME_METHOD, name), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .deleteCookieNamed(name))
                         .ifException(exception -> {

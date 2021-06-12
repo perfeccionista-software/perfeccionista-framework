@@ -43,7 +43,7 @@ public class MobileShouldBeSelectedAvailableMatcher implements MobileIsSelectedA
                 ? assertInvocation(SHOULD_BE_SELECTED_METHOD, element, SELECTED)
                 : assertInvocation(SHOULD_NOT_BE_SELECTED_METHOD, element, SELECTED);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> check(element, positive));
     }
 

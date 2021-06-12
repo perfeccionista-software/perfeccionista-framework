@@ -21,14 +21,14 @@ class GetDimensionsTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        ElementBounds dimensions = runCheck(environment, () -> {
+        ElementBounds dimensions = runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
             WebElementOperation<ElementBounds> getDimensionsOperation = WebElementOperation.of(scrollToLocatorChain, new JsGetElementBounds());

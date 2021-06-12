@@ -164,7 +164,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     @Override
     public boolean isOpen() {
         MobileGetIsOpenOperationType operationType = MobileGetIsOpenOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, UL).executeGetter());
     }
 
@@ -172,7 +172,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     public MobileDropDownList open() {
         MobileGetIsOpenOperationType isOpenOperationType = MobileGetIsOpenOperationType.of(this);
         MobileOpenOperationType openOperationType = MobileOpenOperationType.of(this);
-        runCheck(getEnvironment(), openOperationType.getInvocationName(),
+        runCheck(openOperationType.getInvocationName(),
                 () -> {
                     boolean isOpen = MobileElementOperationHandler.of(this, isOpenOperationType, UL).executeGetter();
                     if (!isOpen) {
@@ -186,7 +186,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     public MobileDropDownList close() {
         MobileGetIsOpenOperationType isOpenOperationType = MobileGetIsOpenOperationType.of(this);
         MobileCloseOperationType closeOperationType = MobileCloseOperationType.of(this);
-        runCheck(getEnvironment(), closeOperationType.getInvocationName(),
+        runCheck(closeOperationType.getInvocationName(),
                 () -> {
                     boolean isOpen = MobileElementOperationHandler.of(this, isOpenOperationType, UL).executeGetter();
                     if (isOpen) {
@@ -201,7 +201,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     @Override
     public @Nullable String getLabel() {
         MobileGetLabelOperationType operationType = MobileGetLabelOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
@@ -210,7 +210,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     @Override
     public @Nullable String getText() {
         MobileGetTextOperationType operationType = MobileGetTextOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 
@@ -242,7 +242,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     @Override
     public MobileDropDownList tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -251,7 +251,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     @Override
     public MobileDropDownList longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -259,7 +259,7 @@ public class MobileDropDownListImpl extends MobileListImpl implements MobileDrop
     @Override
     public MobileDropDownList doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

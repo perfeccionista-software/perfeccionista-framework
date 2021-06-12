@@ -250,7 +250,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed())
                 .click()
                 .should((WebTextMatcher) element -> {
-                    runCheck(element.getEnvironment(), InvocationName.assertInvocation(SHOULD_FILE_EXIST_METHOD, element),
+                    runCheck(InvocationName.assertInvocation(SHOULD_FILE_EXIST_METHOD, element),
                             () -> FileUtils.fileShouldExist(Path.of(downloadFile)));
                 });
     }

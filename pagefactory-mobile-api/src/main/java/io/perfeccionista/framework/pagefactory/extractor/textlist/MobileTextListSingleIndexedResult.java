@@ -60,7 +60,7 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public @Nullable T getResult() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTextListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -79,7 +79,7 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public @NotNull T getNotNullResult() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(element.getEnvironment(), getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTextListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -105,7 +105,7 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public int getIndex() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(element.getEnvironment(), getterInvocation(GET_INDEX_METHOD, element, filterBuilder, extractor), () -> {
+        return runCheck(getterInvocation(GET_INDEX_METHOD, element, filterBuilder, extractor), () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTextListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())

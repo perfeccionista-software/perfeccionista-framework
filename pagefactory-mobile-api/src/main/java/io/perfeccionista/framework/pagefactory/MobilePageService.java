@@ -10,7 +10,6 @@ import io.perfeccionista.framework.pagefactory.factory.MobilePageFactory;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.util.AnnotationUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,8 +22,9 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NAME_DUPLICATE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NOT_FOUND_BY_CLASS;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NOT_FOUND_BY_NAME;
-import static io.perfeccionista.framework.utils.ReflectionUtils.castObject;
-import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
+import static io.perfeccionista.framework.utils.AnnotationUtils.findRepeatableAnnotations;
+import static io.perfeccionista.framework.utils.CastUtils.castObject;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
 
 public class MobilePageService implements Service {
 
@@ -48,7 +48,7 @@ public class MobilePageService implements Service {
         findAllClasses(this.configuration.getPageObjectPackages(), MobilePage.class)
                 .forEach(mobilePageClass -> {
                     availablePageClasses.add(mobilePageClass);
-                    List<Name> names = AnnotationUtils.findRepeatableAnnotations(mobilePageClass, Name.class);
+                    List<Name> names = findRepeatableAnnotations(mobilePageClass, Name.class);
                     names.stream().map(Name::value).forEach(name -> {
                         if (pageClassesByName.containsKey(name)) {
                             throw RegisterDuplicate.exception(PAGE_NAME_DUPLICATE.getMessage(name, mobilePageClass, pageClassesByName.get(name)));

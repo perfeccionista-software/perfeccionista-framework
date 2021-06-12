@@ -28,9 +28,9 @@ import static io.perfeccionista.framework.pagefactory.dispatcher.DeviceType.ANDR
 import static io.perfeccionista.framework.pagefactory.dispatcher.DeviceType.IOS;
 import static io.perfeccionista.framework.pagefactory.elements.locators.AndroidLocatorStrategy.*;
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
+import static io.perfeccionista.framework.utils.AnnotationUtils.findRepeatableAnnotations;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
-import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
-import static org.junit.platform.commons.util.StringUtils.isNotBlank;
+import static io.perfeccionista.framework.utils.StringUtils.isNotBlank;
 
 public class MobileLocatorAnnotationHandler {
 

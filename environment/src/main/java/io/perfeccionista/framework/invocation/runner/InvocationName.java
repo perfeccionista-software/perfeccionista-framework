@@ -7,7 +7,6 @@ import static io.perfeccionista.framework.invocation.runner.InvocationName.Invoc
 import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.CUSTOM;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.EMPTY;
 import static io.perfeccionista.framework.invocation.runner.InvocationName.InvocationNameType.GETTER;
-import static org.junit.platform.commons.util.StringUtils.isNotBlank;
 
 public class InvocationName {
 

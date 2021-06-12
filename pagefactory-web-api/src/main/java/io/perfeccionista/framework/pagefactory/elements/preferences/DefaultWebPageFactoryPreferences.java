@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.perfeccionista.framework.utils.ReflectionUtils.Order.DESC;
-import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
+import static io.perfeccionista.framework.measurements.Order.DESC;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedInterfaces;
 
 public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferences {
 
@@ -96,7 +96,7 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
         if (Objects.nonNull(webMappedBlock)) {
             return webMappedBlock;
         }
-        for (Class<? extends WebChildElement> inheritedInterface : getInheritedInterfaces(WebChildElement.class, webElementType, DESC)) {
+        for (Class<? extends WebChildElement> inheritedInterface : findInheritedInterfaces(WebChildElement.class, webElementType, DESC)) {
             webMappedBlock = webMappedBlocks.get(inheritedInterface);
             if (Objects.nonNull(webMappedBlock)) {
                 break;
@@ -122,7 +122,7 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         WebEndpointHandlerConfiguration webPageActionConfiguration = WebEndpointHandlerConfiguration.builder();
-        Deque<Class<? extends WebPage>> elementInterfaces = getInheritedInterfaces(WebPage.class, webPageImplementation, DESC);
+        Deque<Class<? extends WebPage>> elementInterfaces = findInheritedInterfaces(WebPage.class, webPageImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 webPageActionConfiguration.setFromIfNotPresent(getWebPageActionConfiguration(inheritedInterface)));
 
@@ -147,7 +147,7 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         WebEndpointHandlerConfiguration webElementActionConfiguration = WebEndpointHandlerConfiguration.builder();
-        Deque<Class<? extends WebChildElementBase>> elementInterfaces = getInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
+        Deque<Class<? extends WebChildElementBase>> elementInterfaces = findInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 webElementActionConfiguration.setFromIfNotPresent(getWebElementActionConfiguration(inheritedInterface)));
 
@@ -172,7 +172,7 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         WebElementPropertyConfiguration webElementPropertyConfiguration = WebElementPropertyConfiguration.builder();
-        Deque<Class<? extends WebChildElementBase>> elementInterfaces = getInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
+        Deque<Class<? extends WebChildElementBase>> elementInterfaces = findInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 webElementPropertyConfiguration.setFromIfNotPresent(getWebElementPropertyConfiguration(inheritedInterface)));
 
@@ -197,7 +197,7 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         WebElementStateConfiguration webElementStateConfiguration = WebElementStateConfiguration.builder();
-        Deque<Class<? extends WebChildElementBase>> elementInterfaces = getInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
+        Deque<Class<? extends WebChildElementBase>> elementInterfaces = findInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 webElementStateConfiguration.setFromIfNotPresent(getWebElementStateConfiguration(inheritedInterface)));
 
@@ -222,7 +222,7 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         WebLocatorConfiguration webLocatorConfiguration = WebLocatorConfiguration.builder();
-        Deque<Class<? extends WebChildElementBase>> elementInterfaces = getInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
+        Deque<Class<? extends WebChildElementBase>> elementInterfaces = findInheritedInterfaces(WebChildElementBase.class, webElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 webLocatorConfiguration.setFromIfNotPresent(getWebLocatorConfiguration(inheritedInterface)));
 

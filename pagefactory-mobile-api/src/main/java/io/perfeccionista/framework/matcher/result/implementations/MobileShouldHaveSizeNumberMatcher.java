@@ -32,7 +32,7 @@ public class MobileShouldHaveSizeNumberMatcher implements MobileIndexesMatcher {
 
         MobileChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             int actualSize = result.getSize();
             if (positive) {
                 shouldHaveSize(element, actualSize);

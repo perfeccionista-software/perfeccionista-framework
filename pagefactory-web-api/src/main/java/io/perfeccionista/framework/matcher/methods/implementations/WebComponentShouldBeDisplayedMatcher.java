@@ -41,7 +41,7 @@ public class WebComponentShouldBeDisplayedMatcher implements WebComponentAvailab
                 ? assertInvocation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, element)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBeDisplayed(element, componentName);

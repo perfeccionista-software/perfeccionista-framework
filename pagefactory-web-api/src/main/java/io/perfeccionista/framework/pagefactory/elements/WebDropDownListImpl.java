@@ -161,7 +161,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     @Override
     public WebDropDownList click() {
         WebClickOperationType operationType = WebClickOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
         return this;
     }
@@ -172,7 +172,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     public WebDropDownList close() {
         WebGetIsOpenOperationType isOpenOperationType = WebGetIsOpenOperationType.of(this);
         WebCloseOperationType closeOperationType = WebCloseOperationType.of(this);
-        runCheck(getEnvironment(), closeOperationType.getInvocationName(),
+        runCheck(closeOperationType.getInvocationName(),
                 () -> {
                     boolean isOpen = WebElementOperationHandler.of(this, isOpenOperationType, UL).executeGetter();
                     if (isOpen) {
@@ -187,7 +187,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     @Override
     public @Nullable String getLabel() {
         WebGetLabelOperationType operationType = WebGetLabelOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
@@ -196,7 +196,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     @Override
     public @Nullable String getText() {
         WebGetTextOperationType operationType = WebGetTextOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 
@@ -213,7 +213,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     @Override
     public boolean isOpen() {
         WebGetIsOpenOperationType operationType = WebGetIsOpenOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, UL).executeGetter());
     }
 
@@ -223,7 +223,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     public WebDropDownList open() {
         WebGetIsOpenOperationType isOpenOperationType = WebGetIsOpenOperationType.of(this);
         WebOpenOperationType openOperationType = WebOpenOperationType.of(this);
-        runCheck(getEnvironment(), openOperationType.getInvocationName(),
+        runCheck(openOperationType.getInvocationName(),
                 () -> {
                     boolean isOpen = WebElementOperationHandler.of(this, isOpenOperationType, UL).executeGetter();
                     if (!isOpen) {

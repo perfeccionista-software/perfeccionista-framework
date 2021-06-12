@@ -42,6 +42,8 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         mavenCentral()
     }
 
+    val jetBrainsAnnotationsVersion: String by rootProject
+    val apiGuardianVersion: String by rootProject
     val junitPlatformVersion: String by rootProject
     val junitVersion: String by rootProject
     val jacksonVersion: String by rootProject
@@ -63,21 +65,23 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     }
 
     dependencies {
-        implementation(group = "org.jetbrains", name = "annotations", version = "20.1.0")
-
-        api(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
-        api(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
-        api(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junitVersion)
-        api(group = "org.junit.jupiter", name = "junit-jupiter-params", version = junitVersion)
+        implementation(group = "org.jetbrains", name = "annotations", version = jetBrainsAnnotationsVersion)
+        implementation(group = "org.apiguardian", name = "apiguardian-api", version = apiGuardianVersion)
 
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-core", version = jacksonVersion)
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations", version = jacksonVersion)
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
 
+        testImplementation(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junitVersion)
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params", version = junitVersion)
+
         testImplementation(group = "io.qameta.allure", name = "allure-java-commons", version = allureVersion)
         testImplementation(group = "io.qameta.allure", name = "allure-junit5", version = allureVersion)
         testImplementation(group = "org.mockito", name = "mockito-core", version = "3.9.0")
     }
+
 
     allure {
         autoconfigure = true
@@ -97,6 +101,10 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     tasks.test {
         finalizedBy("jacocoTestReport")
         useJUnitPlatform()
+        testLogging {
+            showStandardStreams = true
+            info
+        }
     }
 
     tasks.register("cleanAllure", org.gradle.api.tasks.Delete::class) {

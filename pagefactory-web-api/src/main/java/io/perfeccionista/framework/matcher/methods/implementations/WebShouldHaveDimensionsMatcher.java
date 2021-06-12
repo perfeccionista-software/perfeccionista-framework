@@ -35,7 +35,7 @@ public class WebShouldHaveDimensionsMatcher implements WebGetElementBoundsAvaila
                 ? assertInvocation(SHOULD_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions)
                 : assertInvocation(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     ElementBounds actualElementBounds = element.getElementBounds(componentName);
                     if (positive) {

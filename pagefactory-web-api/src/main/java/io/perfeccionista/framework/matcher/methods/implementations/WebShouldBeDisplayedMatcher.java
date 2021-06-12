@@ -38,7 +38,7 @@ public class WebShouldBeDisplayedMatcher implements WebIsDisplayedAvailableMatch
                 ? assertInvocation(SHOULD_BE_DISPLAYED_METHOD, element)
                 : assertInvocation(SHOULD_NOT_BE_DISPLAYED_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBeDisplayed(element);

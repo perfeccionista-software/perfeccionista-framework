@@ -144,7 +144,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public MobileTextInput clear() {
         MobileClearOperationType operationType = MobileClearOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, CLEAR).executeAction());
         return this;
     }
@@ -152,7 +152,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public MobileTextInput typeText(@NotNull String keys) {
         MobileTypeTextOperationType operationType = MobileTypeTextOperationType.of(this, keys);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -160,7 +160,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public MobileTextInput replaceText(@NotNull String keys) {
         MobileReplaceTextOperationType operationType = MobileReplaceTextOperationType.of(this, keys);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -168,7 +168,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public MobileTextInput sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
         MobileSendKeyEventsOperationType operationType = MobileSendKeyEventsOperationType.of(this, keyEvents);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -178,7 +178,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public @Nullable String getLabel() {
         MobileGetLabelOperationType operationType = MobileGetLabelOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
@@ -187,7 +187,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public @Nullable String getText() {
         MobileGetTextOperationType operationType = MobileGetTextOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 
@@ -196,7 +196,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public boolean isEnabled() {
         MobileGetIsEnabledOperationType operationType = MobileGetIsEnabledOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, ENABLED).executeGetter());
     }
 
@@ -213,7 +213,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public MobileTextInput tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -221,7 +221,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public MobileTextInput longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -229,7 +229,7 @@ public class MobileTextInputImpl extends AbstractMobileChildElement implements M
     @Override
     public MobileTextInput doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

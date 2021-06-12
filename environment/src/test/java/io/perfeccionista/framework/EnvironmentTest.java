@@ -25,11 +25,6 @@ class EnvironmentTest extends AbstractParallelTest {
     }
 
     @Test
-    void initializationFailedTest() {
-        assertThrows(IllegalArgumentException.class, () -> new Environment(null));
-    }
-
-    @Test
     void notNullArgumentsTest() {
         Environment environment = new Environment(new DefaultEnvironmentConfiguration());
         assertAll(

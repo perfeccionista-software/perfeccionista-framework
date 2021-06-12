@@ -10,12 +10,12 @@ import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.ScreenshotAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
+import io.perfeccionista.framework.logging.Logger;
+import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceService;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import io.qameta.allure.Allure;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -91,7 +91,7 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
                 .collect(Collectors.joining("\n"));
 
         String mainAttachmentDescription = attachment.getMainAttachmentEntry()
-                .map(entry -> DELIMITER + entry.getName() + "\n" + DELIMITER + entry.getDescription())
+                .map(entry -> getDelimiter() + entry.getName() + "\n" + getDelimiter() + entry.getDescription())
                 .orElse("");
 
         String screenshotAttachmentDescription = takeScreenshot(environment)
@@ -115,12 +115,12 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
         }
 
         logger.info(() -> "Attachments:\n"
-                + DELIMITER
+                + getDelimiter()
                 + (isBlank(fileAttachmentsDescription) ? "" : fileAttachmentsDescription + "\n")
                 + (isBlank(stringAttachmentsDescription) ? "" : stringAttachmentsDescription + "\n")
                 + (isBlank(mainAttachmentDescription) ? "" : mainAttachmentDescription + "\n")
                 + (isBlank(screenshotAttachmentDescription) ? "" : screenshotAttachmentDescription + "\n")
-                + DELIMITER);
+                + getDelimiter());
 
         return "";
     }

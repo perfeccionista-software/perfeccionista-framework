@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.utils;
 
-import io.perfeccionista.framework.utils.ReflectionUtils.Order;
+import io.perfeccionista.framework.measurements.Order;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.SimpleParallelTest;
 
@@ -13,15 +13,15 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedClassesNotNullArgumentsTest() {
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedClasses(null, Object.class, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedClasses(Object.class, null, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedClasses(null, Object.class, Order.DESC));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedClasses(Object.class, null, Order.DESC));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(null, Object.class, null));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(Object.class, null, null));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(null, Object.class, Order.DESC));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(Object.class, null, Order.DESC));
     }
 
     @Test
     void getInheritedClassesDescTest() {
-        Deque<Class<? extends B>> classesFromBToC = ReflectionUtils.getInheritedClasses(B.class, C.class, Order.DESC);
+        Deque<Class<? extends B>> classesFromBToC = ReflectionUtilsForClasses.findInheritedClasses(B.class, C.class, Order.DESC);
         assertEquals(2, classesFromBToC.size());
         assertEquals(C.class, classesFromBToC.getFirst());
         assertEquals(B.class, classesFromBToC.getLast());
@@ -29,7 +29,7 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedClassesAscTest() {
-        Deque<Class<? extends B>> classesFromBToC = ReflectionUtils.getInheritedClasses(B.class, C.class, Order.ASC);
+        Deque<Class<? extends B>> classesFromBToC = ReflectionUtilsForClasses.findInheritedClasses(B.class, C.class, Order.ASC);
         assertEquals(2, classesFromBToC.size());
         assertEquals(B.class, classesFromBToC.getFirst());
         assertEquals(C.class, classesFromBToC.getLast());
@@ -37,7 +37,7 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedClassesAscIgnoreInterfacesTest() {
-        Deque<Class<? extends A>> classesFromAToC = ReflectionUtils.getInheritedClasses(A.class, C.class, Order.ASC);
+        Deque<Class<? extends A>> classesFromAToC = ReflectionUtilsForClasses.findInheritedClasses(A.class, C.class, Order.ASC);
         assertEquals(2, classesFromAToC.size());
         assertEquals(B.class, classesFromAToC.getFirst());
         assertEquals(C.class, classesFromAToC.getLast());
@@ -65,15 +65,15 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedInterfacesNotNullArgumentsTest() {
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedInterfaces(null, Object.class, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedInterfaces(Object.class, null, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedInterfaces(null, Object.class, Order.DESC));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtils.getInheritedInterfaces(Object.class, null, Order.DESC));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(null, Object.class, null));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(Object.class, null, null));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(null, Object.class, Order.DESC));
+        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(Object.class, null, Order.DESC));
     }
 
     @Test
     void getInheritedInterfacesDescTest() {
-        Deque<Class<? extends A>> interfacesFromHToA = ReflectionUtils.getInheritedInterfaces(A.class, HImpl.class, Order.DESC);
+        Deque<Class<? extends A>> interfacesFromHToA = ReflectionUtilsForClasses.findInheritedInterfaces(A.class, HImpl.class, Order.DESC);
         assertEquals(5, interfacesFromHToA.size());
         assertEquals(H.class, interfacesFromHToA.getFirst());
         assertEquals(A.class, interfacesFromHToA.getLast());
@@ -81,7 +81,7 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedInterfacesAscTest() {
-        Deque<Class<? extends A>> interfacesFromHToA = ReflectionUtils.getInheritedInterfaces(A.class, HImpl.class, Order.ASC);
+        Deque<Class<? extends A>> interfacesFromHToA = ReflectionUtilsForClasses.findInheritedInterfaces(A.class, HImpl.class, Order.ASC);
         assertEquals(5, interfacesFromHToA.size());
         assertEquals(A.class, interfacesFromHToA.getFirst());
         assertEquals(H.class, interfacesFromHToA.getLast());
@@ -89,7 +89,7 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedInterfacesFromExtendedClassAscTest() {
-        Deque<Class<? extends A>> interfacesFromHToA = ReflectionUtils.getInheritedInterfaces(A.class, H2Impl.class, Order.ASC);
+        Deque<Class<? extends A>> interfacesFromHToA = ReflectionUtilsForClasses.findInheritedInterfaces(A.class, H2Impl.class, Order.ASC);
         assertEquals(5, interfacesFromHToA.size());
         assertEquals(A.class, interfacesFromHToA.getFirst());
         assertEquals(H.class, interfacesFromHToA.getLast());

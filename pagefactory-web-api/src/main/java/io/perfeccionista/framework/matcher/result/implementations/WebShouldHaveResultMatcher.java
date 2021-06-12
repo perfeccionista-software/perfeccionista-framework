@@ -29,7 +29,7 @@ public class WebShouldHaveResultMatcher<T> implements WebMultipleIndexedResultMa
 
         WebChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             AtomicBoolean match = new AtomicBoolean(false);
             result.getResults().forEach((index, value) -> {
                 if (expectedResult.equals(value)) {

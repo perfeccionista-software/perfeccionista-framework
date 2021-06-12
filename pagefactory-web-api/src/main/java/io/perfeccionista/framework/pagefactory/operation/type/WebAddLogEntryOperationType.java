@@ -10,8 +10,8 @@ import java.util.logging.Level;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.ADD_LOG_ENTRY_METHOD;
-import static org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class WebAddLogEntryOperationType implements WebElementOperationType<Void> {
 

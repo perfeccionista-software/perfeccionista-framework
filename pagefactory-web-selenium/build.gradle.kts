@@ -11,6 +11,9 @@ dependencies {
     testImplementation(project(":demo-app-assets")) {
         because("demo-app-assets module contains api for current module")
     }
+    testImplementation(project(":environment-junit5")) {
+        because("utils module contains tools for current tests")
+    }
     testImplementation(project(":pagefactory-web-allure")) {
         because("pagefactory-web-allure module contains api for current module")
     }

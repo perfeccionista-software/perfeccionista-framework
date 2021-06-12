@@ -41,7 +41,7 @@ public class WebShouldHaveStateMatcher implements WebElementStateAvailableMatche
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldHaveState(element, stateHolder);

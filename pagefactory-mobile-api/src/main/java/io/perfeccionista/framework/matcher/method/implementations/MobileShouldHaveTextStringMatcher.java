@@ -31,7 +31,7 @@ public class MobileShouldHaveTextStringMatcher implements MobileGetTextAvailable
                 ? assertInvocation(SHOULD_HAVE_TEXT_METHOD, this, expectedText)
                 : assertInvocation(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedText);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     String actualText = element.getText();
                     if (positive) {

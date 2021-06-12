@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
 import io.perfeccionista.framework.exceptions.ElementImplementationNotFound;
+import io.perfeccionista.framework.measurements.Order;
 import io.perfeccionista.framework.pagefactory.elements.MobileBlock;
 import io.perfeccionista.framework.pagefactory.elements.MobileBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.MobilePage;
@@ -13,7 +14,6 @@ import io.perfeccionista.framework.pagefactory.factory.proxy.MobileChildElementC
 import io.perfeccionista.framework.pagefactory.factory.proxy.MobileParentElementCallbackFilter;
 import io.perfeccionista.framework.pagefactory.factory.proxy.MobileParentElementInvocationHandler;
 import io.perfeccionista.framework.pagefactory.factory.proxy.UnimplementedElementMethodInvocationHandler;
-import io.perfeccionista.framework.utils.ReflectionUtils.Order;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
@@ -23,10 +23,10 @@ import java.util.Deque;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IMPLEMENTATION_CANT_BE_ABSTRACT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IMPLEMENTATION_NOT_FOUND;
-import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedInterfaces;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 import static java.lang.reflect.Modifier.isAbstract;
 import static java.lang.reflect.Modifier.isInterface;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
 
 public class MobileElementInitializer {
 
@@ -101,7 +101,7 @@ public class MobileElementInitializer {
     }
 
     protected @NotNull Class<? extends MobileChildElement> findAncestorInterfaceImplementation(@NotNull Class<? extends MobileChildElement> webChildElementClass) {
-        Deque<Class<? extends MobileChildElement>> inheritedInterfaces = getInheritedInterfaces(MobileChildElement.class, webChildElementClass, Order.DESC);
+        Deque<Class<? extends MobileChildElement>> inheritedInterfaces = findInheritedInterfaces(MobileChildElement.class, webChildElementClass, Order.DESC);
         for (Class<? extends MobileChildElement> inheritedInterface : inheritedInterfaces) {
             Class<? extends MobileChildElement> elementImplementation = configuration.getMobileElementImplementation(inheritedInterface);
             if (null != elementImplementation) {

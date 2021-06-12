@@ -9,8 +9,8 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_IN_FOCUS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.FOCUS;
-import static org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class MobileGetIsInFocusOperationType implements MobileElementOperationType<Boolean> {
 

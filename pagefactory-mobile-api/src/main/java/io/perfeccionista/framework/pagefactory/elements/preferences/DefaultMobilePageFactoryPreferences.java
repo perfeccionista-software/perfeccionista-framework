@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static io.perfeccionista.framework.utils.ReflectionUtils.Order.DESC;
-import static io.perfeccionista.framework.utils.ReflectionUtils.getInheritedInterfaces;
+import static io.perfeccionista.framework.measurements.Order.DESC;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedInterfaces;
 
 public class DefaultMobilePageFactoryPreferences implements MobilePageFactoryPreferences {
 
@@ -96,7 +96,7 @@ public class DefaultMobilePageFactoryPreferences implements MobilePageFactoryPre
         if (Objects.nonNull(mobileMappedBlock)) {
             return mobileMappedBlock;
         }
-        for (Class<? extends MobileChildElement> inheritedInterface : getInheritedInterfaces(MobileChildElement.class, mobileElementType, DESC)) {
+        for (Class<? extends MobileChildElement> inheritedInterface : findInheritedInterfaces(MobileChildElement.class, mobileElementType, DESC)) {
             mobileMappedBlock = mobileMappedBlocks.get(inheritedInterface);
             if (Objects.nonNull(mobileMappedBlock)) {
                 break;
@@ -122,7 +122,7 @@ public class DefaultMobilePageFactoryPreferences implements MobilePageFactoryPre
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         MobileEndpointHandlerConfiguration mobilePageActionConfiguration = MobileEndpointHandlerConfiguration.builder();
-        Deque<Class<? extends MobilePage>> elementInterfaces = getInheritedInterfaces(MobilePage.class, mobilePageImplementation, DESC);
+        Deque<Class<? extends MobilePage>> elementInterfaces = findInheritedInterfaces(MobilePage.class, mobilePageImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 mobilePageActionConfiguration.setFromIfNotPresent(getMobilePageActionConfiguration(inheritedInterface)));
 
@@ -147,7 +147,7 @@ public class DefaultMobilePageFactoryPreferences implements MobilePageFactoryPre
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         MobileEndpointHandlerConfiguration mobileElementActionConfiguration = MobileEndpointHandlerConfiguration.builder();
-        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = getInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
+        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = findInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 mobileElementActionConfiguration.setFromIfNotPresent(getMobileElementActionConfiguration(inheritedInterface)));
 
@@ -172,7 +172,7 @@ public class DefaultMobilePageFactoryPreferences implements MobilePageFactoryPre
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         MobileElementPropertyConfiguration mobileElementPropertyConfiguration = MobileElementPropertyConfiguration.builder();
-        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = getInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
+        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = findInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 mobileElementPropertyConfiguration.setFromIfNotPresent(getMobileElementPropertyConfiguration(inheritedInterface)));
 
@@ -197,7 +197,7 @@ public class DefaultMobilePageFactoryPreferences implements MobilePageFactoryPre
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         MobileElementStateConfiguration mobileElementStateConfiguration = MobileElementStateConfiguration.builder();
-        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = getInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
+        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = findInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 mobileElementStateConfiguration.setFromIfNotPresent(getMobileElementStateConfiguration(inheritedInterface)));
 
@@ -222,7 +222,7 @@ public class DefaultMobilePageFactoryPreferences implements MobilePageFactoryPre
 
         // Собираем конфигурацию для элемента и добавляем ее в хранилище
         MobileLocatorConfiguration mobileLocatorConfiguration = MobileLocatorConfiguration.builder();
-        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = getInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
+        Deque<Class<? extends MobileChildElementBase>> elementInterfaces = findInheritedInterfaces(MobileChildElementBase.class, mobileElementImplementation, DESC);
         elementInterfaces.forEach(inheritedInterface ->
                 mobileLocatorConfiguration.setFromIfNotPresent(getMobileLocatorConfiguration(inheritedInterface)));
 

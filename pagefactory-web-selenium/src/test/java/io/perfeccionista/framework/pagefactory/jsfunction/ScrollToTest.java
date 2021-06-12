@@ -24,7 +24,7 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
@@ -32,7 +32,7 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
                     .executeWebElementOperation(clickOperation);
 
         });
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", TEXT, "Ливан"));
@@ -48,14 +48,14 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
     void multipleElementsTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
@@ -71,14 +71,14 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
     void selectedElementsTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Text List Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")

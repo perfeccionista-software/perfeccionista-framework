@@ -51,7 +51,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public int getTabCount() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_TAB_COUNT_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_TAB_COUNT_METHOD), () ->
                 exceptionMapper.map(() -> instance.getWindowHandles().size()))
                 .ifException(exception -> {
                     throw exception;
@@ -61,7 +61,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public @NotNull String getActiveTabTitle() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_ACTIVE_TAB_TITLE_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_ACTIVE_TAB_TITLE_METHOD), () ->
                 exceptionMapper.map(instance::getTitle))
                 .ifException(exception -> {
                     throw exception;
@@ -71,7 +71,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public @NotNull String getActiveTabUrl() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_ACTIVE_TAB_URL_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_ACTIVE_TAB_URL_METHOD), () ->
                 exceptionMapper.map(instance::getCurrentUrl))
                 .ifException(exception -> {
                     throw exception;
@@ -81,7 +81,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public @NotNull List<String> getAllTabTitles() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_ALL_TAB_TITLES_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_ALL_TAB_TITLES_METHOD), () ->
                 exceptionMapper.map(() -> instance.getWindowHandles().stream()
                         .map(windowHandle -> {
                             instance.switchTo().window(windowHandle);
@@ -95,7 +95,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public @NotNull List<String> getAllTabUrls() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_ALL_TAB_URLS_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_ALL_TAB_URLS_METHOD), () ->
                 exceptionMapper.map(() -> instance.getWindowHandles().stream()
                         .map(windowHandle -> {
                             instance.switchTo().window(windowHandle);
@@ -109,7 +109,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher newTab() {
-        runCheck(environment, actionInvocation(OPEN_EMPTY_TAB_METHOD), () -> {
+        runCheck(actionInvocation(OPEN_EMPTY_TAB_METHOD), () -> {
             exceptionMapper.map(() -> {
                 instance.executeScript("window.open();");
                 List<String> tabs = new ArrayList<>(instance.getWindowHandles());
@@ -123,7 +123,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher newTab(@NotNull String url) {
-        runCheck(environment, actionInvocation(OPEN_TAB_WITH_URL_METHOD), () -> {
+        runCheck(actionInvocation(OPEN_TAB_WITH_URL_METHOD), () -> {
             exceptionMapper.map(() -> {
                 instance.executeScript("window.open('" + url + "','_blank');");
                 List<String> tabs = new ArrayList<>(instance.getWindowHandles());
@@ -137,7 +137,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher refresh() {
-        runCheck(environment, actionInvocation(BROWSER_REFRESH_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_REFRESH_METHOD), () -> {
             exceptionMapper.map(() -> instance.navigate().refresh())
                     .ifException(exception -> {
                         throw exception;
@@ -148,7 +148,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher back() {
-        runCheck(environment, actionInvocation(BROWSER_BACK_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_BACK_METHOD), () -> {
             exceptionMapper.map(() -> instance.navigate().back())
                     .ifException(exception -> {
                         throw exception;
@@ -159,7 +159,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher openUrl(@NotNull String url) {
-        runCheck(environment, actionInvocation(BROWSER_OPEN_URL_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_OPEN_URL_METHOD), () -> {
             exceptionMapper.map(() -> instance.get(url))
                     .ifException(exception -> {
                         throw exception;
@@ -170,7 +170,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher closeActiveTab() {
-        runCheck(environment, actionInvocation(BROWSER_CLOSE_ACTIVE_TAB_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_CLOSE_ACTIVE_TAB_METHOD), () -> {
             exceptionMapper.map(() -> {
                 Set<String> windowHandles = instance.getWindowHandles();
                 String currentHandle = instance.getWindowHandle();
@@ -188,7 +188,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher closeTabWithTitle(@NotNull Value<String> tabTitle) {
-        runCheck(environment, actionInvocation(BROWSER_CLOSE_TAB_WITH_TITLE_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_CLOSE_TAB_WITH_TITLE_METHOD), () -> {
             exceptionMapper.map(() -> {
                 String currentHandle = instance.getWindowHandle();
                 Set<String> windowHandles = instance.getWindowHandles();
@@ -221,7 +221,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher closeTabWithUrl(@NotNull Value<String> tabUrl) {
-        runCheck(environment, actionInvocation(BROWSER_CLOSE_TAB_WITH_URL_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_CLOSE_TAB_WITH_URL_METHOD), () -> {
             exceptionMapper.map(() -> {
                 String currentHandle = instance.getWindowHandle();
                 Set<String> windowHandles = instance.getWindowHandles();
@@ -254,7 +254,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher switchToTabWithTitle(@NotNull Value<String> tabTitle) {
-        runCheck(environment, actionInvocation(BROWSER_SWITCH_TO_TAB_WITH_TITLE_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_SWITCH_TO_TAB_WITH_TITLE_METHOD), () -> {
             exceptionMapper.map(() -> {
                 Set<String> windowHandles = instance.getWindowHandles();
                 Set<String> windowTitles = new HashSet<>();
@@ -278,7 +278,7 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
 
     @Override
     public SeleniumWebBrowserTabsDispatcher switchToTabWithUrl(@NotNull Value<String> tabUrl) {
-        runCheck(environment, actionInvocation(BROWSER_SWITCH_TO_TAB_WITH_URL_METHOD), () -> {
+        runCheck(actionInvocation(BROWSER_SWITCH_TO_TAB_WITH_URL_METHOD), () -> {
             exceptionMapper.map(() -> {
                 Set<String> windowHandles = instance.getWindowHandles();
                 Set<String> windowUrls = new HashSet<>();

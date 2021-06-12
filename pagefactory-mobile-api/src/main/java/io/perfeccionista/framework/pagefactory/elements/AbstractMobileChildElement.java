@@ -134,14 +134,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public @NotNull Color getColor(@NotNull String property) {
         MobileGetColorOperationType operationType = MobileGetColorOperationType.of(this, ROOT, property);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull Color getColor(@NotNull String componentName, @NotNull String property) {
         MobileGetColorOperationType operationType = MobileGetColorOperationType.of(this, componentName, property);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -150,14 +150,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public @NotNull ElementBounds getElementBounds() {
         MobileGetElementBoundsOperationType operationType = MobileGetElementBoundsOperationType.of(this, ROOT);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull ElementBounds getElementBounds(@NotNull String componentName) {
         MobileGetElementBoundsOperationType operationType = MobileGetElementBoundsOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -166,14 +166,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public @NotNull Screenshot getScreenshot() {
         MobileGetScreenshotOperationType operationType = MobileGetScreenshotOperationType.of(this, ROOT);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull Screenshot getScreenshot(@NotNull String componentName) {
         MobileGetScreenshotOperationType operationType = MobileGetScreenshotOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -182,7 +182,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isDisplayed() {
         MobileGetIsDisplayedOperationType operationType = MobileGetIsDisplayedOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, DISPLAYED).executeGetter());
     }
 
@@ -191,7 +191,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isInFocus() {
         MobileGetIsInFocusOperationType operationType = MobileGetIsInFocusOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, FOCUS).executeGetter());
     }
 
@@ -200,7 +200,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isOnTheScreen() {
         MobileGetIsOnTheScreenOperationType operationType = MobileGetIsOnTheScreenOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, DISPLAYED).executeGetter());
     }
 
@@ -209,7 +209,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isPresent() {
         MobileGetIsPresentOperationType operationType = MobileGetIsPresentOperationType.of(this);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, PRESENTED).executeGetter());
     }
 
@@ -218,14 +218,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isComponentDisplayed(@NotNull String componentName) {
         MobileGetIsComponentDisplayedOperationType operationType = MobileGetIsComponentDisplayedOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
     @Override
     public boolean isComponentPresent(@NotNull String componentName) {
         MobileGetIsComponentPresentOperationType operationType = MobileGetIsComponentPresentOperationType.of(this, componentName);
-        return runCheck(getEnvironment(), operationType.getInvocationName(),
+        return runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -241,7 +241,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
         Optional<MobileElementPropertyHolder> optionalPropertyHolder = getProperty(propertyName);
         if (optionalPropertyHolder.isPresent()) {
             MobileElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
-            return runCheck(getEnvironment(), InvocationName.getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyHolder), () -> {
+            return runCheck(InvocationName.getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyHolder), () -> {
                 MobileElementOperation<String> operation = propertyHolder.getOperation(this);
                 return getMobileDeviceDispatcher()
                         .executor()
@@ -254,7 +254,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
         } else {
             // TODO: Если нет атрибута - выбрасывать эксепшн о том, что атрибут не найден
             MobileGetStringAttributeValueOperationType operationType = MobileGetStringAttributeValueOperationType.of(this, propertyName);
-            return runCheck(getEnvironment(), operationType.getInvocationName(),
+            return runCheck(operationType.getInvocationName(),
                     () -> MobileElementOperationHandler.of(this, operationType, propertyName).executeGetter());
         }
     }
@@ -270,7 +270,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     public boolean hasState(@NotNull String stateName) {
         MobileElementStateHolder stateHolder = getState(stateName)
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName)));
-        return runCheck(getEnvironment(), InvocationName.getterInvocation(HAS_STATE_METHOD, this, stateHolder), () -> {
+        return runCheck(InvocationName.getterInvocation(HAS_STATE_METHOD, this, stateHolder), () -> {
             MobileElementOperation<Boolean> operation = stateHolder.getOperation(this);
             return getMobileDeviceDispatcher()
                     .executor()
@@ -287,7 +287,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public MobileChildElement scrollTo() {
         MobileScrollToOperationType operationType = MobileScrollToOperationType.of(this);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }

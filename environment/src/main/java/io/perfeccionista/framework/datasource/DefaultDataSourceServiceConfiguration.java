@@ -12,10 +12,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_SOURCE_REGISTER_BY_NAME_DUPLICATE;
+import static io.perfeccionista.framework.utils.AnnotationUtils.findRepeatableAnnotations;
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
-import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
-import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 // Возвращает все
 public class DefaultDataSourceServiceConfiguration implements DataSourceServiceConfiguration {

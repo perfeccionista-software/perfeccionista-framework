@@ -10,7 +10,6 @@ import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -23,7 +22,8 @@ import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
-import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 @DefaultServiceConfiguration(DefaultCucumberServiceConfiguration.class)
 public class CucumberService implements Service {
@@ -59,7 +59,7 @@ public class CucumberService implements Service {
                                 previous.addAll(next);
                                 return previous;
                             });
-                    CucumberResolver<?> cucumberResolver = ReflectionUtils.newInstance(processedClass);
+                    CucumberResolver<?> cucumberResolver = newInstance(processedClass);
                     cucumberResolver.init(environment, patterns);
                     Optional.ofNullable(processedClass.getAnnotation(CucumberResolverPriority.class))
                             .ifPresent(priority -> cucumberResolver.setPriority(priority.value()));

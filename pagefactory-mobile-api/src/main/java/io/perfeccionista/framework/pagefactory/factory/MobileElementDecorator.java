@@ -37,7 +37,7 @@ import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMapped
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedMobileTableColumnAnnotationHandler.createMobileTableFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedMobileTextBlockAnnotationHandler.createMobileTextListFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedMobileTextTableColumnAnnotationHandler.createMobileTextTableFrame;
-import static io.perfeccionista.framework.utils.ReflectionUtils.writeField;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForFields.writeField;
 
 public class MobileElementDecorator {
 

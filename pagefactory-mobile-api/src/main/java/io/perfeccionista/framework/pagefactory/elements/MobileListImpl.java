@@ -174,7 +174,7 @@ public class MobileListImpl extends AbstractMobileChildElement implements Mobile
     @Override
     public MobileList scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull MobileListFilterBuilder filterBuilder) {
         MobileListScrollToVerticallyOperationType operationType = MobileListScrollToVerticallyOperationType.of(this, scrollDirection, filterBuilder);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.perfeccionista.framework.utils.AnnotationUtils.findAllRepeatableAnnotationsInHierarchy;
-import static org.junit.platform.commons.util.AnnotationUtils.findRepeatableAnnotations;
+import static io.perfeccionista.framework.utils.AnnotationUtils.findRepeatableAnnotations;
 
 public class MobileElementNameHandler {
 

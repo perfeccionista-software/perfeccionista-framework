@@ -10,7 +10,6 @@ import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.util.AnnotationUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,8 +22,9 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NAME_DUPLICATE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NOT_FOUND_BY_CLASS;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.PAGE_NOT_FOUND_BY_NAME;
-import static io.perfeccionista.framework.utils.ReflectionUtils.castObject;
-import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
+import static io.perfeccionista.framework.utils.AnnotationUtils.findRepeatableAnnotations;
+import static io.perfeccionista.framework.utils.CastUtils.castObject;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
 
 /**
  * Сущность является пейджфактори, которая
@@ -51,7 +51,7 @@ public class WebPageService implements Service {
         findAllClasses(this.configuration.getPageObjectPackages(), WebPage.class)
                 .forEach(webPageClass -> {
                     availablePageClasses.add(webPageClass);
-                    List<Name> names = AnnotationUtils.findRepeatableAnnotations(webPageClass, Name.class);
+                    List<Name> names = findRepeatableAnnotations(webPageClass, Name.class);
                     names.stream().map(Name::value).forEach(name -> {
                         if (pageClassesByName.containsKey(name)) {
                             throw RegisterDuplicate.exception(PAGE_NAME_DUPLICATE.getMessage(name, webPageClass, pageClassesByName.get(name)));

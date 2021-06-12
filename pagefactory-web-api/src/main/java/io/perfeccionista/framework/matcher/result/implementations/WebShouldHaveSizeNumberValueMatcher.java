@@ -35,7 +35,7 @@ public class WebShouldHaveSizeNumberValueMatcher implements WebIndexesMatcher {
 
         WebChildElement element = result.getElement();
 
-        runCheck(element.getEnvironment(), invocationName, () -> {
+        runCheck(invocationName, () -> {
             int actualSize = result.getSize();
             if (positive) {
                 shouldHaveSize(element, actualSize);

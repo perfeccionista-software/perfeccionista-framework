@@ -38,7 +38,7 @@ public class MobileComponentShouldBePresentMatcher implements MobileComponentAva
                 ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, element, componentName)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, element, componentName);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBePresent(element, componentName);

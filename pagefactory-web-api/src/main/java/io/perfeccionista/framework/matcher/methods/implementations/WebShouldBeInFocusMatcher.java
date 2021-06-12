@@ -29,7 +29,7 @@ public class WebShouldBeInFocusMatcher implements WebIsInFocusAvailableMatcher {
                 ? assertInvocation(SHOULD_BE_IN_FOCUS_METHOD, element)
                 : assertInvocation(SHOULD_NOT_BE_IN_FOCUS_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     boolean inFocus = element.isInFocus();
                     if (positive) {

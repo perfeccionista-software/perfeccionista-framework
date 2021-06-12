@@ -21,14 +21,14 @@ class GetAttributeTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        String placeholderValue = runCheck(environment, () -> {
+        String placeholderValue = runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-input"));
             WebElementOperation<String> getAttributeOperation = WebElementOperation.of(scrollToLocatorChain, new JsGetAttributeValue("placeholder"));

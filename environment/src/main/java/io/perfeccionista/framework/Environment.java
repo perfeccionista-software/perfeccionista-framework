@@ -2,12 +2,11 @@ package io.perfeccionista.framework;
 
 import io.perfeccionista.framework.exceptions.EnvironmentNotInitialized;
 import io.perfeccionista.framework.exceptions.ServiceNotFound;
+import io.perfeccionista.framework.logging.Logger;
+import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.utils.EnvironmentLogger;
 import org.jetbrains.annotations.NotNull;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
-import org.junit.platform.commons.util.Preconditions;
 import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
@@ -23,10 +22,9 @@ import java.util.stream.Stream;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_INITIALIZED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_SERVICE_INITIALIZING_FAILED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_NOT_FOUND;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CHECK_ARGUMENT_MUST_NOT_BE_NULL;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_REGISTER_BY_CLASS_DUPLICATE;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_REGISTER_CLASS_CAST;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 /**
  * Экземпляры {@link Environment} инкапсулируют в себе среду выполнения
@@ -63,19 +61,36 @@ public class Environment {
     /**
      * Экземпляр {@link Environment} создается во время инициализации
      * Наследники этого класса должны иметь такой же конструктор
-     * {@link io.perfeccionista.framework.extension.PerfeccionistaExtension}.
+     */
+    public Environment(@NotNull Class<? extends EnvironmentConfiguration> configurationClass) {
+        this(newInstance(configurationClass));
+    }
+
+    /**
+     * Экземпляр {@link Environment} создается во время инициализации
+     * Наследники этого класса должны иметь такой же конструктор
      */
     public Environment(@NotNull EnvironmentConfiguration configuration) {
         this.configuration = configuration;
-        logger.debug(() -> "Environment configuration check");
-        checkEnvironmentConfiguration(configuration);
-
+        this.configuration.getLoggerClass()
+                .ifPresent(LoggerFactory::setLogger);
+        logger.config(() -> "Environment configuration check");
+        checkEnvironmentConfiguration(this.configuration);
+        logger.config(() -> "Environment configuration check success");
     }
 
     public Environment init() {
         logger.debug(() -> "Environment configuration initialization");
         initEnvironment(configuration);
+        this.getServices().forEach(Service::beforeTest);
+        logger.debug(() -> "Environment configuration initialization success");
         return this;
+    }
+
+    public void shutdown() {
+        logger.debug(() -> "Environment shutdown");
+        this.getServices().forEach(Service::afterTest);
+        logger.debug(() -> "Environment shutdown success");
     }
 
     /**
@@ -189,8 +204,7 @@ public class Environment {
      * Этот метод выполняет проверки валидности конфигурации для инициализации {@link Environment}
      */
     protected void checkEnvironmentConfiguration(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        Preconditions.notNull(environmentConfiguration.getEnvironmentClass(),
-                CHECK_ARGUMENT_MUST_NOT_BE_NULL.getMessage("Environment class"));
+        // TODO: Добавить необходимые проверки валидности
     }
 
     /**
@@ -198,7 +212,7 @@ public class Environment {
      * @param environmentConfiguration конфигурация
      */
     protected void initEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        EnvironmentLogger environmentLogger = EnvironmentLogger.of(environmentConfiguration);
+        var environmentLogger = EnvironmentLogger.of(environmentConfiguration);
         environmentLogger.start();
 
         environmentConfiguration.getServices()

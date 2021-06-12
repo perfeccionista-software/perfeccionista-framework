@@ -90,7 +90,7 @@ public class AbstractMobileChildElementBase implements MobileChildElementBase {
     @Override
     public MobileChildElementBase executeAction(@NotNull String name, Object... args) {
         MobileActionOperationType operationType = MobileActionOperationType.of(this, name, args);
-        runCheck(getEnvironment(), operationType.getInvocationName(),
+        runCheck(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }

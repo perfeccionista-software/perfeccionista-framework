@@ -20,14 +20,14 @@ class GetIsDisplayedTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(environment, () -> {
+        runCheck(() -> {
             WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        boolean visibleLinkIsDisplayed = runCheck(environment, () -> {
+        boolean visibleLinkIsDisplayed = runCheck(() -> {
             WebLocatorChain linkElementLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
             WebElementOperation<Boolean> getIsDisplayedOperation = WebElementOperation.of(linkElementLocatorChain, new JsGetIsDisplayed());
@@ -39,7 +39,7 @@ class GetIsDisplayedTest extends AbstractWebSeleniumParallelTest {
                     .getResult();
         });
         System.out.println(visibleLinkIsDisplayed);
-        boolean invisibleLinkIsDisplayed = runCheck(environment, () -> {
+        boolean invisibleLinkIsDisplayed = runCheck(() -> {
             WebLocatorChain textElementLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Simple Link clicked"));
             WebElementOperation<Boolean> getIsDisplayed2Operation = WebElementOperation.of(textElementLocatorChain, new JsGetIsDisplayed());

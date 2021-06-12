@@ -47,7 +47,7 @@ public class WebTableShouldHaveColumnMatcher implements WebTableMatcher {
                 ? assertInvocation(COLUMN_SHOULD_BE_DISPLAYED_METHOD, element)
                 : assertInvocation(COLUMN_SHOULD_NOT_BE_DISPLAYED_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBeDisplayed(element, columnName);

@@ -43,7 +43,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public @NotNull Screenshot getPageScreenshot() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_PAGE_SCREENSHOT), () -> exceptionMapper
+        return runCheck(getterInvocation(BROWSER_GET_PAGE_SCREENSHOT), () -> exceptionMapper
                 .map(() -> PngScreenshot.from(((TakesScreenshot) instance).getScreenshotAs(OutputType.BYTES)))
                 .ifException(exception -> {
                     throw exception;
@@ -53,7 +53,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public @NotNull Dimensions2D getInnerWindowSize() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_INNER_WINDOW_SIZE_METHOD), () -> exceptionMapper
+        return runCheck(getterInvocation(BROWSER_GET_INNER_WINDOW_SIZE_METHOD), () -> exceptionMapper
                 .map(() -> {
                     String script = "return window.innerWidth + 'x' + window.innerHeight;";
                     return createPerfeccionistaDimensions(operationExecutor.executeScript(String.class, script));
@@ -66,7 +66,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public @NotNull Dimensions2D getOuterWindowSize() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_OUTER_WINDOW_SIZE_METHOD), () -> exceptionMapper
+        return runCheck(getterInvocation(BROWSER_GET_OUTER_WINDOW_SIZE_METHOD), () -> exceptionMapper
                 .map(() -> {
                     String script = "return window.outerWidth + 'x' + window.outerHeight;";
                     return createPerfeccionistaDimensions(operationExecutor.executeScript(String.class, script));
@@ -79,7 +79,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public SeleniumWebBrowserWindowDispatcher setOuterWindowSize(@NotNull Dimensions2D windowSize) {
-        runCheck(environment, getterInvocation(BROWSER_SET_OUTER_WINDOW_SIZE_METHOD, windowSize), () ->
+        runCheck(getterInvocation(BROWSER_SET_OUTER_WINDOW_SIZE_METHOD, windowSize), () ->
                 exceptionMapper.map(() -> instance.manage().window().setSize(new Dimension(windowSize.getWidthAsInt(), windowSize.getHeightAsInt())))
                         .ifException(exception -> {
                             throw exception;
@@ -89,7 +89,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public @NotNull Point2D getAbsoluteLocation() {
-        return runCheck(environment, getterInvocation(BROWSER_GET_ABSOLUTE_WINDOW_LOCATION_METHOD), () ->
+        return runCheck(getterInvocation(BROWSER_GET_ABSOLUTE_WINDOW_LOCATION_METHOD), () ->
                 exceptionMapper.map(() -> createPerfeccionistaLocation(instance.manage().window().getPosition()))
                         .ifException(exception -> {
                             throw exception;
@@ -99,7 +99,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public SeleniumWebBrowserWindowDispatcher setAbsoluteLocation(@NotNull Point2D location) {
-        runCheck(environment, getterInvocation(BROWSER_SET_ABSOLUTE_WINDOW_LOCATION_METHOD, location), () ->
+        runCheck(getterInvocation(BROWSER_SET_ABSOLUTE_WINDOW_LOCATION_METHOD, location), () ->
                 exceptionMapper.map(() -> instance.manage().window().setPosition(new Point(location.getXAsInt(), location.getYAsInt())))
                         .ifException(exception -> {
                             throw exception;
@@ -109,7 +109,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public SeleniumWebBrowserWindowDispatcher fullscreen() {
-        runCheck(environment, getterInvocation(BROWSER_SET_WINDOW_FULLSCREEN_METHOD), () ->
+        runCheck(getterInvocation(BROWSER_SET_WINDOW_FULLSCREEN_METHOD), () ->
                 exceptionMapper.map(() -> instance.manage().window().fullscreen())
                         .ifException(exception -> {
                             throw exception;
@@ -119,7 +119,7 @@ public class SeleniumWebBrowserWindowDispatcher implements WebBrowserWindowDispa
 
     @Override
     public SeleniumWebBrowserWindowDispatcher maximize() {
-        runCheck(environment, getterInvocation(BROWSER_SET_WINDOW_MAXIMIZED_METHOD), () ->
+        runCheck(getterInvocation(BROWSER_SET_WINDOW_MAXIMIZED_METHOD), () ->
                 exceptionMapper.map(() -> instance.manage().window().maximize())
                         .ifException(exception -> {
                             throw exception;

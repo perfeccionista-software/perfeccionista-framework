@@ -33,7 +33,7 @@ public class WebBrowserActiveTabShouldHaveUrlStringValueMatcher implements WebBr
                 ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_URL_VALUE_METHOD, this, expectedTextValue)
                 : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_URL_VALUE_METHOD, this, expectedTextValue);
 
-        runCheck(Environment.getCurrent(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     String actualActiveTabUrlText = tabsDispatcher.getActiveTabUrl();
                     if (positive) {

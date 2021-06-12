@@ -4,6 +4,7 @@ import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
+import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,23 +22,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
-import static io.perfeccionista.framework.utils.ReflectionUtils.findAllClasses;
-import static io.perfeccionista.framework.utils.ReflectionUtils.loadClass;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.loadClass;
 
 public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
 
-    public static final String DEFAULT_PACKAGE_TO_SCAN = "io.perfeccionista.framework";
-    public static final String SCAN_PACKAGE_PROPERTY = "perfeccionista.scanPackages";
-    public static final String SERVICE_PROPERTY_PREFIX = "perfeccionista.service.";
+    protected static final String PERFECCIONISTA_PROPERTIES_FILE = "perfeccionista.properties";
+    protected static final String SERVICE_PROPERTY_PREFIX = "perfeccionista.service.";
+
+    protected static final String SCAN_PACKAGE_PROPERTY = "perfeccionista.scanPackages";
+    protected static final String DEFAULT_PACKAGE_TO_SCAN = "io.perfeccionista.framework";
 
     protected Properties perfeccionistaProperties;
     protected Properties systemProperties;
 
-    @Override
-    public DefaultEnvironmentConfiguration init(@Nullable Properties systemProperties, @Nullable Properties perfeccionistaProperties) {
-        this.systemProperties = systemProperties;
-        this.perfeccionistaProperties = perfeccionistaProperties;
-        return this;
+    public DefaultEnvironmentConfiguration() {
+        readProperties();
     }
 
     @Override
@@ -82,6 +82,13 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
         }
 
         return servicesWithDefaultConfiguration;
+    }
+
+    protected DefaultEnvironmentConfiguration readProperties() {
+        perfeccionistaProperties = FileUtils.readOptionalPropertyFile(PERFECCIONISTA_PROPERTIES_FILE)
+                .orElse(new Properties());
+        systemProperties = System.getProperties();
+        return this;
     }
 
     protected Map<Class<? extends Service>, ConfiguredServiceHolder> processProperties(@Nullable Properties properties) {

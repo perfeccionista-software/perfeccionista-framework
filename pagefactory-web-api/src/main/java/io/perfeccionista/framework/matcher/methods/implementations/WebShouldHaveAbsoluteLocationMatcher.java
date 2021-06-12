@@ -35,7 +35,7 @@ public class WebShouldHaveAbsoluteLocationMatcher implements WebGetElementBounds
                 ? assertInvocation(SHOULD_HAVE_ABSOLUTE_LOCATION_METHOD, element, componentName, expectedLocation)
                 : assertInvocation(SHOULD_NOT_HAVE_ABSOLUTE_LOCATION_METHOD, element, componentName, expectedLocation);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     ElementBounds actualElementBounds = element.getElementBounds(componentName);
                     if (positive) {

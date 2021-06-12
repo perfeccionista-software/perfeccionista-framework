@@ -36,7 +36,7 @@ public class WebShouldBeOnTheScreenMatcher implements WebIsOnTheScreenAvailableM
                 ? assertInvocation(SHOULD_BE_ON_THE_SCREEN_METHOD, element)
                 : assertInvocation(SHOULD_NOT_BE_ON_THE_SCREEN_METHOD, element);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     boolean onTheScreen = element.isOnTheScreen();
                     if (positive) {

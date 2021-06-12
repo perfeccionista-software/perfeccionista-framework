@@ -37,7 +37,7 @@ public class MobileShouldBePresentMatcher implements MobileIsPresentAvailableMat
                 ? assertInvocation(SHOULD_BE_PRESENT_METHOD, element, PRESENTED)
                 : assertInvocation(SHOULD_NOT_BE_PRESENT_METHOD, element, PRESENTED);
 
-        runCheck(element.getEnvironment(), invocationName,
+        runCheck(invocationName,
                 () -> {
                     if (positive) {
                         shouldBePresent(element);

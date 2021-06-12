@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
-import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -19,6 +18,7 @@ import java.util.stream.Stream;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_PARAMETRIZED;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 @DefaultServiceConfiguration(DefaultFixtureServiceConfiguration.class)
 public class FixtureService implements Service {
@@ -42,7 +42,7 @@ public class FixtureService implements Service {
             throw FixtureNotFound.exception(FIXTURE_NOT_FOUND.getMessage(fixtureName));
         }
 
-        Fixture<?, ?> fixtureInstance = ReflectionUtils.newInstance(fixtureClass);
+        Fixture<?, ?> fixtureInstance = newInstance(fixtureClass);
         // TODO: Check fixture parametrized types
         return (Fixture<S, T>) fixtureInstance;
     }
@@ -73,14 +73,14 @@ public class FixtureService implements Service {
     }
 
     public <S, T> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Class<? extends Fixture<S, T>> fixtureClass) {
-        Fixture<S, T> fixtureInstance = ReflectionUtils.newInstance(fixtureClass);
+        Fixture<S, T> fixtureInstance = newInstance(fixtureClass);
         return executeFixture(fixtureInstance);
     }
 
     public <S, T> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Class<? extends ParametrizedFixture<S, T>> fixtureClass,
                                                                 @NotNull FixtureParameters fixtureParameters) {
         // TODO Validate required parameters
-        ParametrizedFixture<S, T> fixtureInstance = ReflectionUtils.newInstance(fixtureClass)
+        ParametrizedFixture<S, T> fixtureInstance = newInstance(fixtureClass)
                 .withParameters(fixtureParameters);
             return executeFixture(fixtureInstance);
     }
