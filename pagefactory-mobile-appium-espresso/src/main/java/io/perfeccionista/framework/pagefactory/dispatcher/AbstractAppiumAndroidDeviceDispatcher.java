@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static io.perfeccionista.framework.exceptions.messages.PagefactoryMobileAppiumMessages.APPIUM_DEVICE_INSTANCE_NOT_STARTED;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.dispatcher.DeviceType.ANDROID;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_CALL_METHOD;

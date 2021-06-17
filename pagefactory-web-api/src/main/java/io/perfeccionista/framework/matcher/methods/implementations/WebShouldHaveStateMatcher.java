@@ -5,7 +5,7 @@ import io.perfeccionista.framework.exceptions.ElementHasUnexpectedState;
 import io.perfeccionista.framework.exceptions.ElementStateNotFound;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebElementStateAvailable;
 import io.perfeccionista.framework.pagefactory.elements.states.base.WebElementStateHolder;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_DOES_NOT_HAVE_EXPECTED_STATE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_HAS_UNEXPECTED_STATE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_STATE_NOT_FOUND;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_STATE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_STATE_METHOD;
@@ -33,7 +33,7 @@ public class WebShouldHaveStateMatcher implements WebElementStateAvailableMatche
 
     @Override
     public void check(@NotNull WebElementStateAvailable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_STATE_METHOD, element, stateName)
                 : assertInvocation(SHOULD_NOT_HAVE_STATE_METHOD, element, stateName);
 

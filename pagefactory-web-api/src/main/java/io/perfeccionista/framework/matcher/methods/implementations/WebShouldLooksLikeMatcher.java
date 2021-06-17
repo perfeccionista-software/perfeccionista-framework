@@ -3,7 +3,7 @@ package io.perfeccionista.framework.matcher.methods.implementations;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.ScreenshotAttachmentEntry;
 import io.perfeccionista.framework.exceptions.WebElementScreenshot;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetScreenshotAvailable;
 import io.perfeccionista.framework.screenshots.Screenshot;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_SCREENSHOT_IS_EQUAL_EXPECTED_SCREENSHOT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_SCREENSHOT_IS_NOT_EQUAL_EXPECTED_SCREENSHOT;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_LOOKS_LIKE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_LOOKS_LIKE_METHOD;
@@ -30,7 +30,7 @@ public class WebShouldLooksLikeMatcher implements WebGetScreenshotAvailableMatch
 
     @Override
     public void check(@NotNull WebGetScreenshotAvailable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot)
                 : assertInvocation(SHOULD_NOT_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot);
 

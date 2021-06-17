@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +26,8 @@ public class MobileClearOperationType implements MobileElementOperationType<Void
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(CLEAR_METHOD, element, CLEAR);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(CLEAR_METHOD, element, CLEAR);
     }
 
     @Override

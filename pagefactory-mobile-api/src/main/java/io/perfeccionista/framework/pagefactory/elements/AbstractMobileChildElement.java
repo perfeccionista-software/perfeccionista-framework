@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.ElementStateNotFound;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.method.MobileComponentAvailableMatcher;
 import io.perfeccionista.framework.matcher.method.MobileElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.method.MobileElementStateAvailableMatcher;
@@ -241,7 +241,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
         Optional<MobileElementPropertyHolder> optionalPropertyHolder = getProperty(propertyName);
         if (optionalPropertyHolder.isPresent()) {
             MobileElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
-            return runCheck(InvocationName.getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyHolder), () -> {
+            return runCheck(InvocationInfo.getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyHolder), () -> {
                 MobileElementOperation<String> operation = propertyHolder.getOperation(this);
                 return getMobileDeviceDispatcher()
                         .executor()
@@ -270,7 +270,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     public boolean hasState(@NotNull String stateName) {
         MobileElementStateHolder stateHolder = getState(stateName)
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName)));
-        return runCheck(InvocationName.getterInvocation(HAS_STATE_METHOD, this, stateHolder), () -> {
+        return runCheck(InvocationInfo.getterInvocation(HAS_STATE_METHOD, this, stateHolder), () -> {
             MobileElementOperation<Boolean> operation = stateHolder.getOperation(this);
             return getMobileDeviceDispatcher()
                     .executor()

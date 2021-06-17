@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -24,8 +24,8 @@ public class MobileScrollToOperationType implements MobileElementOperationType<V
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(SCROLL_TO_METHOD, element);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(SCROLL_TO_METHOD, element);
     }
 
     @Override

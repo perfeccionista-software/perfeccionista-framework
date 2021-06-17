@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.invocation.runner;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.Environment;
 
 import java.time.Duration;
@@ -25,12 +24,12 @@ public interface InvocationRunner {
      *  - запуск этой логики в асинхронном режиме
      *
      * @param environment экземпляр текущей Environment для доступа ко всему окружению
-     * @param name        имя блока кода для удобного отображения логики его выполнения в отчете
+     * @param invocation        имя блока кода для удобного отображения логики его выполнения в отчете
      * @param supplier    блок исполняемого кода
      * @param timeout     пользовательский таймаут для его использования в циклах (при необходимости)
      * @param <T>         возвращаемый Supplier'ом тип
      * @return значение, возвращаемой Supplier'ом.
      */
-    <T> T run(@NotNull Environment environment, @NotNull InvocationName name, @NotNull final Supplier<T> supplier, @Nullable Duration timeout);
+    <T> T run(@NotNull Environment environment, @NotNull InvocationInfo invocation, @NotNull final Supplier<T> supplier, @NotNull Duration timeout);
 
 }

@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.ElementBounds;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
@@ -27,8 +27,8 @@ public class MobileGetElementBoundsOperationType implements MobileElementOperati
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(GET_ELEMENT_BOUNDS_METHOD, element, componentName);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(GET_ELEMENT_BOUNDS_METHOD, element, componentName);
     }
 
     @Override

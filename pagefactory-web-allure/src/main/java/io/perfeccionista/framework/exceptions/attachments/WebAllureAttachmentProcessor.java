@@ -1,15 +1,8 @@
-package io.perfeccionista.framework.invocation.runner;
+package io.perfeccionista.framework.exceptions.attachments;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.EmptyAttachment;
-import io.perfeccionista.framework.exceptions.attachments.Attachment;
-import io.perfeccionista.framework.exceptions.attachments.BigTextAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.DefaultAttachmentProcessor;
-import io.perfeccionista.framework.exceptions.attachments.FileAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.ScreenshotAttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.logging.Logger;
 import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserService;
@@ -34,9 +27,9 @@ public class WebAllureAttachmentProcessor extends DefaultAttachmentProcessor {
     private static final Logger logger = LoggerFactory.getLogger(WebAllureAttachmentProcessor.class);
 
     protected Environment environment;
-    protected InvocationName invocationName;
+    protected InvocationInfo invocationName;
 
-    public WebAllureAttachmentProcessor(@NotNull Environment environment, @NotNull InvocationName invocationName) {
+    public WebAllureAttachmentProcessor(@NotNull Environment environment, @NotNull InvocationInfo invocationName) {
         this.environment = environment;
         this.invocationName = invocationName;
     }

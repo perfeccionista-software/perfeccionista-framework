@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ public class MobileDoubleTapOperationType implements MobileElementOperationType<
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(DOUBLE_TAP_METHOD, element, TAP);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(DOUBLE_TAP_METHOD, element, TAP);
     }
 
     @Override

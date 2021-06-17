@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.elements.states.base.MobileElementStateHolder;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
@@ -27,8 +27,8 @@ public class MobileHasStateOperationType implements MobileElementOperationType<B
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(HAS_STATE_METHOD, element, stateHolder);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(HAS_STATE_METHOD, element, stateHolder);
     }
 
     @Override

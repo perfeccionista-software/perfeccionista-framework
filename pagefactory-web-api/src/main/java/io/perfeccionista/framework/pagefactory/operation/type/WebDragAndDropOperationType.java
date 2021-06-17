@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.measurements.Point2D;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.DRAG_AND_DROP_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
@@ -29,7 +29,7 @@ public class WebDragAndDropOperationType implements WebElementOperationType<Void
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
+    public @NotNull InvocationInfo getInvocationName() {
         return actionInvocation(DRAG_AND_DROP_METHOD, element, ROOT, target);
     }
 

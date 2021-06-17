@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.elements.properties.base.MobileElementPropertyHolder;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
@@ -27,8 +27,8 @@ public class MobileGetPropertyValueOperationType implements MobileElementOperati
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(GET_PROPERTY_VALUE_METHOD, element, propertyHolder);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(GET_PROPERTY_VALUE_METHOD, element, propertyHolder);
     }
 
     @Override

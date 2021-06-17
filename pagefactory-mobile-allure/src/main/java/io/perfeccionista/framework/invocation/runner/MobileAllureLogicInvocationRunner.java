@@ -26,7 +26,7 @@ public class MobileAllureLogicInvocationRunner implements InvocationRunner {
     private ExceptionCollector exceptionCollector = null;
 
     @Override
-    public <T> T run(@NotNull Environment environment, @NotNull InvocationName name, @NotNull Supplier<T> supplier, @NotNull Duration timeout) {
+    public <T> T run(@NotNull Environment environment, @NotNull InvocationInfo invocation, @NotNull Supplier<T> supplier, @NotNull Duration timeout) {
         Duration delay = getDelayTimeout(environment);
 
         // We need this for one attempt if timeout = 0
@@ -46,20 +46,20 @@ public class MobileAllureLogicInvocationRunner implements InvocationRunner {
                     break;
                 }
             } catch (final Throwable e) {
-                logInvocationExecution(name, invocationStartTime, "UNEXPECTED EXCEPTION");
+                logInvocationExecution(invocation, invocationStartTime, "UNEXPECTED EXCEPTION");
                 throw e;
             }
             sleep(delay);
             currentTime = System.nanoTime();
         }
 
-        logInvocationExecution(name, invocationStartTime, "EXCEPTION");
-        exceptionCollector.throwLastException(new MobileAllureAttachmentProcessor(environment, name));
+        logInvocationExecution(invocation, invocationStartTime, "EXCEPTION");
+        exceptionCollector.throwLastException(new MobileAllureAttachmentProcessor(environment, invocation));
         throw IncorrectInvocationRunnerLogic.exception(INCORRECT_INVOCATION_RUNNER_LOGIC.getMessage()).addLastAttachmentEntry(BigTextAttachmentEntry
                 .of("All Exception Messages", exceptionCollector.generateExceptionSequenceMessage()));
     }
 
-    protected void logInvocationExecution(InvocationName name, long invocationStartTime, String status) {
+    protected void logInvocationExecution(InvocationInfo name, long invocationStartTime, String status) {
         logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> " + status);
     }
 

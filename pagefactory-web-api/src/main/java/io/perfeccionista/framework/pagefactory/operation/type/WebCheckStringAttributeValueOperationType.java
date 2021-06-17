@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -32,8 +32,8 @@ public class WebCheckStringAttributeValueOperationType implements WebElementOper
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(CHECK_STRING_ATTRIBUTE_VALUE_METHOD, ROOT, element, attributeName, expectedValue);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(CHECK_STRING_ATTRIBUTE_VALUE_METHOD, ROOT, element, attributeName, expectedValue);
     }
 
     @Override

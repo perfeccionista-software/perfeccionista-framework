@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.measurements.VerticalDirection;
 import io.perfeccionista.framework.pagefactory.elements.MobileList;
 import io.perfeccionista.framework.pagefactory.filter.list.MobileListFilterBuilder;
@@ -34,8 +34,8 @@ public class MobileListScrollToVerticallyOperationType implements MobileElementO
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.actionInvocation(LIST_SCROLL_TO_VERTICALLY_METHOD, element, scrollDirection, filterBuilder);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.actionInvocation(LIST_SCROLL_TO_VERTICALLY_METHOD, element, scrollDirection, filterBuilder);
     }
 
     @Override

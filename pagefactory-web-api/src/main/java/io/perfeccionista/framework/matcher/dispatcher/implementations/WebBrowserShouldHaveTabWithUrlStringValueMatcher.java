@@ -1,10 +1,9 @@
 package io.perfeccionista.framework.matcher.dispatcher.implementations;
 
-import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.WebBrowserTabUrl;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.ValueAttachmentEntry;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.dispatcher.WebBrowserTabsDispatcherMatcher;
 import io.perfeccionista.framework.pagefactory.dispatcher.tabs.WebBrowserTabsDispatcher;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -14,7 +13,7 @@ import java.util.List;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_CONTAINS_TAB_WITH_EXPECTED_URL;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_DOES_NOT_CONTAIN_TAB_WITH_EXPECTED_URL;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SHOULD_HAVE_TAB_WITH_URL_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SHOULD_NOT_HAVE_TAB_WITH_URL_VALUE_METHOD;
@@ -31,7 +30,7 @@ public class WebBrowserShouldHaveTabWithUrlStringValueMatcher implements WebBrow
 
     @Override
     public void check(@NotNull WebBrowserTabsDispatcher tabsDispatcher) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(BROWSER_SHOULD_HAVE_TAB_WITH_URL_VALUE_METHOD, this, expectedTextValue)
                 : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TAB_WITH_URL_VALUE_METHOD, this, expectedTextValue);
 

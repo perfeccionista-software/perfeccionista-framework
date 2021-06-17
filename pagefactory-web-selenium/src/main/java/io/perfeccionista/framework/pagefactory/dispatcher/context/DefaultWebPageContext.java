@@ -18,10 +18,9 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ACTIVE_PAGE_NOT_INITIALIZED;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD;
-import static io.perfeccionista.framework.pagefactory.dispatcher.context.ContextStrategy.IMMUTABLE;
 
 public class DefaultWebPageContext implements WebPageContext {
 

@@ -1,13 +1,13 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_OPEN_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.UL;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
@@ -26,7 +26,7 @@ public class WebGetIsOpenOperationType implements WebElementOperationType<Boolea
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
+    public @NotNull InvocationInfo getInvocationName() {
         return getterInvocation(IS_OPEN_METHOD, element, UL);
     }
 

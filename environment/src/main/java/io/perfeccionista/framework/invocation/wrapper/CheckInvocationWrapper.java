@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.invocation.wrapper;
 
 import io.perfeccionista.framework.invocation.InvocationService;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.Environment;
@@ -19,20 +19,20 @@ public final class CheckInvocationWrapper implements InvocationWrapper {
     }
 
     // поставить аннотацию @Shadow над методом и аргументами, которые нужно выделять/затемнять
-    public static <T> T runCheck(@NotNull final InvocationName name,
+    public static <T> T runCheck(@NotNull final InvocationInfo name,
                                  @NotNull final Supplier<T> supplier,
                                  @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
         return actionRunner.run(Environment.getCurrent(), name, supplier, timeout);
     }
 
-    public static <T> T runCheck(@NotNull final InvocationName name,
+    public static <T> T runCheck(@NotNull final InvocationInfo name,
                                  @NotNull final Supplier<T> supplier) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
         return actionRunner.run(Environment.getCurrent(), name, supplier, getCheckTimeout(Environment.getCurrent()));
     }
 
-    public static void runCheck(@NotNull final InvocationName name,
+    public static void runCheck(@NotNull final InvocationInfo name,
                                 @NotNull final Runnable runnable,
                                 @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
@@ -42,7 +42,7 @@ public final class CheckInvocationWrapper implements InvocationWrapper {
         }, timeout);
     }
 
-    public static void runCheck(@NotNull final InvocationName name,
+    public static void runCheck(@NotNull final InvocationInfo name,
                                 @NotNull final Runnable runnable) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
         actionRunner.run(Environment.getCurrent(), name, (Supplier<Void>) () -> {
@@ -54,18 +54,18 @@ public final class CheckInvocationWrapper implements InvocationWrapper {
     public static <T> T runCheck(@NotNull final Supplier<T> supplier,
                                  @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), InvocationName.empty(), supplier, timeout);
+        return actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), supplier, timeout);
     }
 
     public static <T> T runCheck(@NotNull final Supplier<T> supplier) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), InvocationName.empty(), supplier, getCheckTimeout(Environment.getCurrent()));
+        return actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), supplier, getCheckTimeout(Environment.getCurrent()));
     }
 
     public static void runCheck(@NotNull final Runnable runnable,
                                 @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), InvocationName.empty(), (Supplier<Void>) () -> {
+        actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), (Supplier<Void>) () -> {
             runnable.run();
             return null;
         }, timeout);
@@ -73,7 +73,7 @@ public final class CheckInvocationWrapper implements InvocationWrapper {
 
     public static void runCheck(@NotNull final Runnable runnable) {
         InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), InvocationName.empty(), (Supplier<Void>) () -> {
+        actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), (Supplier<Void>) () -> {
             runnable.run();
             return null;
         }, getCheckTimeout(Environment.getCurrent()));
