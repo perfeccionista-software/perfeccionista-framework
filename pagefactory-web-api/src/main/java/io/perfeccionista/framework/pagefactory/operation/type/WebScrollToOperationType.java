@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebScrollToAvailable;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ public class WebScrollToOperationType implements WebElementOperationType<Void> {
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.actionInvocation(SCROLL_TO_METHOD, element, ROOT);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.actionInvocation(SCROLL_TO_METHOD, element, ROOT);
     }
 
     @Override

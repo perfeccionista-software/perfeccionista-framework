@@ -49,6 +49,7 @@ import static io.perfeccionista.framework.value.Values.intGreaterThan;
 import static io.perfeccionista.framework.value.Values.stringContains;
 import static io.perfeccionista.framework.value.Values.stringEmpty;
 import static io.perfeccionista.framework.value.Values.stringEquals;
+import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -121,20 +122,22 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebButton simpleButton = elementsPage.simpleButton();
         // Check Simple button with inner asserts
-        simpleButton
-                .should(bePresent())
-                .should(beDisplayed())
-                .should(notBeInFocus())
-                .scrollTo()
-                .should(haveDimensions(Dimensions2D.of(127.6d, 38.0d).setInaccuracy(0.2d)))
-                .should(haveScreenLocation(Point2D.of(369.3d, 314.3d).setInaccuracy(0.2d)))
-                .should(haveCenterLocation(Point2D.of(433.1d, 333.4d).setInaccuracy(0.2d)))
-                .should(haveColor("background-color", Color.of(0, 123, 255, 1.0d)))
-                .hoverTo(true)
-                .should(haveColor( "background-color", Color.of(0, 105, 217, 1.0d)))
-                .should(haveText("Simple Button"))
-                .should(haveText(stringContains("Button")))
-                .should(notHaveText(stringContains("link")));
+        step("Step with inner asserts", () -> {
+            simpleButton
+                    .should(bePresent())
+                    .should(beDisplayed())
+                    .should(notBeInFocus())
+                    .scrollTo()
+                    .should(haveDimensions(Dimensions2D.of(127.6d, 38.0d).setInaccuracy(0.2d)))
+                    .should(haveScreenLocation(Point2D.of(369.3d, 314.3d).setInaccuracy(0.2d)))
+                    .should(haveCenterLocation(Point2D.of(433.1d, 333.4d).setInaccuracy(0.2d)))
+                    .should(haveColor("background-color", Color.of(0, 123, 255, 1.0d)))
+                    .hoverTo(true)
+                    .should(haveColor( "background-color", Color.of(0, 105, 217, 1.0d)))
+                    .should(haveText("Simple Button hghghg"))
+                    .should(haveText(stringContains("Button")))
+                    .should(notHaveText(stringContains("link")));
+        });
         // Check Simple button with junit asserts
         assertAll(
                 () -> assertTrue(simpleButton.isPresent()),

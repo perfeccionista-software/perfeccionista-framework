@@ -4,19 +4,16 @@ import io.appium.java_client.AppiumDriver;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.mapper.MobileExceptionMapper;
 import io.perfeccionista.framework.matcher.dispatcher.MobileDeviceScreenDispatcherMatcher;
-import io.perfeccionista.framework.measurements.Dimensions2D;
 import io.perfeccionista.framework.measurements.Rotation3D;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_ON_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.dispatcher.screen.AppiumRotationConverter.createAppiumScreenOrientation;
-import static io.perfeccionista.framework.pagefactory.dispatcher.screen.AppiumRotationConverter.createDeviceRotation;
 
 public class DefaultAppiumIosScreenDispatcher implements MobileDeviceScreenDispatcher {
 

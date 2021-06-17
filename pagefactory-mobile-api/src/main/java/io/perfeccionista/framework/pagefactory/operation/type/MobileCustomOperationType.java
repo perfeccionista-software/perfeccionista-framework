@@ -1,10 +1,10 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.customOperationInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.customOperationInvocation;
 
 public class MobileCustomOperationType<T> implements MobileElementOperationType<T> {
 
@@ -19,7 +19,7 @@ public class MobileCustomOperationType<T> implements MobileElementOperationType<
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
+    public @NotNull InvocationInfo getInvocationName() {
         return customOperationInvocation(endpointHandler.getClass().getCanonicalName());
     }
 

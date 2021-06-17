@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import io.perfeccionista.framework.value.string.StringValue;
@@ -31,8 +31,8 @@ public class MobileCheckStringAttributeValueOperationType implements MobileEleme
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(CHECK_STRING_ATTRIBUTE_VALUE_METHOD, element, attributeName);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(CHECK_STRING_ATTRIBUTE_VALUE_METHOD, element, attributeName);
     }
 
     @Override

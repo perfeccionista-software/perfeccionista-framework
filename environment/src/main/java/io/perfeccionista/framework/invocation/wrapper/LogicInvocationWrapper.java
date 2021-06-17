@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.invocation.wrapper;
 
 import io.perfeccionista.framework.invocation.InvocationService;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.Environment;
@@ -23,20 +23,20 @@ public final class LogicInvocationWrapper implements InvocationWrapper {
     private LogicInvocationWrapper() {
     }
 
-    public static <T> T runLogic(@NotNull final InvocationName name,
+    public static <T> T runLogic(@NotNull final InvocationInfo name,
                                  @NotNull final Supplier<T> supplier,
                                  @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
         return actionRunner.run(Environment.getCurrent(), name, supplier, timeout);
     }
 
-    public static <T> T runLogic(@NotNull final InvocationName name,
+    public static <T> T runLogic(@NotNull final InvocationInfo name,
                                  @NotNull final Supplier<T> supplier) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
         return actionRunner.run(Environment.getCurrent(), name, supplier, getLogicTimeout(Environment.getCurrent()));
     }
 
-    public static void runLogic(@NotNull final InvocationName name,
+    public static void runLogic(@NotNull final InvocationInfo name,
                                 @NotNull final Runnable runnable,
                                 @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
@@ -46,7 +46,7 @@ public final class LogicInvocationWrapper implements InvocationWrapper {
         }, timeout);
     }
 
-    public static void runLogic(@NotNull final InvocationName name,
+    public static void runLogic(@NotNull final InvocationInfo name,
                                 @NotNull final Runnable runnable) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
         actionRunner.run(Environment.getCurrent(), name, (Supplier<Void>) () -> {
@@ -58,18 +58,18 @@ public final class LogicInvocationWrapper implements InvocationWrapper {
     public static <T> T runLogic(@NotNull final Supplier<T> supplier,
                                  @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), InvocationName.empty(), supplier, timeout);
+        return actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), supplier, timeout);
     }
 
     public static <T> T runLogic(@NotNull final Supplier<T> supplier) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), null, supplier, getLogicTimeout(Environment.getCurrent()));
+        return actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), supplier, getLogicTimeout(Environment.getCurrent()));
     }
 
     public static void runLogic(@NotNull final Runnable runnable,
                                 @NotNull final Duration timeout) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), InvocationName.empty(), (Supplier<Void>) () -> {
+        actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), (Supplier<Void>) () -> {
             runnable.run();
             return null;
         }, timeout);
@@ -77,7 +77,7 @@ public final class LogicInvocationWrapper implements InvocationWrapper {
 
     public static void runLogic(@NotNull final Runnable runnable) {
         InvocationRunner actionRunner = getLogicActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), InvocationName.empty(), (Supplier<Void>) () -> {
+        actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), (Supplier<Void>) () -> {
             runnable.run();
             return null;
         }, getLogicTimeout(Environment.getCurrent()));

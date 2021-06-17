@@ -3,14 +3,14 @@ package io.perfeccionista.framework.matcher.methods.implementations;
 import io.perfeccionista.framework.exceptions.WebElementIsDisabled;
 import io.perfeccionista.framework.exceptions.WebElementIsEnabled;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.methods.WebIsEnabledAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_DISABLED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_ENABLED;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_DISABLED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_ENABLED_METHOD;
@@ -25,7 +25,7 @@ public class WebShouldBeEnabledMatcher implements WebIsEnabledAvailableMatcher {
 
     @Override
     public void check(@NotNull WebIsEnabledAvailable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_BE_ENABLED_METHOD, element)
                 : assertInvocation(SHOULD_BE_DISABLED_METHOD, element);
 

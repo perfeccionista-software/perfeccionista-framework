@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ public class MobileGetIsInFocusOperationType implements MobileElementOperationTy
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(IS_IN_FOCUS_METHOD, element, FOCUS);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(IS_IN_FOCUS_METHOD, element, FOCUS);
     }
 
     @Override

@@ -8,7 +8,7 @@ import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.js.JsElementSearch;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.element.WebTableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.COMPONENT_IS_DISPLAYED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.COMPONENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_DISPLAYED;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COLUMN_SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COLUMN_SHOULD_NOT_BE_DISPLAYED_METHOD;
@@ -43,7 +43,7 @@ public class WebTableShouldHaveColumnMatcher implements WebTableMatcher {
 
     @Override
     public void check(@NotNull WebTable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(COLUMN_SHOULD_BE_DISPLAYED_METHOD, element)
                 : assertInvocation(COLUMN_SHOULD_NOT_BE_DISPLAYED_METHOD, element);
 

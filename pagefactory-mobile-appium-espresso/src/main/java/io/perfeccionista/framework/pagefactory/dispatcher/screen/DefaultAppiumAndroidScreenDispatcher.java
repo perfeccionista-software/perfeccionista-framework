@@ -20,8 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.RESPONSE_FORMAT_NOT_VALID;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.actionInvocation;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_GET_PAGE_SCREENSHOT;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_ON_METHOD;

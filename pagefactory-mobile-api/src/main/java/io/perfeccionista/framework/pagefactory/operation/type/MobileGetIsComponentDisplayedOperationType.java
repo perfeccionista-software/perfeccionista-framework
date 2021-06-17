@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +26,8 @@ public class MobileGetIsComponentDisplayedOperationType implements MobileElement
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(IS_COMPONENT_DISPLAYED_METHOD, element, componentName);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(IS_COMPONENT_DISPLAYED_METHOD, element, componentName);
     }
 
     @Override

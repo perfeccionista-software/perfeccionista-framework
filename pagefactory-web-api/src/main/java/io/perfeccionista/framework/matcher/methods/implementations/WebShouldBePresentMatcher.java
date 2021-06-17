@@ -8,7 +8,7 @@ import io.perfeccionista.framework.exceptions.ElementIsPresent;
 import io.perfeccionista.framework.exceptions.ElementNotPresent;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.js.JsElementSearch;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.operation.WebElementIsPresentOperationHandler;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IS_PRESENT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_PRESENT;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PRESENTED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_PRESENT_METHOD;
@@ -35,7 +35,7 @@ public class WebShouldBePresentMatcher implements WebIsPresentAvailableMatcher {
 
     @Override
     public void check(@NotNull WebIsPresentAvailable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_BE_PRESENT_METHOD, element)
                 : assertInvocation(SHOULD_NOT_BE_PRESENT_METHOD, element);
 

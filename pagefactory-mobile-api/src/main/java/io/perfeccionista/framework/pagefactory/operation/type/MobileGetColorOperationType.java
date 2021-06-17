@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
 import io.perfeccionista.framework.color.Color;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +29,8 @@ public class MobileGetColorOperationType implements MobileElementOperationType<C
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(GET_COLOR_METHOD, element, componentName, property);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(GET_COLOR_METHOD, element, componentName, property);
     }
 
     @Override

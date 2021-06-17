@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +30,8 @@ public class MobileCheckBooleanAttributeValueOperationType implements MobileElem
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD, element, attributeName);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD, element, attributeName);
     }
 
     @Override

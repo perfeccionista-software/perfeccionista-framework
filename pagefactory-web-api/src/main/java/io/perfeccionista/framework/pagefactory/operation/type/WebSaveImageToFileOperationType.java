@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -27,8 +27,8 @@ public class WebSaveImageToFileOperationType implements WebElementOperationType<
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.actionInvocation(SAVE_IMAGE_TO_FILE_METHOD, element, ROOT, filePath);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.actionInvocation(SAVE_IMAGE_TO_FILE_METHOD, element, ROOT, filePath);
     }
 
     @Override

@@ -10,7 +10,7 @@ import io.perfeccionista.framework.exceptions.ElementIsPresent.ElementIsPresentA
 import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocationAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementTextValue.WebElementTextValueAssertionError;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
 import io.perfeccionista.framework.matcher.element.WebTextMatcher;
@@ -250,7 +250,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed())
                 .click()
                 .should((WebTextMatcher) element -> {
-                    runCheck(InvocationName.assertInvocation(SHOULD_FILE_EXIST_METHOD, element),
+                    runCheck(InvocationInfo.assertInvocation(SHOULD_FILE_EXIST_METHOD, element),
                             () -> FileUtils.fileShouldExist(Path.of(downloadFile)));
                 });
     }

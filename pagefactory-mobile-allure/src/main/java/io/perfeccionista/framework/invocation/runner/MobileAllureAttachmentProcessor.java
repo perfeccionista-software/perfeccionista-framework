@@ -34,9 +34,9 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
     private static final Logger logger = LoggerFactory.getLogger(MobileAllureAttachmentProcessor.class);
 
     protected Environment environment;
-    protected InvocationName invocationName;
+    protected InvocationInfo invocationName;
 
-    public MobileAllureAttachmentProcessor(@NotNull Environment environment, @NotNull InvocationName invocationName) {
+    public MobileAllureAttachmentProcessor(@NotNull Environment environment, @NotNull InvocationInfo invocationName) {
         this.environment = environment;
         this.invocationName = invocationName;
     }

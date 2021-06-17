@@ -6,7 +6,7 @@ import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.method.MobileIsPresentAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.locators.MobileLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.methods.MobileIsPresentAvailable;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.COMPONENT_IS_PRESENT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.COMPONENT_NOT_PRESENT;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_BE_PRESENT_METHOD;
@@ -33,7 +33,7 @@ public class MobileShouldBePresentMatcher implements MobileIsPresentAvailableMat
 
     @Override
     public void check(@NotNull MobileIsPresentAvailable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_BE_PRESENT_METHOD, element, PRESENTED)
                 : assertInvocation(SHOULD_NOT_BE_PRESENT_METHOD, element, PRESENTED);
 

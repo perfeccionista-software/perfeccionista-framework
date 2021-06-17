@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ public class MobileOpenOperationType implements MobileElementOperationType<Void>
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.actionInvocation(OPEN_METHOD, element, OPEN);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.actionInvocation(OPEN_METHOD, element, OPEN);
     }
 
     @Override

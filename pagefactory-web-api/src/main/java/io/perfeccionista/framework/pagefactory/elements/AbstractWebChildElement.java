@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.exceptions.ElementStateNotFound;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
 import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
@@ -46,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_STATE_NOT_FOUND;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HAS_STATE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.DISPLAYED;

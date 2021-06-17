@@ -4,14 +4,14 @@ import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.color.Color;
 import io.perfeccionista.framework.exceptions.WebElementColor;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetColorAvailable;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_COLOR_IS_EQUAL_EXPECTED_COLOR;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_COLOR_IS_NOT_EQUAL_EXPECTED_COLOR;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_COLOR_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_COLOR_METHOD;
@@ -32,7 +32,7 @@ public class WebShouldHaveColorMatcher implements WebGetColorAvailableMatcher {
 
     @Override
     public void check(@NotNull WebGetColorAvailable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor)
                 : assertInvocation(SHOULD_NOT_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor);
 

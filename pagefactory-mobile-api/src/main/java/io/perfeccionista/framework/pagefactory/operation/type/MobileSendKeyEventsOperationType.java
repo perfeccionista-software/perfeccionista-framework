@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
@@ -27,8 +27,8 @@ public class MobileSendKeyEventsOperationType implements MobileElementOperationT
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.actionInvocation(SEND_KEY_EVENTS_METHOD, element, keyEvents);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.actionInvocation(SEND_KEY_EVENTS_METHOD, element, keyEvents);
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.invocation.runner.InvocationName.getterInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_ADD_COOKIE_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_CLEAN_COOKIES_METHOD;

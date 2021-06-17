@@ -3,14 +3,14 @@ package io.perfeccionista.framework.matcher.methods.implementations;
 import io.perfeccionista.framework.exceptions.ElementIsSelected;
 import io.perfeccionista.framework.exceptions.WebElementNotSelected;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.methods.WebIsSelectedAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsSelectedAvailable;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_SELECTED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_NOT_SELECTED;
-import static io.perfeccionista.framework.invocation.runner.InvocationName.assertInvocation;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_BE_SELECTED_METHOD;
@@ -25,7 +25,7 @@ public class WebShouldBeSelectedMatcher implements WebIsSelectedAvailableMatcher
 
     @Override
     public void check(@NotNull WebIsSelectedAvailable element) {
-        InvocationName invocationName = positive
+        InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_BE_SELECTED_METHOD, element)
                 : assertInvocation(SHOULD_NOT_BE_SELECTED_METHOD, element);
 

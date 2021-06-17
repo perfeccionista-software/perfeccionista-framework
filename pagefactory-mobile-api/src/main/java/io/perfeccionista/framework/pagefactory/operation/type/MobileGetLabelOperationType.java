@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ public class MobileGetLabelOperationType implements MobileElementOperationType<S
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(GET_LABEL_METHOD, element, LABEL);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(GET_LABEL_METHOD, element, LABEL);
     }
 
     @Override

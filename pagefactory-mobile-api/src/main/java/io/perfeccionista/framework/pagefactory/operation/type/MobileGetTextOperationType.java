@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
-import io.perfeccionista.framework.invocation.runner.InvocationName;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.methods.MobileGetTextAvailable;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,8 @@ public class MobileGetTextOperationType implements MobileElementOperationType<St
     }
 
     @Override
-    public @NotNull InvocationName getInvocationName() {
-        return InvocationName.getterInvocation(GET_TEXT_METHOD, element, TEXT);
+    public @NotNull InvocationInfo getInvocationName() {
+        return InvocationInfo.getterInvocation(GET_TEXT_METHOD, element, TEXT);
     }
 
     @Override
