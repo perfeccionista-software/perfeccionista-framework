@@ -8,7 +8,7 @@ import io.perfeccionista.framework.name.Name;
 import org.jetbrains.annotations.NotNull;
 
 @Name("Test fixture three")
-public class TestFixtureThree implements ParametrizedFixture<Long, Boolean> {
+public class TestFixtureThree implements ParametrizedFixture<Long, Boolean, FixtureParameters> {
 
     private FixtureParameters fixtureParameters;
 
@@ -23,7 +23,7 @@ public class TestFixtureThree implements ParametrizedFixture<Long, Boolean> {
     }
 
     @Override
-    public ParametrizedFixture<Long, Boolean> withParameters(@NotNull FixtureParameters fixtureParameters) {
+    public ParametrizedFixture<Long, Boolean, FixtureParameters> withParameters(@NotNull FixtureParameters fixtureParameters) {
         this.fixtureParameters = fixtureParameters;
         return this;
     }

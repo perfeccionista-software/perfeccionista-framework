@@ -24,7 +24,7 @@ public class FixtureParameterImpl<S, T> implements FixtureParameter<S, T> {
     }
 
     @Override
-    public @NotNull ParametrizedFixture<S, T> getFixtureInstance(@NotNull FixtureParameters fixtureParameters) {
+    public @NotNull <P extends FixtureParameters> ParametrizedFixture<S, T, P> getFixtureInstance(@NotNull P fixtureParameters) {
         return environment.getService(FixtureService.class)
                 .getParametrizedFixture(rawInput, fixtureParameters);
     }
