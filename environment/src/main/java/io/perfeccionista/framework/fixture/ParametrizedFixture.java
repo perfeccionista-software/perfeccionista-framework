@@ -2,8 +2,8 @@ package io.perfeccionista.framework.fixture;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface ParametrizedFixture<S, T> extends Fixture<S, T> {
+public interface ParametrizedFixture<S, T, P extends FixtureParameters> extends Fixture<S, T> {
 
-    ParametrizedFixture<S, T> withParameters(@NotNull FixtureParameters fixtureParameters);
+    ParametrizedFixture<S, T, P> withParameters(@NotNull P fixtureParameters);
 
 }

@@ -47,11 +47,11 @@ public class FixtureService implements Service {
         return (Fixture<S, T>) fixtureInstance;
     }
 
-    public <S, T> @NotNull ParametrizedFixture<S, T> getParametrizedFixture(@NotNull String fixtureName,
-                                                                            @NotNull FixtureParameters fixtureParameters) {
+    public <S, T, P extends FixtureParameters> @NotNull ParametrizedFixture<S, T, P> getParametrizedFixture(@NotNull String fixtureName,
+                                                                            @NotNull P fixtureParameters) {
         Fixture<S, T> fixtureInstance = getFixture(fixtureName);
         if (fixtureInstance instanceof ParametrizedFixture) {
-            return ((ParametrizedFixture<S, T>) fixtureInstance).withParameters(fixtureParameters);
+            return ((ParametrizedFixture<S, T, P>) fixtureInstance).withParameters(fixtureParameters);
         }
         throw FixtureNotParametrized.exception(FIXTURE_NOT_PARAMETRIZED.getMessage(fixtureName));
     }
@@ -77,10 +77,10 @@ public class FixtureService implements Service {
         return executeFixture(fixtureInstance);
     }
 
-    public <S, T> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Class<? extends ParametrizedFixture<S, T>> fixtureClass,
-                                                                @NotNull FixtureParameters fixtureParameters) {
+    public <S, T, P extends FixtureParameters> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Class<? extends ParametrizedFixture<S, T, P>> fixtureClass,
+                                                                @NotNull P fixtureParameters) {
         // TODO Validate required parameters
-        ParametrizedFixture<S, T> fixtureInstance = newInstance(fixtureClass)
+        ParametrizedFixture<S, T, P> fixtureInstance = newInstance(fixtureClass)
                 .withParameters(fixtureParameters);
             return executeFixture(fixtureInstance);
     }
