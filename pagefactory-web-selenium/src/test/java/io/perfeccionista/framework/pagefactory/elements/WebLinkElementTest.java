@@ -161,7 +161,7 @@ class WebLinkElementTest extends AbstractWebSeleniumParallelTest {
                 .should(bePresent())
                 .should(beDisplayed())
                 .should(notBeInFocus());
-        assertEquals(Point2D.of(433.1d, 489.4d).setInaccuracy(0.2d), simpleLink.getElementBounds().getCenter());
+        assertEquals(Point2D.of(495.2d, 491.4d).setInaccuracy(0.2d), simpleLink.getElementBounds().getCenter());
     }
 
     @Test

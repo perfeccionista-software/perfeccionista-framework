@@ -160,7 +160,7 @@ class WebRadioButtonElementTest  extends AbstractWebSeleniumParallelTest {
         );
         radioButtonText
                 .should(haveText(stringContainsAll("Label 1")));
-        assertEquals(Point2D.of(433.1d, 725.4d).setInaccuracy(0.2d), radioButtonOne.getElementBounds().getCenter());
+        assertEquals(Point2D.of(448.0d, 725.4d).setInaccuracy(0.2d), radioButtonOne.getElementBounds().getCenter());
     }
 
     @Test

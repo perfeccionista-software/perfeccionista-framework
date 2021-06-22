@@ -34,8 +34,8 @@ public class ElementActionNames {
     public static final String GET_LOCATION_METHOD = "GetLocation";
     public static final String SHOULD_HAVE_SCREEN_LOCATION_METHOD = "ShouldHaveScreenLocation";
     public static final String SHOULD_NOT_HAVE_SCREEN_LOCATION_METHOD = "ShouldNotHaveScreenLocation";
-    public static final String SHOULD_HAVE_ABSOLUTE_LOCATION_METHOD = "ShouldHaveAbsoluteLocation";
-    public static final String SHOULD_NOT_HAVE_ABSOLUTE_LOCATION_METHOD = "ShouldNotHaveAbsoluteLocation";
+    public static final String SHOULD_HAVE_CENTER_LOCATION_METHOD = "ShouldHaveCenterLocation";
+    public static final String SHOULD_NOT_HAVE_CENTER_LOCATION_METHOD = "ShouldNotHaveCenterLocation";
 
     public static final String GET_SCREENSHOT_METHOD = "GetScreenshot";
     public static final String SHOULD_LOOKS_LIKE_METHOD = "ShouldLooksLike";

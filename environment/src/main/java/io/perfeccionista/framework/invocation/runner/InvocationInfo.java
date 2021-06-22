@@ -1,11 +1,15 @@
 package io.perfeccionista.framework.invocation.runner;
 
+import io.perfeccionista.framework.exceptions.attachments.Attachment;
+import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationResult.InvocationStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -25,6 +29,7 @@ public final class InvocationInfo {
 
     protected Deque<InvocationResult> invocationResults;
     protected InvocationResult current = null;
+    protected Attachment attachment = Attachment.empty();
 
     protected InvocationInfoNameFormatter nameFormatter;
     protected InvocationInfoStatisticsFormatter statisticsFormatter;
@@ -89,8 +94,33 @@ public final class InvocationInfo {
         return args;
     }
 
+    public Optional<InvocationResult> getCurrent() {
+        return Optional.ofNullable(current);
+    }
+
     public Deque<InvocationResult> getResults() {
         return invocationResults;
+    }
+
+    public InvocationStatus getLastStatus() {
+        if (invocationResults.isEmpty()) {
+            return InvocationStatus.NEW;
+        }
+        return invocationResults.getLast().getStatus();
+    }
+
+    public InvocationInfo setAttachment(@NotNull Attachment attachment) {
+        this.attachment = attachment;
+        return this;
+    }
+
+    public InvocationInfo addAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
+        this.attachment.addLastAttachmentEntry(attachmentEntry);
+        return this;
+    }
+
+    public Attachment getAttachment() {
+        return this.attachment;
     }
 
     public InvocationInfo start() {
@@ -114,8 +144,8 @@ public final class InvocationInfo {
     public InvocationInfo success(@NotNull Consumer<InvocationInfo> successInvocationVisitor) {
         this.current.success();
         this.invocationResults.addLast(this.current);
-        this.current = null;
         successInvocationVisitor.accept(this);
+        this.current = null;
         return this;
     }
 
@@ -129,8 +159,8 @@ public final class InvocationInfo {
     public InvocationInfo exception(Throwable t, @NotNull Consumer<InvocationInfo> exceptionInvocationVisitor) {
         this.current.exception(t);
         this.invocationResults.addLast(this.current);
-        this.current = null;
         exceptionInvocationVisitor.accept(this);
+        this.current = null;
         return this;
     }
 

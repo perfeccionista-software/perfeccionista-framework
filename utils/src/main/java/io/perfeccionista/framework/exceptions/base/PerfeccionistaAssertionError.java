@@ -23,7 +23,7 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
 
     private AttachmentProcessor processor = new DefaultAttachmentProcessor();
     private Attachment attachment = null;
-    private String attachmentsDescription = null;
+    private String attachmentsDescription = "";
     private boolean processed = false;
     private boolean service = false;
 
@@ -113,7 +113,7 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
     }
 
     public PerfeccionistaAssertionError prepareAttachmentDescription() {
-        if (Objects.nonNull(attachment) && Objects.isNull(this.attachmentsDescription)) {
+        if (Objects.nonNull(attachment)) {
             this.attachmentsDescription = processor.processAttachment(attachment);
         }
         return this;
@@ -124,12 +124,6 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
     }
 
     public String getAttachmentDescription() {
-        if (Objects.isNull(attachment)) {
-            return "";
-        }
-        if (Objects.isNull(attachmentsDescription)) {
-            attachmentsDescription = processor.processAttachment(attachment);
-        }
         return attachmentsDescription;
     }
 

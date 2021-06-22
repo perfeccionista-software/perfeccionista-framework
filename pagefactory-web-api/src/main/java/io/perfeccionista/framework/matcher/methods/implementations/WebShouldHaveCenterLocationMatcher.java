@@ -14,8 +14,8 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiM
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_LOCATION_IS_NOT_EQUAL_EXPECTED_LOCATION;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_ABSOLUTE_LOCATION_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_ABSOLUTE_LOCATION_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_CENTER_LOCATION_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_CENTER_LOCATION_METHOD;
 
 public class WebShouldHaveCenterLocationMatcher implements WebGetElementBoundsAvailableMatcher {
 
@@ -32,8 +32,8 @@ public class WebShouldHaveCenterLocationMatcher implements WebGetElementBoundsAv
     @Override
     public void check(@NotNull WebGetElementBoundsAvailable element) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_ABSOLUTE_LOCATION_METHOD, element, componentName, expectedLocation)
-                : assertInvocation(SHOULD_NOT_HAVE_ABSOLUTE_LOCATION_METHOD, element, componentName, expectedLocation);
+                ? assertInvocation(SHOULD_HAVE_CENTER_LOCATION_METHOD, element, componentName, expectedLocation)
+                : assertInvocation(SHOULD_NOT_HAVE_CENTER_LOCATION_METHOD, element, componentName, expectedLocation);
 
         runCheck(invocationName,
                 () -> {

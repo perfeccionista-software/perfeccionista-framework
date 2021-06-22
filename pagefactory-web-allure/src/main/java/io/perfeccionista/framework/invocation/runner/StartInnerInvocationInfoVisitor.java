@@ -7,18 +7,17 @@ import java.util.function.Consumer;
 
 import static io.qameta.allure.Allure.getLifecycle;
 
-public class StartInvocationInfoVisitor implements Consumer<InvocationInfo> {
+public class StartInnerInvocationInfoVisitor implements Consumer<InvocationInfo> {
     private final AllureInvocationNameFormatter allureNameFormatter = new AllureInvocationNameFormatter();
 
     @Override
     public void accept(InvocationInfo invocationInfo) {
-        if (invocationInfo.getResults().isEmpty()) {
-            getLifecycle().startStep(invocationInfo.getUuid(),
-                    new StepResult().setName(invocationInfo.getFormattedName(allureNameFormatter)));
-        }
+        getLifecycle().startStep(invocationInfo.getUuid(),
+                new StepResult().setName(invocationInfo.getFormattedName(allureNameFormatter)));
         getLifecycle().updateStep(invocationInfo.getUuid(), step -> {
             step.setSteps(new ArrayList<>());
         });
     }
 
 }
+
