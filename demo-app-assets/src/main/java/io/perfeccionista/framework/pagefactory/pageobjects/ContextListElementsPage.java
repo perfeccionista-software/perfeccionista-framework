@@ -17,6 +17,6 @@ public interface ContextListElementsPage extends AbstractWebPage {
     @WebLocator(id = "continents-list")
     @WebLocator(component = LI, xpath = ".//div[@itemid = 'continents-list-item']", single = false)
     @UseMappedWebBlock(ContinentBlock.class)
-    WebList continentsList();
+    WebList<ContinentBlock> continentsList();
 
 }

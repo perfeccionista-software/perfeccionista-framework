@@ -16,17 +16,17 @@ import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
 
 @WebLocator(component = "LI", css = ".list-group-item", single = false)
 @UseMappedWebBlock(LeftMenuItemBlock.class)
-public interface LeftMenu extends WebList {
+public interface LeftMenu extends WebList<LeftMenuItemBlock> {
 
     default void select(@NotNull StringValue expectedValue) {
-        this.filter(containsText(frame(LeftMenuItemBlock.class).item(), expectedValue))
+        this.filter(block -> with(containsText(block.item(), expectedValue)))
                 .extractOne(element(frame(LeftMenuItemBlock.class).item()))
                 .getNotNullResult()
                 .click();
     }
 
     default void select(@NotNull String expectedText) {
-        this.filter(containsText(frame(LeftMenuItemBlock.class).item(), expectedText))
+        this.filter(block -> with(containsText(frame(LeftMenuItemBlock.class).item(), expectedText)))
                 .extractOne(element(frame(LeftMenuItemBlock.class).item()))
                 .getNotNullResult()
                 .click();

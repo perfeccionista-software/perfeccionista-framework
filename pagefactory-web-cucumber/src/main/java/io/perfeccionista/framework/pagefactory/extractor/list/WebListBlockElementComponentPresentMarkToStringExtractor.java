@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.extractor.list;
 
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import org.jetbrains.annotations.NotNull;
 
@@ -7,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-public class WebListBlockElementComponentPresentMarkToStringExtractor implements WebListBlockValueExtractor<String> {
+public class WebListBlockElementComponentPresentMarkToStringExtractor implements WebListBlockValueExtractor<String, WebBlock> {
 
     private final String elementPath;
     private final String componentName;
@@ -19,8 +20,8 @@ public class WebListBlockElementComponentPresentMarkToStringExtractor implements
     }
 
     @Override
-    public Map<Integer, String> extractValues(@NotNull WebListFilter filter) {
-        return new WebListBlockElementComponentPresentMarkExtractor(elementPath, componentName)
+    public Map<Integer, String> extractValues(@NotNull WebListFilter<WebBlock> filter) {
+        return new WebListBlockElementComponentPresentMarkExtractor<>(elementPath, componentName)
                 .extractValues(filter).entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue() ? "1" : "0"));
     }

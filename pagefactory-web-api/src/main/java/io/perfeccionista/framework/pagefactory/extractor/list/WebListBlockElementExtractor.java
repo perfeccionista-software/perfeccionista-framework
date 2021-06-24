@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.extractor.list;
 
 import io.perfeccionista.framework.pagefactory.WebPageService;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
@@ -11,30 +12,30 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WebListBlockElementExtractor<T extends WebChildElement> implements WebListBlockValueExtractor<T> {
+public class WebListBlockElementExtractor<R extends WebChildElement, T extends WebBlock> implements WebListBlockValueExtractor<R, T> {
 
     private final String elementPath;
-    private final T elementFrame;
-    private final Class<T> returnType;
+    private final R elementFrame;
+    private final Class<R> returnType;
 
-    public WebListBlockElementExtractor(@NotNull String elementPath, @NotNull Class<T> returnType) {
+    public WebListBlockElementExtractor(@NotNull String elementPath, @NotNull Class<R> returnType) {
         this.elementPath = elementPath;
         this.elementFrame = null;
         this.returnType = returnType;
     }
 
-    public WebListBlockElementExtractor(@NotNull T elementFrame) {
+    public WebListBlockElementExtractor(@NotNull R elementFrame) {
         this.elementPath = null;
         this.elementFrame = elementFrame;
         this.returnType = null;
     }
 
     @Override
-    public Map<Integer, T> extractValues(@NotNull WebListFilter filter) {
+    public Map<Integer, R> extractValues(@NotNull WebListFilter<T> filter) {
         FilterResult filterResult = filter.getFilterResult();
-        WebList element = filter.getElement();
+        WebList<T> element = filter.getElement();
 
-        Map<Integer, T> extractedElements = new HashMap<>();
+        Map<Integer, R> extractedElements = new HashMap<>();
 
         WebPageFactory webPageFactory = element.getEnvironment()
                 .getService(WebPageService.class)
@@ -42,13 +43,13 @@ public class WebListBlockElementExtractor<T extends WebChildElement> implements 
 
         webPageFactory.createWebListBlocks(element, filterResult)
                 .forEach((index, webMappedBlock) -> {
-                    T elementToExtract;
+                    R elementToExtract;
                     if (elementPath != null) {
                         elementToExtract = webMappedBlock.getElementRegistry()
                                 .getRequiredElementByPath(elementPath, returnType);
                     } else {
                         //noinspection unchecked
-                        elementToExtract = (T) webMappedBlock.getElementRegistry()
+                        elementToExtract = (R) webMappedBlock.getElementRegistry()
                                 .getRequiredElementByMethod(elementFrame.getElementIdentifier().getElementMethod());
                     }
                     extractedElements.put(index, elementToExtract);

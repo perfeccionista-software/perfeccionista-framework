@@ -5,16 +5,16 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface WebSingleIndexedResult<T, E extends WebChildElement> {
+public interface WebSingleIndexedResult<R, T extends WebChildElement> {
 
-    @NotNull E getElement();
+    @NotNull T getElement();
 
-    @Nullable T getResult();
+    @Nullable R getResult();
 
-    @NotNull T getNotNullResult();
+    @NotNull R getNotNullResult();
 
     int getIndex();
 
-    WebSingleIndexedResult<T, E> should(WebMultipleIndexedResultMatcher<T> matcher);
+    WebSingleIndexedResult<R, T> should(WebMultipleIndexedResultMatcher<R> matcher);
 
 }

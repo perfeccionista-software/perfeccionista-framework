@@ -12,18 +12,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-public class WebListBlockExtractor<T extends WebBlock> implements WebListBlockValueExtractor<T> {
+public class WebListBlockExtractor<R extends WebBlock, T extends WebBlock> implements WebListBlockValueExtractor<R, T> {
 
-    private final Class<T> blockClass;
+    private final Class<R> blockClass;
 
-    public WebListBlockExtractor(@NotNull Class<T> blockClass) {
+    public WebListBlockExtractor(@NotNull Class<R> blockClass) {
         this.blockClass = blockClass;
     }
 
     @Override
-    public Map<Integer, T> extractValues(@NotNull WebListFilter filter) {
+    public Map<Integer, R> extractValues(@NotNull WebListFilter<T> filter) {
         FilterResult filterResult = filter.getFilterResult();
-        WebList element = filter.getElement();
+        WebList<T> element = filter.getElement();
 
         WebPageFactory webPageFactory = element.getEnvironment()
                 .getService(WebPageService.class)
@@ -31,7 +31,7 @@ public class WebListBlockExtractor<T extends WebBlock> implements WebListBlockVa
 
         return webPageFactory.createWebListBlocks(element, filterResult)
                 .entrySet().stream()
-                .collect(Collectors.toMap(Entry::getKey, entry -> (T) entry.getValue()));
+                .collect(Collectors.toMap(Entry::getKey, entry -> (R) entry.getValue()));
     }
 
 }

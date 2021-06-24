@@ -32,7 +32,7 @@ public interface HomePage extends AbstractWebPage {
     @WebLocator(xpath = ".//*[@test-id='flags-first-group']")
     @WebLocator(component = ElementComponents.LI, tagName = "img")
     @UseMappedWebBlock(FlagBlock.class)
-    WebList flagsFirstGroup();
+    WebList<FlagBlock> flagsFirstGroup();
 
     @Name("Second text block")
     @Name("Второй текстовый блок")
@@ -44,7 +44,7 @@ public interface HomePage extends AbstractWebPage {
     @WebLocator(xpath = ".//*[@test-id='flags-second-group']")
     @WebLocator(component = ElementComponents.LI, tagName = "img")
     @UseMappedWebBlock(FlagBlock.class)
-    WebList flagsSecondGroup();
+    WebList<FlagBlock> flagsSecondGroup();
 
     @Name("Third text block")
     @Name("Третий текстовый блок")

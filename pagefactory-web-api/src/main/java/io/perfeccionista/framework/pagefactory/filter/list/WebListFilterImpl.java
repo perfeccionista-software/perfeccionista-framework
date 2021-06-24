@@ -1,6 +1,10 @@
 package io.perfeccionista.framework.pagefactory.filter.list;
 
+import io.perfeccionista.framework.exceptions.SingleResultCreating;
+import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListMultipleIndexedResult;
@@ -15,43 +19,101 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import static io.perfeccionista.framework.Web.block;
 import static io.perfeccionista.framework.Web.blockIndex;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SINGLE_RESULT_HAS_NO_VALUE;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.*;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
 import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.*;
 
-public class WebListFilterImpl implements WebListFilter {
+public class WebListFilterImpl<T extends WebBlock> implements WebListFilter<T> {
 
-    private final WebList element;
-    private final WebListFilterBuilder filterBuilder;
+    private final WebList<T> element;
+    private final WebListFilterBuilder<T> filterBuilder;
 
     private String initialHash = null;
     private FilterResult filterResult = null;
 
-    private WebListFilterImpl(WebList element, WebListFilterBuilder filterBuilder) {
+    private WebListFilterImpl(WebList<T> element, WebListFilterBuilder<T> filterBuilder) {
         this.element = element;
         this.filterBuilder = filterBuilder;
     }
 
-    public static WebListFilterImpl of(@NotNull WebList element, @NotNull WebListFilterBuilder filterBuilder) {
-        return new WebListFilterImpl(element, filterBuilder);
+    public static <T extends WebBlock> WebListFilterImpl<T> of(@NotNull WebList<T> element, @NotNull WebListFilterBuilder<T> filterBuilder) {
+        return new WebListFilterImpl<>(element, filterBuilder);
     }
 
     @Override
-    public @NotNull <T> WebMultipleIndexedResult<T, WebList> extractAll(@NotNull WebListBlockValueExtractor<T> extractor) {
+    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebListBlockValueExtractor<R, T> extractor) {
         return WebListMultipleIndexedResult.of(element, filterBuilder, extractor);
     }
 
     @Override
-    public @NotNull <T> WebSingleIndexedResult<T, WebList> extractOne(@NotNull WebListBlockValueExtractor<T> extractor) {
+    public @NotNull <R> WebSingleIndexedResult<R, WebList<T>> extractOne(@NotNull WebListBlockValueExtractor<R, T> extractor) {
         return WebListMultipleIndexedResult.of(element, filterBuilder, extractor)
                 .singleResult();
     }
 
     @Override
-    public @NotNull WebList getElement() {
+    public WebListFilter<T> forSingleBlock(@NotNull Consumer<T> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            T singleBlock = WebListMultipleIndexedResult.of(element, filterBuilder, block(element.getWebListFrame().getMappedBlockClass()))
+                    .singleResult()
+                    .getNotNullResult();
+            listBlockConsumer.accept(singleBlock);
+        });
+        return this;
+    }
+
+    @Override
+    public WebListFilter<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            WebListMultipleIndexedResult.of(element, filterBuilder, block(element.getWebListFrame().getMappedBlockClass()))
+                    .getResults()
+                    .forEach((key, value) -> listBlockConsumer.accept(value));
+        });
+        return this;
+    }
+
+    @Override
+    public WebListFilter<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            T firstBlock = WebListMultipleIndexedResult.of(element, filterBuilder, block(element.getWebListFrame().getMappedBlockClass()))
+                    .getResults().entrySet()
+                    .stream()
+                    .min(Entry.comparingByKey())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                            .setProcessed(true)
+                            .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)))
+                    .getValue();
+            listBlockConsumer.accept(firstBlock);
+        });
+        return this;
+    }
+
+    @Override
+    public WebListFilter<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            T firstBlock = WebListMultipleIndexedResult.of(element, filterBuilder, block(element.getWebListFrame().getMappedBlockClass()))
+                    .getResults().entrySet()
+                    .stream()
+                    .max(Entry.comparingByKey())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                            .setProcessed(true)
+                            .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)))
+                    .getValue();
+            listBlockConsumer.accept(firstBlock);
+        });
+        return this;
+    }
+
+    @Override
+    public @NotNull WebList<T> getElement() {
         return element;
     }
 
@@ -62,24 +124,24 @@ public class WebListFilterImpl implements WebListFilter {
     }
 
     @Override
-    public WebListFilter should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
-        WebListMultipleIndexedResult<Integer> indexedResult = WebListMultipleIndexedResult.of(element, filterBuilder, blockIndex());
+    public WebListFilter<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
+        WebListMultipleIndexedResult<Integer, T> indexedResult = WebListMultipleIndexedResult.of(element, filterBuilder, blockIndex());
         matcher.check(indexedResult);
         return this;
     }
 
     @Override
-    public WebListFilter setInitialHash(@Nullable String initialHash) {
+    public WebListFilter<T> setInitialHash(@Nullable String initialHash) {
         this.initialHash = initialHash;
         return this;
     }
 
-    private void executeFilter(WebList element, WebListFilterBuilder filterBuilder) {
-        Deque<WebListBlockFilterResultGroupingHolder> conditions = filterBuilder.getConditions();
+    private void executeFilter(WebList<T> element, WebListFilterBuilder<T> filterBuilder) {
+        Deque<WebListBlockFilterResultGroupingHolder<T>> conditions = filterBuilder.getConditions();
         Set<Integer> indexes = new HashSet<>();
         String calculatedHash = initialHash;
-        for (WebListBlockFilterResultGroupingHolder conditionHolder : conditions) {
-            WebListBlockCondition condition = conditionHolder.getCondition();
+        for (WebListBlockFilterResultGroupingHolder<T> conditionHolder : conditions) {
+            WebListBlockCondition<T> condition = conditionHolder.getCondition();
             FilterResult conditionResult = processConditions(element, condition, calculatedHash);
             calculatedHash = conditionResult.getHash();
             if (ADD == conditionHolder.getUsage()) {
@@ -92,16 +154,16 @@ public class WebListFilterImpl implements WebListFilter {
         filterResult = FilterResult.of(indexes, calculatedHash);
     }
 
-    private static FilterResult processConditions(WebList element, WebListBlockCondition condition, String hash) {
+    private static <T extends WebBlock> FilterResult processConditions(WebList<T> element, WebListBlockCondition<T> condition, String hash) {
         FilterResult conditionResult = condition.process(element, hash);
-        Deque<WebListBlockConditionHolder> childConditions = condition.getChildConditions();
+        Deque<WebListBlockConditionHolder<T>> childConditions = condition.getChildConditions();
         if (childConditions.isEmpty()) {
             return conditionResult;
         }
         String calculatedHash = conditionResult.getHash();
         Set<Integer> indexes = conditionResult.getIndexes();
-        for (WebListBlockConditionHolder childConditionHolder : childConditions) {
-            WebListBlockCondition childCondition = childConditionHolder.getCondition();
+        for (WebListBlockConditionHolder<T> childConditionHolder : childConditions) {
+            WebListBlockCondition<T> childCondition = childConditionHolder.getCondition();
             FilterResult childConditionResult = processConditions(element, childCondition, calculatedHash);
             calculatedHash = childConditionResult.getHash();
             if (AND == childConditionHolder.getUsage()) {

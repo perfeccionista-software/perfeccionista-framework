@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.list.condition;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
@@ -21,39 +22,39 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
-public class WebListBlockElementEmptyCondition implements WebListBlockCondition {
+public class WebListBlockElementEmptyCondition<T extends WebBlock> implements WebListBlockCondition<T> {
 
-    private final Deque<WebListBlockConditionHolder> childConditions = new ArrayDeque<>();
+    private final Deque<WebListBlockConditionHolder<T>> childConditions = new ArrayDeque<>();
 
     private boolean inverse = false;
 
-    public WebListBlockElementEmptyCondition allBlocks() {
+    public WebListBlockElementEmptyCondition<T> allBlocks() {
         return this;
     }
 
-    public WebListBlockElementEmptyCondition noBlocks() {
+    public WebListBlockElementEmptyCondition<T> noBlocks() {
         return this.inverse();
     }
 
     @Override
-    public WebListBlockCondition and(@NotNull WebListBlockCondition condition) {
+    public WebListBlockCondition<T> and(@NotNull WebListBlockCondition<T> condition) {
         childConditions.add(WebListBlockConditionHolder.of(AND, condition));
         return this;
     }
 
     @Override
-    public WebListBlockCondition or(@NotNull WebListBlockCondition condition) {
+    public WebListBlockCondition<T> or(@NotNull WebListBlockCondition<T> condition) {
         childConditions.add(WebListBlockConditionHolder.of(OR, condition));
         return this;
     }
 
     @Override
-    public Deque<WebListBlockConditionHolder> getChildConditions() {
+    public Deque<WebListBlockConditionHolder<T>> getChildConditions() {
         return childConditions;
     }
 
     @Override
-    public @NotNull FilterResult process(@NotNull WebList element, @Nullable String hash) {
+    public @NotNull FilterResult process(@NotNull WebList<T> element, @Nullable String hash) {
 
         // Цепочка от корня страницы до WebListBlock
         WebLocatorChain listLocatorChain = element.getLocatorChain();
@@ -83,7 +84,7 @@ public class WebListBlockElementEmptyCondition implements WebListBlockCondition 
         return FilterResult.of(indexes, calculatedHash);
     }
 
-    private WebListBlockElementEmptyCondition inverse() {
+    private WebListBlockElementEmptyCondition<T> inverse() {
         inverse = true;
         return this;
     }
