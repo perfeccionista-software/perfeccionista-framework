@@ -15,7 +15,6 @@ import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
 
 
 @WebLocator(component = "LI", css = ".list-group-item", single = false)
-@UseMappedWebBlock(LeftMenuItemBlock.class)
 public interface LeftMenu extends WebList<LeftMenuItemBlock> {
 
     default void select(@NotNull StringValue expectedValue) {
