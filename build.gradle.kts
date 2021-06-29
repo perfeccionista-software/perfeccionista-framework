@@ -1,14 +1,19 @@
 import io.qameta.allure.gradle.task.AllureReport
+import org.gradle.internal.classpath.Instrumented.systemProperty
 
-repositories {
-    google()
-    mavenLocal()
-    maven("https://plugins.gradle.org/m2/")
+buildscript {
+    repositories {
+        maven("https://plugins.gradle.org/m2/")
+        google()
+        mavenLocal()
+        mavenCentral()
+    }
 }
 
 plugins {
     java
     jacoco
+    signing
     checkstyle
     `java-gradle-plugin`
     `maven-publish`
@@ -16,31 +21,66 @@ plugins {
     id("org.sonarqube") version "3.1.1"
     id("io.qameta.allure") version "2.8.1"
     id("com.github.ben-manes.versions") version "0.38.0" apply false
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
+
 // Global registry workaround https://github.com/ben-manes/gradle-versions-plugin
 // until https://github.com/ben-manes/gradle-versions-plugin/pull/504 approved
 if (!project.plugins.hasPlugin("com.github.ben-manes.versions")) {
     apply(plugin = "com.github.ben-manes.versions")
 }
 
-rootProject.apply {
-    description = "Perfeccionista framework"
+val ossrhUsername = systemProperty("ossrhUsername", null)
+val ossrhPassword = systemProperty("ossrhPassword", null)
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            stagingProfileId.set("2a04cf3a01d7b7")
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username.set(ossrhUsername)
+            password.set(ossrhPassword)
+        }
+    }
 }
 
-configure(allprojects.filter { !it.name.contains("demo-app") }) {
+val notToPublish = listOf(
+    "demo-app",
+    "bdd-engine",
+    "demo-app-assets",
+    "demo-app-mobile-assets",
+    "environment-cucumber-api",
+    "pagefactory-mobile-allure",
+    "pagefactory-mobile-android",
+    "pagefactory-mobile-api",
+    "pagefactory-mobile-appium",
+    "pagefactory-mobile-appium-espresso",
+    "pagefactory-mobile-appium-xcuitest",
+    "pagefactory-mobile-cucumber",
+    "pagefactory-mobile-espresso",
+    "pagefactory-web-cucumber"
+)
+
+configure(listOf(rootProject)) {
+    description = "Perfeccionista framework"
     group = "io.perfeccionista.framework"
+    version = rootProject.property("frameworkVersion") ?: "local"
 }
 
 configure(subprojects.filter { it.name != "demo-app" }) {
-    version = rootProject.property("frameworkVersion") ?: "local"
-
-    extra["isRelease"] = !version.toString().endsWith("-SNAPSHOT")
 
     repositories {
         google()
         mavenLocal()
         mavenCentral()
     }
+
+    val project = this
+    group = "io.perfeccionista.framework"
+    version = rootProject.property("frameworkVersion") ?: "local"
+
+    extra["isRelease"] = !version.toString().endsWith("-SNAPSHOT")
 
     val jetBrainsAnnotationsVersion: String by rootProject
     val apiGuardianVersion: String by rootProject
@@ -49,13 +89,11 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     val jacksonVersion: String by rootProject
     val allureVersion: String by rootProject
 
-    val notToPublish = kotlin.collections.listOf("demo-app")
-
 //    apply(plugin = "checkstyle")
     apply(plugin = "java")
     apply(plugin = "java-gradle-plugin")
     apply(plugin = "jacoco")
-    apply(plugin = "maven-publish")
+    apply(plugin = "signing")
     apply(plugin = "io.qameta.allure")
 
     tasks.withType<JavaCompile> {
@@ -82,10 +120,30 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         testImplementation(group = "org.mockito", name = "mockito-core", version = "3.9.0")
     }
 
-
     allure {
         autoconfigure = true
         version = allureVersion
+    }
+
+    tasks.register("cleanAllure", org.gradle.api.tasks.Delete::class) {
+        group = "build"
+
+        delete("allure-results")
+        delete("$buildDir/allure-results")
+        delete("$buildDir/reports/allure-report")
+    }
+
+    tasks.register("allureReportLocal", AllureReport::class) {
+        resultsDirs.add(file("allure-results"))
+    }
+
+    tasks.register("clearAllureLocal", org.gradle.api.tasks.Delete::class) {
+        group = "build"
+        delete("allure-results")
+    }
+
+    tasks.clean {
+        finalizedBy("cleanAllure")
     }
 
 //    checkstyle {
@@ -98,6 +156,13 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         toolVersion = "0.8.4"
     }
 
+    tasks.jacocoTestReport {
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+        }
+    }
+
     tasks.test {
         finalizedBy("jacocoTestReport")
         useJUnitPlatform()
@@ -107,41 +172,24 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         }
     }
 
-    tasks.register("cleanAllure", org.gradle.api.tasks.Delete::class) {
-        group = "build"
-
-        delete("allure-results")
-        delete("$buildDir/allure-results")
-        delete("$buildDir/reports/allure-report")
-    }
-
-    tasks.clean {
-        finalizedBy("cleanAllure")
-    }
-
-    tasks.jacocoTestReport {
-        reports {
-            xml.isEnabled = true
-            html.isEnabled = true
+    tasks.jar {
+        manifest {
+            attributes(mapOf(
+                "Implementation-Title" to project.name,
+                "Implementation-Version" to project.version
+            ))
         }
     }
 
-    allure {
-        autoconfigure = true
-        version = allureVersion
-    }
-
-    tasks.register("allureReportLocal", AllureReport::class) {
-        resultsDirs.add(file("allure-results"))
-    }
-
-    tasks.register("clearAllureLocal", org.gradle.api.tasks.Delete::class) {
-        group = "build"
-        delete("allure-results")
-    }
-
     if (project.name !in notToPublish) {
+
         apply(plugin = "org.gradle.maven-publish")
+
+        val javadocJar = task<Jar>("javadocJar") {
+            from("javadoc")
+            archiveClassifier.set("javadoc")
+        }
+
         val sourcesJar = task<Jar>("sourcesJar") {
             from(sourceSets["main"].allSource)
             archiveClassifier.set("sources")
@@ -149,15 +197,54 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 
         publishing {
             publications {
-                create<MavenPublication>(project.name) {
+                create<MavenPublication>("mavenCentral") {
                     from(components["java"])
+                    suppressAllPomMetadataWarnings()
+                    pom {
+                        name.set(project.name)
+                        description.set("Module ${project.name} of Perfeccionista Framework.")
+                        url.set("https://github.com/perfeccionista-software/perfeccionista-framework")
+                        licenses {
+                            license {
+                                name.set("The Apache License, Version 2.0")
+                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                            }
+                        }
+                        developers {
+                            developer {
+                                id.set("iRSV")
+                                name.set("Sergey Razuvaev")
+                                email.set("svrazuvaev@yandex.ru")
+                            }
+                            developer {
+                                id.set("sshuvalov")
+                                name.set("Stanislav Shuvalov")
+                                email.set("shuvalov.stanislav@gmail.com")
+                            }
+                        }
+                        scm {
+                            developerConnection.set("scm:git:git://github.com/perfeccionista-software/perfeccionista-framework")
+                            connection.set("scm:git:git://github.com/perfeccionista-software/perfeccionista-framework")
+                            url.set("https://github.com/perfeccionista-software/perfeccionista-framework")
+                        }
+                        issueManagement {
+                            system.set("GitHub Issues")
+                            url.set("https://github.com/perfeccionista-software/perfeccionista-framework/issues")
+                        }
+                    }
                     artifacts {
+                        artifact(javadocJar)
                         artifact(sourcesJar)
                     }
                 }
             }
         }
+        signing {
+            sign(publishing.publications["mavenCentral"])
+        }
+
     }
+
 }
 
 val allTestsCoverageFile = "$rootDir/build/jacoco/rootTestsCoverage.exec"
