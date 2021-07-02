@@ -25,70 +25,79 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailabl
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import org.jetbrains.annotations.NotNull;
 
-public interface WebDropDownList extends WebList,
+import java.util.function.Consumer;
+
+public interface WebDropDownList<T extends WebBlock> extends WebList<T>,
         WebClickAvailable, WebGetTextAvailable, WebGetLabelAvailable, WebDropDownAvailable, WebChildElement {
+
+    // Checks
+    @Override
+    WebDropDownList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer);
+    @Override
+    WebDropDownList<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer);
+    @Override
+    WebDropDownList<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer);
 
     // Actions
     @Override
-    WebDropDownList executeAction(@NotNull String name, Object... args);
+    WebDropDownList<T> executeAction(@NotNull String name, Object... args);
 
     // Asserts
-    WebDropDownList should(@NotNull WebDropDownListMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebDropDownListMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
+    WebDropDownList<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
     @Override
-    WebDropDownList should(@NotNull WebListMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebListMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebIndexesMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebIndexesMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebChildElementMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebGetColorAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebGetScreenshotAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebIsDisplayedAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebIsInFocusAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebIsPresentAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebComponentAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebElementStateAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebElementStateAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebGetLabelAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebGetLabelAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebGetTextAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebGetTextAvailableMatcher matcher);
     @Override
-    WebDropDownList should(@NotNull WebDropDownAvailableMatcher matcher);
+    WebDropDownList<T> should(@NotNull WebDropDownAvailableMatcher matcher);
 
     // Click
     @Override
-    WebDropDownList click();
+    WebDropDownList<T> click();
 
     // DropDown
     @Override
-    WebDropDownList open();
+    WebDropDownList<T> open();
     @Override
-    WebDropDownList close();
+    WebDropDownList<T> close();
 
     // HoverTo
     @Override
-    WebDropDownList hoverTo(boolean withOutOfBounds);
+    WebDropDownList<T> hoverTo(boolean withOutOfBounds);
 
     // ScrollTo
     @Override
-    WebDropDownList scrollTo();
+    WebDropDownList<T> scrollTo();
 //    @Override
 //    WebDropDownList scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebListFilterBuilder filterBuilder);
 //    @Override

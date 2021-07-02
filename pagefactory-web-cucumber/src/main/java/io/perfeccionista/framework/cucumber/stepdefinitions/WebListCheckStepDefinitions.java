@@ -72,7 +72,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                     WebListFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebList.class)
-                        .filter(itemFilter)
+                        .filterByCondition(block -> itemFilter)
                         .should(haveSize(integerValue.getValue())));
     }
 
@@ -147,7 +147,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                    WebListFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebList.class)
-                                .filter(itemFilter)
+                                .filterByCondition(block -> itemFilter)
                                 .extractAll(valueExtractor.createExtractorFor(blockElementFinder.getRaw()))
                                 .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }

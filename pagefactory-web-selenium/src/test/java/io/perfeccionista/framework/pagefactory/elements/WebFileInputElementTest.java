@@ -178,7 +178,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                     assertAll(
                             () -> assertNotNull(screenshot),
                             () -> assertTrue(intGreaterThan(4500).check(screenshot.getRaw().length)),
-                            () -> assertEquals(Point2D.of(536.3d, 772.4d).setInaccuracy(0.2d), fileInput.getElementBounds().getCenter())
+                            () -> assertEquals(Point2D.of(551.5d, 772.4d).setInaccuracy(0.2d), fileInput.getElementBounds().getCenter())
                     );
                 }
         );

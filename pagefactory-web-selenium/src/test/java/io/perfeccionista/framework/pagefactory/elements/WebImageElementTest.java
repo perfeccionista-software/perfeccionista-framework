@@ -147,7 +147,7 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
                     );
                 },
                 () -> assertEquals("World map picture", worldMap.getPropertyValue("prompt")),
-                () -> assertEquals(Point2D.of(433.13d, 235.7d).setInaccuracy(0.2d), worldMap.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(448.0d, 235.7d).setInaccuracy(0.2d), worldMap.getElementBounds().getCenter())
         );
     }
 

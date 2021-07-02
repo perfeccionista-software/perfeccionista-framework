@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter.list;
 
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.filter.WebFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
@@ -8,36 +9,36 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Deque;
 
-public interface WebListFilterBuilder extends WebFilterBuilder<WebList, WebListFilter> {
+public interface WebListFilterBuilder<T extends WebBlock> extends WebFilterBuilder<WebList<T>, WebListFilter<T>> {
 
     @Override
-    @NotNull WebListFilter build(@NotNull WebList element);
+    @NotNull WebListFilter<T> build(@NotNull WebList<T> element);
 
-    WebListFilterBuilder add(@NotNull WebListBlockCondition condition);
+    WebListFilterBuilder<T> add(@NotNull WebListBlockCondition<T> condition);
 
-    WebListFilterBuilder subtract(@NotNull WebListBlockCondition condition);
+    WebListFilterBuilder<T> subtract(@NotNull WebListBlockCondition<T> condition);
 
-    Deque<WebListBlockFilterResultGroupingHolder> getConditions();
+    Deque<WebListBlockFilterResultGroupingHolder<T>> getConditions();
 
-    class WebListBlockFilterResultGroupingHolder {
+    class WebListBlockFilterResultGroupingHolder<T extends WebBlock> {
 
         private final FilterResultGrouping usage;
-        private final WebListBlockCondition condition;
+        private final WebListBlockCondition<T> condition;
 
-        private WebListBlockFilterResultGroupingHolder(FilterResultGrouping usage, WebListBlockCondition condition) {
+        private WebListBlockFilterResultGroupingHolder(FilterResultGrouping usage, WebListBlockCondition<T> condition) {
             this.usage = usage;
             this.condition = condition;
         }
 
-        public static WebListBlockFilterResultGroupingHolder of(FilterResultGrouping usage, WebListBlockCondition condition) {
-            return new WebListBlockFilterResultGroupingHolder(usage, condition);
+        public static <T extends WebBlock> WebListBlockFilterResultGroupingHolder<T> of(FilterResultGrouping usage, WebListBlockCondition<T> condition) {
+            return new WebListBlockFilterResultGroupingHolder<>(usage, condition);
         }
 
         public FilterResultGrouping getUsage() {
             return usage;
         }
 
-        public WebListBlockCondition getCondition() {
+        public WebListBlockCondition<T> getCondition() {
             return condition;
         }
 

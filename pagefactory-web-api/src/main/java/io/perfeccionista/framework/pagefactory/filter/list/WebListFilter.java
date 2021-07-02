@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.list;
 
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
@@ -9,16 +10,26 @@ import io.perfeccionista.framework.pagefactory.filter.WebFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface WebListFilter extends WebFilter<WebList> {
+import java.util.function.Consumer;
 
-    @NotNull <T> WebMultipleIndexedResult<T, WebList> extractAll(@NotNull WebListBlockValueExtractor<T> extractor);
+public interface WebListFilter<T extends WebBlock> extends WebFilter<WebList<T>> {
 
-    @NotNull <T> WebSingleIndexedResult<T, WebList> extractOne(@NotNull WebListBlockValueExtractor<T> extractor);
+    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebListBlockValueExtractor<R, T> extractor);
+
+    @NotNull <R> WebSingleIndexedResult<R, WebList<T>> extractOne(@NotNull WebListBlockValueExtractor<R, T> extractor);
+
+    WebListFilter<T> forSingleBlock(@NotNull Consumer<T> listBlockConsumer);
+
+    WebListFilter<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer);
+
+    WebListFilter<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer);
+
+    WebListFilter<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer);
 
     @Override
-    WebListFilter should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
+    WebListFilter<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
 
     @Override
-    WebListFilter setInitialHash(@Nullable String initialHash);
+    WebListFilter<T> setInitialHash(@Nullable String initialHash);
 
 }

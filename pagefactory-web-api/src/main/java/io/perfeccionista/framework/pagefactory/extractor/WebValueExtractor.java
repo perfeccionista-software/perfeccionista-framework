@@ -6,12 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public interface WebValueExtractor<T extends WebChildElement, F extends WebFilter<T>, V> {
+public interface WebValueExtractor<T extends WebChildElement, F extends WebFilter<T>, R> {
 
     /**
      * Если индексы пустые, то ищем по всем
      * @return
      */
-    Map<Integer, V> extractValues(@NotNull F filter);
+    Map<Integer, R> extractValues(@NotNull F filter);
 
 }

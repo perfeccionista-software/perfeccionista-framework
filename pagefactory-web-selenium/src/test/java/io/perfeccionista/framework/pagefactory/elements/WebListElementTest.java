@@ -21,6 +21,7 @@ import io.perfeccionista.framework.measurements.Point2D;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBlock;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
         ListElementsPage listElementsPage = (ListElementsPage) pageFactory.createWebPage(ListElementsPage.class);
         listElementsPage.setEnvironment(environment);
         listElementsPage.setWebBrowserDispatcher(mock(WebBrowserDispatcher.class));
-        WebList list = listElementsPage.webList();
+        WebList<CountryBlock> list = listElementsPage.webList();
         WebElementIdentifier elementIdentifier = list.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(list.getEnvironment()),
@@ -83,7 +84,7 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertFalse(elementIdentifier.isNameDeprecated("List of countries")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
                 () -> {
-                    WebList listByName = listElementsPage.getElementRegistry()
+                    WebList<CountryBlock> listByName = listElementsPage.getElementRegistry()
                             .getRequiredElementByPath("List of countries", WebList.class);
                     assertAll(
                             () -> assertNotNull(listByName),
@@ -101,7 +102,7 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
                 .select("List Elements");
 
         ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList();
+        WebList<CountryBlock> list = listElementsPage.webList();
         list.should(bePresent())
                 .should(beDisplayed())
                 .should(notBeInFocus())
@@ -119,7 +120,7 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(Point2D.of(345d, 227d).setInaccuracy(0.2d), list.getElementBounds().getAbsoluteLocation()),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), list.getColor("border-color")),
                 () -> assertEquals(195, list.extractAll(block()).getSize()),
-                () -> assertEquals(Point2D.of(742.5d, 438.5d).setInaccuracy(0.2d), list.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(757.5d, 438.5d).setInaccuracy(0.2d), list.getElementBounds().getCenter())
         );
     }
 
@@ -130,7 +131,7 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
                 .select("List Elements");
 
         ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList();
+        WebList<CountryBlock> list = listElementsPage.webList();
         // Выполнение этого метода показывает завершение загрузки страницы
         list.should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера

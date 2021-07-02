@@ -25,6 +25,6 @@ public interface ListElementsPage extends AbstractWebPage {
     @WebLocator(id = "countries-list")
     @WebLocator(component = LI, xpath = ".//div[@itemid = 'countries-list-item']", single = false)
     @UseMappedWebBlock(CountryBlock.class)
-    WebList webList();
+    WebList<CountryBlock> webList();
 
 }

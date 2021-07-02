@@ -5,6 +5,7 @@ import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
+import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBlock;
 import org.junit.jupiter.api.Test;
 
 import static io.perfeccionista.framework.Web.*;
@@ -21,7 +22,7 @@ class WebMultipleResultTest extends AbstractWebSeleniumParallelTest {
                 .select("List Elements");
 
         ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
-        WebList list = listElementsPage.webList()
+        WebList<CountryBlock> list = listElementsPage.webList()
                 .should(beDisplayed());
 
         list.extractAll(blockIndex())
@@ -43,13 +44,13 @@ class WebMultipleResultTest extends AbstractWebSeleniumParallelTest {
 //                        .add(78, value.intNotEquals(78))
 //                        .add(188, value.intNotEquals(188)));
 
-        list.filter(blockIndex(intEquals(77)))
+        list.filterByCondition(block -> blockIndex(intEquals(77)))
                 .extractAll(blockIndex())
                 .should(haveSize(1))
                 .should(haveIndex(77))
                 .should(haveResult(77));
 
-        list.filter(blockIndex(intEquals(77)))
+        list.filterByCondition(block -> blockIndex(intEquals(77)))
                 .extractOne(blockIndex())
                 .should(haveIndex(77))
                 .should(haveResult(77));

@@ -120,7 +120,7 @@ class WebTextTableElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(Point2D.of(345d, 173d).setInaccuracy(0.2d), textTable.getElementBounds().getAbsoluteLocation()),
                 () -> assertEquals(Color.of(222, 226, 230, 1.0d), textTable.getColor("border-color")),
                 () -> assertEquals(195, textTable.filter(emptyWebTextTableFilter()).extractRows(SHORT_COUNTRY_NAME).getSize()),
-                () -> assertEquals(Point2D.of(742.5d, 439d).setInaccuracy(0.2d), textTable.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(757.5d, 439d).setInaccuracy(0.2d), textTable.getElementBounds().getCenter())
         );
     }
 

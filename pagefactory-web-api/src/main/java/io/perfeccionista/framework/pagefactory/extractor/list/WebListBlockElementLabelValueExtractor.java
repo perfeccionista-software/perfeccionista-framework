@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.extractor.list;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
@@ -19,7 +20,7 @@ import java.util.Set;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
-public class WebListBlockElementLabelValueExtractor implements WebListBlockValueExtractor<String> {
+public class WebListBlockElementLabelValueExtractor<T extends WebBlock> implements WebListBlockValueExtractor<String, T> {
 
     private final String elementPath;
     private final WebGetLabelAvailable elementFrame;
@@ -35,11 +36,11 @@ public class WebListBlockElementLabelValueExtractor implements WebListBlockValue
     }
 
     @Override
-    public Map<Integer, String> extractValues(@NotNull WebListFilter filter) {
+    public Map<Integer, String> extractValues(@NotNull WebListFilter<T> filter) {
         FilterResult filterResult = filter.getFilterResult();
         Set<Integer> indexes = filterResult.getIndexes();
         String hash = filterResult.getHash();
-        WebList element = filter.getElement();
+        WebList<T> element = filter.getElement();
 
         // Цепочка от корня страницы до WebListBlock
         WebLocatorChain listLocatorChain = element.getLocatorChain()

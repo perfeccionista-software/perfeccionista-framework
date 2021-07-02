@@ -188,7 +188,7 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                             () -> assertTrue(intGreaterThan(4500).check(screenshot.getRaw().length))
                     );
                 },
-                () -> assertEquals(Point2D.of(742.5d, 536.4d).setInaccuracy(0.2d), simpleInput.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(757.7d, 536.4d).setInaccuracy(0.2d), simpleInput.getElementBounds().getCenter())
         );
     }
 

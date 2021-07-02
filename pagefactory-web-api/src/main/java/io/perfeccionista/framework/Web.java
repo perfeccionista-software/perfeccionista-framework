@@ -172,7 +172,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Comparator;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
-import static io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilderImpl.webListFilterBuilder;
+import static io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilderImpl.webListFilterBuilderWith;
+import static io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilderImpl.webListFilterBuilderWithout;
 import static io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilderImpl.webRadioGroupFilterBuilder;
 import static io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilderImpl.webTableFilterBuilder;
 import static io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilderImpl.webTextListFilterBuilder;
@@ -689,20 +690,16 @@ public class Web {
 
     // List
 
-    public static WebListFilterBuilder emptyWebListFilter() {
-        return webListFilterBuilder()
-                .add(allBlocks());
+    public static <T extends WebBlock> WebListFilterBuilder<T> emptyWebListFilter() {
+        return webListFilterBuilderWith(allBlocks());
     }
 
-    public static WebListFilterBuilder with(@NotNull WebListBlockCondition condition) {
-        return webListFilterBuilder()
-                .add(condition);
+    public static <T extends WebBlock> WebListFilterBuilder<T> with(@NotNull WebListBlockCondition<T> condition) {
+        return webListFilterBuilderWith(condition);
     }
 
-    public static WebListFilterBuilder without(@NotNull WebListBlockCondition condition) {
-        return webListFilterBuilder()
-                .add(allBlocks())
-                .subtract(condition);
+    public static <T extends WebBlock> WebListFilterBuilder<T> without(@NotNull WebListBlockCondition<T> condition) {
+        return webListFilterBuilderWithout(condition);
     }
 
     // TextList
@@ -857,366 +854,366 @@ public class Web {
 
     // Empty
 
-    public static WebListBlockElementEmptyCondition allBlocks() {
-        return new WebListBlockElementEmptyCondition().allBlocks();
+    public static <T extends WebBlock> WebListBlockElementEmptyCondition<T> allBlocks() {
+        return new WebListBlockElementEmptyCondition<T>().allBlocks();
     }
 
-    public static WebListBlockElementEmptyCondition noBlocks() {
-        return new WebListBlockElementEmptyCondition().noBlocks();
+    public static <T extends WebBlock> WebListBlockElementEmptyCondition<T> noBlocks() {
+        return new WebListBlockElementEmptyCondition<T>().noBlocks();
     }
 
     // Index
 
-    public static WebListBlockIndexCondition blockIndex(@NotNull Integer expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withBlockIndex();
+    public static <T extends WebBlock> WebListBlockIndexCondition<T> blockIndex(@NotNull Integer expectedValue) {
+        return new WebListBlockIndexCondition<T>(expectedValue).withBlockIndex();
     }
 
-    public static WebListBlockIndexCondition blockIndex(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withBlockIndex();
+    public static <T extends WebBlock> WebListBlockIndexCondition<T> blockIndex(@NotNull NumberValue<Integer> expectedValue) {
+        return new WebListBlockIndexCondition<T>(expectedValue).withBlockIndex();
     }
 
-    public static WebListBlockIndexCondition blockIndexNot(@NotNull Integer expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withoutBlockIndexNot();
+    public static <T extends WebBlock> WebListBlockIndexCondition<T> blockIndexNot(@NotNull Integer expectedValue) {
+        return new WebListBlockIndexCondition<T>(expectedValue).withoutBlockIndexNot();
     }
 
-    public static WebListBlockIndexCondition blockIndexNot(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withoutBlockIndexNot();
+    public static <T extends WebBlock> WebListBlockIndexCondition<T> blockIndexNot(@NotNull NumberValue<Integer> expectedValue) {
+        return new WebListBlockIndexCondition<T>(expectedValue).withoutBlockIndexNot();
     }
 
     // ComponentDisplayed
 
-    public static WebListBlockElementComponentDisplayedCondition componentDisplayed(@NotNull WebChildElement elementFrame,
-                                                                                    @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementFrame, componentName).componentDisplayed();
+    public static <T extends WebBlock> WebListBlockElementComponentDisplayedCondition<T> componentDisplayed(@NotNull WebChildElement elementFrame,
+                                                                                                            @NotNull String componentName) {
+        return new WebListBlockElementComponentDisplayedCondition<T>(elementFrame, componentName).componentDisplayed();
     }
 
-    public static WebListBlockElementComponentDisplayedCondition componentDisplayed(@NotNull String elementPath,
-                                                                                    @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementPath, componentName).componentDisplayed();
+    public static <T extends WebBlock> WebListBlockElementComponentDisplayedCondition<T> componentDisplayed(@NotNull String elementPath,
+                                                                                                            @NotNull String componentName) {
+        return new WebListBlockElementComponentDisplayedCondition<T>(elementPath, componentName).componentDisplayed();
     }
 
-    public static WebListBlockElementComponentDisplayedCondition componentNotDisplayed(@NotNull WebChildElement elementFrame,
-                                                                                       @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementFrame, componentName).componentNotDisplayed();
+    public static <T extends WebBlock> WebListBlockElementComponentDisplayedCondition<T> componentNotDisplayed(@NotNull WebChildElement elementFrame,
+                                                                                                               @NotNull String componentName) {
+        return new WebListBlockElementComponentDisplayedCondition<T>(elementFrame, componentName).componentNotDisplayed();
     }
 
-    public static WebListBlockElementComponentDisplayedCondition componentNotDisplayed(@NotNull String elementPath,
-                                                                                       @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementPath, componentName).componentNotDisplayed();
+    public static <T extends WebBlock> WebListBlockElementComponentDisplayedCondition<T> componentNotDisplayed(@NotNull String elementPath,
+                                                                                                               @NotNull String componentName) {
+        return new WebListBlockElementComponentDisplayedCondition<T>(elementPath, componentName).componentNotDisplayed();
     }
 
     // ComponentPresent
 
-    public static WebListBlockElementComponentPresentCondition componentPresent(@NotNull WebChildElement elementFrame,
-                                                                                @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementFrame, componentName).componentPresent();
+    public static <T extends WebBlock> WebListBlockElementComponentPresentCondition<T> componentPresent(@NotNull WebChildElement elementFrame,
+                                                                                                        @NotNull String componentName) {
+        return new WebListBlockElementComponentPresentCondition<T>(elementFrame, componentName).componentPresent();
     }
 
-    public static WebListBlockElementComponentPresentCondition componentPresent(@NotNull String elementPath,
-                                                                                @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementPath, componentName).componentPresent();
+    public static <T extends WebBlock> WebListBlockElementComponentPresentCondition<T> componentPresent(@NotNull String elementPath,
+                                                                                                        @NotNull String componentName) {
+        return new WebListBlockElementComponentPresentCondition<T>(elementPath, componentName).componentPresent();
     }
 
-    public static WebListBlockElementComponentPresentCondition componentNotPresent(@NotNull WebChildElement elementFrame,
-                                                                                   @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementFrame, componentName).componentNotPresent();
+    public static <T extends WebBlock> WebListBlockElementComponentPresentCondition<T> componentNotPresent(@NotNull WebChildElement elementFrame,
+                                                                                                           @NotNull String componentName) {
+        return new WebListBlockElementComponentPresentCondition<T>(elementFrame, componentName).componentNotPresent();
     }
 
-    public static WebListBlockElementComponentPresentCondition componentNotPresent(@NotNull String elementPath,
-                                                                                   @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementPath, componentName).componentNotPresent();
+    public static <T extends WebBlock> WebListBlockElementComponentPresentCondition<T> componentNotPresent(@NotNull String elementPath,
+                                                                                                           @NotNull String componentName) {
+        return new WebListBlockElementComponentPresentCondition<T>(elementPath, componentName).componentNotPresent();
     }
 
     // Displayed
 
-    public static WebListBlockElementDisplayedCondition displayed(@NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebListBlockElementDisplayedCondition(elementFrame).displayed();
+    public static <T extends WebBlock> WebListBlockElementDisplayedCondition<T> displayed(@NotNull WebIsDisplayedAvailable elementFrame) {
+        return new WebListBlockElementDisplayedCondition<T>(elementFrame).displayed();
     }
 
-    public static WebListBlockElementDisplayedCondition displayed(@NotNull String elementPath) {
-        return new WebListBlockElementDisplayedCondition(elementPath).displayed();
+    public static <T extends WebBlock> WebListBlockElementDisplayedCondition<T> displayed(@NotNull String elementPath) {
+        return new WebListBlockElementDisplayedCondition<T>(elementPath).displayed();
     }
 
-    public static WebListBlockElementDisplayedCondition notDisplayed(@NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebListBlockElementDisplayedCondition(elementFrame).notDisplayed();
+    public static <T extends WebBlock> WebListBlockElementDisplayedCondition<T> notDisplayed(@NotNull WebIsDisplayedAvailable elementFrame) {
+        return new WebListBlockElementDisplayedCondition<T>(elementFrame).notDisplayed();
     }
 
-    public static WebListBlockElementDisplayedCondition notDisplayed(@NotNull String elementPath) {
-        return new WebListBlockElementDisplayedCondition(elementPath).notDisplayed();
+    public static <T extends WebBlock> WebListBlockElementDisplayedCondition<T> notDisplayed(@NotNull String elementPath) {
+        return new WebListBlockElementDisplayedCondition<T>(elementPath).notDisplayed();
     }
 
     // Present
 
-    public static WebListBlockElementPresentCondition present(@NotNull WebIsPresentAvailable elementFrame) {
-        return new WebListBlockElementPresentCondition(elementFrame).present();
+    public static <T extends WebBlock> WebListBlockElementPresentCondition<T> present(@NotNull WebIsPresentAvailable elementFrame) {
+        return new WebListBlockElementPresentCondition<T>(elementFrame).present();
     }
 
-    public static WebListBlockElementPresentCondition present(@NotNull String elementPath) {
-        return new WebListBlockElementPresentCondition(elementPath).present();
+    public static <T extends WebBlock> WebListBlockElementPresentCondition<T> present(@NotNull String elementPath) {
+        return new WebListBlockElementPresentCondition<T>(elementPath).present();
     }
 
-    public static WebListBlockElementPresentCondition notPresent(@NotNull WebIsPresentAvailable elementFrame) {
-        return new WebListBlockElementPresentCondition(elementFrame).notPresent();
+    public static <T extends WebBlock> WebListBlockElementPresentCondition<T> notPresent(@NotNull WebIsPresentAvailable elementFrame) {
+        return new WebListBlockElementPresentCondition<T>(elementFrame).notPresent();
     }
 
-    public static WebListBlockElementPresentCondition notPresent(@NotNull String elementPath) {
-        return new WebListBlockElementPresentCondition(elementPath).notPresent();
+    public static <T extends WebBlock> WebListBlockElementPresentCondition<T> notPresent(@NotNull String elementPath) {
+        return new WebListBlockElementPresentCondition<T>(elementPath).notPresent();
     }
 
     // Enabled
 
-    public static WebListBlockElementEnabledCondition enabled(@NotNull WebIsEnabledAvailable elementFrame) {
-        return new WebListBlockElementEnabledCondition(elementFrame).enabled();
+    public static <T extends WebBlock> WebListBlockElementEnabledCondition<T> enabled(@NotNull WebIsEnabledAvailable elementFrame) {
+        return new WebListBlockElementEnabledCondition<T>(elementFrame).enabled();
     }
 
-    public static WebListBlockElementEnabledCondition enabled(@NotNull String elementPath) {
-        return new WebListBlockElementEnabledCondition(elementPath).enabled();
+    public static <T extends WebBlock> WebListBlockElementEnabledCondition<T> enabled(@NotNull String elementPath) {
+        return new WebListBlockElementEnabledCondition<T>(elementPath).enabled();
     }
 
-    public static WebListBlockElementEnabledCondition disabled(@NotNull WebIsEnabledAvailable elementFrame) {
-        return new WebListBlockElementEnabledCondition(elementFrame).disabled();
+    public static <T extends WebBlock> WebListBlockElementEnabledCondition<T> disabled(@NotNull WebIsEnabledAvailable elementFrame) {
+        return new WebListBlockElementEnabledCondition<T>(elementFrame).disabled();
     }
 
-    public static WebListBlockElementEnabledCondition disabled(@NotNull String elementPath) {
-        return new WebListBlockElementEnabledCondition(elementPath).disabled();
+    public static <T extends WebBlock> WebListBlockElementEnabledCondition<T> disabled(@NotNull String elementPath) {
+        return new WebListBlockElementEnabledCondition<T>(elementPath).disabled();
     }
 
     // Selected
 
-    public static WebListBlockElementSelectedCondition selected(@NotNull WebIsSelectedAvailable elementFrame) {
-        return new WebListBlockElementSelectedCondition(elementFrame).selected();
+    public static <T extends WebBlock> WebListBlockElementSelectedCondition<T> selected(@NotNull WebIsSelectedAvailable elementFrame) {
+        return new WebListBlockElementSelectedCondition<T>(elementFrame).selected();
     }
 
-    public static WebListBlockElementSelectedCondition selected(@NotNull String elementPath) {
-        return new WebListBlockElementSelectedCondition(elementPath).selected();
+    public static <T extends WebBlock> WebListBlockElementSelectedCondition<T> selected(@NotNull String elementPath) {
+        return new WebListBlockElementSelectedCondition<T>(elementPath).selected();
     }
 
-    public static WebListBlockElementSelectedCondition notSelected(@NotNull WebIsSelectedAvailable elementFrame) {
-        return new WebListBlockElementSelectedCondition(elementFrame).notSelected();
+    public static <T extends WebBlock> WebListBlockElementSelectedCondition<T> notSelected(@NotNull WebIsSelectedAvailable elementFrame) {
+        return new WebListBlockElementSelectedCondition<T>(elementFrame).notSelected();
     }
 
-    public static WebListBlockElementSelectedCondition notSelected(@NotNull String elementPath) {
-        return new WebListBlockElementSelectedCondition(elementPath).notSelected();
+    public static <T extends WebBlock> WebListBlockElementSelectedCondition<T> notSelected(@NotNull String elementPath) {
+        return new WebListBlockElementSelectedCondition<T>(elementPath).notSelected();
     }
 
     // ContainsLabel
 
-    public static WebListBlockElementLabelTextCondition containsLabel(@NotNull String elementPath,
-                                                                      @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementPath, expectedText).containsLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelTextCondition<T> containsLabel(@NotNull String elementPath,
+                                                                                              @NotNull String expectedText) {
+        return new WebListBlockElementLabelTextCondition<T>(elementPath, expectedText).containsLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition containsLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                      @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementFrame, expectedText).containsLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelTextCondition<T> containsLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                              @NotNull String expectedText) {
+        return new WebListBlockElementLabelTextCondition<T>(elementFrame, expectedText).containsLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition notContainLabel(@NotNull String elementPath,
-                                                                        @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementPath, expectedText).notContainLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelTextCondition<T> notContainLabel(@NotNull String elementPath,
+                                                                                                @NotNull String expectedText) {
+        return new WebListBlockElementLabelTextCondition<T>(elementPath, expectedText).notContainLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                        @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementFrame, expectedText).notContainLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelTextCondition<T> notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                @NotNull String expectedText) {
+        return new WebListBlockElementLabelTextCondition<T>(elementFrame, expectedText).notContainLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition containsLabel(@NotNull String elementPath,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementPath, expectedStringValue).containsLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelStringValueCondition<T> containsLabel(@NotNull String elementPath,
+                                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementLabelStringValueCondition<T>(elementPath, expectedStringValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition containsLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementFrame, expectedStringValue).containsLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelStringValueCondition<T> containsLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementLabelStringValueCondition<T>(elementFrame, expectedStringValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition notContainLabel(@NotNull String elementPath,
-                                                                               @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementPath, expectedStringValue).notContainLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelStringValueCondition<T> notContainLabel(@NotNull String elementPath,
+                                                                                                       @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementLabelStringValueCondition<T>(elementPath, expectedStringValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                               @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementFrame, expectedStringValue).notContainLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelStringValueCondition<T> notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                       @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementLabelStringValueCondition<T>(elementFrame, expectedStringValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition containsLabel(@NotNull String elementPath,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementPath, expectedNumberValue).containsLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelNumberValueCondition<T> containsLabel(@NotNull String elementPath,
+                                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementLabelNumberValueCondition<T>(elementPath, expectedNumberValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition containsLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementFrame, expectedNumberValue).containsLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelNumberValueCondition<T> containsLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementLabelNumberValueCondition<T>(elementFrame, expectedNumberValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition notContainLabel(@NotNull String elementPath,
-                                                                               @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementPath, expectedNumberValue).notContainLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelNumberValueCondition<T> notContainLabel(@NotNull String elementPath,
+                                                                                                       @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementLabelNumberValueCondition<T>(elementPath, expectedNumberValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                               @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementFrame, expectedNumberValue).notContainLabel();
+    public static <T extends WebBlock> WebListBlockElementLabelNumberValueCondition<T> notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                       @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementLabelNumberValueCondition<T>(elementFrame, expectedNumberValue).notContainLabel();
     }
 
     // ContainsProperty
 
-    public static WebListBlockElementPropertyTextCondition containsProperty(@NotNull WebChildElement elementFrame,
-                                                                            @NotNull String propertyName,
-                                                                            @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementFrame, propertyName, expectedText).containsProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyTextCondition<T> containsProperty(@NotNull WebChildElement elementFrame,
+                                                                                                    @NotNull String propertyName,
+                                                                                                    @NotNull String expectedText) {
+        return new WebListBlockElementPropertyTextCondition<T>(elementFrame, propertyName, expectedText).containsProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition containsProperty(@NotNull String elementPath,
-                                                                            @NotNull String propertyName,
-                                                                            @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementPath, propertyName, expectedText).containsProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyTextCondition<T> containsProperty(@NotNull String elementPath,
+                                                                                                    @NotNull String propertyName,
+                                                                                                    @NotNull String expectedText) {
+        return new WebListBlockElementPropertyTextCondition<T>(elementPath, propertyName, expectedText).containsProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition notContainProperty(@NotNull WebChildElement elementFrame,
-                                                                              @NotNull String propertyName,
-                                                                              @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementFrame, propertyName, expectedText).notContainProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyTextCondition<T> notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                                      @NotNull String propertyName,
+                                                                                                      @NotNull String expectedText) {
+        return new WebListBlockElementPropertyTextCondition<T>(elementFrame, propertyName, expectedText).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition notContainProperty(@NotNull String elementPath,
-                                                                              @NotNull String propertyName,
-                                                                              @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementPath, propertyName, expectedText).notContainProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyTextCondition<T> notContainProperty(@NotNull String elementPath,
+                                                                                                      @NotNull String propertyName,
+                                                                                                      @NotNull String expectedText) {
+        return new WebListBlockElementPropertyTextCondition<T>(elementPath, propertyName, expectedText).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition containsProperty(@NotNull WebChildElement elementFrame,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementFrame, propertyName, expectedStringValue).containsProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyStringValueCondition<T> containsProperty(@NotNull WebChildElement elementFrame,
+                                                                                                           @NotNull String propertyName,
+                                                                                                           @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementPropertyStringValueCondition<T>(elementFrame, propertyName, expectedStringValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition containsProperty(@NotNull String elementPath,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementPath, propertyName, expectedStringValue).containsProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyStringValueCondition<T> containsProperty(@NotNull String elementPath,
+                                                                                                           @NotNull String propertyName,
+                                                                                                           @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementPropertyStringValueCondition<T>(elementPath, propertyName, expectedStringValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition notContainProperty(@NotNull WebChildElement elementFrame,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementFrame, propertyName, expectedStringValue).notContainProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyStringValueCondition<T> notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                                             @NotNull String propertyName,
+                                                                                                             @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementPropertyStringValueCondition<T>(elementFrame, propertyName, expectedStringValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition notContainProperty(@NotNull String elementPath,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementPath, propertyName, expectedStringValue).notContainProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyStringValueCondition<T> notContainProperty(@NotNull String elementPath,
+                                                                                                             @NotNull String propertyName,
+                                                                                                             @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementPropertyStringValueCondition<T>(elementPath, propertyName, expectedStringValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition containsProperty(@NotNull WebChildElement elementFrame,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementFrame, propertyName, expectedNumberValue).containsProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyNumberValueCondition<T> containsProperty(@NotNull WebChildElement elementFrame,
+                                                                                                           @NotNull String propertyName,
+                                                                                                           @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebListBlockElementPropertyNumberValueCondition<T>(elementFrame, propertyName, expectedNumberValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition containsProperty(@NotNull String elementPath,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementPath, propertyName, expectedNumberValue).containsProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyNumberValueCondition<T> containsProperty(@NotNull String elementPath,
+                                                                                                           @NotNull String propertyName,
+                                                                                                           @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebListBlockElementPropertyNumberValueCondition<T>(elementPath, propertyName, expectedNumberValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition notContainProperty(@NotNull WebChildElement elementFrame,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementFrame, propertyName, expectedNumberValue).notContainProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyNumberValueCondition<T> notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                                             @NotNull String propertyName,
+                                                                                                             @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebListBlockElementPropertyNumberValueCondition<T>(elementFrame, propertyName, expectedNumberValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition notContainProperty(@NotNull String elementPath,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementPath, propertyName, expectedNumberValue).notContainProperty();
+    public static <T extends WebBlock> WebListBlockElementPropertyNumberValueCondition<T> notContainProperty(@NotNull String elementPath,
+                                                                                                             @NotNull String propertyName,
+                                                                                                             @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebListBlockElementPropertyNumberValueCondition<T>(elementPath, propertyName, expectedNumberValue).notContainProperty();
     }
 
     // ContainsText
 
-    public static WebListBlockElementTextCondition containsText(@NotNull String elementPath,
-                                                                @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementPath, expectedText).containsText();
+    public static <T extends WebBlock> WebListBlockElementTextCondition<T> containsText(@NotNull String elementPath,
+                                                                                        @NotNull String expectedText) {
+        return new WebListBlockElementTextCondition<T>(elementPath, expectedText).containsText();
     }
 
-    public static WebListBlockElementTextCondition containsText(@NotNull WebGetTextAvailable elementFrame,
-                                                                @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementFrame, expectedText).containsText();
+    public static <T extends WebBlock> WebListBlockElementTextCondition<T> containsText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                        @NotNull String expectedText) {
+        return new WebListBlockElementTextCondition<T>(elementFrame, expectedText).containsText();
     }
 
-    public static WebListBlockElementTextCondition notContainText(@NotNull String elementPath,
-                                                                  @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementPath, expectedText).notContainText();
+    public static <T extends WebBlock> WebListBlockElementTextCondition<T> notContainText(@NotNull String elementPath,
+                                                                                          @NotNull String expectedText) {
+        return new WebListBlockElementTextCondition<T>(elementPath, expectedText).notContainText();
     }
 
-    public static WebListBlockElementTextCondition notContainText(@NotNull WebGetTextAvailable elementFrame,
-                                                                  @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementFrame, expectedText).notContainText();
+    public static <T extends WebBlock> WebListBlockElementTextCondition<T> notContainText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                          @NotNull String expectedText) {
+        return new WebListBlockElementTextCondition<T>(elementFrame, expectedText).notContainText();
     }
 
-    public static WebListBlockElementTextStringValueCondition containsText(@NotNull String elementPath,
-                                                                           @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementPath, expectedStringValue).containsText();
+    public static <T extends WebBlock> WebListBlockElementTextStringValueCondition<T> containsText(@NotNull String elementPath,
+                                                                                                   @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementTextStringValueCondition<T>(elementPath, expectedStringValue).containsText();
     }
 
-    public static WebListBlockElementTextStringValueCondition containsText(@NotNull WebGetTextAvailable elementFrame,
-                                                                           @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementFrame, expectedStringValue).containsText();
+    public static <T extends WebBlock> WebListBlockElementTextStringValueCondition<T> containsText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                                   @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementTextStringValueCondition<T>(elementFrame, expectedStringValue).containsText();
     }
 
-    public static WebListBlockElementTextStringValueCondition notContainText(@NotNull String elementPath,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementPath, expectedStringValue).notContainText();
+    public static <T extends WebBlock> WebListBlockElementTextStringValueCondition<T> notContainText(@NotNull String elementPath,
+                                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementTextStringValueCondition<T>(elementPath, expectedStringValue).notContainText();
     }
 
-    public static WebListBlockElementTextStringValueCondition notContainText(@NotNull WebGetTextAvailable elementFrame,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementFrame, expectedStringValue).notContainText();
+    public static <T extends WebBlock> WebListBlockElementTextStringValueCondition<T> notContainText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                                     @NotNull StringValue expectedStringValue) {
+        return new WebListBlockElementTextStringValueCondition<T>(elementFrame, expectedStringValue).notContainText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition containsText(@NotNull String elementPath,
-                                                                           @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementPath, expectedNumberValue).containsText();
+    public static <T extends WebBlock> WebListBlockElementTextNumberValueCondition<T> containsText(@NotNull String elementPath,
+                                                                                                   @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementTextNumberValueCondition<T>(elementPath, expectedNumberValue).containsText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition containsText(@NotNull WebGetTextAvailable elementFrame,
-                                                                           @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementFrame, expectedNumberValue).containsText();
+    public static <T extends WebBlock> WebListBlockElementTextNumberValueCondition<T> containsText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                                   @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementTextNumberValueCondition<T>(elementFrame, expectedNumberValue).containsText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition notContainText(@NotNull String elementPath,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementPath, expectedNumberValue).notContainText();
+    public static <T extends WebBlock> WebListBlockElementTextNumberValueCondition<T> notContainText(@NotNull String elementPath,
+                                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementTextNumberValueCondition<T>(elementPath, expectedNumberValue).notContainText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition notContainText(@NotNull WebGetTextAvailable elementFrame,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementFrame, expectedNumberValue).notContainText();
+    public static <T extends WebBlock> WebListBlockElementTextNumberValueCondition<T> notContainText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebListBlockElementTextNumberValueCondition<T>(elementFrame, expectedNumberValue).notContainText();
     }
 
     // haveState
 
-    public static WebListBlockElementHaveStateCondition haveState(@NotNull WebChildElement elementFrame,
-                                                                  @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementFrame, stateName).haveState();
+    public static <T extends WebBlock> WebListBlockElementHaveStateCondition<T> haveState(@NotNull WebChildElement elementFrame,
+                                                                                          @NotNull String stateName) {
+        return new WebListBlockElementHaveStateCondition<T>(elementFrame, stateName).haveState();
     }
 
-    public static WebListBlockElementHaveStateCondition haveState(@NotNull String elementPath,
-                                                                  @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementPath, stateName).haveState();
+    public static <T extends WebBlock> WebListBlockElementHaveStateCondition<T> haveState(@NotNull String elementPath,
+                                                                                          @NotNull String stateName) {
+        return new WebListBlockElementHaveStateCondition<T>(elementPath, stateName).haveState();
     }
 
-    public static WebListBlockElementHaveStateCondition notHaveState(@NotNull WebChildElement elementFrame,
-                                                                     @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementFrame, stateName).notHaveState();
+    public static <T extends WebBlock> WebListBlockElementHaveStateCondition<T> notHaveState(@NotNull WebChildElement elementFrame,
+                                                                                             @NotNull String stateName) {
+        return new WebListBlockElementHaveStateCondition<T>(elementFrame, stateName).notHaveState();
     }
 
-    public static WebListBlockElementHaveStateCondition notHaveState(@NotNull String elementPath,
-                                                                     @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementPath, stateName).notHaveState();
+    public static <T extends WebBlock> WebListBlockElementHaveStateCondition<T> notHaveState(@NotNull String elementPath,
+                                                                                             @NotNull String stateName) {
+        return new WebListBlockElementHaveStateCondition<T>(elementPath, stateName).notHaveState();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1874,100 +1871,103 @@ public class Web {
 
     // WebList
 
-    public static WebListBlockIndexExtractor blockIndex() {
-        return new WebListBlockIndexExtractor();
+    public static <T extends WebBlock> WebListBlockIndexExtractor<T> blockIndex() {
+        return new WebListBlockIndexExtractor<>();
     }
 
-    public static WebListBlockExtractor<WebBlock> block() {
+    public static <T extends WebBlock> WebListBlockExtractor<WebBlock, T> block() {
         return new WebListBlockExtractor<>(WebBlock.class);
     }
 
-    public static <T extends WebBlock> WebListBlockExtractor<T> block(@NotNull Class<T> blockClass) {
+    public static <R extends WebBlock, T extends WebBlock> WebListBlockExtractor<R, T> block(@NotNull Class<R> blockClass) {
         return new WebListBlockExtractor<>(blockClass);
     }
 
-    public static <T extends WebChildElement> WebListBlockElementExtractor<T> element(@NotNull T elementFrame) {
+    public static <R extends WebChildElement, T extends WebBlock> WebListBlockElementExtractor<R, T> element(@NotNull R elementFrame) {
         return new WebListBlockElementExtractor<>(elementFrame);
     }
 
-    public static <T extends WebChildElement> WebListBlockElementExtractor<T> element(@NotNull String elementPath, @NotNull Class<T> returnType) {
+    public static <R extends WebChildElement, T extends WebBlock> WebListBlockElementExtractor<R, T> element(@NotNull String elementPath,
+                                                                                                             @NotNull Class<R> returnType) {
         return new WebListBlockElementExtractor<>(elementPath, returnType);
     }
 
-    public static WebListBlockElementDisplayedMarkExtractor displayedMark(@NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebListBlockElementDisplayedMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebListBlockElementDisplayedMarkExtractor<T> displayedMark(@NotNull WebIsDisplayedAvailable elementFrame) {
+        return new WebListBlockElementDisplayedMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementDisplayedMarkExtractor displayedMark(@NotNull String elementPath) {
-        return new WebListBlockElementDisplayedMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebListBlockElementDisplayedMarkExtractor<T> displayedMark(@NotNull String elementPath) {
+        return new WebListBlockElementDisplayedMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementPresentMarkExtractor presentMark(@NotNull WebIsPresentAvailable elementFrame) {
-        return new WebListBlockElementPresentMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebListBlockElementPresentMarkExtractor<T> presentMark(@NotNull WebIsPresentAvailable elementFrame) {
+        return new WebListBlockElementPresentMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementPresentMarkExtractor presentMark(@NotNull String elementPath) {
-        return new WebListBlockElementPresentMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebListBlockElementPresentMarkExtractor<T> presentMark(@NotNull String elementPath) {
+        return new WebListBlockElementPresentMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementEnabledMarkExtractor enabledMark(@NotNull WebIsEnabledAvailable elementFrame) {
-        return new WebListBlockElementEnabledMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebListBlockElementEnabledMarkExtractor<T> enabledMark(@NotNull WebIsEnabledAvailable elementFrame) {
+        return new WebListBlockElementEnabledMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementEnabledMarkExtractor enabledMark(@NotNull String elementPath) {
-        return new WebListBlockElementEnabledMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebListBlockElementEnabledMarkExtractor<T> enabledMark(@NotNull String elementPath) {
+        return new WebListBlockElementEnabledMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementSelectedMarkExtractor selectedMark(@NotNull WebIsSelectedAvailable elementFrame) {
-        return new WebListBlockElementSelectedMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebListBlockElementSelectedMarkExtractor<T> selectedMark(@NotNull WebIsSelectedAvailable elementFrame) {
+        return new WebListBlockElementSelectedMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementSelectedMarkExtractor selectedMark(@NotNull String elementPath) {
-        return new WebListBlockElementSelectedMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebListBlockElementSelectedMarkExtractor<T> selectedMark(@NotNull String elementPath) {
+        return new WebListBlockElementSelectedMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementTextValueExtractor textValue(@NotNull WebGetTextAvailable elementFrame) {
-        return new WebListBlockElementTextValueExtractor(elementFrame);
+    public static <T extends WebBlock> WebListBlockElementTextValueExtractor<T> textValue(@NotNull WebGetTextAvailable elementFrame) {
+        return new WebListBlockElementTextValueExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementTextValueExtractor textValue(@NotNull String elementPath) {
-        return new WebListBlockElementTextValueExtractor(elementPath);
+    public static <T extends WebBlock> WebListBlockElementTextValueExtractor<T> textValue(@NotNull String elementPath) {
+        return new WebListBlockElementTextValueExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementLabelValueExtractor labelValue(@NotNull WebGetLabelAvailable elementFrame) {
-        return new WebListBlockElementLabelValueExtractor(elementFrame);
+    public static <T extends WebBlock> WebListBlockElementLabelValueExtractor<T> labelValue(@NotNull WebGetLabelAvailable elementFrame) {
+        return new WebListBlockElementLabelValueExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementLabelValueExtractor labelValue(@NotNull String elementPath) {
-        return new WebListBlockElementLabelValueExtractor(elementPath);
+    public static <T extends WebBlock> WebListBlockElementLabelValueExtractor<T> labelValue(@NotNull String elementPath) {
+        return new WebListBlockElementLabelValueExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementPropertyValueExtractor propertyValue(@NotNull WebChildElement elementFrame, @NotNull String propertyName) {
-        return new WebListBlockElementPropertyValueExtractor(elementFrame, propertyName);
+    public static <T extends WebBlock> WebListBlockElementPropertyValueExtractor<T> propertyValue(@NotNull WebChildElement elementFrame,
+                                                                                                  @NotNull String propertyName) {
+        return new WebListBlockElementPropertyValueExtractor<>(elementFrame, propertyName);
     }
 
-    public static WebListBlockElementPropertyValueExtractor propertyValue(@NotNull String elementPath, @NotNull String propertyName) {
-        return new WebListBlockElementPropertyValueExtractor(elementPath, propertyName);
+    public static <T extends WebBlock> WebListBlockElementPropertyValueExtractor<T> propertyValue(@NotNull String elementPath,
+                                                                                                  @NotNull String propertyName) {
+        return new WebListBlockElementPropertyValueExtractor<>(elementPath, propertyName);
     }
 
-    public static WebListBlockElementComponentDisplayedMarkExtractor componentDisplayedMark(@NotNull WebComponentAvailable elementFrame,
-                                                                                            @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedMarkExtractor(elementFrame, componentName);
+    public static <T extends WebBlock> WebListBlockElementComponentDisplayedMarkExtractor<T> componentDisplayedMark(@NotNull WebComponentAvailable elementFrame,
+                                                                                                                    @NotNull String componentName) {
+        return new WebListBlockElementComponentDisplayedMarkExtractor<>(elementFrame, componentName);
     }
 
-    public static WebListBlockElementComponentDisplayedMarkExtractor componentDisplayedMark(@NotNull String elementPath,
-                                                                                            @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedMarkExtractor(elementPath, componentName);
+    public static <T extends WebBlock> WebListBlockElementComponentDisplayedMarkExtractor<T> componentDisplayedMark(@NotNull String elementPath,
+                                                                                                                    @NotNull String componentName) {
+        return new WebListBlockElementComponentDisplayedMarkExtractor<>(elementPath, componentName);
     }
 
-    public static WebListBlockElementComponentPresentMarkExtractor componentPresentMark(@NotNull WebComponentAvailable elementFrame,
-                                                                                        @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentMarkExtractor(elementFrame, componentName);
+    public static <T extends WebBlock> WebListBlockElementComponentPresentMarkExtractor<T> componentPresentMark(@NotNull WebComponentAvailable elementFrame,
+                                                                                                                @NotNull String componentName) {
+        return new WebListBlockElementComponentPresentMarkExtractor<>(elementFrame, componentName);
     }
 
-    public static WebListBlockElementComponentPresentMarkExtractor componentPresentMark(@NotNull String elementPath,
-                                                                                        @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentMarkExtractor(elementPath, componentName);
+    public static <T extends WebBlock> WebListBlockElementComponentPresentMarkExtractor<T> componentPresentMark(@NotNull String elementPath,
+                                                                                                                @NotNull String componentName) {
+        return new WebListBlockElementComponentPresentMarkExtractor<>(elementPath, componentName);
     }
 
     // WebTextList

@@ -25,39 +25,76 @@ import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import static io.perfeccionista.framework.Web.*;
 
-public class WebListImpl extends AbstractWebChildElement implements WebList {
+public class WebListImpl<T extends WebBlock> extends AbstractWebChildElement implements WebList<T> {
 
-    protected WebListFrame<WebBlock> webListFrame;
+    protected WebListFrame<T> webListFrame;
 
     @Override
-    public @NotNull WebListFrame<WebBlock> getWebListFrame() {
+    public @NotNull WebListFrame<T> getWebListFrame() {
         return webListFrame;
     }
 
     // Extractor
 
     @Override
-    public @NotNull <V> WebMultipleIndexedResult<V, WebList> extractAll(@NotNull WebListBlockValueExtractor<V> extractor) {
+    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebListBlockValueExtractor<R, T> extractor) {
         return WebListMultipleIndexedResult.of(this, extractor);
     }
 
     // Filter
-
     @Override
-    public @NotNull WebListFilter filter(@NotNull WebListFilterBuilder filterBuilder) {
+    public @NotNull WebListFilter<T> filter(@NotNull WebListFilterBuilder<T> filterBuilder) {
         return filterBuilder.build(this);
     }
 
-    public @NotNull WebListFilter filter(@NotNull WebListBlockCondition filterCondition) {
+    @Override
+    public @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction) {
+        return filterBuilderFunction.apply(getWebListFrame().getMappedBlockFrame())
+                .build(this);
+    }
+
+    @Override
+    public @NotNull WebListFilter<T> filterByCondition(@NotNull WebListBlockCondition<T> filterCondition) {
         return with(filterCondition).build(this);
+    }
+
+    @Override
+    public @NotNull WebListFilter<T> filterByCondition(@NotNull Function<T, ? extends WebListBlockCondition<T>> filterConditionFunction) {
+        return with(filterConditionFunction.apply(getWebListFrame().getMappedBlockFrame()))
+                .build(this);
+    }
+
+    // Checks
+    @Override
+    public WebList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer) {
+        filter(block -> emptyWebListFilter())
+                .forEachBlock(listBlockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebList<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer) {
+        filter(block -> emptyWebListFilter())
+                .forFirstBlock(listBlockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebList<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer) {
+        filter(block -> emptyWebListFilter())
+                .forLastBlock(listBlockConsumer);
+        return this;
     }
 
     // Actions
 
     @Override
-    public WebList executeAction(@NotNull String name, Object... args) {
+    public WebList<T> executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
@@ -66,85 +103,85 @@ public class WebListImpl extends AbstractWebChildElement implements WebList {
 
 
     @Override
-    public WebList should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
-        filter(allBlocks()).should(matcher);
+    public WebList<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
+        filter(block -> emptyWebListFilter()).should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebListMatcher matcher) {
+    public WebList<T> should(@NotNull WebListMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebIndexesMatcher matcher) {
+    public WebList<T> should(@NotNull WebIndexesMatcher matcher) {
         matcher.check(WebListMultipleIndexedResult.of(this, blockIndex()));
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebChildElementMatcher matcher) {
+    public WebList<T> should(@NotNull WebChildElementMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebGetColorAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebIsInFocusAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebIsPresentAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebComponentAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebComponentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebElementPropertyAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebElementPropertyAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebList should(@NotNull WebElementStateAvailableMatcher matcher) {
+    public WebList<T> should(@NotNull WebElementStateAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -152,7 +189,7 @@ public class WebListImpl extends AbstractWebChildElement implements WebList {
     // HoverTo
 
     @Override
-    public WebList hoverTo(boolean withOutOfBounds) {
+    public WebList<T> hoverTo(boolean withOutOfBounds) {
         super.hoverTo(withOutOfBounds);
         return this;
     }
@@ -160,7 +197,7 @@ public class WebListImpl extends AbstractWebChildElement implements WebList {
     // ScrollTo
 
     @Override
-    public WebList scrollTo() {
+    public WebList<T> scrollTo() {
         super.scrollTo();
         return this;
     }

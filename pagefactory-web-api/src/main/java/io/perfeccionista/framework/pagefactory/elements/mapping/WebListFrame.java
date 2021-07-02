@@ -30,4 +30,8 @@ public class WebListFrame<T extends WebBlock> {
         return mappedBlockFrame;
     }
 
+    public @NotNull Class<T> getMappedBlockClass() {
+        return (Class<T>) mappedBlockFrame.getClass();
+    }
+
 }

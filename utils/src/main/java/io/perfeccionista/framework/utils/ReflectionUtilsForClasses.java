@@ -14,6 +14,8 @@ import io.perfeccionista.framework.exceptions.ConstructorNotFound;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -359,7 +362,33 @@ public final class ReflectionUtilsForClasses {
         return inheritedInterfacesCollector;
     }
 
-
+    public static Optional<Type> findGenericInterface(@NotNull Type inheritorType, @NotNull Class<?> ancestorInterface) {
+        if (inheritorType instanceof ParameterizedType) {
+            ParameterizedType inheritorParametrizedType = (ParameterizedType) inheritorType;
+            Class<?> rawInheritorType = (Class<?>) inheritorParametrizedType.getRawType();
+            if (rawInheritorType.equals(ancestorInterface)) {
+                return Optional.of(inheritorParametrizedType);
+            }
+            for (Type type : rawInheritorType.getGenericInterfaces()) {
+                Optional<Type> genericInterface = findGenericInterface(type, ancestorInterface);
+                if (genericInterface.isPresent()) {
+                    return genericInterface;
+                }
+            }
+        } else {
+            Class<?> inheritorClass = (Class<?>) inheritorType;
+            if (inheritorClass.equals(ancestorInterface)) {
+                return Optional.of(inheritorType);
+            }
+            for (Type type : inheritorClass.getGenericInterfaces()) {
+                Optional<Type> genericInterface = findGenericInterface(type, ancestorInterface);
+                if (genericInterface.isPresent()) {
+                    return genericInterface;
+                }
+            }
+        }
+        return Optional.empty();
+    }
 
     private static synchronized void fillClassesByPackagesMap(@NotNull String packageName) {
         if (!classesByPackage.containsKey(packageName)) {

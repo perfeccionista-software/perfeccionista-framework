@@ -9,16 +9,16 @@ import java.util.Map;
 // TODO: Подумать как тут можно проверять сразу группу индексов
 //  shouldHaveIndexes(intValues.containsAll(1, 2, 3, 4, 5));
 // TODO: Добавить методы entryStream(), stream(), forEach() и т.п.
-public interface WebMultipleIndexedResult<T, E extends WebChildElement> {
+public interface WebMultipleIndexedResult<R, T extends WebChildElement> {
 
-    @NotNull E getElement();
+    @NotNull T getElement();
 
-    Map<Integer, T> getResults();
+    Map<Integer, R> getResults();
 
     int getSize();
 
-    WebMultipleIndexedResult<T, E> should(WebMultipleIndexedResultMatcher<T> matcher);
+    WebMultipleIndexedResult<R, T> should(WebMultipleIndexedResultMatcher<R> matcher);
 
-    @NotNull WebSingleIndexedResult<T, E> singleResult();
+    @NotNull WebSingleIndexedResult<R, T> singleResult();
 
 }
