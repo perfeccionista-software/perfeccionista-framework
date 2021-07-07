@@ -15,12 +15,13 @@ plugins {
     jacoco
     signing
     checkstyle
-    `java-gradle-plugin`
     `maven-publish`
+    `java-gradle-plugin`
     id("com.github.kt3k.coveralls") version "2.11.0"
     id("org.sonarqube") version "3.1.1"
     id("io.qameta.allure") version "2.8.1"
     id("com.github.ben-manes.versions") version "0.38.0" apply false
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
@@ -46,6 +47,7 @@ nexusPublishing {
 }
 
 val notToPublish = listOf(
+    "perfeccionista-framework",
     "demo-app",
     "bdd-engine",
     "demo-app-assets",
@@ -66,6 +68,11 @@ configure(listOf(rootProject)) {
     description = "Perfeccionista framework"
     group = "io.perfeccionista.framework"
     version = rootProject.property("frameworkVersion") ?: "local"
+    project.plugins.withId("java-gradle-plugin") {
+        project.configure<GradlePluginDevelopmentExtension> {
+            isAutomatedPublishing = false
+        }
+    }
 }
 
 configure(subprojects.filter { it.name != "demo-app" }) {
@@ -82,19 +89,19 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 
     extra["isRelease"] = !version.toString().endsWith("-SNAPSHOT")
 
-    val jetBrainsAnnotationsVersion: String by rootProject
-    val apiGuardianVersion: String by rootProject
-    val junitPlatformVersion: String by rootProject
-    val junitVersion: String by rootProject
-    val jacksonVersion: String by rootProject
-    val allureVersion: String by rootProject
-
 //    apply(plugin = "checkstyle")
     apply(plugin = "java")
     apply(plugin = "java-gradle-plugin")
     apply(plugin = "jacoco")
     apply(plugin = "signing")
     apply(plugin = "io.qameta.allure")
+    apply(plugin = "io.spring.dependency-management")
+
+    project.plugins.withId("java-gradle-plugin") { // only do it if it's actually applied
+        project.configure<GradlePluginDevelopmentExtension> {
+            isAutomatedPublishing = false
+        }
+    }
 
     tasks.withType<JavaCompile> {
         sourceCompatibility = "11"
@@ -102,22 +109,69 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         options.encoding = "UTF-8"
     }
 
+    val cucumberVersion = "6.10.2"
+    val junitVersion = "5.7.2"
+    val fasterxmlVersion = "2.12.3"
+    val allureVersion = "2.14.0"
+
+    dependencyManagement {
+        imports {
+            mavenBom("com.fasterxml.jackson:jackson-bom:$fasterxmlVersion")
+            mavenBom("org.junit:junit-bom:$junitVersion")
+        }
+        dependencies {
+            dependency("org.jetbrains:annotations:21.0.1")
+            dependency("org.apiguardian:apiguardian-api:1.1.2")
+
+            dependency("com.fasterxml.jackson.core:jackson-core:$fasterxmlVersion")
+            dependency("com.fasterxml.jackson.core:jackson-annotations:$fasterxmlVersion")
+            dependency("com.fasterxml.jackson.core:jackson-databind:$fasterxmlVersion")
+
+            dependency("org.junit.platform:junit-platform-runner:1.7.2")
+            dependency("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+            dependency("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+            dependency("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+
+            dependency("io.qameta.allure:allure-java-commons:$allureVersion")
+            dependency("io.qameta.allure:allure-junit5:$allureVersion")
+            dependency("io.qameta.allure:allure-cucumber6-jvm:$allureVersion")
+
+            dependency("org.mockito:mockito-core:3.9.0")
+
+            dependency("cglib:cglib:3.3.0")
+
+            dependency("org.seleniumhq.selenium:selenium-java:3.141.59")
+            dependency("io.github.bonigarcia:webdrivermanager:4.3.1")
+
+            dependency("io.cucumber:cucumber-java:$cucumberVersion")
+            dependency("io.cucumber:cucumber-junit-platform-engine:$cucumberVersion")
+
+            dependency("io.appium:java-client:7.5.0")
+
+            dependency("androidx.test:core:1.3.0")
+            dependency("androidx.test.espresso:espresso-core:3.3.0")
+        }
+        generatedPomCustomization {
+            enabled(false)
+        }
+    }
+
     dependencies {
-        implementation(group = "org.jetbrains", name = "annotations", version = jetBrainsAnnotationsVersion)
-        implementation(group = "org.apiguardian", name = "apiguardian-api", version = apiGuardianVersion)
+        implementation(group = "org.jetbrains", name = "annotations")
+        implementation(group = "org.apiguardian", name = "apiguardian-api")
 
-        implementation(group = "com.fasterxml.jackson.core", name = "jackson-core", version = jacksonVersion)
-        implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations", version = jacksonVersion)
-        implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = jacksonVersion)
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-core")
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations")
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind")
 
-        testImplementation(group = "org.junit.platform", name = "junit-platform-runner", version = junitPlatformVersion)
-        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
-        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = junitVersion)
-        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params", version = junitVersion)
+        testImplementation(group = "org.junit.platform", name = "junit-platform-runner")
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-engine")
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params")
 
-        testImplementation(group = "io.qameta.allure", name = "allure-java-commons", version = allureVersion)
-        testImplementation(group = "io.qameta.allure", name = "allure-junit5", version = allureVersion)
-        testImplementation(group = "org.mockito", name = "mockito-core", version = "3.9.0")
+        testImplementation(group = "io.qameta.allure", name = "allure-java-commons")
+        testImplementation(group = "io.qameta.allure", name = "allure-junit5")
+        testImplementation(group = "org.mockito", name = "mockito-core")
     }
 
     allure {
@@ -199,6 +253,11 @@ configure(subprojects.filter { it.name != "demo-app" }) {
             publications {
                 create<MavenPublication>("mavenCentral") {
                     from(components["java"])
+                    versionMapping {
+                        allVariants {
+                            fromResolutionResult()
+                        }
+                    }
                     suppressAllPomMetadataWarnings()
                     pom {
                         name.set(project.name)
@@ -242,7 +301,6 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         signing {
             sign(publishing.publications["mavenCentral"])
         }
-
     }
 
 }

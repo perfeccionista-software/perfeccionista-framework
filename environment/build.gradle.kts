@@ -1,11 +1,7 @@
 dependencies {
 
-    api(project(":utils")) {
-        because("utils module contains tools for current module")
-    }
+    api(project(":utils"))
 
-    testImplementation(project(":environment-junit5")) {
-        because("utils module contains tools for current tests")
-    }
+    testImplementation(project(":environment-junit5"))
 
 }

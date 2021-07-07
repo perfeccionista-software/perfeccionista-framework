@@ -1,11 +1,9 @@
-val appiumVersion: String by rootProject
-
 dependencies {
-    api(project(":pagefactory-mobile-api")) {
-        because("pagefactory-mobile-api module contains api for current module")
-    }
 
-    api(group = "io.appium", name = "java-client", version = appiumVersion) {
+    api(project(":pagefactory-mobile-api"))
+
+    api(group = "io.appium", name = "java-client") {
         exclude(module="spring-context")
     }
+
 }
