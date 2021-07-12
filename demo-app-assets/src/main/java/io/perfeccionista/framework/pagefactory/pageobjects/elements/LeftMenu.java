@@ -5,14 +5,12 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.elements.LeftMenu.LeftMenuItemBlock;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
-
 
 @WebLocator(component = "LI", css = ".list-group-item", single = false)
 public interface LeftMenu extends WebList<LeftMenuItemBlock> {

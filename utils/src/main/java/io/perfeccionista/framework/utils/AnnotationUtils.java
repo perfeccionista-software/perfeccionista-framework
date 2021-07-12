@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedInterfaces;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForMethods.findRequiredMethod;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForMethods.invokeMethod;
 import static java.util.Arrays.asList;
@@ -45,18 +46,64 @@ public class AnnotationUtils {
         return findAnnotation(element, annotationType, inherited, new HashSet<>());
     }
 
-    public static <A extends Annotation, T> Optional<A> findFirstAnnotationInHierarchy(@NotNull Class<A> annotationClass,
+    public static <A extends Annotation> List<A> findRepeatableAnnotations(@NotNull AnnotatedElement element,
+                                                                           @NotNull Class<A> annotationType) {
+        Repeatable repeatable = annotationType.getAnnotation(Repeatable.class);
+        Class<? extends Annotation> containerType = repeatable.value();
+        boolean inherited = containerType.isAnnotationPresent(Inherited.class);
+        // We use a LinkedHashSet because the search algorithm may discover duplicates, but we need to maintain the original order.
+        Set<A> found = new LinkedHashSet<>(16);
+        findRepeatableAnnotations(element, annotationType, containerType, inherited, found, new HashSet<>(16));
+        return Collections.unmodifiableList(new ArrayList<>(found));
+    }
+
+    public static <A extends Annotation, T> Optional<A> findFirstAnnotationInHierarchy(@NotNull Class<A> annotationType,
                                                                                        @NotNull Class<T> ancestorClass,
                                                                                        @NotNull Class<? extends T> inheritorClass) {
         return findInheritedClasses(ancestorClass, inheritorClass, Order.DESC).stream()
-                .map(processedClass -> findAnnotation(processedClass, annotationClass))
+                .map(processedClass -> findAnnotation(processedClass, annotationType))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst();
     }
 
+    public static <A extends Annotation> List<A> findAllRepeatableAnnotationsInHierarchy(@NotNull Class<A> annotationType,
+                                                                                         @NotNull Class<?> elementClass) {
+        return findAllRepeatableAnnotationsInHierarchy(annotationType, Object.class, elementClass);
+    }
+
+    public static <A extends Annotation, T> List<A> findAllRepeatableAnnotationsInHierarchy(@NotNull Class<A> annotationType,
+                                                                                            @NotNull Class<T> ancestorClass,
+                                                                                            @NotNull Class<? extends T> inheritorClass) {
+        List<A> annotationsList = new ArrayList<>();
+        return findInheritedClasses(ancestorClass, inheritorClass, Order.ASC).stream()
+                .map(processedClass -> findAllRepeatableAnnotationsInClassHierarchy(annotationType, ancestorClass, processedClass))
+                .reduce(annotationsList, (previousElement, nextElement) -> {
+                    previousElement.addAll(nextElement);
+                    return previousElement;
+                });
+    }
+
+    protected static <A extends Annotation, T> List<A> findAllRepeatableAnnotationsInClassHierarchy(@NotNull Class<A> annotationType,
+                                                                                                    @NotNull Class<T> elementClass) {
+        List<A> annotations = new ArrayList<>(Arrays.asList(elementClass.getDeclaredAnnotationsByType(annotationType)));
+        findInheritedInterfaces(Object.class, elementClass, Order.ASC)
+                .forEach(processedInterface -> annotations.addAll(Arrays.asList(processedInterface.getDeclaredAnnotationsByType(annotationType))));
+        return annotations;
+    }
+
+    protected static <A extends Annotation, T> List<A> findAllRepeatableAnnotationsInClassHierarchy(@NotNull Class<A> annotationType,
+                                                                                                    @NotNull Class<T> ancestorClass,
+                                                                                                    @NotNull Class<? extends T> inheritorClass) {
+        List<A> annotations = new ArrayList<>(Arrays.asList(inheritorClass.getDeclaredAnnotationsByType(annotationType)));
+        findInheritedInterfaces(ancestorClass, inheritorClass, Order.ASC)
+                .forEach(processedInterface -> annotations.addAll(Arrays.asList(processedInterface.getDeclaredAnnotationsByType(annotationType))));
+        return annotations;
+    }
+
     private static <A extends Annotation> Optional<A> findAnnotation(@NotNull AnnotatedElement element,
-                                                                     @NotNull Class<A> annotationType, boolean inherited, Set<Annotation> visited) {
+                                                                     @NotNull Class<A> annotationType,
+                                                                     boolean inherited, Set<Annotation> visited) {
         // Directly present?
         A annotation = element.getDeclaredAnnotation(annotationType);
         if (annotation != null) {
@@ -99,44 +146,8 @@ public class AnnotationUtils {
         return findMetaAnnotation(annotationType, element.getAnnotations(), inherited, visited);
     }
 
-    public static <A extends Annotation> List<A> findRepeatableAnnotations(@NotNull AnnotatedElement element, @NotNull Class<A> annotationType) {
-        Repeatable repeatable = annotationType.getAnnotation(Repeatable.class);
-        Class<? extends Annotation> containerType = repeatable.value();
-        boolean inherited = containerType.isAnnotationPresent(Inherited.class);
-        // We use a LinkedHashSet because the search algorithm may discover duplicates, but we need to maintain the original order.
-        Set<A> found = new LinkedHashSet<>(16);
-        findRepeatableAnnotations(element, annotationType, containerType, inherited, found, new HashSet<>(16));
-        return Collections.unmodifiableList(new ArrayList<>(found));
-    }
-
-    public static <A extends Annotation> List<A> findAllRepeatableAnnotationsInHierarchy(@NotNull Class<A> annotationClass,
-                                                                                         @NotNull Class<?> annotatedClass) {
-        return findAllRepeatableAnnotationsInHierarchy(annotationClass, Object.class, annotatedClass);
-    }
-
-    public static <A extends Annotation, T> List<A> findAllRepeatableAnnotationsInHierarchy(@NotNull Class<A> annotationClass,
-                                                                                            @NotNull Class<T> ancestorClass,
-                                                                                            @NotNull Class<? extends T> inheritorClass) {
-        List<A> annotationsList = new ArrayList<>();
-        return findInheritedClasses(ancestorClass, inheritorClass, Order.ASC).stream()
-                .map(processedClass -> findAllRepeatableAnnotationsInClassHierarchy(processedClass, annotationClass))
-                .reduce(annotationsList, (previousElement, nextElement) -> {
-                    previousElement.addAll(nextElement);
-                    return previousElement;
-                });
-    }
-
-
-
-    protected static <A extends Annotation, T> List<A> findAllRepeatableAnnotationsInClassHierarchy(@NotNull Class<T> processedClass,
-                                                                                                    @NotNull Class<A> annotationClass) {
-        List<A> annotations = new ArrayList<>(Arrays.asList(processedClass.getDeclaredAnnotationsByType(annotationClass)));
-        Arrays.stream(processedClass.getInterfaces())
-                .forEach(processedInterface -> annotations.addAll(Arrays.asList(processedInterface.getDeclaredAnnotationsByType(annotationClass))));
-        return annotations;
-    }
-
-    private static <A extends Annotation> void findRepeatableAnnotations(@NotNull AnnotatedElement element, @NotNull Class<A> annotationType,
+    private static <A extends Annotation> void findRepeatableAnnotations(@NotNull AnnotatedElement element,
+                                                                         @NotNull Class<A> annotationType,
                                                                          @NotNull Class<? extends Annotation> containerType,
                                                                          boolean inherited, Set<A> found, Set<Annotation> visited) {
         if (element instanceof Class) {

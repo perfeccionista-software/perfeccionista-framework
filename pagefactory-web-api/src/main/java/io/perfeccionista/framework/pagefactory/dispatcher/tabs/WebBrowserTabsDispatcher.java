@@ -20,13 +20,13 @@ public interface WebBrowserTabsDispatcher {
 
     WebBrowserTabsDispatcher newTab();
 
-    WebBrowserTabsDispatcher newTab(@NotNull String url);
+    WebBrowserTabsDispatcher newTab(@NotNull String absoluteUrl);
 
     WebBrowserTabsDispatcher refresh();
 
     WebBrowserTabsDispatcher back();
 
-    WebBrowserTabsDispatcher openUrl(@NotNull String url);
+    WebBrowserTabsDispatcher openUrl(@NotNull String relativeOrAbsoluteUrl);
 
     WebBrowserTabsDispatcher closeActiveTab();
 

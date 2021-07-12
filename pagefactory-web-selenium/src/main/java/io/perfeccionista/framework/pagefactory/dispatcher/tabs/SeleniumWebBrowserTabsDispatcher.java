@@ -34,6 +34,8 @@ import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActio
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SWITCH_TO_TAB_WITH_URL_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.OPEN_EMPTY_TAB_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.OPEN_TAB_WITH_URL_METHOD;
+import static io.perfeccionista.framework.utils.UrlUtils.isAbsoluteUrl;
+import static io.perfeccionista.framework.utils.UrlUtils.withoutFollowingSlash;
 import static java.util.stream.Collectors.toList;
 
 // TODO: Эти манипуляции скорее всего можно сделать через JS проще
@@ -122,10 +124,10 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
     }
 
     @Override
-    public SeleniumWebBrowserTabsDispatcher newTab(@NotNull String url) {
+    public SeleniumWebBrowserTabsDispatcher newTab(@NotNull String absoluteUrl) {
         runCheck(actionInvocation(OPEN_TAB_WITH_URL_METHOD), () -> {
             exceptionMapper.map(() -> {
-                instance.executeScript("window.open('" + url + "','_blank');");
+                instance.executeScript("window.open('" + absoluteUrl + "','_blank');");
                 List<String> tabs = new ArrayList<>(instance.getWindowHandles());
                 instance.switchTo().window(tabs.get(tabs.size() - 1));
             }).ifException(exception -> {
@@ -158,12 +160,19 @@ public class SeleniumWebBrowserTabsDispatcher implements WebBrowserTabsDispatche
     }
 
     @Override
-    public SeleniumWebBrowserTabsDispatcher openUrl(@NotNull String url) {
+    public SeleniumWebBrowserTabsDispatcher openUrl(@NotNull String relativeOrAbsoluteUrl) {
         runCheck(actionInvocation(BROWSER_OPEN_URL_METHOD), () -> {
-            exceptionMapper.map(() -> instance.get(url))
-                    .ifException(exception -> {
-                        throw exception;
-                    });
+            exceptionMapper.map(() -> {
+                String actualUrl;
+                if (isAbsoluteUrl(relativeOrAbsoluteUrl)) {
+                    actualUrl = relativeOrAbsoluteUrl;
+                } else {
+                    actualUrl = withoutFollowingSlash(instance.getCurrentUrl()) + relativeOrAbsoluteUrl;
+                }
+                instance.get(actualUrl);
+            }).ifException(exception -> {
+                throw exception;
+            });
         });
         return this;
     }

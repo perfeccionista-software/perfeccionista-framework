@@ -25,7 +25,6 @@ public interface ContinentBlock extends WebBlock {
     @Name("Список стран")
     @WebLocator(xpath = "self::node()//div[@itemid = 'countries-list']")
     @WebLocator(component = LI, xpath = ".//div[@itemid = 'countries-list-item']", single = false)
-    @UseMappedWebBlock(CountryBlock.class)
-    WebList countriesList();
+    WebList<CountryBlock> countriesList();
 
 }
