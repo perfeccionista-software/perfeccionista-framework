@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HOVER_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.HOVER;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -18,9 +17,13 @@ public class WebHoverToOperationType implements WebElementOperationType<Void> {
     private final WebHoverToAvailable element;
     private final boolean withOutOfBounds;
 
+    private final InvocationInfo invocationInfo;
+
     private WebHoverToOperationType(WebHoverToAvailable element, boolean withOutOfBounds) {
         this.element = element;
         this.withOutOfBounds = withOutOfBounds;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(HOVER_TO_METHOD, elementName);
     }
 
     public static WebHoverToOperationType of(@NotNull WebHoverToAvailable element, boolean withOutOfBounds) {
@@ -29,7 +32,7 @@ public class WebHoverToOperationType implements WebElementOperationType<Void> {
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(HOVER_TO_METHOD, element, HOVER, withOutOfBounds);
+        return this.invocationInfo;
     }
 
     @Override

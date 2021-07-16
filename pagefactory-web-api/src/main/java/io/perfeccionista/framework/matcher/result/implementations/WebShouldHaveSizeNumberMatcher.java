@@ -28,11 +28,12 @@ public class WebShouldHaveSizeNumberMatcher implements WebIndexesMatcher {
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<Integer, ? extends WebChildElement> result) {
-        InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_SIZE_METHOD, this, expectedSize)
-                : assertInvocation(SHOULD_NOT_HAVE_SIZE_METHOD, this, expectedSize);
-
         WebChildElement element = result.getElement();
+        var elementName = element.getElementIdentifier().getLastUsedName();
+
+        InvocationInfo invocationName = positive
+                ? assertInvocation(SHOULD_HAVE_SIZE_METHOD, elementName, String.valueOf(expectedSize))
+                : assertInvocation(SHOULD_NOT_HAVE_SIZE_METHOD, elementName, String.valueOf(expectedSize));
 
         runCheck(invocationName, () -> {
             int actualSize = result.getSize();

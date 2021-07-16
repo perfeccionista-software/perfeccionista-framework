@@ -29,7 +29,7 @@ public class WebShouldHaveStringValueResultMatcher implements WebMultipleIndexed
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<String, ? extends WebChildElement> result) {
-        InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_EXPECTED_RESULT_METHOD, this);
+        InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_EXPECTED_RESULT_METHOD, expectedResult.getShortDescription());
 
         WebChildElement element = result.getElement();
 

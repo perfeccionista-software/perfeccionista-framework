@@ -3,6 +3,8 @@ package io.perfeccionista.framework.pagefactory.extractor.textlist;
 import io.perfeccionista.framework.exceptions.ResultVerification;
 import io.perfeccionista.framework.exceptions.SingleResultCreating;
 import io.perfeccionista.framework.exceptions.attachments.MobileElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.MobileExtractorDescriptionAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.MobileFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.MobileTextList;
@@ -60,7 +62,11 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public @Nullable T getResult() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTextListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -79,7 +85,11 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public @NotNull T getNotNullResult() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTextListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -105,7 +115,11 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public int getIndex() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_INDEX_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTextListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())

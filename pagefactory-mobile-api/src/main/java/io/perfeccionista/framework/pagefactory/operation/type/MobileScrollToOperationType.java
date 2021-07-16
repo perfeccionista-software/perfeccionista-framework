@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -15,8 +16,12 @@ public class MobileScrollToOperationType implements MobileElementOperationType<V
 
     private final MobileChildElementBase element;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileScrollToOperationType(MobileChildElementBase element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(SCROLL_TO_METHOD, elementName);
     }
 
     public static MobileScrollToOperationType of(@NotNull MobileChildElementBase element) {
@@ -25,7 +30,7 @@ public class MobileScrollToOperationType implements MobileElementOperationType<V
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.getterInvocation(SCROLL_TO_METHOD, element);
+        return this.invocationInfo;
     }
 
     @Override

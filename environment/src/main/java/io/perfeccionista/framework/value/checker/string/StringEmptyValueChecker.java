@@ -27,6 +27,11 @@ public class StringEmptyValueChecker extends AbstractStringChecker {
     }
 
     @Override
+    public @NotNull String getShortComparisonDescription() {
+        return "is empty";
+    }
+
+    @Override
     public @NotNull String getComparisonDescription() {
         return String.format("Compare parameters:\n"
                         + "          rawExpected: '%s'\n"

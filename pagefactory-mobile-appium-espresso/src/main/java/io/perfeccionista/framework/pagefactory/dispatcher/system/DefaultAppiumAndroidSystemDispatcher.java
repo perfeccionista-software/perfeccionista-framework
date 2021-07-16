@@ -56,7 +56,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public DefaultAppiumAndroidSystemDispatcher installApplication(@NotNull String pathToApplication) {
-        runCheck(actionInvocation(INSTALL_MOBILE_APPLICATION_METHOD), () ->
+        runCheck(actionInvocation(INSTALL_MOBILE_APPLICATION_METHOD, pathToApplication), () ->
                 exceptionMapper.map(() -> instance.installApp(stringProcess(pathToApplication), new AndroidInstallApplicationOptions().withAllowTestPackagesEnabled()))
                         .ifException(exception -> {
                             throw exception;
@@ -96,7 +96,7 @@ public class DefaultAppiumAndroidSystemDispatcher implements MobileDeviceSystemD
 
     @Override
     public DefaultAppiumAndroidSystemDispatcher sendApplicationToBackground(@NotNull Duration duration) {
-        runCheck(actionInvocation(SEND_MOBILE_APPLICATION_TO_BACKGROUND_METHOD, duration), () ->
+        runCheck(actionInvocation(SEND_MOBILE_APPLICATION_TO_BACKGROUND_METHOD, duration.toString()), () ->
                 exceptionMapper.map(() -> instance.runAppInBackground(duration))
                         .ifException(exception -> {
                             throw exception;

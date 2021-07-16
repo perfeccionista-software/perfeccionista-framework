@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.PRESENTED;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 import static org.gradle.internal.impldep.org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
 
@@ -17,8 +16,12 @@ public class WebGetIsPresentOperationType implements WebElementOperationType<Boo
 
     private final WebIsPresentAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebGetIsPresentOperationType(WebIsPresentAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(IS_PRESENT_METHOD, elementName);
     }
 
     public static WebGetIsPresentOperationType of(@NotNull WebIsPresentAvailable element) {
@@ -27,7 +30,7 @@ public class WebGetIsPresentOperationType implements WebElementOperationType<Boo
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(IS_PRESENT_METHOD, element, PRESENTED);
+        return this.invocationInfo;
     }
 
     @Override

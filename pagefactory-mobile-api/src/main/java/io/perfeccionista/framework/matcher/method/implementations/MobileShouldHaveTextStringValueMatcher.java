@@ -13,8 +13,8 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileA
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.ELEMENT_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_VALUE_METHOD;
 
 public class MobileShouldHaveTextStringValueMatcher implements MobileGetTextAvailableMatcher {
 
@@ -28,9 +28,10 @@ public class MobileShouldHaveTextStringValueMatcher implements MobileGetTextAvai
 
     @Override
     public void check(@NotNull MobileGetTextAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_TEXT_METHOD, this, expectedStringValue)
-                : assertInvocation(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedStringValue);
+                ? assertInvocation(SHOULD_HAVE_VALUE_METHOD, elementName, expectedStringValue.getShortDescription())
+                : assertInvocation(SHOULD_NOT_HAVE_VALUE_METHOD, elementName, expectedStringValue.getShortDescription());
 
         runCheck(invocationName,
                 () -> {

@@ -79,7 +79,7 @@ class WebTextListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(textList.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("textList", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("textList", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Simple list of countries", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Simple list of countries")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Simple list of countries")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

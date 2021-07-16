@@ -75,14 +75,7 @@ public class WebLocatorAnnotationHandler {
     public static @NotNull WebLocatorHolder createWebLocatorHolder(@NotNull WebLocator webLocator) {
         Optional<WebLocatorHolder> optionalWebLocatorHolder = createOptionalWebLocatorHolder(webLocator);
         if (optionalWebLocatorHolder.isPresent()) {
-            WebLocatorHolder webLocatorHolder = optionalWebLocatorHolder.get();
-            webLocatorHolder.setSingle(webLocator.single());
-            webLocatorHolder.setStrictSearch(webLocator.strictSearch());
-            webLocatorHolder.setOnlyWithinParent(webLocator.onlyWithinParent());
-            for (Class<? extends EndpointHandler<Void>> endpointHandlerClass : webLocator.invokeOnCall()) {
-                webLocatorHolder.addInvokedOnCallFunction(newInstance(endpointHandlerClass));
-            }
-            return webLocatorHolder;
+            return optionalWebLocatorHolder.get();
         }
         throw LocatorProcessing.exception(LOCATOR_STRATEGY_VALIDATION_FAILED.getMessage())
                 .addLastAttachmentEntry(JsonAttachmentEntry.of("WebLocator", webLocatorToJson(webLocator)));

@@ -21,7 +21,6 @@ import static io.qameta.allure.util.ResultsUtils.getStatusDetails;
 
 public class ExceptionInnerInvocationInfoCheckVisitor implements Consumer<InvocationInfo> {
     private final WebAllureAttachmentProcessor attachmentProcessor = new WebAllureAttachmentProcessor(Environment.getCurrent());
-    private final AllureInvocationStatisticsFormatter allureStatisticsFormatter = new AllureInvocationStatisticsFormatter();
 
     @Override
     public void accept(InvocationInfo invocationInfo) {
@@ -32,7 +31,7 @@ public class ExceptionInnerInvocationInfoCheckVisitor implements Consumer<Invoca
                 .getThrowable()
                 .orElseThrow(() -> PreconditionViolation.exception("Exception status is set together with the exception"));
         if (!primaryExceptionProcessed) {
-            Allure.addAttachment("Execution statistics", invocationInfo.getFormattedStatistics(allureStatisticsFormatter));
+            Allure.addAttachment("Execution statistics", invocationInfo.getStatistics());
             if (throwable instanceof PerfeccionistaRuntimeException) {
                 PerfeccionistaRuntimeException exception = ((PerfeccionistaRuntimeException) throwable);
                 exception.prepareAttachmentDescription();
@@ -53,6 +52,7 @@ public class ExceptionInnerInvocationInfoCheckVisitor implements Consumer<Invoca
         getLifecycle().updateStep(invocationInfo.getUuid(), step -> step
                 .setStatus(getStatus(throwable).orElse(Status.BROKEN))
                 .setStatusDetails(getStatusDetails(throwable).orElse(null)));
+        attachmentProcessor.processAttachment(invocationInfo.getAttachment());
         getLifecycle().stopStep(invocationInfo.getUuid());
     }
 

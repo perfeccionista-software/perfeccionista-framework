@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ELEMENT_BOUNDS_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -17,9 +18,13 @@ public class MobileGetElementBoundsOperationType implements MobileElementOperati
     private final MobileChildElementBase element;
     private final String componentName;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileGetElementBoundsOperationType(@NotNull MobileChildElementBase element, @NotNull String componentName) {
         this.element = element;
         this.componentName = componentName;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(GET_ELEMENT_BOUNDS_METHOD, elementName, componentName);
     }
 
     public static MobileGetElementBoundsOperationType of(@NotNull MobileChildElementBase element, @NotNull String componentName) {
@@ -28,7 +33,7 @@ public class MobileGetElementBoundsOperationType implements MobileElementOperati
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.getterInvocation(GET_ELEMENT_BOUNDS_METHOD, element, componentName);
+        return this.invocationInfo;
     }
 
     @Override

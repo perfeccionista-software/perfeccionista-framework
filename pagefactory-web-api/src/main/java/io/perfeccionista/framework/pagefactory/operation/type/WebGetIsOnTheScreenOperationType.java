@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_ON_THE_SCREEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,12 @@ public class WebGetIsOnTheScreenOperationType implements WebElementOperationType
 
     private final WebIsOnTheScreenAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebGetIsOnTheScreenOperationType(WebIsOnTheScreenAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(IS_ON_THE_SCREEN_METHOD, elementName);
     }
 
     public static WebGetIsOnTheScreenOperationType of(@NotNull WebIsOnTheScreenAvailable element) {
@@ -27,7 +30,7 @@ public class WebGetIsOnTheScreenOperationType implements WebElementOperationType
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(IS_ON_THE_SCREEN_METHOD, element, ROOT);
+        return this.invocationInfo;
     }
 
     @Override

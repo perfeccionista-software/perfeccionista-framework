@@ -32,9 +32,10 @@ public class WebShouldHaveColorMatcher implements WebGetColorAvailableMatcher {
 
     @Override
     public void check(@NotNull WebGetColorAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor)
-                : assertInvocation(SHOULD_NOT_HAVE_COLOR_METHOD, element, componentName, cssProperty, expectedColor);
+                ? assertInvocation(SHOULD_HAVE_COLOR_METHOD, elementName, componentName, cssProperty, expectedColor.toString())
+                : assertInvocation(SHOULD_NOT_HAVE_COLOR_METHOD, elementName, componentName, cssProperty, expectedColor.toString());
 
         runCheck(invocationName,
                 () -> {

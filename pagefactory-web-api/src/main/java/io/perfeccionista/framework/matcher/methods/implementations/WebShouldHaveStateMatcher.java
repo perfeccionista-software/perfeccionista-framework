@@ -33,9 +33,10 @@ public class WebShouldHaveStateMatcher implements WebElementStateAvailableMatche
 
     @Override
     public void check(@NotNull WebElementStateAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_STATE_METHOD, element, stateName)
-                : assertInvocation(SHOULD_NOT_HAVE_STATE_METHOD, element, stateName);
+                ? assertInvocation(SHOULD_HAVE_STATE_METHOD, elementName, stateName)
+                : assertInvocation(SHOULD_NOT_HAVE_STATE_METHOD, elementName, stateName);
 
         WebElementStateHolder stateHolder = element.getState(stateName)
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName))

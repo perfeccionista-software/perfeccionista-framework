@@ -92,7 +92,7 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(simpleButton.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("simpleButton", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("simpleButton", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Simple button", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Simple button")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Simple button")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

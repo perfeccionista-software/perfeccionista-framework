@@ -74,6 +74,11 @@ public class DefaultObjectValue implements ObjectValue {
     }
 
     @Override
+    public @NotNull String getShortDescription() {
+        return objectChecker.getShortComparisonDescription();
+    }
+
+    @Override
     public String toString() {
         return objectChecker.getComparisonDescription();
     }

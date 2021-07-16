@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -33,7 +34,12 @@ public class WebChildElementIdentifier implements WebElementIdentifier {
 
     @Override
     public @NotNull String getLastUsedName() {
-        return lastUsedName == null ? elementMethod.getName() : lastUsedName;
+        if (Objects.nonNull(lastUsedName)) {
+            return lastUsedName;
+        }
+        return names.keySet().stream()
+                .findFirst()
+                .orElse(elementMethod.getName());
     }
 
     @Override

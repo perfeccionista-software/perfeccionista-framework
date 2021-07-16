@@ -17,9 +17,13 @@ public class WebGetStringAttributeValueOperationType implements WebElementOperat
     private final WebChildElementBase element;
     private final String attributeName;
 
+    private final InvocationInfo invocationInfo;
+
     private WebGetStringAttributeValueOperationType(WebChildElementBase element, String attributeName) {
         this.element = element;
         this.attributeName = attributeName;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(GET_STRING_ATTRIBUTE_VALUE_METHOD, elementName, attributeName);
     }
 
     public static WebGetStringAttributeValueOperationType of(@NotNull WebChildElementBase element, @NotNull String attributeName) {
@@ -28,7 +32,7 @@ public class WebGetStringAttributeValueOperationType implements WebElementOperat
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(GET_STRING_ATTRIBUTE_VALUE_METHOD, element, attributeName);
+        return this.invocationInfo;
     }
 
     @Override

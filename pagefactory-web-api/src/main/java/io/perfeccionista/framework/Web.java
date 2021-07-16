@@ -42,7 +42,7 @@ import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveI
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveIndexNumberValueMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveNonNullResultMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveNullResultMatcher;
-import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveResultMatcher;
+import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveExpectedResultMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveSizeNumberMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveSizeNumberValueMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveSortedResultMatcher;
@@ -541,8 +541,8 @@ public class Web {
     // Result
 
     // TODO: Добавить матчеры для результатов через Value
-    public static <T> WebShouldHaveResultMatcher<T> haveResult(T expectedResult) {
-        return new WebShouldHaveResultMatcher<>(expectedResult);
+    public static <T> WebShouldHaveExpectedResultMatcher<T> haveResult(T expectedResult) {
+        return new WebShouldHaveExpectedResultMatcher<>(expectedResult);
     }
 
     public static <T> WebShouldHaveNonNullResultMatcher<T> haveNotNullResults() {

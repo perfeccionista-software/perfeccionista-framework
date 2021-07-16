@@ -28,6 +28,11 @@ public class StringContainsChecker extends AbstractStringChecker {
     }
 
     @Override
+    public @NotNull String getShortComparisonDescription() {
+        return String.format("contains {%s}", getProcessedExpected());
+    }
+
+    @Override
     public @NotNull String getComparisonDescription() {
         return String.format("Compare parameters:\n"
                         + "          rawExpected: '%s'\n"

@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
+import io.perfeccionista.framework.exceptions.attachments.MobileFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.measurements.VerticalDirection;
 import io.perfeccionista.framework.pagefactory.elements.MobileList;
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.LIST_SCROLL_TO_VERTICALLY_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -19,12 +21,17 @@ public class MobileListScrollToVerticallyOperationType implements MobileElementO
     private final VerticalDirection scrollDirection;
     private final MobileListFilterBuilder filterBuilder;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileListScrollToVerticallyOperationType(MobileList element,
                                                         VerticalDirection scrollDirection,
                                                         MobileListFilterBuilder filterBuilder) {
         this.element = element;
         this.scrollDirection = scrollDirection;
         this.filterBuilder = filterBuilder;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(LIST_SCROLL_TO_VERTICALLY_METHOD, elementName, scrollDirection.name())
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
     }
 
     public static MobileListScrollToVerticallyOperationType of(@NotNull MobileList element,
@@ -35,7 +42,7 @@ public class MobileListScrollToVerticallyOperationType implements MobileElementO
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.actionInvocation(LIST_SCROLL_TO_VERTICALLY_METHOD, element, scrollDirection, filterBuilder);
+        return this.invocationInfo;
     }
 
     @Override

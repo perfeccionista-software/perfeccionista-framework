@@ -107,4 +107,9 @@ public class KeyEventsChain implements JsonSerializable {
         return rootNode;
     }
 
+    @Override
+    public String toString() {
+        return toJson().toString();
+    }
+
 }

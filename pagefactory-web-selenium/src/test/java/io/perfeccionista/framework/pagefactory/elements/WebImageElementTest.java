@@ -85,7 +85,7 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(worldMap.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("worldMap", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("worldMap", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("World map", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("World map")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("World map")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

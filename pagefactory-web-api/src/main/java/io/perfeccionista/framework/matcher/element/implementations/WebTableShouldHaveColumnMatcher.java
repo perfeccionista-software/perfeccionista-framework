@@ -43,9 +43,11 @@ public class WebTableShouldHaveColumnMatcher implements WebTableMatcher {
 
     @Override
     public void check(@NotNull WebTable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+
         InvocationInfo invocationName = positive
-                ? assertInvocation(COLUMN_SHOULD_BE_DISPLAYED_METHOD, element)
-                : assertInvocation(COLUMN_SHOULD_NOT_BE_DISPLAYED_METHOD, element);
+                ? assertInvocation(COLUMN_SHOULD_BE_DISPLAYED_METHOD, elementName, columnName)
+                : assertInvocation(COLUMN_SHOULD_NOT_BE_DISPLAYED_METHOD, elementName, columnName);
 
         runCheck(invocationName,
                 () -> {

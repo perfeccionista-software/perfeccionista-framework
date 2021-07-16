@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.UL;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,12 @@ public class WebGetIsOpenOperationType implements WebElementOperationType<Boolea
 
     private final WebDropDownAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebGetIsOpenOperationType(WebDropDownAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(IS_OPEN_METHOD, elementName);
     }
 
     public static WebGetIsOpenOperationType of(@NotNull WebDropDownAvailable element) {
@@ -27,7 +30,7 @@ public class WebGetIsOpenOperationType implements WebElementOperationType<Boolea
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(IS_OPEN_METHOD, element, UL);
+        return this.invocationInfo;
     }
 
     @Override

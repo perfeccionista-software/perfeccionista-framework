@@ -15,19 +15,20 @@ import static io.perfeccionista.framework.invocation.runner.InvocationInfo.asser
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_EXPECTED_RESULT_METHOD;
 
-public class WebShouldHaveResultMatcher<T> implements WebMultipleIndexedResultMatcher<T> {
+public class WebShouldHaveExpectedResultMatcher<T> implements WebMultipleIndexedResultMatcher<T> {
 
     private final T expectedResult;
 
-    public WebShouldHaveResultMatcher(@NotNull T expectedResult) {
+    public WebShouldHaveExpectedResultMatcher(@NotNull T expectedResult) {
         this.expectedResult = expectedResult;
     }
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<T, ? extends WebChildElement> result) {
-        InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_EXPECTED_RESULT_METHOD, this);
-
         WebChildElement element = result.getElement();
+        var elementName = element.getElementIdentifier().getLastUsedName();
+
+        InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_EXPECTED_RESULT_METHOD, elementName, String.valueOf(expectedResult));
 
         runCheck(invocationName, () -> {
             AtomicBoolean match = new AtomicBoolean(false);

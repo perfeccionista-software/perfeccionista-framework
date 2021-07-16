@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.operation;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebElementOperationAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.js.JsElementSearch;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
@@ -49,8 +50,10 @@ public class WebElementIsDisplayedOperationHandler {
 
     public boolean executeGetter() {
         WebElementOperation<Boolean> operation = getOperation();
+        operationType.getInvocationName().setMainAttachmentEntry(WebElementOperationAttachmentEntry.of(operation));
         WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor()
                 .executeWebElementOperation(operation);
+        // TODO: После доработки вывода OperationResult можно и его добавить в InvocationInfo
         if (operationResult.isSuccess()) {
             int resultSize = operationResult.getResults().size();
             if (resultSize == 0) {

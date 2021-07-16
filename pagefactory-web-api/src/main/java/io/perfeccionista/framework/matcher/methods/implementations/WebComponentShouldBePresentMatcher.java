@@ -36,9 +36,10 @@ public class WebComponentShouldBePresentMatcher implements WebComponentAvailable
 
     @Override
     public void check(@NotNull WebChildElement element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, element)
-                : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, element);
+                ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, elementName, componentName)
+                : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, elementName, componentName);
 
         runCheck(invocationName,
                 () -> {

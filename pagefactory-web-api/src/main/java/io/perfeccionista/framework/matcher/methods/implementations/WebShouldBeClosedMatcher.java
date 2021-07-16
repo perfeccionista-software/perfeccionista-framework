@@ -10,13 +10,14 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_IS_OPEN;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_OPEN_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_CLOSED_METHOD;
 
 public class WebShouldBeClosedMatcher implements WebDropDownAvailableMatcher {
 
     @Override
     public void check(@NotNull WebDropDownAvailable element) {
-        InvocationInfo invocationName = assertInvocation(SHOULD_BE_OPEN_METHOD, element);
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationName = assertInvocation(SHOULD_BE_CLOSED_METHOD, elementName);
 
         runCheck(invocationName,
                 () -> {

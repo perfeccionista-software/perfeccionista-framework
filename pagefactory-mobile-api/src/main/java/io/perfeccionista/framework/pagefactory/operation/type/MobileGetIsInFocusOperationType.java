@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_IN_FOCUS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.FOCUS;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -16,8 +16,12 @@ public class MobileGetIsInFocusOperationType implements MobileElementOperationTy
 
     private final MobileChildElementBase element;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileGetIsInFocusOperationType(MobileChildElementBase element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(IS_IN_FOCUS_METHOD, elementName);
     }
 
     public static MobileGetIsInFocusOperationType of(@NotNull MobileChildElementBase element) {
@@ -26,7 +30,7 @@ public class MobileGetIsInFocusOperationType implements MobileElementOperationTy
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.getterInvocation(IS_IN_FOCUS_METHOD, element, FOCUS);
+        return this.invocationInfo;
     }
 
     @Override

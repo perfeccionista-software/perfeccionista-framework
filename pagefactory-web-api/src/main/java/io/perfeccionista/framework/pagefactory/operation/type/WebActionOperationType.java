@@ -6,9 +6,12 @@ import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.EXECUTE_ACTION;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -18,21 +21,26 @@ public class WebActionOperationType implements WebElementOperationType<Void> {
     private final WebChildElementBase element;
     private final Object[] args;
 
+    private final InvocationInfo invocationInfo;
+
     private WebActionOperationType(WebChildElementBase element, String endpointHandlerName, Object... args) {
         this.element = element;
         this.endpointHandlerName = endpointHandlerName;
         this.args = args;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var argsAsString = Arrays.stream(args).map(Object::toString).collect(Collectors.joining("; "));
+        this.invocationInfo = actionInvocation(EXECUTE_ACTION, elementName, endpointHandlerName, argsAsString);
     }
 
     public static WebActionOperationType of(@NotNull WebChildElementBase element,
-                                            @NotNull String endpointHandlerName,
+                                            @NotNull String invocationName,
                                             @NotNull Object... args) {
-        return new WebActionOperationType(element, endpointHandlerName, args);
+        return new WebActionOperationType(element, invocationName, args);
     }
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(endpointHandlerName, element, args);
+        return invocationInfo;
     }
 
     @Override

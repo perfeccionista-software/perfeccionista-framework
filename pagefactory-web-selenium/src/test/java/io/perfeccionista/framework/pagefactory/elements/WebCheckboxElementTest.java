@@ -99,7 +99,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(checkboxOne.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("checkboxOne", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("checkboxOne", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Checkbox one", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Checkbox one")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Checkbox one")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

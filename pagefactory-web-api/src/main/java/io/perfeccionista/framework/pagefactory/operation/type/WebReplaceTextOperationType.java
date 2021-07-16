@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.REPLACE_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -18,9 +17,13 @@ public class WebReplaceTextOperationType implements WebElementOperationType<Void
     private final WebInputTextAvailable element;
     private final String text;
 
+    private final InvocationInfo invocationInfo;
+
     private WebReplaceTextOperationType(WebInputTextAvailable element, String text) {
         this.element = element;
         this.text = text;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(REPLACE_TEXT_METHOD, elementName, text);
     }
 
     public static WebReplaceTextOperationType of(@NotNull WebInputTextAvailable element, @NotNull String text) {
@@ -29,7 +32,7 @@ public class WebReplaceTextOperationType implements WebElementOperationType<Void
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(REPLACE_TEXT_METHOD, element, INPUT, text);
+        return this.invocationInfo;
     }
 
     @Override

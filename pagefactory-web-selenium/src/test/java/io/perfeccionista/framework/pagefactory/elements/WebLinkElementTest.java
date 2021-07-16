@@ -87,7 +87,7 @@ class WebLinkElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(simpleLink.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("simpleLink", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("simpleLink", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Simple link", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Simple link")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Simple link")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

@@ -30,9 +30,10 @@ public class WebShouldLooksLikeMatcher implements WebGetScreenshotAvailableMatch
 
     @Override
     public void check(@NotNull WebGetScreenshotAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot)
-                : assertInvocation(SHOULD_NOT_LOOKS_LIKE_METHOD, element, componentName, expectedScreenshot);
+                ? assertInvocation(SHOULD_LOOKS_LIKE_METHOD, elementName, componentName, String.valueOf(expectedScreenshot.getSize()))
+                : assertInvocation(SHOULD_NOT_LOOKS_LIKE_METHOD, elementName, componentName, String.valueOf(expectedScreenshot.getSize()));
 
         runCheck(invocationName,
                 () -> {

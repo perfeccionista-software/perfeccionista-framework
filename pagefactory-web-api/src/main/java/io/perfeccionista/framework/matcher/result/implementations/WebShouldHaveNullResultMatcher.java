@@ -18,9 +18,10 @@ public class WebShouldHaveNullResultMatcher<T> implements WebMultipleIndexedResu
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<T, ? extends WebChildElement> result) {
-        InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_NULL_RESULT_METHOD, this);
-
         WebChildElement element = result.getElement();
+        var elementName = element.getElementIdentifier().getLastUsedName();
+
+        InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_NULL_RESULT_METHOD, elementName);
 
         runCheck(invocationName, () -> {
             result.getResults().forEach((index, value) -> {

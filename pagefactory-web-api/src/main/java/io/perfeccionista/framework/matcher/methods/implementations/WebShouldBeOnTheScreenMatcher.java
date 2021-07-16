@@ -32,9 +32,10 @@ public class WebShouldBeOnTheScreenMatcher implements WebIsOnTheScreenAvailableM
 
     @Override
     public void check(@NotNull WebIsOnTheScreenAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_BE_ON_THE_SCREEN_METHOD, element)
-                : assertInvocation(SHOULD_NOT_BE_ON_THE_SCREEN_METHOD, element);
+                ? assertInvocation(SHOULD_BE_ON_THE_SCREEN_METHOD, elementName)
+                : assertInvocation(SHOULD_NOT_BE_ON_THE_SCREEN_METHOD, elementName);
 
         runCheck(invocationName,
                 () -> {

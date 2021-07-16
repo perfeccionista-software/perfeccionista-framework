@@ -38,10 +38,12 @@ public class MappedWebBlockIdentifier implements WebElementIdentifier {
 
     @Override
     public @NotNull String getLastUsedName() {
-        if (Objects.isNull(lastUsedName)) {
-            return mappedBlockClass.getCanonicalName();
+        if (Objects.nonNull(lastUsedName)) {
+            return lastUsedName;
         }
-        return lastUsedName;
+        return names.keySet().stream()
+                .findFirst()
+                .orElse(mappedBlockClass.getCanonicalName());
     }
 
     @Override

@@ -13,8 +13,8 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiM
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_NUMBER_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_NUMBER_METHOD;
 
 public class WebShouldHaveTextNumberValueMatcher implements WebGetTextAvailableMatcher {
 
@@ -28,9 +28,10 @@ public class WebShouldHaveTextNumberValueMatcher implements WebGetTextAvailableM
 
     @Override
     public void check(@NotNull WebGetTextAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_TEXT_METHOD, this, expectedNumberValue)
-                : assertInvocation(SHOULD_NOT_HAVE_TEXT_METHOD, this, expectedNumberValue);
+                ? assertInvocation(SHOULD_HAVE_NUMBER_METHOD, elementName, expectedNumberValue.getShortDescription())
+                : assertInvocation(SHOULD_NOT_HAVE_NUMBER_METHOD, elementName, expectedNumberValue.getShortDescription());
 
         runCheck(invocationName,
                 () -> {

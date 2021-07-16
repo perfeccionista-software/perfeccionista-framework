@@ -30,9 +30,10 @@ public class WebShouldHaveSortedResultMatcher<T> implements WebMultipleIndexedRe
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<T, ? extends WebChildElement> result) {
-        InvocationInfo invocationName = assertInvocation(SHOULD_BE_SORTED_METHOD, this);
-
         WebChildElement element = result.getElement();
+        var elementName = element.getElementIdentifier().getLastUsedName();
+
+        InvocationInfo invocationName = assertInvocation(SHOULD_BE_SORTED_METHOD, elementName, comparator.getClass().getCanonicalName());
 
         runCheck(invocationName, () -> {
             AtomicBoolean comparisonResult = new AtomicBoolean(true);

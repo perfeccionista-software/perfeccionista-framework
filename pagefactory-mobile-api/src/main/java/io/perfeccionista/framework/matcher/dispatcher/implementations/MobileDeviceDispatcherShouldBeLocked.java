@@ -25,8 +25,8 @@ public class MobileDeviceDispatcherShouldBeLocked implements MobileDeviceDispatc
     @Override
     public void check(@NotNull MobileDeviceDispatcher mobileDevice) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(MOBILE_DEVICE_SHOULD_BE_LOCKED_METHOD, this)
-                : assertInvocation(MOBILE_DEVICE_SHOULD_BE_UNLOCKED_METHOD, this);
+                ? assertInvocation(MOBILE_DEVICE_SHOULD_BE_LOCKED_METHOD)
+                : assertInvocation(MOBILE_DEVICE_SHOULD_BE_UNLOCKED_METHOD);
 
         runCheck(invocationName,
                 () -> {

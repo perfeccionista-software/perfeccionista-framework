@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.REPLACE_TEXT_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -16,9 +17,13 @@ public class MobileReplaceTextOperationType implements MobileElementOperationTyp
     private final MobileChildElementBase element;
     private final String valueToInput;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileReplaceTextOperationType(MobileChildElementBase element, String valueToInput) {
         this.element = element;
         this.valueToInput = valueToInput;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(REPLACE_TEXT_METHOD, elementName, valueToInput);
     }
 
     public static MobileReplaceTextOperationType of(@NotNull MobileChildElementBase element, @NotNull String valueToInput) {
@@ -27,7 +32,7 @@ public class MobileReplaceTextOperationType implements MobileElementOperationTyp
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.actionInvocation(REPLACE_TEXT_METHOD, element, valueToInput);
+        return this.invocationInfo;
     }
 
     @Override

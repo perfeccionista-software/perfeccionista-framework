@@ -50,6 +50,11 @@ public abstract class AbstractNumberValue<T extends Number> implements NumberVal
     }
 
     @Override
+    public @NotNull String getShortDescription() {
+        return numberChecker.getShortComparisonDescription();
+    }
+
+    @Override
     public String toString() {
         return numberChecker.getComparisonDescription();
     }

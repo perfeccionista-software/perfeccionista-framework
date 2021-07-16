@@ -12,8 +12,8 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMess
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_HAS_UNEXPECTED_STATE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_STATE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_STATE_METHOD;
 
 public class MobileShouldHaveStateMatcher implements MobileElementStateAvailableMatcher {
 
@@ -27,9 +27,10 @@ public class MobileShouldHaveStateMatcher implements MobileElementStateAvailable
 
     @Override
     public void check(@NotNull MobileElementStateAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, element, stateName)
-                : assertInvocation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, element, stateName);
+                ? assertInvocation(SHOULD_HAVE_STATE_METHOD, elementName, stateName)
+                : assertInvocation(SHOULD_NOT_HAVE_STATE_METHOD, elementName, stateName);
 
         runCheck(invocationName,
                 () -> {

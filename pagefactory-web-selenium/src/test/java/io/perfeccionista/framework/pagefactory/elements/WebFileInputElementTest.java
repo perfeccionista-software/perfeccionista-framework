@@ -104,7 +104,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(fileInput.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("fileInput", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("fileInput", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("File input", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("File input")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("File input")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
@@ -250,7 +250,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed())
                 .click()
                 .should((WebTextMatcher) element -> {
-                    runCheck(InvocationInfo.assertInvocation(SHOULD_FILE_EXIST_METHOD, element),
+                    runCheck(InvocationInfo.assertInvocation(SHOULD_FILE_EXIST_METHOD, element.getElementIdentifier().getLastUsedName()),
                             () -> FileUtils.fileShouldExist(Path.of(downloadFile)));
                 });
     }

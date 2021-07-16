@@ -1,6 +1,8 @@
 package io.perfeccionista.framework.invocation.runner;
 
+import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.PreconditionViolation;
+import io.perfeccionista.framework.exceptions.attachments.WebAllureAttachmentProcessor;
 import io.qameta.allure.model.Status;
 
 import java.util.function.Consumer;
@@ -11,6 +13,7 @@ import static io.qameta.allure.util.ResultsUtils.getStatus;
 import static io.qameta.allure.util.ResultsUtils.getStatusDetails;
 
 public class CloseInvocationInfoLogicVisitor implements Consumer<InvocationInfo> {
+    private final WebAllureAttachmentProcessor attachmentProcessor = new WebAllureAttachmentProcessor(Environment.getCurrent());
 
     @Override
     public void accept(InvocationInfo invocationInfo) {
@@ -22,6 +25,7 @@ public class CloseInvocationInfoLogicVisitor implements Consumer<InvocationInfo>
                     .setStatus(getStatus(throwable).orElse(Status.BROKEN))
                     .setStatusDetails(getStatusDetails(throwable).orElse(null)));
         }
+        attachmentProcessor.processAttachment(invocationInfo.getAttachment());
         getLifecycle().stopStep(invocationInfo.getUuid());
     }
 

@@ -79,7 +79,7 @@ class WebTableElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(table.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("table", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("table", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Table of countries", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Table of countries")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Table of countries")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

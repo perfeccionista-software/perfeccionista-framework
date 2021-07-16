@@ -16,11 +16,13 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class WebGetScreenshotOperationType implements WebElementOperationType<Screenshot> {
 
     private final WebGetScreenshotAvailable element;
-    private final String componentName;
+
+    private final InvocationInfo invocationInfo;
 
     private WebGetScreenshotOperationType(WebGetScreenshotAvailable element, String componentName) {
         this.element = element;
-        this.componentName = componentName;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(GET_SCREENSHOT_METHOD, elementName, componentName);
     }
 
     public static WebGetScreenshotOperationType of(@NotNull WebGetScreenshotAvailable element, @NotNull String componentName) {
@@ -29,7 +31,7 @@ public class WebGetScreenshotOperationType implements WebElementOperationType<Sc
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(GET_SCREENSHOT_METHOD, element, componentName);
+        return this.invocationInfo;
     }
 
     @Override

@@ -20,6 +20,8 @@ public interface Screenshot {
 
     byte[] getRaw();
 
+    int getSize();
+
     Screenshot writeToFile(@NotNull Path path);
 
 }

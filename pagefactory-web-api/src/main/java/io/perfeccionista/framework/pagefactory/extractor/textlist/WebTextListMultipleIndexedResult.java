@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.pagefactory.extractor.textlist;
 
+import io.perfeccionista.framework.exceptions.attachments.WebExtractorDescriptionAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
@@ -49,15 +51,20 @@ public class WebTextListMultipleIndexedResult<T> implements WebMultipleIndexedRe
     @Override
     public Map<Integer, T> getResults() {
         WebTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
-                () -> extractor.extractValues(webTextListFilter));
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> extractor.extractValues(webTextListFilter));
     }
 
     @Override
     public int getSize() {
         WebTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
-                () -> webTextListFilter.getFilterResult().getIndexes().size());
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
+        return runCheck(invocationInfo, () -> webTextListFilter.getFilterResult().getIndexes().size());
     }
 
     @Override

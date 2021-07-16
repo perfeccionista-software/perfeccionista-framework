@@ -30,8 +30,8 @@ public class WebBrowserShouldHaveTabWithTitleStringMatcher implements WebBrowser
     @Override
     public void check(@NotNull WebBrowserTabsDispatcher tabsDispatcher) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(BROWSER_SHOULD_HAVE_TAB_WITH_TITLE_METHOD, this, expectedText)
-                : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TAB_WITH_TITLE_METHOD, this, expectedText);
+                ? assertInvocation(BROWSER_SHOULD_HAVE_TAB_WITH_TITLE_METHOD, expectedText)
+                : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TAB_WITH_TITLE_METHOD, expectedText);
 
         runCheck(invocationName,
                 () -> {

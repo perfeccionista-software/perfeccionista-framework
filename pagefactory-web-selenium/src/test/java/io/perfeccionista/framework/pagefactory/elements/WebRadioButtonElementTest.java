@@ -97,7 +97,7 @@ class WebRadioButtonElementTest  extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(radioButtonOne.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("radioButtonOne", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("radioButtonOne", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("RadioButton one", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("RadioButton one")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("RadioButton one")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

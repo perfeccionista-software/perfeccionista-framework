@@ -83,7 +83,7 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(radioGroup.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("radioGroup", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("radioGroup", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Radio group", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Radio group")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Radio group")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

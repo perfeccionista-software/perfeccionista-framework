@@ -101,7 +101,7 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(simpleInput.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("simpleInput", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("simpleInput", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Simple input", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Simple input")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Simple input")),
                 () -> assertEquals(2, elementIdentifier.names().size()),

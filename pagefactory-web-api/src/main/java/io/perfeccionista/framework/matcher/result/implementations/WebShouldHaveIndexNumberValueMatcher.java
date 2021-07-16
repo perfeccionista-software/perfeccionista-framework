@@ -32,11 +32,12 @@ public class WebShouldHaveIndexNumberValueMatcher implements WebIndexesMatcher {
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<Integer, ? extends WebChildElement> result) {
-        InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_INDEX_VALUE_METHOD, this, expectedValue)
-                : assertInvocation(SHOULD_NOT_HAVE_INDEX_VALUE_METHOD, this, expectedValue);
-
         WebChildElement element = result.getElement();
+        var elementName = element.getElementIdentifier().getLastUsedName();
+
+        InvocationInfo invocationName = positive
+                ? assertInvocation(SHOULD_HAVE_INDEX_VALUE_METHOD, elementName, expectedValue.getShortDescription())
+                : assertInvocation(SHOULD_NOT_HAVE_INDEX_VALUE_METHOD, elementName, expectedValue.getShortDescription());
 
         runCheck(invocationName, () -> {
             Collection<Integer> indexes = result.getResults().values();

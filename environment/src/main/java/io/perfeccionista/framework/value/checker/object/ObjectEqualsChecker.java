@@ -28,6 +28,11 @@ public class ObjectEqualsChecker extends AbstractObjectChecker {
     }
 
     @Override
+    public @NotNull String getShortComparisonDescription() {
+        return String.format("equals {%s}", getProcessedExpected());
+    }
+
+    @Override
     public @NotNull String getComparisonDescription() {
         return String.format("Compare parameters:\n"
                         + "          rawExpected: '%s'\n"

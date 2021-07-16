@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLOSE_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLOSE;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,12 @@ public class WebCloseOperationType implements WebElementOperationType<Void> {
 
     private final WebDropDownAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebCloseOperationType(WebDropDownAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(CLOSE_METHOD, elementName);
     }
 
     public static WebCloseOperationType of(@NotNull WebDropDownAvailable element) {
@@ -27,7 +30,7 @@ public class WebCloseOperationType implements WebElementOperationType<Void> {
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(CLOSE_METHOD, element, CLOSE);
+        return invocationInfo;
     }
 
     @Override

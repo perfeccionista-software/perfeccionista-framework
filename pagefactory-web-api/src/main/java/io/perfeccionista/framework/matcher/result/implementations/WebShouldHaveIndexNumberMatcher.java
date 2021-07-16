@@ -31,11 +31,12 @@ public class WebShouldHaveIndexNumberMatcher implements WebIndexesMatcher {
 
     @Override
     public void check(@NotNull WebMultipleIndexedResult<Integer, ? extends WebChildElement> result) {
-        InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_INDEX_METHOD, this, expectedIndex)
-                : assertInvocation(SHOULD_NOT_HAVE_INDEX_METHOD, this, expectedIndex);
-
         WebChildElement element = result.getElement();
+        var elementName = element.getElementIdentifier().getLastUsedName();
+
+        InvocationInfo invocationName = positive
+                ? assertInvocation(SHOULD_HAVE_INDEX_METHOD, elementName, String.valueOf(expectedIndex))
+                : assertInvocation(SHOULD_NOT_HAVE_INDEX_METHOD, elementName, String.valueOf(expectedIndex));
 
         runCheck(invocationName, () -> {
             Collection<Integer> indexes = result.getResults().values();

@@ -25,9 +25,10 @@ public class WebShouldBeEnabledMatcher implements WebIsEnabledAvailableMatcher {
 
     @Override
     public void check(@NotNull WebIsEnabledAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_BE_ENABLED_METHOD, element)
-                : assertInvocation(SHOULD_BE_DISABLED_METHOD, element);
+                ? assertInvocation(SHOULD_BE_ENABLED_METHOD, elementName)
+                : assertInvocation(SHOULD_BE_DISABLED_METHOD, elementName);
 
         runCheck(invocationName,
                 () -> {

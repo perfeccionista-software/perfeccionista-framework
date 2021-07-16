@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static io.perfeccionista.framework.utils.FileUtils.readBinaryFile;
 import static io.perfeccionista.framework.utils.FileUtils.writeBinaryFile;
@@ -70,6 +71,11 @@ public class JpegScreenshot implements Screenshot {
     @Override
     public byte[] getRaw() {
         return raw;
+    }
+
+    @Override
+    public int getSize() {
+        return Objects.isNull(raw) ? 0 : raw.length;
     }
 
     @Override

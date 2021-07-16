@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SEND_KEY_EVENTS_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -17,9 +18,13 @@ public class MobileSendKeyEventsOperationType implements MobileElementOperationT
     private final MobileChildElementBase element;
     private final KeyEventsChain keyEvents;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileSendKeyEventsOperationType(MobileChildElementBase element, KeyEventsChain keyEvents) {
         this.element = element;
         this.keyEvents = keyEvents;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(SEND_KEY_EVENTS_METHOD, elementName, keyEvents.toString());
     }
 
     public static MobileSendKeyEventsOperationType of(@NotNull MobileChildElementBase element, @NotNull KeyEventsChain keyEvents) {
@@ -28,7 +33,7 @@ public class MobileSendKeyEventsOperationType implements MobileElementOperationT
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.actionInvocation(SEND_KEY_EVENTS_METHOD, element, keyEvents);
+        return this.invocationInfo;
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_COLOR_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -15,13 +16,15 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class MobileGetColorOperationType implements MobileElementOperationType<Color> {
 
     private final MobileChildElementBase element;
-    private final String componentName;
     private final String property;
+
+    private final InvocationInfo invocationInfo;
 
     private MobileGetColorOperationType(MobileChildElementBase element, String componentName, String property) {
         this.element = element;
-        this.componentName = componentName;
         this.property = property;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(GET_COLOR_METHOD, elementName, componentName, property);
     }
 
     public static MobileGetColorOperationType of(@NotNull MobileChildElementBase element, @NotNull String componentName, @NotNull String cssProperty) {
@@ -30,7 +33,7 @@ public class MobileGetColorOperationType implements MobileElementOperationType<C
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.getterInvocation(GET_COLOR_METHOD, element, componentName, property);
+        return this.invocationInfo;
     }
 
     @Override

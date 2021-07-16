@@ -74,9 +74,6 @@ public class WebElementRegistry implements JsonSerializable {
                 }
             }
         }
-        if (lookupElement != null) {
-            lookupElement.getElementIdentifier().setLastUsedName(method.getName());
-        }
         return Optional.ofNullable(lookupElement);
     }
 
@@ -119,9 +116,6 @@ public class WebElementRegistry implements JsonSerializable {
                     }
                 }
             }
-        }
-        if (lookupElement != null) {
-            lookupElement.getElementIdentifier().setLastUsedName(methodName);
         }
         return Optional.ofNullable(lookupElement);
     }

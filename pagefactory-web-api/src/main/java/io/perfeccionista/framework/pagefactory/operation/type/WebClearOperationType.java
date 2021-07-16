@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLEAR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,13 @@ public class WebClearOperationType implements WebElementOperationType<Void> {
 
     private final WebInputTextAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebClearOperationType(WebInputTextAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(CLEAR_METHOD, elementName);
+
     }
 
     public static WebClearOperationType of(@NotNull WebInputTextAvailable element) {
@@ -27,7 +31,7 @@ public class WebClearOperationType implements WebElementOperationType<Void> {
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(CLEAR_METHOD, element, INPUT);
+        return invocationInfo;
     }
 
     @Override

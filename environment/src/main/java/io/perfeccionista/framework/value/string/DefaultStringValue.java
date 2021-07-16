@@ -80,6 +80,11 @@ public class DefaultStringValue implements StringValue {
     }
 
     @Override
+    public @NotNull String getShortDescription() {
+        return stringChecker.getShortComparisonDescription();
+    }
+
+    @Override
     public String toString() {
         return stringChecker.getComparisonDescription();
     }

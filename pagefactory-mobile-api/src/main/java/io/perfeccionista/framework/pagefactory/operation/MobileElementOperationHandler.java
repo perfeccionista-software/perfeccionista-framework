@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.operation;
 
 import io.perfeccionista.framework.exceptions.attachments.MobileElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.MobileElementOperationAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElementBase;
 import io.perfeccionista.framework.pagefactory.elements.locators.MobileLocatorChain;
 import io.perfeccionista.framework.pagefactory.operation.type.MobileElementOperationType;
@@ -47,6 +48,7 @@ public class MobileElementOperationHandler<T> {
 
     public T executeGetter() {
         MobileElementOperation<T> operation = getOperation();
+        operationType.getInvocationName().setMainAttachmentEntry(MobileElementOperationAttachmentEntry.of(operation));
         return element.getMobileDeviceDispatcher()
                 .executor()
                 .executeMobileElementOperation(operation)
@@ -59,6 +61,7 @@ public class MobileElementOperationHandler<T> {
 
     public void executeAction() {
         MobileElementOperation<T> operation = getOperation();
+        operationType.getInvocationName().setMainAttachmentEntry(MobileElementOperationAttachmentEntry.of(operation));
         element.getMobileDeviceDispatcher()
                 .executor()
                 .executeMobileElementOperation(operation)
