@@ -4,7 +4,7 @@ import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebText;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementAttributeProperty;
 
 public interface FullCountryNameWebBlock extends WebBlock {
 
@@ -12,7 +12,7 @@ public interface FullCountryNameWebBlock extends WebBlock {
     @Name("Полное название государства")
     @WebLocator(xpath = "self::node()//span[@itemid = 'country-full-name']", strictSearch = false)
     @WebLocator(component = "SNG", xpath = "self::node()//span[@itemid = 'sng']")
-    @WebElementProperty(name = "prompt", params = "title")
+    @WebElementAttributeProperty(name = "prompt", attribute = "title")
     WebText fullName();
 
 }

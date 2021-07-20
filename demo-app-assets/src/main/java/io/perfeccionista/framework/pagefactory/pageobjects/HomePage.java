@@ -7,7 +7,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebText;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebListBlockLocator;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementAttributeProperty;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 
 import static io.perfeccionista.framework.Web.beDisplayed;
@@ -68,7 +68,7 @@ public interface HomePage extends AbstractWebPage {
         @Name("Flag image")
         @Name("картинка Флага")
         @WebLocator(css = ".img-thumbnail")
-        @WebElementProperty(name = "подсказка", params = "alt")
+        @WebElementAttributeProperty(name = "подсказка", attribute = "alt")
         WebImage russianFlag();
 
     }
