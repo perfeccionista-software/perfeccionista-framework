@@ -310,6 +310,7 @@
                 foundElements = findElementsByXpath(parentElement, textXpathValue);
                 break;
             case 'containsText':
+                // TODO: Переделать механизм
                 let partialTextXpathValue = './/*[contains(text(), "' + locator.locatorValue + '")]';
                 foundElements = findElementsByXpath(parentElement, partialTextXpathValue);
                 break;

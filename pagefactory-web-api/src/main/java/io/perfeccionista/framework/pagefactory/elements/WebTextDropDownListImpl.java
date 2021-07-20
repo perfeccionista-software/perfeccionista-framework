@@ -44,6 +44,7 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
 
     @Override
     public WebTextDropDownList select(@NotNull WebTextListBlockCondition filterCondition) {
+        // TODO: Не работает стабильно - элемент хэш после экстракции
         filter(filterCondition)
                 .extractOne(textBlock()).getNotNullResult().textLink()
                 .click();

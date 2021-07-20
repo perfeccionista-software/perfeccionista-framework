@@ -9,8 +9,8 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_PRESENT_METHOD;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
-import static org.gradle.internal.impldep.org.junit.platform.commons.util.ReflectionUtils.getDeclaredConstructor;
 
 public class WebGetIsPresentOperationType implements WebElementOperationType<Boolean> {
 
