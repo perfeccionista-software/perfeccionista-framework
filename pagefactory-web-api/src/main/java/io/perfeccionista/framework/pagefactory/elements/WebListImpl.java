@@ -206,6 +206,13 @@ public class WebListImpl<T extends WebBlock> extends AbstractWebChildElement imp
         return this;
     }
 
+    // Size
+
+    @Override
+    public int size() {
+        return extractAll(blockIndex()).getSize();
+    }
+
     @Override
     public JsonNode toJson() {
         ObjectNode rootNode = (ObjectNode) super.toJson();

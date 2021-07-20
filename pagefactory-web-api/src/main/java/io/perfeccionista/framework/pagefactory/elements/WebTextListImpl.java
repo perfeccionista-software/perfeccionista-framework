@@ -210,6 +210,13 @@ public class WebTextListImpl extends AbstractWebChildElement implements WebTextL
         return this;
     }
 
+    // Size
+
+    @Override
+    public int size() {
+        return extractAll(textBlockIndex()).getSize();
+    }
+
     @Override
     public JsonNode toJson() {
         ObjectNode rootNode = (ObjectNode) super.toJson();

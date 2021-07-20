@@ -146,6 +146,14 @@ public class WebTextListFilterImpl implements WebTextListFilter {
     }
 
     @Override
+    public int size() {
+        return runCheck(InvocationInfo.getterInvocation(""), () -> {
+            executeFilter(element, filterBuilder);
+            return filterResult.getSize();
+        });
+    }
+
+    @Override
     public WebTextListFilter setInitialHash(@Nullable String initialHash) {
         this.initialHash = initialHash;
         return this;

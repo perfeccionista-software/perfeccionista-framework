@@ -126,7 +126,8 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(Point2D.of(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getElementBounds().getScreenLocation()),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), radioGroup.getColor("border-color")),
                 () -> assertEquals(3, radioGroup.filterBuilder(emptyWebRadioButtonFilter()).extractAll(element()).getSize()),
-                () -> assertEquals(Point2D.of(757.5d, 1328.4d).setInaccuracy(0.2d), radioGroup.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(757.5d, 1328.4d).setInaccuracy(0.2d), radioGroup.getElementBounds().getCenter()),
+                () -> assertEquals(3, radioGroup.size())
         );
     }
 

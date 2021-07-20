@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter.radio;
 
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
@@ -19,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static io.perfeccionista.framework.Web.index;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.ADD;
 import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.SUBTRACT;
 
@@ -66,6 +68,14 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
         WebRadioGroupMultipleIndexedResult<Integer> indexedResult = WebRadioGroupMultipleIndexedResult.of(element, filterBuilder, index());
         matcher.check(indexedResult);
         return this;
+    }
+
+    @Override
+    public int size() {
+        return runCheck(InvocationInfo.getterInvocation(""), () -> {
+            executeFilter(element, filterBuilder);
+            return filterResult.getSize();
+        });
     }
 
     @Override

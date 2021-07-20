@@ -92,4 +92,7 @@ public interface WebTextList extends WebChildElement, WebElementContainer<WebTex
 //    WebTextList scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebTextListFilterBuilder filterBuilder);
 //    WebTextList scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebTextListFilterBuilder filterBuilder);
 
+    // Size
+    int size();
+
 }

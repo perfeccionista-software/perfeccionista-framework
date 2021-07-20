@@ -120,7 +120,8 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(Point2D.of(345d, 227d).setInaccuracy(0.2d), list.getElementBounds().getAbsoluteLocation()),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), list.getColor("border-color")),
                 () -> assertEquals(195, list.extractAll(block()).getSize()),
-                () -> assertEquals(Point2D.of(757.5d, 438.5d).setInaccuracy(0.2d), list.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(757.5d, 438.5d).setInaccuracy(0.2d), list.getElementBounds().getCenter()),
+                () -> assertEquals(195, list.size())
         );
     }
 

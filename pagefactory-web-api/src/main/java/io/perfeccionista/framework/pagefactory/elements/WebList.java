@@ -89,4 +89,7 @@ public interface WebList<T extends WebBlock> extends WebChildElement {
 //    WebList scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebListFilterBuilder filterBuilder);
 //    WebList scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebListFilterBuilder filterBuilder);
 
+    // Size
+    int size();
+
 }

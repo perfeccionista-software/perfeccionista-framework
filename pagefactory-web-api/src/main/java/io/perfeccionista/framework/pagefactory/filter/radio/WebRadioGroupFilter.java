@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 public interface WebRadioGroupFilter extends WebFilter<WebRadioGroup> {
 
     @NotNull <T> WebSingleIndexedResult<T, WebRadioGroup> extractOne(@NotNull WebRadioButtonValueExtractor<T> extractor);
-
     @NotNull <T> WebMultipleIndexedResult<T, WebRadioGroup> extractAll(@NotNull WebRadioButtonValueExtractor<T> extractor);
 
     @Override

@@ -13,9 +13,24 @@ import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Tag("WebElement") @Tag("WebRadioGroup")
 class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
+
+    @Test
+    void webRadioGroupFilterSizeTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select(stringEquals("Elements"));
+
+        ElementsPage elementsPage = context.getPage(ElementsPage.class);
+        WebRadioGroup radioGroup = elementsPage.radioGroup()
+                .should(beDisplayed());
+
+        assertEquals(2, radioGroup.filterBuilder(with(radioButtonIndex(intGreaterThanOrEqual(1)))).size());
+        assertEquals(1, radioGroup.filterBuilder(without(radioButtonIndex(intGreaterThanOrEqual(1)))).size());
+    }
 
     @Test
     void webRadioGroupFilterEmptyConditionTest() {

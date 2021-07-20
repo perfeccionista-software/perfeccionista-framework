@@ -83,4 +83,7 @@ public interface WebRadioGroup extends WebChildElement, WebElementContainer<WebR
     @Override
     WebRadioGroup scrollTo();
 
+    // Size
+    int size();
+
 }

@@ -19,4 +19,6 @@ public interface WebFilter<E extends WebChildElement> {
     @API(status = Status.STABLE)
     WebFilter<E> setInitialHash(@Nullable String initialHash);
 
+    int size();
+
 }

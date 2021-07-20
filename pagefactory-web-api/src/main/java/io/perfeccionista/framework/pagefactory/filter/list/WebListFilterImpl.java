@@ -143,6 +143,14 @@ public class WebListFilterImpl<T extends WebBlock> implements WebListFilter<T> {
     }
 
     @Override
+    public int size() {
+        return runCheck(InvocationInfo.getterInvocation(""), () -> {
+            executeFilter(element, filterBuilder);
+            return filterResult.getSize();
+        });
+    }
+
+    @Override
     public WebListFilter<T> setInitialHash(@Nullable String initialHash) {
         this.initialHash = initialHash;
         return this;

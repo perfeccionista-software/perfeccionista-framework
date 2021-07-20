@@ -192,6 +192,13 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
         return this;
     }
 
+    // Size
+
+    @Override
+    public int size() {
+        return extractAll(index()).getSize();
+    }
+
     @Override
     public @NotNull JsonNode toJson() {
         ObjectNode rootNode = (ObjectNode) super.toJson();

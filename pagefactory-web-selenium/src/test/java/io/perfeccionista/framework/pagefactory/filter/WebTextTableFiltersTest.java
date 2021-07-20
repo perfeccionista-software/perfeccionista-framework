@@ -15,9 +15,24 @@ import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Tag("WebElement") @Tag("WebTextTable")
 class WebTextTableFiltersTest extends AbstractWebSeleniumParallelTest {
+
+    @Test
+    void webTextTableFilterSizeTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select("Text Table Element");
+
+        TextTablePage textTablePage = context.getPage(TextTablePage.class);
+        WebTextTable textTable = textTablePage.textTable()
+                .should(beDisplayed());
+
+        assertEquals(95, textTable.filterBuilder(with(textRowIndex(intGreaterThanOrEqual(100)))).size());
+        assertEquals(100, textTable.filterBuilder(without(textRowIndex(intGreaterThanOrEqual(100)))).size());
+    }
 
     @Test
     void webTextTableFilterEmptyConditionTest() {
@@ -34,7 +49,7 @@ class WebTextTableFiltersTest extends AbstractWebSeleniumParallelTest {
     }
 
     @Test
-    void webTableFilterRowIndexConditionTest() {
+    void webTextTableFilterRowIndexConditionTest() {
         WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select("Text Table Element");
@@ -50,7 +65,7 @@ class WebTextTableFiltersTest extends AbstractWebSeleniumParallelTest {
     }
 
     @Test
-    void webTableFilterElementTextConditionTest() {
+    void webTextTableFilterElementTextConditionTest() {
         WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select(stringEquals("Text Table Element"));

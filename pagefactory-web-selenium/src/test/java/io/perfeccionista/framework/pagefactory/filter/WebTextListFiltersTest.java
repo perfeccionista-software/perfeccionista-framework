@@ -12,9 +12,24 @@ import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Tag("WebElement") @Tag("WebTextList")
 class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
+
+    @Test
+    void webTextListFilterSizeTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select(stringEquals("Text List Elements"));
+
+        TextListElementsPage textListElementsPage = context.getPage(TextListElementsPage.class);
+        WebTextList textList = textListElementsPage.textList()
+                .should(beDisplayed());
+
+        assertEquals(95, textList.filterBuilder(with(textBlockIndex(intGreaterThanOrEqual(100)))).size());
+        assertEquals(100, textList.filterBuilder(without(textBlockIndex(intGreaterThanOrEqual(100)))).size());
+    }
 
     @Test
     void webTextListFilterEmptyConditionTest() {

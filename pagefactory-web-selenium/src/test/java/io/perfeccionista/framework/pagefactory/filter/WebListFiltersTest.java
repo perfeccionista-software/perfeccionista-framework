@@ -16,11 +16,26 @@ import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Сделать тесты на несколько условий и на несколько фильтров
 @Tag("WebElement") @Tag("WebList")
 class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
+
+    @Test
+    void webListFilterSizeTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select("List Elements");
+
+        ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
+        WebList<CountryBlock> list = listElementsPage.webList()
+                .should(beDisplayed());
+
+        assertEquals(95, list.filter(blockIndex(intGreaterThanOrEqual(100))).size());
+        assertEquals(100, list.filterBuilder(without(blockIndex(intGreaterThanOrEqual(100)))).size());
+    }
 
     @Test
     void webListFilterEmptyConditionTest() {

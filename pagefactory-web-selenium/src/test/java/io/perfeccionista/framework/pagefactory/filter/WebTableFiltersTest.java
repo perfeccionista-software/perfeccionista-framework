@@ -26,10 +26,25 @@ import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Tag("WebElement") @Tag("WebTable")
 class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
+
+    @Test
+    void webTableFilterSizeTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select("Table Element");
+
+        TablePage tablePage = context.getPage(TablePage.class);
+        WebTable table = tablePage.table()
+                .should(beDisplayed());
+
+        assertEquals(95, table.filterBuilder(with(rowIndex(intGreaterThanOrEqual(100)))).size());
+        assertEquals(100, table.filterBuilder(without(rowIndex(intGreaterThanOrEqual(100)))).size());
+    }
 
     @Test
     void webTableFilterEmptyConditionTest() {

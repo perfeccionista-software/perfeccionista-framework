@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter.texttable;
 
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableValueExtractor;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 import static io.perfeccionista.framework.Web.textCellValue;
 import static io.perfeccionista.framework.Web.textRowIndex;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 
 
 // TODO: Implement: public Map<String, SingleResult<String>> extractOne(Set<String> columnNames)
@@ -89,6 +91,14 @@ public class WebTextTableFilterImpl implements WebTextTableFilter {
         WebTextTableMultipleIndexedResult<Integer> indexedResult = WebTextTableMultipleIndexedResult.of(element, filterBuilder, textRowIndex());
         matcher.check(indexedResult);
         return this;
+    }
+
+    @Override
+    public int size() {
+        return runCheck(InvocationInfo.getterInvocation(""), () -> {
+            executeFilter(element, filterBuilder);
+            return filterResult.getSize();
+        });
     }
 
     @Override
