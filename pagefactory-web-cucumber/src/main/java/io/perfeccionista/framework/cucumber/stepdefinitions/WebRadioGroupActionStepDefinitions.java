@@ -26,7 +26,7 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                                ValueIntegerParameter radioButtonIndex) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
-                                .filter(webRadioGroupFilterBuilder()
+                                .filterBuilder(webRadioGroupFilterBuilder()
                                         .add(radioButtonIndex(radioButtonIndex.getValue())))
                                 .extractOne(element())
                                 .getNotNullResult()
@@ -44,7 +44,7 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                                ValueStringParameter radioButtonLabel) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
-                                .filter(webRadioGroupFilterBuilder()
+                                .filterBuilder(webRadioGroupFilterBuilder()
                                         .add(containsLabel(radioButtonLabel.getValue())))
                                 .extractOne(element())
                                 .getNotNullResult()
@@ -62,7 +62,7 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                                WebRadioGroupFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
-                                .filter(itemFilter)
+                                .filterBuilder(itemFilter)
                                 .extractOne(element())
                                 .getNotNullResult()
                                 .scrollTo());

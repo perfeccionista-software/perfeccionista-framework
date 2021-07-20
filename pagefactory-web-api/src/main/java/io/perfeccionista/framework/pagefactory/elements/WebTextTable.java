@@ -42,7 +42,7 @@ public interface WebTextTable extends WebChildElement, WebElementContainer<WebTe
 
     // Filter
     @Override
-    @NotNull WebTextTableFilter filter(@NotNull WebTextTableFilterBuilder filterBuilder);
+    @NotNull WebTextTableFilter filterBuilder(@NotNull WebTextTableFilterBuilder filterBuilder);
     @NotNull WebTextTableFilter filter(@NotNull WebTextTableRowCondition filterCondition);
 
     // Actions

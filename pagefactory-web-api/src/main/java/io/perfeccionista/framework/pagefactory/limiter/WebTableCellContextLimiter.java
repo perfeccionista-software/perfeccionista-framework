@@ -64,7 +64,7 @@ public class WebTableCellContextLimiter<T extends WebBlock> implements WebContex
                         .getElementRegistry()
                         .getRequiredElementByPath(elementPath, WebTable.class);
             }
-            return (Collection<T>) webTable.filter(filterBuilder)
+            return (Collection<T>) webTable.filterBuilder(filterBuilder)
                     .extractRows(cell(columnName))
                     .getResults().values();
         }).reduce(new ArrayList<>(), (webBlocks1, webBlocks2) -> {

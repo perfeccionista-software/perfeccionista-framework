@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static io.perfeccionista.framework.Web.block;
 import static io.perfeccionista.framework.Web.blockIndex;
@@ -54,8 +55,19 @@ public class WebListFilterImpl<T extends WebBlock> implements WebListFilter<T> {
     }
 
     @Override
+    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, WebListBlockValueExtractor<R, T>> extractorFunction) {
+        return WebListMultipleIndexedResult.of(element, filterBuilder, extractorFunction.apply(element.getWebListFrame().getMappedBlockFrame()));
+    }
+
+    @Override
     public @NotNull <R> WebSingleIndexedResult<R, WebList<T>> extractOne(@NotNull WebListBlockValueExtractor<R, T> extractor) {
         return WebListMultipleIndexedResult.of(element, filterBuilder, extractor)
+                .singleResult();
+    }
+
+    @Override
+    public @NotNull <R> WebSingleIndexedResult<R, WebList<T>> extractOne(@NotNull Function<T, WebListBlockValueExtractor<R, T>> extractorFunction) {
+        return WebListMultipleIndexedResult.of(element, filterBuilder, extractorFunction.apply(element.getWebListFrame().getMappedBlockFrame()))
                 .singleResult();
     }
 
@@ -99,7 +111,7 @@ public class WebListFilterImpl<T extends WebBlock> implements WebListFilter<T> {
     @Override
     public WebListFilter<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer) {
         runCheck(InvocationInfo.assertInvocation(""), () -> {
-            T firstBlock = WebListMultipleIndexedResult.of(element, filterBuilder, block(element.getWebListFrame().getMappedBlockClass()))
+            T lastBlock = WebListMultipleIndexedResult.of(element, filterBuilder, block(element.getWebListFrame().getMappedBlockClass()))
                     .getResults().entrySet()
                     .stream()
                     .max(Entry.comparingByKey())
@@ -107,7 +119,7 @@ public class WebListFilterImpl<T extends WebBlock> implements WebListFilter<T> {
                             .setProcessed(true)
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)))
                     .getValue();
-            listBlockConsumer.accept(firstBlock);
+            listBlockConsumer.accept(lastBlock);
         });
         return this;
     }

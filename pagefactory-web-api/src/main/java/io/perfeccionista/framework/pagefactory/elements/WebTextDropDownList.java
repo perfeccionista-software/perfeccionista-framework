@@ -23,13 +23,28 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailabl
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 public interface WebTextDropDownList extends WebTextList,
         WebClickAvailable, WebGetTextAvailable, WebGetLabelAvailable, WebDropDownAvailable, WebChildElement {
 
+    // Select
+    @Override
+    WebTextDropDownList select(@NotNull WebTextListFilterBuilder filterBuilder);
+    @Override
     WebTextDropDownList select(@NotNull WebTextListBlockCondition filterCondition);
+
+    // Checks
+    @Override
+    WebTextDropDownList forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    @Override
+    WebTextDropDownList forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    @Override
+    WebTextDropDownList forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
 
     // Actions
     @Override

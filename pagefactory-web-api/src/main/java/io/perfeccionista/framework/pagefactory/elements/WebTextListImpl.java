@@ -26,6 +26,8 @@ import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 import static io.perfeccionista.framework.Web.*;
 
 
@@ -36,6 +38,22 @@ public class WebTextListImpl extends AbstractWebChildElement implements WebTextL
     @Override
     public @NotNull WebListFrame<DefaultWebTextBlock> getWebTextListFrame() {
         return webTextListFrame;
+    }
+
+    // Select
+
+    @Override
+    public WebTextList select(@NotNull WebTextListFilterBuilder filterBuilder) {
+        filterBuilder.build(this)
+                .forSingleBlock(WebLink::click);
+        return this;
+    }
+
+    @Override
+    public WebTextList select(@NotNull WebTextListBlockCondition filterCondition) {
+        with(filterCondition).build(this)
+                .forSingleBlock(WebLink::click);
+        return this;
     }
 
     // Extractor
@@ -53,13 +71,33 @@ public class WebTextListImpl extends AbstractWebChildElement implements WebTextL
     // Filter
 
     @Override
-    public @NotNull WebTextListFilter filter(@NotNull WebTextListFilterBuilder filterBuilder) {
+    public @NotNull WebTextListFilter filterBuilder(@NotNull WebTextListFilterBuilder filterBuilder) {
         return filterBuilder.build(this);
     }
 
     @Override
     public @NotNull WebTextListFilter filter(@NotNull WebTextListBlockCondition filterCondition) {
         return with(filterCondition).build(this);
+    }
+
+    // Checks
+
+    public WebTextList forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
+        filterBuilder(emptyWebTextListFilter())
+                .forEachBlock(textListBlockConsumer);
+        return this;
+    }
+
+    public WebTextList forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
+        filterBuilder(emptyWebTextListFilter())
+                .forFirstBlock(textListBlockConsumer);
+        return this;
+    }
+
+    public WebTextList forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
+        filterBuilder(emptyWebTextListFilter())
+                .forLastBlock(textListBlockConsumer);
+        return this;
     }
 
     // Actions

@@ -2,7 +2,6 @@ package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.color.Color;
-import io.perfeccionista.framework.exceptions.ElementPropertyNotFound.ElementPropertyNotFoundException;
 import io.perfeccionista.framework.exceptions.SingleResultConversion.SingleResultConversionException;
 import io.perfeccionista.framework.exceptions.WebElementColor.WebElementColorAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementDimensions.WebElementDimensionsAssertionError;
@@ -126,7 +125,7 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(Dimensions2D.of(825.0d, 24.0d).setInaccuracy(0.2d), radioGroup.getElementBounds().getDimensions()),
                 () -> assertEquals(Point2D.of(330d, 713.4d).setInaccuracy(0.2d), radioGroup.getElementBounds().getScreenLocation()),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), radioGroup.getColor("border-color")),
-                () -> assertEquals(3, radioGroup.filter(emptyWebRadioButtonFilter()).extractAll(element()).getSize()),
+                () -> assertEquals(3, radioGroup.filterBuilder(emptyWebRadioButtonFilter()).extractAll(element()).getSize()),
                 () -> assertEquals(Point2D.of(757.5d, 1328.4d).setInaccuracy(0.2d), radioGroup.getElementBounds().getCenter())
         );
     }

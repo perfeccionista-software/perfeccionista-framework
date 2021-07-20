@@ -42,7 +42,7 @@ public class WebTableRowContextLimiter implements WebContextLimiter<WebTableRow>
                 .map(parentElement -> parentElement
                         .getElementRegistry()
                         .getRequiredElementByPath(elementPath, WebTable.class)
-                        .filter(filterBuilder)
+                        .filterBuilder(filterBuilder)
                         .extractRows(row())
                         .getResults().values())
                 .reduce(new ArrayList<>(), (webBlocks1, webBlocks2) -> {

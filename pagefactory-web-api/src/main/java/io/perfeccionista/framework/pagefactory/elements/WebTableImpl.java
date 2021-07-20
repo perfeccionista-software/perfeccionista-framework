@@ -59,7 +59,7 @@ public class WebTableImpl extends AbstractWebChildElement implements WebTable {
     // Filter
 
     @Override
-    public @NotNull WebTableFilter filter(@NotNull WebTableFilterBuilder filterBuilder) {
+    public @NotNull WebTableFilter filterBuilder(@NotNull WebTableFilterBuilder filterBuilder) {
         return filterBuilder.build(this);
     }
 

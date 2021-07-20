@@ -51,7 +51,7 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
                                          WebListFilterBuilder<WebBlock> itemFilter) {
         getWebPageContext().execute(context -> {
             WebList<WebBlock> element = (WebList<WebBlock>) elementFinder.getElement(context, WebList.class);
-            element.filter(block -> itemFilter)
+            element.filterBuilder(block -> itemFilter)
                     .extractOne(block())
                     .should(haveNotNullResults())
                     .getNotNullResult()
@@ -72,7 +72,7 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
             WebTextDropDownList element = elementFinder.getElement(context, WebTextDropDownList.class);
             element.open()
                     .should(beOpen());
-            element.filter(itemFilter)
+            element.filterBuilder(itemFilter)
                     .extractOne(textBlockElement())
                     .should(haveNotNullResults())
                     .getNotNullResult()
@@ -93,7 +93,7 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
                                              WebTextListFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebTextList.class)
-                        .filter(itemFilter)
+                        .filterBuilder(itemFilter)
                         .extractOne(textBlock())
                         .should(haveNotNullResults())
                         .getNotNullResult()

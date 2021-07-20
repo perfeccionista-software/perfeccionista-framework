@@ -44,7 +44,7 @@ public interface WebTable extends WebChildElement, WebElementContainer<WebTableF
 
     // Filter
     @Override
-    @NotNull WebTableFilter filter(@NotNull WebTableFilterBuilder filterBuilder);
+    @NotNull WebTableFilter filterBuilder(@NotNull WebTableFilterBuilder filterBuilder);
     @NotNull WebTableFilter filter(@NotNull WebTableRowCondition filterCondition);
 
     // Actions

@@ -60,7 +60,7 @@ public class WebTextTableImpl extends AbstractWebChildElement implements WebText
     // Filter
 
     @Override
-    public @NotNull WebTextTableFilter filter(@NotNull WebTextTableFilterBuilder filterBuilder) {
+    public @NotNull WebTextTableFilter filterBuilder(@NotNull WebTextTableFilterBuilder filterBuilder) {
         return filterBuilder.build(this);
     }
 

@@ -25,7 +25,7 @@ public class WebTableActionStepDefinitions implements WebStepDefinitions {
                                           WebTableFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebTable.class)
-                                .filter(itemFilter)
+                                .filterBuilder(itemFilter)
                                 .extractRow(row())
                                 .getNotNullResult()
                                 .scrollTo());
@@ -42,7 +42,7 @@ public class WebTableActionStepDefinitions implements WebStepDefinitions {
                                               WebTextTableFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebTextTable.class)
-                                .filter(itemFilter)
+                                .filterBuilder(itemFilter)
                                 .extractRow(textRow())
                                 .getNotNullResult()
                                 .scrollTo());

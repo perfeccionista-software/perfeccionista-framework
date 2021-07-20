@@ -34,7 +34,7 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
 
         list.should(haveSize(195));
 
-        list.filter(emptyWebListFilter())
+        list.filterBuilder(emptyWebListFilter())
                 .should(haveSize(195));
     }
 
@@ -48,9 +48,9 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebList<CountryBlock> list = listElementsPage.webList()
                 .should(beDisplayed());
 
-        list.filterByCondition(blockIndex(intGreaterThanOrEqual(100)))
+        list.filter(blockIndex(intGreaterThanOrEqual(100)))
                 .should(haveSize(intEquals(95)));
-        list.filter(without(blockIndex(intGreaterThanOrEqual(100))))
+        list.filterBuilder(without(blockIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(intEquals(100)));
     }
 
@@ -66,86 +66,86 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
 
         // TODO: Добавить проверки со стрингой в остальные тесты
         // By Element
-        list.filterByCondition(block -> containsText(block.shortName(), "Финляндия"))
+        list.filter(block -> containsText(block.shortName(), "Финляндия"))
                 .should(haveSize(1));
-        list.filterByCondition(block -> containsText(block.shortName(), stringEquals("Финляндия")))
+        list.filter(block -> containsText(block.shortName(), stringEquals("Финляндия")))
                 .should(haveSize(1));
-        list.filterByCondition(block -> containsText(block.shortName(), stringStartsWith("М")))
+        list.filter(block -> containsText(block.shortName(), stringStartsWith("М")))
                 .should(haveSize(17));
-        list.filterByCondition(block -> notContainText(block.shortName(), "Финляндия"))
+        list.filter(block -> notContainText(block.shortName(), "Финляндия"))
                 .should(haveSize(194));
-        list.filterByCondition(block -> notContainText(block.shortName(), stringEquals("Финляндия")))
+        list.filter(block -> notContainText(block.shortName(), stringEquals("Финляндия")))
                 .should(haveSize(194));
-        list.filterByCondition(block -> notContainText(block.shortName(), stringStartsWith("М")))
+        list.filter(block -> notContainText(block.shortName(), stringStartsWith("М")))
                 .should(haveSize(178));
 
-        list.filter(block -> without(containsText(block.shortName(), stringEquals("Финляндия"))))
+        list.filterBuilder(block -> without(containsText(block.shortName(), stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        list.filter(block -> without(containsText(block.shortName(), stringStartsWith("М"))))
+        list.filterBuilder(block -> without(containsText(block.shortName(), stringStartsWith("М"))))
                 .should(haveSize(178));
-        list.filter(block -> without(notContainText(block.shortName(), stringEquals("Финляндия"))))
+        list.filterBuilder(block -> without(notContainText(block.shortName(), stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        list.filter(block -> without(notContainText(block.shortName(), stringStartsWith("М"))))
+        list.filterBuilder(block -> without(notContainText(block.shortName(), stringStartsWith("М"))))
                 .should(haveSize(17));
 
-        list.filterByCondition(block -> containsText(block.number(), intEquals(77)))
+        list.filter(block -> containsText(block.number(), intEquals(77)))
                 .should(haveSize(1));
-        list.filterByCondition(block -> containsText(block.number(), intGreaterThanOrEqual(124)))
+        list.filter(block -> containsText(block.number(), intGreaterThanOrEqual(124)))
                 .should(haveSize(72));
-        list.filterByCondition(block -> notContainText(block.number(), intEquals(77)))
+        list.filter(block -> notContainText(block.number(), intEquals(77)))
                 .should(haveSize(194));
-        list.filterByCondition(block -> notContainText(block.number(), intGreaterThanOrEqual(124)))
+        list.filter(block -> notContainText(block.number(), intGreaterThanOrEqual(124)))
                 .should(haveSize(123));
 
-        list.filter(block -> without(containsText(block.number(), intEquals(77))))
+        list.filterBuilder(block -> without(containsText(block.number(), intEquals(77))))
                 .should(haveSize(194));
-        list.filter(block -> without(containsText(block.number(), intGreaterThanOrEqual(124))))
+        list.filterBuilder(block -> without(containsText(block.number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        list.filter(block -> without(notContainText(block.number(), intEquals(77))))
+        list.filterBuilder(block -> without(notContainText(block.number(), intEquals(77))))
                 .should(haveSize(1));
-        list.filter(block -> without(notContainText(block.number(), intGreaterThanOrEqual(124))))
+        list.filterBuilder(block -> without(notContainText(block.number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
 
         // TODO: Добавить проверки со стрингой в остальные тесты
         // By Element name
-        list.filterByCondition(containsText("Country name", "Финляндия"))
+        list.filter(containsText("Country name", "Финляндия"))
                 .should(haveSize(1));
-        list.filterByCondition(containsText("Country name", stringEquals("Финляндия")))
+        list.filter(containsText("Country name", stringEquals("Финляндия")))
                 .should(haveSize(1));
-        list.filterByCondition(containsText("Country name", stringStartsWith("М")))
+        list.filter(containsText("Country name", stringStartsWith("М")))
                 .should(haveSize(17));
-        list.filterByCondition(notContainText("Country name", "Финляндия"))
+        list.filter(notContainText("Country name", "Финляндия"))
                 .should(haveSize(194));
-        list.filterByCondition(notContainText("Country name", stringEquals("Финляндия")))
+        list.filter(notContainText("Country name", stringEquals("Финляндия")))
                 .should(haveSize(194));
-        list.filterByCondition(notContainText("Country name", stringStartsWith("М")))
+        list.filter(notContainText("Country name", stringStartsWith("М")))
                 .should(haveSize(178));
 
-        list.filter(without(containsText("Country name", stringEquals("Финляндия"))))
+        list.filterBuilder(without(containsText("Country name", stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        list.filter(without(containsText("Country name", stringStartsWith("М"))))
+        list.filterBuilder(without(containsText("Country name", stringStartsWith("М"))))
                 .should(haveSize(178));
-        list.filter(without(notContainText("Country name", stringEquals("Финляндия"))))
+        list.filterBuilder(without(notContainText("Country name", stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        list.filter(without(notContainText("Country name", stringStartsWith("М"))))
+        list.filterBuilder(without(notContainText("Country name", stringStartsWith("М"))))
                 .should(haveSize(17));
 
-        list.filterByCondition(containsText("Number", intEquals(77)))
+        list.filter(containsText("Number", intEquals(77)))
                 .should(haveSize(1));
-        list.filterByCondition(containsText("Number", intGreaterThanOrEqual(124)))
+        list.filter(containsText("Number", intGreaterThanOrEqual(124)))
                 .should(haveSize(72));
-        list.filterByCondition(notContainText("Number", intEquals(77)))
+        list.filter(notContainText("Number", intEquals(77)))
                 .should(haveSize(194));
-        list.filterByCondition(notContainText("Number", intGreaterThanOrEqual(124)))
+        list.filter(notContainText("Number", intGreaterThanOrEqual(124)))
                 .should(haveSize(123));
 
-        list.filter(without(containsText("Number", intEquals(77))))
+        list.filterBuilder(without(containsText("Number", intEquals(77))))
                 .should(haveSize(194));
-        list.filter(without(containsText("Number", intGreaterThanOrEqual(124))))
+        list.filterBuilder(without(containsText("Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        list.filter(without(notContainText("Number", intEquals(77))))
+        list.filterBuilder(without(notContainText("Number", intEquals(77))))
                 .should(haveSize(1));
-        list.filter(without(notContainText("Number", intGreaterThanOrEqual(124))))
+        list.filterBuilder(without(notContainText("Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
     }
 
@@ -160,41 +160,41 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filterByCondition(block -> containsProperty(block.fullName(), "prompt", "Финляндская Республика"))
+        list.filter(block -> containsProperty(block.fullName(), "prompt", "Финляндская Республика"))
                 .should(haveSize(1));
-        list.filterByCondition(block -> containsProperty(block.fullName(), "prompt", stringStartsWith("М")))
+        list.filter(block -> containsProperty(block.fullName(), "prompt", stringStartsWith("М")))
                 .should(haveSize(5));
-        list.filterByCondition(block -> notContainProperty(block.fullName(), "prompt", stringEquals("Финляндская Республика")))
+        list.filter(block -> notContainProperty(block.fullName(), "prompt", stringEquals("Финляндская Республика")))
                 .should(haveSize(194));
-        list.filterByCondition(block -> notContainProperty(block.fullName(), "prompt", stringStartsWith("М")))
+        list.filter(block -> notContainProperty(block.fullName(), "prompt", stringStartsWith("М")))
                 .should(haveSize(190));
 
-        list.filter(block -> without(containsProperty(block.fullName(), "prompt", "Финляндская Республика")))
+        list.filterBuilder(block -> without(containsProperty(block.fullName(), "prompt", "Финляндская Республика")))
                 .should(haveSize(194));
-        list.filter(block -> without(containsProperty(block.fullName(), "prompt", stringStartsWith("М"))))
+        list.filterBuilder(block -> without(containsProperty(block.fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        list.filter(block -> without(notContainProperty(block.fullName(), "prompt", stringEquals("Финляндская Республика"))))
+        list.filterBuilder(block -> without(notContainProperty(block.fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        list.filter(block -> without(notContainProperty(block.fullName(), "prompt", stringStartsWith("М"))))
+        list.filterBuilder(block -> without(notContainProperty(block.fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
 
         // By Element name
-        list.filterByCondition(containsProperty("Full country name", "prompt", "Финляндская Республика"))
+        list.filter(containsProperty("Full country name", "prompt", "Финляндская Республика"))
                 .should(haveSize(1));
-        list.filterByCondition(containsProperty("Full country name", "prompt", stringStartsWith("М")))
+        list.filter(containsProperty("Full country name", "prompt", stringStartsWith("М")))
                 .should(haveSize(5));
-        list.filterByCondition(notContainProperty("Full country name", "prompt", stringEquals("Финляндская Республика")))
+        list.filter(notContainProperty("Full country name", "prompt", stringEquals("Финляндская Республика")))
                 .should(haveSize(194));
-        list.filterByCondition(notContainProperty("Full country name", "prompt", stringStartsWith("М")))
+        list.filter(notContainProperty("Full country name", "prompt", stringStartsWith("М")))
                 .should(haveSize(190));
 
-        list.filter(without(containsProperty("Full country name", "prompt", "Финляндская Республика")))
+        list.filterBuilder(without(containsProperty("Full country name", "prompt", "Финляндская Республика")))
                 .should(haveSize(194));
-        list.filter(without(containsProperty("Full country name", "prompt", stringStartsWith("М"))))
+        list.filterBuilder(without(containsProperty("Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        list.filter(without(notContainProperty("Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        list.filterBuilder(without(notContainProperty("Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        list.filter(without(notContainProperty("Full country name", "prompt", stringStartsWith("М"))))
+        list.filterBuilder(without(notContainProperty("Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
     }
 
@@ -209,77 +209,77 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filterByCondition(block -> containsLabel(block.checkbox(), stringEquals("86")))
+        list.filter(block -> containsLabel(block.checkbox(), stringEquals("86")))
                 .should(haveSize(1));
-        list.filterByCondition(block -> containsLabel(block.checkbox(), stringStartsWith("15")))
+        list.filter(block -> containsLabel(block.checkbox(), stringStartsWith("15")))
                 .should(haveSize(11));
-        list.filterByCondition(block -> notContainLabel(block.checkbox(), stringEquals("86")))
+        list.filter(block -> notContainLabel(block.checkbox(), stringEquals("86")))
                 .should(haveSize(194));
-        list.filterByCondition(block -> notContainLabel(block.checkbox(), stringStartsWith("15")))
+        list.filter(block -> notContainLabel(block.checkbox(), stringStartsWith("15")))
                 .should(haveSize(184));
 
-        list.filter(block -> without(containsLabel(block.checkbox(), stringEquals("86"))))
+        list.filterBuilder(block -> without(containsLabel(block.checkbox(), stringEquals("86"))))
                 .should(haveSize(194));
-        list.filter(block -> without(containsLabel(block.checkbox(), stringStartsWith("15"))))
+        list.filterBuilder(block -> without(containsLabel(block.checkbox(), stringStartsWith("15"))))
                 .should(haveSize(184));
-        list.filter(block -> without(notContainLabel(block.checkbox(), stringEquals("86"))))
+        list.filterBuilder(block -> without(notContainLabel(block.checkbox(), stringEquals("86"))))
                 .should(haveSize(1));
-        list.filter(block -> without(notContainLabel(block.checkbox(), stringStartsWith("15"))))
+        list.filterBuilder(block -> without(notContainLabel(block.checkbox(), stringStartsWith("15"))))
                 .should(haveSize(11));
 
-        list.filterByCondition(block -> containsLabel(block.checkbox(), intEquals(77)))
+        list.filter(block -> containsLabel(block.checkbox(), intEquals(77)))
                 .should(haveSize(1));
-        list.filterByCondition(block -> containsLabel(block.checkbox(), intGreaterThanOrEqual(124)))
+        list.filter(block -> containsLabel(block.checkbox(), intGreaterThanOrEqual(124)))
                 .should(haveSize(72));
-        list.filterByCondition(block -> notContainLabel(block.checkbox(), intEquals(77)))
+        list.filter(block -> notContainLabel(block.checkbox(), intEquals(77)))
                 .should(haveSize(194));
-        list.filterByCondition(block -> notContainLabel(block.checkbox(), intGreaterThanOrEqual(124)))
+        list.filter(block -> notContainLabel(block.checkbox(), intGreaterThanOrEqual(124)))
                 .should(haveSize(123));
 
-        list.filter(block -> without(containsLabel(block.checkbox(), intEquals(77))))
+        list.filterBuilder(block -> without(containsLabel(block.checkbox(), intEquals(77))))
                 .should(haveSize(194));
-        list.filter(block -> without(containsLabel(block.checkbox(), intGreaterThanOrEqual(124))))
+        list.filterBuilder(block -> without(containsLabel(block.checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        list.filter(block -> without(notContainLabel(block.checkbox(), intEquals(77))))
+        list.filterBuilder(block -> without(notContainLabel(block.checkbox(), intEquals(77))))
                 .should(haveSize(1));
-        list.filter(block -> without(notContainLabel(block.checkbox(), intGreaterThanOrEqual(124))))
+        list.filterBuilder(block -> without(notContainLabel(block.checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
 
         // By Element name
-        list.filterByCondition(containsLabel("Select", stringEquals("86")))
+        list.filter(containsLabel("Select", stringEquals("86")))
                 .should(haveSize(1));
-        list.filterByCondition(containsLabel("Select", stringStartsWith("15")))
+        list.filter(containsLabel("Select", stringStartsWith("15")))
                 .should(haveSize(11));
-        list.filterByCondition(notContainLabel("Select", stringEquals("86")))
+        list.filter(notContainLabel("Select", stringEquals("86")))
                 .should(haveSize(194));
-        list.filterByCondition(notContainLabel("Select", stringStartsWith("15")))
+        list.filter(notContainLabel("Select", stringStartsWith("15")))
                 .should(haveSize(184));
 
-        list.filter(without(containsLabel("Select", stringEquals("86"))))
+        list.filterBuilder(without(containsLabel("Select", stringEquals("86"))))
                 .should(haveSize(194));
-        list.filter(without(containsLabel("Select", stringStartsWith("15"))))
+        list.filterBuilder(without(containsLabel("Select", stringStartsWith("15"))))
                 .should(haveSize(184));
-        list.filter(without(notContainLabel("Select", stringEquals("86"))))
+        list.filterBuilder(without(notContainLabel("Select", stringEquals("86"))))
                 .should(haveSize(1));
-        list.filter(without(notContainLabel("Select", stringStartsWith("15"))))
+        list.filterBuilder(without(notContainLabel("Select", stringStartsWith("15"))))
                 .should(haveSize(11));
 
-        list.filterByCondition(containsLabel("Select", intEquals(77)))
+        list.filter(containsLabel("Select", intEquals(77)))
                 .should(haveSize(1));
-        list.filterByCondition(containsLabel("Select", intGreaterThanOrEqual(124)))
+        list.filter(containsLabel("Select", intGreaterThanOrEqual(124)))
                 .should(haveSize(72));
-        list.filterByCondition(notContainLabel("Select", intEquals(77)))
+        list.filter(notContainLabel("Select", intEquals(77)))
                 .should(haveSize(194));
-        list.filterByCondition(notContainLabel("Select", intGreaterThanOrEqual(124)))
+        list.filter(notContainLabel("Select", intGreaterThanOrEqual(124)))
                 .should(haveSize(123));
 
-        list.filter(without(containsLabel("Select", intEquals(77))))
+        list.filterBuilder(without(containsLabel("Select", intEquals(77))))
                 .should(haveSize(194));
-        list.filter(without(containsLabel("Select", intGreaterThanOrEqual(124))))
+        list.filterBuilder(without(containsLabel("Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        list.filter(without(notContainLabel("Select", intEquals(77))))
+        list.filterBuilder(without(notContainLabel("Select", intEquals(77))))
                 .should(haveSize(1));
-        list.filter(without(notContainLabel("Select", intGreaterThanOrEqual(124))))
+        list.filterBuilder(without(notContainLabel("Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
     }
 
@@ -294,25 +294,25 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filterByCondition(block -> enabled(block.checkbox()))
+        list.filter(block -> enabled(block.checkbox()))
                 .should(haveSize(189));
-        list.filterByCondition(block -> disabled(block.checkbox()))
+        list.filter(block -> disabled(block.checkbox()))
                 .should(haveSize(6));
 
-        list.filter(block -> without(enabled(block.checkbox())))
+        list.filterBuilder(block -> without(enabled(block.checkbox())))
                 .should(haveSize(6));
-        list.filter(block -> without(disabled(block.checkbox())))
+        list.filterBuilder(block -> without(disabled(block.checkbox())))
                 .should(haveSize(189));
 
         // By Element name
-        list.filterByCondition(enabled("Select"))
+        list.filter(enabled("Select"))
                 .should(haveSize(189));
-        list.filterByCondition(disabled("Select"))
+        list.filter(disabled("Select"))
                 .should(haveSize(6));
 
-        list.filter(without(enabled("Select")))
+        list.filterBuilder(without(enabled("Select")))
                 .should(haveSize(6));
-        list.filter(without(disabled("Select")))
+        list.filterBuilder(without(disabled("Select")))
                 .should(haveSize(189));
     }
 
@@ -327,25 +327,25 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filterByCondition(block -> selected(block.checkbox()))
+        list.filter(block -> selected(block.checkbox()))
                 .should(haveSize(6));
-        list.filterByCondition(block -> notSelected(block.checkbox()))
+        list.filter(block -> notSelected(block.checkbox()))
                 .should(haveSize(189));
 
-        list.filter(block -> without(selected(block.checkbox())))
+        list.filterBuilder(block -> without(selected(block.checkbox())))
                 .should(haveSize(189));
-        list.filter(block -> without(notSelected(block.checkbox())))
+        list.filterBuilder(block -> without(notSelected(block.checkbox())))
                 .should(haveSize(6));
 
         // By Element name
-        list.filterByCondition(selected("Select"))
+        list.filter(selected("Select"))
                 .should(haveSize(6));
-        list.filterByCondition(notSelected("Select"))
+        list.filter(notSelected("Select"))
                 .should(haveSize(189));
 
-        list.filter(without(selected("Select")))
+        list.filterBuilder(without(selected("Select")))
                 .should(haveSize(189));
-        list.filter(without(notSelected("Select")))
+        list.filterBuilder(without(notSelected("Select")))
                 .should(haveSize(6));
     }
 
@@ -359,25 +359,25 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filterByCondition(block -> present(block.shortName()))
+        list.filter(block -> present(block.shortName()))
                 .should(haveSize(193));
-        list.filterByCondition(block -> notPresent(block.shortName()))
+        list.filter(block -> notPresent(block.shortName()))
                 .should(haveSize(2));
 
-        list.filter(block -> without(present(block.shortName())))
+        list.filterBuilder(block -> without(present(block.shortName())))
                 .should(haveSize(2));
-        list.filter(block -> without(notPresent(block.shortName())))
+        list.filterBuilder(block -> without(notPresent(block.shortName())))
                 .should(haveSize(193));
 
         // By Element name
-        list.filterByCondition(present("Country name"))
+        list.filter(present("Country name"))
                 .should(haveSize(193));
-        list.filterByCondition(notPresent("Country name"))
+        list.filter(notPresent("Country name"))
                 .should(haveSize(2));
 
-        list.filter(without(present("Country name")))
+        list.filterBuilder(without(present("Country name")))
                 .should(haveSize(2));
-        list.filter(without(notPresent("Country name")))
+        list.filterBuilder(without(notPresent("Country name")))
                 .should(haveSize(193));
     }
 
@@ -393,48 +393,48 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
 
         // By Element
         // Для элементов, которых нет в DOM
-        list.filterByCondition(block -> displayed(block.shortName()))
+        list.filter(block -> displayed(block.shortName()))
                 .should(haveSize(193));
-        list.filterByCondition(block -> notDisplayed(block.shortName()))
+        list.filter(block -> notDisplayed(block.shortName()))
                 .should(haveSize(2));
 
-        list.filter(block -> without(displayed(block.shortName())))
+        list.filterBuilder(block -> without(displayed(block.shortName())))
                 .should(haveSize(2));
-        list.filter(block -> without(notDisplayed(block.shortName())))
+        list.filterBuilder(block -> without(notDisplayed(block.shortName())))
                 .should(haveSize(193));
 
         // Для элементов, которые есть в DOM, но не отображаются
-        list.filterByCondition(block -> displayed(block.populationUnit()))
+        list.filter(block -> displayed(block.populationUnit()))
                 .should(haveSize(186));
-        list.filterByCondition(block -> notDisplayed(block.populationUnit()))
+        list.filter(block -> notDisplayed(block.populationUnit()))
                 .should(haveSize(9));
 
-        list.filter(block -> without(displayed(block.populationUnit())))
+        list.filterBuilder(block -> without(displayed(block.populationUnit())))
                 .should(haveSize(9));
-        list.filter(block -> without(notDisplayed(block.populationUnit())))
+        list.filterBuilder(block -> without(notDisplayed(block.populationUnit())))
                 .should(haveSize(186));
 
         // By Element name
         // Для элементов, которых нет в DOM
-        list.filterByCondition(displayed("Country name"))
+        list.filter(displayed("Country name"))
                 .should(haveSize(193));
-        list.filterByCondition(notDisplayed("Country name"))
+        list.filter(notDisplayed("Country name"))
                 .should(haveSize(2));
 
-        list.filter(without(displayed("Country name")))
+        list.filterBuilder(without(displayed("Country name")))
                 .should(haveSize(2));
-        list.filter(without(notDisplayed("Country name")))
+        list.filterBuilder(without(notDisplayed("Country name")))
                 .should(haveSize(193));
 
         // Для элементов, которые есть в DOM, но не отображаются
-        list.filterByCondition(displayed("Population unit"))
+        list.filter(displayed("Population unit"))
                 .should(haveSize(186));
-        list.filterByCondition(notDisplayed("Population unit"))
+        list.filter(notDisplayed("Population unit"))
                 .should(haveSize(9));
 
-        list.filter(without(displayed("Population unit")))
+        list.filterBuilder(without(displayed("Population unit")))
                 .should(haveSize(9));
-        list.filter(without(notDisplayed("Population unit")))
+        list.filterBuilder(without(notDisplayed("Population unit")))
                 .should(haveSize(186));
     }
 
@@ -449,28 +449,28 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filterByCondition(block -> componentPresent(block.shortName(), "Self"))
+        list.filter(block -> componentPresent(block.shortName(), "Self"))
                 .should(haveSize(193));
-        list.filterByCondition(block -> componentNotPresent(block.shortName(), "Self"))
+        list.filter(block -> componentNotPresent(block.shortName(), "Self"))
                 .should(haveSize(2));
 
-        list.filter(block -> without(componentPresent(block.shortName(), "Self")))
+        list.filterBuilder(block -> without(componentPresent(block.shortName(), "Self")))
                 .should(haveSize(2));
-        list.filter(block -> without(componentNotPresent(block.shortName(), "Self")))
+        list.filterBuilder(block -> without(componentNotPresent(block.shortName(), "Self")))
                 .should(haveSize(193));
 
         // By Element name
-        list.filterByCondition(componentPresent("Country name", "Self"))
+        list.filter(componentPresent("Country name", "Self"))
                 .should(haveSize(193));
-        list.filterByCondition(componentNotPresent("Country name", "Self"))
+        list.filter(componentNotPresent("Country name", "Self"))
                 .should(haveSize(2));
 
-        list.filter(without(componentPresent("Country name", "Self")))
+        list.filterBuilder(without(componentPresent("Country name", "Self")))
                 .should(haveSize(2));
-        list.filter(without(componentNotPresent("Country name", "Self")))
+        list.filterBuilder(without(componentNotPresent("Country name", "Self")))
                 .should(haveSize(193));
 
-        WebListFilter<CountryBlock> filter = list.filter(block -> with(componentPresent(block.shortName(), "Unknown")));
+        WebListFilter<CountryBlock> filter = list.filterBuilder(block -> with(componentPresent(block.shortName(), "Unknown")));
         assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 
@@ -485,28 +485,28 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filterByCondition(block -> componentDisplayed(block.populationUnit(), "Self"))
+        list.filter(block -> componentDisplayed(block.populationUnit(), "Self"))
                 .should(haveSize(186));
-        list.filterByCondition(block -> componentNotDisplayed(block.populationUnit(), "Self"))
+        list.filter(block -> componentNotDisplayed(block.populationUnit(), "Self"))
                 .should(haveSize(9));
 
-        list.filter(block -> without(componentDisplayed(block.populationUnit(), "Self")))
+        list.filterBuilder(block -> without(componentDisplayed(block.populationUnit(), "Self")))
                 .should(haveSize(9));
-        list.filter(block -> without(componentNotDisplayed(block.populationUnit(), "Self")))
+        list.filterBuilder(block -> without(componentNotDisplayed(block.populationUnit(), "Self")))
                 .should(haveSize(186));
 
         // By Element name
-        list.filterByCondition(componentDisplayed("Population unit", "Self"))
+        list.filter(componentDisplayed("Population unit", "Self"))
                 .should(haveSize(186));
-        list.filterByCondition(componentNotDisplayed("Population unit", "Self"))
+        list.filter(componentNotDisplayed("Population unit", "Self"))
                 .should(haveSize(9));
 
-        list.filter(without(componentDisplayed("Population unit", "Self")))
+        list.filterBuilder(without(componentDisplayed("Population unit", "Self")))
                 .should(haveSize(9));
-        list.filter(without(componentNotDisplayed("Population unit", "Self")))
+        list.filterBuilder(without(componentNotDisplayed("Population unit", "Self")))
                 .should(haveSize(186));
 
-        WebListFilter<CountryBlock> filter = list.filter(block -> with(componentDisplayed(block.shortName(), "Unknown")));
+        WebListFilter<CountryBlock> filter = list.filterBuilder(block -> with(componentDisplayed(block.shortName(), "Unknown")));
         assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 

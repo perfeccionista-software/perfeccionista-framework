@@ -46,47 +46,51 @@ public class WebListImpl<T extends WebBlock> extends AbstractWebChildElement imp
         return WebListMultipleIndexedResult.of(this, extractor);
     }
 
+    @Override
+    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebListBlockValueExtractor<R, T>> extractorFunction) {
+        return WebListMultipleIndexedResult.of(this, extractorFunction.apply(getWebListFrame().getMappedBlockFrame()));
+    }
+
     // Filter
     @Override
-    public @NotNull WebListFilter<T> filter(@NotNull WebListFilterBuilder<T> filterBuilder) {
+    public @NotNull WebListFilter<T> filterBuilder(@NotNull WebListFilterBuilder<T> filterBuilder) {
         return filterBuilder.build(this);
     }
 
     @Override
-    public @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction) {
+    public @NotNull WebListFilter<T> filterBuilder(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction) {
         return filterBuilderFunction.apply(getWebListFrame().getMappedBlockFrame())
                 .build(this);
     }
 
     @Override
-    public @NotNull WebListFilter<T> filterByCondition(@NotNull WebListBlockCondition<T> filterCondition) {
+    public @NotNull WebListFilter<T> filter(@NotNull WebListBlockCondition<T> filterCondition) {
         return with(filterCondition).build(this);
     }
 
     @Override
-    public @NotNull WebListFilter<T> filterByCondition(@NotNull Function<T, ? extends WebListBlockCondition<T>> filterConditionFunction) {
+    public @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebListBlockCondition<T>> filterConditionFunction) {
         return with(filterConditionFunction.apply(getWebListFrame().getMappedBlockFrame()))
                 .build(this);
     }
 
-    // Checks
     @Override
     public WebList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer) {
-        filter(block -> emptyWebListFilter())
+        filterBuilder(block -> emptyWebListFilter())
                 .forEachBlock(listBlockConsumer);
         return this;
     }
 
     @Override
     public WebList<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer) {
-        filter(block -> emptyWebListFilter())
+        filterBuilder(block -> emptyWebListFilter())
                 .forFirstBlock(listBlockConsumer);
         return this;
     }
 
     @Override
     public WebList<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer) {
-        filter(block -> emptyWebListFilter())
+        filterBuilder(block -> emptyWebListFilter())
                 .forLastBlock(listBlockConsumer);
         return this;
     }
@@ -104,7 +108,7 @@ public class WebListImpl<T extends WebBlock> extends AbstractWebChildElement imp
 
     @Override
     public WebList<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
-        filter(block -> emptyWebListFilter()).should(matcher);
+        filterBuilder(block -> emptyWebListFilter()).should(matcher);
         return this;
     }
 

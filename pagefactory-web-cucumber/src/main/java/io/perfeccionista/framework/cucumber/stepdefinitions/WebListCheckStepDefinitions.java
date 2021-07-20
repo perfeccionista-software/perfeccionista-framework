@@ -72,7 +72,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                     WebListFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebList.class)
-                        .filterByCondition(block -> itemFilter)
+                        .filter(block -> itemFilter)
                         .should(haveSize(integerValue.getValue())));
     }
 
@@ -103,7 +103,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                         WebTextListFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebTextList.class)
-                        .filter(itemFilter)
+                        .filterBuilder(itemFilter)
                         .should(haveSize(integerValue.getValue())));
     }
 
@@ -147,7 +147,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                    WebListFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebList.class)
-                                .filterByCondition(block -> itemFilter)
+                                .filter(block -> itemFilter)
                                 .extractAll(valueExtractor.createExtractorFor(blockElementFinder.getRaw()))
                                 .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
@@ -184,7 +184,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                        WebTextListFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebTextList.class)
-                                .filter(itemFilter)
+                                .filterBuilder(itemFilter)
                                 .extractAll()
                                 .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }

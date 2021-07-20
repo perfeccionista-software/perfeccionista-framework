@@ -35,12 +35,13 @@ public interface WebList<T extends WebBlock> extends WebChildElement {
 
     // Extractor
     @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebListBlockValueExtractor<R, T> extractor);
+    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebListBlockValueExtractor<R, T>> extractorFunction);
 
     // Filter
-    @NotNull WebListFilter<T> filter(@NotNull WebListFilterBuilder<T> filterBuilder);
-    @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction);
-    @NotNull WebListFilter<T> filterByCondition(@NotNull WebListBlockCondition<T> filterCondition);
-    @NotNull WebListFilter<T> filterByCondition(@NotNull Function<T, ? extends WebListBlockCondition<T>> filterConditionFunction);
+    @NotNull WebListFilter<T> filterBuilder(@NotNull WebListFilterBuilder<T> filterBuilder);
+    @NotNull WebListFilter<T> filterBuilder(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction);
+    @NotNull WebListFilter<T> filter(@NotNull WebListBlockCondition<T> filterCondition);
+    @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebListBlockCondition<T>> filterConditionFunction);
 
     // Checks
     WebList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer);

@@ -1,6 +1,11 @@
 package io.perfeccionista.framework.pagefactory.filter.textlist;
 
+import io.perfeccionista.framework.exceptions.SingleResultCreating;
+import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
+import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListMultipleIndexedResult;
@@ -18,10 +23,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import static io.perfeccionista.framework.Web.textBlock;
 import static io.perfeccionista.framework.Web.textBlockIndex;
 import static io.perfeccionista.framework.Web.textBlockValue;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SINGLE_RESULT_HAS_NO_VALUE;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.apiguardian.api.API.Status.STABLE;
 
@@ -62,6 +72,59 @@ public class WebTextListFilterImpl implements WebTextListFilter {
     @API(status = INTERNAL)
     public @NotNull <T> WebMultipleIndexedResult<T, WebTextList> extractAll(@NotNull WebTextListBlockValueExtractor<T> extractor) {
         return WebTextListMultipleIndexedResult.of(element, filterBuilder, extractor);
+    }
+
+    @Override
+    public WebTextListFilter forSingleBlock(@NotNull Consumer<WebLink> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            DefaultWebTextBlock singleBlock = WebTextListMultipleIndexedResult.of(element, filterBuilder, textBlock())
+                    .singleResult()
+                    .getNotNullResult();
+            listBlockConsumer.accept(singleBlock.textLink());
+        });
+        return this;
+    }
+
+    @Override
+    public WebTextListFilter forEachBlock(@NotNull Consumer<WebLink> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            WebTextListMultipleIndexedResult.of(element, filterBuilder, textBlock())
+                    .getResults()
+                    .forEach((key, value) -> listBlockConsumer.accept(value.textLink()));
+        });
+        return this;
+    }
+
+    @Override
+    public WebTextListFilter forFirstBlock(@NotNull Consumer<WebLink> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            DefaultWebTextBlock firstBlock = WebTextListMultipleIndexedResult.of(element, filterBuilder, textBlock())
+                    .getResults().entrySet()
+                    .stream()
+                    .min(Entry.comparingByKey())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                            .setProcessed(true)
+                            .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)))
+                    .getValue();
+            listBlockConsumer.accept(firstBlock.textLink());
+        });
+        return this;
+    }
+
+    @Override
+    public WebTextListFilter forLastBlock(@NotNull Consumer<WebLink> listBlockConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            DefaultWebTextBlock lastBlock = WebTextListMultipleIndexedResult.of(element, filterBuilder, textBlock())
+                    .getResults().entrySet()
+                    .stream()
+                    .max(Entry.comparingByKey())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                            .setProcessed(true)
+                            .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)))
+                    .getValue();
+            listBlockConsumer.accept(lastBlock.textLink());
+        });
+        return this;
     }
 
     @Override

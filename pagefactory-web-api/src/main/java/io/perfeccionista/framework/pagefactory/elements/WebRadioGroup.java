@@ -36,7 +36,7 @@ public interface WebRadioGroup extends WebChildElement, WebElementContainer<WebR
 
     // Filter
     @Override
-    @NotNull WebRadioGroupFilter filter(@NotNull WebRadioGroupFilterBuilder filterBuilder);
+    @NotNull WebRadioGroupFilter filterBuilder(@NotNull WebRadioGroupFilterBuilder filterBuilder);
     @NotNull WebRadioGroupFilter filter(@NotNull WebRadioButtonCondition filterCondition);
 
     // Button Extractors

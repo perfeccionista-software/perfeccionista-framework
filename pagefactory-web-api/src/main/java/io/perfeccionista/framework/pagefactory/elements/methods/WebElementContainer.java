@@ -7,6 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface WebElementContainer<F extends WebFilter<?>, B extends WebFilterBuilder<?, F>> extends WebChildElement {
 
-    @NotNull F filter(@NotNull B filterBuilder);
+    @NotNull F filterBuilder(@NotNull B filterBuilder);
 
 }

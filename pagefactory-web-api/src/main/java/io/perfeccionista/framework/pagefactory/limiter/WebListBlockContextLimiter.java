@@ -59,7 +59,7 @@ public class WebListBlockContextLimiter<T extends WebBlock> implements WebContex
                         .getElementRegistry()
                         .getRequiredElementByPath(elementPath, WebList.class);
             }
-            return (Collection<T>) webList.filter(block -> filterBuilder)
+            return (Collection<T>) webList.filterBuilder(block -> filterBuilder)
                     .extractAll(block())
                     .getResults().values();
         }).reduce(new ArrayList<>(), (webBlocks1, webBlocks2) -> {

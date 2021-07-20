@@ -22,11 +22,28 @@ import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatche
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebInputTextAvailable;
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
+import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 public interface WebTextAutocomplete extends WebTextDropDownList,
         WebInputTextAvailable, WebChildElement {
+
+    // Select
+    @Override
+    WebTextAutocomplete select(@NotNull WebTextListFilterBuilder filterBuilder);
+    @Override
+    WebTextAutocomplete select(@NotNull WebTextListBlockCondition filterCondition);
+
+    // Checks
+    @Override
+    WebTextAutocomplete forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    @Override
+    WebTextAutocomplete forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    @Override
+    WebTextAutocomplete forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
 
     // Actions
     @Override
@@ -70,9 +87,6 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
     WebTextAutocomplete should(@NotNull WebGetTextAvailableMatcher matcher);
     @Override
     WebTextAutocomplete should(@NotNull WebDropDownAvailableMatcher matcher);
-
-    @Override
-    WebTextAutocomplete select(@NotNull WebTextListBlockCondition filterCondition);
 
     // Click
     @Override

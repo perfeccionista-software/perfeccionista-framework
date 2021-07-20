@@ -26,19 +26,30 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 public interface WebTextList extends WebChildElement, WebElementContainer<WebTextListFilter, WebTextListFilterBuilder> {
 
     @API(status = Status.MAINTAINED)
     @NotNull WebListFrame<DefaultWebTextBlock> getWebTextListFrame();
 
+    // Select
+    WebTextList select(@NotNull WebTextListFilterBuilder filterBuilder);
+    WebTextList select(@NotNull WebTextListBlockCondition filterCondition);
+
     // Extractor
     @NotNull WebMultipleIndexedResult<String, WebTextList> extractAll();
-    @NotNull <V> WebMultipleIndexedResult<V, WebTextList> extractAll(@NotNull WebTextListBlockValueExtractor<V> extractor);
+    @NotNull <T> WebMultipleIndexedResult<T, WebTextList> extractAll(@NotNull WebTextListBlockValueExtractor<T> extractor);
 
     // Filter
     @Override
-    @NotNull WebTextListFilter filter(@NotNull WebTextListFilterBuilder filterBuilder);
+    @NotNull WebTextListFilter filterBuilder(@NotNull WebTextListFilterBuilder filterBuilder);
     @NotNull WebTextListFilter filter(@NotNull WebTextListBlockCondition filterCondition);
+
+    // Checks
+    WebTextList forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    WebTextList forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    WebTextList forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
 
     // Actions
     @Override

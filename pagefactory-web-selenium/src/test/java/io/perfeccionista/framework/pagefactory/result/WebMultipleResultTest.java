@@ -44,13 +44,13 @@ class WebMultipleResultTest extends AbstractWebSeleniumParallelTest {
 //                        .add(78, value.intNotEquals(78))
 //                        .add(188, value.intNotEquals(188)));
 
-        list.filterByCondition(block -> blockIndex(intEquals(77)))
+        list.filter(block -> blockIndex(intEquals(77)))
                 .extractAll(blockIndex())
                 .should(haveSize(1))
                 .should(haveIndex(77))
                 .should(haveResult(77));
 
-        list.filterByCondition(block -> blockIndex(intEquals(77)))
+        list.filter(block -> blockIndex(intEquals(77)))
                 .extractOne(blockIndex())
                 .should(haveIndex(77))
                 .should(haveResult(77));

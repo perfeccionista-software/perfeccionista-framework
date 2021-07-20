@@ -15,9 +15,6 @@ import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryN
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.logging.LogManager;
-
 import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.elements.WebBlock.frame;
 import static io.perfeccionista.framework.pagefactory.pageobjects.TablePage.CHECKBOX;
@@ -44,7 +41,7 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
         WebTable table = tablePage.table()
                 .should(beDisplayed());
 
-        table.filter(emptyWebTableFilter())
+        table.filterBuilder(emptyWebTableFilter())
                 .should(haveSize(195));
     }
 
@@ -58,9 +55,9 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
         WebTable table = tablePage.table()
                 .should(beDisplayed());
 
-        table.filter(with(rowIndex(intGreaterThanOrEqual(100))))
+        table.filterBuilder(with(rowIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(95));
-        table.filter(without(rowIndex(intGreaterThanOrEqual(100))))
+        table.filterBuilder(without(rowIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(100));
     }
 
@@ -75,77 +72,77 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия")))
+        table.filterBuilder(with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия")))
                 .should(haveSize(1));
-        table.filter(with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
+        table.filterBuilder(with(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(17));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringEquals("Финляндия"))))
+        table.filterBuilder(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
+        table.filterBuilder(with(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(178));
 
-        table.filter(without(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия")))
+        table.filterBuilder(without(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Финляндия")))
                 .should(haveSize(194));
-        table.filter(without(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
+        table.filterBuilder(without(containsText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(178));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringEquals("Финляндия"))))
+        table.filterBuilder(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
+        table.filterBuilder(without(notContainText(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), stringStartsWith("М"))))
                 .should(haveSize(17));
 
-        table.filter(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
+        table.filterBuilder(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
+        table.filterBuilder(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
+        table.filterBuilder(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(containsText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
+        table.filterBuilder(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(notContainText(NUMBER, frame(CountryNumberWebBlock.class).number(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
 
         // By Element name
-        table.filter(with(containsText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
+        table.filterBuilder(with(containsText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        table.filter(with(containsText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
+        table.filterBuilder(with(containsText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(17));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
+        table.filterBuilder(with(notContainText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
+        table.filterBuilder(with(notContainText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(178));
 
-        table.filter(without(containsText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
+        table.filterBuilder(without(containsText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(194));
-        table.filter(without(containsText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
+        table.filterBuilder(without(containsText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(178));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
+        table.filterBuilder(without(notContainText(SHORT_COUNTRY_NAME, "Country name", stringEquals("Финляндия"))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
+        table.filterBuilder(without(notContainText(SHORT_COUNTRY_NAME, "Country name", stringStartsWith("М"))))
                 .should(haveSize(17));
 
-        table.filter(with(containsText(NUMBER, "Number", intEquals(77))))
+        table.filterBuilder(with(containsText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsText(NUMBER, "Number", intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(containsText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainText(NUMBER, "Number", intEquals(77))))
+        table.filterBuilder(with(notContainText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainText(NUMBER, "Number", intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(notContainText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsText(NUMBER, "Number", intEquals(77))))
+        table.filterBuilder(without(containsText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsText(NUMBER, "Number", intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(containsText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainText(NUMBER, "Number", intEquals(77))))
+        table.filterBuilder(without(notContainText(NUMBER, "Number", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainText(NUMBER, "Number", intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(notContainText(NUMBER, "Number", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
     }
 
@@ -160,41 +157,41 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", "Финляндская Республика")))
+        table.filterBuilder(with(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", "Финляндская Республика")))
                 .should(haveSize(1));
-        table.filter(with(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
+        table.filterBuilder(with(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
+        table.filterBuilder(with(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
 
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
+        table.filterBuilder(without(containsProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
+        table.filterBuilder(without(notContainProperty(FULL_COUNTRY_NAME, frame(FullCountryNameWebBlock.class).fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
 
         // By Element name
-        table.filter(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filter(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
+        table.filterBuilder(with(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
+        table.filterBuilder(with(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
 
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filter(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
+        table.filterBuilder(without(containsProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filter(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
+        table.filterBuilder(without(notContainProperty(FULL_COUNTRY_NAME, "Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
     }
 
@@ -209,77 +206,77 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(11));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(184));
 
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(184));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), stringStartsWith("15"))))
                 .should(haveSize(11));
 
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, frame(CheckboxWebBlock.class).checkbox(), intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
 
         // By Element name
-        table.filter(with(containsLabel(CHECKBOX, "Select", stringEquals("86"))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, "Select", stringStartsWith("15"))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(11));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", stringEquals("86"))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", stringStartsWith("15"))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(184));
 
-        table.filter(without(containsLabel(CHECKBOX, "Select", stringEquals("86"))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, "Select", stringStartsWith("15"))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(184));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", stringEquals("86"))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, "Select", stringEquals("86"))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", stringStartsWith("15"))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, "Select", stringStartsWith("15"))))
                 .should(haveSize(11));
 
-        table.filter(with(containsLabel(CHECKBOX, "Select", intEquals(77))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(with(containsLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(containsLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", intEquals(77))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(with(notContainLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
+        table.filterBuilder(with(notContainLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
 
-        table.filter(without(containsLabel(CHECKBOX, "Select", intEquals(77))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(194));
-        table.filter(without(containsLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(containsLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(123));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", intEquals(77))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, "Select", intEquals(77))))
                 .should(haveSize(1));
-        table.filter(without(notContainLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
+        table.filterBuilder(without(notContainLabel(CHECKBOX, "Select", intGreaterThanOrEqual(124))))
                 .should(haveSize(72));
     }
 
@@ -294,25 +291,25 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(enabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(with(enabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(189));
-        table.filter(with(disabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(with(disabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(6));
 
-        table.filter(without(enabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(without(enabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(6));
-        table.filter(without(disabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(without(disabled(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(189));
 
         // By Element name
-        table.filter(with(enabled(CHECKBOX, "Select")))
+        table.filterBuilder(with(enabled(CHECKBOX, "Select")))
                 .should(haveSize(189));
-        table.filter(with(disabled(CHECKBOX, "Select")))
+        table.filterBuilder(with(disabled(CHECKBOX, "Select")))
                 .should(haveSize(6));
 
-        table.filter(without(enabled(CHECKBOX, "Select")))
+        table.filterBuilder(without(enabled(CHECKBOX, "Select")))
                 .should(haveSize(6));
-        table.filter(without(disabled(CHECKBOX, "Select")))
+        table.filterBuilder(without(disabled(CHECKBOX, "Select")))
                 .should(haveSize(189));
     }
 
@@ -327,25 +324,25 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(selected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(with(selected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(6));
-        table.filter(with(notSelected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(with(notSelected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(189));
 
-        table.filter(without(selected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(without(selected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(189));
-        table.filter(without(notSelected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
+        table.filterBuilder(without(notSelected(CHECKBOX, frame(CheckboxWebBlock.class).checkbox())))
                 .should(haveSize(6));
 
         // By Element name
-        table.filter(with(selected(CHECKBOX, "Select")))
+        table.filterBuilder(with(selected(CHECKBOX, "Select")))
                 .should(haveSize(6));
-        table.filter(with(notSelected(CHECKBOX, "Select")))
+        table.filterBuilder(with(notSelected(CHECKBOX, "Select")))
                 .should(haveSize(189));
 
-        table.filter(without(selected(CHECKBOX, "Select")))
+        table.filterBuilder(without(selected(CHECKBOX, "Select")))
                 .should(haveSize(189));
-        table.filter(without(notSelected(CHECKBOX, "Select")))
+        table.filterBuilder(without(notSelected(CHECKBOX, "Select")))
                 .should(haveSize(6));
     }
 
@@ -360,25 +357,25 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(present(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(with(present(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(193));
-        table.filter(with(notPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(with(notPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(2));
 
-        table.filter(without(present(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(without(present(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(2));
-        table.filter(without(notPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(without(notPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(193));
 
         // By Element name
-        table.filter(with(present(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(with(present(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(193));
-        table.filter(with(notPresent(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(with(notPresent(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(2));
 
-        table.filter(without(present(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(without(present(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(2));
-        table.filter(without(notPresent(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(without(notPresent(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(193));
     }
 
@@ -394,48 +391,48 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
 
         // By Element
         // Для элементов, которых нет в DOM
-        table.filter(with(displayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(with(displayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(193));
-        table.filter(with(notDisplayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(with(notDisplayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(2));
 
-        table.filter(without(displayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(without(displayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(2));
-        table.filter(without(notDisplayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
+        table.filterBuilder(without(notDisplayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName())))
                 .should(haveSize(193));
 
         // Для элементов, которые есть в DOM, но не отображаются
-        table.filter(with(displayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
+        table.filterBuilder(with(displayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
                 .should(haveSize(186));
-        table.filter(with(notDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
+        table.filterBuilder(with(notDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
                 .should(haveSize(9));
 
-        table.filter(without(displayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
+        table.filterBuilder(without(displayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
                 .should(haveSize(9));
-        table.filter(without(notDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
+        table.filterBuilder(without(notDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit())))
                 .should(haveSize(186));
 
         // By Element name
         // Для элементов, которых нет в DOM
-        table.filter(with(displayed(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(with(displayed(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(193));
-        table.filter(with(notDisplayed(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(with(notDisplayed(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(2));
 
-        table.filter(without(displayed(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(without(displayed(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(2));
-        table.filter(without(notDisplayed(SHORT_COUNTRY_NAME, "Country name")))
+        table.filterBuilder(without(notDisplayed(SHORT_COUNTRY_NAME, "Country name")))
                 .should(haveSize(193));
 
         // Для элементов, которые есть в DOM, но не отображаются
-        table.filter(with(displayed(POPULATION, "Population unit")))
+        table.filterBuilder(with(displayed(POPULATION, "Population unit")))
                 .should(haveSize(186));
-        table.filter(with(notDisplayed(POPULATION, "Population unit")))
+        table.filterBuilder(with(notDisplayed(POPULATION, "Population unit")))
                 .should(haveSize(9));
 
-        table.filter(without(displayed(POPULATION, "Population unit")))
+        table.filterBuilder(without(displayed(POPULATION, "Population unit")))
                 .should(haveSize(9));
-        table.filter(without(notDisplayed(POPULATION, "Population unit")))
+        table.filterBuilder(without(notDisplayed(POPULATION, "Population unit")))
                 .should(haveSize(186));
     }
 
@@ -450,29 +447,29 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(componentPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
+        table.filterBuilder(with(componentPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
                 .should(haveSize(193));
-        table.filter(with(componentNotPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
+        table.filterBuilder(with(componentNotPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
                 .should(haveSize(2));
 
-        table.filter(without(componentPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
+        table.filterBuilder(without(componentPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
                 .should(haveSize(2));
-        table.filter(without(componentNotPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
+        table.filterBuilder(without(componentNotPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Self")))
                 .should(haveSize(193));
 
         // By Element name
-        table.filter(with(componentPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
+        table.filterBuilder(with(componentPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
                 .should(haveSize(193));
-        table.filter(with(componentNotPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
+        table.filterBuilder(with(componentNotPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
                 .should(haveSize(2));
 
-        table.filter(without(componentPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
+        table.filterBuilder(without(componentPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
                 .should(haveSize(2));
-        table.filter(without(componentNotPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
+        table.filterBuilder(without(componentNotPresent(SHORT_COUNTRY_NAME, "Country name", "Self")))
                 .should(haveSize(193));
 
         WebTableFilter filter = table
-                .filter(with(componentPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Unknown")));
+                .filterBuilder(with(componentPresent(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Unknown")));
         assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 
@@ -487,29 +484,29 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(with(componentDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
+        table.filterBuilder(with(componentDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
                 .should(haveSize(186));
-        table.filter(with(componentNotDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
+        table.filterBuilder(with(componentNotDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
                 .should(haveSize(9));
 
-        table.filter(without(componentDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
+        table.filterBuilder(without(componentDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
                 .should(haveSize(9));
-        table.filter(without(componentNotDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
+        table.filterBuilder(without(componentNotDisplayed(POPULATION, frame(PopulationWebBlock.class).populationUnit(), "Self")))
                 .should(haveSize(186));
 
         // By Element name
-        table.filter(with(componentDisplayed(POPULATION, "Population unit", "Self")))
+        table.filterBuilder(with(componentDisplayed(POPULATION, "Population unit", "Self")))
                 .should(haveSize(186));
-        table.filter(with(componentNotDisplayed(POPULATION, "Population unit", "Self")))
+        table.filterBuilder(with(componentNotDisplayed(POPULATION, "Population unit", "Self")))
                 .should(haveSize(9));
 
-        table.filter(without(componentDisplayed(POPULATION, "Population unit", "Self")))
+        table.filterBuilder(without(componentDisplayed(POPULATION, "Population unit", "Self")))
                 .should(haveSize(9));
-        table.filter(without(componentNotDisplayed(POPULATION, "Population unit", "Self")))
+        table.filterBuilder(without(componentNotDisplayed(POPULATION, "Population unit", "Self")))
                 .should(haveSize(186));
 
         WebTableFilter filter = table
-                .filter(with(componentDisplayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Unknown")));
+                .filterBuilder(with(componentDisplayed(SHORT_COUNTRY_NAME, frame(CountryNameWebBlock.class).shortName(), "Unknown")));
         assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 

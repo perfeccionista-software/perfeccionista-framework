@@ -47,7 +47,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
     // Filter
 
     @Override
-    public @NotNull WebRadioGroupFilter filter(@NotNull WebRadioGroupFilterBuilder filterBuilder) {
+    public @NotNull WebRadioGroupFilter filterBuilder(@NotNull WebRadioGroupFilterBuilder filterBuilder) {
         return filterBuilder.build(this);
     }
 

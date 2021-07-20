@@ -50,7 +50,7 @@ public class WebTableCheckStepDefinitions implements WebStepDefinitions {
                                      WebTableFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebTable.class)
-                                .filter(itemFilter)
+                                .filterBuilder(itemFilter)
                                 .should(haveSize(integerValue.getValue())));
     }
 
@@ -81,7 +81,7 @@ public class WebTableCheckStepDefinitions implements WebStepDefinitions {
                                          WebTextTableFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebTextTable.class)
-                                .filter(itemFilter)
+                                .filterBuilder(itemFilter)
                                 .should(haveSize(integerValue.getValue())));
     }
 
@@ -128,7 +128,7 @@ public class WebTableCheckStepDefinitions implements WebStepDefinitions {
                                     WebTableFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebTable.class)
-                        .filter(itemFilter)
+                        .filterBuilder(itemFilter)
                         .extractRows(valueExtractor.createExtractorFor(webTableColumn.getRaw(), blockElementFinder.getRaw()))
                         .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
@@ -168,7 +168,7 @@ public class WebTableCheckStepDefinitions implements WebStepDefinitions {
                                         WebTextTableFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebTextTable.class)
-                                .filter(itemFilter)
+                                .filterBuilder(itemFilter)
                                 .extractRows(webTableColumn.getRaw())
                                 .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }
