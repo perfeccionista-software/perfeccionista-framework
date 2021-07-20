@@ -123,7 +123,7 @@ public class WebElementDecorator {
             decorateWebRadioGroupInstance((WebRadioGroup) webChildElementInstance, webChildElementMethod);
         }
         if (webChildElementInstance instanceof WebList) {
-            decorateWebListInstance((WebList) webChildElementInstance, webChildElementMethod);
+            decorateWebListInstance((WebList<?>) webChildElementInstance, webChildElementMethod);
         }
         if (webChildElementInstance instanceof WebTextList) {
             decorateWebTextListInstance((WebTextList) webChildElementInstance, webChildElementMethod);
@@ -143,7 +143,7 @@ public class WebElementDecorator {
         writeField(WEB_RADIO_GROUP_FRAME_FIELD, webRadioGroupInstance, webRadioGroupFrame);
     }
 
-    public void decorateWebListInstance(@NotNull WebList webListInstance, @NotNull Method webChildElementMethod) {
+    public void decorateWebListInstance(@NotNull WebList<?> webListInstance, @NotNull Method webChildElementMethod) {
         WebListFrame<WebBlock> webListFrame =
                 createWebListFrame(webListInstance, webChildElementMethod, webPageFactory, configuration);
         writeField(WEB_LIST_FRAME_FIELD, webListInstance, webListFrame);

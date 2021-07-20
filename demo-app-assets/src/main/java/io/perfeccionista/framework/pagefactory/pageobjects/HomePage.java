@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebText;
-import io.perfeccionista.framework.pagefactory.elements.ElementComponents;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebListBlockLocator;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
 import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
@@ -29,7 +29,7 @@ public interface HomePage extends AbstractWebPage {
     @Name("First flag block")
     @Name("Первый блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-first-group']")
-    @WebLocator(component = ElementComponents.LI, tagName = "img")
+    @WebListBlockLocator(tagName = "img")
     WebList<FlagBlock> flagsFirstGroup();
 
     @Name("Second text block")
@@ -40,7 +40,7 @@ public interface HomePage extends AbstractWebPage {
     @Name("Second flag block")
     @Name("Второй блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-second-group']")
-    @WebLocator(component = ElementComponents.LI, tagName = "img")
+    @WebListBlockLocator(tagName = "img")
     WebList<FlagBlock> flagsSecondGroup();
 
     @Name("Third text block")

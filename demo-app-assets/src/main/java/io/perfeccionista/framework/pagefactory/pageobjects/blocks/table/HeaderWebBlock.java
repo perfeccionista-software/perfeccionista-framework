@@ -9,7 +9,7 @@ public interface HeaderWebBlock extends WebBlock {
 
     @Name("Title")
     @Name("Заголовок")
-    @WebLocator(xpath = "self::node()")
+    @WebLocator(selfNode = true)
     @WebLocator(component = "Not sorted", xpath = "self::node()[@aria-sort = 'none']")
     @WebLocator(component = "Sorted by asc", xpath = "self::node()[@aria-sort = 'ascending']")
     @WebLocator(component = "Sorted by desc", xpath = "self::node()[@aria-sort = 'descending']")
