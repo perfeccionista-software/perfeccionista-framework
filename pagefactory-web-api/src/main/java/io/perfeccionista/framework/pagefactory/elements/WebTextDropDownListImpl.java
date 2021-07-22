@@ -29,6 +29,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsOpenOperat
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetLabelOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebOpenOperationType;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +46,18 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextDropDownList {
 
     // Select
+
+    @Override
+    public WebTextDropDownList select(@NotNull String text) {
+        super.select(text);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList select(@NotNull StringValue text) {
+        super.select(text);
+        return this;
+    }
 
     @Override
     public WebTextDropDownList select(@NotNull WebTextListFilterBuilder filterBuilder) {

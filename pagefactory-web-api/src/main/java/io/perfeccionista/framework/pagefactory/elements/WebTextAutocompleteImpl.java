@@ -27,6 +27,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.WebClearOperationT
 import io.perfeccionista.framework.pagefactory.operation.type.WebReplaceTextOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebSendKeyEventsOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebTypeTextOperationType;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -37,6 +38,18 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements WebTextAutocomplete {
 
     // Select
+
+    @Override
+    public WebTextAutocomplete select(@NotNull String text) {
+        super.select(text);
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete select(@NotNull StringValue text) {
+        super.select(text);
+        return this;
+    }
 
     @Override
     public WebTextAutocomplete select(@NotNull WebTextListFilterBuilder filterBuilder) {

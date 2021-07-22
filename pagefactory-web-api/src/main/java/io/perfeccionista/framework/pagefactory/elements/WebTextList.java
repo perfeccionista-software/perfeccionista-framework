@@ -22,6 +22,7 @@ import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebText
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,8 @@ public interface WebTextList extends WebChildElement, WebElementContainer<WebTex
     @NotNull WebListFrame<DefaultWebTextBlock> getWebTextListFrame();
 
     // Select
+    WebTextList select(@NotNull String text);
+    WebTextList select(@NotNull StringValue text);
     WebTextList select(@NotNull WebTextListFilterBuilder filterBuilder);
     WebTextList select(@NotNull WebTextListBlockCondition filterCondition);
 

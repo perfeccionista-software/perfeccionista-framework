@@ -33,7 +33,8 @@ public @interface WebListBlockLocator {
     String containsText() default "";
 
     boolean strictSearch() default false;
-    boolean onlyWithinParent() default true;
+    boolean fromParent() default true;
+    boolean onlyWithinParent() default false;
     Class<? extends EndpointHandler<Void>>[] invokeOnCall() default {};
 
 }

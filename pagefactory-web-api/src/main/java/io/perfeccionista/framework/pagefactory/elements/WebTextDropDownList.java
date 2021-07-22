@@ -25,6 +25,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvaila
 import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -33,6 +34,10 @@ public interface WebTextDropDownList extends WebTextList,
         WebClickAvailable, WebGetTextAvailable, WebGetLabelAvailable, WebDropDownAvailable, WebChildElement {
 
     // Select
+    @Override
+    WebTextDropDownList select(@NotNull String text);
+    @Override
+    WebTextDropDownList select(@NotNull StringValue text);
     @Override
     WebTextDropDownList select(@NotNull WebTextListFilterBuilder filterBuilder);
     @Override

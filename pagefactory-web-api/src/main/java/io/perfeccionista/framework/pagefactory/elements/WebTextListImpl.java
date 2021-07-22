@@ -24,6 +24,7 @@ import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebText
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -41,6 +42,20 @@ public class WebTextListImpl extends AbstractWebChildElement implements WebTextL
     }
 
     // Select
+
+    @Override
+    public WebTextList select(@NotNull String text) {
+        with(containsTextBlock(text)).build(this)
+                .forSingleBlock(WebLink::click);
+        return this;
+    }
+
+    @Override
+    public WebTextList select(@NotNull StringValue text) {
+        with(containsTextBlock(text)).build(this)
+                .forSingleBlock(WebLink::click);
+        return this;
+    }
 
     @Override
     public WebTextList select(@NotNull WebTextListFilterBuilder filterBuilder) {

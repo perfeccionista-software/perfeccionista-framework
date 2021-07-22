@@ -145,7 +145,8 @@ public class WebLocatorAnnotationHandler {
         }
         webLocatorHolder.setSingle(webLocator.single())
                 .setStrictSearch(webLocator.strictSearch())
-                .setOnlyWithinParent(webLocator.onlyWithinParent());
+            .setFromParent(webLocator.fromParent())
+            .setOnlyWithinParent(webLocator.onlyWithinParent());
         for (Class<? extends EndpointHandler<Void>> endpointHandlerClass : webLocator.invokeOnCall()) {
             webLocatorHolder.addInvokedOnCallFunction(newInstance(endpointHandlerClass));
         }
@@ -194,6 +195,7 @@ public class WebLocatorAnnotationHandler {
         }
         webLocatorHolder.setSingle(false)
                 .setStrictSearch(webLocator.strictSearch())
+                .setFromParent(webLocator.fromParent())
                 .setOnlyWithinParent(webLocator.onlyWithinParent());
         for (Class<? extends EndpointHandler<Void>> endpointHandlerClass : webLocator.invokeOnCall()) {
             webLocatorHolder.addInvokedOnCallFunction(newInstance(endpointHandlerClass));
@@ -230,6 +232,7 @@ public class WebLocatorAnnotationHandler {
                 .put("selfNode", webLocator.selfNode())
                 .put("single", webLocator.single())
                 .put("strictSearch", webLocator.strictSearch())
+                .put("fromParent", webLocator.fromParent())
                 .put("onlyWithinParent", webLocator.onlyWithinParent());
         ArrayNode invokeOnCallNode = rootNode.putArray("invokeOnCall");
         for (Class<? extends EndpointHandler<Void>> jsFunctionClass : webLocator.invokeOnCall()) {
@@ -252,6 +255,7 @@ public class WebLocatorAnnotationHandler {
                 .put("containsText", webLocator.containsText())
                 .put("single", false)
                 .put("strictSearch", webLocator.strictSearch())
+                .put("fromParent", webLocator.fromParent())
                 .put("onlyWithinParent", webLocator.onlyWithinParent());
         ArrayNode invokeOnCallNode = rootNode.putArray("invokeOnCall");
         for (Class<? extends EndpointHandler<Void>> jsFunctionClass : webLocator.invokeOnCall()) {

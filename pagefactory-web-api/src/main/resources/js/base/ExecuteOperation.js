@@ -110,14 +110,15 @@
     async function findSingleFromSingle(previousLocatorProcessingResult, locator) {
         let parentElementEntry = previousLocatorProcessingResult.elementEntries[0];
         let parentElement = parentElementEntry.element;
+        let enclosingElement = parentElementEntry.element;
         let parentFunctionInvocations = previousLocatorProcessingResult.invokeOnCallFunctions;
         if (parentFunctionInvocations !== undefined && parentFunctionInvocations.length > 0) {
             await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
         }
-        // if (locator.onlyWithinParent === false) {
-        //     parentElement = document.documentElement;
-        // }
-        let foundElements = findElements(parentElement, locator);
+        if (locator.fromParent === false) {
+            parentElement = document.documentElement;
+        }
+        let foundElements = findElements(parentElement, locator, enclosingElement);
         let foundElementEntries = [];
         let size = foundElements.length;
         if (size === 0) {
@@ -164,14 +165,15 @@
     async function findMultipleFromSingle(previousLocatorProcessingResult, locator) {
         let parentElementEntry = previousLocatorProcessingResult.elementEntries[0];
         let parentElement = parentElementEntry.element;
+        let enclosingElement = parentElementEntry.element;
         let parentFunctionInvocations = previousLocatorProcessingResult.invokeOnCallFunctions;
         if (undefined !== parentFunctionInvocations && parentFunctionInvocations.length > 0) {
             await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
         }
-        // if (locator.onlyWithinParent === false) {
-        //     parentElement = document.documentElement;
-        // }
-        let foundElements = findElements(parentElement, locator);
+        if (locator.fromParent === false) {
+            parentElement = document.documentElement;
+        }
+        let foundElements = findElements(parentElement, locator, enclosingElement);
         let foundElementEntries = [];
         let size = foundElements.length;
         if (size === 0) {
@@ -216,14 +218,17 @@
     async function findSingleFromMultiple(previousLocatorProcessingResult, locator) {
         let parentElementEntries = previousLocatorProcessingResult.elementEntries;
         let foundElementEntries = [];
+        // TODO: Возможно, стоит сделать принудительный признак поиска элементов внутри предка
+        // locator.onlyWithinParent = true;
         for (let parentElementEntry of parentElementEntries) {
             let parentElement = parentElementEntry.element;
+            let enclosingElement = parentElementEntry.element;
             let parentFunctionInvocations = previousLocatorProcessingResult.invokeOnCallFunctions;
             if (undefined !== parentFunctionInvocations && parentFunctionInvocations.length > 0) {
                 await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
             }
             let parentIndex = parentElementEntry.index;
-            let foundElements = findElements(parentElement, locator);
+            let foundElements = findElements(parentElement, locator, enclosingElement);
             let size = foundElements.length;
             if (size === 0) {
                 if (locator.strictSearch) {
@@ -272,9 +277,10 @@
      * то фильтруем все элементы, которые не принадлежат родительскому элементу
      * @param parentElement
      * @param locator
+     * @param enclosingElement
      * @return {HTMLElement[]|[]}
      */
-    function findElements(parentElement, locator) {
+    function findElements(parentElement, locator, enclosingElement) {
         let foundElements = [];
         if (parentElement === null) {
             return foundElements;
@@ -284,7 +290,10 @@
                 foundElements = new Array(parentElement);
                 break;
             case 'id':
-                foundElements = [document.getElementById(locator.locatorValue)];
+                let foundElement = document.getElementById(locator.locatorValue);
+                if (foundElement !== null) {
+                    foundElements = [foundElement];
+                }
                 break;
             case 'css':
                 foundElements = collectionToArray(parentElement.querySelectorAll(locator.locatorValue));
@@ -321,9 +330,10 @@
         }
         // Убираем те элементы, которые не принадлежат родительскому узлу
         let foundElementsWithinParent = [];
+
         if (locator.onlyWithinParent) {
             for (let foundElement of foundElements) {
-                if (parentElement.contains(foundElement)) {
+                if (enclosingElement.contains(foundElement)) {
                     foundElementsWithinParent.push(foundElement);
                 }
             }

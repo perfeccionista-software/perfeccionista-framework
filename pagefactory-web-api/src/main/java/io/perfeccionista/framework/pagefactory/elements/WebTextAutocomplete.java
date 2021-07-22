@@ -24,6 +24,7 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebInputTextAvai
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
 import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -32,6 +33,10 @@ public interface WebTextAutocomplete extends WebTextDropDownList,
         WebInputTextAvailable, WebChildElement {
 
     // Select
+    @Override
+    WebTextAutocomplete select(@NotNull String text);
+    @Override
+    WebTextAutocomplete select(@NotNull StringValue text);
     @Override
     WebTextAutocomplete select(@NotNull WebTextListFilterBuilder filterBuilder);
     @Override

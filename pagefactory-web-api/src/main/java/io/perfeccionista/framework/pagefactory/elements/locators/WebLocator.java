@@ -44,7 +44,8 @@ public @interface WebLocator {
     boolean selfNode() default false;
     boolean single() default true;
     boolean strictSearch() default true;
-    boolean onlyWithinParent() default true;
+    boolean fromParent() default true;
+    boolean onlyWithinParent() default false;
     Class<? extends EndpointHandler<Void>>[] invokeOnCall() default {};
 
 }
