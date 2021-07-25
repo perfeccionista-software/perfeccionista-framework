@@ -8,7 +8,8 @@ import io.perfeccionista.framework.exceptions.WebFilterConditionNotResolved;
 import io.perfeccionista.framework.pagefactory.filter.AbstractWebFilterBuilderResolver;
 import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
 import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.pagefactory.filter.textlist.condition.resolver.WebTextListBlockConditionCucumberResolver;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,10 +22,10 @@ import static io.perfeccionista.framework.Web.without;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebCucumberApiMessages.INCORRECT_WEB_TEXT_LIST_FILTER_BUILDER_DATA_TABLE_FORMAT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebCucumberApiMessages.WEB_FILTER_CONDITION_NOT_RESOLVED;
 
-public class WebTextListFilterBuilderResolver extends AbstractWebFilterBuilderResolver {
+public class  WebTextListFilterBuilderResolver extends AbstractWebFilterBuilderResolver {
 
-    WebTextListFilterBuilder filterBuilder = null;
-    WebTextListBlockCondition currentCondition = null;
+    WebTextBlockFilterBuilder filterBuilder = null;
+    WebTextBlockCondition currentCondition = null;
 
     protected WebTextListFilterBuilderResolver(Environment environment, DataTable dataTable) {
         super(environment, dataTable);
@@ -34,7 +35,7 @@ public class WebTextListFilterBuilderResolver extends AbstractWebFilterBuilderRe
         return new WebTextListFilterBuilderResolver(environment, dataTable);
     }
 
-    public @NotNull WebTextListFilterBuilder resolve() {
+    public @NotNull WebTextBlockFilterBuilder resolve() {
         List<List<String>> dataTableAsLists = dataTable.asLists();
 
         // если одна строка и одна колонка
@@ -52,7 +53,7 @@ public class WebTextListFilterBuilderResolver extends AbstractWebFilterBuilderRe
             if (dataTableRow.size() != 2) {
                 throw IncorrectDataTableFormat.exception(INCORRECT_WEB_TEXT_LIST_FILTER_BUILDER_DATA_TABLE_FORMAT.getMessage());
             }
-            WebTextListBlockCondition processedCondition = resolveStringEntry(dataTableRow.get(0));
+            WebTextBlockCondition processedCondition = resolveStringEntry(dataTableRow.get(0));
             String operator = dataTableRow.get(1);
             // если группировка кондишенов
             Optional<ConditionGrouping> optionalWebConditionGrouping = tryResolveWebConditionGrouping(operator);
@@ -73,7 +74,7 @@ public class WebTextListFilterBuilderResolver extends AbstractWebFilterBuilderRe
         return filterBuilder;
     }
 
-    protected void processConditionGrouping(WebTextListBlockCondition processed, ConditionGrouping grouping) {
+    protected void processConditionGrouping(WebTextBlockCondition processed, ConditionGrouping grouping) {
         if (Objects.isNull(currentCondition)) {
             currentCondition = processed;
             return;
@@ -116,11 +117,11 @@ public class WebTextListFilterBuilderResolver extends AbstractWebFilterBuilderRe
         }
     }
 
-    protected WebTextListBlockCondition resolveStringEntry(String stringEntry) {
+    protected WebTextBlockCondition resolveStringEntry(String stringEntry) {
         CucumberService cucumberService = environment.getService(CucumberService.class);
         return cucumberService.resolveFirst(WebTextListBlockConditionCucumberResolver.class, stringEntry)
                 .orElseThrow(() -> WebFilterConditionNotResolved
-                        .exception(WEB_FILTER_CONDITION_NOT_RESOLVED.getMessage(stringEntry, WebTextListFilterBuilder.class.getCanonicalName())));
+                        .exception(WEB_FILTER_CONDITION_NOT_RESOLVED.getMessage(stringEntry, WebTextBlockFilterBuilder.class.getCanonicalName())));
     }
 
 }

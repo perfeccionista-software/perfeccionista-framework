@@ -15,12 +15,12 @@ import io.perfeccionista.framework.matcher.element.WebListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilter;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
@@ -31,22 +31,22 @@ import java.util.function.Function;
 public interface WebList<T extends WebBlock> extends WebChildElement {
 
     @API(status = Status.MAINTAINED)
-    @NotNull WebListFrame<T> getWebListFrame();
+    @NotNull WebBlockFrame<T> getBlockFrame();
 
     // Extractor
-    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebListBlockValueExtractor<R, T> extractor);
-    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebListBlockValueExtractor<R, T>> extractorFunction);
+    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebBlockValueExtractor<R, T> extractor);
+    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebBlockValueExtractor<R, T>> extractorFunction);
 
     // Filter
-    @NotNull WebListFilter<T> filterBuilder(@NotNull WebListFilterBuilder<T> filterBuilder);
-    @NotNull WebListFilter<T> filterBuilder(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction);
-    @NotNull WebListFilter<T> filter(@NotNull WebListBlockCondition<T> filterCondition);
-    @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebListBlockCondition<T>> filterConditionFunction);
+    @NotNull WebBlockFilter<T> filterBuilder(@NotNull WebBlockFilterBuilder<T> filterBuilder);
+    @NotNull WebBlockFilter<T> filterBuilder(@NotNull Function<T, ? extends WebBlockFilterBuilder<T>> filterBuilderFunction);
+    @NotNull WebBlockFilter<T> filter(@NotNull WebBlockCondition<T> filterCondition);
+    @NotNull WebBlockFilter<T> filter(@NotNull Function<T, ? extends WebBlockCondition<T>> filterConditionFunction);
 
     // Checks
-    WebList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer);
-    WebList<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer);
-    WebList<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer);
+    WebList<T> forEach(@NotNull Consumer<T> blockConsumer);
+    WebList<T> forFirst(@NotNull Consumer<T> blockConsumer);
+    WebList<T> forLast(@NotNull Consumer<T> blockConsumer);
 
     // Actions
     @Override

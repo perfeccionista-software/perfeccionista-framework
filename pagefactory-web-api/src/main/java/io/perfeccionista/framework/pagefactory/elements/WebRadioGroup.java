@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public interface WebRadioGroup extends WebChildElement, WebElementContainer<WebRadioGroupFilter, WebRadioGroupFilterBuilder> {
 
     @API(status = Status.MAINTAINED)
-    @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getWebRadioGroupFrame();
+    @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getBlockFrame();
 
     // Extractor
     @NotNull <V> WebMultipleIndexedResult<V, WebRadioGroup> extractAll(@NotNull WebRadioButtonValueExtractor<V> extractor);

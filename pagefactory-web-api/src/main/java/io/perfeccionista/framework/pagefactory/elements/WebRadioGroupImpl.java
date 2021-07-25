@@ -33,7 +33,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
     protected WebRadioGroupFrame<DefaultWebRadioButtonBlock> webRadioGroupFrame;
 
     @Override
-    public @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getWebRadioGroupFrame() {
+    public @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getBlockFrame() {
         return webRadioGroupFrame;
     }
 

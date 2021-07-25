@@ -3,13 +3,15 @@ package io.perfeccionista.framework.pagefactory.filter.list;
 import io.cucumber.datatable.DataTable;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.cucumber.CucumberService;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.filter.AbstractWebFilterBuilderResolver;
 import io.perfeccionista.framework.pagefactory.filter.ConditionGrouping;
 import io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.list.condition.resolver.WebListBlockConditionCucumberResolver;
 import io.perfeccionista.framework.exceptions.IncorrectDataTableFormat;
 import io.perfeccionista.framework.exceptions.WebFilterConditionNotResolved;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -21,20 +23,20 @@ import static io.perfeccionista.framework.Web.without;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebCucumberApiMessages.INCORRECT_WEB_LIST_FILTER_BUILDER_DATA_TABLE_FORMAT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebCucumberApiMessages.WEB_FILTER_CONDITION_NOT_RESOLVED;
 
-public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolver {
+public class WebListFilterBuilderResolver<T extends WebBlock> extends AbstractWebFilterBuilderResolver {
 
-    WebListFilterBuilder filterBuilder = null;
-    WebListBlockCondition currentCondition = null;
+    WebBlockFilterBuilder<T> filterBuilder = null;
+    WebBlockCondition<T> currentCondition = null;
 
     protected WebListFilterBuilderResolver(Environment environment, DataTable dataTable) {
         super(environment, dataTable);
     }
 
-    public static WebListFilterBuilderResolver of(@NotNull Environment environment, @NotNull DataTable dataTable) {
-        return new WebListFilterBuilderResolver(environment, dataTable);
+    public static <T extends WebBlock> WebListFilterBuilderResolver<T> of(@NotNull Environment environment, @NotNull DataTable dataTable) {
+        return new WebListFilterBuilderResolver<>(environment, dataTable);
     }
 
-    public @NotNull WebListFilterBuilder resolve() {
+    public @NotNull WebBlockFilterBuilder<T> resolve() {
         List<List<String>> dataTableAsLists = dataTable.asLists();
 
         // если одна строка и одна колонка
@@ -52,7 +54,7 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
             if (dataTableRow.size() != 2) {
                 throw IncorrectDataTableFormat.exception(INCORRECT_WEB_LIST_FILTER_BUILDER_DATA_TABLE_FORMAT.getMessage());
             }
-            WebListBlockCondition processedCondition = resolveStringEntry(dataTableRow.get(0));
+            WebBlockCondition<T> processedCondition = resolveStringEntry(dataTableRow.get(0));
             String operator = dataTableRow.get(1);
             // если группировка кондишенов
             Optional<ConditionGrouping> optionalWebConditionGrouping = tryResolveWebConditionGrouping(operator);
@@ -73,7 +75,7 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
         return filterBuilder;
     }
 
-    protected void processConditionGrouping(WebListBlockCondition processed, ConditionGrouping grouping) {
+    protected void processConditionGrouping(WebBlockCondition<T> processed, ConditionGrouping grouping) {
         if (Objects.isNull(currentCondition)) {
             currentCondition = processed;
             return;
@@ -116,11 +118,11 @@ public class WebListFilterBuilderResolver extends AbstractWebFilterBuilderResolv
         }
     }
 
-    protected WebListBlockCondition resolveStringEntry(String stringEntry) {
+    protected WebBlockCondition<T> resolveStringEntry(String stringEntry) {
         CucumberService cucumberService = environment.getService(CucumberService.class);
         return cucumberService.resolveFirst(WebListBlockConditionCucumberResolver.class, stringEntry)
                 .orElseThrow(() -> WebFilterConditionNotResolved
-                        .exception(WEB_FILTER_CONDITION_NOT_RESOLVED.getMessage(stringEntry, WebListFilterBuilder.class.getCanonicalName())));
+                        .exception(WEB_FILTER_CONDITION_NOT_RESOLVED.getMessage(stringEntry, WebBlockFilterBuilder.class.getCanonicalName())));
     }
 
 }

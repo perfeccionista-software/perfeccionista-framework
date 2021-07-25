@@ -27,7 +27,7 @@ class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
 
-        assertEquals(95, textList.filterBuilder(with(textBlockIndex(intGreaterThanOrEqual(100)))).size());
+        assertEquals(95, textList.filter(textBlockIndex(intGreaterThanOrEqual(100))).size());
         assertEquals(100, textList.filterBuilder(without(textBlockIndex(intGreaterThanOrEqual(100)))).size());
     }
 
@@ -41,7 +41,7 @@ class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
 
-        textList.filterBuilder(emptyWebTextListFilter())
+        textList.filterBuilder(emptyWebTextBlockFilter())
                 .should(haveSize(195));
     }
 
@@ -55,7 +55,7 @@ class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
 
-        textList.filterBuilder(with(textBlockIndex(intGreaterThanOrEqual(100))))
+        textList.filter(textBlockIndex(intGreaterThanOrEqual(100)))
                 .should(haveSize(95));
         textList.filterBuilder(without(textBlockIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(100));
@@ -72,13 +72,13 @@ class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        textList.filterBuilder(with(containsTextBlock("Финляндия")))
+        textList.filter(containsTextBlock("Финляндия"))
                 .should(haveSize(1));
-        textList.filterBuilder(with(containsTextBlock(stringStartsWith("М"))))
+        textList.filter(containsTextBlock(stringStartsWith("М")))
                 .should(haveSize(17));
-        textList.filterBuilder(with(notContainTextBlock(stringEquals("Финляндия"))))
+        textList.filter(notContainTextBlock(stringEquals("Финляндия")))
                 .should(haveSize(194));
-        textList.filterBuilder(with(notContainTextBlock(stringStartsWith("М"))))
+        textList.filter(notContainTextBlock(stringStartsWith("М")))
                 .should(haveSize(178));
 
         textList.filterBuilder(without(containsTextBlock("Финляндия")))

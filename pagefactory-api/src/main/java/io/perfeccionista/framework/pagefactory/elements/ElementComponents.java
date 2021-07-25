@@ -28,21 +28,19 @@ public class ElementComponents {
      */
     public static final String IMAGE = "IMAGE";
 
-    // WebRadioGroup
-    public static final String RADIO = "RADIO";
+    // Iterable item in List, Table, RadioGroup
+    public static final String ITEM = "ITEM";
 
     // WebList
     public static final String UL = "UL";
-    public static final String LI = "LI";
 
     // WebDropDown
     public static final String CLOSE = "CLOSE";
     public static final String OPEN = "OPEN";
 
     // WebTable
-    public static final String THEAD_ROW = "THEAD";
-    public static final String TBODY_ROW = "TBODY";
-    public static final String TFOOT_ROW = "THEAD";
+    public static final String TABLE_HEADER = "THEAD";
+    public static final String TABLE_FOOTER = "THEAD";
 
     public static final String TAP = "TAP";
 

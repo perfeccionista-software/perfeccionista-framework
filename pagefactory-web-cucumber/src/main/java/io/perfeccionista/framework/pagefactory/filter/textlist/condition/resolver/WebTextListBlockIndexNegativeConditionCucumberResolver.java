@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.textlist.condition.resolver;
 
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.value.number.IntegerValueResolver;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
 public class WebTextListBlockIndexNegativeConditionCucumberResolver extends AbstractWebTextListBlockConditionCucumberResolver {
 
     @Override
-    public Optional<WebTextListBlockCondition> tryResolve(@NotNull String expression, @Nullable Object... args) {
+    public Optional<WebTextBlockCondition> tryResolve(@NotNull String expression, @Nullable Object... args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.find()) {

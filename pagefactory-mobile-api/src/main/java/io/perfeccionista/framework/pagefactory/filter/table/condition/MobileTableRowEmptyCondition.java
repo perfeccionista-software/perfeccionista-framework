@@ -17,7 +17,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
@@ -63,7 +63,7 @@ public class MobileTableRowEmptyCondition implements MobileTableRowCondition {
         MobileLocatorHolder tableLocatorHolder = tableLocatorChain.getLastLocator()
                 .setCalculateHash(true)
                 .setExpectedHash(hash);
-        tableLocatorChain.addLastLocator(element.getRequiredLocator(TBODY_ROW));
+        tableLocatorChain.addLastLocator(element.getRequiredLocator(ITEM));
 
         // Формируем и выполняем операцию
         MobileElementOperation<Boolean> operation = MobileElementOperation.of(tableLocatorChain, MobileGetIsPresentOperationType.of(element));

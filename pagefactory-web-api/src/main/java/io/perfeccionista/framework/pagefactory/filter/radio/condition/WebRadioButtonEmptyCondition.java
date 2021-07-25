@@ -17,7 +17,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
@@ -60,7 +60,7 @@ public class WebRadioButtonEmptyCondition implements WebRadioButtonCondition {
         WebLocatorHolder radioGroupLocatorHolder = radioGroupLocatorChain.getLastLocator()
                 .setCalculateHash(true)
                 .setExpectedHash(hash);
-        radioGroupLocatorChain.addLastLocator(element.getRequiredLocator(RADIO));
+        radioGroupLocatorChain.addLastLocator(element.getRequiredLocator(ITEM));
 
         // Формируем и выполняем операцию
         WebGetIsPresentOperationType operationType = WebGetIsPresentOperationType.of(element);

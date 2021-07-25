@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
 
 public class WebRadioButtonSelectedMarkExtractor implements WebRadioButtonValueExtractor<Boolean> {
@@ -25,13 +25,13 @@ public class WebRadioButtonSelectedMarkExtractor implements WebRadioButtonValueE
         FilterResult filterResult = filter.getFilterResult();
         String hash = filterResult.getHash();
         WebRadioGroup element = filter.getElement();
-        WebRadioButton webRadioButton = element.getWebRadioGroupFrame().getMappedBlockFrame().radioButton();
+        WebRadioButton webRadioButton = element.getBlockFrame().getMappedBlockFrame().radioButton();
 
         // Формируем полную цепочку локаторов до WebRadioButtonBlock
         WebLocatorChain radioGroupLocatorChain = element.getLocatorChain()
                 .updateLastLocator(locator -> locator.setCalculateHash(true))
                 .updateLastLocator(locator -> locator.setExpectedHash(hash))
-                .addLastLocator(element.getRequiredLocator(RADIO));
+                .addLastLocator(element.getRequiredLocator(ITEM));
 
         // Добавляем в цепочку локаторов операции локаторы до блока RadioButtonBlock
         WebGetIsSelectedOperationType operationType = WebGetIsSelectedOperationType.of(webRadioButton);

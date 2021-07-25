@@ -3,15 +3,10 @@ package io.perfeccionista.framework.cucumber.stepdefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
-import io.perfeccionista.framework.cucumber.parameters.WebTableColumnParameter;
 import io.perfeccionista.framework.pagefactory.limiter.WebListBlockContextLimiter;
-import io.perfeccionista.framework.pagefactory.limiter.WebTableCellContextLimiter;
-import io.perfeccionista.framework.pagefactory.limiter.WebTableRowContextLimiter;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
 
 import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
@@ -28,38 +23,8 @@ public class WebSearchContextStepDefinitions implements WebStepDefinitions {
     @Given("user chooses in the list {webElement} blocks with")
     @Дано("пользователь выбирает в списке {webElement} блоки, где")
     public void userRestrictsBlocksInTheWebList(WebElementParameter<WebList> elementFinder,
-                                                WebListFilterBuilder itemFilter) {
+                                                WebBlockFilterBuilder<WebBlock> itemFilter) {
         WebListBlockContextLimiter<WebBlock> limiter = selectWebListBlocks(elementFinder.getRaw(), itemFilter, intGreaterThanOrEqual(1));
-        getWebPageContext()
-                .addContextLimiter(limiter);
-    }
-
-    /**
-     *
-     * @param elementFinder -
-     * @param itemFilter -
-     */
-    @Given("user chooses in the table {webElement} rows with")
-    @Дано("пользователь выбирает в таблице {webElement} строки, где")
-    public void userRestrictsRowsInTheWebTable(WebElementParameter<WebTable> elementFinder,
-                                               WebTableFilterBuilder itemFilter) {
-        WebTableRowContextLimiter limiter = selectWebTableRows(elementFinder.getRaw(), itemFilter, intGreaterThanOrEqual(1));
-        getWebPageContext()
-                .addContextLimiter(limiter);
-    }
-
-    /**
-     *
-     * @param elementFinder -
-     * @param tableColumn -
-     * @param itemFilter -
-     */
-    @Given("user chooses in the table {webElement} cells from column {webTableColumn} with")
-    @Дано("пользователь выбирает в таблице {webElement} ячейки из колонки {webTableColumn}, где")
-    public void userRestrictsCellsInTheWebTable(WebElementParameter<WebTable> elementFinder,
-                                                WebTableColumnParameter tableColumn,
-                                                WebTableFilterBuilder itemFilter) {
-        WebTableCellContextLimiter<WebBlock> limiter = selectWebTableCells(elementFinder.getRaw(), tableColumn.getRaw(), itemFilter, intGreaterThanOrEqual(1));
         getWebPageContext()
                 .addContextLimiter(limiter);
     }

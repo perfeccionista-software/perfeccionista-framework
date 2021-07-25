@@ -26,4 +26,11 @@ public class WebElementNameHandler {
         return names;
     }
 
+    public static @NotNull Map<String, Boolean> extractNames(@NotNull Class<? extends WebChildElement> webChildElementClass) {
+        Map<String, Boolean> names = new LinkedHashMap<>();
+        findAllRepeatableAnnotationsInHierarchy(Name.class, WebChildElement.class, webChildElementClass)
+                .forEach(name -> names.put(name.value(), name.deprecated()));
+        return names;
+    }
+
 }

@@ -34,11 +34,11 @@ public interface WebDropDownList<T extends WebBlock> extends WebList<T>,
 
     // Checks
     @Override
-    WebDropDownList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer);
+    WebDropDownList<T> forEach(@NotNull Consumer<T> blockConsumer);
     @Override
-    WebDropDownList<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer);
+    WebDropDownList<T> forFirst(@NotNull Consumer<T> blockConsumer);
     @Override
-    WebDropDownList<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer);
+    WebDropDownList<T> forLast(@NotNull Consumer<T> blockConsumer);
 
     // Actions
     @Override

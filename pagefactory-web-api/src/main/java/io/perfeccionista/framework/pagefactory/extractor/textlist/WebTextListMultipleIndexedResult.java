@@ -4,15 +4,15 @@ import io.perfeccionista.framework.exceptions.attachments.WebExtractorDescriptio
 import io.perfeccionista.framework.exceptions.attachments.WebFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilter;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import static io.perfeccionista.framework.Web.emptyWebTextListFilter;
+import static io.perfeccionista.framework.Web.emptyWebTextBlockFilter;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_EXTRACTED_VALUES_METHOD;
@@ -21,11 +21,11 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementActionName
 public class WebTextListMultipleIndexedResult<T> implements WebMultipleIndexedResult<T, WebTextList> {
 
     private final WebTextList element;
-    private final WebTextListFilterBuilder filterBuilder;
+    private final WebTextBlockFilterBuilder filterBuilder;
     private final WebTextListBlockValueExtractor<T> extractor;
 
     private WebTextListMultipleIndexedResult(WebTextList element,
-                                             WebTextListFilterBuilder filterBuilder,
+                                             WebTextBlockFilterBuilder filterBuilder,
                                              WebTextListBlockValueExtractor<T> extractor) {
         this.element = element;
         this.filterBuilder = filterBuilder;
@@ -33,14 +33,14 @@ public class WebTextListMultipleIndexedResult<T> implements WebMultipleIndexedRe
     }
 
     public static <T> WebTextListMultipleIndexedResult<T> of(@NotNull WebTextList element,
-                                                             @NotNull WebTextListFilterBuilder filterBuilder,
+                                                             @NotNull WebTextBlockFilterBuilder filterBuilder,
                                                              @NotNull WebTextListBlockValueExtractor<T> extractor) {
         return new WebTextListMultipleIndexedResult<>(element, filterBuilder, extractor);
     }
 
     public static <T> WebTextListMultipleIndexedResult<T> of(@NotNull WebTextList element,
                                                              @NotNull WebTextListBlockValueExtractor<T> extractor) {
-        return new WebTextListMultipleIndexedResult<>(element, emptyWebTextListFilter(), extractor);
+        return new WebTextListMultipleIndexedResult<>(element, emptyWebTextBlockFilter(), extractor);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class WebTextListMultipleIndexedResult<T> implements WebMultipleIndexedRe
 
     @Override
     public Map<Integer, T> getResults() {
-        WebTextListFilter webTextListFilter = filterBuilder.build(element);
+        WebTextBlockFilter webTextListFilter = filterBuilder.build(element);
         var elementName = element.getElementIdentifier().getLastUsedName();
         var invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
                 .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
@@ -60,7 +60,7 @@ public class WebTextListMultipleIndexedResult<T> implements WebMultipleIndexedRe
 
     @Override
     public int getSize() {
-        WebTextListFilter webTextListFilter = filterBuilder.build(element);
+        WebTextBlockFilter webTextListFilter = filterBuilder.build(element);
         var elementName = element.getElementIdentifier().getLastUsedName();
         var invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
                 .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));

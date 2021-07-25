@@ -37,20 +37,20 @@ public class WebAutocompleteImpl<T extends WebBlock> extends WebDropDownListImpl
     // Checks
 
     @Override
-    public WebAutocomplete<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer) {
-        super.forEachBlock(listBlockConsumer);
+    public WebAutocomplete<T> forEach(@NotNull Consumer<T> blockConsumer) {
+        super.forEach(blockConsumer);
         return this;
     }
 
     @Override
-    public WebAutocomplete<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer) {
-        super.forFirstBlock(listBlockConsumer);
+    public WebAutocomplete<T> forFirst(@NotNull Consumer<T> blockConsumer) {
+        super.forFirst(blockConsumer);
         return this;
     }
 
     @Override
-    public WebAutocomplete<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer) {
-        super.forLastBlock(listBlockConsumer);
+    public WebAutocomplete<T> forLast(@NotNull Consumer<T> blockConsumer) {
+        super.forLast(blockConsumer);
         return this;
     }
 

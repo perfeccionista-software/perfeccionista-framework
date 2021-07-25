@@ -5,7 +5,6 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
-import io.perfeccionista.framework.pagefactory.elements.WebTableRowImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +23,6 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
     protected Class<? extends WebPageImpl> webPageImplementationClass = WebPageImpl.class;
     protected Class<? extends WebBlockImpl> webBlockImplementationClass = WebBlockImpl.class;
     protected Class<? extends WebBlockImpl> mappedWebBlockImplementationClass = MappedWebBlockImpl.class;
-    protected Class<? extends WebTableRowImpl> webTableRowImplementationClass = WebTableRowImpl.class;
 
     protected Map<Class<? extends WebChildElement>, Class<? extends WebChildElement>> webElementImplementations = new HashMap<>();
     protected Map<Class<? extends WebChildElement>, Class<? extends WebBlock>> webMappedBlocks = new HashMap<>();
@@ -65,17 +63,6 @@ public class DefaultWebPageFactoryPreferences implements WebPageFactoryPreferenc
     @Override
     public WebPageFactoryPreferences setMappedWebBlockImplementation(@NotNull Class<? extends WebBlockImpl> mappedWebBlockImplementation) {
         this.mappedWebBlockImplementationClass = mappedWebBlockImplementation;
-        return this;
-    }
-
-    @Override
-    public @NotNull Class<? extends WebTableRowImpl> getWebTableRowImplementation() {
-        return webTableRowImplementationClass;
-    }
-
-    @Override
-    public WebPageFactoryPreferences setWebTableRowImplementation(@NotNull Class<? extends WebTableRowImpl> webTableRowImplementation) {
-        this.webTableRowImplementationClass = webTableRowImplementation;
         return this;
     }
 

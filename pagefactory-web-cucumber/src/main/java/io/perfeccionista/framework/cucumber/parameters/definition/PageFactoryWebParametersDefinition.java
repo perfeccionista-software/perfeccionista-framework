@@ -29,8 +29,6 @@ import io.perfeccionista.framework.cucumber.parameters.WebRadioButtonValueExtrac
 import io.perfeccionista.framework.cucumber.parameters.WebRadioButtonValueExtractorParameterImpl;
 import io.perfeccionista.framework.cucumber.parameters.WebTableColumnParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebTableColumnParameterImpl;
-import io.perfeccionista.framework.cucumber.parameters.WebTableValueExtractorParameter;
-import io.perfeccionista.framework.cucumber.parameters.WebTableValueExtractorParameterImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 
 import static io.perfeccionista.framework.cucumber.parameters.definition.EnvironmentParametersDefinition.BRACKETS_PATTERN;
@@ -167,16 +165,6 @@ public class PageFactoryWebParametersDefinition implements EnvironmentAvailable 
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public WebTableColumnParameter webTableColumn(String value) {
         return new WebTableColumnParameterImpl(value);
-    }
-
-    /**
-     *
-      * @param value
-     * @return
-     */
-    @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
-    public WebTableValueExtractorParameter webTableValueExtractor(String value) {
-        return new WebTableValueExtractorParameterImpl(getEnvironment(), value);
     }
 
 }

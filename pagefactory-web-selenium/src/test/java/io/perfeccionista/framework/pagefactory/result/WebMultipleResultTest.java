@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.result;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
+import io.perfeccionista.framework.Web;
 import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
@@ -44,13 +45,13 @@ class WebMultipleResultTest extends AbstractWebSeleniumParallelTest {
 //                        .add(78, value.intNotEquals(78))
 //                        .add(188, value.intNotEquals(188)));
 
-        list.filter(block -> blockIndex(intEquals(77)))
+        list.filter(block -> Web.index(intEquals(77)))
                 .extractAll(blockIndex())
                 .should(haveSize(1))
                 .should(haveIndex(77))
                 .should(haveResult(77));
 
-        list.filter(block -> blockIndex(intEquals(77)))
+        list.filter(block -> Web.index(intEquals(77)))
                 .extractOne(blockIndex())
                 .should(haveIndex(77))
                 .should(haveResult(77));

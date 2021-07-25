@@ -15,7 +15,6 @@ import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebRadioButtonMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsEnabledOperationType;

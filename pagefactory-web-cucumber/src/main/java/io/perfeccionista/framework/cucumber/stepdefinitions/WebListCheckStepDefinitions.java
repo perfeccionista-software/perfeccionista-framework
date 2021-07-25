@@ -13,8 +13,8 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
 
 import static io.perfeccionista.framework.Web.*;
 
@@ -50,6 +50,8 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
      * @param elementFinder -
      * @param integerValue -
      */
+    @Дано("таблица {webElement} содержит {integerValue} строк(а|и|у)")
+    @Given("table {webElement} has {integerValue} row(s)")
     @Дано("список {webElement} содержит {integerValue} блок(а|ов)")
     @Given("list {webElement} has {integerValue} block(s)")
     public void listHasSize(WebElementParameter<WebList> elementFinder,
@@ -65,11 +67,13 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
      * @param integerValue -
      * @param itemFilter -
      */
+    @Дано("таблица {webElement} содержит {integerValue} строк(а|и|у), где")
+    @Given("table {webElement} has {integerValue} row(s) with")
     @Дано("список {webElement} содержит {integerValue} блок(а|ов), где")
     @Given("list {webElement} has {integerValue} block(s) with")
     public void filteredListHasSize(WebElementParameter<WebList> elementFinder,
                                     ValueIntegerParameter integerValue,
-                                    WebListFilterBuilder itemFilter) {
+                                    WebBlockFilterBuilder<?> itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebList.class)
                         .filter(block -> itemFilter)
@@ -100,7 +104,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
     @Given("text list {webElement} has {integerValue} value(s) with")
     public void filteredTextListHasSize(WebElementParameter<WebTextList> elementFinder,
                                         ValueIntegerParameter integerValue,
-                                        WebTextListFilterBuilder itemFilter) {
+                                        WebTextBlockFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebTextList.class)
                         .filterBuilder(itemFilter)
@@ -115,6 +119,8 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
      * @param comparatorType -
      * @param sortDirection -
      */
+    @Дано("в таблице {webElement} {webListValueExtractor} из {webBlockElement} в формате {stringComparatorType} отсортированы {sortDirection}")
+    @Given("in the table {webElement} {webListValueExtractor} from {webBlockElement} in {stringComparatorType} format sorted {sortDirection}")
     @Дано("в списке {webElement} {webListValueExtractor} из {webBlockElement} в формате {stringComparatorType} отсортированы {sortDirection}")
     @Given("in the list {webElement} {webListValueExtractor} from {webBlockElement} in {stringComparatorType} format sorted {sortDirection}")
     public void listSorted(WebElementParameter<WebList> elementFinder,
@@ -137,6 +143,8 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
      * @param sortDirection -
      * @param itemFilter -
      */
+    @Дано("в таблице {webElement} {webListValueExtractor} из {webBlockElement} в формате {stringComparatorType} отсортированы {sortDirection} в строках, где")
+    @Given("in the table {webElement} {webListValueExtractor} from {webBlockElement} in {stringComparatorType} format sorted {sortDirection} in rows with")
     @Дано("в списке {webElement} {webListValueExtractor} из {webBlockElement} в формате {stringComparatorType} отсортированы {sortDirection} в блоках, где")
     @Given("in the list {webElement} {webListValueExtractor} from {webBlockElement} in {stringComparatorType} format sorted {sortDirection} in blocks with")
     public void filteredListSorted(WebElementParameter<WebList> elementFinder,
@@ -144,7 +152,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                    @SourceParameterReference("elementFinder") WebBlockElementParameter<WebChildElement> blockElementFinder,
                                    StringComparatorTypeParameter comparatorType,
                                    SortDirectionParameter sortDirection,
-                                   WebListFilterBuilder itemFilter) {
+                                   WebBlockFilterBuilder<?> itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebList.class)
                                 .filter(block -> itemFilter)
@@ -181,7 +189,7 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
     public void filteredTextListSorted(WebElementParameter<WebTextList> elementFinder,
                                        StringComparatorTypeParameter comparatorType,
                                        SortDirectionParameter sortDirection,
-                                       WebTextListFilterBuilder itemFilter) {
+                                       WebTextBlockFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebTextList.class)
                                 .filterBuilder(itemFilter)

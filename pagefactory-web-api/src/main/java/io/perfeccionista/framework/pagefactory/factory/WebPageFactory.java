@@ -3,10 +3,7 @@ package io.perfeccionista.framework.pagefactory.factory;
 import io.perfeccionista.framework.exceptions.ElementNotFound;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlock;
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.elements.base.TableSection;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolderForChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolderForIsolatedStructuralElement;
@@ -34,11 +31,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_FOUND;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_HEADER;
 import static io.perfeccionista.framework.utils.WebElementUtils.getWebChildElementMethods;
 import static java.util.stream.Collectors.toList;
 
@@ -97,9 +91,9 @@ public class WebPageFactory {
 
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder radioButtonLocatorHolder = webRadioGroup.getRequiredLocator(RADIO);
+        WebLocatorHolder radioButtonLocatorHolder = webRadioGroup.getRequiredLocator(ITEM);
 
-        Class<? extends DefaultWebRadioButtonBlock> mappedBlockClass = (Class<? extends DefaultWebRadioButtonBlock>) webRadioGroup.getWebRadioGroupFrame()
+        Class<? extends DefaultWebRadioButtonBlock> mappedBlockClass = (Class<? extends DefaultWebRadioButtonBlock>) webRadioGroup.getBlockFrame()
                 .getMappedBlockFrame()
                 .getElementIdentifier()
                 // TODO: Либо добавить проверку, либо отдельный тип идентифаера
@@ -133,16 +127,16 @@ public class WebPageFactory {
         return webRadioButtons;
     }
 
-    public Map<Integer, WebBlock> createWebListBlocks(@NotNull WebList webList,
+    public Map<Integer, WebBlock> createWebListBlocks(@NotNull WebList<?> webList,
                                                       @NotNull FilterResult filterResult) {
         Map<Integer, WebBlock> webMappedBlocks = new HashMap<>();
 
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder liLocatorHolder = webList.getRequiredLocator(LI);
+        WebLocatorHolder blockLocatorHolder = webList.getRequiredLocator(ITEM);
 
         //noinspection unchecked
-        Class<? extends WebBlock> mappedBlockClass = (Class<? extends WebBlock>) webList.getWebListFrame()
+        Class<? extends WebBlock> mappedBlockClass = (Class<? extends WebBlock>) webList.getBlockFrame()
                 .getMappedBlockFrame()
                 .getElementIdentifier()
                 .getElementType();
@@ -155,7 +149,7 @@ public class WebPageFactory {
             WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
             // ParentLocators
             Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            WebLocatorHolder blockRootLocator = liLocatorHolder.clone().setSingle(true).setIndex(index);
+            WebLocatorHolder blockRootLocator = blockLocatorHolder.clone().setSingle(true).setIndex(index);
             parentLocators.add(blockRootLocator);
             WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webList, hash, parentLocators);
             // Decorate MappedBlock
@@ -173,10 +167,10 @@ public class WebPageFactory {
 
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder liLocatorHolder = webList.getRequiredLocator(LI);
+        WebLocatorHolder liLocatorHolder = webList.getRequiredLocator(ITEM);
 
         //noinspection unchecked
-        Class<? extends DefaultWebTextBlock> mappedBlockClass = (Class<? extends DefaultWebTextBlock>) webList.getWebTextListFrame()
+        Class<? extends DefaultWebTextBlock> mappedBlockClass = (Class<? extends DefaultWebTextBlock>) webList.getBlockFrame()
                 .getMappedBlockFrame()
                 .getElementIdentifier()
                 .getElementType();
@@ -201,386 +195,404 @@ public class WebPageFactory {
         return webMappedBlocks;
     }
 
-    public Map<Integer, WebBlock> createWebTableCells(@NotNull WebTable webTable,
-                                                      @NotNull String columnName,
-                                                      @NotNull TableSection tableSection,
-                                                      @NotNull FilterResult filterResult) {
-        Map<Integer, WebBlock> webMappedCells = new HashMap<>();
-
-        String hash = filterResult.getHash();
-        Set<Integer> indexes = filterResult.getIndexes();
-
-        WebLocatorHolder tableRowLocator = webTable.getRequiredLocator(TBODY_ROW);
-        WebLocatorHolder tableCellLocator = webTable.getWebTableFrame()
-                .getRequiredBodyLocator(columnName);
-        //noinspection unchecked
-        Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) webTable.getWebTableFrame()
-                .getRequiredBodyMappedBlock(columnName)
-                .getElementIdentifier()
-                .getElementType();
-
-        if (TableSection.HEADER == tableSection) {
-            tableRowLocator = webTable.getRequiredLocator(THEAD_ROW);
-            tableCellLocator = webTable.getWebTableFrame()
-                    .getRequiredHeaderLocator(columnName);
-            //noinspection unchecked
-            tableCellMappedBlockClass = (Class<? extends WebBlock>) webTable.getWebTableFrame()
-                    .getRequiredHeaderMappedBlock(columnName)
-                    .getElementIdentifier()
-                    .getElementType();
-        }
-        if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = webTable.getRequiredLocator(TFOOT_ROW);
-            tableCellLocator = webTable.getWebTableFrame()
-                    .getRequiredFooterLocator(columnName);
-            //noinspection unchecked
-            tableCellMappedBlockClass = (Class<? extends WebBlock>) webTable.getWebTableFrame()
-                    .getRequiredFooterMappedBlock(columnName)
-                    .getElementIdentifier()
-                    .getElementType();
-        }
-
-        List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
-
-        if (TableSection.BODY == tableSection) {
-            for (int index : indexes) {
-                WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-                // ElementRegistry
-                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
-                // ParentLocators
-                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                parentLocators.add(tableRowLocator.clone().setSingle(true).setIndex(index));
-                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-                parentLocators.add(tableCellRootLocator);
-                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
-                // Decorate MappedBlock
-                WebBlock decoratedWebMappedBlockInstance = decorator
-                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-                webMappedCells.put(index, decoratedWebMappedBlockInstance);
-            }
-        } else {
-            WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-            // ElementRegistry
-            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
-            // ParentLocators
-            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            parentLocators.add(tableRowLocator.clone());
-            WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-            parentLocators.add(tableCellRootLocator);
-            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
-            // Decorate MappedBlock
-            WebBlock decoratedWebMappedBlockInstance = decorator
-                    .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-            webMappedCells.put(-1, decoratedWebMappedBlockInstance);
-        }
-
-        return webMappedCells;
-    }
-
-    public Map<Integer, DefaultWebTextBlock> createWebTextTableCells(@NotNull WebTextTable webTextTable,
-                                                                     @NotNull String columnName,
-                                                                     @NotNull TableSection tableSection,
-                                                                     @NotNull FilterResult filterResult) {
-        Map<Integer, DefaultWebTextBlock> webMappedCells = new HashMap<>();
-
-        String hash = filterResult.getHash();
-        Set<Integer> indexes = filterResult.getIndexes();
-
-        WebLocatorHolder tableRowLocator = webTextTable.getRequiredLocator(TBODY_ROW);
-        WebLocatorHolder tableCellLocator = webTextTable.getWebTextTableFrame()
-                .getRequiredBodyLocator(columnName);
-        //noinspection unchecked
-        Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) webTextTable.getWebTextTableFrame()
-                .getRequiredBodyMappedBlock(columnName)
-                .getElementIdentifier()
-                .getElementType();
-
-        if (TableSection.HEADER == tableSection) {
-            tableRowLocator = webTextTable.getRequiredLocator(THEAD_ROW);
-            tableCellLocator = webTextTable.getWebTextTableFrame()
-                    .getRequiredHeaderLocator(columnName);
-            //noinspection unchecked
-            tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) webTextTable.getWebTextTableFrame()
-                    .getRequiredHeaderMappedBlock(columnName)
-                    .getElementIdentifier()
-                    .getElementType();
-        }
-        if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = webTextTable.getRequiredLocator(TFOOT_ROW);
-            tableCellLocator = webTextTable.getWebTextTableFrame()
-                    .getRequiredFooterLocator(columnName);
-            //noinspection unchecked
-            tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) webTextTable.getWebTextTableFrame()
-                    .getRequiredFooterMappedBlock(columnName)
-                    .getElementIdentifier()
-                    .getElementType();
-        }
-
-        List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
-
-        if (TableSection.BODY == tableSection) {
-            for (int index : indexes) {
-                DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-                // ElementRegistry
-                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
-                // ParentLocators
-                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                parentLocators.add(tableRowLocator.clone().setSingle(true).setIndex(index));
-                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-                parentLocators.add(tableCellRootLocator);
-                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
-                // Decorate MappedBlock
-                DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
-                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-                webMappedCells.put(index, decoratedWebMappedBlockInstance);
-            }
-        } else {
-            DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-            // ElementRegistry
-            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
-            // ParentLocators
-            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            parentLocators.add(tableRowLocator.clone());
-            WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-            parentLocators.add(tableCellRootLocator);
-            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
-            // Decorate MappedBlock
-            DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
-                    .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-            webMappedCells.put(-1, decoratedWebMappedBlockInstance);
-        }
-
-        return webMappedCells;
-    }
-
-    public Map<Integer, WebTableRow> createWebTableRows(@NotNull WebTable webTable,
-                                                        @NotNull TableSection tableSection,
-                                                        @NotNull FilterResult filterResult) {
-        Map<Integer, WebTableRow> webMappedRows = new HashMap<>();
-
-        String hash = filterResult.getHash();
-        Set<Integer> indexes = filterResult.getIndexes();
-
-        Set<String> tableColumnNames = webTable.getWebTableFrame().getTableColumnNames();
-        WebLocatorHolder tableRowLocator = webTable.getRequiredLocator(TBODY_ROW);
-        Map<String, WebBlock> tableCellFrames = webTable.getWebTableFrame().getBody();
-        Map<String, WebLocatorHolder> tableCellLocators = webTable.getWebTableFrame().getBodyLocators();
-
-        if (TableSection.HEADER == tableSection) {
-            tableRowLocator = webTable.getRequiredLocator(THEAD_ROW);
-            tableCellFrames = webTable.getWebTableFrame().getHeaders();
-            tableCellLocators = webTable.getWebTableFrame().getHeaderLocators();
-        }
-        if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = webTable.getRequiredLocator(TFOOT_ROW);
-            tableCellFrames = webTable.getWebTableFrame().getFooters();
-            tableCellLocators = webTable.getWebTableFrame().getFooterLocators();
-        }
-
-        Map<String, List<Method>> webChildElementMethods = new HashMap<>();
-        for (String tableColumnName : tableColumnNames) {
-            //noinspection unchecked
-            Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) tableCellFrames
-                    .get(tableColumnName)
-                    .getElementIdentifier()
-                    .getElementType();
-            List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
-            webChildElementMethods.put(tableColumnName, childElementMethods);
-        }
-
-        if (TableSection.BODY == tableSection) {
-            for (int index : indexes) {
-                WebTableRow webMappedRowInstance = initializer.initWebTableRow();
-
-                Map<String, WebBlock> tableCells = new HashMap<>();
-                for (String tableColumnName : tableColumnNames) {
-                    //noinspection unchecked
-                    Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) tableCellFrames
-                            .get(tableColumnName)
-                            .getElementIdentifier()
-                            .getElementType();
-                    WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
-
-                    WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-                    // ElementRegistry
-                    List<Method> methods = webChildElementMethods.get(tableColumnName);
-                    WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
-                    // ParentLocators (from tableRowInstance)
-                    Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                    WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-                    parentLocators.add(tableCellRootLocator);
-                    WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
-                    // Decorate MappedBlock
-                    WebBlock decoratedWebMappedBlockInstance = decorator
-                            .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-                    tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
-                }
-                // ElementRegistry
-                WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
-                // ParentLocators (from tableRowInstance)
-                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                WebLocatorHolder tableRowRootLocator = tableRowLocator.clone().setSingle(true).setIndex(index);
-                parentLocators.add(tableRowRootLocator);
-                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
-                WebTableRow decoratedWebMappedRowInstance = decorator
-                        .decorateMappedWebBlockInstance(webMappedRowInstance, WebTableRow.class, elementRegistry, parentInfo);
-                webMappedRows.put(index, decoratedWebMappedRowInstance);
-            }
-        } else {
-            WebTableRow webMappedRowInstance = initializer.initWebTableRow();
-
-            Map<String, WebBlock> tableCells = new HashMap<>();
-            for (String tableColumnName : tableColumnNames) {
-                //noinspection unchecked
-                Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) tableCellFrames
-                        .get(tableColumnName)
-                        .getElementIdentifier()
-                        .getElementType();
-                WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
-
-                WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-                // ElementRegistry
-                List<Method> methods = webChildElementMethods.get(tableColumnName);
-                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
-                // ParentLocators (from tableRowInstance)
-                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-                parentLocators.add(tableCellRootLocator);
-                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
-                // Decorate MappedBlock
-                WebBlock decoratedWebMappedBlockInstance = decorator
-                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-                tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
-            }
-            // ElementRegistry
-            WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
-            // ParentLocators (from tableRowInstance)
-            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            WebLocatorHolder tableRowRootLocator = tableRowLocator.clone();
-            parentLocators.add(tableRowRootLocator);
-            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
-            WebTableRow decoratedWebMappedRowInstance = decorator
-                    .decorateMappedWebBlockInstance(webMappedRowInstance, WebTableRow.class, elementRegistry, parentInfo);
-            webMappedRows.put(-1, decoratedWebMappedRowInstance);
-        }
-
-        return webMappedRows;
+    public <T extends WebBlock> T createWebTableHeader(@NotNull WebTable<?, ?> webTable,
+                                                       @NotNull Class<T> mappedBlockClass) {
+        WebLocatorHolder blockRootLocator = webTable.getRequiredLocator(TABLE_HEADER);
+        List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
+        WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(mappedBlockClass);
+        // ElementRegistry
+        WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
+        // ParentLocators
+        Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+        parentLocators.add(blockRootLocator);
+        WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, parentLocators);
+        // Decorate MappedBlock
+        return (T) decorator.decorateMappedWebBlockInstance(webMappedBlockInstance, mappedBlockClass, elementRegistry, parentInfo);
     }
 
 
-    public Map<Integer, WebBlock> createWebTextTableRows(@NotNull WebTextTable webTextTable,
-                                                         @NotNull TableSection tableSection,
-                                                         @NotNull FilterResult filterResult) {
-        Map<Integer, WebBlock> webMappedRows = new HashMap<>();
 
-        String hash = filterResult.getHash();
-        Set<Integer> indexes = filterResult.getIndexes();
 
-        Set<String> tableColumnNames = webTextTable.getWebTextTableFrame().getTableColumnNames();
-        WebLocatorHolder tableRowLocator = webTextTable.getRequiredLocator(TBODY_ROW);
-        Map<String, DefaultWebTextBlock> tableCellFrames = webTextTable.getWebTextTableFrame().getBody();
-        Map<String, WebLocatorHolder> tableCellLocators = webTextTable.getWebTextTableFrame().getBodyLocators();
-
-        if (TableSection.HEADER == tableSection) {
-            tableRowLocator = webTextTable.getRequiredLocator(THEAD_ROW);
-            tableCellFrames = webTextTable.getWebTextTableFrame().getHeaders();
-            tableCellLocators = webTextTable.getWebTextTableFrame().getHeaderLocators();
-        }
-        if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = webTextTable.getRequiredLocator(TFOOT_ROW);
-            tableCellFrames = webTextTable.getWebTextTableFrame().getFooters();
-            tableCellLocators = webTextTable.getWebTextTableFrame().getFooterLocators();
-        }
-
-        Map<String, List<Method>> webChildElementMethods = new HashMap<>();
-        for (String tableColumnName : tableColumnNames) {
-            //noinspection unchecked
-            Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) tableCellFrames
-                    .get(tableColumnName)
-                    .getElementIdentifier()
-                    .getElementType();
-            List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
-            webChildElementMethods.put(tableColumnName, childElementMethods);
-        }
-
-        if (TableSection.BODY == tableSection) {
-            for (int index : indexes) {
-                WebBlock webMappedRowInstance = initializer.initWebTableRow();
-
-                Map<String, WebBlock> tableCells = new HashMap<>();
-                for (String tableColumnName : tableColumnNames) {
-                    //noinspection unchecked
-                    Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) tableCellFrames
-                            .get(tableColumnName)
-                            .getElementIdentifier()
-                            .getElementType();
-                    WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
-
-                    DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-                    // ElementRegistry
-                    List<Method> methods = webChildElementMethods.get(tableColumnName);
-                    WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
-                    // ParentLocators (from tableRowInstance)
-                    Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                    WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-                    parentLocators.add(tableCellRootLocator);
-                    WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
-                    // Decorate MappedBlock
-                    DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
-                            .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-                    tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
-                }
-                // ElementRegistry
-                WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
-                // ParentLocators (from tableRowInstance)
-                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                WebLocatorHolder tableRowRootLocator = tableRowLocator.clone().setSingle(true).setIndex(index);
-                parentLocators.add(tableRowRootLocator);
-                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
-                WebBlock decoratedWebMappedRowInstance = decorator
-                        .decorateMappedWebBlockInstance(webMappedRowInstance, DefaultWebTextBlock.class, elementRegistry, parentInfo);
-                webMappedRows.put(index, decoratedWebMappedRowInstance);
-            }
-        } else {
-            WebBlock webMappedRowInstance = initializer.initWebTableRow();
-
-            Map<String, WebBlock> tableCells = new HashMap<>();
-            for (String tableColumnName : tableColumnNames) {
-                //noinspection unchecked
-                Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) tableCellFrames
-                        .get(tableColumnName)
-                        .getElementIdentifier()
-                        .getElementType();
-                WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
-
-                DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
-                // ElementRegistry
-                List<Method> methods = webChildElementMethods.get(tableColumnName);
-                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
-                // ParentLocators (from tableRowInstance)
-                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
-                parentLocators.add(tableCellRootLocator);
-                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
-                // Decorate MappedBlock
-                DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
-                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
-                tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
-            }
-            // ElementRegistry
-            WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
-            // ParentLocators (from tableRowInstance)
-            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            WebLocatorHolder tableRowRootLocator = tableRowLocator.clone();
-            parentLocators.add(tableRowRootLocator);
-            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
-            WebBlock decoratedWebMappedRowInstance = decorator
-                    .decorateMappedWebBlockInstance(webMappedRowInstance, DefaultWebTextBlock.class, elementRegistry, parentInfo);
-            webMappedRows.put(-1, decoratedWebMappedRowInstance);
-        }
-
-        return webMappedRows;
-    }
+//    public Map<Integer, WebBlock> createWebTableCells(@NotNull WebTable webTable,
+//                                                      @NotNull String columnName,
+//                                                      @NotNull TableSection tableSection,
+//                                                      @NotNull FilterResult filterResult) {
+//        Map<Integer, WebBlock> webMappedCells = new HashMap<>();
+//
+//        String hash = filterResult.getHash();
+//        Set<Integer> indexes = filterResult.getIndexes();
+//
+//        WebLocatorHolder tableRowLocator = webTable.getRequiredLocator(TBODY_ROW);
+//        WebLocatorHolder tableCellLocator = webTable.getWebTableFrame()
+//                .getRequiredBodyLocator(columnName);
+//        //noinspection unchecked
+//        Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) webTable.getWebTableFrame()
+//                .getRequiredBodyMappedBlock(columnName)
+//                .getElementIdentifier()
+//                .getElementType();
+//
+//        if (TableSection.HEADER == tableSection) {
+//            tableRowLocator = webTable.getRequiredLocator(THEAD_ROW);
+//            tableCellLocator = webTable.getWebTableFrame()
+//                    .getRequiredHeaderLocator(columnName);
+//            //noinspection unchecked
+//            tableCellMappedBlockClass = (Class<? extends WebBlock>) webTable.getWebTableFrame()
+//                    .getRequiredHeaderMappedBlock(columnName)
+//                    .getElementIdentifier()
+//                    .getElementType();
+//        }
+//        if (TableSection.FOOTER == tableSection) {
+//            tableRowLocator = webTable.getRequiredLocator(TFOOT_ROW);
+//            tableCellLocator = webTable.getWebTableFrame()
+//                    .getRequiredFooterLocator(columnName);
+//            //noinspection unchecked
+//            tableCellMappedBlockClass = (Class<? extends WebBlock>) webTable.getWebTableFrame()
+//                    .getRequiredFooterMappedBlock(columnName)
+//                    .getElementIdentifier()
+//                    .getElementType();
+//        }
+//
+//        List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
+//
+//        if (TableSection.BODY == tableSection) {
+//            for (int index : indexes) {
+//                WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//                // ElementRegistry
+//                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
+//                // ParentLocators
+//                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                parentLocators.add(tableRowLocator.clone().setSingle(true).setIndex(index));
+//                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//                parentLocators.add(tableCellRootLocator);
+//                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
+//                // Decorate MappedBlock
+//                WebBlock decoratedWebMappedBlockInstance = decorator
+//                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//                webMappedCells.put(index, decoratedWebMappedBlockInstance);
+//            }
+//        } else {
+//            WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//            // ElementRegistry
+//            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
+//            // ParentLocators
+//            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//            parentLocators.add(tableRowLocator.clone());
+//            WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//            parentLocators.add(tableCellRootLocator);
+//            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
+//            // Decorate MappedBlock
+//            WebBlock decoratedWebMappedBlockInstance = decorator
+//                    .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//            webMappedCells.put(-1, decoratedWebMappedBlockInstance);
+//        }
+//
+//        return webMappedCells;
+//    }
+//
+//    public Map<Integer, DefaultWebTextBlock> createWebTextTableCells(@NotNull WebTextTable webTextTable,
+//                                                                     @NotNull String columnName,
+//                                                                     @NotNull TableSection tableSection,
+//                                                                     @NotNull FilterResult filterResult) {
+//        Map<Integer, DefaultWebTextBlock> webMappedCells = new HashMap<>();
+//
+//        String hash = filterResult.getHash();
+//        Set<Integer> indexes = filterResult.getIndexes();
+//
+//        WebLocatorHolder tableRowLocator = webTextTable.getRequiredLocator(TBODY_ROW);
+//        WebLocatorHolder tableCellLocator = webTextTable.getWebTextTableFrame()
+//                .getRequiredBodyLocator(columnName);
+//        //noinspection unchecked
+//        Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) webTextTable.getWebTextTableFrame()
+//                .getRequiredBodyMappedBlock(columnName)
+//                .getElementIdentifier()
+//                .getElementType();
+//
+//        if (TableSection.HEADER == tableSection) {
+//            tableRowLocator = webTextTable.getRequiredLocator(THEAD_ROW);
+//            tableCellLocator = webTextTable.getWebTextTableFrame()
+//                    .getRequiredHeaderLocator(columnName);
+//            //noinspection unchecked
+//            tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) webTextTable.getWebTextTableFrame()
+//                    .getRequiredHeaderMappedBlock(columnName)
+//                    .getElementIdentifier()
+//                    .getElementType();
+//        }
+//        if (TableSection.FOOTER == tableSection) {
+//            tableRowLocator = webTextTable.getRequiredLocator(TFOOT_ROW);
+//            tableCellLocator = webTextTable.getWebTextTableFrame()
+//                    .getRequiredFooterLocator(columnName);
+//            //noinspection unchecked
+//            tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) webTextTable.getWebTextTableFrame()
+//                    .getRequiredFooterMappedBlock(columnName)
+//                    .getElementIdentifier()
+//                    .getElementType();
+//        }
+//
+//        List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
+//
+//        if (TableSection.BODY == tableSection) {
+//            for (int index : indexes) {
+//                DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//                // ElementRegistry
+//                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
+//                // ParentLocators
+//                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                parentLocators.add(tableRowLocator.clone().setSingle(true).setIndex(index));
+//                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//                parentLocators.add(tableCellRootLocator);
+//                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
+//                // Decorate MappedBlock
+//                DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
+//                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//                webMappedCells.put(index, decoratedWebMappedBlockInstance);
+//            }
+//        } else {
+//            DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//            // ElementRegistry
+//            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
+//            // ParentLocators
+//            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//            parentLocators.add(tableRowLocator.clone());
+//            WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//            parentLocators.add(tableCellRootLocator);
+//            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
+//            // Decorate MappedBlock
+//            DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
+//                    .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//            webMappedCells.put(-1, decoratedWebMappedBlockInstance);
+//        }
+//
+//        return webMappedCells;
+//    }
+//
+//    public Map<Integer, WebTableRow> createWebTableRows(@NotNull WebTable webTable,
+//                                                        @NotNull TableSection tableSection,
+//                                                        @NotNull FilterResult filterResult) {
+//        Map<Integer, WebTableRow> webMappedRows = new HashMap<>();
+//
+//        String hash = filterResult.getHash();
+//        Set<Integer> indexes = filterResult.getIndexes();
+//
+//        Set<String> tableColumnNames = webTable.getWebTableFrame().getTableColumnNames();
+//        WebLocatorHolder tableRowLocator = webTable.getRequiredLocator(TBODY_ROW);
+//        Map<String, WebBlock> tableCellFrames = webTable.getWebTableFrame().getBody();
+//        Map<String, WebLocatorHolder> tableCellLocators = webTable.getWebTableFrame().getBodyLocators();
+//
+//        if (TableSection.HEADER == tableSection) {
+//            tableRowLocator = webTable.getRequiredLocator(THEAD_ROW);
+//            tableCellFrames = webTable.getWebTableFrame().getHeaders();
+//            tableCellLocators = webTable.getWebTableFrame().getHeaderLocators();
+//        }
+//        if (TableSection.FOOTER == tableSection) {
+//            tableRowLocator = webTable.getRequiredLocator(TFOOT_ROW);
+//            tableCellFrames = webTable.getWebTableFrame().getFooters();
+//            tableCellLocators = webTable.getWebTableFrame().getFooterLocators();
+//        }
+//
+//        Map<String, List<Method>> webChildElementMethods = new HashMap<>();
+//        for (String tableColumnName : tableColumnNames) {
+//            //noinspection unchecked
+//            Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) tableCellFrames
+//                    .get(tableColumnName)
+//                    .getElementIdentifier()
+//                    .getElementType();
+//            List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
+//            webChildElementMethods.put(tableColumnName, childElementMethods);
+//        }
+//
+//        if (TableSection.BODY == tableSection) {
+//            for (int index : indexes) {
+//                WebTableRow webMappedRowInstance = initializer.initWebTableRow();
+//
+//                Map<String, WebBlock> tableCells = new HashMap<>();
+//                for (String tableColumnName : tableColumnNames) {
+//                    //noinspection unchecked
+//                    Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) tableCellFrames
+//                            .get(tableColumnName)
+//                            .getElementIdentifier()
+//                            .getElementType();
+//                    WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
+//
+//                    WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//                    // ElementRegistry
+//                    List<Method> methods = webChildElementMethods.get(tableColumnName);
+//                    WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
+//                    // ParentLocators (from tableRowInstance)
+//                    Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                    WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//                    parentLocators.add(tableCellRootLocator);
+//                    WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
+//                    // Decorate MappedBlock
+//                    WebBlock decoratedWebMappedBlockInstance = decorator
+//                            .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//                    tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
+//                }
+//                // ElementRegistry
+//                WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
+//                // ParentLocators (from tableRowInstance)
+//                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                WebLocatorHolder tableRowRootLocator = tableRowLocator.clone().setSingle(true).setIndex(index);
+//                parentLocators.add(tableRowRootLocator);
+//                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
+//                WebTableRow decoratedWebMappedRowInstance = decorator
+//                        .decorateMappedWebBlockInstance(webMappedRowInstance, WebTableRow.class, elementRegistry, parentInfo);
+//                webMappedRows.put(index, decoratedWebMappedRowInstance);
+//            }
+//        } else {
+//            WebTableRow webMappedRowInstance = initializer.initWebTableRow();
+//
+//            Map<String, WebBlock> tableCells = new HashMap<>();
+//            for (String tableColumnName : tableColumnNames) {
+//                //noinspection unchecked
+//                Class<? extends WebBlock> tableCellMappedBlockClass = (Class<? extends WebBlock>) tableCellFrames
+//                        .get(tableColumnName)
+//                        .getElementIdentifier()
+//                        .getElementType();
+//                WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
+//
+//                WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//                // ElementRegistry
+//                List<Method> methods = webChildElementMethods.get(tableColumnName);
+//                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
+//                // ParentLocators (from tableRowInstance)
+//                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//                parentLocators.add(tableCellRootLocator);
+//                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
+//                // Decorate MappedBlock
+//                WebBlock decoratedWebMappedBlockInstance = decorator
+//                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//                tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
+//            }
+//            // ElementRegistry
+//            WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
+//            // ParentLocators (from tableRowInstance)
+//            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//            WebLocatorHolder tableRowRootLocator = tableRowLocator.clone();
+//            parentLocators.add(tableRowRootLocator);
+//            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, hash, parentLocators);
+//            WebTableRow decoratedWebMappedRowInstance = decorator
+//                    .decorateMappedWebBlockInstance(webMappedRowInstance, WebTableRow.class, elementRegistry, parentInfo);
+//            webMappedRows.put(-1, decoratedWebMappedRowInstance);
+//        }
+//
+//        return webMappedRows;
+//    }
+//
+//
+//    public Map<Integer, WebBlock> createWebTextTableRows(@NotNull WebTextTable webTextTable,
+//                                                         @NotNull TableSection tableSection,
+//                                                         @NotNull FilterResult filterResult) {
+//        Map<Integer, WebBlock> webMappedRows = new HashMap<>();
+//
+//        String hash = filterResult.getHash();
+//        Set<Integer> indexes = filterResult.getIndexes();
+//
+//        Set<String> tableColumnNames = webTextTable.getWebTextTableFrame().getTableColumnNames();
+//        WebLocatorHolder tableRowLocator = webTextTable.getRequiredLocator(TBODY_ROW);
+//        Map<String, DefaultWebTextBlock> tableCellFrames = webTextTable.getWebTextTableFrame().getBody();
+//        Map<String, WebLocatorHolder> tableCellLocators = webTextTable.getWebTextTableFrame().getBodyLocators();
+//
+//        if (TableSection.HEADER == tableSection) {
+//            tableRowLocator = webTextTable.getRequiredLocator(THEAD_ROW);
+//            tableCellFrames = webTextTable.getWebTextTableFrame().getHeaders();
+//            tableCellLocators = webTextTable.getWebTextTableFrame().getHeaderLocators();
+//        }
+//        if (TableSection.FOOTER == tableSection) {
+//            tableRowLocator = webTextTable.getRequiredLocator(TFOOT_ROW);
+//            tableCellFrames = webTextTable.getWebTextTableFrame().getFooters();
+//            tableCellLocators = webTextTable.getWebTextTableFrame().getFooterLocators();
+//        }
+//
+//        Map<String, List<Method>> webChildElementMethods = new HashMap<>();
+//        for (String tableColumnName : tableColumnNames) {
+//            //noinspection unchecked
+//            Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) tableCellFrames
+//                    .get(tableColumnName)
+//                    .getElementIdentifier()
+//                    .getElementType();
+//            List<Method> childElementMethods = getWebChildElementMethods(tableCellMappedBlockClass);
+//            webChildElementMethods.put(tableColumnName, childElementMethods);
+//        }
+//
+//        if (TableSection.BODY == tableSection) {
+//            for (int index : indexes) {
+//                WebBlock webMappedRowInstance = initializer.initWebTableRow();
+//
+//                Map<String, WebBlock> tableCells = new HashMap<>();
+//                for (String tableColumnName : tableColumnNames) {
+//                    //noinspection unchecked
+//                    Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) tableCellFrames
+//                            .get(tableColumnName)
+//                            .getElementIdentifier()
+//                            .getElementType();
+//                    WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
+//
+//                    DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//                    // ElementRegistry
+//                    List<Method> methods = webChildElementMethods.get(tableColumnName);
+//                    WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
+//                    // ParentLocators (from tableRowInstance)
+//                    Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                    WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//                    parentLocators.add(tableCellRootLocator);
+//                    WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
+//                    // Decorate MappedBlock
+//                    DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
+//                            .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//                    tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
+//                }
+//                // ElementRegistry
+//                WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
+//                // ParentLocators (from tableRowInstance)
+//                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                WebLocatorHolder tableRowRootLocator = tableRowLocator.clone().setSingle(true).setIndex(index);
+//                parentLocators.add(tableRowRootLocator);
+//                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
+//                WebBlock decoratedWebMappedRowInstance = decorator
+//                        .decorateMappedWebBlockInstance(webMappedRowInstance, DefaultWebTextBlock.class, elementRegistry, parentInfo);
+//                webMappedRows.put(index, decoratedWebMappedRowInstance);
+//            }
+//        } else {
+//            WebBlock webMappedRowInstance = initializer.initWebTableRow();
+//
+//            Map<String, WebBlock> tableCells = new HashMap<>();
+//            for (String tableColumnName : tableColumnNames) {
+//                //noinspection unchecked
+//                Class<? extends DefaultWebTextBlock> tableCellMappedBlockClass = (Class<? extends DefaultWebTextBlock>) tableCellFrames
+//                        .get(tableColumnName)
+//                        .getElementIdentifier()
+//                        .getElementType();
+//                WebLocatorHolder tableCellLocator = tableCellLocators.get(tableColumnName);
+//
+//                DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(tableCellMappedBlockClass);
+//                // ElementRegistry
+//                List<Method> methods = webChildElementMethods.get(tableColumnName);
+//                WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, methods);
+//                // ParentLocators (from tableRowInstance)
+//                Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//                WebLocatorHolder tableCellRootLocator = tableCellLocator.clone();
+//                parentLocators.add(tableCellRootLocator);
+//                WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webMappedRowInstance, parentLocators);
+//                // Decorate MappedBlock
+//                DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
+//                        .decorateMappedWebBlockInstance(webMappedBlockInstance, tableCellMappedBlockClass, elementRegistry, parentInfo);
+//                tableCells.put(tableColumnName, decoratedWebMappedBlockInstance);
+//            }
+//            // ElementRegistry
+//            WebElementRegistry elementRegistry = WebElementRegistry.of(tableCells);
+//            // ParentLocators (from tableRowInstance)
+//            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+//            WebLocatorHolder tableRowRootLocator = tableRowLocator.clone();
+//            parentLocators.add(tableRowRootLocator);
+//            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTextTable, hash, parentLocators);
+//            WebBlock decoratedWebMappedRowInstance = decorator
+//                    .decorateMappedWebBlockInstance(webMappedRowInstance, DefaultWebTextBlock.class, elementRegistry, parentInfo);
+//            webMappedRows.put(-1, decoratedWebMappedRowInstance);
+//        }
+//
+//        return webMappedRows;
+//    }
 
     protected @NotNull WebElementRegistry createWebChildElementRegistry(@NotNull WebParentElement parent,
                                                                         @NotNull List<Method> parentMethods) {

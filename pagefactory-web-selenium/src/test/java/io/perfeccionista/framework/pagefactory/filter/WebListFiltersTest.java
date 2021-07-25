@@ -4,7 +4,7 @@ import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.exceptions.LocatorNotFound.LocatorNotFoundException;
 import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilter;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBlock;
@@ -33,8 +33,8 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebList<CountryBlock> list = listElementsPage.webList()
                 .should(beDisplayed());
 
-        assertEquals(95, list.filter(blockIndex(intGreaterThanOrEqual(100))).size());
-        assertEquals(100, list.filterBuilder(without(blockIndex(intGreaterThanOrEqual(100)))).size());
+        assertEquals(95, list.filter(index(intGreaterThanOrEqual(100))).size());
+        assertEquals(100, list.filterBuilder(without(index(intGreaterThanOrEqual(100)))).size());
     }
 
     @Test
@@ -49,7 +49,7 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
 
         list.should(haveSize(195));
 
-        list.filterBuilder(emptyWebListFilter())
+        list.filterBuilder(emptyWebBlockFilter())
                 .should(haveSize(195));
     }
 
@@ -63,9 +63,9 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebList<CountryBlock> list = listElementsPage.webList()
                 .should(beDisplayed());
 
-        list.filter(blockIndex(intGreaterThanOrEqual(100)))
+        list.filter(index(intGreaterThanOrEqual(100)))
                 .should(haveSize(intEquals(95)));
-        list.filterBuilder(without(blockIndex(intGreaterThanOrEqual(100))))
+        list.filterBuilder(without(index(intGreaterThanOrEqual(100))))
                 .should(haveSize(intEquals(100)));
     }
 
@@ -485,7 +485,7 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
         list.filterBuilder(without(componentNotPresent("Country name", "Self")))
                 .should(haveSize(193));
 
-        WebListFilter<CountryBlock> filter = list.filterBuilder(block -> with(componentPresent(block.shortName(), "Unknown")));
+        WebBlockFilter<CountryBlock> filter = list.filterBuilder(block -> with(componentPresent(block.shortName(), "Unknown")));
         assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 
@@ -521,7 +521,7 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
         list.filterBuilder(without(componentNotDisplayed("Population unit", "Self")))
                 .should(haveSize(186));
 
-        WebListFilter<CountryBlock> filter = list.filterBuilder(block -> with(componentDisplayed(block.shortName(), "Unknown")));
+        WebBlockFilter<CountryBlock> filter = list.filterBuilder(block -> with(componentDisplayed(block.shortName(), "Unknown")));
         assertThrows(LocatorNotFoundException.class, () -> filter.should(haveSize(200)));
     }
 

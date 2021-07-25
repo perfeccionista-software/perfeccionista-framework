@@ -18,8 +18,8 @@ import io.perfeccionista.framework.matcher.element.WebTextDropDownListMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.pagefactory.operation.WebElementIsDisplayedOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
@@ -60,31 +60,34 @@ public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextD
     }
 
     @Override
-    public WebTextDropDownList select(@NotNull WebTextListFilterBuilder filterBuilder) {
+    public WebTextDropDownList select(@NotNull WebTextBlockFilterBuilder filterBuilder) {
         super.select(filterBuilder);
         return this;
     }
 
     @Override
-    public WebTextDropDownList select(@NotNull WebTextListBlockCondition filterCondition) {
+    public WebTextDropDownList select(@NotNull WebTextBlockCondition filterCondition) {
         super.select(filterCondition);
         return this;
     }
 
     // Checks
 
-    public WebTextDropDownList forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        super.forEachBlock(textListBlockConsumer);
+    @Override
+    public WebTextDropDownList forEach(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forEach(textBlockConsumer);
         return this;
     }
 
-    public WebTextDropDownList forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        super.forFirstBlock(textListBlockConsumer);
+    @Override
+    public WebTextDropDownList forFirst(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forFirst(textBlockConsumer);
         return this;
     }
 
-    public WebTextDropDownList forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        super.forLastBlock(textListBlockConsumer);
+    @Override
+    public WebTextDropDownList forLast(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forLast(textBlockConsumer);
         return this;
     }
 

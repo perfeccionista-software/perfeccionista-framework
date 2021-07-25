@@ -23,8 +23,8 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailabl
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,17 +39,17 @@ public interface WebTextDropDownList extends WebTextList,
     @Override
     WebTextDropDownList select(@NotNull StringValue text);
     @Override
-    WebTextDropDownList select(@NotNull WebTextListFilterBuilder filterBuilder);
+    WebTextDropDownList select(@NotNull WebTextBlockFilterBuilder filterBuilder);
     @Override
-    WebTextDropDownList select(@NotNull WebTextListBlockCondition filterCondition);
+    WebTextDropDownList select(@NotNull WebTextBlockCondition filterCondition);
 
     // Checks
     @Override
-    WebTextDropDownList forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    WebTextDropDownList forEach(@NotNull Consumer<WebLink> textBlockConsumer);
     @Override
-    WebTextDropDownList forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    WebTextDropDownList forFirst(@NotNull Consumer<WebLink> textBlockConsumer);
     @Override
-    WebTextDropDownList forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer);
+    WebTextDropDownList forLast(@NotNull Consumer<WebLink> textBlockConsumer);
 
     // Actions
     @Override

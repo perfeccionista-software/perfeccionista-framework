@@ -90,9 +90,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filterBuilder(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element())
-                        .getNotNullResult()
-                        .should(beSelected()));
+                        .forSingle(webRadioButton -> webRadioButton.should(beSelected())));
     }
 
     /**
@@ -107,9 +105,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filterBuilder(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element())
-                        .getNotNullResult()
-                        .should(notBeSelected()));
+                        .forSingle(webRadioButton -> webRadioButton.should(notBeSelected())));
     }
 
     /**
@@ -124,9 +120,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filterBuilder(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element())
-                        .getNotNullResult()
-                        .should(beEnabled()));
+                        .forSingle(webRadioButton -> webRadioButton.should(beEnabled())));
     }
 
     /**
@@ -141,9 +135,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebRadioGroup.class)
                         .filterBuilder(with(containsLabel(labelValue.getValue())))
-                        .extractOne(element())
-                        .getNotNullResult()
-                        .should(beDisabled()));
+                        .forSingle(webRadioButton -> webRadioButton.should(beDisabled())));
     }
 
     /**
@@ -205,9 +197,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filterBuilder(with(radioButtonIndex(indexValue.getValue())))
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .should(beSelected()));
+                                .forSingle(webRadioButton -> webRadioButton.should(beSelected())));
     }
 
     /**
@@ -222,9 +212,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filterBuilder(with(radioButtonIndex(indexValue.getValue())))
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .should(notBeSelected()));
+                                .forSingle(webRadioButton -> webRadioButton.should(notBeSelected())));
     }
 
     /**
@@ -239,9 +227,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filterBuilder(with(radioButtonIndex(indexValue.getValue())))
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .should(beEnabled()));
+                                .forSingle(webRadioButton -> webRadioButton.should(beEnabled())));
     }
 
     /**
@@ -256,9 +242,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filterBuilder(with(radioButtonIndex(indexValue.getValue())))
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .should(beDisabled()));
+                                .forSingle(webRadioButton -> webRadioButton.should(beDisabled())));
     }
 
     /**
@@ -275,9 +259,7 @@ public class WebRadioGroupCheckStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
                                 .filterBuilder(with(radioButtonIndex(indexValue.getValue())))
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .should(haveLabel(labelValue.getValue())));
+                                .forSingle(webRadioButton -> webRadioButton.should(haveLabel(labelValue.getValue()))));
     }
 
     /**

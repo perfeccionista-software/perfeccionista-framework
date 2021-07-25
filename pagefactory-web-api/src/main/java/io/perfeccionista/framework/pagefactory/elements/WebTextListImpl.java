@@ -17,13 +17,13 @@ import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMa
 import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilter;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,10 +34,10 @@ import static io.perfeccionista.framework.Web.*;
 
 public class WebTextListImpl extends AbstractWebChildElement implements WebTextList {
 
-    protected WebListFrame<DefaultWebTextBlock> webTextListFrame;
+    protected WebBlockFrame<DefaultWebTextBlock> webTextListFrame;
 
     @Override
-    public @NotNull WebListFrame<DefaultWebTextBlock> getWebTextListFrame() {
+    public @NotNull WebBlockFrame<DefaultWebTextBlock> getBlockFrame() {
         return webTextListFrame;
     }
 
@@ -46,28 +46,28 @@ public class WebTextListImpl extends AbstractWebChildElement implements WebTextL
     @Override
     public WebTextList select(@NotNull String text) {
         with(containsTextBlock(text)).build(this)
-                .forSingleBlock(WebLink::click);
+                .forSingle(WebLink::click);
         return this;
     }
 
     @Override
     public WebTextList select(@NotNull StringValue text) {
         with(containsTextBlock(text)).build(this)
-                .forSingleBlock(WebLink::click);
+                .forSingle(WebLink::click);
         return this;
     }
 
     @Override
-    public WebTextList select(@NotNull WebTextListFilterBuilder filterBuilder) {
+    public WebTextList select(@NotNull WebTextBlockFilterBuilder filterBuilder) {
         filterBuilder.build(this)
-                .forSingleBlock(WebLink::click);
+                .forSingle(WebLink::click);
         return this;
     }
 
     @Override
-    public WebTextList select(@NotNull WebTextListBlockCondition filterCondition) {
+    public WebTextList select(@NotNull WebTextBlockCondition filterCondition) {
         with(filterCondition).build(this)
-                .forSingleBlock(WebLink::click);
+                .forSingle(WebLink::click);
         return this;
     }
 
@@ -86,32 +86,32 @@ public class WebTextListImpl extends AbstractWebChildElement implements WebTextL
     // Filter
 
     @Override
-    public @NotNull WebTextListFilter filterBuilder(@NotNull WebTextListFilterBuilder filterBuilder) {
+    public @NotNull WebTextBlockFilter filterBuilder(@NotNull WebTextBlockFilterBuilder filterBuilder) {
         return filterBuilder.build(this);
     }
 
     @Override
-    public @NotNull WebTextListFilter filter(@NotNull WebTextListBlockCondition filterCondition) {
+    public @NotNull WebTextBlockFilter filter(@NotNull WebTextBlockCondition filterCondition) {
         return with(filterCondition).build(this);
     }
 
     // Checks
 
-    public WebTextList forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        filterBuilder(emptyWebTextListFilter())
-                .forEachBlock(textListBlockConsumer);
+    public WebTextList forEach(@NotNull Consumer<WebLink> textBlockConsumer) {
+        filterBuilder(emptyWebTextBlockFilter())
+                .forEach(textBlockConsumer);
         return this;
     }
 
-    public WebTextList forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        filterBuilder(emptyWebTextListFilter())
-                .forFirstBlock(textListBlockConsumer);
+    public WebTextList forFirst(@NotNull Consumer<WebLink> textBlockConsumer) {
+        filterBuilder(emptyWebTextBlockFilter())
+                .forFirst(textBlockConsumer);
         return this;
     }
 
-    public WebTextList forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        filterBuilder(emptyWebTextListFilter())
-                .forLastBlock(textListBlockConsumer);
+    public WebTextList forLast(@NotNull Consumer<WebLink> textBlockConsumer) {
+        filterBuilder(emptyWebTextBlockFilter())
+                .forLast(textBlockConsumer);
         return this;
     }
 

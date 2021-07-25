@@ -96,7 +96,7 @@ public class AbstractWebChildElementBase implements WebChildElementBase {
     }
 
     @Override
-    public JsonNode toJson() {
+    public @NotNull JsonNode toJson() {
         ObjectNode rootNode = createObjectNode();
         rootNode.set("elementIdentifier", this.elementIdentifier.toJson());
         rootNode.put("elementClass", this.getClass().getCanonicalName())

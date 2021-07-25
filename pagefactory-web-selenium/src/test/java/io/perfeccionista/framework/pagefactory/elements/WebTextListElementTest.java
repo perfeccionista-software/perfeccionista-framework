@@ -119,7 +119,7 @@ class WebTextListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(Dimensions2D.of(795.0d, 9508.0d).setInaccuracy(0.2d), textList.getElementBounds().getDimensions()),
                 () -> assertEquals(Point2D.of(345d, 281d).setInaccuracy(0.2d), textList.getElementBounds().getAbsoluteLocation()),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), textList.getColor("border-color")),
-                () -> assertEquals(195, textList.filterBuilder(emptyWebTextListFilter()).extractAll().getSize()),
+                () -> assertEquals(195, textList.filterBuilder(emptyWebTextBlockFilter()).extractAll().getSize()),
                 () -> assertEquals(Point2D.of(757.5d, 439d).setInaccuracy(0.2d), textList.getElementBounds().getCenter()),
                 () -> assertEquals(195, textList.size())
         );

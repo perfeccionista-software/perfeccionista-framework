@@ -31,11 +31,11 @@ public interface WebAutocomplete<T extends WebBlock> extends WebDropDownList<T>,
 
     // Checks
     @Override
-    WebAutocomplete<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer);
+    WebAutocomplete<T> forEach(@NotNull Consumer<T> blockConsumer);
     @Override
-    WebAutocomplete<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer);
+    WebAutocomplete<T> forFirst(@NotNull Consumer<T> blockConsumer);
     @Override
-    WebAutocomplete<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer);
+    WebAutocomplete<T> forLast(@NotNull Consumer<T> blockConsumer);
 
     // Actions
     @Override

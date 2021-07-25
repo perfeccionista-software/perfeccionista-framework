@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
@@ -64,7 +64,7 @@ public class WebRadioButtonLabelTextCondition implements WebRadioButtonCondition
 
     @Override
     public @NotNull FilterResult process(@NotNull WebRadioGroup element, @Nullable String hash) {
-        WebRadioButton webRadioButton = element.getWebRadioGroupFrame()
+        WebRadioButton webRadioButton = element.getBlockFrame()
                 .getMappedBlockFrame()
                 .radioButton();
 
@@ -73,7 +73,7 @@ public class WebRadioButtonLabelTextCondition implements WebRadioButtonCondition
         WebLocatorHolder radioGroupLocatorHolder = radioGroupLocatorChain.getLastLocator()
                 .setCalculateHash(true)
                 .setExpectedHash(hash);
-        radioGroupLocatorChain.addLastLocator(element.getRequiredLocator(RADIO));
+        radioGroupLocatorChain.addLastLocator(element.getRequiredLocator(ITEM));
 
         // Добавляем в цепочку локаторов операции локаторы до блока RadioButtonBlock
         WebGetLabelOperationType operationType = WebGetLabelOperationType.of(webRadioButton);

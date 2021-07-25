@@ -16,15 +16,16 @@ import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMa
 import io.perfeccionista.framework.matcher.element.WebListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
 import io.perfeccionista.framework.pagefactory.extractor.list.WebListMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -32,66 +33,66 @@ import static io.perfeccionista.framework.Web.*;
 
 public class WebListImpl<T extends WebBlock> extends AbstractWebChildElement implements WebList<T> {
 
-    protected WebListFrame<T> webListFrame;
+    protected WebBlockFrame<T> webListFrame;
 
     @Override
-    public @NotNull WebListFrame<T> getWebListFrame() {
+    public @NotNull WebBlockFrame<T> getBlockFrame() {
         return webListFrame;
     }
 
     // Extractor
 
     @Override
-    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebListBlockValueExtractor<R, T> extractor) {
+    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebBlockValueExtractor<R, T> extractor) {
         return WebListMultipleIndexedResult.of(this, extractor);
     }
 
     @Override
-    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebListBlockValueExtractor<R, T>> extractorFunction) {
-        return WebListMultipleIndexedResult.of(this, extractorFunction.apply(getWebListFrame().getMappedBlockFrame()));
+    public @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebBlockValueExtractor<R, T>> extractorFunction) {
+        return WebListMultipleIndexedResult.of(this, extractorFunction.apply(getBlockFrame().getMappedBlockFrame()));
     }
 
     // Filter
     @Override
-    public @NotNull WebListFilter<T> filterBuilder(@NotNull WebListFilterBuilder<T> filterBuilder) {
+    public @NotNull WebBlockFilter<T> filterBuilder(@NotNull WebBlockFilterBuilder<T> filterBuilder) {
         return filterBuilder.build(this);
     }
 
     @Override
-    public @NotNull WebListFilter<T> filterBuilder(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction) {
-        return filterBuilderFunction.apply(getWebListFrame().getMappedBlockFrame())
+    public @NotNull WebBlockFilter<T> filterBuilder(@NotNull Function<T, ? extends WebBlockFilterBuilder<T>> filterBuilderFunction) {
+        return filterBuilderFunction.apply(getBlockFrame().getMappedBlockFrame())
                 .build(this);
     }
 
     @Override
-    public @NotNull WebListFilter<T> filter(@NotNull WebListBlockCondition<T> filterCondition) {
+    public @NotNull WebBlockFilter<T> filter(@NotNull WebBlockCondition<T> filterCondition) {
         return with(filterCondition).build(this);
     }
 
     @Override
-    public @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebListBlockCondition<T>> filterConditionFunction) {
-        return with(filterConditionFunction.apply(getWebListFrame().getMappedBlockFrame()))
+    public @NotNull WebBlockFilter<T> filter(@NotNull Function<T, ? extends WebBlockCondition<T>> filterConditionFunction) {
+        return with(filterConditionFunction.apply(getBlockFrame().getMappedBlockFrame()))
                 .build(this);
     }
 
     @Override
-    public WebList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer) {
-        filterBuilder(block -> emptyWebListFilter())
-                .forEachBlock(listBlockConsumer);
+    public WebList<T> forEach(@NotNull Consumer<T> blockConsumer) {
+        filterBuilder(block -> emptyWebBlockFilter())
+                .forEach(blockConsumer);
         return this;
     }
 
     @Override
-    public WebList<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer) {
-        filterBuilder(block -> emptyWebListFilter())
-                .forFirstBlock(listBlockConsumer);
+    public WebList<T> forFirst(@NotNull Consumer<T> blockConsumer) {
+        filterBuilder(block -> emptyWebBlockFilter())
+                .forFirst(blockConsumer);
         return this;
     }
 
     @Override
-    public WebList<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer) {
-        filterBuilder(block -> emptyWebListFilter())
-                .forLastBlock(listBlockConsumer);
+    public WebList<T> forLast(@NotNull Consumer<T> blockConsumer) {
+        filterBuilder(block -> emptyWebBlockFilter())
+                .forLast(blockConsumer);
         return this;
     }
 
@@ -108,7 +109,7 @@ public class WebListImpl<T extends WebBlock> extends AbstractWebChildElement imp
 
     @Override
     public WebList<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
-        filterBuilder(block -> emptyWebListFilter()).should(matcher);
+        filterBuilder(block -> emptyWebBlockFilter()).should(matcher);
         return this;
     }
 
@@ -214,9 +215,11 @@ public class WebListImpl<T extends WebBlock> extends AbstractWebChildElement imp
     }
 
     @Override
-    public JsonNode toJson() {
+    public @NotNull JsonNode toJson() {
         ObjectNode rootNode = (ObjectNode) super.toJson();
-        rootNode.put("mappedBlock", webListFrame.getMappedBlockFrame().getClass().getCanonicalName());
+        if (Objects.nonNull(webListFrame)) {
+            rootNode.put("mappedBlock", webListFrame.getMappedBlockFrame().getClass().getCanonicalName());
+        }
         return rootNode;
     }
 

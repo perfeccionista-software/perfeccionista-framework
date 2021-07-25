@@ -3,7 +3,6 @@ package io.perfeccionista.framework.pagefactory.dispatcher.context;
 import io.perfeccionista.framework.pagefactory.limiter.WebContextLimiter;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
-import io.perfeccionista.framework.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;

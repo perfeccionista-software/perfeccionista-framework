@@ -20,8 +20,8 @@ import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClearOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebReplaceTextOperationType;
@@ -52,31 +52,34 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     }
 
     @Override
-    public WebTextAutocomplete select(@NotNull WebTextListFilterBuilder filterBuilder) {
+    public WebTextAutocomplete select(@NotNull WebTextBlockFilterBuilder filterBuilder) {
         super.select(filterBuilder);
         return this;
     }
 
     @Override
-    public WebTextAutocomplete select(@NotNull WebTextListBlockCondition filterCondition) {
+    public WebTextAutocomplete select(@NotNull WebTextBlockCondition filterCondition) {
         super.select(filterCondition);
         return this;
     }
 
     // Checks
 
-    public WebTextAutocomplete forEachBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        super.forEachBlock(textListBlockConsumer);
+    @Override
+    public WebTextAutocomplete forEach(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forEach(textBlockConsumer);
         return this;
     }
 
-    public WebTextAutocomplete forFirstBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        super.forFirstBlock(textListBlockConsumer);
+    @Override
+    public WebTextAutocomplete forFirst(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forFirst(textBlockConsumer);
         return this;
     }
 
-    public WebTextAutocomplete forLastBlock(@NotNull Consumer<WebLink> textListBlockConsumer) {
-        super.forLastBlock(textListBlockConsumer);
+    @Override
+    public WebTextAutocomplete forLast(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forLast(textBlockConsumer);
         return this;
     }
 

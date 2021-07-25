@@ -44,20 +44,20 @@ public class WebDropDownListImpl<T extends WebBlock> extends WebListImpl<T> impl
     // Checks
 
     @Override
-    public WebDropDownList<T> forEachBlock(@NotNull Consumer<T> listBlockConsumer) {
-        super.forEachBlock(listBlockConsumer);
+    public WebDropDownList<T> forEach(@NotNull Consumer<T> blockConsumer) {
+        super.forEach(blockConsumer);
         return this;
     }
 
     @Override
-    public WebDropDownList<T> forFirstBlock(@NotNull Consumer<T> listBlockConsumer) {
-        super.forFirstBlock(listBlockConsumer);
+    public WebDropDownList<T> forFirst(@NotNull Consumer<T> blockConsumer) {
+        super.forFirst(blockConsumer);
         return this;
     }
 
     @Override
-    public WebDropDownList<T> forLastBlock(@NotNull Consumer<T> listBlockConsumer) {
-        super.forLastBlock(listBlockConsumer);
+    public WebDropDownList<T> forLast(@NotNull Consumer<T> blockConsumer) {
+        super.forLast(blockConsumer);
         return this;
     }
 
