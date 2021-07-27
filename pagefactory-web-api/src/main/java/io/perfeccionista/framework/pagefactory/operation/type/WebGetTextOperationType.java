@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,12 @@ public class WebGetTextOperationType implements WebElementOperationType<String> 
 
     private final WebGetTextAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebGetTextOperationType(WebGetTextAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(GET_TEXT_METHOD, elementName);
     }
 
     public static WebGetTextOperationType of(@NotNull WebGetTextAvailable element) {
@@ -27,7 +30,7 @@ public class WebGetTextOperationType implements WebElementOperationType<String> 
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(GET_TEXT_METHOD, element, TEXT);
+        return this.invocationInfo;
     }
 
     @Override

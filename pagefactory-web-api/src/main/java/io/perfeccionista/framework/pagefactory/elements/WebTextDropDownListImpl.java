@@ -18,7 +18,8 @@ import io.perfeccionista.framework.matcher.element.WebTextDropDownListMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.pagefactory.operation.WebElementIsDisplayedOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClickOperationType;
@@ -28,10 +29,12 @@ import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsOpenOperat
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetLabelOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebOpenOperationType;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.perfeccionista.framework.Web.textBlock;
+import java.util.function.Consumer;
+
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLOSE;
@@ -42,11 +45,49 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 
 public class WebTextDropDownListImpl extends WebTextListImpl implements WebTextDropDownList {
 
+    // Select
+
     @Override
-    public WebTextDropDownList select(@NotNull WebTextListBlockCondition filterCondition) {
-        filter(filterCondition)
-                .extractOne(textBlock()).getNotNullResult().textLink()
-                .click();
+    public WebTextDropDownList select(@NotNull String text) {
+        super.select(text);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList select(@NotNull StringValue text) {
+        super.select(text);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList select(@NotNull WebTextBlockFilterBuilder filterBuilder) {
+        super.select(filterBuilder);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList select(@NotNull WebTextBlockCondition filterCondition) {
+        super.select(filterCondition);
+        return this;
+    }
+
+    // Checks
+
+    @Override
+    public WebTextDropDownList forEach(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forEach(textBlockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList forFirst(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forFirst(textBlockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebTextDropDownList forLast(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forLast(textBlockConsumer);
         return this;
     }
 

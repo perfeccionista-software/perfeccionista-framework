@@ -5,8 +5,8 @@ import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
+import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebTextBlock;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import org.jetbrains.annotations.NotNull;
@@ -25,19 +25,19 @@ public class UseMappedWebTextBlockAnnotationHandler {
     private UseMappedWebTextBlockAnnotationHandler() {
     }
 
-    public static @NotNull WebListFrame<DefaultWebTextBlock> createWebTextListFrame(@NotNull WebTextList webTextList,
-                                                                                    @NotNull Method elementMethod,
-                                                                                    @NotNull WebPageFactory webPageFactory,
-                                                                                    @NotNull WebPageFactoryPreferences configuration) {
+    public static @NotNull WebBlockFrame<DefaultWebTextBlock> createWebTextListFrame(@NotNull WebTextList webTextList,
+                                                                                     @NotNull Method elementMethod,
+                                                                                     @NotNull WebPageFactory webPageFactory,
+                                                                                     @NotNull WebPageFactoryPreferences configuration) {
         Class<? extends WebBlock> webMappedBlockClass = configuration.getWebMappedBlock(webTextList.getClass());
 
-        Optional<UseMappedWebBlock> optionalClassAnnotation = findFirstAnnotationInHierarchy(UseMappedWebBlock.class,
+        Optional<UseMappedWebTextBlock> optionalClassAnnotation = findFirstAnnotationInHierarchy(UseMappedWebTextBlock.class,
                 WebChildElement.class, webTextList.getClass());
         if (optionalClassAnnotation.isPresent()) {
             webMappedBlockClass = optionalClassAnnotation.get().value();
         }
 
-        Optional<UseMappedWebBlock> optionalMethodAnnotation = findAnnotation(elementMethod, UseMappedWebBlock.class);
+        Optional<UseMappedWebTextBlock> optionalMethodAnnotation = findAnnotation(elementMethod, UseMappedWebTextBlock.class);
         if (optionalMethodAnnotation.isPresent()) {
             webMappedBlockClass = optionalMethodAnnotation.get().value();
         }
@@ -51,9 +51,11 @@ public class UseMappedWebTextBlockAnnotationHandler {
             }
             webTextListBlock = (DefaultWebTextBlock) webPageFactory
                     .createMappedWebBlock(webTextList, webMappedBlockClass);
+        } else {
+            webTextListBlock = webPageFactory.createMappedWebBlock(webTextList, DefaultWebTextBlock.class);
         }
 
-        return new WebListFrame<>(webTextList, webTextListBlock);
+        return new WebBlockFrame<>(webTextListBlock);
     }
 
 }

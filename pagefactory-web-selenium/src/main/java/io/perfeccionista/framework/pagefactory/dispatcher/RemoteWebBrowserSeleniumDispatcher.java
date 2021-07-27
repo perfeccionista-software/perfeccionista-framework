@@ -20,9 +20,18 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebSele
 // TODO: Добавить в жавадоки описание этих капабилитис
 public class RemoteWebBrowserSeleniumDispatcher extends AbstractWebBrowserSeleniumDispatcher<RemoteWebDriver, MutableCapabilities> {
 
-    protected String remoteUrl;
+    protected URL remoteUrl;
 
     public RemoteWebBrowserSeleniumDispatcher(Environment environment, String remoteUrl) {
+        super(environment, new RemoteType());
+        try {
+            this.remoteUrl = new URL(remoteUrl);
+        } catch (MalformedURLException e) {
+            throw SeleniumWebDriverInstantiation.exception(INCORRECT_REMOTE_WEB_DRIVER_INSTANCE_URL.getMessage(remoteUrl), e);
+        }
+    }
+
+    public RemoteWebBrowserSeleniumDispatcher(Environment environment, URL remoteUrl) {
         super(environment, new RemoteType());
         this.remoteUrl = remoteUrl;
     }
@@ -31,16 +40,12 @@ public class RemoteWebBrowserSeleniumDispatcher extends AbstractWebBrowserSeleni
     public WebBrowserDispatcher launch() {
         long connectionTimeout = timeouts.getSessionTimeout();
         long socketTimeout = timeouts.getSessionTimeout() + 30_000;
-        try {
-            HttpClient.Factory factory = new RemoteWebDriverConnectionFactory()
-                    .connectionTimeout(Duration.ofSeconds(connectionTimeout))
-                    .socketTimeout(Duration.ofSeconds(socketTimeout));
-            HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(ImmutableMap.of(), new URL(remoteUrl), factory);
-            this.instance = new RemoteWebDriver(httpCommandExecutor, this.options);
-            this.instance.setFileDetector(new LocalFileDetector());
-        } catch (MalformedURLException e) {
-            throw SeleniumWebDriverInstantiation.exception(INCORRECT_REMOTE_WEB_DRIVER_INSTANCE_URL.getMessage(remoteUrl), e);
-        }
+        HttpClient.Factory factory = new RemoteWebDriverConnectionFactory()
+                .connectionTimeout(Duration.ofSeconds(connectionTimeout))
+                .socketTimeout(Duration.ofSeconds(socketTimeout));
+        HttpCommandExecutor httpCommandExecutor = new HttpCommandExecutor(ImmutableMap.of(), remoteUrl, factory);
+        this.instance = new RemoteWebDriver(httpCommandExecutor, this.options);
+        this.instance.setFileDetector(new LocalFileDetector());
         setTimeouts();
         return this;
     }

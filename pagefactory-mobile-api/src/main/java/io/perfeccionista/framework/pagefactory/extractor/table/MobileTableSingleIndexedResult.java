@@ -3,6 +3,8 @@ package io.perfeccionista.framework.pagefactory.extractor.table;
 import io.perfeccionista.framework.exceptions.ResultVerification;
 import io.perfeccionista.framework.exceptions.SingleResultCreating;
 import io.perfeccionista.framework.exceptions.attachments.MobileElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.MobileExtractorDescriptionAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.MobileFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.MobileTable;
@@ -59,7 +61,11 @@ public class MobileTableSingleIndexedResult<T> implements MobileSingleIndexedRes
     @Override
     public @Nullable T getResult() {
         MobileTableFilter webTableFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTableFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -78,7 +84,11 @@ public class MobileTableSingleIndexedResult<T> implements MobileSingleIndexedRes
     @Override
     public @NotNull T getNotNullResult() {
         MobileTableFilter webTableFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTableFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -104,7 +114,11 @@ public class MobileTableSingleIndexedResult<T> implements MobileSingleIndexedRes
     @Override
     public int getIndex() {
         MobileTableFilter webTableFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_INDEX_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webTableFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())

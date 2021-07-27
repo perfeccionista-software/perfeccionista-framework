@@ -22,7 +22,7 @@ public class MobileDeviceShouldHaveScreenOrientation implements MobileDeviceScre
 
     @Override
     public void check(@NotNull MobileDeviceScreenDispatcher mobileDevice) {
-        InvocationInfo invocationName = assertInvocation(MOBILE_DEVICE_SHOULD_HAVE_SCREEN_ORIENTATION_METHOD, this);
+        InvocationInfo invocationName = assertInvocation(MOBILE_DEVICE_SHOULD_HAVE_SCREEN_ORIENTATION_METHOD);
 
         runCheck(invocationName,
                 () -> {

@@ -83,7 +83,7 @@ public class Color {
 
     @Override
     public String toString() {
-        return toJson().toPrettyString();
+        return toJson().toString();
     }
 
 }

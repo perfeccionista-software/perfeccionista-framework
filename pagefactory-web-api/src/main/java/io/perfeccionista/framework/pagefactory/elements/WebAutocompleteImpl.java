@@ -27,15 +27,37 @@ import io.perfeccionista.framework.pagefactory.operation.type.WebSendKeyEventsOp
 import io.perfeccionista.framework.pagefactory.operation.type.WebTypeTextOperationType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
 
-public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutocomplete {
+public class WebAutocompleteImpl<T extends WebBlock> extends WebDropDownListImpl<T> implements WebAutocomplete<T> {
+
+    // Checks
+
+    @Override
+    public WebAutocomplete<T> forEach(@NotNull Consumer<T> blockConsumer) {
+        super.forEach(blockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebAutocomplete<T> forFirst(@NotNull Consumer<T> blockConsumer) {
+        super.forFirst(blockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebAutocomplete<T> forLast(@NotNull Consumer<T> blockConsumer) {
+        super.forLast(blockConsumer);
+        return this;
+    }
 
     // Actions
 
     @Override
-    public WebAutocomplete executeAction(@NotNull String name, Object... args) {
+    public WebAutocomplete<T> executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
@@ -43,115 +65,115 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     // Asserts
 
     @Override
-    public WebAutocomplete should(@NotNull WebAutocompleteMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebAutocompleteMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebDropDownListMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebDropDownListMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
+    public WebAutocomplete<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebListMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebListMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebIndexesMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebIndexesMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebChildElementMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebChildElementMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebGetColorAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebIsInFocusAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebIsPresentAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebComponentAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebComponentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebElementPropertyAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebElementPropertyAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebElementStateAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebElementStateAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebGetLabelAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebGetLabelAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebGetTextAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebGetTextAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebAutocomplete should(@NotNull WebDropDownAvailableMatcher matcher) {
+    public WebAutocomplete<T> should(@NotNull WebDropDownAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
@@ -159,7 +181,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     // Click
 
     @Override
-    public WebAutocomplete click() {
+    public WebAutocomplete<T> click() {
         super.click();
         return this;
     }
@@ -167,13 +189,13 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     // DropDown
 
     @Override
-    public WebAutocomplete open() {
+    public WebAutocomplete<T> open() {
         super.open();
         return this;
     }
 
     @Override
-    public WebAutocomplete close() {
+    public WebAutocomplete<T> close() {
         super.close();
         return this;
     }
@@ -181,7 +203,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     // HoverTo
 
     @Override
-    public WebAutocomplete hoverTo(boolean withOutOfBounds) {
+    public WebAutocomplete<T> hoverTo(boolean withOutOfBounds) {
         super.hoverTo(withOutOfBounds);
         return this;
     }
@@ -189,7 +211,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     // InputText
 
     @Override
-    public WebAutocomplete clear() {
+    public WebAutocomplete<T> clear() {
         WebClearOperationType operationType = WebClearOperationType.of(this);
         runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
@@ -197,7 +219,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     }
 
     @Override
-    public WebAutocomplete typeText(@NotNull String text) {
+    public WebAutocomplete<T> typeText(@NotNull String text) {
         WebTypeTextOperationType operationType = WebTypeTextOperationType.of(this, text);
         runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
@@ -205,7 +227,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     }
 
     @Override
-    public WebAutocomplete replaceText(@NotNull String text) {
+    public WebAutocomplete<T> replaceText(@NotNull String text) {
         WebReplaceTextOperationType operationType = WebReplaceTextOperationType.of(this, text);
         runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
@@ -213,7 +235,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     }
 
     @Override
-    public WebAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
+    public WebAutocomplete<T> sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
         WebSendKeyEventsOperationType operationType = WebSendKeyEventsOperationType.of(this, keyEvents);
         runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
@@ -223,7 +245,7 @@ public class WebAutocompleteImpl extends WebDropDownListImpl implements WebAutoc
     // ScrollTo
 
     @Override
-    public WebAutocomplete scrollTo() {
+    public WebAutocomplete<T> scrollTo() {
         super.scrollTo();
         return this;
     }

@@ -15,7 +15,7 @@ public interface PopulationWebBlock extends WebBlock {
     @Name("Population unit")
     @Name("Единица изменения населения")
     @WebLocator(xpath = "self::node()//span[@itemid = 'population-unit']")
-    @WebLocator(component = "Self", xpath = "self::node()", strictSearch = false)
+    @WebLocator(component = "Self", selfNode = true, strictSearch = false)
     WebText populationUnit();
 
 }

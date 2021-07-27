@@ -12,7 +12,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebText;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebElementAction;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementAttributeProperty;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsDragAndDrop;
 import io.perfeccionista.framework.pagefactory.pageobjects.handlers.SeleniumDoubleClickHandler;
 
@@ -27,8 +27,8 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Карта мира")
     @WebLocator(id = "simple-image")
     @WebLocator(component = "Image border", xpath = "self::node()[@class = 'img-thumbnail']")
-    @WebElementProperty(name = "prompt", params = "alt")
-    @WebElementProperty(name = "source", params = "src")
+    @WebElementAttributeProperty(name = "prompt", attribute = "alt")
+    @WebElementAttributeProperty(name = "source", attribute = "src")
     WebImage worldMap();
 
 
@@ -96,7 +96,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Simple input")
     @Name("Простое поле ввода")
     @WebLocator(id = "simple-input")
-    @WebElementProperty(name = "placeholder", params = "placeholder")
+    @WebElementAttributeProperty(name = "placeholder", attribute = "placeholder")
     WebTextInput simpleInput();
 
     @Name("Simple input text")
@@ -115,7 +115,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Area input")
     @Name("Многострочное поле ввода")
     @WebLocator(id = "area-input")
-    @WebElementProperty(name = "placeholder", params = "placeholder")
+    @WebElementAttributeProperty(name = "placeholder", attribute = "placeholder")
     WebTextInput areaInput();
 
     @Name("Area input text")
@@ -128,21 +128,21 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("Первый чекбокс")
     @WebLocator(xpath = ".//*[@id = 'checkbox-one']/parent::node()")
     @WebLocator(component = FOCUS, xpath = ".//input")
-    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "checkbox-one"))
+    @WebElementAttributeProperty(name = "name", locator = @WebLocator(id = "checkbox-one"), attribute = "name")
     WebCheckbox checkboxOne();
 
     @Name("Checkbox two")
     @Name("Второй чекбокс")
     @WebLocator(xpath = ".//*[@id = 'checkbox-two']/parent::node()")
     @WebLocator(component = FOCUS, xpath = ".//input")
-    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "checkbox-two"))
+    @WebElementAttributeProperty(name = "name", locator = @WebLocator(id = "checkbox-two"), attribute = "name")
     WebCheckbox checkboxTwo();
 
     @Name("Checkbox three")
     @Name("Третий чекбокс")
     @WebLocator(xpath = ".//*[@id = 'checkbox-three']/parent::node()")
     @WebLocator(component = FOCUS, xpath = ".//input")
-    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "checkbox-three"))
+    @WebElementAttributeProperty(name = "name", locator = @WebLocator(id = "checkbox-three"), attribute = "name")
     WebCheckbox checkboxThree();
 
     @Name("Checkbox text")
@@ -154,7 +154,7 @@ public interface ElementsPage extends AbstractWebPage {
     @Name("RadioButton one")
     @Name("Первая радио-кнопка")
     @WebLocator(xpath = ".//*[@id = 'radio-one']/parent::node()")
-    @WebElementProperty(name = "name", params = "name", locator = @WebLocator(id = "radio-one"))
+    @WebElementAttributeProperty(name = "name", locator = @WebLocator(id = "radio-one"), attribute = "name")
     WebRadioButton radioButtonOne();
 
     @Name("Radio group")

@@ -101,7 +101,7 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(simpleInput.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("simpleInput", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("simpleInput", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Simple input", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Simple input")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Simple input")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
@@ -188,7 +188,7 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                             () -> assertTrue(intGreaterThan(4500).check(screenshot.getRaw().length))
                     );
                 },
-                () -> assertEquals(Point2D.of(742.5d, 536.4d).setInaccuracy(0.2d), simpleInput.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(757.7d, 536.4d).setInaccuracy(0.2d), simpleInput.getElementBounds().getCenter())
         );
     }
 

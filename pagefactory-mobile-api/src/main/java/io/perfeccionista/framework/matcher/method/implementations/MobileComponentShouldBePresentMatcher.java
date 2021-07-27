@@ -34,9 +34,10 @@ public class MobileComponentShouldBePresentMatcher implements MobileComponentAva
 
     @Override
     public void check(@NotNull MobileComponentAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, element, componentName)
-                : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, element, componentName);
+                ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, elementName, componentName)
+                : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, elementName, componentName);
 
         runCheck(invocationName,
                 () -> {

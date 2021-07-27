@@ -15,11 +15,13 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class WebGetIsComponentDisplayedOperationType implements WebElementOperationType<Boolean> {
 
     private final WebComponentAvailable element;
-    private final String componentName;
+
+    private final InvocationInfo invocationInfo;
 
     private WebGetIsComponentDisplayedOperationType(WebComponentAvailable element, String componentName) {
         this.element = element;
-        this.componentName = componentName;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(IS_COMPONENT_DISPLAYED_METHOD, elementName, componentName);
     }
 
     public static WebGetIsComponentDisplayedOperationType of(@NotNull WebComponentAvailable element, @NotNull String componentName) {
@@ -28,7 +30,7 @@ public class WebGetIsComponentDisplayedOperationType implements WebElementOperat
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(IS_COMPONENT_DISPLAYED_METHOD, element, componentName);
+        return this.invocationInfo;
     }
 
     @Override

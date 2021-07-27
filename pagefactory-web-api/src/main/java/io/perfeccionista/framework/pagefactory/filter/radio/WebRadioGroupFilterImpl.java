@@ -1,6 +1,10 @@
 package io.perfeccionista.framework.pagefactory.filter.radio;
 
+import io.perfeccionista.framework.exceptions.SingleResultCreating;
+import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioGroupMultipleIndexedResult;
@@ -16,9 +20,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Consumer;
 
+import static io.perfeccionista.framework.Web.element;
 import static io.perfeccionista.framework.Web.index;
+import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SINGLE_RESULT_HAS_NO_VALUE;
+import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.ADD;
 import static io.perfeccionista.framework.pagefactory.filter.FilterResultGrouping.SUBTRACT;
 
@@ -37,6 +46,59 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
 
     public static WebRadioGroupFilterImpl of(@NotNull WebRadioGroup element, @NotNull WebRadioGroupFilterBuilder filterBuilder) {
         return new WebRadioGroupFilterImpl(element, filterBuilder);
+    }
+
+    @Override
+    public WebRadioGroupFilter forSingle(@NotNull Consumer<WebRadioButton> radioButtonConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            WebRadioButton webRadioButton = WebRadioGroupMultipleIndexedResult.of(element, filterBuilder, element())
+                    .singleResult()
+                    .getNotNullResult();
+            radioButtonConsumer.accept(webRadioButton);
+        });
+        return this;
+    }
+
+    @Override
+    public WebRadioGroupFilter forEach(@NotNull Consumer<WebRadioButton> radioButtonConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            WebRadioGroupMultipleIndexedResult.of(element, filterBuilder, element())
+                    .getResults()
+                    .forEach((index, webRadioButton) -> radioButtonConsumer.accept(webRadioButton));
+        });
+        return this;
+    }
+
+    @Override
+    public WebRadioGroupFilter forFirst(@NotNull Consumer<WebRadioButton> radioButtonConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            WebRadioButton firstWebRadioButton = WebRadioGroupMultipleIndexedResult.of(element, filterBuilder, element())
+                    .getResults().entrySet()
+                    .stream()
+                    .min(Entry.comparingByKey())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                            .setProcessed(true)
+                            .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)))
+                    .getValue();
+            radioButtonConsumer.accept(firstWebRadioButton);
+        });
+        return this;
+    }
+
+    @Override
+    public WebRadioGroupFilter forLast(@NotNull Consumer<WebRadioButton> radioButtonConsumer) {
+        runCheck(InvocationInfo.assertInvocation(""), () -> {
+            WebRadioButton lastWebRadioButton = WebRadioGroupMultipleIndexedResult.of(element, filterBuilder, element())
+                    .getResults().entrySet()
+                    .stream()
+                    .max(Entry.comparingByKey())
+                    .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
+                            .setProcessed(true)
+                            .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)))
+                    .getValue();
+            radioButtonConsumer.accept(lastWebRadioButton);
+        });
+        return this;
     }
 
     @Override
@@ -66,6 +128,14 @@ public class WebRadioGroupFilterImpl implements WebRadioGroupFilter {
         WebRadioGroupMultipleIndexedResult<Integer> indexedResult = WebRadioGroupMultipleIndexedResult.of(element, filterBuilder, index());
         matcher.check(indexedResult);
         return this;
+    }
+
+    @Override
+    public int size() {
+        return runCheck(InvocationInfo.getterInvocation(""), () -> {
+            executeFilter(element, filterBuilder);
+            return filterResult.getSize();
+        });
     }
 
     @Override

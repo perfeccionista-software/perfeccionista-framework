@@ -16,7 +16,8 @@ public class WebShouldBeOpenMatcher implements WebDropDownAvailableMatcher {
 
     @Override
     public void check(@NotNull WebDropDownAvailable element) {
-            InvocationInfo invocationName = assertInvocation(SHOULD_BE_OPEN_METHOD, element);
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationName = assertInvocation(SHOULD_BE_OPEN_METHOD, elementName);
 
             runCheck(invocationName,
                     () -> {

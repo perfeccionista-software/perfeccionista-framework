@@ -97,7 +97,7 @@ class WebRadioButtonElementTest  extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(radioButtonOne.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("radioButtonOne", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("radioButtonOne", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("RadioButton one", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("RadioButton one")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("RadioButton one")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
@@ -160,7 +160,7 @@ class WebRadioButtonElementTest  extends AbstractWebSeleniumParallelTest {
         );
         radioButtonText
                 .should(haveText(stringContainsAll("Label 1")));
-        assertEquals(Point2D.of(433.1d, 725.4d).setInaccuracy(0.2d), radioButtonOne.getElementBounds().getCenter());
+        assertEquals(Point2D.of(448.0d, 725.4d).setInaccuracy(0.2d), radioButtonOne.getElementBounds().getCenter());
     }
 
     @Test

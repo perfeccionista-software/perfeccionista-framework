@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +33,7 @@ import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_EXISTS;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_NOT_EXIST;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.TARGET_IS_NOT_A_FILE;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 // TODO: Привести аргументы к одному виду Path вместо Path и URL.
 public class FileUtils {
@@ -99,7 +101,7 @@ public class FileUtils {
     }
 
     public static void writeTextFile(@NotNull Path path, String content) {
-        writeTextFile(path, content, StandardCharsets.UTF_8);
+        writeTextFile(path, content, UTF_8);
     }
 
     public static void writeTextFile(@NotNull Path path, String content, @NotNull Charset charset) {
@@ -113,7 +115,7 @@ public class FileUtils {
     }
 
     public static String readTextFile(@NotNull URL url) {
-        return readTextFile(url, StandardCharsets.UTF_8);
+        return readTextFile(url, UTF_8);
     }
 
     public static String readTextFile(@NotNull URL url, @NotNull Charset charset) {
@@ -135,9 +137,9 @@ public class FileUtils {
             return Optional.ofNullable(propertiesCache.get(propertyFileName))
                     .orElseThrow(() -> FileNotExist.exception(FILE_NOT_EXIST.getMessage(propertyFileName)));
         }
-        try (InputStream fileInputStream = new FileInputStream(propertyFileName)) {
+        try (var fileInputStreamReader = new InputStreamReader(new FileInputStream(propertyFileName), UTF_8)) {
             var properties = new Properties();
-            properties.load(fileInputStream);
+            properties.load(fileInputStreamReader);
             cachePropertyFile(propertyFileName, properties);
             return properties;
         } catch (IOException e) {
@@ -154,9 +156,9 @@ public class FileUtils {
             cachePropertyFile(propertyFileName, null);
             return Optional.empty();
         }
-        try (var fileInputStream = resource.openStream()) {
+        try (var fileInputStreamReader = new InputStreamReader(resource.openStream(), UTF_8)) {
             var properties = new Properties();
-            properties.load(fileInputStream);
+            properties.load(fileInputStreamReader);
             cachePropertyFile(propertyFileName, properties);
             return Optional.of(properties);
         } catch (IOException e) {
@@ -166,7 +168,7 @@ public class FileUtils {
     }
 
     public static Map<String, String> readPropertyFileAsMap(@NotNull URL url) {
-        return readPropertyFileAsMap(url, StandardCharsets.UTF_8);
+        return readPropertyFileAsMap(url, UTF_8);
     }
 
     public static Map<String, String> readPropertyFileAsMap(@NotNull URL url, @NotNull Charset charset) {

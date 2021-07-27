@@ -31,9 +31,10 @@ public class WebShouldHaveAbsoluteLocationMatcher implements WebGetElementBounds
 
     @Override
     public void check(@NotNull WebGetElementBoundsAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_ABSOLUTE_LOCATION_METHOD, element, componentName, expectedLocation)
-                : assertInvocation(SHOULD_NOT_HAVE_ABSOLUTE_LOCATION_METHOD, element, componentName, expectedLocation);
+                ? assertInvocation(SHOULD_HAVE_ABSOLUTE_LOCATION_METHOD, elementName, componentName, expectedLocation.toString())
+                : assertInvocation(SHOULD_NOT_HAVE_ABSOLUTE_LOCATION_METHOD, elementName, componentName, expectedLocation.toString());
 
         runCheck(invocationName,
                 () -> {

@@ -11,7 +11,6 @@ import io.perfeccionista.framework.matcher.dispatcher.implementations.WebBrowser
 import io.perfeccionista.framework.matcher.dispatcher.implementations.WebBrowserShouldHaveTabWithTitleStringValueMatcher;
 import io.perfeccionista.framework.matcher.dispatcher.implementations.WebBrowserShouldHaveTabWithUrlStringMatcher;
 import io.perfeccionista.framework.matcher.dispatcher.implementations.WebBrowserShouldHaveTabWithUrlStringValueMatcher;
-import io.perfeccionista.framework.matcher.element.implementations.WebTableShouldHaveColumnMatcher;
 import io.perfeccionista.framework.matcher.methods.implementations.WebComponentShouldBeDisplayedMatcher;
 import io.perfeccionista.framework.matcher.methods.implementations.WebComponentShouldBePresentMatcher;
 import io.perfeccionista.framework.matcher.methods.implementations.WebShouldBeClosedMatcher;
@@ -42,7 +41,7 @@ import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveI
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveIndexNumberValueMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveNonNullResultMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveNullResultMatcher;
-import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveResultMatcher;
+import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveExpectedResultMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveSizeNumberMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveSizeNumberValueMatcher;
 import io.perfeccionista.framework.matcher.result.implementations.WebShouldHaveSortedResultMatcher;
@@ -51,74 +50,54 @@ import io.perfeccionista.framework.measurements.Dimensions2D;
 import io.perfeccionista.framework.measurements.Point2D;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebComponentAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.WebElementPropertyAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsDisplayedAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsSelectedAvailable;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementComponentDisplayedMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementComponentPresentMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementDisplayedMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementEnabledMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementLabelValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementPresentMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementPropertyValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementSelectedMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementTextValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockIndexExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementComponentDisplayedMarkExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementComponentPresentMarkExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementDisplayedMarkExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementEnabledMarkExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementLabelValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementPresentMarkExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementPropertyValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementSelectedMarkExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementTextValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockIndexExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonElementExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonEnabledMarkExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonIndexExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonLabelValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.radio.WebRadioButtonSelectedMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementComponentDisplayedMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementComponentPresentMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementDisplayedMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementEnabledMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementLabelValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementPresentMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementPropertyValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementSelectedMarkExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellElementTextValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableCellExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableRowExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableRowIndexExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockElementExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockIndexExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockTextValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableCellElementExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableCellTextValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableRowExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.texttable.WebTextTableRowIndexExtractor;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementComponentDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementComponentPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementEmptyCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementEnabledCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementHaveStateCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementLabelNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementLabelStringValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementLabelTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementPropertyNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementPropertyStringValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementPropertyTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementSelectedCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementTextNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockElementTextStringValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.list.condition.WebListBlockIndexCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementComponentDisplayedCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementComponentPresentCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementDisplayedCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementEmptyCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementEnabledCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementHaveStateCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementLabelNumberValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementLabelStringValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementLabelTextCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementPresentCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementPropertyNumberValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementPropertyStringValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementPropertyTextCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementSelectedCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementTextCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementTextNumberValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockElementTextStringValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockIndexCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilder;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonEmptyCondition;
@@ -128,55 +107,29 @@ import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioBu
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonLabelStringValueCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonLabelTextCondition;
 import io.perfeccionista.framework.pagefactory.filter.radio.condition.WebRadioButtonSelectedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementComponentDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementComponentPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementDisplayedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementEnabledCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementLabelNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementLabelStringValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementLabelTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementPresentCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementPropertyNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementPropertyStringValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementPropertyTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementSelectedCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementTextNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableCellElementTextStringValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableRowCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableRowEmptyCondition;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableRowIndexCondition;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockEmptyCondition;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockIndexCondition;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockTextNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockTextStringValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowCondition;
-import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowEmptyCondition;
-import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowIndexCondition;
-import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowTextCondition;
-import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowTextNumberValueCondition;
-import io.perfeccionista.framework.pagefactory.filter.texttable.condition.WebTextTableRowTextStringValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockEmptyCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockIndexCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockTextCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockTextNumberValueCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockTextStringValueCondition;
 import io.perfeccionista.framework.pagefactory.limiter.WebListBlockContextLimiter;
-import io.perfeccionista.framework.pagefactory.limiter.WebTableCellContextLimiter;
-import io.perfeccionista.framework.pagefactory.limiter.WebTableRowContextLimiter;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import io.perfeccionista.framework.value.number.NumberValue;
 import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
+import java.util.function.Function;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
-import static io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilderImpl.webListFilterBuilder;
-import static io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilderImpl.webRadioGroupFilterBuilder;
-import static io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilderImpl.webTableFilterBuilder;
-import static io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilderImpl.webTextListFilterBuilder;
-import static io.perfeccionista.framework.pagefactory.filter.texttable.WebTextTableFilterBuilderImpl.webTextTableFilterBuilder;
+import static io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilderImpl.webBlockFilterBuilderWith;
+import static io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilderImpl.webBlockFilterBuilderWithout;
+import static io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilderImpl.webRadioGroupFilterBuilderWith;
+import static io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilderImpl.webRadioGroupFilterBuilderWithout;
+import static io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilderImpl.webTextBlockFilterBuilderWith;
+import static io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilderImpl.webTextBlockFilterBuilderWithout;
 import static io.perfeccionista.framework.value.Values.intEquals;
 
 // TODO: Возможно, тут стоит вынести отдельные разделы в классы
@@ -200,14 +153,6 @@ public class Web {
     //   Element
     //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static WebTableShouldHaveColumnMatcher haveColumn(@NotNull String columnName) {
-        return new WebTableShouldHaveColumnMatcher(columnName, true);
-    }
-
-    public static WebTableShouldHaveColumnMatcher notHaveColumn(@NotNull String columnName) {
-        return new WebTableShouldHaveColumnMatcher(columnName, false);
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -540,8 +485,8 @@ public class Web {
     // Result
 
     // TODO: Добавить матчеры для результатов через Value
-    public static <T> WebShouldHaveResultMatcher<T> haveResult(T expectedResult) {
-        return new WebShouldHaveResultMatcher<>(expectedResult);
+    public static <T> WebShouldHaveExpectedResultMatcher<T> haveResult(T expectedResult) {
+        return new WebShouldHaveExpectedResultMatcher<>(expectedResult);
     }
 
     public static <T> WebShouldHaveNonNullResultMatcher<T> haveNotNullResults() {
@@ -669,94 +614,47 @@ public class Web {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // Block
+
+    public static <T extends WebBlock> WebBlockFilterBuilder<T> emptyWebBlockFilter() {
+        return webBlockFilterBuilderWith(allItems());
+    }
+
+    public static <T extends WebBlock> WebBlockFilterBuilder<T> with(@NotNull WebBlockCondition<T> condition) {
+        return webBlockFilterBuilderWith(condition);
+    }
+
+    public static <T extends WebBlock> WebBlockFilterBuilder<T> without(@NotNull WebBlockCondition<T> condition) {
+        return webBlockFilterBuilderWithout(condition);
+    }
+
+    // TextBlock
+
+    public static WebTextBlockFilterBuilder emptyWebTextBlockFilter() {
+        return webTextBlockFilterBuilderWith(allTextBlocks());
+    }
+
+    public static WebTextBlockFilterBuilder with(@NotNull WebTextBlockCondition stringCondition) {
+        return webTextBlockFilterBuilderWith(stringCondition);
+    }
+
+    public static WebTextBlockFilterBuilder without(@NotNull WebTextBlockCondition stringCondition) {
+        return webTextBlockFilterBuilderWithout(stringCondition);
+    }
+
+
     // RadioButton
 
     public static WebRadioGroupFilterBuilder emptyWebRadioButtonFilter() {
-        return webRadioGroupFilterBuilder()
-                .add(allRadioButtons());
+        return webRadioGroupFilterBuilderWith(allRadioButtons());
     }
 
     public static WebRadioGroupFilterBuilder with(@NotNull WebRadioButtonCondition condition) {
-        return webRadioGroupFilterBuilder()
-                .add(condition);
+        return webRadioGroupFilterBuilderWith(condition);
     }
 
     public static WebRadioGroupFilterBuilder without(@NotNull WebRadioButtonCondition condition) {
-        return webRadioGroupFilterBuilder()
-                .add(allRadioButtons())
-                .subtract(condition);
-    }
-
-    // List
-
-    public static WebListFilterBuilder emptyWebListFilter() {
-        return webListFilterBuilder()
-                .add(allBlocks());
-    }
-
-    public static WebListFilterBuilder with(@NotNull WebListBlockCondition condition) {
-        return webListFilterBuilder()
-                .add(condition);
-    }
-
-    public static WebListFilterBuilder without(@NotNull WebListBlockCondition condition) {
-        return webListFilterBuilder()
-                .add(allBlocks())
-                .subtract(condition);
-    }
-
-    // TextList
-
-    public static WebTextListFilterBuilder emptyWebTextListFilter() {
-        return webTextListFilterBuilder()
-                .add(allTextBlocks());
-    }
-
-    public static WebTextListFilterBuilder with(@NotNull WebTextListBlockCondition stringCondition) {
-        return webTextListFilterBuilder()
-                .add(stringCondition);
-    }
-
-    public static WebTextListFilterBuilder without(@NotNull WebTextListBlockCondition stringCondition) {
-        return webTextListFilterBuilder()
-                .add(allTextBlocks())
-                .subtract(stringCondition);
-    }
-
-    // Table
-
-    public static WebTableFilterBuilder emptyWebTableFilter() {
-        return webTableFilterBuilder()
-                .add(allRows());
-    }
-
-    public static WebTableFilterBuilder with(@NotNull WebTableRowCondition condition) {
-        return webTableFilterBuilder()
-                .add(condition);
-    }
-
-    public static WebTableFilterBuilder without(@NotNull WebTableRowCondition condition) {
-        return webTableFilterBuilder()
-                .add(allRows())
-                .subtract(condition);
-    }
-
-    // TextTable
-
-    public static WebTextTableFilterBuilder emptyWebTextTableFilter() {
-        return webTextTableFilterBuilder()
-                .add(allTextRows());
-    }
-
-    public static WebTextTableFilterBuilder with(@NotNull WebTextTableRowCondition stringCondition) {
-        return webTextTableFilterBuilder()
-                .add(stringCondition);
-    }
-
-    public static WebTextTableFilterBuilder without(@NotNull WebTextTableRowCondition stringCondition) {
-        return webTextTableFilterBuilder()
-                .add(allTextRows())
-                .subtract(stringCondition);
+        return webRadioGroupFilterBuilderWithout(condition);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -857,366 +755,366 @@ public class Web {
 
     // Empty
 
-    public static WebListBlockElementEmptyCondition allBlocks() {
-        return new WebListBlockElementEmptyCondition().allBlocks();
+    public static <T extends WebBlock> WebBlockElementEmptyCondition<T> allItems() {
+        return new WebBlockElementEmptyCondition<T>().allBlocks();
     }
 
-    public static WebListBlockElementEmptyCondition noBlocks() {
-        return new WebListBlockElementEmptyCondition().noBlocks();
+    public static <T extends WebBlock> WebBlockElementEmptyCondition<T> noItems() {
+        return new WebBlockElementEmptyCondition<T>().noBlocks();
     }
 
     // Index
 
-    public static WebListBlockIndexCondition blockIndex(@NotNull Integer expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withBlockIndex();
+    public static <T extends WebBlock> WebBlockIndexCondition<T> index(@NotNull Integer expectedValue) {
+        return new WebBlockIndexCondition<T>(expectedValue).withBlockIndex();
     }
 
-    public static WebListBlockIndexCondition blockIndex(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withBlockIndex();
+    public static <T extends WebBlock> WebBlockIndexCondition<T> index(@NotNull NumberValue<Integer> expectedValue) {
+        return new WebBlockIndexCondition<T>(expectedValue).withBlockIndex();
     }
 
-    public static WebListBlockIndexCondition blockIndexNot(@NotNull Integer expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withoutBlockIndexNot();
+    public static <T extends WebBlock> WebBlockIndexCondition<T> indexNot(@NotNull Integer expectedValue) {
+        return new WebBlockIndexCondition<T>(expectedValue).withoutBlockIndexNot();
     }
 
-    public static WebListBlockIndexCondition blockIndexNot(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebListBlockIndexCondition(expectedValue).withoutBlockIndexNot();
+    public static <T extends WebBlock> WebBlockIndexCondition<T> indexNot(@NotNull NumberValue<Integer> expectedValue) {
+        return new WebBlockIndexCondition<T>(expectedValue).withoutBlockIndexNot();
     }
 
     // ComponentDisplayed
 
-    public static WebListBlockElementComponentDisplayedCondition componentDisplayed(@NotNull WebChildElement elementFrame,
-                                                                                    @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementFrame, componentName).componentDisplayed();
+    public static <T extends WebBlock> WebBlockElementComponentDisplayedCondition<T> componentDisplayed(@NotNull WebChildElement elementFrame,
+                                                                                                        @NotNull String componentName) {
+        return new WebBlockElementComponentDisplayedCondition<T>(elementFrame, componentName).componentDisplayed();
     }
 
-    public static WebListBlockElementComponentDisplayedCondition componentDisplayed(@NotNull String elementPath,
-                                                                                    @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementPath, componentName).componentDisplayed();
+    public static <T extends WebBlock> WebBlockElementComponentDisplayedCondition<T> componentDisplayed(@NotNull String elementPath,
+                                                                                                        @NotNull String componentName) {
+        return new WebBlockElementComponentDisplayedCondition<T>(elementPath, componentName).componentDisplayed();
     }
 
-    public static WebListBlockElementComponentDisplayedCondition componentNotDisplayed(@NotNull WebChildElement elementFrame,
-                                                                                       @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementFrame, componentName).componentNotDisplayed();
+    public static <T extends WebBlock> WebBlockElementComponentDisplayedCondition<T> componentNotDisplayed(@NotNull WebChildElement elementFrame,
+                                                                                                           @NotNull String componentName) {
+        return new WebBlockElementComponentDisplayedCondition<T>(elementFrame, componentName).componentNotDisplayed();
     }
 
-    public static WebListBlockElementComponentDisplayedCondition componentNotDisplayed(@NotNull String elementPath,
-                                                                                       @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedCondition(elementPath, componentName).componentNotDisplayed();
+    public static <T extends WebBlock> WebBlockElementComponentDisplayedCondition<T> componentNotDisplayed(@NotNull String elementPath,
+                                                                                                           @NotNull String componentName) {
+        return new WebBlockElementComponentDisplayedCondition<T>(elementPath, componentName).componentNotDisplayed();
     }
 
     // ComponentPresent
 
-    public static WebListBlockElementComponentPresentCondition componentPresent(@NotNull WebChildElement elementFrame,
-                                                                                @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementFrame, componentName).componentPresent();
+    public static <T extends WebBlock> WebBlockElementComponentPresentCondition<T> componentPresent(@NotNull WebChildElement elementFrame,
+                                                                                                    @NotNull String componentName) {
+        return new WebBlockElementComponentPresentCondition<T>(elementFrame, componentName).componentPresent();
     }
 
-    public static WebListBlockElementComponentPresentCondition componentPresent(@NotNull String elementPath,
-                                                                                @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementPath, componentName).componentPresent();
+    public static <T extends WebBlock> WebBlockElementComponentPresentCondition<T> componentPresent(@NotNull String elementPath,
+                                                                                                    @NotNull String componentName) {
+        return new WebBlockElementComponentPresentCondition<T>(elementPath, componentName).componentPresent();
     }
 
-    public static WebListBlockElementComponentPresentCondition componentNotPresent(@NotNull WebChildElement elementFrame,
-                                                                                   @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementFrame, componentName).componentNotPresent();
+    public static <T extends WebBlock> WebBlockElementComponentPresentCondition<T> componentNotPresent(@NotNull WebChildElement elementFrame,
+                                                                                                       @NotNull String componentName) {
+        return new WebBlockElementComponentPresentCondition<T>(elementFrame, componentName).componentNotPresent();
     }
 
-    public static WebListBlockElementComponentPresentCondition componentNotPresent(@NotNull String elementPath,
-                                                                                   @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentCondition(elementPath, componentName).componentNotPresent();
+    public static <T extends WebBlock> WebBlockElementComponentPresentCondition<T> componentNotPresent(@NotNull String elementPath,
+                                                                                                       @NotNull String componentName) {
+        return new WebBlockElementComponentPresentCondition<T>(elementPath, componentName).componentNotPresent();
     }
 
     // Displayed
 
-    public static WebListBlockElementDisplayedCondition displayed(@NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebListBlockElementDisplayedCondition(elementFrame).displayed();
+    public static <T extends WebBlock> WebBlockElementDisplayedCondition<T> displayed(@NotNull WebIsDisplayedAvailable elementFrame) {
+        return new WebBlockElementDisplayedCondition<T>(elementFrame).displayed();
     }
 
-    public static WebListBlockElementDisplayedCondition displayed(@NotNull String elementPath) {
-        return new WebListBlockElementDisplayedCondition(elementPath).displayed();
+    public static <T extends WebBlock> WebBlockElementDisplayedCondition<T> displayed(@NotNull String elementPath) {
+        return new WebBlockElementDisplayedCondition<T>(elementPath).displayed();
     }
 
-    public static WebListBlockElementDisplayedCondition notDisplayed(@NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebListBlockElementDisplayedCondition(elementFrame).notDisplayed();
+    public static <T extends WebBlock> WebBlockElementDisplayedCondition<T> notDisplayed(@NotNull WebIsDisplayedAvailable elementFrame) {
+        return new WebBlockElementDisplayedCondition<T>(elementFrame).notDisplayed();
     }
 
-    public static WebListBlockElementDisplayedCondition notDisplayed(@NotNull String elementPath) {
-        return new WebListBlockElementDisplayedCondition(elementPath).notDisplayed();
+    public static <T extends WebBlock> WebBlockElementDisplayedCondition<T> notDisplayed(@NotNull String elementPath) {
+        return new WebBlockElementDisplayedCondition<T>(elementPath).notDisplayed();
     }
 
     // Present
 
-    public static WebListBlockElementPresentCondition present(@NotNull WebIsPresentAvailable elementFrame) {
-        return new WebListBlockElementPresentCondition(elementFrame).present();
+    public static <T extends WebBlock> WebBlockElementPresentCondition<T> present(@NotNull WebIsPresentAvailable elementFrame) {
+        return new WebBlockElementPresentCondition<T>(elementFrame).present();
     }
 
-    public static WebListBlockElementPresentCondition present(@NotNull String elementPath) {
-        return new WebListBlockElementPresentCondition(elementPath).present();
+    public static <T extends WebBlock> WebBlockElementPresentCondition<T> present(@NotNull String elementPath) {
+        return new WebBlockElementPresentCondition<T>(elementPath).present();
     }
 
-    public static WebListBlockElementPresentCondition notPresent(@NotNull WebIsPresentAvailable elementFrame) {
-        return new WebListBlockElementPresentCondition(elementFrame).notPresent();
+    public static <T extends WebBlock> WebBlockElementPresentCondition<T> notPresent(@NotNull WebIsPresentAvailable elementFrame) {
+        return new WebBlockElementPresentCondition<T>(elementFrame).notPresent();
     }
 
-    public static WebListBlockElementPresentCondition notPresent(@NotNull String elementPath) {
-        return new WebListBlockElementPresentCondition(elementPath).notPresent();
+    public static <T extends WebBlock> WebBlockElementPresentCondition<T> notPresent(@NotNull String elementPath) {
+        return new WebBlockElementPresentCondition<T>(elementPath).notPresent();
     }
 
     // Enabled
 
-    public static WebListBlockElementEnabledCondition enabled(@NotNull WebIsEnabledAvailable elementFrame) {
-        return new WebListBlockElementEnabledCondition(elementFrame).enabled();
+    public static <T extends WebBlock> WebBlockElementEnabledCondition<T> enabled(@NotNull WebIsEnabledAvailable elementFrame) {
+        return new WebBlockElementEnabledCondition<T>(elementFrame).enabled();
     }
 
-    public static WebListBlockElementEnabledCondition enabled(@NotNull String elementPath) {
-        return new WebListBlockElementEnabledCondition(elementPath).enabled();
+    public static <T extends WebBlock> WebBlockElementEnabledCondition<T> enabled(@NotNull String elementPath) {
+        return new WebBlockElementEnabledCondition<T>(elementPath).enabled();
     }
 
-    public static WebListBlockElementEnabledCondition disabled(@NotNull WebIsEnabledAvailable elementFrame) {
-        return new WebListBlockElementEnabledCondition(elementFrame).disabled();
+    public static <T extends WebBlock> WebBlockElementEnabledCondition<T> disabled(@NotNull WebIsEnabledAvailable elementFrame) {
+        return new WebBlockElementEnabledCondition<T>(elementFrame).disabled();
     }
 
-    public static WebListBlockElementEnabledCondition disabled(@NotNull String elementPath) {
-        return new WebListBlockElementEnabledCondition(elementPath).disabled();
+    public static <T extends WebBlock> WebBlockElementEnabledCondition<T> disabled(@NotNull String elementPath) {
+        return new WebBlockElementEnabledCondition<T>(elementPath).disabled();
     }
 
     // Selected
 
-    public static WebListBlockElementSelectedCondition selected(@NotNull WebIsSelectedAvailable elementFrame) {
-        return new WebListBlockElementSelectedCondition(elementFrame).selected();
+    public static <T extends WebBlock> WebBlockElementSelectedCondition<T> selected(@NotNull WebIsSelectedAvailable elementFrame) {
+        return new WebBlockElementSelectedCondition<T>(elementFrame).selected();
     }
 
-    public static WebListBlockElementSelectedCondition selected(@NotNull String elementPath) {
-        return new WebListBlockElementSelectedCondition(elementPath).selected();
+    public static <T extends WebBlock> WebBlockElementSelectedCondition<T> selected(@NotNull String elementPath) {
+        return new WebBlockElementSelectedCondition<T>(elementPath).selected();
     }
 
-    public static WebListBlockElementSelectedCondition notSelected(@NotNull WebIsSelectedAvailable elementFrame) {
-        return new WebListBlockElementSelectedCondition(elementFrame).notSelected();
+    public static <T extends WebBlock> WebBlockElementSelectedCondition<T> notSelected(@NotNull WebIsSelectedAvailable elementFrame) {
+        return new WebBlockElementSelectedCondition<T>(elementFrame).notSelected();
     }
 
-    public static WebListBlockElementSelectedCondition notSelected(@NotNull String elementPath) {
-        return new WebListBlockElementSelectedCondition(elementPath).notSelected();
+    public static <T extends WebBlock> WebBlockElementSelectedCondition<T> notSelected(@NotNull String elementPath) {
+        return new WebBlockElementSelectedCondition<T>(elementPath).notSelected();
     }
 
     // ContainsLabel
 
-    public static WebListBlockElementLabelTextCondition containsLabel(@NotNull String elementPath,
-                                                                      @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementPath, expectedText).containsLabel();
+    public static <T extends WebBlock> WebBlockElementLabelTextCondition<T> containsLabel(@NotNull String elementPath,
+                                                                                          @NotNull String expectedText) {
+        return new WebBlockElementLabelTextCondition<T>(elementPath, expectedText).containsLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition containsLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                      @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementFrame, expectedText).containsLabel();
+    public static <T extends WebBlock> WebBlockElementLabelTextCondition<T> containsLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                          @NotNull String expectedText) {
+        return new WebBlockElementLabelTextCondition<T>(elementFrame, expectedText).containsLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition notContainLabel(@NotNull String elementPath,
-                                                                        @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementPath, expectedText).notContainLabel();
+    public static <T extends WebBlock> WebBlockElementLabelTextCondition<T> notContainLabel(@NotNull String elementPath,
+                                                                                            @NotNull String expectedText) {
+        return new WebBlockElementLabelTextCondition<T>(elementPath, expectedText).notContainLabel();
     }
 
-    public static WebListBlockElementLabelTextCondition notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                        @NotNull String expectedText) {
-        return new WebListBlockElementLabelTextCondition(elementFrame, expectedText).notContainLabel();
+    public static <T extends WebBlock> WebBlockElementLabelTextCondition<T> notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                            @NotNull String expectedText) {
+        return new WebBlockElementLabelTextCondition<T>(elementFrame, expectedText).notContainLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition containsLabel(@NotNull String elementPath,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementPath, expectedStringValue).containsLabel();
+    public static <T extends WebBlock> WebBlockElementLabelStringValueCondition<T> containsLabel(@NotNull String elementPath,
+                                                                                                 @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementLabelStringValueCondition<T>(elementPath, expectedStringValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition containsLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementFrame, expectedStringValue).containsLabel();
+    public static <T extends WebBlock> WebBlockElementLabelStringValueCondition<T> containsLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                 @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementLabelStringValueCondition<T>(elementFrame, expectedStringValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition notContainLabel(@NotNull String elementPath,
-                                                                               @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementPath, expectedStringValue).notContainLabel();
+    public static <T extends WebBlock> WebBlockElementLabelStringValueCondition<T> notContainLabel(@NotNull String elementPath,
+                                                                                                   @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementLabelStringValueCondition<T>(elementPath, expectedStringValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelStringValueCondition notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                               @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementLabelStringValueCondition(elementFrame, expectedStringValue).notContainLabel();
+    public static <T extends WebBlock> WebBlockElementLabelStringValueCondition<T> notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                   @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementLabelStringValueCondition<T>(elementFrame, expectedStringValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition containsLabel(@NotNull String elementPath,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementPath, expectedNumberValue).containsLabel();
+    public static <T extends WebBlock> WebBlockElementLabelNumberValueCondition<T> containsLabel(@NotNull String elementPath,
+                                                                                                 @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementLabelNumberValueCondition<T>(elementPath, expectedNumberValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition containsLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementFrame, expectedNumberValue).containsLabel();
+    public static <T extends WebBlock> WebBlockElementLabelNumberValueCondition<T> containsLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                 @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementLabelNumberValueCondition<T>(elementFrame, expectedNumberValue).containsLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition notContainLabel(@NotNull String elementPath,
-                                                                               @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementPath, expectedNumberValue).notContainLabel();
+    public static <T extends WebBlock> WebBlockElementLabelNumberValueCondition<T> notContainLabel(@NotNull String elementPath,
+                                                                                                   @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementLabelNumberValueCondition<T>(elementPath, expectedNumberValue).notContainLabel();
     }
 
-    public static WebListBlockElementLabelNumberValueCondition notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
-                                                                               @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementLabelNumberValueCondition(elementFrame, expectedNumberValue).notContainLabel();
+    public static <T extends WebBlock> WebBlockElementLabelNumberValueCondition<T> notContainLabel(@NotNull WebGetLabelAvailable elementFrame,
+                                                                                                   @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementLabelNumberValueCondition<T>(elementFrame, expectedNumberValue).notContainLabel();
     }
 
     // ContainsProperty
 
-    public static WebListBlockElementPropertyTextCondition containsProperty(@NotNull WebChildElement elementFrame,
-                                                                            @NotNull String propertyName,
-                                                                            @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementFrame, propertyName, expectedText).containsProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyTextCondition<T> containsProperty(@NotNull WebChildElement elementFrame,
+                                                                                                @NotNull String propertyName,
+                                                                                                @NotNull String expectedText) {
+        return new WebBlockElementPropertyTextCondition<T>(elementFrame, propertyName, expectedText).containsProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition containsProperty(@NotNull String elementPath,
-                                                                            @NotNull String propertyName,
-                                                                            @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementPath, propertyName, expectedText).containsProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyTextCondition<T> containsProperty(@NotNull String elementPath,
+                                                                                                @NotNull String propertyName,
+                                                                                                @NotNull String expectedText) {
+        return new WebBlockElementPropertyTextCondition<T>(elementPath, propertyName, expectedText).containsProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition notContainProperty(@NotNull WebChildElement elementFrame,
-                                                                              @NotNull String propertyName,
-                                                                              @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementFrame, propertyName, expectedText).notContainProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyTextCondition<T> notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                                  @NotNull String propertyName,
+                                                                                                  @NotNull String expectedText) {
+        return new WebBlockElementPropertyTextCondition<T>(elementFrame, propertyName, expectedText).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyTextCondition notContainProperty(@NotNull String elementPath,
-                                                                              @NotNull String propertyName,
-                                                                              @NotNull String expectedText) {
-        return new WebListBlockElementPropertyTextCondition(elementPath, propertyName, expectedText).notContainProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyTextCondition<T> notContainProperty(@NotNull String elementPath,
+                                                                                                  @NotNull String propertyName,
+                                                                                                  @NotNull String expectedText) {
+        return new WebBlockElementPropertyTextCondition<T>(elementPath, propertyName, expectedText).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition containsProperty(@NotNull WebChildElement elementFrame,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementFrame, propertyName, expectedStringValue).containsProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyStringValueCondition<T> containsProperty(@NotNull WebChildElement elementFrame,
+                                                                                                       @NotNull String propertyName,
+                                                                                                       @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementPropertyStringValueCondition<T>(elementFrame, propertyName, expectedStringValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition containsProperty(@NotNull String elementPath,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementPath, propertyName, expectedStringValue).containsProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyStringValueCondition<T> containsProperty(@NotNull String elementPath,
+                                                                                                       @NotNull String propertyName,
+                                                                                                       @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementPropertyStringValueCondition<T>(elementPath, propertyName, expectedStringValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition notContainProperty(@NotNull WebChildElement elementFrame,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementFrame, propertyName, expectedStringValue).notContainProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyStringValueCondition<T> notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                                         @NotNull String propertyName,
+                                                                                                         @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementPropertyStringValueCondition<T>(elementFrame, propertyName, expectedStringValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyStringValueCondition notContainProperty(@NotNull String elementPath,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementPropertyStringValueCondition(elementPath, propertyName, expectedStringValue).notContainProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyStringValueCondition<T> notContainProperty(@NotNull String elementPath,
+                                                                                                         @NotNull String propertyName,
+                                                                                                         @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementPropertyStringValueCondition<T>(elementPath, propertyName, expectedStringValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition containsProperty(@NotNull WebChildElement elementFrame,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementFrame, propertyName, expectedNumberValue).containsProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyNumberValueCondition<T> containsProperty(@NotNull WebChildElement elementFrame,
+                                                                                                       @NotNull String propertyName,
+                                                                                                       @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebBlockElementPropertyNumberValueCondition<T>(elementFrame, propertyName, expectedNumberValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition containsProperty(@NotNull String elementPath,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementPath, propertyName, expectedNumberValue).containsProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyNumberValueCondition<T> containsProperty(@NotNull String elementPath,
+                                                                                                       @NotNull String propertyName,
+                                                                                                       @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebBlockElementPropertyNumberValueCondition<T>(elementPath, propertyName, expectedNumberValue).containsProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition notContainProperty(@NotNull WebChildElement elementFrame,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementFrame, propertyName, expectedNumberValue).notContainProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyNumberValueCondition<T> notContainProperty(@NotNull WebChildElement elementFrame,
+                                                                                                         @NotNull String propertyName,
+                                                                                                         @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebBlockElementPropertyNumberValueCondition<T>(elementFrame, propertyName, expectedNumberValue).notContainProperty();
     }
 
-    public static WebListBlockElementPropertyNumberValueCondition notContainProperty(@NotNull String elementPath,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull NumberValue<? extends Number> expectedNumberValue) {
-        return new WebListBlockElementPropertyNumberValueCondition(elementPath, propertyName, expectedNumberValue).notContainProperty();
+    public static <T extends WebBlock> WebBlockElementPropertyNumberValueCondition<T> notContainProperty(@NotNull String elementPath,
+                                                                                                         @NotNull String propertyName,
+                                                                                                         @NotNull NumberValue<? extends Number> expectedNumberValue) {
+        return new WebBlockElementPropertyNumberValueCondition<T>(elementPath, propertyName, expectedNumberValue).notContainProperty();
     }
 
     // ContainsText
 
-    public static WebListBlockElementTextCondition containsText(@NotNull String elementPath,
-                                                                @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementPath, expectedText).containsText();
+    public static <T extends WebBlock> WebBlockElementTextCondition<T> containsText(@NotNull String elementPath,
+                                                                                    @NotNull String expectedText) {
+        return new WebBlockElementTextCondition<T>(elementPath, expectedText).containsText();
     }
 
-    public static WebListBlockElementTextCondition containsText(@NotNull WebGetTextAvailable elementFrame,
-                                                                @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementFrame, expectedText).containsText();
+    public static <T extends WebBlock> WebBlockElementTextCondition<T> containsText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                    @NotNull String expectedText) {
+        return new WebBlockElementTextCondition<T>(elementFrame, expectedText).containsText();
     }
 
-    public static WebListBlockElementTextCondition notContainText(@NotNull String elementPath,
-                                                                  @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementPath, expectedText).notContainText();
+    public static <T extends WebBlock> WebBlockElementTextCondition<T> notContainText(@NotNull String elementPath,
+                                                                                      @NotNull String expectedText) {
+        return new WebBlockElementTextCondition<T>(elementPath, expectedText).notContainText();
     }
 
-    public static WebListBlockElementTextCondition notContainText(@NotNull WebGetTextAvailable elementFrame,
-                                                                  @NotNull String expectedText) {
-        return new WebListBlockElementTextCondition(elementFrame, expectedText).notContainText();
+    public static <T extends WebBlock> WebBlockElementTextCondition<T> notContainText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                      @NotNull String expectedText) {
+        return new WebBlockElementTextCondition<T>(elementFrame, expectedText).notContainText();
     }
 
-    public static WebListBlockElementTextStringValueCondition containsText(@NotNull String elementPath,
-                                                                           @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementPath, expectedStringValue).containsText();
+    public static <T extends WebBlock> WebBlockElementTextStringValueCondition<T> containsText(@NotNull String elementPath,
+                                                                                               @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementTextStringValueCondition<T>(elementPath, expectedStringValue).containsText();
     }
 
-    public static WebListBlockElementTextStringValueCondition containsText(@NotNull WebGetTextAvailable elementFrame,
-                                                                           @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementFrame, expectedStringValue).containsText();
+    public static <T extends WebBlock> WebBlockElementTextStringValueCondition<T> containsText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                               @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementTextStringValueCondition<T>(elementFrame, expectedStringValue).containsText();
     }
 
-    public static WebListBlockElementTextStringValueCondition notContainText(@NotNull String elementPath,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementPath, expectedStringValue).notContainText();
+    public static <T extends WebBlock> WebBlockElementTextStringValueCondition<T> notContainText(@NotNull String elementPath,
+                                                                                                 @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementTextStringValueCondition<T>(elementPath, expectedStringValue).notContainText();
     }
 
-    public static WebListBlockElementTextStringValueCondition notContainText(@NotNull WebGetTextAvailable elementFrame,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebListBlockElementTextStringValueCondition(elementFrame, expectedStringValue).notContainText();
+    public static <T extends WebBlock> WebBlockElementTextStringValueCondition<T> notContainText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                                 @NotNull StringValue expectedStringValue) {
+        return new WebBlockElementTextStringValueCondition<T>(elementFrame, expectedStringValue).notContainText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition containsText(@NotNull String elementPath,
-                                                                           @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementPath, expectedNumberValue).containsText();
+    public static <T extends WebBlock> WebBlockElementTextNumberValueCondition<T> containsText(@NotNull String elementPath,
+                                                                                               @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementTextNumberValueCondition<T>(elementPath, expectedNumberValue).containsText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition containsText(@NotNull WebGetTextAvailable elementFrame,
-                                                                           @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementFrame, expectedNumberValue).containsText();
+    public static <T extends WebBlock> WebBlockElementTextNumberValueCondition<T> containsText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                               @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementTextNumberValueCondition<T>(elementFrame, expectedNumberValue).containsText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition notContainText(@NotNull String elementPath,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementPath, expectedNumberValue).notContainText();
+    public static <T extends WebBlock> WebBlockElementTextNumberValueCondition<T> notContainText(@NotNull String elementPath,
+                                                                                                 @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementTextNumberValueCondition<T>(elementPath, expectedNumberValue).notContainText();
     }
 
-    public static WebListBlockElementTextNumberValueCondition notContainText(@NotNull WebGetTextAvailable elementFrame,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebListBlockElementTextNumberValueCondition(elementFrame, expectedNumberValue).notContainText();
+    public static <T extends WebBlock> WebBlockElementTextNumberValueCondition<T> notContainText(@NotNull WebGetTextAvailable elementFrame,
+                                                                                                 @NotNull NumberValue<?> expectedNumberValue) {
+        return new WebBlockElementTextNumberValueCondition<T>(elementFrame, expectedNumberValue).notContainText();
     }
 
     // haveState
 
-    public static WebListBlockElementHaveStateCondition haveState(@NotNull WebChildElement elementFrame,
-                                                                  @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementFrame, stateName).haveState();
+    public static <T extends WebBlock> WebBlockElementHaveStateCondition<T> haveState(@NotNull WebChildElement elementFrame,
+                                                                                      @NotNull String stateName) {
+        return new WebBlockElementHaveStateCondition<T>(elementFrame, stateName).haveState();
     }
 
-    public static WebListBlockElementHaveStateCondition haveState(@NotNull String elementPath,
-                                                                  @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementPath, stateName).haveState();
+    public static <T extends WebBlock> WebBlockElementHaveStateCondition<T> haveState(@NotNull String elementPath,
+                                                                                      @NotNull String stateName) {
+        return new WebBlockElementHaveStateCondition<T>(elementPath, stateName).haveState();
     }
 
-    public static WebListBlockElementHaveStateCondition notHaveState(@NotNull WebChildElement elementFrame,
-                                                                     @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementFrame, stateName).notHaveState();
+    public static <T extends WebBlock> WebBlockElementHaveStateCondition<T> notHaveState(@NotNull WebChildElement elementFrame,
+                                                                                         @NotNull String stateName) {
+        return new WebBlockElementHaveStateCondition<T>(elementFrame, stateName).notHaveState();
     }
 
-    public static WebListBlockElementHaveStateCondition notHaveState(@NotNull String elementPath,
-                                                                     @NotNull String stateName) {
-        return new WebListBlockElementHaveStateCondition(elementPath, stateName).notHaveState();
+    public static <T extends WebBlock> WebBlockElementHaveStateCondition<T> notHaveState(@NotNull String elementPath,
+                                                                                         @NotNull String stateName) {
+        return new WebBlockElementHaveStateCondition<T>(elementPath, stateName).notHaveState();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1227,508 +1125,56 @@ public class Web {
 
     // Empty
 
-    public static WebTextListBlockEmptyCondition allTextBlocks() {
-        return new WebTextListBlockEmptyCondition().allTextBlocks();
+    public static WebTextBlockEmptyCondition allTextBlocks() {
+        return new WebTextBlockEmptyCondition().allTextBlocks();
     }
 
-    public static WebTextListBlockEmptyCondition noTextBlocks() {
-        return new WebTextListBlockEmptyCondition().noTextBlocks();
-    }
-
-    // Index
-
-    public static WebTextListBlockIndexCondition textBlockIndex(@NotNull Integer expectedValue) {
-        return new WebTextListBlockIndexCondition(expectedValue).withTextBlockIndex();
-    }
-
-    public static WebTextListBlockIndexCondition textBlockIndex(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebTextListBlockIndexCondition(expectedValue).withTextBlockIndex();
-    }
-
-    public static WebTextListBlockIndexCondition textBlockIndexNot(@NotNull Integer expectedValue) {
-        return new WebTextListBlockIndexCondition(expectedValue).withoutTextBlockIndex();
-    }
-
-    public static WebTextListBlockIndexCondition textBlockIndexNot(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebTextListBlockIndexCondition(expectedValue).withoutTextBlockIndex();
-    }
-
-    // ContainsText
-
-    public static WebTextListBlockTextCondition containsTextBlock(@NotNull String expectedText) {
-        return new WebTextListBlockTextCondition(expectedText).containsTextBlock();
-    }
-
-    public static WebTextListBlockTextCondition notContainTextBlock(@NotNull String expectedText) {
-        return new WebTextListBlockTextCondition(expectedText).notContainTextBlock();
-    }
-
-    public static WebTextListBlockTextStringValueCondition containsTextBlock(@NotNull StringValue expectedStringValue) {
-        return new WebTextListBlockTextStringValueCondition(expectedStringValue).containsTextBlock();
-    }
-
-    public static WebTextListBlockTextStringValueCondition notContainTextBlock(@NotNull StringValue expectedStringValue) {
-        return new WebTextListBlockTextStringValueCondition(expectedStringValue).notContainTextBlock();
-    }
-
-    public static WebTextListBlockTextNumberValueCondition containsTextBlock(@NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTextListBlockTextNumberValueCondition(expectedNumberValue).containsTextBlock();
-    }
-
-    public static WebTextListBlockTextNumberValueCondition notContainTextBlock(@NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTextListBlockTextNumberValueCondition(expectedNumberValue).notContainTextBlock();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //   WebTable
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Empty
-
-    public static WebTableRowEmptyCondition allRows() {
-        return new WebTableRowEmptyCondition().allRows();
-    }
-
-    public static WebTableRowEmptyCondition noRows() {
-        return new WebTableRowEmptyCondition().noRows();
+    public static WebTextBlockEmptyCondition noTextBlocks() {
+        return new WebTextBlockEmptyCondition().noTextBlocks();
     }
 
     // Index
 
-    public static WebTableRowIndexCondition rowIndex(@NotNull Integer expectedValue) {
-        return new WebTableRowIndexCondition(expectedValue).withRowIndex();
+    public static WebTextBlockIndexCondition textBlockIndex(@NotNull Integer expectedValue) {
+        return new WebTextBlockIndexCondition(expectedValue).withTextBlockIndex();
     }
 
-    public static WebTableRowIndexCondition rowIndex(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebTableRowIndexCondition(expectedValue).withRowIndex();
+    public static WebTextBlockIndexCondition textBlockIndex(@NotNull NumberValue<Integer> expectedValue) {
+        return new WebTextBlockIndexCondition(expectedValue).withTextBlockIndex();
     }
 
-    public static WebTableRowIndexCondition rowIndexNot(@NotNull Integer expectedValue) {
-        return new WebTableRowIndexCondition(expectedValue).withoutRowIndexNot();
+    public static WebTextBlockIndexCondition textBlockIndexNot(@NotNull Integer expectedValue) {
+        return new WebTextBlockIndexCondition(expectedValue).withoutTextBlockIndex();
     }
 
-    public static WebTableRowIndexCondition rowIndexNot(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebTableRowIndexCondition(expectedValue).withoutRowIndexNot();
-    }
-
-    // ComponentDisplayed
-
-    public static WebTableCellElementComponentDisplayedCondition componentDisplayed(@NotNull String columnName,
-                                                                                    @NotNull WebChildElement elementFrame,
-                                                                                    @NotNull String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementFrame, componentName).componentDisplayed();
-    }
-
-    public static WebTableCellElementComponentDisplayedCondition componentDisplayed(@NotNull String columnName,
-                                                                                    @NotNull String elementPath,
-                                                                                    @NotNull String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementPath, componentName).componentDisplayed();
-    }
-
-    public static WebTableCellElementComponentDisplayedCondition componentNotDisplayed(@NotNull String columnName,
-                                                                                       @NotNull WebChildElement elementFrame,
-                                                                                       @NotNull String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementFrame, componentName).componentNotDisplayed();
-    }
-
-    public static WebTableCellElementComponentDisplayedCondition componentNotDisplayed(@NotNull String columnName,
-                                                                                       @NotNull String elementPath,
-                                                                                       @NotNull String componentName) {
-        return new WebTableCellElementComponentDisplayedCondition(columnName, elementPath, componentName).componentNotDisplayed();
-    }
-
-    // ComponentPresent
-
-    public static WebTableCellElementComponentPresentCondition componentPresent(@NotNull String columnName,
-                                                                                @NotNull WebChildElement elementFrame,
-                                                                                @NotNull String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementFrame, componentName).componentPresent();
-    }
-
-    public static WebTableCellElementComponentPresentCondition componentPresent(@NotNull String columnName,
-                                                                                @NotNull String elementPath,
-                                                                                @NotNull String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementPath, componentName).componentPresent();
-    }
-
-    public static WebTableCellElementComponentPresentCondition componentNotPresent(@NotNull String columnName,
-                                                                                   @NotNull WebChildElement elementFrame,
-                                                                                   @NotNull String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementFrame, componentName).componentNotPresent();
-    }
-
-    public static WebTableCellElementComponentPresentCondition componentNotPresent(@NotNull String columnName,
-                                                                                   @NotNull String elementPath,
-                                                                                   @NotNull String componentName) {
-        return new WebTableCellElementComponentPresentCondition(columnName, elementPath, componentName).componentNotPresent();
-    }
-
-    // Displayed
-
-    public static WebTableCellElementDisplayedCondition displayed(@NotNull String columnName, @NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementFrame).displayed();
-    }
-
-    public static WebTableCellElementDisplayedCondition displayed(@NotNull String columnName, @NotNull String elementPath) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementPath).displayed();
-    }
-
-    public static WebTableCellElementDisplayedCondition notDisplayed(@NotNull String columnName, @NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementFrame).notDisplayed();
-    }
-
-    public static WebTableCellElementDisplayedCondition notDisplayed(@NotNull String columnName, @NotNull String elementPath) {
-        return new WebTableCellElementDisplayedCondition(columnName, elementPath).notDisplayed();
-    }
-
-    // Present
-
-    public static WebTableCellElementPresentCondition present(@NotNull String columnName, @NotNull WebIsPresentAvailable elementFrame) {
-        return new WebTableCellElementPresentCondition(columnName, elementFrame).present();
-    }
-
-    public static WebTableCellElementPresentCondition present(@NotNull String columnName, @NotNull String elementPath) {
-        return new WebTableCellElementPresentCondition(columnName, elementPath).present();
-    }
-
-    public static WebTableCellElementPresentCondition notPresent(@NotNull String columnName, @NotNull WebIsPresentAvailable elementFrame) {
-        return new WebTableCellElementPresentCondition(columnName, elementFrame).notPresent();
-    }
-
-    public static WebTableCellElementPresentCondition notPresent(@NotNull String columnName, @NotNull String elementPath) {
-        return new WebTableCellElementPresentCondition(columnName, elementPath).notPresent();
-    }
-
-    // Enabled
-
-    public static WebTableCellElementEnabledCondition enabled(@NotNull String columnName, @NotNull WebIsEnabledAvailable elementMock) {
-        return new WebTableCellElementEnabledCondition(columnName, elementMock).enabled();
-    }
-
-    public static WebTableCellElementEnabledCondition enabled(@NotNull String columnName, @NotNull String elementName) {
-        return new WebTableCellElementEnabledCondition(columnName, elementName).enabled();
-    }
-
-    public static WebTableCellElementEnabledCondition disabled(@NotNull String columnName, @NotNull WebIsEnabledAvailable elementMock) {
-        return new WebTableCellElementEnabledCondition(columnName, elementMock).disabled();
-    }
-
-    public static WebTableCellElementEnabledCondition disabled(@NotNull String columnName, @NotNull String elementName) {
-        return new WebTableCellElementEnabledCondition(columnName, elementName).disabled();
-    }
-
-    // Selected
-
-    public static WebTableCellElementSelectedCondition selected(@NotNull String columnName, @NotNull WebIsSelectedAvailable elementMock) {
-        return new WebTableCellElementSelectedCondition(columnName, elementMock).selected();
-    }
-
-    public static WebTableCellElementSelectedCondition selected(@NotNull String columnName, @NotNull String elementName) {
-        return new WebTableCellElementSelectedCondition(columnName, elementName).selected();
-    }
-
-    public static WebTableCellElementSelectedCondition notSelected(@NotNull String columnName, @NotNull WebIsSelectedAvailable elementMock) {
-        return new WebTableCellElementSelectedCondition(columnName, elementMock).notSelected();
-    }
-
-    public static WebTableCellElementSelectedCondition notSelected(@NotNull String columnName, @NotNull String elementName) {
-        return new WebTableCellElementSelectedCondition(columnName, elementName).notSelected();
-    }
-
-    // ContainsLabel
-
-    public static WebTableCellElementLabelTextCondition containsLabel(@NotNull String columnName,
-                                                                      @NotNull String elementPath,
-                                                                      @NotNull String expectedText) {
-        return new WebTableCellElementLabelTextCondition(columnName, elementPath, expectedText).containsLabel();
-    }
-
-    public static WebTableCellElementLabelTextCondition containsLabel(@NotNull String columnName,
-                                                                      @NotNull WebGetLabelAvailable elementFrame,
-                                                                      @NotNull String expectedText) {
-        return new WebTableCellElementLabelTextCondition(columnName, elementFrame, expectedText).containsLabel();
-    }
-
-    public static WebTableCellElementLabelTextCondition notContainLabel(@NotNull String columnName,
-                                                                        @NotNull String elementPath,
-                                                                        @NotNull String expectedText) {
-        return new WebTableCellElementLabelTextCondition(columnName, elementPath, expectedText).notContainLabel();
-    }
-
-    public static WebTableCellElementLabelTextCondition notContainLabel(@NotNull String columnName,
-                                                                        @NotNull WebGetLabelAvailable elementFrame,
-                                                                        @NotNull String expectedText) {
-        return new WebTableCellElementLabelTextCondition(columnName, elementFrame, expectedText).notContainLabel();
-    }
-
-    public static WebTableCellElementLabelStringValueCondition containsLabel(@NotNull String columnName,
-                                                                             @NotNull String elementPath,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementLabelStringValueCondition(columnName, elementPath, expectedStringValue).containsLabel();
-    }
-
-    public static WebTableCellElementLabelStringValueCondition containsLabel(@NotNull String columnName,
-                                                                             @NotNull WebGetLabelAvailable elementFrame,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementLabelStringValueCondition(columnName, elementFrame, expectedStringValue).containsLabel();
-    }
-
-    public static WebTableCellElementLabelStringValueCondition notContainLabel(@NotNull String columnName,
-                                                                               @NotNull String elementPath,
-                                                                               @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementLabelStringValueCondition(columnName, elementPath, expectedStringValue).notContainLabel();
-    }
-
-    public static WebTableCellElementLabelStringValueCondition notContainLabel(@NotNull String columnName,
-                                                                               @NotNull WebGetLabelAvailable elementFrame,
-                                                                               @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementLabelStringValueCondition(columnName, elementFrame, expectedStringValue).notContainLabel();
-    }
-
-    public static WebTableCellElementLabelNumberValueCondition containsLabel(@NotNull String columnName,
-                                                                             @NotNull String elementPath,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementLabelNumberValueCondition(columnName, elementPath, expectedNumberValue).containsLabel();
-    }
-
-    public static WebTableCellElementLabelNumberValueCondition containsLabel(@NotNull String columnName,
-                                                                             @NotNull WebGetLabelAvailable elementFrame,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementLabelNumberValueCondition(columnName, elementFrame, expectedNumberValue).containsLabel();
-    }
-
-    public static WebTableCellElementLabelNumberValueCondition notContainLabel(@NotNull String columnName,
-                                                                               @NotNull String elementPath,
-                                                                               @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementLabelNumberValueCondition(columnName, elementPath, expectedNumberValue).notContainLabel();
-    }
-
-    public static WebTableCellElementLabelNumberValueCondition notContainLabel(@NotNull String columnName,
-                                                                               @NotNull WebGetLabelAvailable elementFrame,
-                                                                               @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementLabelNumberValueCondition(columnName, elementFrame, expectedNumberValue).notContainLabel();
-    }
-
-    // ContainsProperty
-
-    public static WebTableCellElementPropertyTextCondition containsProperty(@NotNull String columnName,
-                                                                            @NotNull String elementPath,
-                                                                            @NotNull String propertyName,
-                                                                            @NotNull String expectedText) {
-        return new WebTableCellElementPropertyTextCondition(columnName, elementPath, propertyName, expectedText).containsProperty();
-    }
-
-    public static WebTableCellElementPropertyTextCondition containsProperty(@NotNull String columnName,
-                                                                            @NotNull WebElementPropertyAvailable elementFrame,
-                                                                            @NotNull String propertyName,
-                                                                            @NotNull String expectedText) {
-        return new WebTableCellElementPropertyTextCondition(columnName, elementFrame, propertyName, expectedText).containsProperty();
-    }
-
-    public static WebTableCellElementPropertyTextCondition notContainProperty(@NotNull String columnName,
-                                                                              @NotNull String elementPath,
-                                                                              @NotNull String propertyName,
-                                                                              @NotNull String expectedText) {
-        return new WebTableCellElementPropertyTextCondition(columnName, elementPath, propertyName, expectedText).notContainProperty();
-    }
-
-    public static WebTableCellElementPropertyTextCondition notContainProperty(@NotNull String columnName,
-                                                                              @NotNull WebElementPropertyAvailable elementFrame,
-                                                                              @NotNull String propertyName,
-                                                                              @NotNull String expectedText) {
-        return new WebTableCellElementPropertyTextCondition(columnName, elementFrame, propertyName, expectedText).notContainProperty();
-    }
-
-    public static WebTableCellElementPropertyStringValueCondition containsProperty(@NotNull String columnName,
-                                                                                   @NotNull String elementPath,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementPropertyStringValueCondition(columnName, elementPath, propertyName, expectedStringValue).containsProperty();
-    }
-
-    public static WebTableCellElementPropertyStringValueCondition containsProperty(@NotNull String columnName,
-                                                                                   @NotNull WebElementPropertyAvailable elementFrame,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementPropertyStringValueCondition(columnName, elementFrame, propertyName, expectedStringValue).containsProperty();
-    }
-
-    public static WebTableCellElementPropertyStringValueCondition notContainProperty(@NotNull String columnName,
-                                                                                     @NotNull String elementPath,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementPropertyStringValueCondition(columnName, elementPath, propertyName, expectedStringValue).notContainProperty();
-    }
-
-    public static WebTableCellElementPropertyStringValueCondition notContainProperty(@NotNull String columnName,
-                                                                                     @NotNull WebElementPropertyAvailable elementFrame,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementPropertyStringValueCondition(columnName, elementFrame, propertyName, expectedStringValue).notContainProperty();
-    }
-
-    public static WebTableCellElementPropertyNumberValueCondition containsProperty(@NotNull String columnName,
-                                                                                   @NotNull String elementPath,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementPath, propertyName, expectedNumberValue).containsProperty();
-    }
-
-    public static WebTableCellElementPropertyNumberValueCondition containsProperty(@NotNull String columnName,
-                                                                                   @NotNull WebElementPropertyAvailable elementFrame,
-                                                                                   @NotNull String propertyName,
-                                                                                   @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementFrame, propertyName, expectedNumberValue).containsProperty();
-    }
-
-    public static WebTableCellElementPropertyNumberValueCondition notContainProperty(@NotNull String columnName,
-                                                                                     @NotNull String elementPath,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementPath, propertyName, expectedNumberValue).notContainProperty();
-    }
-
-    public static WebTableCellElementPropertyNumberValueCondition notContainProperty(@NotNull String columnName,
-                                                                                     @NotNull WebElementPropertyAvailable elementFrame,
-                                                                                     @NotNull String propertyName,
-                                                                                     @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementPropertyNumberValueCondition(columnName, elementFrame, propertyName, expectedNumberValue).notContainProperty();
+    public static WebTextBlockIndexCondition textBlockIndexNot(@NotNull NumberValue<Integer> expectedValue) {
+        return new WebTextBlockIndexCondition(expectedValue).withoutTextBlockIndex();
     }
 
     // ContainsText
 
-    public static WebTableCellElementTextCondition containsText(@NotNull String columnName,
-                                                                @NotNull String elementPath,
-                                                                @NotNull String expectedText) {
-        return new WebTableCellElementTextCondition(columnName, elementPath, expectedText).containsText();
+    public static WebTextBlockTextCondition containsTextBlock(@NotNull String expectedText) {
+        return new WebTextBlockTextCondition(expectedText).containsTextBlock();
     }
 
-    public static WebTableCellElementTextCondition containsText(@NotNull String columnName,
-                                                                @NotNull WebGetTextAvailable elementFrame,
-                                                                @NotNull String expectedText) {
-        return new WebTableCellElementTextCondition(columnName, elementFrame, expectedText).containsText();
+    public static WebTextBlockTextCondition notContainTextBlock(@NotNull String expectedText) {
+        return new WebTextBlockTextCondition(expectedText).notContainTextBlock();
     }
 
-    public static WebTableCellElementTextCondition notContainText(@NotNull String columnName,
-                                                                  @NotNull String elementPath,
-                                                                  @NotNull String expectedText) {
-        return new WebTableCellElementTextCondition(columnName, elementPath, expectedText).notContainText();
+    public static WebTextBlockTextStringValueCondition containsTextBlock(@NotNull StringValue expectedStringValue) {
+        return new WebTextBlockTextStringValueCondition(expectedStringValue).containsTextBlock();
     }
 
-    public static WebTableCellElementTextCondition notContainText(@NotNull String columnName,
-                                                                  @NotNull WebGetTextAvailable elementFrame,
-                                                                  @NotNull String expectedText) {
-        return new WebTableCellElementTextCondition(columnName, elementFrame, expectedText).notContainText();
+    public static WebTextBlockTextStringValueCondition notContainTextBlock(@NotNull StringValue expectedStringValue) {
+        return new WebTextBlockTextStringValueCondition(expectedStringValue).notContainTextBlock();
     }
 
-    public static WebTableCellElementTextStringValueCondition containsText(@NotNull String columnName,
-                                                                           @NotNull String elementPath,
-                                                                           @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementTextStringValueCondition(columnName, elementPath, expectedStringValue).containsText();
+    public static WebTextBlockTextNumberValueCondition containsTextBlock(@NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTextBlockTextNumberValueCondition(expectedNumberValue).containsTextBlock();
     }
 
-    public static WebTableCellElementTextStringValueCondition containsText(@NotNull String columnName,
-                                                                           @NotNull WebGetTextAvailable elementFrame,
-                                                                           @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementTextStringValueCondition(columnName, elementFrame, expectedStringValue).containsText();
-    }
-
-    public static WebTableCellElementTextStringValueCondition notContainText(@NotNull String columnName,
-                                                                             @NotNull String elementPath,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementTextStringValueCondition(columnName, elementPath, expectedStringValue).notContainText();
-    }
-
-    public static WebTableCellElementTextStringValueCondition notContainText(@NotNull String columnName,
-                                                                             @NotNull WebGetTextAvailable elementFrame,
-                                                                             @NotNull StringValue expectedStringValue) {
-        return new WebTableCellElementTextStringValueCondition(columnName, elementFrame, expectedStringValue).notContainText();
-    }
-
-    public static WebTableCellElementTextNumberValueCondition containsText(@NotNull String columnName,
-                                                                           @NotNull String elementPath,
-                                                                           @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementTextNumberValueCondition(columnName, elementPath, expectedNumberValue).containsText();
-    }
-
-    public static WebTableCellElementTextNumberValueCondition containsText(@NotNull String columnName,
-                                                                           @NotNull WebGetTextAvailable elementFrame,
-                                                                           @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementTextNumberValueCondition(columnName, elementFrame, expectedNumberValue).containsText();
-    }
-
-    public static WebTableCellElementTextNumberValueCondition notContainText(@NotNull String columnName,
-                                                                             @NotNull String elementPath,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementTextNumberValueCondition(columnName, elementPath, expectedNumberValue).notContainText();
-    }
-
-    public static WebTableCellElementTextNumberValueCondition notContainText(@NotNull String columnName,
-                                                                             @NotNull WebGetTextAvailable elementFrame,
-                                                                             @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTableCellElementTextNumberValueCondition(columnName, elementFrame, expectedNumberValue).notContainText();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    //   WebTextTable
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Empty
-
-    public static WebTextTableRowEmptyCondition allTextRows() {
-        return new WebTextTableRowEmptyCondition().allTextRows();
-    }
-
-    public static WebTextTableRowEmptyCondition noTextRows() {
-        return new WebTextTableRowEmptyCondition().noTextRows();
-    }
-
-    // Index
-
-    public static WebTextTableRowIndexCondition textRowIndex(@NotNull Integer expectedValue) {
-        return new WebTextTableRowIndexCondition(expectedValue).withTextRowIndex();
-    }
-
-    public static WebTextTableRowIndexCondition textRowIndex(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebTextTableRowIndexCondition(expectedValue).withTextRowIndex();
-    }
-
-    public static WebTextTableRowIndexCondition textRowIndexNot(@NotNull Integer expectedValue) {
-        return new WebTextTableRowIndexCondition(expectedValue).withoutTextRowIndex();
-    }
-
-    public static WebTextTableRowIndexCondition textRowIndexNot(@NotNull NumberValue<Integer> expectedValue) {
-        return new WebTextTableRowIndexCondition(expectedValue).withoutTextRowIndex();
-    }
-
-    // ContainsText
-
-    public static WebTextTableRowTextCondition containsTextCell(@NotNull String columnName, @NotNull String expectedText) {
-        return new WebTextTableRowTextCondition(columnName, expectedText).containsTextCell();
-    }
-
-    public static WebTextTableRowTextCondition notContainTextCell(@NotNull String columnName, @NotNull String expectedText) {
-        return new WebTextTableRowTextCondition(columnName, expectedText).notContainTextCell();
-    }
-
-    public static WebTextTableRowTextStringValueCondition containsTextCell(@NotNull String columnName, @NotNull StringValue expectedStringValue) {
-        return new WebTextTableRowTextStringValueCondition(columnName, expectedStringValue).containsTextCell();
-    }
-
-    public static WebTextTableRowTextStringValueCondition notContainTextCell(@NotNull String columnName, @NotNull StringValue expectedStringValue) {
-        return new WebTextTableRowTextStringValueCondition(columnName, expectedStringValue).notContainTextCell();
-    }
-
-    public static WebTextTableRowTextNumberValueCondition containsTextCell(@NotNull String columnName, @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTextTableRowTextNumberValueCondition(columnName, expectedNumberValue).containsTextCell();
-    }
-
-    public static WebTextTableRowTextNumberValueCondition notContainTextCell(@NotNull String columnName, @NotNull NumberValue<?> expectedNumberValue) {
-        return new WebTextTableRowTextNumberValueCondition(columnName, expectedNumberValue).notContainTextCell();
+    public static WebTextBlockTextNumberValueCondition notContainTextBlock(@NotNull NumberValue<?> expectedNumberValue) {
+        return new WebTextBlockTextNumberValueCondition(expectedNumberValue).notContainTextBlock();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1743,99 +1189,55 @@ public class Web {
 
     // WebList block limiters
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull WebList fromList,
-                                                                                        @NotNull WebListFilterBuilder blockFilter) {
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull WebList<T> fromList,
+                                                                                        @NotNull WebBlockFilterBuilder<T> blockFilter) {
         return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(1));
+    }
+
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull WebList<T> fromList,
+                                                                                        @NotNull Function<T, WebBlockFilterBuilder<T>> blockFilterFunction) {
+        return WebListBlockContextLimiter.of(fromList, blockFilterFunction.apply(fromList.getBlockFrame().getMappedBlockFrame()), intEquals(1));
     }
 
     public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlock(@NotNull String fromList,
-                                                                                        @NotNull WebListFilterBuilder blockFilter) {
+                                                                                        @NotNull WebBlockFilterBuilder<T> blockFilter) {
         return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(1));
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList fromList,
-                                                                                         @NotNull WebListFilterBuilder blockFilter,
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList<T> fromList,
+                                                                                         @NotNull WebBlockFilterBuilder<T> blockFilter,
                                                                                          int expectedSize) {
         return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(expectedSize));
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList fromList,
-                                                                                         @NotNull WebListFilterBuilder blockFilter,
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList<T> fromList,
+                                                                                         @NotNull Function<T, WebBlockFilterBuilder<T>> blockFilterFunction,
+                                                                                         int expectedSize) {
+        return WebListBlockContextLimiter.of(fromList, blockFilterFunction.apply(fromList.getBlockFrame().getMappedBlockFrame()), intEquals(expectedSize));
+    }
+
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList<T> fromList,
+                                                                                         @NotNull WebBlockFilterBuilder<T> blockFilter,
                                                                                          @NotNull NumberValue<Integer> expectedSize) {
         return WebListBlockContextLimiter.of(fromList, blockFilter, expectedSize);
     }
 
+    public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull WebList<T> fromList,
+                                                                                         @NotNull Function<T, WebBlockFilterBuilder<T>> blockFilterFunction,
+                                                                                         @NotNull NumberValue<Integer> expectedSize) {
+        return WebListBlockContextLimiter.of(fromList, blockFilterFunction.apply(fromList.getBlockFrame().getMappedBlockFrame()), expectedSize);
+    }
+
     public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull String fromList,
-                                                                                         @NotNull WebListFilterBuilder blockFilter,
+                                                                                         @NotNull WebBlockFilterBuilder<T> blockFilter,
                                                                                          int expectedSize) {
         return WebListBlockContextLimiter.of(fromList, blockFilter, intEquals(expectedSize));
     }
 
     public static <T extends WebBlock> WebListBlockContextLimiter<T> selectWebListBlocks(@NotNull String fromList,
-                                                                                         @NotNull WebListFilterBuilder blockFilter,
+                                                                                         @NotNull WebBlockFilterBuilder<T> blockFilter,
                                                                                          @NotNull NumberValue<Integer> expectedSize) {
         return WebListBlockContextLimiter.of(fromList, blockFilter, expectedSize);
-    }
-
-    // WebTable row limiters
-
-    public static WebTableRowContextLimiter selectWebTableRow(@NotNull String fromTable,
-                                                              @NotNull WebTableFilterBuilder rowFilter) {
-        return WebTableRowContextLimiter.of(fromTable, rowFilter, intEquals(1));
-    }
-
-    public static WebTableRowContextLimiter selectWebTableRows(@NotNull String fromTable,
-                                                               @NotNull WebTableFilterBuilder rowFilter,
-                                                               int expectedSize) {
-        return WebTableRowContextLimiter.of(fromTable, rowFilter, intEquals(expectedSize));
-    }
-
-    public static WebTableRowContextLimiter selectWebTableRows(@NotNull String fromTable,
-                                                               @NotNull WebTableFilterBuilder rowFilter,
-                                                               @NotNull NumberValue<Integer> expectedSize) {
-        return WebTableRowContextLimiter.of(fromTable, rowFilter, expectedSize);
-    }
-
-    // WebTable cell limiters
-
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCell(@NotNull WebTable fromTable,
-                                                                                        @NotNull String fromColumn,
-                                                                                        @NotNull WebTableFilterBuilder rowFilter) {
-        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(1));
-    }
-
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCell(@NotNull String fromTable,
-                                                                                        @NotNull String fromColumn,
-                                                                                        @NotNull WebTableFilterBuilder rowFilter) {
-        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(1));
-    }
-
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull WebTable fromTable,
-                                                                                         @NotNull String fromColumn,
-                                                                                         @NotNull WebTableFilterBuilder rowFilter,
-                                                                                         int expectedSize) {
-        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(expectedSize));
-    }
-
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull WebTable fromTable,
-                                                                                         @NotNull String fromColumn,
-                                                                                         @NotNull WebTableFilterBuilder rowFilter,
-                                                                                         @NotNull NumberValue<Integer> expectedSize) {
-        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, expectedSize);
-    }
-
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull String fromTable,
-                                                                                         @NotNull String fromColumn,
-                                                                                         @NotNull WebTableFilterBuilder rowFilter,
-                                                                                         int expectedSize) {
-        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, intEquals(expectedSize));
-    }
-
-    public static <T extends WebBlock> WebTableCellContextLimiter<T> selectWebTableCells(@NotNull String fromTable,
-                                                                                         @NotNull String fromColumn,
-                                                                                         @NotNull WebTableFilterBuilder rowFilter,
-                                                                                         @NotNull NumberValue<Integer> expectedSize) {
-        return WebTableCellContextLimiter.of(fromTable, fromColumn, rowFilter, expectedSize);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1874,100 +1276,103 @@ public class Web {
 
     // WebList
 
-    public static WebListBlockIndexExtractor blockIndex() {
-        return new WebListBlockIndexExtractor();
+    public static <T extends WebBlock> WebBlockIndexExtractor<T> blockIndex() {
+        return new WebBlockIndexExtractor<>();
     }
 
-    public static WebListBlockExtractor<WebBlock> block() {
-        return new WebListBlockExtractor<>(WebBlock.class);
+    public static <T extends WebBlock> WebBlockExtractor<WebBlock, T> block() {
+        return new WebBlockExtractor<>(WebBlock.class);
     }
 
-    public static <T extends WebBlock> WebListBlockExtractor<T> block(@NotNull Class<T> blockClass) {
-        return new WebListBlockExtractor<>(blockClass);
+    public static <R extends WebBlock, T extends WebBlock> WebBlockExtractor<R, T> block(@NotNull Class<R> blockClass) {
+        return new WebBlockExtractor<>(blockClass);
     }
 
-    public static <T extends WebChildElement> WebListBlockElementExtractor<T> element(@NotNull T elementFrame) {
-        return new WebListBlockElementExtractor<>(elementFrame);
+    public static <R extends WebChildElement, T extends WebBlock> WebBlockElementExtractor<R, T> element(@NotNull R elementFrame) {
+        return new WebBlockElementExtractor<>(elementFrame);
     }
 
-    public static <T extends WebChildElement> WebListBlockElementExtractor<T> element(@NotNull String elementPath, @NotNull Class<T> returnType) {
-        return new WebListBlockElementExtractor<>(elementPath, returnType);
+    public static <R extends WebChildElement, T extends WebBlock> WebBlockElementExtractor<R, T> element(@NotNull String elementPath,
+                                                                                                         @NotNull Class<R> returnType) {
+        return new WebBlockElementExtractor<>(elementPath, returnType);
     }
 
-    public static WebListBlockElementDisplayedMarkExtractor displayedMark(@NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebListBlockElementDisplayedMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebBlockElementDisplayedMarkExtractor<T> displayedMark(@NotNull WebIsDisplayedAvailable elementFrame) {
+        return new WebBlockElementDisplayedMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementDisplayedMarkExtractor displayedMark(@NotNull String elementPath) {
-        return new WebListBlockElementDisplayedMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebBlockElementDisplayedMarkExtractor<T> displayedMark(@NotNull String elementPath) {
+        return new WebBlockElementDisplayedMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementPresentMarkExtractor presentMark(@NotNull WebIsPresentAvailable elementFrame) {
-        return new WebListBlockElementPresentMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebBlockElementPresentMarkExtractor<T> presentMark(@NotNull WebIsPresentAvailable elementFrame) {
+        return new WebBlockElementPresentMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementPresentMarkExtractor presentMark(@NotNull String elementPath) {
-        return new WebListBlockElementPresentMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebBlockElementPresentMarkExtractor<T> presentMark(@NotNull String elementPath) {
+        return new WebBlockElementPresentMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementEnabledMarkExtractor enabledMark(@NotNull WebIsEnabledAvailable elementFrame) {
-        return new WebListBlockElementEnabledMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebBlockElementEnabledMarkExtractor<T> enabledMark(@NotNull WebIsEnabledAvailable elementFrame) {
+        return new WebBlockElementEnabledMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementEnabledMarkExtractor enabledMark(@NotNull String elementPath) {
-        return new WebListBlockElementEnabledMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebBlockElementEnabledMarkExtractor<T> enabledMark(@NotNull String elementPath) {
+        return new WebBlockElementEnabledMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementSelectedMarkExtractor selectedMark(@NotNull WebIsSelectedAvailable elementFrame) {
-        return new WebListBlockElementSelectedMarkExtractor(elementFrame);
+    public static <T extends WebBlock> WebBlockElementSelectedMarkExtractor<T> selectedMark(@NotNull WebIsSelectedAvailable elementFrame) {
+        return new WebBlockElementSelectedMarkExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementSelectedMarkExtractor selectedMark(@NotNull String elementPath) {
-        return new WebListBlockElementSelectedMarkExtractor(elementPath);
+    public static <T extends WebBlock> WebBlockElementSelectedMarkExtractor<T> selectedMark(@NotNull String elementPath) {
+        return new WebBlockElementSelectedMarkExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementTextValueExtractor textValue(@NotNull WebGetTextAvailable elementFrame) {
-        return new WebListBlockElementTextValueExtractor(elementFrame);
+    public static <T extends WebBlock> WebBlockElementTextValueExtractor<T> textValue(@NotNull WebGetTextAvailable elementFrame) {
+        return new WebBlockElementTextValueExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementTextValueExtractor textValue(@NotNull String elementPath) {
-        return new WebListBlockElementTextValueExtractor(elementPath);
+    public static <T extends WebBlock> WebBlockElementTextValueExtractor<T> textValue(@NotNull String elementPath) {
+        return new WebBlockElementTextValueExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementLabelValueExtractor labelValue(@NotNull WebGetLabelAvailable elementFrame) {
-        return new WebListBlockElementLabelValueExtractor(elementFrame);
+    public static <T extends WebBlock> WebBlockElementLabelValueExtractor<T> labelValue(@NotNull WebGetLabelAvailable elementFrame) {
+        return new WebBlockElementLabelValueExtractor<>(elementFrame);
     }
 
-    public static WebListBlockElementLabelValueExtractor labelValue(@NotNull String elementPath) {
-        return new WebListBlockElementLabelValueExtractor(elementPath);
+    public static <T extends WebBlock> WebBlockElementLabelValueExtractor<T> labelValue(@NotNull String elementPath) {
+        return new WebBlockElementLabelValueExtractor<>(elementPath);
     }
 
-    public static WebListBlockElementPropertyValueExtractor propertyValue(@NotNull WebChildElement elementFrame, @NotNull String propertyName) {
-        return new WebListBlockElementPropertyValueExtractor(elementFrame, propertyName);
+    public static <T extends WebBlock> WebBlockElementPropertyValueExtractor<T> propertyValue(@NotNull WebChildElement elementFrame,
+                                                                                              @NotNull String propertyName) {
+        return new WebBlockElementPropertyValueExtractor<>(elementFrame, propertyName);
     }
 
-    public static WebListBlockElementPropertyValueExtractor propertyValue(@NotNull String elementPath, @NotNull String propertyName) {
-        return new WebListBlockElementPropertyValueExtractor(elementPath, propertyName);
+    public static <T extends WebBlock> WebBlockElementPropertyValueExtractor<T> propertyValue(@NotNull String elementPath,
+                                                                                              @NotNull String propertyName) {
+        return new WebBlockElementPropertyValueExtractor<>(elementPath, propertyName);
     }
 
-    public static WebListBlockElementComponentDisplayedMarkExtractor componentDisplayedMark(@NotNull WebComponentAvailable elementFrame,
-                                                                                            @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedMarkExtractor(elementFrame, componentName);
+    public static <T extends WebBlock> WebBlockElementComponentDisplayedMarkExtractor<T> componentDisplayedMark(@NotNull WebComponentAvailable elementFrame,
+                                                                                                                @NotNull String componentName) {
+        return new WebBlockElementComponentDisplayedMarkExtractor<>(elementFrame, componentName);
     }
 
-    public static WebListBlockElementComponentDisplayedMarkExtractor componentDisplayedMark(@NotNull String elementPath,
-                                                                                            @NotNull String componentName) {
-        return new WebListBlockElementComponentDisplayedMarkExtractor(elementPath, componentName);
+    public static <T extends WebBlock> WebBlockElementComponentDisplayedMarkExtractor<T> componentDisplayedMark(@NotNull String elementPath,
+                                                                                                                @NotNull String componentName) {
+        return new WebBlockElementComponentDisplayedMarkExtractor<>(elementPath, componentName);
     }
 
-    public static WebListBlockElementComponentPresentMarkExtractor componentPresentMark(@NotNull WebComponentAvailable elementFrame,
-                                                                                        @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentMarkExtractor(elementFrame, componentName);
+    public static <T extends WebBlock> WebBlockElementComponentPresentMarkExtractor<T> componentPresentMark(@NotNull WebComponentAvailable elementFrame,
+                                                                                                            @NotNull String componentName) {
+        return new WebBlockElementComponentPresentMarkExtractor<>(elementFrame, componentName);
     }
 
-    public static WebListBlockElementComponentPresentMarkExtractor componentPresentMark(@NotNull String elementPath,
-                                                                                        @NotNull String componentName) {
-        return new WebListBlockElementComponentPresentMarkExtractor(elementPath, componentName);
+    public static <T extends WebBlock> WebBlockElementComponentPresentMarkExtractor<T> componentPresentMark(@NotNull String elementPath,
+                                                                                                            @NotNull String componentName) {
+        return new WebBlockElementComponentPresentMarkExtractor<>(elementPath, componentName);
     }
 
     // WebTextList
@@ -1976,160 +1381,12 @@ public class Web {
         return new WebTextListBlockIndexExtractor();
     }
 
-    public static WebTextListBlockExtractor textBlock() {
-        return new WebTextListBlockExtractor();
-    }
-
     public static WebTextListBlockElementExtractor textBlockElement() {
         return new WebTextListBlockElementExtractor();
     }
 
     public static WebTextListBlockTextValueExtractor textBlockValue() {
         return new WebTextListBlockTextValueExtractor();
-    }
-
-    // WebTable
-
-    public static WebTableRowIndexExtractor rowIndex() {
-        return new WebTableRowIndexExtractor();
-    }
-
-    public static WebTableRowExtractor row() {
-        return new WebTableRowExtractor();
-    }
-
-    public static WebTableCellExtractor<WebBlock> cell(@NotNull String columnName) {
-        return new WebTableCellExtractor<>(columnName, WebBlock.class);
-    }
-
-    public static <T extends WebBlock> WebTableCellExtractor<T> cell(@NotNull String columnName,
-                                                                     @NotNull Class<T> cellClass) {
-        return new WebTableCellExtractor<>(columnName, cellClass);
-    }
-
-    public static <T extends WebChildElement> WebTableCellElementExtractor<T> element(@NotNull String columnName,
-                                                                                      @NotNull T elementFrame) {
-        return new WebTableCellElementExtractor<>(columnName, elementFrame);
-    }
-
-    public static <T extends WebChildElement> WebTableCellElementExtractor<T> element(@NotNull String columnName,
-                                                                                      @NotNull String elementPath,
-                                                                                      @NotNull Class<T> returnType) {
-        return new WebTableCellElementExtractor<>(columnName, elementPath, returnType);
-    }
-
-    public static WebTableCellElementDisplayedMarkExtractor displayedMark(@NotNull String columnName,
-                                                                          @NotNull WebIsDisplayedAvailable elementFrame) {
-        return new WebTableCellElementDisplayedMarkExtractor(columnName, elementFrame);
-    }
-
-    public static WebTableCellElementDisplayedMarkExtractor displayedMark(@NotNull String columnName,
-                                                                          @NotNull String elementPath) {
-        return new WebTableCellElementDisplayedMarkExtractor(columnName, elementPath);
-    }
-
-    public static WebTableCellElementPresentMarkExtractor presentMark(@NotNull String columnName,
-                                                                      @NotNull WebIsPresentAvailable elementFrame) {
-        return new WebTableCellElementPresentMarkExtractor(columnName, elementFrame);
-    }
-
-    public static WebTableCellElementPresentMarkExtractor presentMark(@NotNull String columnName,
-                                                                      @NotNull String elementPath) {
-        return new WebTableCellElementPresentMarkExtractor(columnName, elementPath);
-    }
-
-    public static WebTableCellElementEnabledMarkExtractor enabledMark(@NotNull String columnName,
-                                                                      @NotNull WebIsEnabledAvailable elementFrame) {
-        return new WebTableCellElementEnabledMarkExtractor(columnName, elementFrame);
-    }
-
-    public static WebTableCellElementEnabledMarkExtractor enabledMark(@NotNull String columnName,
-                                                                      @NotNull String elementPath) {
-        return new WebTableCellElementEnabledMarkExtractor(columnName, elementPath);
-    }
-
-    public static WebTableCellElementSelectedMarkExtractor selectedMark(@NotNull String columnName,
-                                                                        @NotNull WebIsSelectedAvailable elementFrame) {
-        return new WebTableCellElementSelectedMarkExtractor(columnName, elementFrame);
-    }
-
-    public static WebTableCellElementSelectedMarkExtractor selectedMark(@NotNull String columnName,
-                                                                        @NotNull String elementPath) {
-        return new WebTableCellElementSelectedMarkExtractor(columnName, elementPath);
-    }
-
-    public static WebTableCellElementTextValueExtractor textValue(@NotNull String columnName,
-                                                                  @NotNull WebGetTextAvailable elementFrame) {
-        return new WebTableCellElementTextValueExtractor(columnName, elementFrame);
-    }
-
-    public static WebTableCellElementTextValueExtractor textValue(@NotNull String columnName,
-                                                                  @NotNull String elementPath) {
-        return new WebTableCellElementTextValueExtractor(columnName, elementPath);
-    }
-
-    public static WebTableCellElementLabelValueExtractor labelValue(@NotNull String columnName,
-                                                                    @NotNull WebGetLabelAvailable elementFrame) {
-        return new WebTableCellElementLabelValueExtractor(columnName, elementFrame);
-    }
-
-    public static WebTableCellElementLabelValueExtractor labelValue(@NotNull String columnName,
-                                                                    @NotNull String elementPath) {
-        return new WebTableCellElementLabelValueExtractor(columnName, elementPath);
-    }
-
-    public static WebTableCellElementPropertyValueExtractor propertyValue(@NotNull String columnName,
-                                                                          @NotNull WebChildElement elementFrame,
-                                                                          @NotNull String propertyName) {
-        return new WebTableCellElementPropertyValueExtractor(columnName, elementFrame, propertyName);
-    }
-
-    public static WebTableCellElementPropertyValueExtractor propertyValue(@NotNull String columnName,
-                                                                          @NotNull String elementPath,
-                                                                          @NotNull String propertyName) {
-        return new WebTableCellElementPropertyValueExtractor(columnName, elementPath, propertyName);
-    }
-
-    public static WebTableCellElementComponentDisplayedMarkExtractor componentDisplayedMark(@NotNull String columnName,
-                                                                                            @NotNull WebChildElement elementMock,
-                                                                                            @NotNull String componentName) {
-        return new WebTableCellElementComponentDisplayedMarkExtractor(columnName, elementMock, componentName);
-    }
-
-    public static WebTableCellElementComponentDisplayedMarkExtractor componentDisplayedMark(@NotNull String columnName,
-                                                                                            @NotNull String elementName,
-                                                                                            @NotNull String componentName) {
-        return new WebTableCellElementComponentDisplayedMarkExtractor(columnName, elementName, componentName);
-    }
-
-    public static WebTableCellElementComponentPresentMarkExtractor componentPresentMark(@NotNull String columnName,
-                                                                                        @NotNull WebChildElement elementMock,
-                                                                                        @NotNull String componentName) {
-        return new WebTableCellElementComponentPresentMarkExtractor(columnName, elementMock, componentName);
-    }
-
-    public static WebTableCellElementComponentPresentMarkExtractor componentPresentMark(@NotNull String columnName,
-                                                                                        @NotNull String elementName,
-                                                                                        @NotNull String componentName) {
-        return new WebTableCellElementComponentPresentMarkExtractor(columnName, elementName, componentName);
-    }
-
-    // WebTextTable
-
-    public static WebTextTableRowIndexExtractor textRowIndex() {
-        return new WebTextTableRowIndexExtractor();
-    }
-
-    public static WebTextTableRowExtractor textRow() {
-        return new WebTextTableRowExtractor();
-    }
-
-    public static WebTextTableCellElementExtractor textRowElement(@NotNull String columnName) {
-        return new WebTextTableCellElementExtractor(columnName);
-    }
-
-    public static WebTextTableCellTextValueExtractor textCellValue(@NotNull String columnName) {
-        return new WebTextTableCellTextValueExtractor(columnName);
     }
 
 }

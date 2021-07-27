@@ -13,9 +13,24 @@ import static io.perfeccionista.framework.value.Values.intEquals;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Tag("WebElement") @Tag("WebRadioGroup")
 class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
+
+    @Test
+    void webRadioGroupFilterSizeTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select(stringEquals("Elements"));
+
+        ElementsPage elementsPage = context.getPage(ElementsPage.class);
+        WebRadioGroup radioGroup = elementsPage.radioGroup()
+                .should(beDisplayed());
+
+        assertEquals(2, radioGroup.filter(radioButtonIndex(intGreaterThanOrEqual(1))).size());
+        assertEquals(1, radioGroup.filterBuilder(without(radioButtonIndex(intGreaterThanOrEqual(1)))).size());
+    }
 
     @Test
     void webRadioGroupFilterEmptyConditionTest() {
@@ -27,9 +42,9 @@ class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
         var radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());
 
-        radioGroup.filter(emptyWebRadioButtonFilter())
+        radioGroup.filterBuilder(emptyWebRadioButtonFilter())
                 .should(haveSize(3));
-        radioGroup.filter(emptyWebRadioButtonFilter().subtract(allRadioButtons()))
+        radioGroup.filterBuilder(emptyWebRadioButtonFilter().subtract(allRadioButtons()))
                 .should(haveSize(intEquals(0)));
     }
 
@@ -43,9 +58,9 @@ class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
         WebRadioGroup radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());
 
-        radioGroup.filter(with(radioButtonIndex(intGreaterThanOrEqual(1))))
+        radioGroup.filter(radioButtonIndex(intGreaterThanOrEqual(1)))
                 .should(haveSize(2));
-        radioGroup.filter(without(radioButtonIndex(intGreaterThanOrEqual(1))))
+        radioGroup.filterBuilder(without(radioButtonIndex(intGreaterThanOrEqual(1))))
                 .should(haveSize(intEquals(1)));
     }
 
@@ -60,14 +75,14 @@ class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        radioGroup.filter(with(selected()))
+        radioGroup.filter(selected())
                 .should(haveSize(1));
-        radioGroup.filter(with(notSelected()))
+        radioGroup.filter(notSelected())
                 .should(haveSize(2));
 
-        radioGroup.filter(without(selected()))
+        radioGroup.filterBuilder(without(selected()))
                 .should(haveSize(intEquals(2)));
-        radioGroup.filter(without(notSelected()))
+        radioGroup.filterBuilder(without(notSelected()))
                 .should(haveSize(intEquals(1)));
     }
 
@@ -82,22 +97,22 @@ class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        radioGroup.filter(with(containsLabel("Label 3")))
+        radioGroup.filter(containsLabel("Label 3"))
                 .should(haveSize(1));
-        radioGroup.filter(with(containsLabel(stringStartsWith("Label"))))
+        radioGroup.filter(containsLabel(stringStartsWith("Label")))
                 .should(haveSize(3));
-        radioGroup.filter(with(notContainLabel("Label 3")))
+        radioGroup.filter(notContainLabel("Label 3"))
                 .should(haveSize(2));
-        radioGroup.filter(with(notContainLabel(stringStartsWith("Label"))))
+        radioGroup.filter(notContainLabel(stringStartsWith("Label")))
                 .should(haveSize(0));
 
-        radioGroup.filter(without(containsLabel(stringEquals("Label 3"))))
+        radioGroup.filterBuilder(without(containsLabel(stringEquals("Label 3"))))
                 .should(haveSize(intEquals(2)));
-        radioGroup.filter(without(containsLabel(stringStartsWith("Label"))))
+        radioGroup.filterBuilder(without(containsLabel(stringStartsWith("Label"))))
                 .should(haveSize(intEquals(0)));
-        radioGroup.filter(without(notContainLabel(stringEquals("Label 3"))))
+        radioGroup.filterBuilder(without(notContainLabel(stringEquals("Label 3"))))
                 .should(haveSize(intEquals(1)));
-        radioGroup.filter(without(notContainLabel(stringStartsWith("Label"))))
+        radioGroup.filterBuilder(without(notContainLabel(stringStartsWith("Label"))))
                 .should(haveSize(intEquals(3)));
     }
 
@@ -112,14 +127,14 @@ class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        radioGroup.filter(with(enabled()))
+        radioGroup.filter(enabled())
                 .should(haveSize(2));
-        radioGroup.filter(with(disabled()))
+        radioGroup.filter(disabled())
                 .should(haveSize(1));
 
-        radioGroup.filter(without(enabled()))
+        radioGroup.filterBuilder(without(enabled()))
                 .should(haveSize(1));
-        radioGroup.filter(without(disabled()))
+        radioGroup.filterBuilder(without(disabled()))
                 .should(haveSize(2));
     }
 

@@ -21,4 +21,6 @@ public interface Checker<T> {
 
     @NotNull String getComparisonDescription();
 
+    @NotNull String getShortComparisonDescription();
+
 }

@@ -4,10 +4,8 @@ import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebText;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebItemLocator;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
-
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
 
 public interface ContinentBlock extends WebBlock {
 
@@ -24,8 +22,7 @@ public interface ContinentBlock extends WebBlock {
     @Name("List of countries")
     @Name("Список стран")
     @WebLocator(xpath = "self::node()//div[@itemid = 'countries-list']")
-    @WebLocator(component = LI, xpath = ".//div[@itemid = 'countries-list-item']", single = false)
-    @UseMappedWebBlock(CountryBlock.class)
-    WebList countriesList();
+    @WebItemLocator(xpath = ".//div[@itemid = 'countries-list-item']")
+    WebList<CountryBlock> countriesList();
 
 }

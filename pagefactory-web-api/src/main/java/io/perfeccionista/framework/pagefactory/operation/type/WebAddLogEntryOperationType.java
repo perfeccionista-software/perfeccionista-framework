@@ -19,10 +19,14 @@ public class WebAddLogEntryOperationType implements WebElementOperationType<Void
     private final Level logLevel;
     private final String message;
 
+    private final InvocationInfo invocationInfo;
+
     private WebAddLogEntryOperationType(WebPage page, Level logLevel, String message) {
         this.page = page;
         this.logLevel = logLevel;
         this.message = message;
+        var pageName = page.getPageIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(ADD_LOG_ENTRY_METHOD, pageName, logLevel.getName(), message);
     }
 
     public static WebAddLogEntryOperationType of(@NotNull WebPage page, @NotNull Level logLevel, @NotNull String message) {
@@ -31,7 +35,7 @@ public class WebAddLogEntryOperationType implements WebElementOperationType<Void
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(ADD_LOG_ENTRY_METHOD, page, logLevel, message);
+        return invocationInfo;
     }
 
     @Override

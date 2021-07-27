@@ -31,9 +31,10 @@ public class WebShouldHaveDimensionsMatcher implements WebGetElementBoundsAvaila
 
     @Override
     public void check(@NotNull WebGetElementBoundsAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions)
-                : assertInvocation(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, element, componentName, expectedDimensions);
+                ? assertInvocation(SHOULD_HAVE_DIMENSIONS_METHOD, elementName, componentName, expectedDimensions.toString())
+                : assertInvocation(SHOULD_NOT_HAVE_DIMENSIONS_METHOD, elementName, componentName, expectedDimensions.toString());
 
         runCheck(invocationName,
                 () -> {

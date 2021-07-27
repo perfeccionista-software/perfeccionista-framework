@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
+import io.perfeccionista.framework.matcher.element.WebListMatcher;
 import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
@@ -14,77 +15,81 @@ import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMa
 import io.perfeccionista.framework.matcher.element.WebTableMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
-import io.perfeccionista.framework.measurements.HorizontalDirection;
-import io.perfeccionista.framework.measurements.VerticalDirection;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
-import io.perfeccionista.framework.pagefactory.elements.methods.WebElementContainer;
-import io.perfeccionista.framework.pagefactory.extractor.table.WebTableValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.table.condition.WebTableRowCondition;
-import io.perfeccionista.framework.result.WebMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilterBuilder;
-import io.perfeccionista.framework.result.WebSingleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.table.WebTableFilter;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilter;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-// TODO: Map<String, SingleResult<T>> extractHeader(Map<String, WebTableCellValueExtractor<V>> columnExtractors);
-// TODO: Map<String, MultipleResult<T>> extractAll(Map<String, WebTableCellValueExtractor<V>> columnExtractors);
-// TODO: Map<String, SingleResult<T>> extractFooter(Map<String, WebTableCellValueExtractor<V>> columnExtractors);
-public interface WebTable extends WebChildElement, WebElementContainer<WebTableFilter, WebTableFilterBuilder> {
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+public interface WebTable<H extends WebBlock, T extends WebBlock> extends WebList<T> {
 
     @API(status = Status.MAINTAINED)
-    @NotNull WebTableFrame<WebBlock> getWebTableFrame();
-
-    // Extractor
-    @NotNull <V> WebSingleIndexedResult<V, WebTable> extractHeader(@NotNull WebTableValueExtractor<V> extractor);
-    @NotNull <V> WebMultipleIndexedResult<V, WebTable> extractRows(@NotNull WebTableValueExtractor<V> extractor);
-    @NotNull <V> WebSingleIndexedResult<V, WebTable> extractFooter(@NotNull WebTableValueExtractor<V> extractor);
+    @NotNull H header();
 
     // Filter
     @Override
-    @NotNull WebTableFilter filter(@NotNull WebTableFilterBuilder filterBuilder);
-    @NotNull WebTableFilter filter(@NotNull WebTableRowCondition filterCondition);
+    @NotNull WebBlockFilter<T> filterBuilder(@NotNull WebBlockFilterBuilder<T> filterBuilder);
+    @Override
+    @NotNull WebBlockFilter<T> filterBuilder(@NotNull Function<T, ? extends WebBlockFilterBuilder<T>> filterBuilderFunction);
+    @Override
+    @NotNull WebBlockFilter<T> filter(@NotNull WebBlockCondition<T> filterCondition);
+    @Override
+    @NotNull WebBlockFilter<T> filter(@NotNull Function<T, ? extends WebBlockCondition<T>> filterConditionFunction);
+
+    // Checks
+    @Override
+    WebTable<H, T> forEach(@NotNull Consumer<T> tableRowConsumer);
+    @Override
+    WebTable<H, T> forFirst(@NotNull Consumer<T> tableRowConsumer);
+    @Override
+    WebTable<H, T> forLast(@NotNull Consumer<T> tableRowConsumer);
 
     // Actions
     @Override
-    WebTable executeAction(@NotNull String name, Object... args);
+    WebTable<H, T> executeAction(@NotNull String name, Object... args);
 
     // Asserts
-    WebTable should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
-    WebTable should(@NotNull WebTableMatcher matcher);
-    WebTable should(@NotNull WebIndexesMatcher matcher);
+    WebTable<H, T> should(@NotNull WebTableMatcher matcher);
     @Override
-    WebTable should(@NotNull WebChildElementMatcher matcher);
+    WebTable<H, T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
     @Override
-    WebTable should(@NotNull WebGetColorAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebListMatcher matcher);
     @Override
-    WebTable should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebIndexesMatcher matcher);
     @Override
-    WebTable should(@NotNull WebGetScreenshotAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebTable should(@NotNull WebIsDisplayedAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebTable should(@NotNull WebIsInFocusAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebTable should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebTable should(@NotNull WebIsPresentAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebTable should(@NotNull WebComponentAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebTable should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebTable should(@NotNull WebElementStateAvailableMatcher matcher);
+    WebTable<H, T> should(@NotNull WebIsPresentAvailableMatcher matcher);
+    @Override
+    WebTable<H, T> should(@NotNull WebComponentAvailableMatcher matcher);
+    @Override
+    WebTable<H, T> should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    @Override
+    WebTable<H, T> should(@NotNull WebElementStateAvailableMatcher matcher);
 
     // HoverTo
     @Override
-    WebTable hoverTo(boolean withOutOfBounds);
+    WebTable<H, T> hoverTo(boolean withOutOfBounds);
 
     // ScrollTo
     @Override
-    WebTable scrollTo();
+    WebTable<H, T> scrollTo();
 //    WebTable scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebTableFilterBuilder filterBuilder);
 //    WebTable scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebTableFilterBuilder filterBuilder);
 

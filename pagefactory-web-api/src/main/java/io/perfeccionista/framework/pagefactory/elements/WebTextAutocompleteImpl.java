@@ -19,22 +19,69 @@ import io.perfeccionista.framework.matcher.element.WebTextDropDownListMatcher;
 import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClearOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebReplaceTextOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebSendKeyEventsOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebTypeTextOperationType;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
+
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLEAR;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 
 public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements WebTextAutocomplete {
+
+    // Select
+
+    @Override
+    public WebTextAutocomplete select(@NotNull String text) {
+        super.select(text);
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete select(@NotNull StringValue text) {
+        super.select(text);
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete select(@NotNull WebTextBlockFilterBuilder filterBuilder) {
+        super.select(filterBuilder);
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete select(@NotNull WebTextBlockCondition filterCondition) {
+        super.select(filterCondition);
+        return this;
+    }
+
+    // Checks
+
+    @Override
+    public WebTextAutocomplete forEach(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forEach(textBlockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete forFirst(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forFirst(textBlockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebTextAutocomplete forLast(@NotNull Consumer<WebLink> textBlockConsumer) {
+        super.forLast(textBlockConsumer);
+        return this;
+    }
 
     // Actions
 
@@ -157,12 +204,6 @@ public class WebTextAutocompleteImpl extends WebTextDropDownListImpl implements 
     @Override
     public WebTextAutocomplete should(@NotNull WebDropDownAvailableMatcher matcher) {
         super.should(matcher);
-        return this;
-    }
-
-    @Override
-    public WebTextAutocomplete select(@NotNull WebTextListBlockCondition filterCondition) {
-        super.select(filterCondition);
         return this;
     }
 

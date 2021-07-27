@@ -2,8 +2,6 @@ package io.perfeccionista.framework.pagefactory.factory;
 
 import io.perfeccionista.framework.exceptions.ElementImplementationNotFound;
 import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
-import io.perfeccionista.framework.pagefactory.elements.WebTableRow;
-import io.perfeccionista.framework.pagefactory.elements.WebTableRowImpl;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
@@ -64,15 +62,6 @@ public class WebElementInitializer {
         enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new WebParentElementInvocationHandler()});
         enhancer.setCallbackFilter(new WebParentElementCallbackFilter(webBlockImplementation));
         return (T) enhancer.create();
-    }
-
-    public @NotNull WebTableRow initWebTableRow() {
-        Class<? extends WebTableRowImpl> webTableRowImplementation = configuration.getWebTableRowImplementation();
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(webTableRowImplementation);
-        enhancer.setCallbacks(new Callback[] {NoOp.INSTANCE, new WebParentElementInvocationHandler()});
-        enhancer.setCallbackFilter(new WebParentElementCallbackFilter(webTableRowImplementation));
-        return (WebTableRow) enhancer.create();
     }
 
     public @NotNull WebChildElement initWebChildElement(@NotNull Class<? extends WebChildElement> webChildElementClass) {

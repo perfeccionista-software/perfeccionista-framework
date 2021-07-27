@@ -15,30 +15,44 @@ import io.perfeccionista.framework.matcher.element.WebTextListMatcher;
 import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebElementContainer;
 import io.perfeccionista.framework.pagefactory.extractor.textlist.WebTextListBlockValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.textlist.condition.WebTextListBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilter;
+import io.perfeccionista.framework.value.string.StringValue;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
-public interface WebTextList extends WebChildElement, WebElementContainer<WebTextListFilter, WebTextListFilterBuilder> {
+import java.util.function.Consumer;
+
+public interface WebTextList extends WebChildElement, WebElementContainer<WebTextBlockFilter, WebTextBlockFilterBuilder> {
 
     @API(status = Status.MAINTAINED)
-    @NotNull WebListFrame<DefaultWebTextBlock> getWebTextListFrame();
+    @NotNull WebBlockFrame<DefaultWebTextBlock> getBlockFrame();
+
+    // Select
+    WebTextList select(@NotNull String text);
+    WebTextList select(@NotNull StringValue text);
+    WebTextList select(@NotNull WebTextBlockFilterBuilder filterBuilder);
+    WebTextList select(@NotNull WebTextBlockCondition filterCondition);
 
     // Extractor
     @NotNull WebMultipleIndexedResult<String, WebTextList> extractAll();
-    @NotNull <V> WebMultipleIndexedResult<V, WebTextList> extractAll(@NotNull WebTextListBlockValueExtractor<V> extractor);
+    @NotNull <T> WebMultipleIndexedResult<T, WebTextList> extractAll(@NotNull WebTextListBlockValueExtractor<T> extractor);
 
     // Filter
     @Override
-    @NotNull WebTextListFilter filter(@NotNull WebTextListFilterBuilder filterBuilder);
-    @NotNull WebTextListFilter filter(@NotNull WebTextListBlockCondition filterCondition);
+    @NotNull WebTextBlockFilter filterBuilder(@NotNull WebTextBlockFilterBuilder filterBuilder);
+    @NotNull WebTextBlockFilter filter(@NotNull WebTextBlockCondition filterCondition);
+
+    // Checks
+    WebTextList forEach(@NotNull Consumer<WebLink> textBlockConsumer);
+    WebTextList forFirst(@NotNull Consumer<WebLink> textBlockConsumer);
+    WebTextList forLast(@NotNull Consumer<WebLink> textBlockConsumer);
 
     // Actions
     @Override
@@ -80,5 +94,8 @@ public interface WebTextList extends WebChildElement, WebElementContainer<WebTex
     WebTextList scrollTo();
 //    WebTextList scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebTextListFilterBuilder filterBuilder);
 //    WebTextList scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebTextListFilterBuilder filterBuilder);
+
+    // Size
+    int size();
 
 }

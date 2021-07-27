@@ -13,8 +13,8 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiM
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.ELEMENT_TEXT_CONTAINS_EXPECTED_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_TEXT_LABEL_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_TEXT_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_NUMBER_LABEL_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD;
 
 public class WebShouldHaveLabelNumberValueMatcher implements WebGetLabelAvailableMatcher {
 
@@ -28,9 +28,10 @@ public class WebShouldHaveLabelNumberValueMatcher implements WebGetLabelAvailabl
 
     @Override
     public void check(@NotNull WebGetLabelAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue)
-                : assertInvocation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, this, expectedNumberValue);
+                ? assertInvocation(SHOULD_HAVE_NUMBER_LABEL_METHOD, elementName, expectedNumberValue.getShortDescription())
+                : assertInvocation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, elementName, expectedNumberValue.getShortDescription());
 
         runCheck(invocationName,
                 () -> {

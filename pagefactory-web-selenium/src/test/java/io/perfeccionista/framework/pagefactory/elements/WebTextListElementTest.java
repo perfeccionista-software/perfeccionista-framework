@@ -79,7 +79,7 @@ class WebTextListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(textList.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("textList", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("textList", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Simple list of countries", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Simple list of countries")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Simple list of countries")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
@@ -119,8 +119,9 @@ class WebTextListElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(Dimensions2D.of(795.0d, 9508.0d).setInaccuracy(0.2d), textList.getElementBounds().getDimensions()),
                 () -> assertEquals(Point2D.of(345d, 281d).setInaccuracy(0.2d), textList.getElementBounds().getAbsoluteLocation()),
                 () -> assertEquals(Color.of(33, 37, 41, 1.0d), textList.getColor("border-color")),
-                () -> assertEquals(195, textList.filter(emptyWebTextListFilter()).extractAll().getSize()),
-                () -> assertEquals(Point2D.of(742.5d, 439d).setInaccuracy(0.2d), textList.getElementBounds().getCenter())
+                () -> assertEquals(195, textList.filterBuilder(emptyWebTextBlockFilter()).extractAll().getSize()),
+                () -> assertEquals(Point2D.of(757.5d, 439d).setInaccuracy(0.2d), textList.getElementBounds().getCenter()),
+                () -> assertEquals(195, textList.size())
         );
     }
 

@@ -5,6 +5,7 @@ import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementIsDisplayed;
 import io.perfeccionista.framework.exceptions.ElementNotDisplayed;
+import io.perfeccionista.framework.exceptions.attachments.WebElementOperationAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.js.JsElementSearch;
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
@@ -34,25 +35,27 @@ public class WebShouldBeDisplayedMatcher implements WebIsDisplayedAvailableMatch
 
     @Override
     public void check(@NotNull WebChildElement element) {
-        InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_BE_DISPLAYED_METHOD, element)
-                : assertInvocation(SHOULD_NOT_BE_DISPLAYED_METHOD, element);
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = positive
+                ? assertInvocation(SHOULD_BE_DISPLAYED_METHOD, elementName)
+                : assertInvocation(SHOULD_NOT_BE_DISPLAYED_METHOD, elementName);
 
-        runCheck(invocationName,
+        runCheck(invocationInfo,
                 () -> {
                     if (positive) {
-                        shouldBeDisplayed(element);
+                        shouldBeDisplayed(element, invocationInfo);
                     } else {
-                        shouldNotBeDisplayed(element);
+                        shouldNotBeDisplayed(element, invocationInfo);
                     }
                 });
     }
 
-    protected void shouldBeDisplayed(WebChildElement element) {
+    protected void shouldBeDisplayed(WebChildElement element, InvocationInfo invocationInfo) {
         WebGetIsDisplayedOperationType operationType = WebGetIsDisplayedOperationType.of(element);
         WebElementOperation<Boolean> operation = WebElementIsDisplayedOperationHandler.of(element, operationType, DISPLAYED)
                 .getOperation()
                 .withPageSource();
+        invocationInfo.setMainAttachmentEntry(WebElementOperationAttachmentEntry.of(operation));
         WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeWebElementOperation(operation);
         operationResult.ifException((exceptionMapper, originalException) -> {
             PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
@@ -74,11 +77,12 @@ public class WebShouldBeDisplayedMatcher implements WebIsDisplayedAvailableMatch
         }
     }
 
-    protected void shouldNotBeDisplayed(WebChildElement element) {
+    protected void shouldNotBeDisplayed(WebChildElement element, InvocationInfo invocationInfo) {
         WebGetIsDisplayedOperationType operationType = WebGetIsDisplayedOperationType.of(element);
         WebElementOperation<Boolean> operation = WebElementIsDisplayedOperationHandler.of(element, operationType, DISPLAYED)
                 .getOperation()
                 .withPageSource();
+        invocationInfo.setMainAttachmentEntry(WebElementOperationAttachmentEntry.of(operation));
         WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeWebElementOperation(operation);
         operationResult.ifSuccess(successOperationResult -> {
             // Сюда мы попадем если элемент найден. При этом он может быть невидим для пользователя

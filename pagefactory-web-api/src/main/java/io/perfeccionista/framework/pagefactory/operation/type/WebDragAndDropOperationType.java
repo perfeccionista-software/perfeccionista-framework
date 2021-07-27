@@ -10,7 +10,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.DRAG_AND_DROP_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -19,9 +18,13 @@ public class WebDragAndDropOperationType implements WebElementOperationType<Void
     private final WebChildElement element;
     private final Point2D target;
 
+    private final InvocationInfo invocationInfo;
+
     private WebDragAndDropOperationType(WebChildElement element, Point2D target) {
         this.element = element;
         this.target = target;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(DRAG_AND_DROP_METHOD, elementName, target.toString());
     }
 
     public static WebDragAndDropOperationType of(@NotNull WebChildElement element, @NotNull Point2D target) {
@@ -30,7 +33,7 @@ public class WebDragAndDropOperationType implements WebElementOperationType<Void
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(DRAG_AND_DROP_METHOD, element, ROOT, target);
+        return this.invocationInfo;
     }
 
     @Override

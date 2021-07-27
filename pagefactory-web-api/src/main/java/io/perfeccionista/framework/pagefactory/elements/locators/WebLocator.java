@@ -23,6 +23,8 @@ import java.lang.annotation.Target;
 @Repeatable(WebLocators.class)
 public @interface WebLocator {
 
+    boolean selfNode() default false;
+
     String component() default ElementComponents.ROOT;
 
     @Language("selenium-id")
@@ -41,10 +43,10 @@ public @interface WebLocator {
     String text() default "";
     String containsText() default "";
 
-    boolean selfNode() default false;
     boolean single() default true;
     boolean strictSearch() default true;
-    boolean onlyWithinParent() default true;
+    boolean fromParent() default true;
+    boolean onlyWithinParent() default false;
     Class<? extends EndpointHandler<Void>>[] invokeOnCall() default {};
 
 }

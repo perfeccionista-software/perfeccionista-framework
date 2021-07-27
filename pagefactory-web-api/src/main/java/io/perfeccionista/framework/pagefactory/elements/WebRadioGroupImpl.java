@@ -33,7 +33,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
     protected WebRadioGroupFrame<DefaultWebRadioButtonBlock> webRadioGroupFrame;
 
     @Override
-    public @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getWebRadioGroupFrame() {
+    public @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getBlockFrame() {
         return webRadioGroupFrame;
     }
 
@@ -47,7 +47,7 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
     // Filter
 
     @Override
-    public @NotNull WebRadioGroupFilter filter(@NotNull WebRadioGroupFilterBuilder filterBuilder) {
+    public @NotNull WebRadioGroupFilter filterBuilder(@NotNull WebRadioGroupFilterBuilder filterBuilder) {
         return filterBuilder.build(this);
     }
 
@@ -190,6 +190,13 @@ public class WebRadioGroupImpl extends AbstractWebChildElement implements WebRad
     public WebRadioGroup scrollTo() {
         super.scrollTo();
         return this;
+    }
+
+    // Size
+
+    @Override
+    public int size() {
+        return extractAll(index()).getSize();
     }
 
     @Override

@@ -20,6 +20,7 @@ import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrap
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_SORTED_METHOD;
 
 public class MobileShouldHaveSortedResultMatcher<T> implements MobileMultipleIndexedResultMatcher<T> {
+
     private final Comparator<T> comparator;
 
     public MobileShouldHaveSortedResultMatcher(Comparator<T> comparator) {
@@ -28,7 +29,7 @@ public class MobileShouldHaveSortedResultMatcher<T> implements MobileMultipleInd
 
     @Override
     public void check(@NotNull MobileMultipleIndexedResult<T, ? extends MobileChildElement> result) {
-        InvocationInfo invocationName = assertInvocation(SHOULD_BE_SORTED_METHOD, this);
+        InvocationInfo invocationName = assertInvocation(SHOULD_BE_SORTED_METHOD, comparator.getClass().getCanonicalName());
 
         MobileChildElement element = result.getElement();
 

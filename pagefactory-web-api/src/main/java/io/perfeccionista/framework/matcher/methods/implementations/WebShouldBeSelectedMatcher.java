@@ -25,9 +25,10 @@ public class WebShouldBeSelectedMatcher implements WebIsSelectedAvailableMatcher
 
     @Override
     public void check(@NotNull WebIsSelectedAvailable element) {
+        var elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_BE_SELECTED_METHOD, element)
-                : assertInvocation(SHOULD_NOT_BE_SELECTED_METHOD, element);
+                ? assertInvocation(SHOULD_BE_SELECTED_METHOD, elementName)
+                : assertInvocation(SHOULD_NOT_BE_SELECTED_METHOD, elementName);
 
         runCheck(invocationName,
                 () -> {

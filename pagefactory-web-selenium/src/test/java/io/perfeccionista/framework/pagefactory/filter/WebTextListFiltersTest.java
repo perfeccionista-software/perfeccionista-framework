@@ -12,9 +12,24 @@ import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 import static io.perfeccionista.framework.value.Values.stringEquals;
 import static io.perfeccionista.framework.value.Values.stringStartsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Tag("WebElement") @Tag("WebTextList")
 class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
+
+    @Test
+    void webTextListFilterSizeTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select(stringEquals("Text List Elements"));
+
+        TextListElementsPage textListElementsPage = context.getPage(TextListElementsPage.class);
+        WebTextList textList = textListElementsPage.textList()
+                .should(beDisplayed());
+
+        assertEquals(95, textList.filter(textBlockIndex(intGreaterThanOrEqual(100))).size());
+        assertEquals(100, textList.filterBuilder(without(textBlockIndex(intGreaterThanOrEqual(100)))).size());
+    }
 
     @Test
     void webTextListFilterEmptyConditionTest() {
@@ -26,7 +41,7 @@ class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
 
-        textList.filter(emptyWebTextListFilter())
+        textList.filterBuilder(emptyWebTextBlockFilter())
                 .should(haveSize(195));
     }
 
@@ -40,9 +55,9 @@ class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
         WebTextList textList = textListElementsPage.textList()
                 .should(beDisplayed());
 
-        textList.filter(with(textBlockIndex(intGreaterThanOrEqual(100))))
+        textList.filter(textBlockIndex(intGreaterThanOrEqual(100)))
                 .should(haveSize(95));
-        textList.filter(without(textBlockIndex(intGreaterThanOrEqual(100))))
+        textList.filterBuilder(without(textBlockIndex(intGreaterThanOrEqual(100))))
                 .should(haveSize(100));
     }
 
@@ -57,22 +72,22 @@ class WebTextListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        textList.filter(with(containsTextBlock("Финляндия")))
+        textList.filter(containsTextBlock("Финляндия"))
                 .should(haveSize(1));
-        textList.filter(with(containsTextBlock(stringStartsWith("М"))))
+        textList.filter(containsTextBlock(stringStartsWith("М")))
                 .should(haveSize(17));
-        textList.filter(with(notContainTextBlock(stringEquals("Финляндия"))))
+        textList.filter(notContainTextBlock(stringEquals("Финляндия")))
                 .should(haveSize(194));
-        textList.filter(with(notContainTextBlock(stringStartsWith("М"))))
+        textList.filter(notContainTextBlock(stringStartsWith("М")))
                 .should(haveSize(178));
 
-        textList.filter(without(containsTextBlock("Финляндия")))
+        textList.filterBuilder(without(containsTextBlock("Финляндия")))
                 .should(haveSize(194));
-        textList.filter(without(containsTextBlock(stringStartsWith("М"))))
+        textList.filterBuilder(without(containsTextBlock(stringStartsWith("М"))))
                 .should(haveSize(178));
-        textList.filter(without(notContainTextBlock("Финляндия")))
+        textList.filterBuilder(without(notContainTextBlock("Финляндия")))
                 .should(haveSize(1));
-        textList.filter(without(notContainTextBlock(stringStartsWith("М"))))
+        textList.filterBuilder(without(notContainTextBlock(stringStartsWith("М"))))
                 .should(haveSize(17));
     }
 

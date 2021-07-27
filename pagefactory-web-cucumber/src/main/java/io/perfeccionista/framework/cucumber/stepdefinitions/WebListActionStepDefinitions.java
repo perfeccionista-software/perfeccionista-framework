@@ -3,12 +3,13 @@ package io.perfeccionista.framework.cucumber.stepdefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextDropDownList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebDropDownAvailable;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilterBuilder;
 
 import static io.perfeccionista.framework.Web.*;
 
@@ -44,17 +45,20 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
      * @param elementFinder -
      * @param itemFilter -
      */
+    @Дано("пользователь прокручивает таблицу {webElement} до строки, где")
+    @Given("user scrolls table {webElement} to row with")
     @Дано("пользователь прокручивает список {webElement} до блока, где")
     @Given("user scrolls the list {webElement} to block with")
     public void userScrollsListToElement(WebElementParameter<WebList> elementFinder,
-                                         WebListFilterBuilder itemFilter) {
-        getWebPageContext().execute(context ->
-                elementFinder.getElement(context, WebList.class)
-                        .filter(itemFilter)
-                        .extractOne(block())
-                        .should(haveNotNullResults())
-                        .getNotNullResult()
-                        .scrollTo());
+                                         WebBlockFilterBuilder<WebBlock> itemFilter) {
+        getWebPageContext().execute(context -> {
+            WebList<WebBlock> element = (WebList<WebBlock>) elementFinder.getElement(context, WebList.class);
+            element.filterBuilder(block -> itemFilter)
+                    .extractOne(block())
+                    .should(haveNotNullResults())
+                    .getNotNullResult()
+                    .scrollTo();
+        });
     }
 
     /**
@@ -65,12 +69,12 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
     @Дано("пользователь выбирает в текстовом списке {webElement} значение, где")
     @Given("user selects in text list {webElement} value with")
     public void userSelectsItemInTextList(WebElementParameter<WebTextDropDownList> elementFinder,
-                                          WebTextListFilterBuilder itemFilter) {
+                                          WebTextBlockFilterBuilder itemFilter) {
         getWebPageContext().execute(context -> {
             WebTextDropDownList element = elementFinder.getElement(context, WebTextDropDownList.class);
             element.open()
                     .should(beOpen());
-            element.filter(itemFilter)
+            element.filterBuilder(itemFilter)
                     .extractOne(textBlockElement())
                     .should(haveNotNullResults())
                     .getNotNullResult()
@@ -88,11 +92,11 @@ public class WebListActionStepDefinitions implements WebStepDefinitions {
     @Дано("пользователь прокручивает текстовый список {webElement} до значения, где")
     @Given("user scrolls the text list {webElement} to value with")
     public void userScrollsTextListToElement(WebElementParameter<WebTextList> elementFinder,
-                                             WebTextListFilterBuilder itemFilter) {
+                                             WebTextBlockFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebTextList.class)
-                        .filter(itemFilter)
-                        .extractOne(textBlock())
+                        .filterBuilder(itemFilter)
+                        .extractOne(textBlockElement())
                         .should(haveNotNullResults())
                         .getNotNullResult()
                         .scrollTo());

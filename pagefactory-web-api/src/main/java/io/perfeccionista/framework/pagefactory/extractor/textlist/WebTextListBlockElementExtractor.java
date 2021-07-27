@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import io.perfeccionista.framework.pagefactory.filter.FilterResult;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -14,10 +14,10 @@ import java.util.Map;
 public class WebTextListBlockElementExtractor implements WebTextListBlockValueExtractor<WebLink> {
 
     @Override
-    public Map<Integer, WebLink> extractValues(@NotNull WebTextListFilter filter) {
+    public Map<Integer, WebLink> extractValues(@NotNull WebTextBlockFilter filter) {
         FilterResult filterResult = filter.getFilterResult();
         WebTextList element = filter.getElement();
-        WebLink elementToExtractFrame = element.getWebTextListFrame().getMappedBlockFrame().textLink();
+        WebLink elementToExtractFrame = element.getBlockFrame().getMappedBlockFrame().textLink();
 
         Map<Integer, WebLink> extractedElements = new HashMap<>();
 

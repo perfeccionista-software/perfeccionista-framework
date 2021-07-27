@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.pagefactory.operation;
 
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebElementOperationAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.operation.type.WebElementOperationType;
@@ -47,9 +48,11 @@ public class WebElementOperationHandler<T> {
 
     public @NotNull T executeGetter() {
         WebElementOperation<T> operation = getOperation();
+        operationType.getInvocationName().setMainAttachmentEntry(WebElementOperationAttachmentEntry.of(operation));
         return element.getWebBrowserDispatcher()
                 .executor()
                 .executeWebElementOperation(operation)
+                // TODO: После доработки вывода OperationResult можно и его добавить в InvocationInfo
                 .ifException((exceptionMapper, originalException) -> {
                     throw exceptionMapper.mapElementException(element, originalException)
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(element));
@@ -59,9 +62,11 @@ public class WebElementOperationHandler<T> {
 
     public void executeAction() {
         WebElementOperation<T> operation = getOperation();
+        operationType.getInvocationName().setMainAttachmentEntry(WebElementOperationAttachmentEntry.of(operation));
         element.getWebBrowserDispatcher()
                 .executor()
                 .executeWebElementOperation(operation)
+                // TODO: После доработки вывода OperationResult можно и его добавить в InvocationInfo
                 .ifException((exceptionMapper, originalException) -> {
                     throw exceptionMapper.mapElementException(element, originalException)
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(element));

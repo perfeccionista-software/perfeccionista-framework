@@ -99,7 +99,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(checkboxOne.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("checkboxOne", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("checkboxOne", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Checkbox one", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Checkbox one")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Checkbox one")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
@@ -179,7 +179,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beSelected());
         checkboxText
                 .should(haveText(stringContainsAll("Label 1", "Label 2")));
-        assertEquals(Point2D.of(433.2d, 685.4d).setInaccuracy(0.2d), checkboxOne.getElementBounds().getCenter());
+        assertEquals(Point2D.of(448.0d, 685.4d).setInaccuracy(0.2d), checkboxOne.getElementBounds().getCenter());
     }
 
     @Test

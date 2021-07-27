@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.TYPE_TEXT_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -14,11 +15,15 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class MobileTypeTextOperationType implements MobileElementOperationType<Void> {
 
     private final MobileChildElementBase element;
-    private final String valueToInput;
+    private final String text;
 
-    private MobileTypeTextOperationType(MobileChildElementBase element, String valueToInput) {
+    private final InvocationInfo invocationInfo;
+
+    private MobileTypeTextOperationType(MobileChildElementBase element, String text) {
         this.element = element;
-        this.valueToInput = valueToInput;
+        this.text = text;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(TYPE_TEXT_METHOD, elementName, text);
     }
 
     public static MobileTypeTextOperationType of(@NotNull MobileChildElementBase element, @NotNull String valueToInput) {
@@ -27,14 +32,14 @@ public class MobileTypeTextOperationType implements MobileElementOperationType<V
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.actionInvocation(TYPE_TEXT_METHOD, element, valueToInput);
+        return this.invocationInfo;
     }
 
     @Override
     public @NotNull EndpointHandler<Void> getEndpointHandler() {
         Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(TYPE_TEXT_METHOD, Void.class);
         Constructor<? extends EndpointHandler<Void>> constructor = getDeclaredConstructor(endpointHandlerClass);
-        return newInstance(constructor, element, valueToInput);
+        return newInstance(constructor, element, text);
     }
 
 }

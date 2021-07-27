@@ -29,8 +29,8 @@ public class WebBrowserActiveTabShouldHaveTitleStringValueMatcher implements Web
     @Override
     public void check(@NotNull WebBrowserTabsDispatcher tabsDispatcher) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_TITLE_VALUE_METHOD, this, expectedStringValue)
-                : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_TITLE_VALUE_METHOD, this, expectedStringValue);
+                ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_TITLE_VALUE_METHOD, expectedStringValue.getShortDescription())
+                : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_TITLE_VALUE_METHOD, expectedStringValue.getShortDescription());
 
         runCheck(invocationName,
                 () -> {

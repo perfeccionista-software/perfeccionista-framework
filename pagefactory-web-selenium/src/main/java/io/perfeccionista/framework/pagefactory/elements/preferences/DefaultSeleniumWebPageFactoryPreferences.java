@@ -35,8 +35,6 @@ import io.perfeccionista.framework.pagefactory.elements.WebTextInput;
 import io.perfeccionista.framework.pagefactory.elements.WebTextInputImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextListImpl;
-import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
-import io.perfeccionista.framework.pagefactory.elements.WebTextTableImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
@@ -122,14 +120,12 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.FOCUS;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.RADIO;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_FOOTER;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_HEADER;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.UL;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CSS;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.XPATH;
@@ -172,7 +168,6 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
         implementations.put(WebTextDropDownList.class, WebTextDropDownListImpl.class);
         implementations.put(WebTextInput.class, WebTextInputImpl.class);
         implementations.put(WebTextList.class, WebTextListImpl.class);
-        implementations.put(WebTextTable.class, WebTextTableImpl.class);
         return implementations;
     }
 
@@ -270,7 +265,7 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
                 .set(CLEAR, WebLocatorHolder.of(CLEAR, CSS, "input[type='file']"))
                 .set(ENABLED, WebLocatorHolder.of(ENABLED, CSS, "input[type='file']")));
         locators.put(WebList.class, WebLocatorConfiguration.builder()
-                .set(LI, WebLocatorHolder.of(LI, CSS, "li")));
+                .set(ITEM, WebLocatorHolder.of(ITEM, CSS, "li").setSingle(false).setStrictSearch(false)));
         // Задавать корневым элементом лучше первый родительский элемент от input
         locators.put(WebRadioButton.class, WebLocatorConfiguration.builder()
                 .set(LABEL, WebLocatorHolder.of(LABEL, CSS, "label"))
@@ -278,11 +273,11 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
                 .set(SELECTED, WebLocatorHolder.of(SELECTED, CSS, "input[type='radio']"))
                 .set(ENABLED, WebLocatorHolder.of(ENABLED, CSS, "input[type='radio']")));
         locators.put(WebRadioGroup.class, WebLocatorConfiguration.builder()
-                .set(RADIO, WebLocatorHolder.of(RADIO, XPATH, ".//input[@type='radio']/parent::node()").setSingle(false)));
+                .set(ITEM, WebLocatorHolder.of(ITEM, XPATH, ".//input[@type='radio']/parent::node()").setSingle(false)));
         locators.put(WebTable.class, WebLocatorConfiguration.builder()
-                .set(THEAD_ROW, WebLocatorHolder.of(THEAD_ROW, CSS, "thead tr"))
-                .set(TBODY_ROW, WebLocatorHolder.of(TBODY_ROW, CSS, "tbody tr").setSingle(false))
-                .set(TFOOT_ROW, WebLocatorHolder.of(TFOOT_ROW, CSS, "tfoot tr")));
+                .set(TABLE_HEADER, WebLocatorHolder.of(TABLE_HEADER, CSS, "thead tr"))
+                .set(ITEM, WebLocatorHolder.of(ITEM, CSS, "tbody tr").setSingle(false).setStrictSearch(false))
+                .set(TABLE_FOOTER, WebLocatorHolder.of(TABLE_FOOTER, CSS, "tfoot tr")));
         locators.put(WebTextAutocomplete.class, WebLocatorConfiguration.builder()
                 .set(CLEAR, WebLocatorHolder.of(CLEAR, CSS, "input[type='text']"))
                 .set(INPUT, WebLocatorHolder.of(INPUT, CSS, "input[type='text']"))
@@ -297,11 +292,7 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
 //                .set(CLEAR, WebLocatorHolder.of(CLEAR, CSS, "input[type='text']"))
 //                .set(ENABLED, WebLocatorHolder.of(ENABLED, CSS, "input[type='text']")));
         locators.put(WebTextList.class, WebLocatorConfiguration.builder()
-                .set(LI, WebLocatorHolder.of(LI, CSS, "li")));
-        locators.put(WebTextTable.class, WebLocatorConfiguration.builder()
-                .set(THEAD_ROW, WebLocatorHolder.of(THEAD_ROW, CSS, "thead tr"))
-                .set(TBODY_ROW, WebLocatorHolder.of(TBODY_ROW, CSS, "tbody tr").setSingle(false))
-                .set(TFOOT_ROW, WebLocatorHolder.of(TFOOT_ROW, CSS, "tfoot tr")));
+                .set(ITEM, WebLocatorHolder.of(ITEM, CSS, "li")));
         return locators;
     }
 

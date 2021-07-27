@@ -5,6 +5,6 @@ import org.jetbrains.annotations.NotNull;
 @FunctionalInterface
 public interface InvocationInfoNameFormatter {
 
-    String format(@NotNull InvocationInfo invocationInfo);
+    String format(@NotNull String name, String... args);
 
 }

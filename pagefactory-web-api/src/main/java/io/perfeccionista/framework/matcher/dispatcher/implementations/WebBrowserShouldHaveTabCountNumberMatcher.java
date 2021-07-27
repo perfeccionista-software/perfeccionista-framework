@@ -28,8 +28,8 @@ public class WebBrowserShouldHaveTabCountNumberMatcher implements WebBrowserTabs
     @Override
     public void check(@NotNull WebBrowserTabsDispatcher tabsDispatcher) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(BROWSER_SHOULD_HAVE_TABS_COUNT_NUMBER_METHOD, this, expectedNumber)
-                : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TABS_COUNT_NUMBER_METHOD, this, expectedNumber);
+                ? assertInvocation(BROWSER_SHOULD_HAVE_TABS_COUNT_NUMBER_METHOD, String.valueOf(expectedNumber))
+                : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TABS_COUNT_NUMBER_METHOD, String.valueOf(expectedNumber));
 
         runCheck(invocationName,
                 () -> {

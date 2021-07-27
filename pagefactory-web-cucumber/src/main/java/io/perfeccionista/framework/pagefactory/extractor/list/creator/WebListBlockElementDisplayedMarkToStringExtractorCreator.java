@@ -1,14 +1,15 @@
 package io.perfeccionista.framework.pagefactory.extractor.list.creator;
 
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementDisplayedMarkToStringExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementDisplayedMarkToStringExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockValueExtractor;
 import org.jetbrains.annotations.NotNull;
 
 public class WebListBlockElementDisplayedMarkToStringExtractorCreator implements WebListBlockElementValueExtractorCreator {
 
     @Override
-    public @NotNull WebListBlockValueExtractor<String> createForElement(@NotNull String blockElementName) {
-        return new WebListBlockElementDisplayedMarkToStringExtractor(blockElementName);
+    public @NotNull WebBlockValueExtractor<String, WebBlock> createForElement(@NotNull String blockElementName) {
+        return new WebBlockElementDisplayedMarkToStringExtractor(blockElementName);
     }
 
 }

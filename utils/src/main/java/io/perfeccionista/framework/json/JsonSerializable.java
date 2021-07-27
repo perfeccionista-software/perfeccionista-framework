@@ -7,7 +7,7 @@ public interface JsonSerializable {
 
     @NotNull JsonNode toJson();
 
-    @NotNull default String getDescription() {
+    @NotNull default String toFormattedString() {
         return toJson().toPrettyString();
     }
 

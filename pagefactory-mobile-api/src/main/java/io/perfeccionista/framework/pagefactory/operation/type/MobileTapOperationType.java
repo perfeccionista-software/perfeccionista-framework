@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SINGLE_TAP_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TAP;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -16,8 +16,12 @@ public class MobileTapOperationType implements MobileElementOperationType<Void> 
 
     private final MobileChildElementBase element;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileTapOperationType(MobileChildElementBase element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(SINGLE_TAP_METHOD, elementName);
     }
 
     public static MobileTapOperationType of(@NotNull MobileChildElementBase element) {
@@ -26,7 +30,7 @@ public class MobileTapOperationType implements MobileElementOperationType<Void> 
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.actionInvocation(SINGLE_TAP_METHOD, element, TAP);
+        return this.invocationInfo;
     }
 
     @Override

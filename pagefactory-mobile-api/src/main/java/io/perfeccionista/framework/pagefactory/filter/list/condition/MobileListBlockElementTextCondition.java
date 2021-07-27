@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.AND;
 import static io.perfeccionista.framework.pagefactory.filter.ConditionGrouping.OR;
 
@@ -72,7 +72,7 @@ public class MobileListBlockElementTextCondition implements MobileListBlockCondi
         MobileLocatorHolder listLocatorHolder = listLocatorChain.getLastLocator()
                 .setCalculateHash(true)
                 .setExpectedHash(hash);
-        listLocatorChain.addLastLocator(element.getRequiredLocator(LI));
+        listLocatorChain.addLastLocator(element.getRequiredLocator(ITEM));
 
         MobileGetTextAvailable elementToFilter = element.getMobileListFrame()
                 .getMappedBlockFrame()

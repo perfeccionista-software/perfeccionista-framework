@@ -88,7 +88,7 @@ public class Point2D {
 
     @Override
     public String toString() {
-        return toJson().toPrettyString();
+        return toJson().toString();
     }
 
 }

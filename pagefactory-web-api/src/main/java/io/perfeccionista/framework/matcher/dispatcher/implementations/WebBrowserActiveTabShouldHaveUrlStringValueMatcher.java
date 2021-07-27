@@ -29,8 +29,8 @@ public class WebBrowserActiveTabShouldHaveUrlStringValueMatcher implements WebBr
     @Override
     public void check(@NotNull WebBrowserTabsDispatcher tabsDispatcher) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_URL_VALUE_METHOD, this, expectedTextValue)
-                : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_URL_VALUE_METHOD, this, expectedTextValue);
+                ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_URL_VALUE_METHOD, expectedTextValue.getShortDescription())
+                : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_URL_VALUE_METHOD, expectedTextValue.getShortDescription());
 
         runCheck(invocationName,
                 () -> {

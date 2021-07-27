@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_FOOTER;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_HEADER;
 
 public class MobileTextTableCellTextValueExtractor implements MobileTextTableValueExtractor<String> {
 
@@ -40,21 +40,21 @@ public class MobileTextTableCellTextValueExtractor implements MobileTextTableVal
         MobileTextTable element = filter.getElement();
 
         // Цепочка от корня страницы до MobileListBlock
-        MobileLocatorHolder tableRowLocator = element.getRequiredLocator(TBODY_ROW);
+        MobileLocatorHolder tableRowLocator = element.getRequiredLocator(ITEM);
         MobileLocatorHolder tableCellLocator = element.getMobileTextTableFrame()
                 .getRequiredBodyLocator(columnName);
         DefaultMobileTextBlock tableCellBlock = element.getMobileTextTableFrame()
                 .getRequiredBodyMappedBlock(columnName);
 
         if (TableSection.HEADER == section) {
-            tableRowLocator = element.getRequiredLocator(THEAD_ROW);
+            tableRowLocator = element.getRequiredLocator(TABLE_HEADER);
             tableCellLocator = element.getMobileTextTableFrame()
                     .getRequiredHeaderLocator(columnName);
             tableCellBlock = element.getMobileTextTableFrame()
                     .getRequiredHeaderMappedBlock(columnName);
         }
         if (TableSection.FOOTER == section) {
-            tableRowLocator = element.getRequiredLocator(TFOOT_ROW);
+            tableRowLocator = element.getRequiredLocator(TABLE_FOOTER);
             tableCellLocator = element.getMobileTextTableFrame()
                     .getRequiredFooterLocator(columnName);
             tableCellBlock = element.getMobileTextTableFrame()

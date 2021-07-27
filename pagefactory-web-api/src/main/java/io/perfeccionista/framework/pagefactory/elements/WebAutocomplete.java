@@ -24,78 +24,88 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebInputTextAvai
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
 import org.jetbrains.annotations.NotNull;
 
-public interface WebAutocomplete extends WebDropDownList,
+import java.util.function.Consumer;
+
+public interface WebAutocomplete<T extends WebBlock> extends WebDropDownList<T>,
         WebInputTextAvailable, WebChildElement {
+
+    // Checks
+    @Override
+    WebAutocomplete<T> forEach(@NotNull Consumer<T> blockConsumer);
+    @Override
+    WebAutocomplete<T> forFirst(@NotNull Consumer<T> blockConsumer);
+    @Override
+    WebAutocomplete<T> forLast(@NotNull Consumer<T> blockConsumer);
 
     // Actions
     @Override
-    WebAutocomplete executeAction(@NotNull String name, Object... args);
+    WebAutocomplete<T> executeAction(@NotNull String name, Object... args);
 
     // Asserts
-    WebAutocomplete should(@NotNull WebAutocompleteMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebAutocompleteMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebDropDownListMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebDropDownListMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
+    WebAutocomplete<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
     @Override
-    WebAutocomplete should(@NotNull WebListMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebListMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebIndexesMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebIndexesMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebChildElementMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebChildElementMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebGetColorAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebGetColorAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebGetScreenshotAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebGetScreenshotAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebIsDisplayedAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebIsDisplayedAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebIsInFocusAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebIsInFocusAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebIsPresentAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebIsPresentAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebComponentAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebComponentAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebElementPropertyAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebElementPropertyAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebElementStateAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebElementStateAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebGetLabelAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebGetLabelAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebGetTextAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebGetTextAvailableMatcher matcher);
     @Override
-    WebAutocomplete should(@NotNull WebDropDownAvailableMatcher matcher);
+    WebAutocomplete<T> should(@NotNull WebDropDownAvailableMatcher matcher);
 
     // Click
     @Override
-    WebAutocomplete click();
+    WebAutocomplete<T> click();
 
     // DropDown
     @Override
-    WebAutocomplete open();
+    WebAutocomplete<T> open();
     @Override
-    WebAutocomplete close();
+    WebAutocomplete<T> close();
 
     // InputText
     @Override
-    WebAutocomplete clear();
+    WebAutocomplete<T> clear();
     @Override
-    WebAutocomplete typeText(@NotNull String keys);
+    WebAutocomplete<T> typeText(@NotNull String keys);
     @Override
-    WebAutocomplete replaceText(@NotNull String keys);
+    WebAutocomplete<T> replaceText(@NotNull String keys);
     @Override
-    WebAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents);
+    WebAutocomplete<T> sendKeyEvents(@NotNull KeyEventsChain keyEvents);
 
     // HoverTo
     @Override
-    WebAutocomplete hoverTo(boolean withOutOfBounds);
+    WebAutocomplete<T> hoverTo(boolean withOutOfBounds);
 
     // ScrollTo
     @Override
-    WebAutocomplete scrollTo();
+    WebAutocomplete<T> scrollTo();
 
 }

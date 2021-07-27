@@ -29,10 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TBODY_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TFOOT_ROW;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.THEAD_ROW;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_FOOTER;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_HEADER;
 import static io.perfeccionista.framework.utils.MobileElementUtils.getMobileChildElementMethods;
 import static java.util.stream.Collectors.toList;
 
@@ -88,7 +87,7 @@ public class MobilePageFactory {
 
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
-        MobileLocatorHolder liLocatorHolder = mobileList.getRequiredLocator(LI);
+        MobileLocatorHolder liLocatorHolder = mobileList.getRequiredLocator(ITEM);
 
         //noinspection unchecked
         Class<? extends MobileBlock> mappedBlockClass = (Class<? extends MobileBlock>) mobileList.getMobileListFrame()
@@ -122,7 +121,7 @@ public class MobilePageFactory {
 
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
-        MobileLocatorHolder liLocatorHolder = mobileList.getRequiredLocator(LI);
+        MobileLocatorHolder liLocatorHolder = mobileList.getRequiredLocator(ITEM);
 
         //noinspection unchecked
         Class<? extends DefaultMobileTextBlock> mappedBlockClass = (Class<? extends DefaultMobileTextBlock>) mobileList.getMobileTextListFrame()
@@ -159,7 +158,7 @@ public class MobilePageFactory {
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
 
-        MobileLocatorHolder tableRowLocator = mobileTable.getRequiredLocator(TBODY_ROW);
+        MobileLocatorHolder tableRowLocator = mobileTable.getRequiredLocator(ITEM);
         MobileLocatorHolder tableCellLocator = mobileTable.getMobileTableFrame()
                 .getRequiredBodyLocator(columnName);
         //noinspection unchecked
@@ -169,7 +168,7 @@ public class MobilePageFactory {
                 .getElementType();
 
         if (TableSection.HEADER == tableSection) {
-            tableRowLocator = mobileTable.getRequiredLocator(THEAD_ROW);
+            tableRowLocator = mobileTable.getRequiredLocator(TABLE_HEADER);
             tableCellLocator = mobileTable.getMobileTableFrame()
                     .getRequiredHeaderLocator(columnName);
             //noinspection unchecked
@@ -179,7 +178,7 @@ public class MobilePageFactory {
                     .getElementType();
         }
         if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = mobileTable.getRequiredLocator(TFOOT_ROW);
+            tableRowLocator = mobileTable.getRequiredLocator(TABLE_FOOTER);
             tableCellLocator = mobileTable.getMobileTableFrame()
                     .getRequiredFooterLocator(columnName);
             //noinspection unchecked
@@ -235,7 +234,7 @@ public class MobilePageFactory {
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
 
-        MobileLocatorHolder tableRowLocator = mobileTextTable.getRequiredLocator(TBODY_ROW);
+        MobileLocatorHolder tableRowLocator = mobileTextTable.getRequiredLocator(ITEM);
         MobileLocatorHolder tableCellLocator = mobileTextTable.getMobileTextTableFrame()
                 .getRequiredBodyLocator(columnName);
         //noinspection unchecked
@@ -245,7 +244,7 @@ public class MobilePageFactory {
                 .getElementType();
 
         if (TableSection.HEADER == tableSection) {
-            tableRowLocator = mobileTextTable.getRequiredLocator(THEAD_ROW);
+            tableRowLocator = mobileTextTable.getRequiredLocator(TABLE_HEADER);
             tableCellLocator = mobileTextTable.getMobileTextTableFrame()
                     .getRequiredHeaderLocator(columnName);
             //noinspection unchecked
@@ -255,7 +254,7 @@ public class MobilePageFactory {
                     .getElementType();
         }
         if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = mobileTextTable.getRequiredLocator(TFOOT_ROW);
+            tableRowLocator = mobileTextTable.getRequiredLocator(TABLE_FOOTER);
             tableCellLocator = mobileTextTable.getMobileTextTableFrame()
                     .getRequiredFooterLocator(columnName);
             //noinspection unchecked
@@ -311,17 +310,17 @@ public class MobilePageFactory {
         Set<Integer> indexes = filterResult.getIndexes();
 
         Set<String> tableColumnNames = mobileTable.getMobileTableFrame().getTableColumnNames();
-        MobileLocatorHolder tableRowLocator = mobileTable.getRequiredLocator(TBODY_ROW);
+        MobileLocatorHolder tableRowLocator = mobileTable.getRequiredLocator(ITEM);
         Map<String, MobileBlock> tableCellFrames = mobileTable.getMobileTableFrame().getBody();
         Map<String, MobileLocatorHolder> tableCellLocators = mobileTable.getMobileTableFrame().getBodyLocators();
 
         if (TableSection.HEADER == tableSection) {
-            tableRowLocator = mobileTable.getRequiredLocator(THEAD_ROW);
+            tableRowLocator = mobileTable.getRequiredLocator(TABLE_HEADER);
             tableCellFrames = mobileTable.getMobileTableFrame().getHeaders();
             tableCellLocators = mobileTable.getMobileTableFrame().getHeaderLocators();
         }
         if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = mobileTable.getRequiredLocator(TFOOT_ROW);
+            tableRowLocator = mobileTable.getRequiredLocator(TABLE_FOOTER);
             tableCellFrames = mobileTable.getMobileTableFrame().getFooters();
             tableCellLocators = mobileTable.getMobileTableFrame().getFooterLocators();
         }
@@ -426,17 +425,17 @@ public class MobilePageFactory {
         Set<Integer> indexes = filterResult.getIndexes();
 
         Set<String> tableColumnNames = mobileTextTable.getMobileTextTableFrame().getTableColumnNames();
-        MobileLocatorHolder tableRowLocator = mobileTextTable.getRequiredLocator(TBODY_ROW);
+        MobileLocatorHolder tableRowLocator = mobileTextTable.getRequiredLocator(ITEM);
         Map<String, DefaultMobileTextBlock> tableCellFrames = mobileTextTable.getMobileTextTableFrame().getBody();
         Map<String, MobileLocatorHolder> tableCellLocators = mobileTextTable.getMobileTextTableFrame().getBodyLocators();
 
         if (TableSection.HEADER == tableSection) {
-            tableRowLocator = mobileTextTable.getRequiredLocator(THEAD_ROW);
+            tableRowLocator = mobileTextTable.getRequiredLocator(TABLE_HEADER);
             tableCellFrames = mobileTextTable.getMobileTextTableFrame().getHeaders();
             tableCellLocators = mobileTextTable.getMobileTextTableFrame().getHeaderLocators();
         }
         if (TableSection.FOOTER == tableSection) {
-            tableRowLocator = mobileTextTable.getRequiredLocator(TFOOT_ROW);
+            tableRowLocator = mobileTextTable.getRequiredLocator(TABLE_FOOTER);
             tableCellFrames = mobileTextTable.getMobileTextTableFrame().getFooters();
             tableCellLocators = mobileTextTable.getMobileTextTableFrame().getFooterLocators();
         }

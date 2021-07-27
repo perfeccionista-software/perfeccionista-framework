@@ -9,7 +9,7 @@ public interface CountryNumberWebBlock extends WebBlock {
 
     @Name("Number")
     @Name("Номер")
-    @WebLocator(xpath = "self::node()")
+    @WebLocator(selfNode = true)
     WebText number();
 
 }

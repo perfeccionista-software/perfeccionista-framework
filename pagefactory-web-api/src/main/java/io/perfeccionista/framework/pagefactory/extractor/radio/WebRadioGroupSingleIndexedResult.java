@@ -4,6 +4,8 @@ import io.perfeccionista.framework.exceptions.ResultVerification;
 import io.perfeccionista.framework.exceptions.SingleResultCreating;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebExtractorDescriptionAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilter;
@@ -59,7 +61,11 @@ public class WebRadioGroupSingleIndexedResult<T> implements WebSingleIndexedResu
     @Override
     public @Nullable T getResult() {
         WebRadioGroupFilter webRadioGroupFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webRadioGroupFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -78,7 +84,11 @@ public class WebRadioGroupSingleIndexedResult<T> implements WebSingleIndexedResu
     @Override
     public @NotNull T getNotNullResult() {
         WebRadioGroupFilter webRadioGroupFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webRadioGroupFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
@@ -104,7 +114,11 @@ public class WebRadioGroupSingleIndexedResult<T> implements WebSingleIndexedResu
     @Override
     public int getIndex() {
         WebRadioGroupFilter webRadioGroupFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_INDEX_METHOD, element, filterBuilder, extractor), () -> {
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
             Map<Integer, T> extractedValues = extractor.extractValues(webRadioGroupFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())

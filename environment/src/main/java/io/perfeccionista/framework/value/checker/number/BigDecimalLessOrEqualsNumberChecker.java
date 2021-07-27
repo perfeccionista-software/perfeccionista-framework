@@ -29,6 +29,11 @@ public class BigDecimalLessOrEqualsNumberChecker extends AbstractNumberChecker<B
     }
 
     @Override
+    public @NotNull String getShortComparisonDescription() {
+        return String.format(" <= %s", getProcessedExpected());
+    }
+
+    @Override
     public @NotNull String getComparisonDescription() {
         return String.format("Compare parameters:\n"
                         + "          rawExpected: '%s'\n"

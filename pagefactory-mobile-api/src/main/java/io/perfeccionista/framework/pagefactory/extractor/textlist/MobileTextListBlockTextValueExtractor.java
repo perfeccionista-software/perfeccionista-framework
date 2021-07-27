@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 
 public class MobileTextListBlockTextValueExtractor implements MobileTextListBlockValueExtractor<String> {
 
@@ -31,7 +31,7 @@ public class MobileTextListBlockTextValueExtractor implements MobileTextListBloc
         MobileLocatorChain listLocatorChain = element.getLocatorChain()
                 .updateLastLocator(locator -> locator.setCalculateHash(true))
                 .updateLastLocator(locator -> locator.setExpectedHash(hash))
-                .addLastLocator(element.getRequiredLocator(LI))
+                .addLastLocator(element.getRequiredLocator(ITEM))
                 .updateLastLocator(locator -> locator.setIndexes(indexes));
 
         // Добавляем в цепочку локаторов операции локаторы до блока MobileListBlock

@@ -27,8 +27,8 @@ public class MobileApplicationShouldBeInstalled implements MobileDeviceSystemDis
     @Override
     public void check(@NotNull MobileDeviceSystemDispatcher mobileDeviceSystemDispatcher) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(MOBILE_APPLICATION_SHOULD_BE_INSTALLED_METHOD, this)
-                : assertInvocation(MOBILE_APPLICATION_SHOULD_NOT_BE_INSTALLED_METHOD, this);
+                ? assertInvocation(MOBILE_APPLICATION_SHOULD_BE_INSTALLED_METHOD)
+                : assertInvocation(MOBILE_APPLICATION_SHOULD_NOT_BE_INSTALLED_METHOD);
 
         runCheck(invocationName,
                 () -> {

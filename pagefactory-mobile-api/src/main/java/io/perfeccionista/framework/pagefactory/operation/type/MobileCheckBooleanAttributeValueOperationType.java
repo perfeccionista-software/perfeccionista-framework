@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -17,10 +18,14 @@ public class MobileCheckBooleanAttributeValueOperationType implements MobileElem
     private final String attributeName;
     private final boolean expectedValue;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileCheckBooleanAttributeValueOperationType(MobileChildElementBase element, String attributeName, boolean expectedValue) {
         this.element = element;
         this.attributeName = attributeName;
         this.expectedValue = expectedValue;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD, elementName, attributeName);
     }
 
     public static MobileCheckBooleanAttributeValueOperationType of(@NotNull MobileChildElementBase element,
@@ -31,7 +36,7 @@ public class MobileCheckBooleanAttributeValueOperationType implements MobileElem
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.getterInvocation(CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD, element, attributeName);
+        return invocationInfo;
     }
 
     @Override

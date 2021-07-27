@@ -6,6 +6,7 @@ import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.ElementIsPresent;
 import io.perfeccionista.framework.exceptions.ElementNotPresent;
+import io.perfeccionista.framework.exceptions.attachments.WebElementOperationAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.js.JsElementSearch;
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
@@ -35,25 +36,27 @@ public class WebShouldBePresentMatcher implements WebIsPresentAvailableMatcher {
 
     @Override
     public void check(@NotNull WebIsPresentAvailable element) {
-        InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_BE_PRESENT_METHOD, element)
-                : assertInvocation(SHOULD_NOT_BE_PRESENT_METHOD, element);
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = positive
+                ? assertInvocation(SHOULD_BE_PRESENT_METHOD, elementName)
+                : assertInvocation(SHOULD_NOT_BE_PRESENT_METHOD, elementName);
 
-        runCheck(invocationName,
+        runCheck(invocationInfo,
                 () -> {
                     if (positive) {
-                        shouldBePresent(element);
+                        shouldBePresent(element, invocationInfo);
                     } else {
-                        shouldNotBePresent(element);
+                        shouldNotBePresent(element, invocationInfo);
                     }
                 });
     }
 
-    protected void shouldBePresent(WebIsPresentAvailable element) {
+    protected void shouldBePresent(WebIsPresentAvailable element, InvocationInfo invocationInfo) {
         WebGetIsPresentOperationType operationType = WebGetIsPresentOperationType.of(element);
         WebElementOperation<Boolean> operation = WebElementIsPresentOperationHandler.of(element, operationType, PRESENTED)
                 .getOperation()
                 .withPageSource();
+        invocationInfo.setMainAttachmentEntry(WebElementOperationAttachmentEntry.of(operation));
         WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeWebElementOperation(operation);
         operationResult.ifException((exceptionMapper, originalException) -> {
             PerfeccionistaRuntimeException exception = exceptionMapper.mapElementException(element, originalException);
@@ -69,11 +72,12 @@ public class WebShouldBePresentMatcher implements WebIsPresentAvailableMatcher {
         });
     }
 
-    protected void shouldNotBePresent(WebIsPresentAvailable element) {
+    protected void shouldNotBePresent(WebIsPresentAvailable element, InvocationInfo invocationInfo) {
         WebGetIsPresentOperationType operationType = WebGetIsPresentOperationType.of(element);
         WebElementOperation<Boolean> operation = WebElementIsPresentOperationHandler.of(element, operationType, PRESENTED)
                 .getOperation()
                 .withPageSource();
+        invocationInfo.setMainAttachmentEntry(WebElementOperationAttachmentEntry.of(operation));
         WebElementOperationResult<Boolean> operationResult = element.getWebBrowserDispatcher().executor().executeWebElementOperation(operation);
         operationResult.ifSuccess(successOperationResult -> {
             boolean present = successOperationResult.getResult();

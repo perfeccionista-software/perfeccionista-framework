@@ -85,7 +85,7 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(worldMap.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("worldMap", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("worldMap", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("World map", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("World map")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("World map")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
@@ -147,7 +147,7 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
                     );
                 },
                 () -> assertEquals("World map picture", worldMap.getPropertyValue("prompt")),
-                () -> assertEquals(Point2D.of(433.13d, 235.7d).setInaccuracy(0.2d), worldMap.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(448.0d, 235.7d).setInaccuracy(0.2d), worldMap.getElementBounds().getCenter())
         );
     }
 

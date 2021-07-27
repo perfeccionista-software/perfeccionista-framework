@@ -5,10 +5,9 @@ import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebImage;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebText;
-import io.perfeccionista.framework.pagefactory.elements.ElementComponents;
+import io.perfeccionista.framework.pagefactory.elements.locators.WebItemLocator;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementAttributeProperty;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 
 import static io.perfeccionista.framework.Web.beDisplayed;
@@ -30,9 +29,8 @@ public interface HomePage extends AbstractWebPage {
     @Name("First flag block")
     @Name("Первый блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-first-group']")
-    @WebLocator(component = ElementComponents.LI, tagName = "img")
-    @UseMappedWebBlock(FlagBlock.class)
-    WebList flagsFirstGroup();
+    @WebItemLocator(tagName = "img")
+    WebList<FlagBlock> flagsFirstGroup();
 
     @Name("Second text block")
     @Name("Второй текстовый блок")
@@ -42,9 +40,8 @@ public interface HomePage extends AbstractWebPage {
     @Name("Second flag block")
     @Name("Второй блок с флагами")
     @WebLocator(xpath = ".//*[@test-id='flags-second-group']")
-    @WebLocator(component = ElementComponents.LI, tagName = "img")
-    @UseMappedWebBlock(FlagBlock.class)
-    WebList flagsSecondGroup();
+    @WebItemLocator(tagName = "img")
+    WebList<FlagBlock> flagsSecondGroup();
 
     @Name("Third text block")
     @Name("Третий текстовый блок")
@@ -71,7 +68,7 @@ public interface HomePage extends AbstractWebPage {
         @Name("Flag image")
         @Name("картинка Флага")
         @WebLocator(css = ".img-thumbnail")
-        @WebElementProperty(name = "подсказка", params = "alt")
+        @WebElementAttributeProperty(name = "подсказка", attribute = "alt")
         WebImage russianFlag();
 
     }

@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
 import io.perfeccionista.framework.pagefactory.filter.FilterResult;
-import io.perfeccionista.framework.pagefactory.filter.textlist.WebTextListFilter;
+import io.perfeccionista.framework.pagefactory.filter.textblock.WebTextBlockFilter;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
@@ -16,24 +16,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LI;
+import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 
 public class WebTextListBlockTextValueExtractor implements WebTextListBlockValueExtractor<String> {
 
     @Override
-    public Map<Integer, String> extractValues(@NotNull WebTextListFilter filter) {
+    public Map<Integer, String> extractValues(@NotNull WebTextBlockFilter filter) {
         FilterResult filterResult = filter.getFilterResult();
         Set<Integer> indexes = filterResult.getIndexes();
         String hash = filterResult.getHash();
         WebTextList element = filter.getElement();
-        WebLink elementToExtractValue = element.getWebTextListFrame().getMappedBlockFrame().textLink();
+        WebLink elementToExtractValue = element.getBlockFrame().getMappedBlockFrame().textLink();
 
         // Цепочка от корня страницы до WebListBlock
         WebLocatorChain listLocatorChain = element.getLocatorChain()
                 .updateLastLocator(locator -> locator.setCalculateHash(true))
                 .updateLastLocator(locator -> locator.setExpectedHash(hash))
-                .addLastLocator(element.getRequiredLocator(LI))
+                .addLastLocator(element.getRequiredLocator(ITEM))
                 .updateLastLocator(locator -> locator.setIndexes(indexes));
 
         // Добавляем в цепочку локаторов операции локаторы до блока WebListBlock

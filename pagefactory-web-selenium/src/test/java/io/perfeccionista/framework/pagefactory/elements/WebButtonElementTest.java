@@ -92,7 +92,7 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertNotNull(simpleButton.getEndpointHandler(SCROLL_TO_METHOD, Void.class)),
                 // Identifier
                 () -> assertEquals("simpleButton", elementIdentifier.getElementMethod().getName()),
-                () -> assertEquals("simpleButton", elementIdentifier.getLastUsedName()),
+                () -> assertEquals("Simple button", elementIdentifier.getLastUsedName()),
                 () -> assertTrue(elementIdentifier.containsName("Simple button")),
                 () -> assertFalse(elementIdentifier.isNameDeprecated("Simple button")),
                 () -> assertEquals(2, elementIdentifier.names().size()),
@@ -122,22 +122,20 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         WebButton simpleButton = elementsPage.simpleButton();
         // Check Simple button with inner asserts
-        step("Step with inner asserts", () -> {
-            simpleButton
-                    .should(bePresent())
-                    .should(beDisplayed())
-                    .should(notBeInFocus())
-                    .scrollTo()
-                    .should(haveDimensions(Dimensions2D.of(127.6d, 38.0d).setInaccuracy(0.2d)))
-                    .should(haveScreenLocation(Point2D.of(369.3d, 314.3d).setInaccuracy(0.2d)))
-                    .should(haveCenterLocation(Point2D.of(433.1d, 333.4d).setInaccuracy(0.2d)))
-                    .should(haveColor("background-color", Color.of(0, 123, 255, 1.0d)))
-                    .hoverTo(true)
-                    .should(haveColor( "background-color", Color.of(0, 105, 217, 1.0d)))
-                    .should(haveText("Simple Button hghghg"))
-                    .should(haveText(stringContains("Button")))
-                    .should(notHaveText(stringContains("link")));
-        });
+        simpleButton
+                .should(bePresent())
+                .should(beDisplayed())
+                .should(notBeInFocus())
+                .scrollTo()
+                .should(haveDimensions(Dimensions2D.of(127.6d, 38.0d).setInaccuracy(0.2d)))
+                .should(haveScreenLocation(Point2D.of(369.3d, 314.3d).setInaccuracy(0.2d)))
+                .should(haveCenterLocation(Point2D.of(472.3d, 333.4d).setInaccuracy(0.2d)))
+                .should(haveColor("background-color", Color.of(0, 123, 255, 1.0d)))
+                .hoverTo(true)
+                .should(haveColor( "background-color", Color.of(0, 105, 217, 1.0d)))
+                .should(haveText("Simple Button"))
+                .should(haveText(stringContains("Button")))
+                .should(notHaveText(stringContains("link")));
         // Check Simple button with junit asserts
         assertAll(
                 () -> assertTrue(simpleButton.isPresent()),
@@ -162,7 +160,7 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
         assertAll(
                 () -> assertFalse(simpleButtonText.isPresent()),
                 () -> assertFalse(simpleButtonText.isDisplayed()),
-                () -> assertEquals(Point2D.of(433.12d, 333.4d).setInaccuracy(0.2d), simpleButton.getElementBounds().getCenter())
+                () -> assertEquals(Point2D.of(472.3d, 333.4d).setInaccuracy(0.2d), simpleButton.getElementBounds().getCenter())
         );
         // Simple button click
         simpleButton

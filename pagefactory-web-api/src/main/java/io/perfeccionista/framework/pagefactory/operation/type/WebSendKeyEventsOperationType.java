@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SEND_KEY_EVENTS_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -18,9 +18,13 @@ public class WebSendKeyEventsOperationType implements WebElementOperationType<Vo
     private final WebHoverToAvailable element;
     private final KeyEventsChain keyEvents;
 
+    private final InvocationInfo invocationInfo;
+
     private WebSendKeyEventsOperationType(WebHoverToAvailable element, KeyEventsChain keyEvents) {
         this.element = element;
         this.keyEvents = keyEvents;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(SEND_KEY_EVENTS_METHOD, elementName, keyEvents.toString());
     }
 
     public static WebSendKeyEventsOperationType of(@NotNull WebHoverToAvailable element, @NotNull KeyEventsChain keyEvents) {
@@ -29,7 +33,7 @@ public class WebSendKeyEventsOperationType implements WebElementOperationType<Vo
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.actionInvocation(SEND_KEY_EVENTS_METHOD, element, INPUT, keyEvents);
+        return this.invocationInfo;
     }
 
     @Override

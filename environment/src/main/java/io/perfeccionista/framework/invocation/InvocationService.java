@@ -3,6 +3,8 @@ package io.perfeccionista.framework.invocation;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
 import io.perfeccionista.framework.invocation.runner.EmptyInvocationRunner;
+import io.perfeccionista.framework.invocation.runner.InvocationInfoNameFormatter;
+import io.perfeccionista.framework.invocation.runner.InvocationInfoStatisticsFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationRunner;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
@@ -27,6 +29,14 @@ public class InvocationService implements Service {
         return configuration == null
                 ? EmptyInvocationRunner.class
                 : configuration.getInvocationRunnerImplementation(invocationWrapper);
+    }
+
+    public InvocationInfoNameFormatter getInvocationInfoNameFormatter() {
+        return configuration.getInvocationInfoNameFormatter();
+    }
+
+    public InvocationInfoStatisticsFormatter getInvocationInfoStatisticsFormatter() {
+        return configuration.getInvocationInfoStatisticsFormatter();
     }
 
     protected InvocationServiceConfiguration validate(ServiceConfiguration configuration) {

@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SCROLL_TO_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -16,8 +16,12 @@ public class WebScrollToOperationType implements WebElementOperationType<Void> {
 
     private final WebScrollToAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebScrollToOperationType(WebScrollToAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(SCROLL_TO_METHOD, elementName);
     }
 
     public static WebScrollToOperationType of(@NotNull WebScrollToAvailable element) {
@@ -26,7 +30,7 @@ public class WebScrollToOperationType implements WebElementOperationType<Void> {
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.actionInvocation(SCROLL_TO_METHOD, element, ROOT);
+        return this.invocationInfo;
     }
 
     @Override

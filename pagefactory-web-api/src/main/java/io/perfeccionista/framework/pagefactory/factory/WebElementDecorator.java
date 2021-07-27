@@ -8,13 +8,12 @@ import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlo
 import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.actions.base.EndpointHandlerRegistry;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebRadioGroupFrame;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.elements.WebTextTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolder;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
@@ -28,16 +27,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 
-import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebBlockAnnotationHandler.createWebListFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebRadioButtonBlockAnnotationHandler.createWebRadioGroupFrame;
-import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebTableColumnAnnotationHandler.createWebTableFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebTextBlockAnnotationHandler.createWebTextListFrame;
-import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebTextTableColumnAnnotationHandler.createWebTextTableFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementNameHandler.extractNames;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementPropertyAnnotationHandler.createWebElementPropertyRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementStateAnnotationHandler.createWebElementStateRegistryFor;
+import static io.perfeccionista.framework.pagefactory.factory.handlers.WebListGenericTypeHandler.createWebListFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createWebLocatorRegistryFor;
+import static io.perfeccionista.framework.pagefactory.factory.handlers.WebTableGenericTypeHandler.createWebTableFrame;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForFields.writeField;
 
 // TODO: Добавить возможность принудительно переопределять в конфигурации методы для конкретных типов элементов
@@ -57,7 +55,6 @@ public class WebElementDecorator {
     public static final String WEB_LIST_FRAME_FIELD = "webListFrame";
     public static final String WEB_TEXT_LIST_FRAME_FIELD = "webTextListFrame";
     public static final String WEB_TABLE_FRAME = "webTableFrame";
-    public static final String WEB_TEXT_TABLE_FRAME = "webTextTableFrame";
 
     protected final WebPageFactoryPreferences configuration;
     protected final WebPageFactory webPageFactory;
@@ -81,7 +78,7 @@ public class WebElementDecorator {
         writeField(PROPERTY_REGISTRY_FIELD, webMappedBlockInstance, propertyRegistry);
         WebElementStateRegistry stateRegistry = createWebElementStateRegistryFor(webMappedBlockInstance, configuration);
         writeField(STATE_REGISTRY_FIELD, webMappedBlockInstance, stateRegistry);
-        WebElementIdentifier elementIdentifier = MappedWebBlockIdentifier.of(webMappedBlockClass);
+        WebElementIdentifier elementIdentifier = MappedWebBlockIdentifier.of(webMappedBlockClass, extractNames(webMappedBlockClass));
         writeField(ELEMENT_IDENTIFIER_FIELD, webMappedBlockInstance, elementIdentifier);
         return webMappedBlockInstance;
     }
@@ -119,22 +116,28 @@ public class WebElementDecorator {
         writeField(STATE_REGISTRY_FIELD, webChildElementInstance, stateRegistry);
         WebElementIdentifier elementIdentifier = WebChildElementIdentifier.of(extractNames(webChildElementInstance, webChildElementMethod), webChildElementMethod);
         writeField(ELEMENT_IDENTIFIER_FIELD, webChildElementInstance, elementIdentifier);
-        if (webChildElementInstance instanceof WebRadioGroup) {
+        if (webChildElementInstance instanceof WebTable) {
+            decorateWebTableInstance((WebTable<?, ?>) webChildElementInstance, webChildElementMethod);
+        } else if (webChildElementInstance instanceof WebList) {
+            decorateWebListInstance((WebList<?>) webChildElementInstance, webChildElementMethod);
+        } else if (webChildElementInstance instanceof WebTextList) {
+            decorateWebTextListInstance((WebTextList) webChildElementInstance, webChildElementMethod);
+        } else if (webChildElementInstance instanceof WebRadioGroup) {
             decorateWebRadioGroupInstance((WebRadioGroup) webChildElementInstance, webChildElementMethod);
         }
-        if (webChildElementInstance instanceof WebList) {
-            decorateWebListInstance((WebList) webChildElementInstance, webChildElementMethod);
-        }
-        if (webChildElementInstance instanceof WebTextList) {
-            decorateWebTextListInstance((WebTextList) webChildElementInstance, webChildElementMethod);
-        }
-        if (webChildElementInstance instanceof WebTable) {
-            decorateWebTableInstance((WebTable) webChildElementInstance, webChildElementMethod);
-        }
-        if (webChildElementInstance instanceof WebTextTable) {
-            decorateWebTextTableInstance((WebTextTable) webChildElementInstance, webChildElementMethod);
-        }
         return webChildElementInstance;
+    }
+
+    public void decorateWebListInstance(@NotNull WebList<?> webListInstance, @NotNull Method webChildElementMethod) {
+        WebBlockFrame<WebBlock> webListFrame =
+                createWebListFrame(webListInstance, webChildElementMethod, webPageFactory, configuration);
+        writeField(WEB_LIST_FRAME_FIELD, webListInstance, webListFrame);
+    }
+
+    public void decorateWebTextListInstance(@NotNull WebTextList webTextListInstance, @NotNull Method webChildElementMethod) {
+        WebBlockFrame<DefaultWebTextBlock> webTextListFrame =
+                createWebTextListFrame(webTextListInstance, webChildElementMethod, webPageFactory, configuration);
+        writeField(WEB_TEXT_LIST_FRAME_FIELD, webTextListInstance, webTextListFrame);
     }
 
     public void decorateWebRadioGroupInstance(@NotNull WebRadioGroup webRadioGroupInstance, @NotNull Method webChildElementMethod) {
@@ -143,28 +146,10 @@ public class WebElementDecorator {
         writeField(WEB_RADIO_GROUP_FRAME_FIELD, webRadioGroupInstance, webRadioGroupFrame);
     }
 
-    public void decorateWebListInstance(@NotNull WebList webListInstance, @NotNull Method webChildElementMethod) {
-        WebListFrame<WebBlock> webListFrame =
-                createWebListFrame(webListInstance, webChildElementMethod, webPageFactory, configuration);
-        writeField(WEB_LIST_FRAME_FIELD, webListInstance, webListFrame);
-    }
-
-    public void decorateWebTextListInstance(@NotNull WebTextList webTextListInstance, @NotNull Method webChildElementMethod) {
-        WebListFrame<DefaultWebTextBlock> webTextListFrame =
-                createWebTextListFrame(webTextListInstance, webChildElementMethod, webPageFactory, configuration);
-        writeField(WEB_TEXT_LIST_FRAME_FIELD, webTextListInstance, webTextListFrame);
-    }
-
-    public void decorateWebTableInstance(@NotNull WebTable webTableInstance, @NotNull Method webChildElementMethod) {
-        WebTableFrame<WebBlock> webTableRegistry =
-                createWebTableFrame(webTableInstance, webChildElementMethod, webPageFactory);
-        writeField(WEB_TABLE_FRAME, webTableInstance, webTableRegistry);
-    }
-
-    public void decorateWebTextTableInstance(@NotNull WebTextTable webTextTableInstance, @NotNull Method webChildElementMethod) {
-        WebTableFrame<DefaultWebTextBlock> webTableRegistry =
-                createWebTextTableFrame(webTextTableInstance, webChildElementMethod, webPageFactory);
-        writeField(WEB_TEXT_TABLE_FRAME, webTextTableInstance, webTableRegistry);
+    public void decorateWebTableInstance(@NotNull WebTable<?, ?> webTableInstance, @NotNull Method webChildElementMethod) {
+        WebTableFrame<WebBlock, WebBlock> webTableFrame =
+                createWebTableFrame(webTableInstance, webChildElementMethod, webPageFactory, configuration);
+        writeField(WEB_TABLE_FRAME, webTableInstance, webTableFrame);
     }
 
 }

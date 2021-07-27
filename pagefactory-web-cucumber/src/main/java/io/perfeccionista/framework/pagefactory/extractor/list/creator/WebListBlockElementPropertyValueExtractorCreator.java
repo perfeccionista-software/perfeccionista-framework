@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.pagefactory.extractor.list.creator;
 
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockElementPropertyValueExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebListBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementPropertyValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockValueExtractor;
 import org.jetbrains.annotations.NotNull;
 
 public class WebListBlockElementPropertyValueExtractorCreator implements WebListBlockElementValueExtractorCreator {
@@ -13,8 +14,8 @@ public class WebListBlockElementPropertyValueExtractorCreator implements WebList
     }
 
     @Override
-    public @NotNull WebListBlockValueExtractor<String> createForElement(@NotNull String blockElementName) {
-        return new WebListBlockElementPropertyValueExtractor(blockElementName, propertyName);
+    public @NotNull WebBlockValueExtractor<String, WebBlock> createForElement(@NotNull String blockElementName) {
+        return new WebBlockElementPropertyValueExtractor<>(blockElementName, propertyName);
     }
 
 }

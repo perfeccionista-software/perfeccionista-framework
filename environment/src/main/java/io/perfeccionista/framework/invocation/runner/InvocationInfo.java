@@ -1,11 +1,17 @@
 package io.perfeccionista.framework.invocation.runner;
 
+import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.exceptions.attachments.Attachment;
+import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
+import io.perfeccionista.framework.invocation.InvocationService;
+import io.perfeccionista.framework.invocation.runner.InvocationResult.InvocationStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -20,53 +26,42 @@ public final class InvocationInfo {
     protected final String uuid;
 
     protected final InvocationType type;
-    protected final String format;
-    protected final Object[] args;
+    protected final String invocationName;
 
     protected Deque<InvocationResult> invocationResults;
     protected InvocationResult current = null;
+    protected Attachment attachment = Attachment.empty();
 
-    protected InvocationInfoNameFormatter nameFormatter;
     protected InvocationInfoStatisticsFormatter statisticsFormatter;
 
-    protected InvocationInfo(@NotNull InvocationInfo.InvocationType type, @NotNull String format, Object... args) {
-        this.type = type;
-        this.format = format;
-        this.args = args;
-        this.invocationResults = new ArrayDeque<>();
-        this.nameFormatter = new DefaultInvocationInfoNameFormatter();
-        this.statisticsFormatter = new DefaultInvocationInfoStatisticsFormatter();
+    protected InvocationInfo(@NotNull InvocationInfo.InvocationType type, @NotNull String invocationName, String... args) {
         this.uuid = UUID.randomUUID().toString();
+        this.type = type;
+        var invocationService = Environment.getCurrent().getService(InvocationService.class);
+        var nameFormatter = invocationService.getInvocationInfoNameFormatter();
+        this.statisticsFormatter = invocationService.getInvocationInfoStatisticsFormatter();
+        this.invocationResults = new ArrayDeque<>();
+        this.invocationName = nameFormatter.format(invocationName, args);
     }
 
-    public static InvocationInfo assertInvocation(String message, Object... args) {
-        return new InvocationInfo(ASSERT, message, args);
+    public static InvocationInfo assertInvocation(String invocationName, String... args) {
+        return new InvocationInfo(ASSERT, invocationName, args);
     }
 
-    public static InvocationInfo actionInvocation(String message, Object... args) {
-        return new InvocationInfo(ACTION, message, args);
+    public static InvocationInfo actionInvocation(String invocationName, String... args) {
+        return new InvocationInfo(ACTION, invocationName, args);
     }
 
-    public static InvocationInfo getterInvocation(String message, Object... args) {
-        return new InvocationInfo(GETTER, message, args);
+    public static InvocationInfo getterInvocation(String invocationName, String... args) {
+        return new InvocationInfo(GETTER, invocationName, args);
     }
 
-    public static InvocationInfo customOperationInvocation(String message, Object... args) {
-        return new InvocationInfo(CUSTOM, message, args);
+    public static InvocationInfo customOperationInvocation(String invocationName, String... args) {
+        return new InvocationInfo(CUSTOM, invocationName, args);
     }
 
     public static InvocationInfo empty() {
-        return new InvocationInfo(EMPTY, "");
-    }
-
-    public InvocationInfo setNameFormatter(@NotNull InvocationInfoNameFormatter nameFormatter) {
-        this.nameFormatter = nameFormatter;
-        return this;
-    }
-
-    public InvocationInfo setStatisticsFormatter(@NotNull InvocationInfoStatisticsFormatter statisticsFormatter) {
-        this.statisticsFormatter = statisticsFormatter;
-        return this;
+        return new InvocationInfo(EMPTY, "Step");
     }
 
     public boolean isNotEmpty() {
@@ -81,16 +76,42 @@ public final class InvocationInfo {
         return type;
     }
 
-    public @NotNull String getFormat() {
-        return format;
+    public @NotNull String getInvocationName() {
+        return this.invocationName;
     }
 
-    public Object[] getArgs() {
-        return args;
+    public Optional<InvocationResult> getCurrent() {
+        return Optional.ofNullable(current);
     }
 
     public Deque<InvocationResult> getResults() {
         return invocationResults;
+    }
+
+    public InvocationStatus getLastStatus() {
+        if (invocationResults.isEmpty()) {
+            return InvocationStatus.NEW;
+        }
+        return invocationResults.getLast().getStatus();
+    }
+
+    public Attachment getAttachment() {
+        return this.attachment;
+    }
+
+    public InvocationInfo setAttachment(@NotNull Attachment attachment) {
+        this.attachment = attachment;
+        return this;
+    }
+
+    public InvocationInfo addAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
+        this.attachment.addLastAttachmentEntry(attachmentEntry);
+        return this;
+    }
+
+    public InvocationInfo setMainAttachmentEntry(@NotNull TextAttachmentEntry attachmentEntry) {
+        this.attachment.setMainAttachmentEntry(attachmentEntry);
+        return this;
     }
 
     public InvocationInfo start() {
@@ -114,8 +135,8 @@ public final class InvocationInfo {
     public InvocationInfo success(@NotNull Consumer<InvocationInfo> successInvocationVisitor) {
         this.current.success();
         this.invocationResults.addLast(this.current);
-        this.current = null;
         successInvocationVisitor.accept(this);
+        this.current = null;
         return this;
     }
 
@@ -129,8 +150,8 @@ public final class InvocationInfo {
     public InvocationInfo exception(Throwable t, @NotNull Consumer<InvocationInfo> exceptionInvocationVisitor) {
         this.current.exception(t);
         this.invocationResults.addLast(this.current);
-        this.current = null;
         exceptionInvocationVisitor.accept(this);
+        this.current = null;
         return this;
     }
 
@@ -139,25 +160,13 @@ public final class InvocationInfo {
         return this;
     }
 
-    public String getFormattedName() {
-        return this.nameFormatter.format(this);
-    }
-
-    public String getFormattedName(@NotNull InvocationInfoNameFormatter nameFormatter) {
-        return nameFormatter.format(this);
-    }
-
-    public String getFormattedStatistics() {
+    public String getStatistics() {
         return this.statisticsFormatter.format(this);
-    }
-
-    public String getFormattedStatistics(@NotNull InvocationInfoStatisticsFormatter statisticsFormatter) {
-        return statisticsFormatter.format(this);
     }
 
     @Override
     public String toString() {
-        return nameFormatter.format(this) + " " + statisticsFormatter.format(this);
+        return this.invocationName + " " + getStatistics();
     }
 
     @Override
@@ -172,18 +181,13 @@ public final class InvocationInfo {
         if (!Objects.equals(type, that.type)) {
             return false;
         }
-        if (!Objects.equals(format, that.format)) {
-            return false;
-        }
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        return Arrays.equals(args, that.args);
+        return Objects.equals(invocationName, that.invocationName);
     }
 
     @Override
     public int hashCode() {
         int result = type.hashCode();
-        result = 31 * result + format.hashCode();
-        result = 31 * result + Arrays.hashCode(args);
+        result = 31 * result + invocationName.hashCode();
         return result;
     }
 

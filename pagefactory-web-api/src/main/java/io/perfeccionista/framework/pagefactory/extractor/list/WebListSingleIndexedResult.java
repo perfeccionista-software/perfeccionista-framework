@@ -4,10 +4,13 @@ import io.perfeccionista.framework.exceptions.ResultVerification;
 import io.perfeccionista.framework.exceptions.SingleResultCreating;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebExtractorDescriptionAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.WebFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilter;
-import io.perfeccionista.framework.pagefactory.filter.list.WebListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilter;
+import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
 import io.perfeccionista.framework.result.WebSingleIndexedResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import static io.perfeccionista.framework.Web.emptyWebListFilter;
+import static io.perfeccionista.framework.Web.emptyWebBlockFilter;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.FILTERED_ELEMENT_CONTAINS_NULL_RESULT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SINGLE_RESULT_HAS_NO_VALUE;
@@ -26,41 +29,45 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementActionName
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_INDEX_METHOD;
 import static io.perfeccionista.framework.utils.StringUtils.indexesToString;
 
-public class WebListSingleIndexedResult<T> implements WebSingleIndexedResult<T, WebList> {
+public class WebListSingleIndexedResult<R, T extends WebBlock> implements WebSingleIndexedResult<R, WebList<T>> {
 
-    private final WebList element;
-    private final WebListFilterBuilder filterBuilder;
-    private final WebListBlockValueExtractor<T> extractor;
+    private final WebList<T> element;
+    private final WebBlockFilterBuilder<T> filterBuilder;
+    private final WebBlockValueExtractor<R, T> extractor;
 
-    private WebListSingleIndexedResult(@NotNull WebList element,
-                                       @NotNull WebListFilterBuilder filterBuilder,
-                                       @NotNull WebListBlockValueExtractor<T> extractor) {
+    private WebListSingleIndexedResult(@NotNull WebList<T> element,
+                                       @NotNull WebBlockFilterBuilder<T> filterBuilder,
+                                       @NotNull WebBlockValueExtractor<R, T> extractor) {
         this.element = element;
         this.filterBuilder = filterBuilder;
         this.extractor = extractor;
     }
 
-    public static <T> WebListSingleIndexedResult<T> of(@NotNull WebList element,
-                                                       @NotNull WebListFilterBuilder filterBuilder,
-                                                       @NotNull WebListBlockValueExtractor<T> extractor) {
+    public static <R, T extends WebBlock> WebListSingleIndexedResult<R, T> of(@NotNull WebList<T> element,
+                                                                              @NotNull WebBlockFilterBuilder<T> filterBuilder,
+                                                                              @NotNull WebBlockValueExtractor<R, T> extractor) {
         return new WebListSingleIndexedResult<>(element, filterBuilder, extractor);
     }
 
-    public static <T> WebListSingleIndexedResult<T> of(@NotNull WebList element,
-                                                       @NotNull WebListBlockValueExtractor<T> extractor) {
-        return new WebListSingleIndexedResult<>(element, emptyWebListFilter(), extractor);
+    public static <R, T extends WebBlock> WebListSingleIndexedResult<R, T> of(@NotNull WebList<T> element,
+                                                                              @NotNull WebBlockValueExtractor<R, T> extractor) {
+        return new WebListSingleIndexedResult<>(element, emptyWebBlockFilter(), extractor);
     }
 
     @Override
-    public @NotNull WebList getElement() {
+    public @NotNull WebList<T> getElement() {
         return element;
     }
 
     @Override
-    public @Nullable T getResult() {
-        WebListFilter webListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
-            Map<Integer, T> extractedValues = extractor.extractValues(webListFilter);
+    public @Nullable R getResult() {
+        WebBlockFilter<T> webListFilter = filterBuilder.build(element);
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
+            Map<Integer, R> extractedValues = extractor.extractValues(webListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
@@ -76,22 +83,26 @@ public class WebListSingleIndexedResult<T> implements WebSingleIndexedResult<T, 
     }
 
     @Override
-    public @NotNull T getNotNullResult() {
-        WebListFilter webListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUE_METHOD, element, filterBuilder, extractor), () -> {
-            Map<Integer, T> extractedValues = extractor.extractValues(webListFilter);
+    public @NotNull R getNotNullResult() {
+        WebBlockFilter<T> webListFilter = filterBuilder.build(element);
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
+            Map<Integer, R> extractedValues = extractor.extractValues(webListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(element))
                         .addLastAttachmentEntry(TextAttachmentEntry.of("Values", indexesToString(extractedValues.keySet())));
             }
-            Entry<Integer, T> extractedEntry = extractedValues.entrySet().stream()
+            Entry<Integer, R> extractedEntry = extractedValues.entrySet().stream()
                     .findFirst()
                     .orElseThrow(() -> SingleResultCreating.exception(SINGLE_RESULT_HAS_NO_VALUE.getMessage())
                             .setProcessed(true)
                             .addLastAttachmentEntry(WebElementAttachmentEntry.of(element)));
-            T maybeNullValue = extractedEntry.getValue();
+            R maybeNullValue = extractedEntry.getValue();
             if (Objects.isNull(maybeNullValue)) {
                 throw ResultVerification.assertionError(FILTERED_ELEMENT_CONTAINS_NULL_RESULT.getMessage(extractedEntry.getKey()))
                         .setProcessed(true)
@@ -103,9 +114,13 @@ public class WebListSingleIndexedResult<T> implements WebSingleIndexedResult<T, 
 
     @Override
     public int getIndex() {
-        WebListFilter webListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_INDEX_METHOD, element, filterBuilder, extractor), () -> {
-            Map<Integer, T> extractedValues = extractor.extractValues(webListFilter);
+        WebBlockFilter<T> webListFilter = filterBuilder.build(element);
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
+                .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> {
+            Map<Integer, R> extractedValues = extractor.extractValues(webListFilter);
             if (extractedValues.size() > 1) {
                 throw SingleResultCreating.exception(SINGLE_RESULT_HAS_MORE_THAN_ONE_VALUE.getMessage())
                         .setProcessed(true)
@@ -121,8 +136,8 @@ public class WebListSingleIndexedResult<T> implements WebSingleIndexedResult<T, 
     }
 
     @Override
-    public WebSingleIndexedResult<T, WebList> should(WebMultipleIndexedResultMatcher<T> matcher) {
-        WebListMultipleIndexedResult<T> result = WebListMultipleIndexedResult.of(element, filterBuilder, extractor);
+    public WebSingleIndexedResult<R, WebList<T>> should(WebMultipleIndexedResultMatcher<R> matcher) {
+        WebListMultipleIndexedResult<R, T> result = WebListMultipleIndexedResult.of(element, filterBuilder, extractor);
         matcher.check(result);
         return this;
     }

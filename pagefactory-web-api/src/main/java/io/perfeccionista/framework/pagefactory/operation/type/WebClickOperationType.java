@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLICK_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,12 @@ public class WebClickOperationType implements WebElementOperationType<Void> {
 
     private final WebClickAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebClickOperationType(WebClickAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(CLICK_METHOD, elementName);
     }
 
     public static WebClickOperationType of(@NotNull WebClickAvailable element) {
@@ -27,7 +30,7 @@ public class WebClickOperationType implements WebElementOperationType<Void> {
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(CLICK_METHOD, element, CLICK);
+        return this.invocationInfo;
     }
 
     @Override

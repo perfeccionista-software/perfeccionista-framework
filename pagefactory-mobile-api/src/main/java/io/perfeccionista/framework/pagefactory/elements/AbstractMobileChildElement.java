@@ -241,7 +241,8 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
         Optional<MobileElementPropertyHolder> optionalPropertyHolder = getProperty(propertyName);
         if (optionalPropertyHolder.isPresent()) {
             MobileElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
-            return runCheck(InvocationInfo.getterInvocation(GET_PROPERTY_VALUE_METHOD, this, propertyHolder), () -> {
+            var elementName = this.elementIdentifier.getLastUsedName();
+            return runCheck(InvocationInfo.getterInvocation(GET_PROPERTY_VALUE_METHOD, elementName, propertyHolder.getName()), () -> {
                 MobileElementOperation<String> operation = propertyHolder.getOperation(this);
                 return getMobileDeviceDispatcher()
                         .executor()
@@ -270,7 +271,8 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     public boolean hasState(@NotNull String stateName) {
         MobileElementStateHolder stateHolder = getState(stateName)
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName)));
-        return runCheck(InvocationInfo.getterInvocation(HAS_STATE_METHOD, this, stateHolder), () -> {
+        var elementName = this.elementIdentifier.getLastUsedName();
+        return runCheck(InvocationInfo.getterInvocation(HAS_STATE_METHOD, elementName, stateHolder.getName()), () -> {
             MobileElementOperation<Boolean> operation = stateHolder.getOperation(this);
             return getMobileDeviceDispatcher()
                     .executor()

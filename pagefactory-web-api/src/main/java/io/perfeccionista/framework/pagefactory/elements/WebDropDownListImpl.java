@@ -28,6 +28,8 @@ import io.perfeccionista.framework.pagefactory.operation.type.WebOpenOperationTy
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLOSE;
@@ -36,12 +38,33 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.UL;
 
-public class WebDropDownListImpl extends WebListImpl implements WebDropDownList {
+public class WebDropDownListImpl<T extends WebBlock> extends WebListImpl<T> implements WebDropDownList<T> {
+
+
+    // Checks
+
+    @Override
+    public WebDropDownList<T> forEach(@NotNull Consumer<T> blockConsumer) {
+        super.forEach(blockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebDropDownList<T> forFirst(@NotNull Consumer<T> blockConsumer) {
+        super.forFirst(blockConsumer);
+        return this;
+    }
+
+    @Override
+    public WebDropDownList<T> forLast(@NotNull Consumer<T> blockConsumer) {
+        super.forLast(blockConsumer);
+        return this;
+    }
 
     // Actions
 
     @Override
-    public WebDropDownList executeAction(@NotNull String name, Object... args) {
+    public WebDropDownList<T> executeAction(@NotNull String name, Object... args) {
         super.executeAction(name, args);
         return this;
     }
@@ -49,13 +72,13 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     // Asserts
 
     @Override
-    public WebDropDownList should(@NotNull WebDropDownListMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebDropDownListMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
+    public WebDropDownList<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher) {
         super.should(matcher);
         return this;
     }
@@ -67,91 +90,91 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebIndexesMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebIndexesMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebChildElementMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebChildElementMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebGetColorAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebGetColorAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebGetScreenshotAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebIsDisplayedAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebIsInFocusAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebIsInFocusAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebIsPresentAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebIsPresentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebComponentAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebComponentAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebElementPropertyAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebElementPropertyAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebElementStateAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebElementStateAvailableMatcher matcher) {
         super.should(matcher);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebGetLabelAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebGetLabelAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebGetTextAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebGetTextAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
 
     @Override
-    public WebDropDownList should(@NotNull WebDropDownAvailableMatcher matcher) {
+    public WebDropDownList<T> should(@NotNull WebDropDownAvailableMatcher matcher) {
         matcher.check(this);
         return this;
     }
@@ -159,7 +182,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     // Click
 
     @Override
-    public WebDropDownList click() {
+    public WebDropDownList<T> click() {
         WebClickOperationType operationType = WebClickOperationType.of(this);
         runCheck(operationType.getInvocationName(),
                 () -> WebElementOperationHandler.of(this, operationType, CLICK).executeAction());
@@ -169,7 +192,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     // Close
 
     @Override
-    public WebDropDownList close() {
+    public WebDropDownList<T> close() {
         WebGetIsOpenOperationType isOpenOperationType = WebGetIsOpenOperationType.of(this);
         WebCloseOperationType closeOperationType = WebCloseOperationType.of(this);
         runCheck(closeOperationType.getInvocationName(),
@@ -203,7 +226,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     // HoverTo
 
     @Override
-    public WebDropDownList hoverTo(boolean withOutOfBounds) {
+    public WebDropDownList<T> hoverTo(boolean withOutOfBounds) {
         super.hoverTo(withOutOfBounds);
         return this;
     }
@@ -220,7 +243,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     // Open
 
     @Override
-    public WebDropDownList open() {
+    public WebDropDownList<T> open() {
         WebGetIsOpenOperationType isOpenOperationType = WebGetIsOpenOperationType.of(this);
         WebOpenOperationType openOperationType = WebOpenOperationType.of(this);
         runCheck(openOperationType.getInvocationName(),
@@ -236,7 +259,7 @@ public class WebDropDownListImpl extends WebListImpl implements WebDropDownList 
     // ScrollTo
 
     @Override
-    public WebDropDownList scrollTo() {
+    public WebDropDownList<T> scrollTo() {
         super.scrollTo();
         return this;
     }

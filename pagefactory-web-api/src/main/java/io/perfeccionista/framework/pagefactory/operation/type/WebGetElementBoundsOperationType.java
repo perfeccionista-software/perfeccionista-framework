@@ -16,11 +16,13 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class WebGetElementBoundsOperationType implements WebElementOperationType<ElementBounds> {
 
     private final WebGetElementBoundsAvailable element;
-    private final String componentName;
+
+    private final InvocationInfo invocationInfo;
 
     private WebGetElementBoundsOperationType(WebGetElementBoundsAvailable element, String componentName) {
         this.element = element;
-        this.componentName = componentName;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(GET_ELEMENT_BOUNDS_METHOD, elementName, componentName);
     }
 
     public static WebGetElementBoundsOperationType of(@NotNull WebGetElementBoundsAvailable element, @NotNull String componentName) {
@@ -29,7 +31,7 @@ public class WebGetElementBoundsOperationType implements WebElementOperationType
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(GET_ELEMENT_BOUNDS_METHOD, element, componentName);
+        return this.invocationInfo;
     }
 
     @Override

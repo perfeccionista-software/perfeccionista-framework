@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HAS_STATE_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -17,9 +18,13 @@ public class MobileHasStateOperationType implements MobileElementOperationType<B
     private final MobileChildElementBase element;
     private final MobileElementStateHolder stateHolder;
 
+    private final InvocationInfo invocationInfo;
+
     private MobileHasStateOperationType(MobileChildElementBase element, MobileElementStateHolder stateHolder) {
         this.element = element;
         this.stateHolder = stateHolder;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(HAS_STATE_METHOD, elementName, stateHolder.getName());
     }
 
     public static MobileHasStateOperationType of(@NotNull MobileChildElementBase element, @NotNull MobileElementStateHolder stateHolder) {
@@ -28,7 +33,7 @@ public class MobileHasStateOperationType implements MobileElementOperationType<B
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return InvocationInfo.getterInvocation(HAS_STATE_METHOD, element, stateHolder);
+        return this.invocationInfo;
     }
 
     @Override

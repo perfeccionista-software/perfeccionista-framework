@@ -29,14 +29,14 @@ import org.jetbrains.annotations.NotNull;
 public interface WebRadioGroup extends WebChildElement, WebElementContainer<WebRadioGroupFilter, WebRadioGroupFilterBuilder> {
 
     @API(status = Status.MAINTAINED)
-    @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getWebRadioGroupFrame();
+    @NotNull WebRadioGroupFrame<DefaultWebRadioButtonBlock> getBlockFrame();
 
     // Extractor
     @NotNull <V> WebMultipleIndexedResult<V, WebRadioGroup> extractAll(@NotNull WebRadioButtonValueExtractor<V> extractor);
 
     // Filter
     @Override
-    @NotNull WebRadioGroupFilter filter(@NotNull WebRadioGroupFilterBuilder filterBuilder);
+    @NotNull WebRadioGroupFilter filterBuilder(@NotNull WebRadioGroupFilterBuilder filterBuilder);
     @NotNull WebRadioGroupFilter filter(@NotNull WebRadioButtonCondition filterCondition);
 
     // Button Extractors
@@ -82,5 +82,8 @@ public interface WebRadioGroup extends WebChildElement, WebElementContainer<WebR
     // ScrollTo
     @Override
     WebRadioGroup scrollTo();
+
+    // Size
+    int size();
 
 }

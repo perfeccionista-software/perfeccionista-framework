@@ -140,7 +140,7 @@ public class Cookie implements JsonSerializable {
 
     @Override
     public String toString() {
-        return getDescription();
+        return toJson().toString();
     }
 
     @Override

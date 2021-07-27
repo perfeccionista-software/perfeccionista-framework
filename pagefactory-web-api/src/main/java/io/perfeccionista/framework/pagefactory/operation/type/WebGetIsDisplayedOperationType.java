@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_DISPLAYED_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.DISPLAYED;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,12 @@ public class WebGetIsDisplayedOperationType implements WebElementOperationType<B
 
     private final WebIsDisplayedAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebGetIsDisplayedOperationType(WebIsDisplayedAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = getterInvocation(IS_DISPLAYED_METHOD, elementName);
     }
 
     public static WebGetIsDisplayedOperationType of(@NotNull WebIsDisplayedAvailable element) {
@@ -27,7 +30,7 @@ public class WebGetIsDisplayedOperationType implements WebElementOperationType<B
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return getterInvocation(IS_DISPLAYED_METHOD, element, DISPLAYED);
+        return this.invocationInfo;
     }
 
     @Override

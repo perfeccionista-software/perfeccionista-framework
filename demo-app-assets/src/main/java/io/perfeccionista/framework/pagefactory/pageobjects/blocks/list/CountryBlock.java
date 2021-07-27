@@ -6,7 +6,7 @@ import io.perfeccionista.framework.pagefactory.elements.WebCheckbox;
 import io.perfeccionista.framework.pagefactory.elements.WebLink;
 import io.perfeccionista.framework.pagefactory.elements.WebText;
 import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementProperty;
+import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementAttributeProperty;
 
 public interface CountryBlock extends WebBlock {
 
@@ -24,14 +24,14 @@ public interface CountryBlock extends WebBlock {
     @Name("Название государства")
     @WebLocator(xpath = "self::node()//a[@itemid = 'country-name']", strictSearch = false) // В некоторых ячейках этого элемента нет
     @WebLocator(component = "Self", xpath = "self::node()", strictSearch = false) // В некоторых ячейках этого элемента нет
-    @WebElementProperty(name = "Wiki link", params = "href")
+    @WebElementAttributeProperty(name = "Wiki link", attribute = "href")
     WebLink shortName();
 
     @Name("Full country name")
     @Name("Полное название государства")
     @WebLocator(xpath = "self::node()//span[@itemid = 'country-full-name']", strictSearch = false)
     @WebLocator(component = "SNG", xpath = "self::node()//span[@itemid = 'sng']")
-    @WebElementProperty(name = "prompt", params = "title")
+    @WebElementAttributeProperty(name = "prompt", attribute = "title")
     WebText fullName();
 
     @Name("Population")

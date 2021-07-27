@@ -9,7 +9,6 @@ import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.OPEN;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -17,8 +16,12 @@ public class WebOpenOperationType implements WebElementOperationType<Void> {
 
     private final WebDropDownAvailable element;
 
+    private final InvocationInfo invocationInfo;
+
     private WebOpenOperationType(WebDropDownAvailable element) {
         this.element = element;
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(OPEN_METHOD, elementName);
     }
 
     public static WebOpenOperationType of(@NotNull WebDropDownAvailable element) {
@@ -27,7 +30,7 @@ public class WebOpenOperationType implements WebElementOperationType<Void> {
 
     @Override
     public @NotNull InvocationInfo getInvocationName() {
-        return actionInvocation(OPEN_METHOD, element, OPEN);
+        return this.invocationInfo;
     }
 
     @Override

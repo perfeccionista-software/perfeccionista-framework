@@ -27,8 +27,8 @@ public class MobileShouldHaveSizeNumberMatcher implements MobileIndexesMatcher {
     @Override
     public void check(@NotNull MobileMultipleIndexedResult<Integer, ? extends MobileChildElement> result) {
         InvocationInfo invocationName = positive
-                ? assertInvocation(SHOULD_HAVE_SIZE_METHOD, this, expectedSize)
-                : assertInvocation(SHOULD_NOT_HAVE_SIZE_METHOD, this, expectedSize);
+                ? assertInvocation(SHOULD_HAVE_SIZE_METHOD, String.valueOf(expectedSize))
+                : assertInvocation(SHOULD_NOT_HAVE_SIZE_METHOD, String.valueOf(expectedSize));
 
         MobileChildElement element = result.getElement();
 

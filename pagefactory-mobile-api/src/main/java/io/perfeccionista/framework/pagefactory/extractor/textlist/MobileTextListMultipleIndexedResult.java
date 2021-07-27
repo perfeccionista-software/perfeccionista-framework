@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.pagefactory.extractor.textlist;
 
+import io.perfeccionista.framework.exceptions.attachments.MobileExtractorDescriptionAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.MobileFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.MobileTextList;
 import io.perfeccionista.framework.pagefactory.filter.MobileFilters;
@@ -48,15 +50,20 @@ public class MobileTextListMultipleIndexedResult<T> implements MobileMultipleInd
 
     @Override
     public Map<Integer, T> getResults() {
-        return runCheck(getterInvocation(GET_EXTRACTED_VALUES_METHOD, element, filterBuilder, extractor),
-                () -> extractor.extractValues(filterBuilder.build(element)));
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
+                .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
+        return runCheck(invocationInfo, () -> extractor.extractValues(filterBuilder.build(element)));
     }
 
     @Override
     public int getSize() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        return runCheck(getterInvocation(GET_SIZE_ELEMENTS_METHOD, element, filterBuilder),
-                () -> webTextListFilter.getFilterResult().getIndexes().size());
+        var elementName = element.getElementIdentifier().getLastUsedName();
+        var invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
+                .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
+        return runCheck(invocationInfo, () -> webTextListFilter.getFilterResult().getIndexes().size());
     }
 
     @Override

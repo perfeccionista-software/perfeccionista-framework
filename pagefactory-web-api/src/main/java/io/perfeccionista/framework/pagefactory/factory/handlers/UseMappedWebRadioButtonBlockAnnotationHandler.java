@@ -5,7 +5,7 @@ import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlo
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebBlock;
+import io.perfeccionista.framework.pagefactory.elements.mapping.UseMappedWebRadioButtonBlock;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebRadioGroupFrame;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
@@ -31,14 +31,14 @@ public class UseMappedWebRadioButtonBlockAnnotationHandler {
                                                                                                    @NotNull WebPageFactoryPreferences configuration) {
         Class<? extends WebBlock> webMappedBlockClass = configuration.getWebMappedBlock(webRadioGroup.getClass());
 
-        Optional<UseMappedWebBlock> optionalClassAnnotation = findFirstAnnotationInHierarchy(UseMappedWebBlock.class,
+        Optional<UseMappedWebRadioButtonBlock> optionalClassAnnotation = findFirstAnnotationInHierarchy(UseMappedWebRadioButtonBlock.class,
                 WebChildElement.class,
                 webRadioGroup.getClass());
         if (optionalClassAnnotation.isPresent()) {
             webMappedBlockClass = optionalClassAnnotation.get().value();
         }
 
-        Optional<UseMappedWebBlock> optionalMethodAnnotation = findAnnotation(elementMethod, UseMappedWebBlock.class);
+        Optional<UseMappedWebRadioButtonBlock> optionalMethodAnnotation = findAnnotation(elementMethod, UseMappedWebRadioButtonBlock.class);
         if (optionalMethodAnnotation.isPresent()) {
             webMappedBlockClass = optionalMethodAnnotation.get().value();
         }
@@ -50,11 +50,12 @@ public class UseMappedWebRadioButtonBlockAnnotationHandler {
                 throw MappedBlockIncorrectType
                         .exception(MAPPED_BLOCK_IMPLEMENTATION_INCORRECT_TYPE.getMessage(DefaultWebRadioButtonBlock.class.getCanonicalName()));
             }
-            webRadioButtonBlock = (DefaultWebRadioButtonBlock) webPageFactory
-                    .createMappedWebBlock(webRadioGroup, webMappedBlockClass);
+            webRadioButtonBlock = (DefaultWebRadioButtonBlock) webPageFactory.createMappedWebBlock(webRadioGroup, webMappedBlockClass);
+        } else {
+            webRadioButtonBlock = webPageFactory.createMappedWebBlock(webRadioGroup, DefaultWebRadioButtonBlock.class);
         }
 
-        return new WebRadioGroupFrame<>(webRadioGroup, webRadioButtonBlock);
+        return new WebRadioGroupFrame<>(webRadioButtonBlock);
     }
 
 }

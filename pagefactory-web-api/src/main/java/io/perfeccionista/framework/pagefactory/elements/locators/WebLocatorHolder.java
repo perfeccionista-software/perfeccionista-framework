@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.elements.locators;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.perfeccionista.framework.json.JsonSerializable;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import io.perfeccionista.framework.utils.JsonUtils;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 import static io.perfeccionista.framework.utils.JsonUtils.toPrettyJson;
 
-public class WebLocatorHolder {
+public class WebLocatorHolder implements JsonSerializable {
 
     protected final String locatorId;
     protected String locatorComponent;
@@ -28,6 +29,7 @@ public class WebLocatorHolder {
     protected int index;
     protected boolean single;
     protected boolean strictSearch;
+    protected boolean fromParent;
     protected boolean onlyWithinParent;
     protected boolean calculateHash;
     protected String expectedHash;
@@ -44,7 +46,8 @@ public class WebLocatorHolder {
         this.index = -1;
         this.single = true;
         this.strictSearch = true;
-        this.onlyWithinParent = true;
+        this.fromParent = true;
+        this.onlyWithinParent = false;
         this.calculateHash = false;
         this.expectedHash = null;
         this.invokeOnCallHandlers = new ArrayDeque<>();
@@ -85,6 +88,11 @@ public class WebLocatorHolder {
 
     public WebLocatorHolder setStrictSearch(boolean strictSearch) {
         this.strictSearch = strictSearch;
+        return this;
+    }
+
+    public WebLocatorHolder setFromParent(boolean fromParent) {
+        this.fromParent = fromParent;
         return this;
     }
 
@@ -142,6 +150,10 @@ public class WebLocatorHolder {
         return strictSearch;
     }
 
+    public boolean isFromParent() {
+        return fromParent;
+    }
+
     public boolean isOnlyWithinParent() {
         return onlyWithinParent;
     }
@@ -164,13 +176,15 @@ public class WebLocatorHolder {
                 .setIndexes(this.getIndexes())
                 .setSingle(this.single)
                 .setStrictSearch(this.strictSearch)
+                .setFromParent(this.fromParent)
                 .setOnlyWithinParent(this.onlyWithinParent)
                 .setCalculateHash(this.calculateHash)
                 .setExpectedHash(this.expectedHash)
                 .setInvokedOnCallFunctions(this.getInvokeOnCallHandlers());
     }
 
-    public ObjectNode toJson() {
+    @Override
+    public @NotNull ObjectNode toJson() {
         ObjectNode locatorNode = JsonUtils.createObjectNode()
                 .put("locatorId", this.locatorId)
                 .put("locatorComponent", this.locatorComponent)
@@ -178,6 +192,7 @@ public class WebLocatorHolder {
                 .put("locatorValue", this.locatorValue)
                 .put("single", this.single)
                 .put("strictSearch", this.strictSearch)
+                .put("fromParent", this.fromParent)
                 .put("onlyWithinParent", this.onlyWithinParent)
                 .put("calculateHash", this.calculateHash);
         if (getExpectedHash().isPresent()) {
@@ -205,16 +220,7 @@ public class WebLocatorHolder {
      * @return
      */
     public String toString() {
-        return toPrettyJson(toJson());
-    }
-
-    /**
-     * Используется в описании цепочки локаторов до элемента
-     * @return
-     */
-    public String getShortDescription() {
-        // TODO: Implement
-        return "";
+        return toJson().toString();
     }
 
 }

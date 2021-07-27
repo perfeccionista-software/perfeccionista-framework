@@ -5,11 +5,12 @@ import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.ValueIntegerParameter;
 import io.perfeccionista.framework.cucumber.parameters.ValueStringParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
+import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
 import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilder;
 
 import static io.perfeccionista.framework.Web.*;
-import static io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilderImpl.webRadioGroupFilterBuilder;
+import static io.perfeccionista.framework.pagefactory.filter.radio.WebRadioGroupFilterBuilderImpl.webRadioGroupFilterBuilderWith;
 
 // TODO: Wrap runLogic()
 // TODO: Add step categories
@@ -26,11 +27,8 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                                ValueIntegerParameter radioButtonIndex) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
-                                .filter(webRadioGroupFilterBuilder()
-                                        .add(radioButtonIndex(radioButtonIndex.getValue())))
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .click());
+                                .filterBuilder(webRadioGroupFilterBuilderWith(radioButtonIndex(radioButtonIndex.getValue())))
+                                .forSingle(WebRadioButton::click));
     }
 
     /**
@@ -44,11 +42,8 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                                ValueStringParameter radioButtonLabel) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
-                                .filter(webRadioGroupFilterBuilder()
-                                        .add(containsLabel(radioButtonLabel.getValue())))
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .click());
+                                .filterBuilder(webRadioGroupFilterBuilderWith(containsLabel(radioButtonLabel.getValue())))
+                                .forSingle(WebRadioButton::click));
     }
 
     /**
@@ -62,10 +57,8 @@ public class WebRadioGroupActionStepDefinitions implements WebStepDefinitions {
                                                WebRadioGroupFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebRadioGroup.class)
-                                .filter(itemFilter)
-                                .extractOne(element())
-                                .getNotNullResult()
-                                .scrollTo());
+                                .filterBuilder(itemFilter)
+                                .forSingle(WebRadioButton::scrollTo));
     }
 
 }

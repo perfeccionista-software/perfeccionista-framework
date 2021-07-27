@@ -19,7 +19,7 @@ public class AllureInvocationStatisticsFormatter extends DefaultInvocationInfoSt
         return "Calls: " + longSummaryStatistics.getCount() + "\n"
                 + "Min duration: " + longSummaryStatistics.getMin() + " ms\n"
                 + "Max duration: " + longSummaryStatistics.getMax() + " ms\n"
-                + "Avg duration: " + Math.round(longSummaryStatistics.getAverage()) + "ms";
+                + "Avg duration: " + Math.round(longSummaryStatistics.getAverage()) + " ms";
     }
 
 }
