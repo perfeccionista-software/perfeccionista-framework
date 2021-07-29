@@ -82,6 +82,8 @@ import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumHoverTo
 import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumReplaceText;
 import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumSendKeyEvents;
 import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumTypeText;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumUploadFromClasspath;
+import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumUploadFromFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -115,7 +117,8 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementActionName
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SEND_KEY_EVENTS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.TYPE_TEXT_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SET_FILENAME_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.UPLOAD_FROM_CLASSPATH_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.UPLOAD_FROM_FILE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLEAR;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.FOCUS;
@@ -183,7 +186,9 @@ public class DefaultSeleniumWebPageFactoryPreferences extends DefaultWebPageFact
                 .set(CLEAR_METHOD, SeleniumClear.class)
                 .set(GET_TEXT_METHOD, JsGetValueAttributeValue.class)
                 .set(REPLACE_TEXT_METHOD, SeleniumReplaceText.class)
-                .set(SET_FILENAME_METHOD, JsTypeText.class));                                       // SeleniumImpl
+                .set(TYPE_TEXT_METHOD, JsTypeText.class)
+                .set(UPLOAD_FROM_CLASSPATH_METHOD, SeleniumUploadFromClasspath.class)
+                .set(UPLOAD_FROM_FILE_METHOD, SeleniumUploadFromFile.class));                       // SeleniumImpl
         actionConfigurations.put(WebTextAutocomplete.class, WebEndpointHandlerConfiguration.builder()
                 .set(GET_TEXT_METHOD, JsGetValueAttributeValue.class));
         actionConfigurations.put(WebTextInput.class, WebEndpointHandlerConfiguration.builder()

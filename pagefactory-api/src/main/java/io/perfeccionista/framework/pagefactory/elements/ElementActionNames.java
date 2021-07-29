@@ -122,6 +122,8 @@ public class ElementActionNames {
     public static final String SET_FILENAME_METHOD = "SetFileName";
     public static final String SHOULD_FILE_EXIST_METHOD = "ShouldFileExist";
 
+    public static final String UPLOAD_FROM_CLASSPATH_METHOD = "UploadFromClasspath";
+    public static final String UPLOAD_FROM_FILE_METHOD = "UploadFromFile";
 
     public static final String SCROLL_TO_METHOD = "ScrollTo";                                       // elementName
     public static final String SCROLL_UP_METHOD = "ScrollUp";

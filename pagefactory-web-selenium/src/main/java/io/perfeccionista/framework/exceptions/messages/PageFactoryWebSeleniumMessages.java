@@ -13,6 +13,7 @@ public enum PageFactoryWebSeleniumMessages implements Messages {
 
     WEB_ELEMENT_CLICK_INTERCEPTED("Click on element '%s' was intercepted by another element"),
     ELEMENT_IS_NOT_INTRACTABLE("Element '%s' is not intractable"),
+    WEB_ELEMENT_INCORRECT_TYPE("WebElement '%s' has incorrect type. Required type is '%s'"),
 
     WEB_BROWSER_ENVIRONMENT_IS_STALE("WebBrowser environment is stale. Function 'executeOperation' is not loaded"),
     WEB_ELEMENT_IS_STALE("Element '%s' has stale WebElement reference"),

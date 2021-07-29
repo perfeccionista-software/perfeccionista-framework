@@ -85,7 +85,7 @@ public class DefaultAndroidEnvironmentConfiguration implements EnvironmentConfig
     }
 
     protected DefaultAndroidEnvironmentConfiguration readProperties() {
-        perfeccionistaProperties = FileUtils.readOptionalPropertyFile(PERFECCIONISTA_PROPERTIES_FILE)
+        perfeccionistaProperties = FileUtils.readOptionalPropertyFileFromClasspath(PERFECCIONISTA_PROPERTIES_FILE)
                 .orElse(new Properties());
         systemProperties = System.getProperties();
         return this;

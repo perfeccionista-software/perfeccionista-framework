@@ -25,12 +25,17 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvai
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
+
 /**
  * Input элемент для FileInput обычно скрыт,
  * поэтому тут удобнее объявлять корневым элементом родительский div
  */
 public interface WebFileInput extends WebChildElement,
         WebClickAvailable, WebIsEnabledAvailable, WebGetLabelAvailable, WebGetTextAvailable, WebInputTextAvailable {
+
+    WebFileInput uploadFromClasspath(@NotNull String... resourceName);
+    WebFileInput uploadFromFile(@NotNull Path... file);
 
     // Actions
     @Override

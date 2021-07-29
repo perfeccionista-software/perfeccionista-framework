@@ -184,6 +184,33 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
         );
     }
 
+    /**
+     * Case: Проверяем что присутствует левое меню
+     *  Проверяем текст заголовка
+     *  Проверяем основной текст
+     */
+    @Test
+    void webFileInputUploadPositiveTest() {
+        WebPageContext context = initWebPageContext();
+        context.getPage(HomePage.class).leftMenu()
+                .select("Elements");
+
+        ElementsPage elementsPage = context.getPage(ElementsPage.class);
+        WebText fileInputText = elementsPage.fileInputText()
+                .should(beDisplayed())
+                .should(haveText(stringEmpty()));
+        // Check Simple input
+        String filePath = this.getClass().getClassLoader().getResource("test.data.properties").getPath();
+        elementsPage.fileInput()
+                .should(beDisplayed())
+                .uploadFromClasspath("test.data.properties")
+                .should(haveText(stringContains("test.data.properties")))
+                .clear()
+                .should(haveText(stringEmpty()))
+                .uploadFromFile(Path.of(filePath))
+                .should(haveText(stringContains("test.data.properties")));
+    }
+
     @Test
     void webTextInputNegativeTest(Environment environment) {
         WebPageContext context = initWebPageContext();

@@ -41,7 +41,7 @@ public class AllureInvocationServiceConfiguration implements InvocationServiceCo
     }
 
     protected void readProperties() {
-        Properties properties = FileUtils.readOptionalPropertyFile(ALLURE_STEP_NAMES_PROPERTIES_FILE)
+        Properties properties = FileUtils.readOptionalPropertyFileFromClasspath(ALLURE_STEP_NAMES_PROPERTIES_FILE)
                 .orElse(new Properties());
         for (String propertyName : properties.stringPropertyNames()) {
             allureStepNamesProperties.put(propertyName, properties.getProperty(propertyName));
