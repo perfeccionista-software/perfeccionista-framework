@@ -15,7 +15,6 @@ import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
 import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
 import io.perfeccionista.framework.matcher.element.WebFileInputMatcher;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebClearOperationType;
@@ -26,11 +25,15 @@ import io.perfeccionista.framework.pagefactory.operation.type.WebGetTextOperatio
 import io.perfeccionista.framework.pagefactory.operation.type.WebReplaceTextOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebSendKeyEventsOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebTypeTextOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebUploadFromClasspathOperationType;
+import io.perfeccionista.framework.pagefactory.operation.type.WebUploadFromFileOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
+import java.util.Arrays;
+
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLEAR;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLICK;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
@@ -38,6 +41,22 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 
 public class WebFileInputImpl extends AbstractWebChildElement implements WebFileInput {
+
+    @Override
+    public WebFileInput uploadFromClasspath(@NotNull String... resourceNames) {
+        WebUploadFromClasspathOperationType operationType = WebUploadFromClasspathOperationType.of(this, Arrays.asList(resourceNames));
+        runCheck(operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
+
+    @Override
+    public WebFileInput uploadFromFile(@NotNull Path... paths) {
+        WebUploadFromFileOperationType operationType = WebUploadFromFileOperationType.of(this, Arrays.asList(paths));
+        runCheck(operationType.getInvocationName(),
+                () -> WebElementOperationHandler.of(this, operationType, INPUT).executeAction());
+        return this;
+    }
 
     // Actions
 

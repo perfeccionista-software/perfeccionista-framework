@@ -7,6 +7,7 @@ package io.perfeccionista.framework.exceptions.messages;
 public enum PageFactoryWebApiMessages implements Messages {
 
     // Execution operation exceptions
+    NO_FILES_TO_UPLOAD("No files have been declared for upload"),
 
     // Element construction exceptions
     ELEMENT_COMPONENT_NOT_FOUND("Element component %s is not found"),
