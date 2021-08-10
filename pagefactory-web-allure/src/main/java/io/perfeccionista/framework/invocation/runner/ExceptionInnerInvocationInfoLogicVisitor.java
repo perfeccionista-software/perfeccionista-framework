@@ -13,7 +13,7 @@ public class ExceptionInnerInvocationInfoLogicVisitor implements Consumer<Invoca
 
     @Override
     public void accept(InvocationInfo invocationInfo) {
-        var throwable = invocationInfo.getCurrent()
+        Throwable throwable = invocationInfo.getCurrent()
                 .orElseThrow(() -> PreconditionViolation.exception("On stage 'exception' current result can't be null"))
                 .getThrowable()
                 .orElseThrow(() -> PreconditionViolation.exception("Exception status is set together with the exception"));

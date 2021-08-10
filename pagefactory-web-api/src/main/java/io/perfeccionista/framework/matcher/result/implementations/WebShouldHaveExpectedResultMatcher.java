@@ -26,7 +26,7 @@ public class WebShouldHaveExpectedResultMatcher<T> implements WebMultipleIndexed
     @Override
     public void check(@NotNull WebMultipleIndexedResult<T, ? extends WebChildElement> result) {
         WebChildElement element = result.getElement();
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
 
         InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_EXPECTED_RESULT_METHOD, elementName, String.valueOf(expectedResult));
 

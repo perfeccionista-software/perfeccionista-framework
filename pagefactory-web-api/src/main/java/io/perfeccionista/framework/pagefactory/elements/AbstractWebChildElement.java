@@ -267,7 +267,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
         Optional<WebElementPropertyHolder> optionalPropertyHolder = getProperty(propertyName);
         if (optionalPropertyHolder.isPresent()) {
             WebElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
-            var elementName = this.elementIdentifier.getLastUsedName();
+            String elementName = this.elementIdentifier.getLastUsedName();
             return runCheck(getterInvocation(GET_PROPERTY_VALUE_METHOD, elementName, propertyHolder.getName()), () -> {
                 WebElementOperation<String> operation = propertyHolder.getOperation(this);
                 return getWebBrowserDispatcher()
@@ -298,7 +298,7 @@ public class AbstractWebChildElement extends AbstractWebChildElementBase impleme
         WebElementStateHolder stateHolder = getState(stateName)
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName))
                         .addLastAttachmentEntry(WebElementAttachmentEntry.of(this)));
-        var elementName = this.elementIdentifier.getLastUsedName();
+        String elementName = this.elementIdentifier.getLastUsedName();
         return runCheck(getterInvocation(HAS_STATE_METHOD, elementName, stateHolder.getName()), () -> {
             WebElementOperation<Boolean> operation = stateHolder.getOperation(this);
             WebElementOperationResult<Boolean> operationResult = getWebBrowserDispatcher()

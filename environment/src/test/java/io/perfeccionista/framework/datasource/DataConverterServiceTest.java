@@ -16,7 +16,7 @@ class DataConverterServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
     void dataConverterServiceInitializationTest(Environment environment) {
-        var dataConverterService = environment.getService(DataConverterService.class);
+        DataConverterService dataConverterService = environment.getService(DataConverterService.class);
         assertAll(
                 () -> assertNotNull(dataConverterService),
                 () -> assertEquals(3, dataConverterService.stream().count())
@@ -25,7 +25,7 @@ class DataConverterServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
     void dataConverterTest(Environment environment) {
-        var dataConverterService = environment.getService(DataConverterService.class);
+        DataConverterService dataConverterService = environment.getService(DataConverterService.class);
         assertAll(
                 () -> assertNotNull(dataConverterService),
                 () -> assertNotNull(dataConverterService.get(SimpleDataConverter.class)),
@@ -36,21 +36,21 @@ class DataConverterServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
     void dataConverterProcessingTest(Environment environment) {
-        var dataConverterService = environment.getService(DataConverterService.class);
+        DataConverterService dataConverterService = environment.getService(DataConverterService.class);
         assertAll(
                 () -> assertNotNull(dataConverterService),
                 () -> {
-                    var stringToUserDataConverter = dataConverterService.get(StringToUserDataConverter.class);
-                    var userToStringDataConverter = dataConverterService.get(UserToStringDataConverter.class);
+                    StringToUserDataConverter stringToUserDataConverter = dataConverterService.get(StringToUserDataConverter.class);
+                    UserToStringDataConverter userToStringDataConverter = dataConverterService.get(UserToStringDataConverter.class);
                     assertAll(
                             () -> assertNotNull(stringToUserDataConverter),
                             () -> {
-                                var user = stringToUserDataConverter.convert("Jack Black", null);
+                                User user = stringToUserDataConverter.convert("Jack Black", null);
                                 assertEquals(new User("Jack", "Black"), user);
                             },
                             () -> assertNotNull(userToStringDataConverter),
                             () -> {
-                                var userName = userToStringDataConverter.convert(new User("Jack", "Black"), null);
+                                String userName = userToStringDataConverter.convert(new User("Jack", "Black"), null);
                                 assertEquals("Jack Black", userName);
                             }
                     );

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                 .map(entry -> {
                     FileAttachmentEntry<?> fileAttachmentEntry = (FileAttachmentEntry<?>) entry;
                     String fileName = entry.getName() + "_" + createId() + "." + fileAttachmentEntry.getFileExtension();
-                    Path filePath = Path.of(ATTACHMENT_DIR + File.separator + fileName);
+                    Path filePath = Paths.get(ATTACHMENT_DIR + File.separator + fileName);
                     if (fileAttachmentEntry instanceof HtmlAttachmentEntry) {
                         String content = ((HtmlAttachmentEntry) fileAttachmentEntry).getContent().orElse("");
                         deleteFileIgnoreExceptions(filePath);
@@ -41,7 +42,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                         Screenshot screenshot = ((ScreenshotAttachmentEntry) entry).getContent()
                                 .orElseThrow(() -> EmptyAttachment.exception(EMPTY_ATTACHMENT_ENTRY.getMessage()));
                         deleteFileIgnoreExceptions(filePath);
-                        writeBinaryFile(Path.of(fileName), screenshot.getRaw());
+                        writeBinaryFile(Paths.get(fileName), screenshot.getRaw());
                     } else if (fileAttachmentEntry instanceof BigTextAttachmentEntry) {
                         String content = ((BigTextAttachmentEntry) fileAttachmentEntry).getContent().orElse("");
                         deleteFileIgnoreExceptions(filePath);

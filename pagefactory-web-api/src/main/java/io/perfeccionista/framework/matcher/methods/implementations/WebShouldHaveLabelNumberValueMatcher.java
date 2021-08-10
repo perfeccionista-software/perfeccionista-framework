@@ -28,7 +28,7 @@ public class WebShouldHaveLabelNumberValueMatcher implements WebGetLabelAvailabl
 
     @Override
     public void check(@NotNull WebGetLabelAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_NUMBER_LABEL_METHOD, elementName, expectedNumberValue.getShortDescription())
                 : assertInvocation(SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD, elementName, expectedNumberValue.getShortDescription());

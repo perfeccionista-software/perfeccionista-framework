@@ -192,7 +192,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
 
         // Нужно ли скроллить вверх
         if (isScrollNeeded(Direction.UP, androidElement, screenBounds)) {
-            var elementName = element.getElementIdentifier().getLastUsedName();
+            String elementName = element.getElementIdentifier().getLastUsedName();
             runCheck(InvocationInfo.actionInvocation(SCROLL_UP_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.UP, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.UP, androidElement, screenBounds);
@@ -209,7 +209,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
 
         // Нужно ли скроллить вниз
         if (isScrollNeeded(Direction.DOWN, androidElement, screenBounds)) {
-            var elementName = element.getElementIdentifier().getLastUsedName();
+            String elementName = element.getElementIdentifier().getLastUsedName();
             runCheck(InvocationInfo.actionInvocation(SCROLL_DOWN_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.DOWN, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.DOWN, androidElement, screenBounds);
@@ -226,7 +226,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
 
         // Нужно ли скроллить влево
         if (isScrollNeeded(Direction.LEFT, androidElement, screenBounds)) {
-            var elementName = element.getElementIdentifier().getLastUsedName();
+            String elementName = element.getElementIdentifier().getLastUsedName();
             runCheck(InvocationInfo.actionInvocation(SCROLL_LEFT_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.LEFT, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.LEFT, androidElement, screenBounds);
@@ -243,7 +243,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
 
         // Нужно ли скроллить вправо
         if (isScrollNeeded(Direction.RIGHT, androidElement, screenBounds)) {
-            var elementName = element.getElementIdentifier().getLastUsedName();
+            String elementName = element.getElementIdentifier().getLastUsedName();
             runCheck(InvocationInfo.actionInvocation(SCROLL_RIGHT_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.RIGHT, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.RIGHT, androidElement, screenBounds);

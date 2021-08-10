@@ -4,9 +4,11 @@ import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.value.checker.ObjectChecker;
 import io.perfeccionista.framework.value.transformer.ValueTransformer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 
 public abstract class AbstractObjectChecker implements ObjectChecker {
 
@@ -20,13 +22,13 @@ public abstract class AbstractObjectChecker implements ObjectChecker {
     }
 
     @Override
-    public @NotNull Object getActual() {
+    public @Nullable Object getActual() {
         return actual;
     }
 
     @Override
-    public @NotNull Object getProcessedActual() {
-        return applyTransformersToActual(actual);
+    public @Nullable Object getProcessedActual() {
+        return Objects.isNull(actual) ? null : applyTransformersToActual(actual);
     }
 
     @Override

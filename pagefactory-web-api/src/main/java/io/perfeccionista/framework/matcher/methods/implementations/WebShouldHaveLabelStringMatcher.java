@@ -27,7 +27,7 @@ public class WebShouldHaveLabelStringMatcher implements WebGetLabelAvailableMatc
 
     @Override
     public void check(@NotNull WebGetLabelAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_TEXT_LABEL_METHOD, elementName, expectedText)
                 : assertInvocation(SHOULD_NOT_HAVE_TEXT_LABEL_METHOD, elementName, expectedText);

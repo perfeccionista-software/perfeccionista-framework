@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,10 +40,10 @@ public class ClasspathScanner {
     private static final String PACKAGE_SEPARATOR_STRING = String.valueOf(PACKAGE_SEPARATOR_CHAR);
     private static final String MALFORMED_CLASS_NAME_ERROR_MESSAGE = "Malformed class name";
     private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
-    private static final Set<String> RESTRICTED_KEYWORDS = Set.of("_",
+    private static final Set<String> RESTRICTED_KEYWORDS = new HashSet<>(Arrays.asList("_",
             "abstract", "assert", "break", "case", "catch", "const", "continue", "default", "do", "else", "enum", "false", "final", "finally",
             "for", "goto", "if", "import", "instanceof", "native", "new", "null", "private", "protected", "public", "return", "static",
-            "strictfp", "super", "switch", "synchronized", "this", "throw", "transient", "true", "try", "volatile", "while");
+            "strictfp", "super", "switch", "synchronized", "this", "throw", "transient", "true", "try", "volatile", "while"));
 
     private final ClassLoader classLoader;
 

@@ -22,7 +22,7 @@ public class MobileTypeTextOperationType implements MobileElementOperationType<V
     private MobileTypeTextOperationType(MobileChildElementBase element, String text) {
         this.element = element;
         this.text = text;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(TYPE_TEXT_METHOD, elementName, text);
     }
 

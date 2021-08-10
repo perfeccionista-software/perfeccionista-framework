@@ -8,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.dispatcher.LocalWebBrowserSeleniu
 import io.perfeccionista.framework.pagefactory.dispatcher.type.OperaType;
 import org.openqa.selenium.opera.OperaOptions;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static io.perfeccionista.framework.utils.StringUtils.isNotBlank;
 import static io.perfeccionista.framework.value.Values.stringProcess;
@@ -27,7 +27,7 @@ public class OperaLocal implements WebBrowserConfiguration {
     }
 
     protected WebBrowserBinaryResolver getWebDriverBinaryResolver() {
-        return WebBrowserBinaryResolver.of(Path.of(stringProcess("${[config] perfeccionista.browser.opera.webdriver}")));
+        return WebBrowserBinaryResolver.of(Paths.get(stringProcess("${[config] perfeccionista.browser.opera.webdriver}")));
     }
 
 }

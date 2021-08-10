@@ -11,6 +11,7 @@ import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -28,9 +29,9 @@ public class TestMethodLocalFirstEnvironmentConfiguration extends DefaultEnviron
                 .setOrder(4);
 
         return Stream.of(
-                Map.entry(TestService2.class, testService2),
-                Map.entry(TestService3.class, testService3),
-                Map.entry(TestService4.class, testService4)
+                new SimpleEntry<>(TestService2.class, testService2),
+                new SimpleEntry<>(TestService3.class, testService3),
+                new SimpleEntry<>(TestService4.class, testService4)
         ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

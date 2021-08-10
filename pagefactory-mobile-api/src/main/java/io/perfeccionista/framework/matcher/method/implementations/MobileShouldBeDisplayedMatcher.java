@@ -35,7 +35,7 @@ public class MobileShouldBeDisplayedMatcher implements MobileIsDisplayedAvailabl
 
     @Override
     public void check(@NotNull MobileIsDisplayedAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_BE_DISPLAYED_METHOD, elementName)
                 : assertInvocation(SHOULD_NOT_BE_DISPLAYED_METHOD, elementName);

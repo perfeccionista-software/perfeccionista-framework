@@ -34,12 +34,12 @@ class WebRadioGroupFiltersTest extends AbstractWebSeleniumParallelTest {
 
     @Test
     void webRadioGroupFilterEmptyConditionTest() {
-        var context = initWebPageContext();
+        WebPageContext context = initWebPageContext();
         context.getPage(HomePage.class).leftMenu()
                 .select(stringEquals("Elements"));
 
-        var elementsPage = context.getPage(ElementsPage.class);
-        var radioGroup = elementsPage.radioGroup()
+        ElementsPage elementsPage = context.getPage(ElementsPage.class);
+        WebRadioGroup radioGroup = elementsPage.radioGroup()
                 .should(beDisplayed());
 
         radioGroup.filterBuilder(emptyWebRadioButtonFilter())

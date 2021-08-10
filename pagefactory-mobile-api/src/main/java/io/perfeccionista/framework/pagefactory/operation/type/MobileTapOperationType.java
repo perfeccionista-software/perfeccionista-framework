@@ -20,7 +20,7 @@ public class MobileTapOperationType implements MobileElementOperationType<Void> 
 
     private MobileTapOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(SINGLE_TAP_METHOD, elementName);
     }
 

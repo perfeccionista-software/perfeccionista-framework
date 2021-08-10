@@ -20,7 +20,7 @@ public class WebScrollToOperationType implements WebElementOperationType<Void> {
 
     private WebScrollToOperationType(WebScrollToAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(SCROLL_TO_METHOD, elementName);
     }
 

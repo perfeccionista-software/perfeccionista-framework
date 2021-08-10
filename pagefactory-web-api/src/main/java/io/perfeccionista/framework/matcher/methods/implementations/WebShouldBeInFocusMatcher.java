@@ -25,7 +25,7 @@ public class WebShouldBeInFocusMatcher implements WebIsInFocusAvailableMatcher {
 
     @Override
     public void check(@NotNull WebIsInFocusAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_BE_IN_FOCUS_METHOD, elementName)
                 : assertInvocation(SHOULD_NOT_BE_IN_FOCUS_METHOD, elementName);

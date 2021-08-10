@@ -4,6 +4,7 @@ import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ public class StringContainsAnyChecker extends AbstractStringChecker {
 
     public StringContainsAnyChecker(@NotNull Environment environment, @NotNull Collection<String> expectedValues) {
         super(environment);
-        this.expectedValues = Set.copyOf(expectedValues);
+        this.expectedValues = new HashSet<>(expectedValues);
     }
 
     @Override

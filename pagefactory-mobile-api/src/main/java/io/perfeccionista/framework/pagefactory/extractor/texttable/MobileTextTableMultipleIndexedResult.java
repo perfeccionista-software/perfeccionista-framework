@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.extractor.texttable;
 
 import io.perfeccionista.framework.exceptions.attachments.MobileExtractorDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.MobileFilterBuilderDescriptionAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.MobileTextTable;
 import io.perfeccionista.framework.pagefactory.filter.texttable.MobileTextTableFilter;
@@ -50,8 +51,8 @@ public class MobileTextTableMultipleIndexedResult<T> implements MobileMultipleIn
 
     @Override
     public Map<Integer, T> getResults() {
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> extractor.extractValues(filterBuilder.build(element)));
@@ -60,8 +61,8 @@ public class MobileTextTableMultipleIndexedResult<T> implements MobileMultipleIn
     @Override
     public int getSize() {
         MobileTextTableFilter webTextTableFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
         return runCheck(invocationInfo, () -> webTextTableFilter.getFilterResult().getIndexes().size());
     }

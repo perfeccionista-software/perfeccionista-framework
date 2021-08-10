@@ -36,7 +36,7 @@ public class WebShouldBePresentMatcher implements WebIsPresentAvailableMatcher {
 
     @Override
     public void check(@NotNull WebIsPresentAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationInfo = positive
                 ? assertInvocation(SHOULD_BE_PRESENT_METHOD, elementName)
                 : assertInvocation(SHOULD_NOT_BE_PRESENT_METHOD, elementName);

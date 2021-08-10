@@ -21,7 +21,7 @@ public class WebGetScreenshotOperationType implements WebElementOperationType<Sc
 
     private WebGetScreenshotOperationType(WebGetScreenshotAvailable element, String componentName) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_SCREENSHOT_METHOD, elementName, componentName);
     }
 

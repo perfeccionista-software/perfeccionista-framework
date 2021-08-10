@@ -20,7 +20,7 @@ public class MobileScrollToOperationType implements MobileElementOperationType<V
 
     private MobileScrollToOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(SCROLL_TO_METHOD, elementName);
     }
 

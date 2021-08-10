@@ -19,7 +19,7 @@ public class WebShouldHaveNonNullResultMatcher<T> implements WebMultipleIndexedR
     @Override
     public void check(@NotNull WebMultipleIndexedResult<T, ? extends WebChildElement> result) {
         WebChildElement element = result.getElement();
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
 
         InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_NOT_NULL_RESULT_METHOD, elementName);
 

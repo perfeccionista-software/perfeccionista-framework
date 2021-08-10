@@ -28,7 +28,7 @@ public class MobileShouldHaveTextNumberValueMatcher implements MobileGetTextAvai
 
     @Override
     public void check(@NotNull MobileGetTextAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_NUMBER_METHOD, elementName, expectedNumberValue.getShortDescription())
                 : assertInvocation(SHOULD_NOT_HAVE_NUMBER_METHOD, elementName, expectedNumberValue.getShortDescription());

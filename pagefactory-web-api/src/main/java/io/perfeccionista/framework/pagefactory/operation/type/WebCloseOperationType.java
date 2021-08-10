@@ -20,7 +20,7 @@ public class WebCloseOperationType implements WebElementOperationType<Void> {
 
     private WebCloseOperationType(WebDropDownAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(CLOSE_METHOD, elementName);
     }
 

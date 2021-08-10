@@ -72,7 +72,7 @@ public class PerfeccionistaRuntimeException extends RuntimeException implements 
 
     @Override
     public PerfeccionistaRuntimeException addFirstAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
-        if (getAttachment().isEmpty()) {
+        if (!getAttachment().isPresent()) {
             this.attachment = Attachment.with();
         }
         this.attachment.addFirstAttachmentEntry(attachmentEntry);
@@ -81,7 +81,7 @@ public class PerfeccionistaRuntimeException extends RuntimeException implements 
 
     @Override
     public PerfeccionistaRuntimeException addLastAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
-        if (getAttachment().isEmpty()) {
+        if (!getAttachment().isPresent()) {
             this.attachment = Attachment.with();
         }
         this.attachment.addLastAttachmentEntry(attachmentEntry);

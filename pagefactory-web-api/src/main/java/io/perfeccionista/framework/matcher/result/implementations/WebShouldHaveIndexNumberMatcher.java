@@ -32,7 +32,7 @@ public class WebShouldHaveIndexNumberMatcher implements WebIndexesMatcher {
     @Override
     public void check(@NotNull WebMultipleIndexedResult<Integer, ? extends WebChildElement> result) {
         WebChildElement element = result.getElement();
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
 
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_INDEX_METHOD, elementName, String.valueOf(expectedIndex))

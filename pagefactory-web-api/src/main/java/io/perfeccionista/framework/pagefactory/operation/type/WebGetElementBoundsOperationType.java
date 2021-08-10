@@ -21,7 +21,7 @@ public class WebGetElementBoundsOperationType implements WebElementOperationType
 
     private WebGetElementBoundsOperationType(WebGetElementBoundsAvailable element, String componentName) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_ELEMENT_BOUNDS_METHOD, elementName, componentName);
     }
 

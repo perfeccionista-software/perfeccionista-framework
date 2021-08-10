@@ -20,7 +20,7 @@ public class MobileGetIsOnTheScreenOperationType implements MobileElementOperati
 
     private MobileGetIsOnTheScreenOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_ON_THE_SCREEN_METHOD, elementName);
     }
 

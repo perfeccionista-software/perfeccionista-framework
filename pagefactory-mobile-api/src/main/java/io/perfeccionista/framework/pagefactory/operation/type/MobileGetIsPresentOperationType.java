@@ -20,7 +20,7 @@ public final class MobileGetIsPresentOperationType implements MobileElementOpera
 
     private MobileGetIsPresentOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_PRESENT_METHOD, elementName);
     }
 

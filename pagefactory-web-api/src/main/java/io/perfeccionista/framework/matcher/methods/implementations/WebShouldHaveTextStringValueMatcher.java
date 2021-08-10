@@ -28,7 +28,7 @@ public class WebShouldHaveTextStringValueMatcher implements WebGetTextAvailableM
 
     @Override
     public void check(@NotNull WebGetTextAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_VALUE_METHOD, elementName, expectedStringValue.getShortDescription())
                 : assertInvocation(SHOULD_NOT_HAVE_VALUE_METHOD, elementName, expectedStringValue.getShortDescription());

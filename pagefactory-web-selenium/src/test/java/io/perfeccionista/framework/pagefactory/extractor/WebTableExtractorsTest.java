@@ -5,6 +5,8 @@ import io.perfeccionista.framework.pagefactory.dispatcher.context.WebPageContext
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.pageobjects.HomePage;
 import io.perfeccionista.framework.pagefactory.pageobjects.TablePage;
+import io.perfeccionista.framework.pagefactory.pageobjects.TablePage.TableHeader;
+import io.perfeccionista.framework.pagefactory.pageobjects.TablePage.TableRow;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +22,7 @@ class WebTableExtractorsTest extends AbstractWebSeleniumParallelTest {
                 .select("Table Element");
 
         TablePage tablePage = context.getPage(TablePage.class);
-        WebTable table = tablePage.table()
+        WebTable<TableHeader, TableRow> table = tablePage.table()
                 .should(beDisplayed());
 
     }

@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.extractor.list;
 
 import io.perfeccionista.framework.exceptions.attachments.WebExtractorDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebFilterBuilderDescriptionAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
@@ -51,8 +52,8 @@ public class WebListMultipleIndexedResult<R, T extends WebBlock> implements WebM
 
     @Override
     public Map<Integer, R> getResults() {
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
                 .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> extractor.extractValues(filterBuilder.build(element)));
@@ -61,8 +62,8 @@ public class WebListMultipleIndexedResult<R, T extends WebBlock> implements WebM
     @Override
     public int getSize() {
         WebBlockFilter<T> webListFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
                 .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
         return runCheck(invocationInfo, () -> webListFilter.getFilterResult().getIndexes().size());
     }

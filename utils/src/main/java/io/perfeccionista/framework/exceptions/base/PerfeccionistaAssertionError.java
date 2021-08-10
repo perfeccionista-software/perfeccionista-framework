@@ -72,7 +72,7 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
 
     @Override
     public PerfeccionistaAssertionError addFirstAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
-        if (getAttachment().isEmpty()) {
+        if (!getAttachment().isPresent()) {
             this.attachment = Attachment.with();
         }
         this.attachment.addFirstAttachmentEntry(attachmentEntry);
@@ -81,7 +81,7 @@ public class PerfeccionistaAssertionError extends AssertionError implements Perf
 
     @Override
     public PerfeccionistaAssertionError addLastAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
-        if (getAttachment().isEmpty()) {
+        if (!getAttachment().isPresent()) {
             this.attachment = Attachment.with();
         }
         this.attachment.addLastAttachmentEntry(attachmentEntry);

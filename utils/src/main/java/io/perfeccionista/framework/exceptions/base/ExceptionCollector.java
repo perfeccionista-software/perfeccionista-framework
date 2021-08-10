@@ -175,7 +175,12 @@ public class ExceptionCollector {
     }
 
     protected String getDelimiter(int length) {
-        return "=".repeat(length + 2) + "\n";
+        int indent = length + 2;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < indent; i++) {
+            sb.append("=");
+        }
+        return sb.append("\n").toString();
     }
 
 }

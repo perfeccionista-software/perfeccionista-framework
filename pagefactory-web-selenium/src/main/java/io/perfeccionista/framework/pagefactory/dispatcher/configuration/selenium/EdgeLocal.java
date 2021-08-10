@@ -8,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.dispatcher.LocalWebBrowserSeleniu
 import io.perfeccionista.framework.pagefactory.dispatcher.type.EdgeType;
 import org.openqa.selenium.edge.EdgeOptions;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static io.perfeccionista.framework.value.Values.stringProcess;
 
@@ -22,7 +22,7 @@ public class EdgeLocal implements WebBrowserConfiguration {
     }
 
     protected WebBrowserBinaryResolver getWebDriverBinaryResolver() {
-        return WebBrowserBinaryResolver.of(Path.of(stringProcess("${[config] perfeccionista.browser.edge.webdriver}")));
+        return WebBrowserBinaryResolver.of(Paths.get(stringProcess("${[config] perfeccionista.browser.edge.webdriver}")));
     }
 
 }

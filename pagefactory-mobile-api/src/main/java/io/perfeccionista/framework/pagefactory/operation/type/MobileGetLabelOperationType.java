@@ -20,7 +20,7 @@ public class MobileGetLabelOperationType implements MobileElementOperationType<S
 
     private MobileGetLabelOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_LABEL_METHOD, elementName);
     }
 

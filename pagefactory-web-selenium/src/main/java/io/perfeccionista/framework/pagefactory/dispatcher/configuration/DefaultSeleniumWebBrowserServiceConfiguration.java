@@ -17,6 +17,7 @@ import io.perfeccionista.framework.pagefactory.dispatcher.configuration.selenium
 import io.perfeccionista.framework.pagefactory.dispatcher.configuration.selenium.SafariLocal;
 import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserServiceConfiguration;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -27,26 +28,26 @@ public class DefaultSeleniumWebBrowserServiceConfiguration implements WebBrowser
     @Override
     public Map<String, WebBrowserConfiguration> getWebBrowserConfigurations() {
         return Stream.of(
-                Map.entry("Chrome Local", new ChromeLocal()),
-                Map.entry("Chrome Remote", new ChromeRemote()),
-                Map.entry("Chrome Wdm", new ChromeWdm()),
-                Map.entry("Chrome Wdm Headless", new ChromeWdmHeadless()),
-                Map.entry("Edge Local", new EdgeLocal()),
-                Map.entry("Edge Wdm", new EdgeWdm()),
-                Map.entry("Firefox Local", new FirefoxLocal()),
-                Map.entry("Firefox Remote", new FirefoxRemote()),
-                Map.entry("Firefox Wdm", new FirefoxWdm()),
-                Map.entry("Opera Local", new OperaLocal()),
-                Map.entry("Opera Remote", new OperaRemote()),
-                Map.entry("Opera Wdm", new OperaWdm()),
-                Map.entry("Safari Local", new SafariLocal())
+                new SimpleEntry<>("Chrome Local", new ChromeLocal()),
+                new SimpleEntry<>("Chrome Remote", new ChromeRemote()),
+                new SimpleEntry<>("Chrome Wdm", new ChromeWdm()),
+                new SimpleEntry<>("Chrome Wdm Headless", new ChromeWdmHeadless()),
+                new SimpleEntry<>("Edge Local", new EdgeLocal()),
+                new SimpleEntry<>("Edge Wdm", new EdgeWdm()),
+                new SimpleEntry<>("Firefox Local", new FirefoxLocal()),
+                new SimpleEntry<>("Firefox Remote", new FirefoxRemote()),
+                new SimpleEntry<>("Firefox Wdm", new FirefoxWdm()),
+                new SimpleEntry<>("Opera Local", new OperaLocal()),
+                new SimpleEntry<>("Opera Remote", new OperaRemote()),
+                new SimpleEntry<>("Opera Wdm", new OperaWdm()),
+                new SimpleEntry<>("Safari Local", new SafariLocal())
         ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     @Override
     public Map<Class<? extends WebExceptionMapper>, WebExceptionMapper> getExceptionMappers() {
         return Stream.of(
-                Map.entry(SeleniumExceptionMapper.class, new SeleniumExceptionMapper())
+                new SimpleEntry<>(SeleniumExceptionMapper.class, new SeleniumExceptionMapper())
         ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

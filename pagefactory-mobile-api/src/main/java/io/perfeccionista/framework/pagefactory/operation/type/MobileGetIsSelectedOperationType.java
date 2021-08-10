@@ -20,7 +20,7 @@ public class MobileGetIsSelectedOperationType implements MobileElementOperationT
 
     private MobileGetIsSelectedOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_SELECTED_METHOD, elementName);
     }
 

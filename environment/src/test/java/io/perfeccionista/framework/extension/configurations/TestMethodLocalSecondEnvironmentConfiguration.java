@@ -9,6 +9,7 @@ import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -24,8 +25,8 @@ public class TestMethodLocalSecondEnvironmentConfiguration extends DefaultEnviro
                 .disable();
 
         return Stream.of(
-                Map.entry(TestService1.class, testService1),
-                Map.entry(TestService2.class, testService2)
+                new SimpleEntry<>(TestService1.class, testService1),
+                new SimpleEntry<>(TestService2.class, testService2)
         ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

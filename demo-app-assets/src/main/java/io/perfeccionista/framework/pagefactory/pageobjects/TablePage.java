@@ -19,11 +19,11 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementComponents
 @Name("Страница с таблицей стран")
 public interface TablePage extends AbstractWebPage {
 
-    String CHECKBOX = "Checkbox";
-    String NUMBER = "Number";
-    String SHORT_COUNTRY_NAME = "Short country name";
-    String FULL_COUNTRY_NAME = "Full country name";
-    String POPULATION = "Population";
+    public static final String CHECKBOX = "Checkbox";
+    public static final String NUMBER = "Number";
+    public static final String SHORT_COUNTRY_NAME = "Short country name";
+    public static final String FULL_COUNTRY_NAME = "Full country name";
+    public static final String POPULATION = "Population";
 
     @Name("Table of countries")
     @Name("Таблица стран")

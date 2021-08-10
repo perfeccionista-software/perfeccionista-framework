@@ -20,7 +20,7 @@ public class MobileGetIsInFocusOperationType implements MobileElementOperationTy
 
     private MobileGetIsInFocusOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_IN_FOCUS_METHOD, elementName);
     }
 

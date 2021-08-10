@@ -53,7 +53,7 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
         getWebPageContext().execute(context -> {
             WebChildElement sourceElement = elementSourceFinder.getElement(context, WebChildElement.class);
             WebChildElement targetElement = elementTargetFinder.getElement(context, WebChildElement.class);
-            sourceElement.executeAction("Drag and drop", targetElement.getElementBounds().getCenter());
+            sourceElement.executeAction("Drag and Drop", targetElement.getElementBounds().getCenter());
         });
     }
 

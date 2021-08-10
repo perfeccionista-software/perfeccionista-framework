@@ -12,8 +12,10 @@ import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +38,7 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        deleteFileIgnoreExceptions(Path.of(getHome() + "/Downloads/images/simple-button.png"));
+        deleteFileIgnoreExceptions(Paths.get(getHome() + "/Downloads/images/simple-button.png"));
         Screenshot screenshot = runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-button")
@@ -51,7 +53,7 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
                     })
                     .getResult();
         });
-        screenshot.writeToFile(Path.of(getHome() + "/Downloads/images/simple-button.png"));
+        screenshot.writeToFile(Paths.get(getHome() + "/Downloads/images/simple-button.png"));
     }
 
     @Test
@@ -65,9 +67,9 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        Set<Integer> indexes = Set.of(7, 56, 125, 170, 171);
+        Set<Integer> indexes = new HashSet<>(Arrays.asList(7, 56, 125, 170, 171));
         indexes.forEach(index -> {
-            deleteFileIgnoreExceptions(Path.of(getHome() + "/Downloads/images/" + index + "-list-item.jpg"));
+            deleteFileIgnoreExceptions(Paths.get(getHome() + "/Downloads/images/" + index + "-list-item.jpg"));
         });
         Map<Integer, Screenshot> screenshots = runCheck(() -> {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
@@ -82,7 +84,7 @@ class GetScreenshotTest extends AbstractWebSeleniumParallelTest {
                     .getResults();
         });
         screenshots.entrySet().forEach((entry) -> {
-                    entry.getValue().writeToFile(Path.of(getHome() + "/Downloads/images/" + entry.getKey() + "-list-item.jpg"));
+                    entry.getValue().writeToFile(Paths.get(getHome() + "/Downloads/images/" + entry.getKey() + "-list-item.jpg"));
                 });
     }
 

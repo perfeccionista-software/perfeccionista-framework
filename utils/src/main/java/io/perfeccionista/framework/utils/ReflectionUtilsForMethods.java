@@ -24,7 +24,6 @@ import static io.perfeccionista.framework.utils.ReflectionUtils.makeAccessible;
 import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toUnmodifiableList;
 
 public class ReflectionUtilsForMethods {
 
@@ -101,9 +100,9 @@ public class ReflectionUtilsForMethods {
     }
 
     public static List<Method> findMethods(@NotNull Class<?> clazz, @NotNull Predicate<Method> predicate, @NotNull HierarchyTraversalMode traversalMode) {
-        return findAllMethodsInHierarchy(clazz, traversalMode).stream()
+        return Collections.unmodifiableList(findAllMethodsInHierarchy(clazz, traversalMode).stream()
                 .filter(predicate)
-                .collect(toUnmodifiableList());
+                .collect(toList()));
     }
 
     private static List<Method> findAllMethodsInHierarchy(Class<?> clazz, HierarchyTraversalMode traversalMode) {

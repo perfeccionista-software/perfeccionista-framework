@@ -11,7 +11,8 @@ import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
@@ -82,7 +83,7 @@ class ScrollToTest extends AbstractWebSeleniumParallelTest {
             WebLocatorChain scrollToLocatorChain = WebLocatorChain.empty()
                     .addLastLocator(WebLocatorHolder.of("ROOT", ID, "text-list"))
                     .addLastLocator(WebLocatorHolder.of("LI", CLASS_NAME, "list-group-item")
-                            .setSingle(false).setIndexes(Set.of(4, 65, 78, 170)));
+                            .setSingle(false).setIndexes(new HashSet<>(Arrays.asList(4, 65, 78, 170))));
             WebElementOperation<Void> scrollToOperation = WebElementOperation.of(scrollToLocatorChain, new JsScrollTo()
                     .setDelay(Duration.ofMillis(100)));
             browser.executor()

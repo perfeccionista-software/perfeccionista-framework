@@ -30,7 +30,7 @@ public class WebShouldHaveSizeNumberValueMatcher implements WebIndexesMatcher {
     @Override
     public void check(@NotNull WebMultipleIndexedResult<Integer, ? extends WebChildElement> result) {
         WebChildElement element = result.getElement();
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
 
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_SIZE_VALUE_METHOD, elementName, expectedValue.getShortDescription())

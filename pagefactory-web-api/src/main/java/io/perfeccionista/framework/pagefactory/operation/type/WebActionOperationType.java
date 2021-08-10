@@ -27,8 +27,8 @@ public class WebActionOperationType implements WebElementOperationType<Void> {
         this.element = element;
         this.endpointHandlerName = endpointHandlerName;
         this.args = args;
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var argsAsString = Arrays.stream(args).map(Object::toString).collect(Collectors.joining("; "));
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        String argsAsString = Arrays.stream(args).map(Object::toString).collect(Collectors.joining("; "));
         this.invocationInfo = actionInvocation(EXECUTE_ACTION, elementName, endpointHandlerName, argsAsString);
     }
 

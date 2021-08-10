@@ -32,8 +32,8 @@ Feature: WebCheckbox element feature
     * element "Checkbox one" does not have dimensions "276.3 x 24.0"
     * element "Checkbox one" does not have dimensions "276.3 x 24.0 (0.2)"
 
-    * element "Checkbox one" has location "(448.0, 685.375)"
-    * element "Checkbox one" has location "(448.0, 685.375) (0.2)"
+    * element "Checkbox one" has location "(345.0, 673.375)"
+    * element "Checkbox one" has location "(345.0, 673.375) (0.2)"
     * element "Checkbox one" does not have location "(548.0, 685.375)"
     * element "Checkbox one" does not have location "(548.0, 685.375) (0.2)"
 

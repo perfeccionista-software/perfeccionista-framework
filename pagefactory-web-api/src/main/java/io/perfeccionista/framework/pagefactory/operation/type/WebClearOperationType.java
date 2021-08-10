@@ -20,7 +20,7 @@ public class WebClearOperationType implements WebElementOperationType<Void> {
 
     private WebClearOperationType(WebInputTextAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(CLEAR_METHOD, elementName);
 
     }

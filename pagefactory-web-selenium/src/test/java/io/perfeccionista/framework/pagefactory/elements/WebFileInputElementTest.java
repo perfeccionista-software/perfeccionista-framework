@@ -29,7 +29,7 @@ import io.perfeccionista.framework.utils.FileUtils;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
@@ -37,8 +37,9 @@ import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLICK_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ELEMENT_BOUNDS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.IS_ON_THE_SCREEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SET_FILENAME_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_FILE_EXIST_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.UPLOAD_FROM_CLASSPATH_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.UPLOAD_FROM_FILE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLEAR_METHOD;
@@ -86,7 +87,8 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 // WebTextInput
                 () -> assertNotNull(fileInput.getEndpointHandler(CLEAR_METHOD, Void.class)),
                 () -> assertNotNull(fileInput.getEndpointHandler(CLICK_METHOD, Void.class)),
-                () -> assertNotNull(fileInput.getEndpointHandler(SET_FILENAME_METHOD, Void.class)),
+                () -> assertNotNull(fileInput.getEndpointHandler(UPLOAD_FROM_CLASSPATH_METHOD, Void.class)),
+                () -> assertNotNull(fileInput.getEndpointHandler(UPLOAD_FROM_FILE_METHOD, Void.class)),
                 () -> assertNotNull(fileInput.getEndpointHandler(IS_ENABLED_METHOD, Boolean.class)),
                 () -> assertNotNull(fileInput.getEndpointHandler(GET_TEXT_METHOD, String.class)),
                 () -> assertNotNull(fileInput.getEndpointHandler(GET_LABEL_METHOD, String.class)),
@@ -207,7 +209,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(haveText(stringContains("test.data.properties")))
                 .clear()
                 .should(haveText(stringEmpty()))
-                .uploadFromFile(Path.of(filePath))
+                .uploadFromFile(Paths.get(filePath))
                 .should(haveText(stringContains("test.data.properties")));
     }
 
@@ -272,13 +274,13 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
         ElementsPage elementsPage = context.getPage(ElementsPage.class);
         String separator = System.getProperty("file.separator");
         String downloadFile = System.getProperty("user.home") + separator + "Downloads" + separator + "LICENSE.txt";
-        deleteFileIgnoreExceptions(Path.of(downloadFile));
+        deleteFileIgnoreExceptions(Paths.get(downloadFile));
         elementsPage.fileDownloadLink()
                 .should(beDisplayed())
                 .click()
                 .should((WebTextMatcher) element -> {
                     runCheck(InvocationInfo.assertInvocation(SHOULD_FILE_EXIST_METHOD, element.getElementIdentifier().getLastUsedName()),
-                            () -> FileUtils.fileShouldExist(Path.of(downloadFile)));
+                            () -> FileUtils.fileShouldExist(Paths.get(downloadFile)));
                 });
     }
 

@@ -25,7 +25,7 @@ public class MobileCheckStringAttributeValueOperationType implements MobileEleme
         this.element = element;
         this.attributeName = attributeName;
         this.expectedValue = expectedValue;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(CHECK_STRING_ATTRIBUTE_VALUE_METHOD, elementName, attributeName, expectedValue.getShortDescription());
     }
 

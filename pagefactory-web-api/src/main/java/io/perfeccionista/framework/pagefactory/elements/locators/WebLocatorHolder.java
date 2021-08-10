@@ -139,7 +139,7 @@ public class WebLocatorHolder implements JsonSerializable {
     }
 
     public @Nullable Set<Integer> getIndexes() {
-        return Objects.isNull(indexes) ? null : Set.copyOf(indexes);
+        return Objects.isNull(indexes) ? null : new HashSet<>(indexes);
     }
 
     public boolean isSingle() {

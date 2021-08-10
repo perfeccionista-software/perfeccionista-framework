@@ -9,6 +9,7 @@ import io.perfeccionista.framework.cucumber.parameters.WebBlockElementParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebListBlockValueExtractorParameter;
 import io.perfeccionista.framework.cucumber.parameters.reference.SourceParameterReference;
+import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebTextList;
@@ -73,10 +74,10 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
     @Given("list {webElement} has {integerValue} block(s) with")
     public void filteredListHasSize(WebElementParameter<WebList> elementFinder,
                                     ValueIntegerParameter integerValue,
-                                    WebBlockFilterBuilder<?> itemFilter) {
+                                    WebBlockFilterBuilder<WebBlock> itemFilter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebList.class)
-                        .filter(block -> itemFilter)
+                        .filterBuilder(itemFilter)
                         .should(haveSize(integerValue.getValue())));
     }
 
@@ -152,10 +153,10 @@ public class WebListCheckStepDefinitions implements WebStepDefinitions {
                                    @SourceParameterReference("elementFinder") WebBlockElementParameter<WebChildElement> blockElementFinder,
                                    StringComparatorTypeParameter comparatorType,
                                    SortDirectionParameter sortDirection,
-                                   WebBlockFilterBuilder<?> itemFilter) {
+                                   WebBlockFilterBuilder itemFilter) {
         getWebPageContext().execute(context ->
                         elementFinder.getElement(context, WebList.class)
-                                .filter(block -> itemFilter)
+                                .filterBuilder(itemFilter)
                                 .extractAll(valueExtractor.createExtractorFor(blockElementFinder.getRaw()))
                                 .should(beSorted(comparatorType.findComparatorForDirection(sortDirection.getDirection()))));
     }

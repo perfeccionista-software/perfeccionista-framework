@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.measurements.Dimensions2D;
-import io.perfeccionista.framework.measurements.Location2D;
 import io.perfeccionista.framework.measurements.Offsets2D;
 import io.perfeccionista.framework.measurements.Point2D;
 

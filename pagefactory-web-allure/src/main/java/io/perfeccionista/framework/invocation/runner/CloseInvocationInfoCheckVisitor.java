@@ -28,7 +28,7 @@ public class CloseInvocationInfoCheckVisitor implements Consumer<InvocationInfo>
         if (EXCEPTION == invocationInfo.getLastStatus()) {
             boolean primaryExceptionProcessed = Optional.ofNullable(WebAllureCheckInvocationRunner.primaryExceptionProcessed.get())
                     .orElse(false);
-            var throwable = invocationInfo.getResults().getLast()
+            Throwable throwable = invocationInfo.getResults().getLast()
                     .getThrowable()
                     .orElseThrow(() -> PreconditionViolation.exception("Exception status is set together with the exception"));
             if (!primaryExceptionProcessed) {

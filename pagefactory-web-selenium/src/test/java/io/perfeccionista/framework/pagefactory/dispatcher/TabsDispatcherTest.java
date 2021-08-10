@@ -8,6 +8,7 @@ import io.perfeccionista.framework.pagefactory.pageobjects.ListElementsPage;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static io.perfeccionista.framework.Web.*;
@@ -31,8 +32,8 @@ class TabsDispatcherTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals(1, browser.tabs().getTabCount()),
                 () -> assertEquals("Perfeccionista Portal: Home", browser.tabs().getActiveTabTitle()),
                 () -> assertEquals(stringProcess("${[config] start_url}"), browser.tabs().getActiveTabUrl()),
-                () -> assertEquals(List.of("Perfeccionista Portal: Home"), browser.tabs().getAllTabTitles()),
-                () -> assertEquals(List.of(stringProcess("${[config] start_url}")), browser.tabs().getAllTabUrls())
+                () -> assertEquals(Arrays.asList("Perfeccionista Portal: Home"), browser.tabs().getAllTabTitles()),
+                () -> assertEquals(Arrays.asList(stringProcess("${[config] start_url}")), browser.tabs().getAllTabUrls())
         );
 
         browser.tabs()
@@ -57,11 +58,11 @@ class TabsDispatcherTest extends AbstractWebSeleniumParallelTest {
                 () -> assertEquals("Perfeccionista Portal: Elements", browser.tabs().getActiveTabTitle()),
                 () -> assertEquals(stringProcess("${[config] start_url}elements"), browser.tabs().getActiveTabUrl()),
                 () -> {
-                    List<String> expectedTitles = List.of("Perfeccionista Portal: Home", "Perfeccionista Portal: Elements");
+                    List<String> expectedTitles = Arrays.asList("Perfeccionista Portal: Home", "Perfeccionista Portal: Elements");
                     assertEquals(expectedTitles, browser.tabs().getAllTabTitles());
                 },
                 () -> {
-                    List<String> expectedUrls = List.of(
+                    List<String> expectedUrls = Arrays.asList(
                             stringProcess("${[config] start_url}"),
                             stringProcess("${[config] start_url}elements")
                     );

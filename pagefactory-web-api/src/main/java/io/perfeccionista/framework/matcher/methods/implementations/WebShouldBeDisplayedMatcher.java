@@ -35,7 +35,7 @@ public class WebShouldBeDisplayedMatcher implements WebIsDisplayedAvailableMatch
 
     @Override
     public void check(@NotNull WebChildElement element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationInfo = positive
                 ? assertInvocation(SHOULD_BE_DISPLAYED_METHOD, elementName)
                 : assertInvocation(SHOULD_NOT_BE_DISPLAYED_METHOD, elementName);

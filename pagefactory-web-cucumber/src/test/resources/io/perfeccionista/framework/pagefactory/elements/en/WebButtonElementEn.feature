@@ -26,8 +26,8 @@ Feature: WebButton element feature
     * element "Simple button" does not have dimensions "227.6 x 38.0"
     * element "Simple button" does not have dimensions "227.6 x 38.0 (0.2)"
 
-    * element "Simple button" has location "(472.3, 333.4)"
-    * element "Simple button" has location "(472.3, 333.4) (0.2)"
+    * element "Simple button" has location "(369.3, 314.4)"
+    * element "Simple button" has location "(369.3, 314.4) (0.2)"
     * element "Simple button" does not have location "(572.3, 333.4)"
     * element "Simple button" does not have location "(572.3, 333.4) (0.2)"
 

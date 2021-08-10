@@ -20,7 +20,7 @@ public class MobileGetIsComponentPresentOperationType implements MobileElementOp
 
     private MobileGetIsComponentPresentOperationType(@NotNull MobileChildElementBase element, @NotNull String componentName) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_COMPONENT_PRESENT_METHOD, elementName, componentName);
     }
 
