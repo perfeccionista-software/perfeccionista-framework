@@ -20,7 +20,7 @@ public class WebGetLabelOperationType implements WebElementOperationType<String>
 
     private WebGetLabelOperationType(WebGetLabelAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_LABEL_METHOD, elementName);
     }
 

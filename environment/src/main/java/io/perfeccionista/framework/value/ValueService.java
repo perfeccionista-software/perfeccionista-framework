@@ -47,7 +47,8 @@ import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
 
 @DefaultServiceConfiguration(DefaultValueServiceConfiguration.class)
 public class ValueService implements Service {
@@ -104,11 +105,11 @@ public class ValueService implements Service {
     }
 
     public StringValue stringContainsAll(@NotNull String... expectedValues) {
-        return new DefaultStringValue(new StringContainsAllChecker(environment, Set.of(expectedValues)));
+        return new DefaultStringValue(new StringContainsAllChecker(environment, new HashSet<>(Arrays.asList(expectedValues))));
     }
 
     public StringValue stringContainsAny(@NotNull String... expectedValues) {
-        return new DefaultStringValue(new StringContainsAnyChecker(environment, Set.of(expectedValues)));
+        return new DefaultStringValue(new StringContainsAnyChecker(environment, new HashSet<>(Arrays.asList(expectedValues))));
     }
 
     public StringValue stringStartsWith(@NotNull String expected) {

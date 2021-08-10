@@ -23,7 +23,7 @@ public class MobileGetColorOperationType implements MobileElementOperationType<C
     private MobileGetColorOperationType(MobileChildElementBase element, String componentName, String property) {
         this.element = element;
         this.property = property;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_COLOR_METHOD, elementName, componentName, property);
     }
 

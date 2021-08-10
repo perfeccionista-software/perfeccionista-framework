@@ -12,11 +12,11 @@ import io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper;
 import io.perfeccionista.framework.invocation.wrapper.LogicInvocationWrapper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.HashMap;
 
 // TODO: Добавить возможность переопределять значения из проперти или переменных окружения
 public class DefaultInvocationServiceConfiguration implements InvocationServiceConfiguration {
-    private static final InvocationInfoNameFormatter DEFAULT_NAME_FORMATTER = new DefaultInvocationInfoNameFormatter(Map.of());
+    private static final InvocationInfoNameFormatter DEFAULT_NAME_FORMATTER = new DefaultInvocationInfoNameFormatter(new HashMap<>());
     private static final InvocationInfoStatisticsFormatter DEFAULT_STATISTICS_FORMATTER = new DefaultInvocationInfoStatisticsFormatter();
 
     @Override

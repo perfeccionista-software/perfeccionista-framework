@@ -23,7 +23,7 @@ public class WebDragAndDropOperationType implements WebElementOperationType<Void
     private WebDragAndDropOperationType(WebChildElement element, Point2D target) {
         this.element = element;
         this.target = target;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(DRAG_AND_DROP_METHOD, elementName, target.toString());
     }
 

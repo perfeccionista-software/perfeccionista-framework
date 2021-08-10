@@ -29,7 +29,7 @@ public class MobileListScrollToVerticallyOperationType implements MobileElementO
         this.element = element;
         this.scrollDirection = scrollDirection;
         this.filterBuilder = filterBuilder;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(LIST_SCROLL_TO_VERTICALLY_METHOD, elementName, scrollDirection.name())
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
     }

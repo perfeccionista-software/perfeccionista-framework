@@ -18,7 +18,7 @@ public class CloseInvocationInfoLogicVisitor implements Consumer<InvocationInfo>
     @Override
     public void accept(InvocationInfo invocationInfo) {
         if (EXCEPTION == invocationInfo.getLastStatus()) {
-            var throwable = invocationInfo.getResults().getLast()
+            Throwable throwable = invocationInfo.getResults().getLast()
                     .getThrowable()
                     .orElseThrow(() -> PreconditionViolation.exception("Exception status is set together with the exception"));
             getLifecycle().updateStep(invocationInfo.getUuid(), step -> step

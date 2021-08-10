@@ -7,7 +7,7 @@ import io.perfeccionista.framework.screenshots.JpegScreenshot;
 import io.perfeccionista.framework.screenshots.PngScreenshot;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SCREENSHOT_MIME_TYPE_NOT_SUPPORTED;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
@@ -41,10 +41,10 @@ public class JsSaveImageToFile implements EndpointHandler<Void> {
         String mimeType = dataUrl.substring(dataUrl.indexOf(':') + 1, dataUrl.indexOf(';'));
         switch (mimeType) {
             case "image/png":
-                PngScreenshot.from(raw).writeToFile(Path.of(filePath));
+                PngScreenshot.from(raw).writeToFile(Paths.get(filePath));
                 break;
             case "image/jpeg":
-                JpegScreenshot.from(raw).writeToFile(Path.of(filePath));
+                JpegScreenshot.from(raw).writeToFile(Paths.get(filePath));
                 break;
             default:
                 throw UnsupportedScreenshotMimeType.exception(SCREENSHOT_MIME_TYPE_NOT_SUPPORTED.getMessage(mimeType));

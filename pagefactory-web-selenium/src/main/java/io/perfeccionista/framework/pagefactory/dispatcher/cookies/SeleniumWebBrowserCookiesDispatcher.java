@@ -3,6 +3,7 @@ package io.perfeccionista.framework.pagefactory.dispatcher.cookies;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -58,7 +59,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher addCookie(@NotNull Cookie cookie) {
-        var invocationInfo = actionInvocation(BROWSER_ADD_COOKIE_METHOD)
+        InvocationInfo invocationInfo = actionInvocation(BROWSER_ADD_COOKIE_METHOD)
                 .addAttachmentEntry(TextAttachmentEntry.of("Cookie", cookie.toFormattedString()));
         runCheck(invocationInfo, () ->
                 exceptionMapper.map(() -> instance.manage()
@@ -82,7 +83,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher deleteCookie(@NotNull Cookie cookie) {
-        var invocationInfo = actionInvocation(BROWSER_DELETE_COOKIE_METHOD)
+        InvocationInfo invocationInfo = actionInvocation(BROWSER_DELETE_COOKIE_METHOD)
                 .addAttachmentEntry(TextAttachmentEntry.of("Cookie", cookie.toFormattedString()));
         runCheck(invocationInfo, () ->
                 exceptionMapper.map(() -> instance.manage()

@@ -21,7 +21,7 @@ public class MobileClearOperationType implements MobileElementOperationType<Void
 
     private MobileClearOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(CLEAR_METHOD, elementName);
     }
 

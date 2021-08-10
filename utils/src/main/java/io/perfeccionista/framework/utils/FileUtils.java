@@ -25,6 +25,9 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -166,8 +169,8 @@ public class FileUtils {
     }
 
     public static String readTextFile(@NotNull URL url, @NotNull Charset charset) {
-        var stringBuilder = new StringBuilder();
-        var file = new File(url.getFile());
+        StringBuilder stringBuilder = new StringBuilder();
+        File file = new File(url.getFile());
         if (!file.isFile()) {
             throw FileReadingFailed.exception(TARGET_IS_NOT_A_FILE.getMessage(url));
         }
@@ -184,8 +187,8 @@ public class FileUtils {
             return Optional.ofNullable(propertiesCache.get(propertyFileName))
                     .orElseThrow(() -> FileNotExist.exception(FILE_NOT_EXIST.getMessage(propertyFileName)));
         }
-        try (var fileInputStreamReader = new InputStreamReader(new FileInputStream(propertyFileName), UTF_8)) {
-            var properties = new Properties();
+        try (InputStreamReader fileInputStreamReader = new InputStreamReader(new FileInputStream(propertyFileName), UTF_8)) {
+            Properties properties = new Properties();
             properties.load(fileInputStreamReader);
             cachePropertyFile(propertyFileName, properties);
             return properties;
@@ -203,8 +206,8 @@ public class FileUtils {
             cachePropertyFile(propertyFileName, null);
             return Optional.empty();
         }
-        try (var fileInputStreamReader = new InputStreamReader(resource.openStream(), UTF_8)) {
-            var properties = new Properties();
+        try (InputStreamReader fileInputStreamReader = new InputStreamReader(resource.openStream(), UTF_8)) {
+            Properties properties = new Properties();
             properties.load(fileInputStreamReader);
             cachePropertyFile(propertyFileName, properties);
             return Optional.of(properties);
@@ -219,12 +222,12 @@ public class FileUtils {
     }
 
     public static Map<String, String> readPropertyFileAsMap(@NotNull URL url, @NotNull Charset charset) {
-        return readTextFile(url, charset)
-                .lines()
+        return Arrays.stream(readTextFile(url, charset)
+                .split(System.lineSeparator()))
                 .filter(line -> line.contains("="))
                 .map(line -> {
                     int delimiterIndex = line.indexOf("=");
-                    return Map.entry(line.substring(0, delimiterIndex).trim(), line.substring(delimiterIndex + 1).trim());
+                    return new SimpleEntry<>(line.substring(0, delimiterIndex).trim(), line.substring(delimiterIndex + 1).trim());
                 }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
@@ -237,7 +240,7 @@ public class FileUtils {
             URI resourceUri = resourceUrl.toURI();
             Path fileFromResource = resourceUri.isOpaque()
                     ? copyUrlToTemporaryFile(resourceUrl)
-                    : Path.of(resourceUri);
+                    : Paths.get(resourceUri);
             fileShouldExist(fileFromResource);
             return fileFromResource;
         } catch (URISyntaxException e) {

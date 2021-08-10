@@ -20,7 +20,7 @@ public class MobileCloseOperationType implements MobileElementOperationType<Void
 
     private MobileCloseOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(CLOSE_METHOD, elementName);
     }
 

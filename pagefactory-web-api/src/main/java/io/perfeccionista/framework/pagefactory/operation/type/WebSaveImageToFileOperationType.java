@@ -22,7 +22,7 @@ public class WebSaveImageToFileOperationType implements WebElementOperationType<
     private WebSaveImageToFileOperationType(WebImage element, String filePath) {
         this.element = element;
         this.filePath = filePath;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(SAVE_IMAGE_TO_FILE_METHOD, elementName, filePath);
     }
 

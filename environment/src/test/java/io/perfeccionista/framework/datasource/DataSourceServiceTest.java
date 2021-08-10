@@ -18,7 +18,7 @@ class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
     void dataSourceServiceInitializationTest(Environment environment) {
-        var dataSourceService = environment.getService(DataSourceService.class);
+        DataSourceService dataSourceService = environment.getService(DataSourceService.class);
         assertAll(
                 () -> assertNotNull(dataSourceService),
                 () -> assertEquals(6, dataSourceService.stream().count())
@@ -27,7 +27,7 @@ class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
     void dataSourceTest(Environment environment) {
-        var dataSourceService = environment.getService(DataSourceService.class);
+        DataSourceService dataSourceService = environment.getService(DataSourceService.class);
         assertAll(
                 () -> assertNotNull(dataSourceService),
                 () -> assertNotNull(dataSourceService.get(StashDataSource.class)),
@@ -40,19 +40,19 @@ class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
     void dataSourceProcessingTest(Environment environment) {
-        var dataSourceService = environment.getService(DataSourceService.class);
+        DataSourceService dataSourceService = environment.getService(DataSourceService.class);
         assertAll(
                 () -> assertNotNull(dataSourceService),
                 () -> {
-                    var simpleDataSource = dataSourceService.get(SimpleDataSource.class);
+                    SimpleDataSource simpleDataSource = dataSourceService.get(SimpleDataSource.class);
                     assertAll(
                             () -> assertNotNull(simpleDataSource),
                             () -> {
-                                var user = simpleDataSource.get("Jack");
+                                User user = simpleDataSource.get("Jack");
                                 assertEquals(new User("Jack", "Black"), user);
                             },
                             () -> {
-                                var professionalUser = simpleDataSource.get("Professional John", Professional.class);
+                                Professional professionalUser = simpleDataSource.get("Professional John", Professional.class);
                                 assertEquals(new Professional("Professional John", "White"), professionalUser);
                                 assertEquals("Jack Black", simpleDataSource.getString("Jack"));
                             }

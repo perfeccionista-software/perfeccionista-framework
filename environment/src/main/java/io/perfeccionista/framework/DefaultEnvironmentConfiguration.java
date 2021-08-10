@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Modifier;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,7 +46,7 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
         // Сканируем все заданные пакеты (дефолтный и дополнительные) и находим сервисы
         Map<Class<? extends Service>, ConfiguredServiceHolder> services = findAllServices()
                 .entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey(), ConfiguredServiceHolder.of(entry.getKey(), entry.getValue())))
+                .map(entry -> new SimpleEntry<>(entry.getKey(), ConfiguredServiceHolder.of(entry.getKey(), entry.getValue())))
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
         processProperties(perfeccionistaProperties).forEach(services::put);
         processProperties(systemProperties).forEach(services::put);
@@ -65,7 +66,7 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
             return validatePackageSet(new HashSet<>(packages));
         }
 
-        return Set.of(DEFAULT_PACKAGE_TO_SCAN);
+        return new HashSet<>(Arrays.asList(DEFAULT_PACKAGE_TO_SCAN));
     }
 
     protected Map<Class<? extends Service>, Class<? extends ServiceConfiguration>> findAllServices() {
@@ -93,20 +94,20 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
 
     protected Map<Class<? extends Service>, ConfiguredServiceHolder> processProperties(@Nullable Properties properties) {
         if (Objects.isNull(properties)) {
-            return Map.of();
+            return new HashMap<>();
         }
         return properties.entrySet().stream()
-                .map(entry -> Map.entry(entry.getKey().toString(), entry.getValue().toString()))
+                .map(entry -> new SimpleEntry<>(entry.getKey().toString(), entry.getValue().toString()))
                 .filter(entry -> entry.getKey().startsWith(SERVICE_PROPERTY_PREFIX))
                 .map(entry -> {
                     String key = entry.getKey().replaceAll(SERVICE_PROPERTY_PREFIX, "");
                     Class<? extends Service> serviceClass = loadClass(key, Service.class);
                     String value = entry.getValue();
                     if ("disabled".equalsIgnoreCase(value)) {
-                        return Map.entry(serviceClass, ConfiguredServiceHolder.disabled(serviceClass));
+                        return new SimpleEntry<>(serviceClass, ConfiguredServiceHolder.disabled(serviceClass));
                     }
                     Class<? extends ServiceConfiguration> serviceConfigurationClass = loadClass(value, ServiceConfiguration.class);
-                    return Map.entry(serviceClass, ConfiguredServiceHolder.of(serviceClass, serviceConfigurationClass));
+                    return new SimpleEntry<>(serviceClass, ConfiguredServiceHolder.of(serviceClass, serviceConfigurationClass));
                 }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

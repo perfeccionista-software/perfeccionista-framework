@@ -20,7 +20,7 @@ public class MobileGetIsDisplayedOperationType implements MobileElementOperation
 
     private MobileGetIsDisplayedOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_DISPLAYED_METHOD, elementName);
     }
 

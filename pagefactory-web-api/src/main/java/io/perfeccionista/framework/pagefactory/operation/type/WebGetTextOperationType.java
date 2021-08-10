@@ -20,7 +20,7 @@ public class WebGetTextOperationType implements WebElementOperationType<String> 
 
     private WebGetTextOperationType(WebGetTextAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_TEXT_METHOD, elementName);
     }
 

@@ -139,7 +139,12 @@ public class EnvironmentLogger {
     }
 
     private String makeSplitterForLength(int length) {
-        return "-".repeat(Math.max(0, length));
+        int indent = Math.max(0, length);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < indent; i++) {
+            sb.append("-");
+        }
+        return sb.toString();
     }
 
     private String formatToColumn(int columnLength, String columnText) {

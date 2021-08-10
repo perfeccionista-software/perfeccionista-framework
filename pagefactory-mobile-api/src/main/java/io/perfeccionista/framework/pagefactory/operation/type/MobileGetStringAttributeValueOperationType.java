@@ -22,7 +22,7 @@ public class MobileGetStringAttributeValueOperationType implements MobileElement
     private MobileGetStringAttributeValueOperationType(MobileChildElementBase element, String attributeName) {
         this.element = element;
         this.attributeName = attributeName;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_STRING_ATTRIBUTE_VALUE_METHOD, elementName, attributeName);
     }
 

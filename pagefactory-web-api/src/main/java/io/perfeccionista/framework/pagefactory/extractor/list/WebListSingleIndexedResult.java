@@ -6,6 +6,7 @@ import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebExtractorDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebFilterBuilderDescriptionAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
@@ -62,8 +63,8 @@ public class WebListSingleIndexedResult<R, T extends WebBlock> implements WebSin
     @Override
     public @Nullable R getResult() {
         WebBlockFilter<T> webListFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
                 .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> {
@@ -85,8 +86,8 @@ public class WebListSingleIndexedResult<R, T extends WebBlock> implements WebSin
     @Override
     public @NotNull R getNotNullResult() {
         WebBlockFilter<T> webListFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
                 .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> {
@@ -115,8 +116,8 @@ public class WebListSingleIndexedResult<R, T extends WebBlock> implements WebSin
     @Override
     public int getIndex() {
         WebBlockFilter<T> webListFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
                 .addAttachmentEntry(WebFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(WebExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> {

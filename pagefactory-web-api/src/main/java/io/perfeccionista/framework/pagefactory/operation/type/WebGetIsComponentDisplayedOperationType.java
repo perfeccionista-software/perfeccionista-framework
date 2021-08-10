@@ -20,7 +20,7 @@ public class WebGetIsComponentDisplayedOperationType implements WebElementOperat
 
     private WebGetIsComponentDisplayedOperationType(WebComponentAvailable element, String componentName) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_COMPONENT_DISPLAYED_METHOD, elementName, componentName);
     }
 

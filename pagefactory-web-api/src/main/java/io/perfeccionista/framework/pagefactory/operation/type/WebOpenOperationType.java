@@ -20,7 +20,7 @@ public class WebOpenOperationType implements WebElementOperationType<Void> {
 
     private WebOpenOperationType(WebDropDownAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(OPEN_METHOD, elementName);
     }
 

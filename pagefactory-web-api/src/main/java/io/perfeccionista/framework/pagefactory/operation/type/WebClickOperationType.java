@@ -20,7 +20,7 @@ public class WebClickOperationType implements WebElementOperationType<Void> {
 
     private WebClickOperationType(WebClickAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(CLICK_METHOD, elementName);
     }
 

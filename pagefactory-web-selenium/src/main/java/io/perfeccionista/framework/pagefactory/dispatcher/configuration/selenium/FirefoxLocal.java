@@ -8,7 +8,7 @@ import io.perfeccionista.framework.pagefactory.dispatcher.LocalWebBrowserSeleniu
 import io.perfeccionista.framework.pagefactory.dispatcher.type.FirefoxType;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static io.perfeccionista.framework.utils.StringUtils.isNotBlank;
 import static io.perfeccionista.framework.value.Values.stringProcess;
@@ -27,7 +27,7 @@ public class FirefoxLocal implements WebBrowserConfiguration {
     }
 
     protected WebBrowserBinaryResolver getWebDriverBinaryResolver() {
-        return WebBrowserBinaryResolver.of(Path.of(stringProcess("${[config] perfeccionista.browser.firefox.webdriver}")));
+        return WebBrowserBinaryResolver.of(Paths.get(stringProcess("${[config] perfeccionista.browser.firefox.webdriver}")));
     }
 
 }

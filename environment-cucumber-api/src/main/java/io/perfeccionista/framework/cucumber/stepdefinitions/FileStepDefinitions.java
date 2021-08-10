@@ -6,7 +6,7 @@ import io.perfeccionista.framework.assertions.FileAssertions;
 import io.perfeccionista.framework.cucumber.parameters.DurationParameter;
 import io.perfeccionista.framework.cucumber.parameters.ValueStringParameter;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static io.perfeccionista.framework.utils.FileUtils.deleteFileIgnoreExceptions;
 
@@ -59,7 +59,7 @@ public class FileStepDefinitions implements CucumberStepDefinitions {
     @Дано("пользователь удаляет файл {stringValue}")
     @Given("user deletes file {stringValue}")
     public void deleteFile(ValueStringParameter filePath) {
-        deleteFileIgnoreExceptions(Path.of(filePath.getProcessedValue()));
+        deleteFileIgnoreExceptions(Paths.get(filePath.getProcessedValue()));
     }
 
 }

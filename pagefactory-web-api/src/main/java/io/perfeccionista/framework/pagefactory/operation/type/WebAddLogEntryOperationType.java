@@ -25,7 +25,7 @@ public class WebAddLogEntryOperationType implements WebElementOperationType<Void
         this.page = page;
         this.logLevel = logLevel;
         this.message = message;
-        var pageName = page.getPageIdentifier().getLastUsedName();
+        String pageName = page.getPageIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(ADD_LOG_ENTRY_METHOD, pageName, logLevel.getName(), message);
     }
 

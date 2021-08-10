@@ -29,7 +29,7 @@ public class WebShouldHavePropertyStringMatcher implements WebElementPropertyAva
 
     @Override
     public void check(@NotNull WebElementPropertyAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_PROPERTY_TEXT_METHOD, elementName, propertyName, expectedText)
                 : assertInvocation(SHOULD_NOT_HAVE_PROPERTY_TEXT_METHOD, elementName, propertyName, expectedText);

@@ -20,7 +20,7 @@ public class MobileOpenOperationType implements MobileElementOperationType<Void>
 
     private MobileOpenOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(OPEN_METHOD, elementName);
     }
 

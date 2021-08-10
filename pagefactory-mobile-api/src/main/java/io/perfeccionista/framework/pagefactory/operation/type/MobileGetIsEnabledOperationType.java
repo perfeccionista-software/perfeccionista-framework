@@ -20,7 +20,7 @@ public class MobileGetIsEnabledOperationType implements MobileElementOperationTy
 
     private MobileGetIsEnabledOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_ENABLED_METHOD, elementName);
     }
 

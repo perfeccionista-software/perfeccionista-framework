@@ -52,7 +52,7 @@ public class WebPageIdentifier implements JsonSerializable {
     }
 
     public Set<String> names() {
-        return Set.copyOf(names);
+        return new HashSet<>(names);
     }
 
     public Stream<String> namesStream() {
@@ -64,7 +64,7 @@ public class WebPageIdentifier implements JsonSerializable {
     }
 
     public Set<String> urls() {
-        return Set.copyOf(urls);
+        return new HashSet<>(urls);
     }
 
     public Stream<String> urlsStream() {

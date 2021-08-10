@@ -23,7 +23,7 @@ public class MobileHasStateOperationType implements MobileElementOperationType<B
     private MobileHasStateOperationType(MobileChildElementBase element, MobileElementStateHolder stateHolder) {
         this.element = element;
         this.stateHolder = stateHolder;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(HAS_STATE_METHOD, elementName, stateHolder.getName());
     }
 

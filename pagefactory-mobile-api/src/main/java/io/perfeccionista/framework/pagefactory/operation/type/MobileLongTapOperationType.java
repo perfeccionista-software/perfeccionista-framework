@@ -20,7 +20,7 @@ public class MobileLongTapOperationType implements MobileElementOperationType<Vo
 
     private MobileLongTapOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(LONG_TAP_METHOD, elementName);
     }
 

@@ -8,6 +8,7 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -68,7 +69,7 @@ public class WebChildElementIdentifier implements WebElementIdentifier {
 
     @Override
     public Set<String> names() {
-        return Set.copyOf(names.keySet());
+        return new HashSet<>(names.keySet());
     }
 
     @Override

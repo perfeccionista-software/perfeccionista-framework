@@ -22,7 +22,7 @@ public class WebReplaceTextOperationType implements WebElementOperationType<Void
     private WebReplaceTextOperationType(WebInputTextAvailable element, String text) {
         this.element = element;
         this.text = text;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(REPLACE_TEXT_METHOD, elementName, text);
     }
 

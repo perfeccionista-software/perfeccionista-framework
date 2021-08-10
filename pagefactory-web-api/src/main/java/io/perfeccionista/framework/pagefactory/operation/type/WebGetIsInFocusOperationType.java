@@ -20,7 +20,7 @@ public class WebGetIsInFocusOperationType implements WebElementOperationType<Boo
 
     private WebGetIsInFocusOperationType(WebIsInFocusAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_IN_FOCUS_METHOD, elementName);
     }
 

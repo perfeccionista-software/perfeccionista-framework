@@ -2,6 +2,7 @@ package io.perfeccionista.framework.invocation.runner;
 
 import java.time.temporal.ChronoField;
 import java.util.Deque;
+import java.util.LongSummaryStatistics;
 
 public class AllureInvocationStatisticsFormatter extends DefaultInvocationInfoStatisticsFormatter {
 
@@ -11,7 +12,7 @@ public class AllureInvocationStatisticsFormatter extends DefaultInvocationInfoSt
         if (invocationResults.isEmpty()) {
             return "";
         }
-        var longSummaryStatistics = invocationResults.stream()
+        LongSummaryStatistics longSummaryStatistics = invocationResults.stream()
                 .map(invocationResult -> invocationResult.getDuration(ChronoField.MILLI_OF_DAY))
                 .mapToLong(Long::longValue)
                 .summaryStatistics();

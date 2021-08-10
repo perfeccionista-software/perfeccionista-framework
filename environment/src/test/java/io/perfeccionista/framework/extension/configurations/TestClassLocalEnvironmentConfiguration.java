@@ -13,6 +13,7 @@ import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -33,11 +34,11 @@ public class TestClassLocalEnvironmentConfiguration extends DefaultEnvironmentCo
                 .disable();
 
         return Stream.of(
-                Map.entry(ValueService.class, valueService),
-                Map.entry(TestService1.class, testService1),
-                Map.entry(TestService2.class, testService2),
-                Map.entry(TestService3.class, testService3),
-                Map.entry(TestService4.class, testService4)
+                new SimpleEntry<>(ValueService.class, valueService),
+                new SimpleEntry<>(TestService1.class, testService1),
+                new SimpleEntry<>(TestService2.class, testService2),
+                new SimpleEntry<>(TestService3.class, testService3),
+                new SimpleEntry<>(TestService4.class, testService4)
         ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

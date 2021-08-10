@@ -25,7 +25,7 @@ public class WebUploadFromFileOperationType implements WebElementOperationType<V
     private WebUploadFromFileOperationType(WebFileInput element, List<Path> filesToUpload) {
         this.element = element;
         this.filesToUpload = filesToUpload;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(UPLOAD_FROM_FILE_METHOD, elementName, filesToUpload.stream()
                 .map(Path::toString)
                 .collect(Collectors.joining(", ")));

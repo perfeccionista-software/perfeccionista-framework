@@ -24,7 +24,7 @@ public class WebCheckBooleanAttributeValueOperationType implements WebElementOpe
         this.element = element;
         this.attributeName = attributeName;
         this.expectedValue = expectedValue;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD, elementName, attributeName);
     }
 

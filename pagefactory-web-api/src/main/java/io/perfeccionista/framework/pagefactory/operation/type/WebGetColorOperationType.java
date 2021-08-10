@@ -23,7 +23,7 @@ public class WebGetColorOperationType implements WebElementOperationType<Color> 
     private WebGetColorOperationType(WebGetColorAvailable element, String componentName, String cssProperty) {
         this.element = element;
         this.cssProperty = cssProperty;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_COLOR_METHOD, elementName, componentName, cssProperty);
     }
 

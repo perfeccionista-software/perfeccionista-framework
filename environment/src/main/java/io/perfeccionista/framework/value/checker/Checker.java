@@ -2,6 +2,7 @@ package io.perfeccionista.framework.value.checker;
 
 import io.perfeccionista.framework.value.transformer.ValueTransformer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface Checker<T> {
 
@@ -11,9 +12,9 @@ public interface Checker<T> {
 
     T getProcessedExpected();
 
-    @NotNull T getActual();
+    @Nullable T getActual();
 
-    @NotNull T getProcessedActual();
+    @Nullable T getProcessedActual();
 
     void setActual(@NotNull T actual);
 

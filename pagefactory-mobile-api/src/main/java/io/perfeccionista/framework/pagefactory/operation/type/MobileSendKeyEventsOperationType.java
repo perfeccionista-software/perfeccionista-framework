@@ -23,7 +23,7 @@ public class MobileSendKeyEventsOperationType implements MobileElementOperationT
     private MobileSendKeyEventsOperationType(MobileChildElementBase element, KeyEventsChain keyEvents) {
         this.element = element;
         this.keyEvents = keyEvents;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(SEND_KEY_EVENTS_METHOD, elementName, keyEvents.toString());
     }
 

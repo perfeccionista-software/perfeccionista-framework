@@ -212,7 +212,7 @@ public class Environment {
      * @param environmentConfiguration конфигурация
      */
     protected void initEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        var environmentLogger = EnvironmentLogger.of(environmentConfiguration);
+        EnvironmentLogger environmentLogger = EnvironmentLogger.of(environmentConfiguration);
         environmentLogger.start();
 
         environmentConfiguration.getServices()

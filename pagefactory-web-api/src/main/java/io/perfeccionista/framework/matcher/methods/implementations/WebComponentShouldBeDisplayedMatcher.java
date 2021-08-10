@@ -37,7 +37,7 @@ public class WebComponentShouldBeDisplayedMatcher implements WebComponentAvailab
 
     @Override
     public void check(@NotNull WebChildElement element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, elementName, componentName)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, elementName, componentName);

@@ -20,7 +20,7 @@ public class WebGetIsOnTheScreenOperationType implements WebElementOperationType
 
     private WebGetIsOnTheScreenOperationType(WebIsOnTheScreenAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_ON_THE_SCREEN_METHOD, elementName);
     }
 

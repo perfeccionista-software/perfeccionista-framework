@@ -20,7 +20,7 @@ public class MobileDoubleTapOperationType implements MobileElementOperationType<
 
     private MobileDoubleTapOperationType(MobileChildElementBase element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(DOUBLE_TAP_METHOD, elementName);
     }
 

@@ -23,7 +23,7 @@ public class WebUploadFromClasspathOperationType implements WebElementOperationT
     private WebUploadFromClasspathOperationType(WebFileInput element, List<String> resourcesToUpload) {
         this.element = element;
         this.resourcesToUpload = resourcesToUpload;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(UPLOAD_FROM_CLASSPATH_METHOD, elementName, String.join(", ", resourcesToUpload));
     }
 

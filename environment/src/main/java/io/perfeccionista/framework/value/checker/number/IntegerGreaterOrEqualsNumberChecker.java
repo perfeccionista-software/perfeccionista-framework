@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.value.checker.number;
 
-import io.perfeccionista.framework.value.checker.AbstractNumberChecker;
 import org.jetbrains.annotations.NotNull;
 
 public class IntegerGreaterOrEqualsNumberChecker extends AbstractNumberChecker<Integer> {

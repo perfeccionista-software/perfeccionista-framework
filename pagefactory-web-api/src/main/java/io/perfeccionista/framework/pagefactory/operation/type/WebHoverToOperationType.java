@@ -22,7 +22,7 @@ public class WebHoverToOperationType implements WebElementOperationType<Void> {
     private WebHoverToOperationType(WebHoverToAvailable element, boolean withOutOfBounds) {
         this.element = element;
         this.withOutOfBounds = withOutOfBounds;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(HOVER_TO_METHOD, elementName);
     }
 

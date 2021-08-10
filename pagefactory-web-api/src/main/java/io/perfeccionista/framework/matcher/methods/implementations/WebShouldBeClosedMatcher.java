@@ -16,7 +16,7 @@ public class WebShouldBeClosedMatcher implements WebDropDownAvailableMatcher {
 
     @Override
     public void check(@NotNull WebDropDownAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = assertInvocation(SHOULD_BE_CLOSED_METHOD, elementName);
 
         runCheck(invocationName,

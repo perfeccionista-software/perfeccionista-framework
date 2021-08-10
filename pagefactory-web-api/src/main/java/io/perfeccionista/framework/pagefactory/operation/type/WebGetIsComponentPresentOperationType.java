@@ -20,7 +20,7 @@ public class WebGetIsComponentPresentOperationType implements WebElementOperatio
 
     private WebGetIsComponentPresentOperationType(WebComponentAvailable element, String componentName) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_COMPONENT_PRESENT_METHOD, elementName, componentName);
     }
 

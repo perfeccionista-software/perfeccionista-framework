@@ -104,8 +104,8 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     }
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
         options.encoding = "UTF-8"
     }
 

@@ -21,7 +21,7 @@ public class MobileGetScreenshotOperationType implements MobileElementOperationT
 
     private MobileGetScreenshotOperationType(@NotNull MobileChildElementBase element, String componentName) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_SCREENSHOT_METHOD, elementName, componentName);
     }
 

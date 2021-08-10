@@ -31,7 +31,7 @@ public class WebShouldHaveCenterLocationMatcher implements WebGetElementBoundsAv
 
     @Override
     public void check(@NotNull WebGetElementBoundsAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_CENTER_LOCATION_METHOD, elementName, componentName, expectedLocation.toString())
                 : assertInvocation(SHOULD_NOT_HAVE_CENTER_LOCATION_METHOD, elementName, componentName, expectedLocation.toString());

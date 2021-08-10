@@ -20,7 +20,7 @@ public class WebGetIsOpenOperationType implements WebElementOperationType<Boolea
 
     private WebGetIsOpenOperationType(WebDropDownAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_OPEN_METHOD, elementName);
     }
 

@@ -33,7 +33,7 @@ public class MobileShouldBePresentMatcher implements MobileIsPresentAvailableMat
 
     @Override
     public void check(@NotNull MobileIsPresentAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_BE_PRESENT_METHOD, elementName)
                 : assertInvocation(SHOULD_NOT_BE_PRESENT_METHOD, elementName);

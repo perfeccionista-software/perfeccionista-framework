@@ -22,7 +22,7 @@ public class MobileReplaceTextOperationType implements MobileElementOperationTyp
     private MobileReplaceTextOperationType(MobileChildElementBase element, String valueToInput) {
         this.element = element;
         this.valueToInput = valueToInput;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(REPLACE_TEXT_METHOD, elementName, valueToInput);
     }
 

@@ -45,7 +45,7 @@ public class WebAllureLogicInvocationRunner implements InvocationRunner {
 
         // вложенный вызов
         if (!invocationDeque.isEmpty()) {
-            var lastInvocation = invocationDeque.getLast();
+            InvocationInfo lastInvocation = invocationDeque.getLast();
             if (!lastInvocation.equals(invocation)) {
                 invocationDeque.addLast(invocation);
                 lastInvocation = invocation;
@@ -115,7 +115,7 @@ public class WebAllureLogicInvocationRunner implements InvocationRunner {
     protected void processInvocationExecution(Deque<InvocationInfo> invocations) {
         while (!invocations.isEmpty()) {
             String indent = getIndent(invocations.size());
-            var processedInvocation = invocations.removeLast();
+            InvocationInfo processedInvocation = invocations.removeLast();
             if (invocations.isEmpty()) {
                 processedInvocation.close(closeInvocationVisitor);
             } else {
@@ -127,7 +127,12 @@ public class WebAllureLogicInvocationRunner implements InvocationRunner {
     }
 
     protected String getIndent(int length) {
-        return "    ".repeat(Math.max(0, length-1));
+        int indent = Math.max(0, length-1);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < indent; i++) {
+            sb.append("    ");
+        }
+        return sb.toString();
     }
 
     protected void processException(PerfeccionistaException exception) {

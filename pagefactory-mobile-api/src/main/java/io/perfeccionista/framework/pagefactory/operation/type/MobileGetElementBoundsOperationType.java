@@ -23,7 +23,7 @@ public class MobileGetElementBoundsOperationType implements MobileElementOperati
     private MobileGetElementBoundsOperationType(@NotNull MobileChildElementBase element, @NotNull String componentName) {
         this.element = element;
         this.componentName = componentName;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_ELEMENT_BOUNDS_METHOD, elementName, componentName);
     }
 

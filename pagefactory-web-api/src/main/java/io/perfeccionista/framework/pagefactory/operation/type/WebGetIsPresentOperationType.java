@@ -20,7 +20,7 @@ public class WebGetIsPresentOperationType implements WebElementOperationType<Boo
 
     private WebGetIsPresentOperationType(WebIsPresentAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_PRESENT_METHOD, elementName);
     }
 

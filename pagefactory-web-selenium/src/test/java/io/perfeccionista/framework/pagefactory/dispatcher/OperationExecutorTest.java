@@ -9,7 +9,8 @@ import io.perfeccionista.framework.pagefactory.operation.handler.JsScrollTo;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.CLASS_NAME;
 import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
@@ -72,7 +73,7 @@ class OperationExecutorTest extends AbstractWebSeleniumParallelTest {
                 .setExpectedHash("kljfldjf;sodjlfjsvnflgjlfjfgdlk")
                 .addInvokedOnCallFunction(new JsScrollTo());
         WebLocatorHolder tableRowLocator = WebLocatorHolder.of("TR", TAG_NAME, "TR")
-                .setIndexes(Set.of(3, 4, 7, 8, 12, 14))
+                .setIndexes(new HashSet<>(Arrays.asList(3, 4, 7, 8, 12, 14)))
                 .setSingle(false)
                 .setStrictSearch(false);
         WebLocatorHolder tableCellLocator = WebLocatorHolder.of("TD", XPATH, ".//td[1]");

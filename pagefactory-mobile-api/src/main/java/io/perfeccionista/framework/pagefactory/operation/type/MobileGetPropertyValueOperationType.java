@@ -23,7 +23,7 @@ public class MobileGetPropertyValueOperationType implements MobileElementOperati
     private MobileGetPropertyValueOperationType(MobileChildElementBase element, MobileElementPropertyHolder propertyHolder) {
         this.element = element;
         this.propertyHolder = propertyHolder;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_PROPERTY_VALUE_METHOD, elementName, propertyHolder.getName());
     }
 

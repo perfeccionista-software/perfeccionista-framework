@@ -5,7 +5,7 @@ import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +35,7 @@ public class JpegScreenshotCucumberResolver implements ScreenshotCucumberResolve
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression.toLowerCase());
             if (matcher.find()) {
-                return Optional.of(JpegScreenshot.from(Path.of(expression)));
+                return Optional.of(JpegScreenshot.from(Paths.get(expression)));
             }
         }
         return Optional.empty();

@@ -30,7 +30,7 @@ public class WebShouldHavePropertyNumberValueMatcher implements WebElementProper
 
     @Override
     public void check(@NotNull WebElementPropertyAvailable element) {
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationName = positive
                 ? assertInvocation(SHOULD_HAVE_PROPERTY_NUMBER_METHOD, elementName, propertyName, expectedNumberValue.getShortDescription())
                 : assertInvocation(SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD, elementName, propertyName, expectedNumberValue.getShortDescription());

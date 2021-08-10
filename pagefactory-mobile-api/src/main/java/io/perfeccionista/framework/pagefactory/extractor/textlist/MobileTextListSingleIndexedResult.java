@@ -6,6 +6,7 @@ import io.perfeccionista.framework.exceptions.attachments.MobileElementAttachmen
 import io.perfeccionista.framework.exceptions.attachments.MobileExtractorDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.MobileFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
+import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.MobileTextList;
 import io.perfeccionista.framework.pagefactory.filter.MobileFilters;
@@ -62,8 +63,8 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public @Nullable T getResult() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> {
@@ -85,8 +86,8 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public @NotNull T getNotNullResult() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUE_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> {
@@ -115,8 +116,8 @@ MobileTextListSingleIndexedResult<T> implements MobileSingleIndexedResult<T, Mob
     @Override
     public int getIndex() {
         MobileTextListFilter webTextListFilter = filterBuilder.build(element);
-        var elementName = element.getElementIdentifier().getLastUsedName();
-        var invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
+        String elementName = element.getElementIdentifier().getLastUsedName();
+        InvocationInfo invocationInfo = getterInvocation(GET_INDEX_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
         return runCheck(invocationInfo, () -> {

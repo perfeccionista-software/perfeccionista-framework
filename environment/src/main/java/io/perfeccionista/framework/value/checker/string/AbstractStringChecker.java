@@ -5,9 +5,11 @@ import io.perfeccionista.framework.value.checker.StringChecker;
 import io.perfeccionista.framework.value.processor.ValueExpressionProcessor;
 import io.perfeccionista.framework.value.transformer.ValueTransformer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 
 public abstract class AbstractStringChecker implements StringChecker {
 
@@ -22,13 +24,13 @@ public abstract class AbstractStringChecker implements StringChecker {
     }
 
     @Override
-    public @NotNull String getActual() {
+    public @Nullable String getActual() {
         return actual;
     }
 
     @Override
-    public @NotNull String getProcessedActual() {
-        return applyTransformersToActual(actual);
+    public @Nullable String getProcessedActual() {
+        return Objects.isNull(actual) ? null : applyTransformersToActual(actual);
     }
 
     @Override

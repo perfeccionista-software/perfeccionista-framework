@@ -1,10 +1,13 @@
-package io.perfeccionista.framework.value.checker;
+package io.perfeccionista.framework.value.checker.number;
 
+import io.perfeccionista.framework.value.checker.NumberChecker;
 import io.perfeccionista.framework.value.transformer.ValueTransformer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 
 public abstract class AbstractNumberChecker<T extends Number> implements NumberChecker<T> {
 
@@ -13,13 +16,13 @@ public abstract class AbstractNumberChecker<T extends Number> implements NumberC
     protected T actual;
 
     @Override
-    public @NotNull T getActual() {
+    public @Nullable T getActual() {
         return actual;
     }
 
     @Override
-    public @NotNull T getProcessedActual() {
-        return applyTransformersToActual(actual);
+    public @Nullable T getProcessedActual() {
+        return Objects.isNull(actual) ? null : applyTransformersToActual(actual);
     }
 
     @Override
@@ -32,7 +35,7 @@ public abstract class AbstractNumberChecker<T extends Number> implements NumberC
         transformers.addLast(transformer);
     }
 
-    protected T applyTransformersToActual(T actual) {
+    protected T applyTransformersToActual(@NotNull T actual) {
         T processedActual = actual;
         for (ValueTransformer<T> transformer : transformers) {
             processedActual = transformer.transformActual(processedActual);
@@ -40,7 +43,7 @@ public abstract class AbstractNumberChecker<T extends Number> implements NumberC
         return processedActual;
     }
 
-    protected T applyTransformersToExpected(T expected) {
+    protected T applyTransformersToExpected(@NotNull T expected) {
         T processedExpected = expected;
         for (ValueTransformer<T> transformer : transformers) {
             processedExpected = transformer.transformExpected(processedExpected);

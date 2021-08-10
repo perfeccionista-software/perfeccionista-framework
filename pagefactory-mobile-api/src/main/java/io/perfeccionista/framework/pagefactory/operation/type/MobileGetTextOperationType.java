@@ -20,7 +20,7 @@ public class MobileGetTextOperationType implements MobileElementOperationType<St
 
     private MobileGetTextOperationType(MobileGetTextAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(GET_TEXT_METHOD, elementName);
     }
 

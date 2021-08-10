@@ -20,7 +20,7 @@ public class WebGetIsEnabledOperationType implements WebElementOperationType<Boo
 
     private WebGetIsEnabledOperationType(WebIsEnabledAvailable element) {
         this.element = element;
-        var elementName = element.getElementIdentifier().getLastUsedName();
+        String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_ENABLED_METHOD, elementName);
     }
 
