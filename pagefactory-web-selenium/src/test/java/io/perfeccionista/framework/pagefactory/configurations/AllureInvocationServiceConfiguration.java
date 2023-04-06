@@ -5,12 +5,10 @@ import io.perfeccionista.framework.invocation.runner.AllureInvocationNameFormatt
 import io.perfeccionista.framework.invocation.runner.DefaultInvocationInfoStatisticsFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoNameFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoStatisticsFormatter;
-import io.perfeccionista.framework.invocation.runner.WebAllureCheckInvocationRunner;
 import io.perfeccionista.framework.invocation.runner.EmptyInvocationRunner;
 import io.perfeccionista.framework.invocation.runner.InvocationRunner;
-import io.perfeccionista.framework.invocation.runner.WebAllureLogicInvocationRunner;
-import io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper;
-import io.perfeccionista.framework.invocation.wrapper.LogicInvocationWrapper;
+import io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper;
+import io.perfeccionista.framework.invocation.wrapper.SingleAttemptInvocationWrapper;
 import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,11 +29,13 @@ public class AllureInvocationServiceConfiguration implements InvocationServiceCo
 
     @Override
     public @NotNull Class<? extends InvocationRunner> getInvocationRunnerImplementation(@NotNull Class<?> invocationWrapper) {
-        if (CheckInvocationWrapper.class.equals(invocationWrapper)) {
-            return WebAllureCheckInvocationRunner.class;
+        if (MultipleAttemptInvocationWrapper.class.equals(invocationWrapper)) {
+            // TODO: Переименовать под новые имена
+//            return WebAllureCheckInvocationRunner.class;
         }
-        if (LogicInvocationWrapper.class.equals(invocationWrapper)) {
-            return WebAllureLogicInvocationRunner.class;
+        if (SingleAttemptInvocationWrapper.class.equals(invocationWrapper)) {
+            // TODO: Переименовать под новые имена
+//            return WebAllureLogicInvocationRunner.class;
         }
         return EmptyInvocationRunner.class;
     }

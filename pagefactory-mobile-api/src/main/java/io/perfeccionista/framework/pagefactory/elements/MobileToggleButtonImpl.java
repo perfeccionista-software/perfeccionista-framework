@@ -19,7 +19,7 @@ import io.perfeccionista.framework.pagefactory.operation.MobileElementOperationH
 import io.perfeccionista.framework.pagefactory.operation.type.MobileGetIsSelectedOperationType;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
 
 public class MobileToggleButtonImpl extends MobileButtonImpl implements MobileToggleButton {
@@ -143,7 +143,7 @@ public class MobileToggleButtonImpl extends MobileButtonImpl implements MobileTo
     @Override
     public boolean isSelected() {
         MobileGetIsSelectedOperationType operationType = MobileGetIsSelectedOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, SELECTED).executeGetter());
     }
 

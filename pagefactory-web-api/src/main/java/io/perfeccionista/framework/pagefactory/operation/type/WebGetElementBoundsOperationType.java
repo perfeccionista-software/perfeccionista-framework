@@ -15,14 +15,18 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebGetElementBoundsOperationType implements WebElementOperationType<ElementBounds> {
 
+    private static final String ACTION_TYPE = GET_ELEMENT_BOUNDS_METHOD;
+
     private final WebGetElementBoundsAvailable element;
+    private final String componentName;
 
     private final InvocationInfo invocationInfo;
 
     private WebGetElementBoundsOperationType(WebGetElementBoundsAvailable element, String componentName) {
         this.element = element;
+        this.componentName = componentName;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(GET_ELEMENT_BOUNDS_METHOD, elementName, componentName);
+        this.invocationInfo = getterInvocation(ACTION_TYPE, elementName, componentName);
     }
 
     public static WebGetElementBoundsOperationType of(@NotNull WebGetElementBoundsAvailable element, @NotNull String componentName) {
@@ -36,10 +40,9 @@ public class WebGetElementBoundsOperationType implements WebElementOperationType
 
     @Override
     public @NotNull EndpointHandler<ElementBounds> getEndpointHandler() {
-        Class<? extends EndpointHandler<ElementBounds>> endpointHandlerClass = element.getEndpointHandler(GET_ELEMENT_BOUNDS_METHOD, ElementBounds.class);
+        Class<? extends EndpointHandler<ElementBounds>> endpointHandlerClass = element.getEndpointHandler(ACTION_TYPE, ElementBounds.class);
         Constructor<? extends EndpointHandler<ElementBounds>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor);
     }
 
 }
-

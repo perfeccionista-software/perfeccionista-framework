@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_ACTIVE_TAB_TITLE_TEXT_CONTAINS_EXPECTED_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_ACTIVE_TAB_TITLE_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.ACTIVE_TAB_SHOULD_HAVE_TITLE_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.ACTIVE_TAB_SHOULD_NOT_HAVE_TITLE_VALUE_METHOD;
 
@@ -32,7 +32,7 @@ public class WebBrowserActiveTabShouldHaveTitleStringValueMatcher implements Web
                 ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_TITLE_VALUE_METHOD, expectedStringValue.getShortDescription())
                 : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_TITLE_VALUE_METHOD, expectedStringValue.getShortDescription());
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     String actualActiveTabTitleText = tabsDispatcher.getActiveTabTitle();
                     if (positive) {

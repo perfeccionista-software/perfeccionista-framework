@@ -175,41 +175,41 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        list.filter(block -> containsProperty(block.fullName(), "prompt", "Финляндская Республика"))
+        list.filter(block -> containsAttribute(block.fullName(), "prompt", "Финляндская Республика"))
                 .should(haveSize(1));
-        list.filter(block -> containsProperty(block.fullName(), "prompt", stringStartsWith("М")))
+        list.filter(block -> containsAttribute(block.fullName(), "prompt", stringStartsWith("М")))
                 .should(haveSize(5));
-        list.filter(block -> notContainProperty(block.fullName(), "prompt", stringEquals("Финляндская Республика")))
+        list.filter(block -> notContainAttribute(block.fullName(), "prompt", stringEquals("Финляндская Республика")))
                 .should(haveSize(194));
-        list.filter(block -> notContainProperty(block.fullName(), "prompt", stringStartsWith("М")))
+        list.filter(block -> notContainAttribute(block.fullName(), "prompt", stringStartsWith("М")))
                 .should(haveSize(190));
 
-        list.filterBuilder(block -> without(containsProperty(block.fullName(), "prompt", "Финляндская Республика")))
+        list.filterBuilder(block -> without(containsAttribute(block.fullName(), "prompt", "Финляндская Республика")))
                 .should(haveSize(194));
-        list.filterBuilder(block -> without(containsProperty(block.fullName(), "prompt", stringStartsWith("М"))))
+        list.filterBuilder(block -> without(containsAttribute(block.fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        list.filterBuilder(block -> without(notContainProperty(block.fullName(), "prompt", stringEquals("Финляндская Республика"))))
+        list.filterBuilder(block -> without(notContainAttribute(block.fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        list.filterBuilder(block -> without(notContainProperty(block.fullName(), "prompt", stringStartsWith("М"))))
+        list.filterBuilder(block -> without(notContainAttribute(block.fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
 
         // By Element name
-        list.filter(containsProperty("Full country name", "prompt", "Финляндская Республика"))
+        list.filter(containsAttribute("Full country name", "prompt", "Финляндская Республика"))
                 .should(haveSize(1));
-        list.filter(containsProperty("Full country name", "prompt", stringStartsWith("М")))
+        list.filter(containsAttribute("Full country name", "prompt", stringStartsWith("М")))
                 .should(haveSize(5));
-        list.filter(notContainProperty("Full country name", "prompt", stringEquals("Финляндская Республика")))
+        list.filter(notContainAttribute("Full country name", "prompt", stringEquals("Финляндская Республика")))
                 .should(haveSize(194));
-        list.filter(notContainProperty("Full country name", "prompt", stringStartsWith("М")))
+        list.filter(notContainAttribute("Full country name", "prompt", stringStartsWith("М")))
                 .should(haveSize(190));
 
-        list.filterBuilder(without(containsProperty("Full country name", "prompt", "Финляндская Республика")))
+        list.filterBuilder(without(containsAttribute("Full country name", "prompt", "Финляндская Республика")))
                 .should(haveSize(194));
-        list.filterBuilder(without(containsProperty("Full country name", "prompt", stringStartsWith("М"))))
+        list.filterBuilder(without(containsAttribute("Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        list.filterBuilder(without(notContainProperty("Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        list.filterBuilder(without(notContainAttribute("Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        list.filterBuilder(without(notContainProperty("Full country name", "prompt", stringStartsWith("М"))))
+        list.filterBuilder(without(notContainAttribute("Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
     }
 
@@ -500,11 +500,15 @@ class WebListFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
+//        list.filter(item -> componentDisplayed("Self"))
+//                .should(haveSize(186));
         list.filter(block -> componentDisplayed(block.populationUnit(), "Self"))
                 .should(haveSize(186));
         list.filter(block -> componentNotDisplayed(block.populationUnit(), "Self"))
                 .should(haveSize(9));
 
+//        list.filterBuilder(item -> without(componentDisplayed("Self")))
+//                .should(haveSize(9));
         list.filterBuilder(block -> without(componentDisplayed(block.populationUnit(), "Self")))
                 .should(haveSize(9));
         list.filterBuilder(block -> without(componentNotDisplayed(block.populationUnit(), "Self")))

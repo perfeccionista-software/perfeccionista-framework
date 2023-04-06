@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.operation;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorChain;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import io.perfeccionista.framework.pagefactory.operation.type.WebCustomOperationType;
 import io.perfeccionista.framework.pagefactory.operation.type.WebElementOperationType;
@@ -15,23 +15,23 @@ import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebElementOperation<R> {
 
-    private final WebLocatorChain locatorChain;
+    private final WebSelectorChain locatorChain;
     private final WebElementOperationType<R> operationType;
 
     private boolean withLogs = false;
     private boolean withPageSource = false;
 
-    private WebElementOperation(WebLocatorChain locatorChain, WebElementOperationType<R> operationType) {
+    private WebElementOperation(WebSelectorChain locatorChain, WebElementOperationType<R> operationType) {
         this.locatorChain = locatorChain;
         this.operationType = operationType;
     }
 
-    public static <R> WebElementOperation<R> of(@NotNull WebLocatorChain locatorChain,
+    public static <R> WebElementOperation<R> of(@NotNull WebSelectorChain locatorChain,
                                                 @NotNull WebElementOperationType<R> operationType) {
         return new WebElementOperation<>(locatorChain, operationType);
     }
 
-    public static <R> WebElementOperation<R> of(@NotNull WebLocatorChain locatorChain,
+    public static <R> WebElementOperation<R> of(@NotNull WebSelectorChain locatorChain,
                                                 @NotNull EndpointHandler<R> endpointHandler) {
         return new WebElementOperation<>(locatorChain, WebCustomOperationType.of(endpointHandler));
     }
@@ -40,11 +40,11 @@ public class WebElementOperation<R> {
         return operationType;
     }
 
-    public WebLocatorChain getLocatorChain() {
+    public WebSelectorChain getLocatorChain() {
         return locatorChain;
     }
 
-    public WebElementOperation<R> updateLocatorChain(@NotNull Consumer<WebLocatorChain> webLocatorChainUpdater) {
+    public WebElementOperation<R> updateLocatorChain(@NotNull Consumer<WebSelectorChain> webLocatorChainUpdater) {
         webLocatorChainUpdater.accept(locatorChain);
         return this;
     }
@@ -65,7 +65,7 @@ public class WebElementOperation<R> {
 
     public List<EndpointHandler<?>> getRequiredFunctions() {
         List<EndpointHandler<?>> requiredFunctions = new ArrayList<>();
-        locatorChain.getAllLocators().forEach(locatorHolder -> requiredFunctions.addAll(locatorHolder.getInvokeOnCallHandlers()));
+        locatorChain.getAllSelectors().forEach(locatorHolder -> requiredFunctions.addAll(locatorHolder.getInvokeOnCallHandlers()));
         requiredFunctions.add(operationType.getEndpointHandler());
         return requiredFunctions;
     }

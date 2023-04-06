@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.RESPONSE_FORMAT_NOT_VALID;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_GET_PAGE_SCREENSHOT;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_ON_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_TO_METHOD;
@@ -49,7 +49,7 @@ public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenD
 
     @Override
     public @NotNull MobileScreenBounds getScreenBounds() {
-        return runCheck(getterInvocation(GET_SCREEN_BOUNDS_METHOD), () -> exceptionMapper
+        return repeatInvocation(getterInvocation(GET_SCREEN_BOUNDS_METHOD), () -> exceptionMapper
                 .map(() -> {
                     MobileScreenBounds mobileScreenBounds;
                     String deviceScreenSize = (String) instance.getSessionDetail("deviceScreenSize");
@@ -104,7 +104,7 @@ public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenD
 
     @Override
     public @NotNull ScreenOrientation getScreenOrientation() {
-        return runCheck(getterInvocation(GET_SCREEN_ORIENTATION_METHOD), () ->
+        return repeatInvocation(getterInvocation(GET_SCREEN_ORIENTATION_METHOD), () ->
                 exceptionMapper.map(() -> createPerfeccionistaScreenOrientation(instance.getOrientation()))
                         .ifException(exception -> {
                             throw exception;
@@ -115,7 +115,7 @@ public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenD
 
     @Override
     public DefaultAppiumAndroidScreenDispatcher rotateOn(@NotNull Rotation3D rotation) {
-        runCheck(actionInvocation(DEVICE_ROTATE_ON_METHOD), () ->
+        repeatInvocation(actionInvocation(DEVICE_ROTATE_ON_METHOD), () ->
                 exceptionMapper.map(() -> instance.rotate(createDeviceRotation(rotation))))
                 .ifException(exception -> {
                     throw exception;
@@ -125,7 +125,7 @@ public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenD
 
     @Override
     public DefaultAppiumAndroidScreenDispatcher rotateTo(@NotNull ScreenOrientation screenOrientation) {
-        runCheck(actionInvocation(DEVICE_ROTATE_TO_METHOD), () ->
+        repeatInvocation(actionInvocation(DEVICE_ROTATE_TO_METHOD), () ->
                 exceptionMapper.map(() -> instance.rotate(createAppiumScreenOrientation(screenOrientation))))
                 .ifException(exception -> {
                     throw exception;
@@ -145,7 +145,7 @@ public class DefaultAppiumAndroidScreenDispatcher implements MobileDeviceScreenD
 
     @Override
     public @NotNull Screenshot getPageScreenshot() {
-        return runCheck(getterInvocation(DEVICE_GET_PAGE_SCREENSHOT), () -> exceptionMapper
+        return repeatInvocation(getterInvocation(DEVICE_GET_PAGE_SCREENSHOT), () -> exceptionMapper
                 .map(() -> PngScreenshot.from(((TakesScreenshot) instance).getScreenshotAs(OutputType.BYTES)))
                 .ifException(exception -> {
                     throw exception;

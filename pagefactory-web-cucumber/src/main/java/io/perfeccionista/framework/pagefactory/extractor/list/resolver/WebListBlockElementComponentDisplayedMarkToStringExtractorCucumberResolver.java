@@ -14,21 +14,23 @@ import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("^component {component} display marks$")
 @CucumberResolverExpression("^признаки отображения компонента {component}$")
-public class WebListBlockElementComponentDisplayedMarkToStringExtractorCucumberResolver extends AbstractWebListBlockValueExtractorCucumberResolver {
-
-    @Override
-    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
-        for (Pattern pattern : patterns) {
-            Matcher matcher = pattern.matcher(expression);
-            if (matcher.find()) {
-                String component = matcher.group("component");
-                if (isNull(component)) {
-                    return Optional.empty();
-                }
-                return Optional.of(new WebListBlockElementComponentDisplayedMarkToStringExtractorCreator(component));
-            }
-        }
-        return Optional.empty();
-    }
+public class WebListBlockElementComponentDisplayedMarkToStringExtractorCucumberResolver
+//        extends AbstractWebListBlockValueExtractorCucumberResolver
+{
+//
+//    @Override
+//    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
+//        for (Pattern pattern : patterns) {
+//            Matcher matcher = pattern.matcher(expression);
+//            if (matcher.find()) {
+//                String component = matcher.group("component");
+//                if (isNull(component)) {
+//                    return Optional.empty();
+//                }
+//                return Optional.of(new WebListBlockElementComponentDisplayedMarkToStringExtractorCreator(component));
+//            }
+//        }
+//        return Optional.empty();
+//    }
 
 }

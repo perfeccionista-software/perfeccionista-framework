@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
-import io.perfeccionista.framework.pagefactory.elements.WebFileInput;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebFileUploadAvailable;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,21 +13,22 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementActionName
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
+@Deprecated
 public class WebUploadFromClasspathOperationType implements WebElementOperationType<Void> {
 
-    private final WebFileInput element;
+    private final WebFileUploadAvailable element;
     private final List<String> resourcesToUpload;
 
     private final InvocationInfo invocationInfo;
 
-    private WebUploadFromClasspathOperationType(WebFileInput element, List<String> resourcesToUpload) {
+    private WebUploadFromClasspathOperationType(WebFileUploadAvailable element, List<String> resourcesToUpload) {
         this.element = element;
         this.resourcesToUpload = resourcesToUpload;
         String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = actionInvocation(UPLOAD_FROM_CLASSPATH_METHOD, elementName, String.join(", ", resourcesToUpload));
     }
 
-    public static WebUploadFromClasspathOperationType of(@NotNull WebFileInput element, @NotNull List<String> resourcesToUpload) {
+    public static WebUploadFromClasspathOperationType of(@NotNull WebFileUploadAvailable element, @NotNull List<String> resourcesToUpload) {
         return new WebUploadFromClasspathOperationType(element, resourcesToUpload);
     }
 

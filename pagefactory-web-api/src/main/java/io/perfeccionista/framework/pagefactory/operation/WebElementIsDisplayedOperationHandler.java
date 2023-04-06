@@ -4,7 +4,7 @@ import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEn
 import io.perfeccionista.framework.exceptions.attachments.WebElementOperationAttachmentEntry;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.js.JsElementSearch;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorChain;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsDisplayedAvailable;
 import io.perfeccionista.framework.pagefactory.operation.type.WebGetIsDisplayedOperationType;
 import org.jetbrains.annotations.NotNull;
@@ -24,11 +24,6 @@ public class WebElementIsDisplayedOperationHandler {
     }
 
     public static WebElementIsDisplayedOperationHandler of(@NotNull WebIsDisplayedAvailable element,
-                                                           @NotNull WebGetIsDisplayedOperationType operationType) {
-        return new WebElementIsDisplayedOperationHandler(element, operationType);
-    }
-
-    public static WebElementIsDisplayedOperationHandler of(@NotNull WebIsDisplayedAvailable element,
                                                            @NotNull WebGetIsDisplayedOperationType operationType,
                                                            @Nullable String component) {
         WebElementIsDisplayedOperationHandler operationBuilder = new WebElementIsDisplayedOperationHandler(element, operationType);
@@ -42,9 +37,9 @@ public class WebElementIsDisplayedOperationHandler {
     }
 
     public WebElementOperation<Boolean> getOperation() {
-        WebLocatorChain webLocatorChain = Objects.nonNull(component)
-                ? element.getLocatorChainTo(component)
-                : element.getLocatorChain();
+        WebSelectorChain webLocatorChain = Objects.nonNull(component)
+                ? element.getSelectorChainTo(component)
+                : element.getSelectorChain();
         return WebElementOperation.of(webLocatorChain, operationType);
     }
 

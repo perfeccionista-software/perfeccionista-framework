@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_ACTIVE_TAB_URL_TEXT_CONTAINS_EXPECTED_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_ACTIVE_TAB_URL_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.ACTIVE_TAB_SHOULD_HAVE_URL_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.ACTIVE_TAB_SHOULD_NOT_HAVE_URL_METHOD;
 
@@ -31,7 +31,7 @@ public class WebBrowserActiveTabShouldHaveUrlStringMatcher implements WebBrowser
                 ? assertInvocation(ACTIVE_TAB_SHOULD_HAVE_URL_METHOD, expectedText)
                 : assertInvocation(ACTIVE_TAB_SHOULD_NOT_HAVE_URL_METHOD, expectedText);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     String actualActiveTabUrlText = tabsDispatcher.getActiveTabUrl();
                     if (positive) {

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.COMPONENT_IS_PRESENT;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.COMPONENT_NOT_PRESENT;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COMPONENT_SHOULD_BE_PRESENT_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD;
 
@@ -39,7 +39,7 @@ public class MobileComponentShouldBePresentMatcher implements MobileComponentAva
                 ? assertInvocation(COMPONENT_SHOULD_BE_PRESENT_METHOD, elementName, componentName)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_PRESENT_METHOD, elementName, componentName);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     if (positive) {
                         shouldBePresent(element, componentName);

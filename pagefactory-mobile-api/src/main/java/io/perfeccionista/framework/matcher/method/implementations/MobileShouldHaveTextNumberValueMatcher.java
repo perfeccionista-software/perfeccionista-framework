@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.ELEMENT_TEXT_CONTAINS_EXPECTED_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.ELEMENT_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_NUMBER_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_NUMBER_METHOD;
 
@@ -33,7 +33,7 @@ public class MobileShouldHaveTextNumberValueMatcher implements MobileGetTextAvai
                 ? assertInvocation(SHOULD_HAVE_NUMBER_METHOD, elementName, expectedNumberValue.getShortDescription())
                 : assertInvocation(SHOULD_NOT_HAVE_NUMBER_METHOD, elementName, expectedNumberValue.getShortDescription());
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     String actualText = element.getText();
                     if (positive) {

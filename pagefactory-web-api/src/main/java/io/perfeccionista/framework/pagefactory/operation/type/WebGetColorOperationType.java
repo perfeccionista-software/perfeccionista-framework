@@ -15,16 +15,20 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebGetColorOperationType implements WebElementOperationType<Color> {
 
+    private static final String ACTION_TYPE = GET_COLOR_METHOD;
+
     private final WebGetColorAvailable element;
+    private final String componentName;
     private final String cssProperty;
 
     private final InvocationInfo invocationInfo;
 
     private WebGetColorOperationType(WebGetColorAvailable element, String componentName, String cssProperty) {
         this.element = element;
+        this.componentName = componentName;
         this.cssProperty = cssProperty;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(GET_COLOR_METHOD, elementName, componentName, cssProperty);
+        this.invocationInfo = getterInvocation(ACTION_TYPE, elementName, componentName, cssProperty);
     }
 
     public static WebGetColorOperationType of(@NotNull WebGetColorAvailable element, @NotNull String componentName, @NotNull String cssProperty) {
@@ -38,7 +42,7 @@ public class WebGetColorOperationType implements WebElementOperationType<Color> 
 
     @Override
     public @NotNull EndpointHandler<Color> getEndpointHandler() {
-        Class<? extends EndpointHandler<Color>> endpointHandlerClass = element.getEndpointHandler(GET_COLOR_METHOD, Color.class);
+        Class<? extends EndpointHandler<Color>> endpointHandlerClass = element.getEndpointHandler(ACTION_TYPE, Color.class);
         Constructor<? extends EndpointHandler<Color>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor, cssProperty);
     }

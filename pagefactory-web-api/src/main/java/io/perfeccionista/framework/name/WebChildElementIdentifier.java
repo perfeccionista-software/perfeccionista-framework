@@ -78,6 +78,12 @@ public class WebChildElementIdentifier implements WebElementIdentifier {
     }
 
     @Override
+    public WebChildElementIdentifier addName(@NotNull String name) {
+        names.put(name, true);
+        return this;
+    }
+
+    @Override
     public WebChildElementIdentifier forEachName(@NotNull Consumer<String> consumer) {
         names().forEach(consumer);
         return this;

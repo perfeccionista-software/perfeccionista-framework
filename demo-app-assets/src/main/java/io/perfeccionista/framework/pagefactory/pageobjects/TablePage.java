@@ -3,8 +3,8 @@ package io.perfeccionista.framework.pagefactory.pageobjects;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebItemLocator;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelector;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebItemSelector;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CheckboxWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountryNameWebBlock;
@@ -27,55 +27,55 @@ public interface TablePage extends AbstractWebPage {
 
     @Name("Table of countries")
     @Name("Таблица стран")
-    @WebLocator(tagName = "table", invokeOnCall = JsCheckIsDisplayed.class)
-    @WebLocator(component = TABLE_HEADER, xpath = ".//thead/tr")
-    @WebItemLocator(xpath = ".//tbody/tr")
+    @WebSelector(tagName = "table", invokeOnCall = JsCheckIsDisplayed.class)
+    @WebSelector(component = TABLE_HEADER, xpath = ".//thead/tr")
+    @WebItemSelector(xpath = ".//tbody/tr")
     WebTable<TableHeader, TableRow> table();
 
-    interface TableHeader extends WebBlock {
+    interface TableHeader extends WebBlock<TableHeader> {
 
         @Name(CHECKBOX)
-        @WebLocator(xpath = ".//th[1]")
+        @WebSelector(xpath = ".//th[1]")
         HeaderWebBlock checkboxColumnHeader();
 
         @Name(NUMBER)
-        @WebLocator(xpath = ".//th[2]")
+        @WebSelector(xpath = ".//th[2]")
         HeaderWebBlock numberColumnHeader();
 
         @Name(SHORT_COUNTRY_NAME)
-        @WebLocator(xpath = ".//th[3]")
+        @WebSelector(xpath = ".//th[3]")
         HeaderWebBlock shortNameColumnHeader();
 
         @Name(FULL_COUNTRY_NAME)
-        @WebLocator(xpath = ".//th[4]")
+        @WebSelector(xpath = ".//th[4]")
         HeaderWebBlock fullNameColumnHeader();
 
         @Name(POPULATION)
-        @WebLocator(xpath = ".//th[5]")
+        @WebSelector(xpath = ".//th[5]")
         HeaderWebBlock populationColumnHeader();
 
     }
 
-    interface TableRow extends WebBlock {
+    interface TableRow extends WebBlock<TableRow> {
 
         @Name(CHECKBOX)
-        @WebLocator(xpath = ".//td[1]")
+        @WebSelector(xpath = ".//td[1]")
         CheckboxWebBlock checkboxColumn();
 
         @Name(NUMBER)
-        @WebLocator(xpath = ".//td[2]")
+        @WebSelector(xpath = ".//td[2]")
         CountryNumberWebBlock numberColumn();
 
         @Name(SHORT_COUNTRY_NAME)
-        @WebLocator(xpath = ".//td[3]")
+        @WebSelector(xpath = ".//td[3]")
         CountryNameWebBlock shortNameColumn();
 
         @Name(FULL_COUNTRY_NAME)
-        @WebLocator(xpath = ".//td[4]")
+        @WebSelector(xpath = ".//td[4]")
         FullCountryNameWebBlock fullNameColumn();
 
         @Name(POPULATION)
-        @WebLocator(xpath = ".//td[5]")
+        @WebSelector(xpath = ".//td[5]")
         PopulationWebBlock populationColumn();
 
     }

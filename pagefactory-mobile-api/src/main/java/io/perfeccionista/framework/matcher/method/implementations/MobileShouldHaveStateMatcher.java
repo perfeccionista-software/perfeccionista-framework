@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_DOES_NOT_HAVE_EXPECTED_STATE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_HAS_UNEXPECTED_STATE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_STATE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_STATE_METHOD;
 
@@ -32,7 +32,7 @@ public class MobileShouldHaveStateMatcher implements MobileElementStateAvailable
                 ? assertInvocation(SHOULD_HAVE_STATE_METHOD, elementName, stateName)
                 : assertInvocation(SHOULD_NOT_HAVE_STATE_METHOD, elementName, stateName);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     boolean actualState = element.hasState(stateName);
                     if (positive) {

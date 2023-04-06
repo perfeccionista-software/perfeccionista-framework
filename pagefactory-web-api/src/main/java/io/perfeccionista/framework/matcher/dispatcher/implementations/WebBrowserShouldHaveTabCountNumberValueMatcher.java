@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_TAB_COUNT_CONTAINS_EXPECTED_VALUE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_TAB_COUNT_DOES_NOT_CONTAIN_EXPECTED_VALUE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SHOULD_HAVE_TABS_COUNT_NUMBER_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SHOULD_NOT_HAVE_TABS_COUNT_NUMBER_VALUE_METHOD;
 
@@ -32,7 +32,7 @@ public class WebBrowserShouldHaveTabCountNumberValueMatcher implements WebBrowse
                 ? assertInvocation(BROWSER_SHOULD_HAVE_TABS_COUNT_NUMBER_VALUE_METHOD, expectedNumberValue.getShortDescription())
                 : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TABS_COUNT_NUMBER_VALUE_METHOD, expectedNumberValue.getShortDescription());
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     int actualTabCount = tabsDispatcher.getTabCount();
                     if (positive) {

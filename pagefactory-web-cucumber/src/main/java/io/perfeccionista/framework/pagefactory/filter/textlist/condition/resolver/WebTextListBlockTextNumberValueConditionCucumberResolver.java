@@ -1,7 +1,6 @@
 package io.perfeccionista.framework.pagefactory.filter.textlist.condition.resolver;
 
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
-import io.perfeccionista.framework.pagefactory.filter.textblock.condition.WebTextBlockCondition;
 import io.perfeccionista.framework.value.number.BigDecimalValueResolver;
 import io.perfeccionista.framework.value.number.IntegerValueResolver;
 import io.perfeccionista.framework.value.number.NumberValue;
@@ -20,24 +19,24 @@ import static java.util.Objects.isNull;
 @CucumberResolverExpression("содержится число {numberValue}")
 public class WebTextListBlockTextNumberValueConditionCucumberResolver extends AbstractWebTextListBlockConditionCucumberResolver {
 
-    @Override
-    public Optional<WebTextBlockCondition> tryResolve(@NotNull String expression, @Nullable Object... args) {
-        for (Pattern pattern : patterns) {
-            Matcher matcher = pattern.matcher(expression);
-            if (matcher.find()) {
-                String numberValue = matcher.group("numberValue");
-                if (isNull(numberValue)) {
-                    return Optional.empty();
-                }
-                if (numberValue.contains(".")) {
-                    NumberValue<BigDecimal> resolvedNumberValue = new BigDecimalValueResolver(environment, numberValue).getBigDecimalValue();
-                    return Optional.of(containsTextBlock(resolvedNumberValue));
-                }
-                NumberValue<Integer> resolvedNumberValue = new IntegerValueResolver(environment, numberValue).getIntegerValue();
-                return Optional.of(containsTextBlock(resolvedNumberValue));
-            }
-        }
-        return Optional.empty();
-    }
+//    @Override
+//    public Optional<WebTextBlockCondition> tryResolve(@NotNull String expression, @Nullable Object... args) {
+//        for (Pattern pattern : patterns) {
+//            Matcher matcher = pattern.matcher(expression);
+//            if (matcher.find()) {
+//                String numberValue = matcher.group("numberValue");
+//                if (isNull(numberValue)) {
+//                    return Optional.empty();
+//                }
+//                if (numberValue.contains(".")) {
+//                    NumberValue<BigDecimal> resolvedNumberValue = new BigDecimalValueResolver(environment, numberValue).getBigDecimalValue();
+//                    return Optional.of(containsTextBlock(resolvedNumberValue));
+//                }
+//                NumberValue<Integer> resolvedNumberValue = new IntegerValueResolver(environment, numberValue).getIntegerValue();
+//                return Optional.of(containsTextBlock(resolvedNumberValue));
+//            }
+//        }
+//        return Optional.empty();
+//    }
 
 }

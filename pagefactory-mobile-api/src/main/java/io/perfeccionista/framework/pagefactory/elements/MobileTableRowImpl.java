@@ -12,12 +12,7 @@ import io.perfeccionista.framework.matcher.method.MobileIsOnTheScreenAvailableMa
 import io.perfeccionista.framework.matcher.method.MobileIsPresentAvailableMatcher;
 import io.perfeccionista.framework.matcher.element.MobileBlockMatcher;
 import io.perfeccionista.framework.matcher.element.MobileChildElementMatcher;
-import io.perfeccionista.framework.measurements.HorizontalDirection;
-import io.perfeccionista.framework.measurements.VerticalDirection;
-import io.perfeccionista.framework.pagefactory.elements.base.MobileChildElement;
 import org.jetbrains.annotations.NotNull;
-
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
 
 public class MobileTableRowImpl extends MappedMobileBlockImpl implements MobileTableRow {
 

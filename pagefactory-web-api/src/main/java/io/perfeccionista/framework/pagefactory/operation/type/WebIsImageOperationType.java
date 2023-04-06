@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
-import io.perfeccionista.framework.pagefactory.elements.WebImage;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebImageElement;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,17 +14,17 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebIsImageOperationType implements WebElementOperationType<Boolean> {
 
-    private final WebImage element;
+    private final WebImageElement element;
 
     private final InvocationInfo invocationInfo;
 
-    private WebIsImageOperationType(WebImage element) {
+    private WebIsImageOperationType(WebImageElement element) {
         this.element = element;
         String elementName = element.getElementIdentifier().getLastUsedName();
         this.invocationInfo = getterInvocation(IS_IMAGE_METHOD, elementName);
     }
 
-    public static WebIsImageOperationType of(@NotNull WebImage element) {
+    public static WebIsImageOperationType of(@NotNull WebImageElement element) {
         return new WebIsImageOperationType(element);
     }
 

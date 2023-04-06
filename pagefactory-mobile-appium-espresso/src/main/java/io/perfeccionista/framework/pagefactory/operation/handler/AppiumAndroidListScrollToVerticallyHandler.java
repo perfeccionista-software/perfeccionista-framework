@@ -8,7 +8,7 @@ import io.appium.java_client.touch.offset.PointOption;
 import io.perfeccionista.framework.exceptions.ElementNotPresent;
 import io.perfeccionista.framework.exceptions.SingleResultCreating;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.measurements.VerticalDirection;
 import io.perfeccionista.framework.pagefactory.elements.MobileBlock;
 import io.perfeccionista.framework.pagefactory.elements.MobileList;
@@ -82,8 +82,8 @@ public class AppiumAndroidListScrollToVerticallyHandler implements EndpointHandl
     protected MobileBlock getResult() {
         Duration current = null;
         try {
-            current = element.getEnvironment().getService(TimeoutsService.class).getTimeout(CheckTimeout.class);
-            element.getEnvironment().getService(TimeoutsService.class).setTimeout(CheckTimeout.class, Duration.ofNanos(1));
+            current = element.getEnvironment().getService(TimeoutsService.class).getTimeout(RepeatInvocationTimeout.class);
+            element.getEnvironment().getService(TimeoutsService.class).setTimeout(RepeatInvocationTimeout.class, Duration.ofNanos(1));
             return filterBuilder.build(element)
                     .extractOne(block())
                     .getResult();
@@ -91,7 +91,7 @@ public class AppiumAndroidListScrollToVerticallyHandler implements EndpointHandl
             return null;
         } finally {
             if (current != null) {
-                element.getEnvironment().getService(TimeoutsService.class).setTimeout(CheckTimeout.class, current);
+                element.getEnvironment().getService(TimeoutsService.class).setTimeout(RepeatInvocationTimeout.class, current);
             }
         }
     }

@@ -93,6 +93,33 @@ public class WebPageService implements Service {
         return pageInstances.get(pageClass);
     }
 
+    // TODO: Implement
+//    public @NotNull WebNode createWebNode(@NotNull WebSelectorHolder rootSelector) {
+//        getWebPageFactory().
+//
+//    }
+
+//    public @NotNull WebNode createWebNode(@NotNull WebChildElement element) {
+//
+//    }
+
+//    public @NotNull WebNode createWebNode(@NotNull WebChildElement parentElement,
+//                                          @NotNull WebSelectorHolder rootSelector) {
+//
+//    }
+
+    // TODO: Implement
+//    public @NotNull WebList<WebNode> createWebList(@NotNull WebSelectorHolder rootSelector,
+//                                                   @NotNull WebSelectorHolder itemSelector) {
+//
+//    }
+
+//    public @NotNull WebList<WebNode> createWebList(@NotNull WebChildElement parentElement,
+//                                                   @NotNull WebSelectorHolder rootSelector,
+//                                                   @NotNull WebSelectorHolder itemSelector) {
+//
+//    }
+
     protected WebPageServiceConfiguration validate(ServiceConfiguration configuration) {
         if (configuration instanceof WebPageServiceConfiguration) {
             return (WebPageServiceConfiguration) configuration;
@@ -105,6 +132,10 @@ public class WebPageService implements Service {
         WebPage webPageInstance = getWebPageFactory()
                 .createWebPage(pageClass);
         pageInstances.put(pageClass, webPageInstance);
+    }
+
+    public static WebPageService getInstance() {
+        return Environment.getCurrent().getService(WebPageService.class);
     }
 
 }

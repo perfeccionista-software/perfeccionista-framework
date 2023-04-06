@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.exceptions.attachments;
 
-import io.perfeccionista.framework.pagefactory.filter.WebFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.WebListFilterBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -11,7 +11,7 @@ public class WebFilterBuilderDescriptionAttachmentEntry extends TextAttachmentEn
         super(name, content);
     }
 
-    public static WebFilterBuilderDescriptionAttachmentEntry of(@Nullable WebFilterBuilder<?, ?> filterBuilder) {
+    public static WebFilterBuilderDescriptionAttachmentEntry of(@Nullable WebListFilterBuilder<?> filterBuilder) {
         return new WebFilterBuilderDescriptionAttachmentEntry("Filter Description", Objects.isNull(filterBuilder) ? null : filterBuilder.toString());
     }
 

@@ -8,7 +8,7 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckDelayTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationDelayTimeout;
 import io.perfeccionista.framework.logging.Logger;
 import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
@@ -72,12 +72,12 @@ public class MobileAllureCheckInvocationRunner implements InvocationRunner {
 
     protected Duration getDelayTimeout(Environment environment) {
         return environment.getService(TimeoutsService.class)
-                .getTimeout(CheckDelayTimeout.class);
+                .getTimeout(RepeatInvocationDelayTimeout.class);
     }
 
-    protected String getFormattedDuration(Duration duration) {
-        return format("%02d:%02d.%03d", duration.toMinutesPart(), duration.toSecondsPart(), duration.toMillisPart());
-    }
+//    protected String getFormattedDuration(Duration duration) {
+//        return format("%02d:%02d.%03d", duration.toMinutesPart(), duration.toSecondsPart(), duration.toMillisPart());
+//    }
 
 }
 

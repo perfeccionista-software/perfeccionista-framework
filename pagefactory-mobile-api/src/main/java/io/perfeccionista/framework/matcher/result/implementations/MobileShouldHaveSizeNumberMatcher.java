@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.FILTERED_ELEMENT_SIZE_MATCH;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.FILTERED_ELEMENT_SIZE_NOT_MATCH;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_SIZE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_SIZE_METHOD;
 
@@ -32,7 +32,7 @@ public class MobileShouldHaveSizeNumberMatcher implements MobileIndexesMatcher {
 
         MobileChildElement element = result.getElement();
 
-        runCheck(invocationName, () -> {
+        repeatInvocation(invocationName, () -> {
             int actualSize = result.getSize();
             if (positive) {
                 shouldHaveSize(element, actualSize);

@@ -1,9 +1,10 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
-import io.perfeccionista.framework.pagefactory.elements.WebTextList;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebItemLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.WebList;
+import io.perfeccionista.framework.pagefactory.elements.WebNode;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebItemSelector;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelector;
 
 @Name("Page with simple list of countries")
 @Name("Страница с простым списком стран")
@@ -17,8 +18,8 @@ public interface TextListElementsPage extends AbstractWebPage {
 
     @Name("Simple list of countries")
     @Name("Простой список стран")
-    @WebLocator(id = "text-list")
-    @WebItemLocator(xpath = "self::node()//div[@itemid = 'text-list-item']")
-    WebTextList textList();
+    @WebSelector(id = "text-list")
+    @WebItemSelector(xpath = "self::node()//div[@itemid = 'text-list-item']")
+    WebList<WebNode> textList();
 
 }

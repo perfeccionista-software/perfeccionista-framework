@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.REPLACE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SET_VALUE_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -23,7 +23,7 @@ public class WebReplaceTextOperationType implements WebElementOperationType<Void
         this.element = element;
         this.text = text;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = actionInvocation(REPLACE_TEXT_METHOD, elementName, text);
+        this.invocationInfo = actionInvocation(SET_VALUE_METHOD, elementName, text);
     }
 
     public static WebReplaceTextOperationType of(@NotNull WebInputTextAvailable element, @NotNull String text) {
@@ -37,7 +37,7 @@ public class WebReplaceTextOperationType implements WebElementOperationType<Void
 
     @Override
     public @NotNull EndpointHandler<Void> getEndpointHandler() {
-        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(REPLACE_TEXT_METHOD, Void.class);
+        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(SET_VALUE_METHOD, Void.class);
         Constructor<? extends EndpointHandler<Void>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor, text);
     }

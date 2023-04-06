@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.REPLACE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SET_VALUE_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -23,7 +23,7 @@ public class MobileReplaceTextOperationType implements MobileElementOperationTyp
         this.element = element;
         this.valueToInput = valueToInput;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = actionInvocation(REPLACE_TEXT_METHOD, elementName, valueToInput);
+        this.invocationInfo = actionInvocation(SET_VALUE_METHOD, elementName, valueToInput);
     }
 
     public static MobileReplaceTextOperationType of(@NotNull MobileChildElementBase element, @NotNull String valueToInput) {
@@ -37,7 +37,7 @@ public class MobileReplaceTextOperationType implements MobileElementOperationTyp
 
     @Override
     public @NotNull EndpointHandler<Void> getEndpointHandler() {
-        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(REPLACE_TEXT_METHOD, Void.class);
+        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(SET_VALUE_METHOD, Void.class);
         Constructor<? extends EndpointHandler<Void>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor, element, valueToInput);
     }

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.filter.list.condition.resolver;
 
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
-import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.conditions.WebItemCondition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +17,7 @@ import static java.util.Objects.isNull;
 public class WebListBlockElementComponentPresentConditionCucumberResolver extends AbstractWebListBlockConditionCucumberResolver {
 
     @Override
-    public Optional<WebBlockCondition> tryResolve(@NotNull String expression, @Nullable Object[] args) {
+    public Optional<WebItemCondition> tryResolve(@NotNull String expression, @Nullable Object[] args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.find()) {

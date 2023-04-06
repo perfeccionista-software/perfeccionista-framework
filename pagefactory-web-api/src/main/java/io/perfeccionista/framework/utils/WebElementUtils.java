@@ -1,7 +1,10 @@
 package io.perfeccionista.framework.utils;
 
+import io.perfeccionista.framework.conditions.WebElementCondition;
+import io.perfeccionista.framework.conditions.WebPageCondition;
 import io.perfeccionista.framework.exceptions.ElementCast;
 import io.perfeccionista.framework.exceptions.ElementNotFound;
+import io.perfeccionista.framework.exceptions.PreconditionViolation;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
@@ -11,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
@@ -24,10 +28,33 @@ import static io.perfeccionista.framework.utils.CastUtils.isSubtypeOf;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findInheritedInterfaces;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForMethods.findMethods;
 import static java.lang.reflect.Modifier.isStatic;
+import static java.util.Objects.isNull;
 
 public class WebElementUtils {
 
     private WebElementUtils() {
+    }
+
+    public static List<WebElementCondition> checkAndCollect(@NotNull WebElementCondition... conditions) {
+        if (isNull(conditions)) {
+            throw PreconditionViolation.exception("No conditions were passed for check");
+        }
+        List<WebElementCondition> listOfConditions = Arrays.asList(conditions);
+        if (listOfConditions.isEmpty()) {
+            throw PreconditionViolation.exception("No conditions were passed for check");
+        }
+        return listOfConditions;
+    }
+
+    public static List<WebPageCondition> checkAndCollect(@NotNull WebPageCondition... conditions) {
+        if (isNull(conditions)) {
+            throw PreconditionViolation.exception("No conditions were passed for check");
+        }
+        List<WebPageCondition> listOfConditions = Arrays.asList(conditions);
+        if (listOfConditions.isEmpty()) {
+            throw PreconditionViolation.exception("No conditions were passed for check");
+        }
+        return listOfConditions;
     }
 
     public static @NotNull <T extends WebChildElement> T castWebChildElement(@NotNull WebChildElement elementToCast, @NotNull Class<T> castType) {

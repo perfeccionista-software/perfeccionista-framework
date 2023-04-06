@@ -66,6 +66,10 @@ public class WebElementOperationResult<T> {
         return exception == null;
     }
 
+    public boolean isException() {
+        return exception != null;
+    }
+
     public WebElementOperationResult<T> ifSuccess(@NotNull Consumer<WebElementOperationResult<T>> action) {
         if (exception == null) {
             action.accept(this);

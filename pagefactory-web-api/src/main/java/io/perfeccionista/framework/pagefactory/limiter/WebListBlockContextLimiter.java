@@ -5,7 +5,7 @@ import io.perfeccionista.framework.exceptions.attachments.ValueAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
-import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.WebListFilterBuilder;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,16 +17,16 @@ import java.util.stream.Stream;
 import static io.perfeccionista.framework.Web.block;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.SEARCH_CONTEXT_EXPECTED_SIZE_DOES_NOT_MATCH;
 
-public class WebListBlockContextLimiter<T extends WebBlock> implements WebContextLimiter<T> {
+public class WebListBlockContextLimiter<T extends WebBlock<?>> implements WebContextLimiter<T> {
 
     private final String elementPath;
     private final WebList<T> elementFrame;
-    private final WebBlockFilterBuilder<T> filterBuilder;
+    private final WebListFilterBuilder<T> filterBuilder;
     private final NumberValue<Integer> expectedSize;
 
     private WebListBlockContextLimiter(String elementPath,
                                        WebList<T> elementFrame,
-                                       WebBlockFilterBuilder<T> filterBuilder,
+                                       WebListFilterBuilder<T> filterBuilder,
                                        NumberValue<Integer> expectedSize) {
         this.elementPath = elementPath;
         this.elementFrame = elementFrame;
@@ -34,15 +34,15 @@ public class WebListBlockContextLimiter<T extends WebBlock> implements WebContex
         this.expectedSize = expectedSize;
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> of(@NotNull WebList<T> elementFrame,
-                                                                        @NotNull WebBlockFilterBuilder<T> filterBuilder,
-                                                                        @NotNull NumberValue<Integer> expectedSize) {
+    public static <T extends WebBlock<?>> WebListBlockContextLimiter<T> of(@NotNull WebList<T> elementFrame,
+                                                                           @NotNull WebListFilterBuilder<T> filterBuilder,
+                                                                           @NotNull NumberValue<Integer> expectedSize) {
         return new WebListBlockContextLimiter<>(null, elementFrame, filterBuilder, expectedSize);
     }
 
-    public static <T extends WebBlock> WebListBlockContextLimiter<T> of(@NotNull String elementPath,
-                                                                        @NotNull WebBlockFilterBuilder<T> filterBuilder,
-                                                                        @NotNull NumberValue<Integer> expectedSize) {
+    public static <T extends WebBlock<?>> WebListBlockContextLimiter<T> of(@NotNull String elementPath,
+                                                                           @NotNull WebListFilterBuilder<T> filterBuilder,
+                                                                           @NotNull NumberValue<Integer> expectedSize) {
         return new WebListBlockContextLimiter<>(elementPath, null, filterBuilder, expectedSize);
     }
 

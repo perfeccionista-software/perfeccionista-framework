@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import org.jetbrains.annotations.NotNull;
 
-public class WebTableFrame<H extends WebBlock, T extends WebBlock> extends WebBlockFrame<T> {
+public class WebTableFrame<H extends WebBlock, T extends WebBlock> extends WebListFrame<T> {
 
     protected final H mappedHeader;
 

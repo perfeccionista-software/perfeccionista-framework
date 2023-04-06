@@ -21,7 +21,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.MobileTapOperation
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TAP;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TEXT;
 
@@ -120,7 +120,7 @@ public class MobileTextImpl extends AbstractMobileChildElement implements Mobile
     @Override
     public @Nullable String getText() {
         MobileGetTextOperationType operationType = MobileGetTextOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TEXT).executeGetter());
     }
 
@@ -137,7 +137,7 @@ public class MobileTextImpl extends AbstractMobileChildElement implements Mobile
     @Override
     public MobileText tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -145,7 +145,7 @@ public class MobileTextImpl extends AbstractMobileChildElement implements Mobile
     @Override
     public MobileText longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -153,7 +153,7 @@ public class MobileTextImpl extends AbstractMobileChildElement implements Mobile
     @Override
     public MobileText doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ACTIVE_PAGE_NOT_INITIALIZED;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD;
 
 public class DefaultWebPageContext implements WebPageContext {
@@ -81,9 +81,8 @@ public class DefaultWebPageContext implements WebPageContext {
     public <T extends WebPage> @NotNull T getPage(@NotNull Class<T> pageClass) {
         T pageInstance = environment.getService(WebPageService.class).getPageInstanceByClass(pageClass);
         pageInstance.setWebBrowserDispatcher(dispatcher);
-        pageInstance.setEnvironment(environment);
         activeWebPage = pageInstance;
-        pageInstance.validatePageOpen();
+        pageInstance.shouldBeOpen();
         return pageInstance;
     }
 
@@ -91,16 +90,15 @@ public class DefaultWebPageContext implements WebPageContext {
     public @NotNull WebPage getPage(@NotNull String pageName) {
         WebPage pageInstance = environment.getService(WebPageService.class).getPageInstanceByName(pageName);
         pageInstance.setWebBrowserDispatcher(dispatcher);
-        pageInstance.setEnvironment(environment);
         activeWebPage = pageInstance;
-        pageInstance.validatePageOpen();
+        pageInstance.shouldBeOpen();
         return pageInstance;
     }
 
     @Override
     public @NotNull WebPage getActivePage() {
         if (Objects.nonNull(activeWebPage)) {
-            activeWebPage.validatePageOpen();
+            activeWebPage.shouldBeOpen();
             return activeWebPage;
         }
         throw PageNotInitialized.exception(ACTIVE_PAGE_NOT_INITIALIZED.getMessage());
@@ -120,7 +118,7 @@ public class DefaultWebPageContext implements WebPageContext {
 
     @Override
     public @NotNull String getPageSource() {
-        return runCheck(getterInvocation(BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD), () ->
+        return repeatInvocation(getterInvocation(BROWSER_GET_ACTIVE_TAB_PAGE_SOURCE_METHOD), () ->
                 exceptionMapper.map(() -> {
                     RemoteWebDriver instance = dispatcher.getInstance(RemoteWebDriver.class);
                     String pageSource = instance.getPageSource();

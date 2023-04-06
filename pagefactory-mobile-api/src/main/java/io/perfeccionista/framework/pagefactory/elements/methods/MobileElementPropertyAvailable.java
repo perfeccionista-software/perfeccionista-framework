@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ATTRIBUTE_VALUE_METHOD;
 
 /**
  * TODO JavaDoc
@@ -19,7 +19,7 @@ public interface MobileElementPropertyAvailable extends MobileChildElementBase {
 
     Optional<MobileElementPropertyHolder> getProperty(String propertyName);
 
-    @MobileMappedElementAction(GET_PROPERTY_VALUE_METHOD)
+    @MobileMappedElementAction(GET_ATTRIBUTE_VALUE_METHOD)
     @Nullable String getPropertyValue(@NotNull String propertyName);
 
     @AssertMethodType

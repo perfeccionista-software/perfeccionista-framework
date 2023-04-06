@@ -4,13 +4,15 @@ import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.cucumber.CucumberService;
 import io.perfeccionista.framework.exceptions.WebExtractorNotResolved;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.WebItemValueExtractor;
 import io.perfeccionista.framework.pagefactory.extractor.list.resolver.WebListBlockValueExtractorCucumberResolver;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebCucumberApiMessages.WEB_EXTRACTOR_NOT_RESOLVED;
 
-public class WebListBlockValueExtractorParameterImpl implements WebListBlockValueExtractorParameter {
+public class WebListBlockValueExtractorParameterImpl
+//        implements WebListBlockValueExtractorParameter
+{
 
     private final Environment environment;
     private final String rawInput;
@@ -20,17 +22,17 @@ public class WebListBlockValueExtractorParameterImpl implements WebListBlockValu
         this.rawInput = rawInput;
     }
 
-    @Override
-    public @NotNull WebBlockValueExtractor<String, WebBlock> createExtractorFor(@NotNull String blockElementName) {
-        return environment.getService(CucumberService.class)
-                .resolveFirst(WebListBlockValueExtractorCucumberResolver.class, rawInput)
-                .orElseThrow(() -> WebExtractorNotResolved.exception(WEB_EXTRACTOR_NOT_RESOLVED.getMessage(rawInput)))
-                .createForElement(blockElementName);
-    }
-
-    @Override
-    public @NotNull String getRaw() {
-        return rawInput;
-    }
+//    @Override
+//    public @NotNull WebItemValueExtractor<String, WebBlock<?>> createExtractorFor(@NotNull String blockElementName) {
+//        return environment.getService(CucumberService.class)
+//                .resolveFirst(WebListBlockValueExtractorCucumberResolver.class, rawInput)
+//                .orElseThrow(() -> WebExtractorNotResolved.exception(WEB_EXTRACTOR_NOT_RESOLVED.getMessage(rawInput)))
+//                .createForElement(blockElementName);
+//    }
+//
+//    @Override
+//    public @NotNull String getRaw() {
+//        return rawInput;
+//    }
 
 }

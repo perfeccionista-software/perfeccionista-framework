@@ -31,8 +31,4 @@ class WebListExtractorsTest extends AbstractWebSeleniumParallelTest {
                 .should(beSorted(Integer::compareTo));
     }
 
-
-
-
-
 }

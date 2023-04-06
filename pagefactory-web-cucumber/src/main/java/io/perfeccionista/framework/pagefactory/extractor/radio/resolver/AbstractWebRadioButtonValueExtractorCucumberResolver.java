@@ -11,27 +11,27 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractWebRadioButtonValueExtractorCucumberResolver implements WebRadioButtonValueExtractorCucumberResolver {
 
-    protected Environment environment;
-    protected List<Pattern> patterns = new ArrayList<>();
-    protected int priority = 0;
-
-    @Override
-    public void init(@NotNull Environment environment, @NotNull List<String> patterns) {
-        this.environment = environment;
-        Set<Pattern> compiledPatterns = patterns.stream()
-                .map(this::convertToRegexp)
-                .collect(Collectors.toSet());
-        this.patterns.addAll(compiledPatterns);
-    }
-
-    @Override
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    @Override
-    public int getPriority() {
-        return priority;
-    }
+//    protected Environment environment;
+//    protected List<Pattern> patterns = new ArrayList<>();
+//    protected int priority = 0;
+//
+//    @Override
+//    public void init(@NotNull Environment environment, @NotNull List<String> patterns) {
+//        this.environment = environment;
+//        Set<Pattern> compiledPatterns = patterns.stream()
+//                .map(this::convertToRegexp)
+//                .collect(Collectors.toSet());
+//        this.patterns.addAll(compiledPatterns);
+//    }
+//
+//    @Override
+//    public void setPriority(int priority) {
+//        this.priority = priority;
+//    }
+//
+//    @Override
+//    public int getPriority() {
+//        return priority;
+//    }
 
 }

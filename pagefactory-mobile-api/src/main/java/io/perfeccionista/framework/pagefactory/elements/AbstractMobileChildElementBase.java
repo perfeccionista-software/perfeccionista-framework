@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_LOCATOR_NOT_FOUND;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ROOT;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
@@ -90,7 +90,7 @@ public class AbstractMobileChildElementBase implements MobileChildElementBase {
     @Override
     public MobileChildElementBase executeAction(@NotNull String name, Object... args) {
         MobileActionOperationType operationType = MobileActionOperationType.of(this, name, args);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }

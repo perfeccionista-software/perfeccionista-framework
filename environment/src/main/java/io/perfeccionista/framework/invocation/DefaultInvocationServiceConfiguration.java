@@ -1,15 +1,15 @@
 package io.perfeccionista.framework.invocation;
 
-import io.perfeccionista.framework.invocation.runner.CheckInvocationRunner;
+import io.perfeccionista.framework.invocation.runner.MultipleAttemptInvocationRunner;
 import io.perfeccionista.framework.invocation.runner.DefaultInvocationInfoNameFormatter;
 import io.perfeccionista.framework.invocation.runner.DefaultInvocationInfoStatisticsFormatter;
 import io.perfeccionista.framework.invocation.runner.EmptyInvocationRunner;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoNameFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoStatisticsFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationRunner;
-import io.perfeccionista.framework.invocation.runner.LogicInvocationRunner;
-import io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper;
-import io.perfeccionista.framework.invocation.wrapper.LogicInvocationWrapper;
+import io.perfeccionista.framework.invocation.runner.SingleAttemptInvocationRunner;
+import io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper;
+import io.perfeccionista.framework.invocation.wrapper.SingleAttemptInvocationWrapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -21,11 +21,11 @@ public class DefaultInvocationServiceConfiguration implements InvocationServiceC
 
     @Override
     public @NotNull Class<? extends InvocationRunner> getInvocationRunnerImplementation(@NotNull Class<?> invocationWrapper) {
-        if (CheckInvocationWrapper.class.equals(invocationWrapper)) {
-            return CheckInvocationRunner.class;
+        if (SingleAttemptInvocationWrapper.class.equals(invocationWrapper)) {
+            return SingleAttemptInvocationRunner.class;
         }
-        if (LogicInvocationWrapper.class.equals(invocationWrapper)) {
-            return LogicInvocationRunner.class;
+        if (MultipleAttemptInvocationWrapper.class.equals(invocationWrapper)) {
+            return MultipleAttemptInvocationRunner.class;
         }
         return EmptyInvocationRunner.class;
     }

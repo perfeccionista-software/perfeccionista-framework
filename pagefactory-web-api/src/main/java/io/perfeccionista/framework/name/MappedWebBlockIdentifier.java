@@ -19,20 +19,20 @@ import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class MappedWebBlockIdentifier implements WebElementIdentifier {
 
-    private final Class<? extends WebBlock> mappedBlockClass;
+    private final Class<? extends WebBlock<?>> mappedBlockClass;
     private final Map<String, Boolean> names;
     private String lastUsedName = null;
 
-    private MappedWebBlockIdentifier(Class<? extends WebBlock> mappedBlockClass, Map<String, Boolean> names) {
+    private MappedWebBlockIdentifier(Class<? extends WebBlock<?>> mappedBlockClass, Map<String, Boolean> names) {
         this.mappedBlockClass = mappedBlockClass;
         this.names = names;
     }
 
-    public static MappedWebBlockIdentifier of(@NotNull Class<? extends WebBlock> mappedBlockClass) {
+    public static MappedWebBlockIdentifier of(@NotNull Class<? extends WebBlock<?>> mappedBlockClass) {
         return new MappedWebBlockIdentifier(mappedBlockClass, new HashMap<>());
     }
 
-    public static MappedWebBlockIdentifier of(@NotNull Class<? extends WebBlock> mappedBlockClass, @NotNull Map<String, Boolean> names) {
+    public static MappedWebBlockIdentifier of(@NotNull Class<? extends WebBlock<?>> mappedBlockClass, @NotNull Map<String, Boolean> names) {
         return new MappedWebBlockIdentifier(mappedBlockClass, names);
     }
 
@@ -52,7 +52,7 @@ public class MappedWebBlockIdentifier implements WebElementIdentifier {
     }
 
     @Override
-    public @NotNull Class<? extends WebBlock> getElementType() {
+    public @NotNull Class<? extends WebBlock<?>> getElementType() {
         return mappedBlockClass;
     }
 
@@ -77,6 +77,13 @@ public class MappedWebBlockIdentifier implements WebElementIdentifier {
     @Override
     public Stream<String> namesStream() {
         return names().stream();
+    }
+
+
+    @Override
+    public MappedWebBlockIdentifier addName(@NotNull String name) {
+        names.put(name, true);
+        return this;
     }
 
     @Override

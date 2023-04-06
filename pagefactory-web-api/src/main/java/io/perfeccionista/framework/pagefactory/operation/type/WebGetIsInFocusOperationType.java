@@ -14,18 +14,22 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebGetIsInFocusOperationType implements WebElementOperationType<Boolean> {
 
+    private static final String ACTION_NAME = IS_IN_FOCUS_METHOD;
+
     private final WebIsInFocusAvailable element;
+    private final String componentName;
 
     private final InvocationInfo invocationInfo;
 
-    private WebGetIsInFocusOperationType(WebIsInFocusAvailable element) {
+    private WebGetIsInFocusOperationType(WebIsInFocusAvailable element, String componentName) {
         this.element = element;
+        this.componentName = componentName;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(IS_IN_FOCUS_METHOD, elementName);
+        this.invocationInfo = getterInvocation(ACTION_NAME, elementName, componentName);
     }
 
-    public static WebGetIsInFocusOperationType of(@NotNull WebIsInFocusAvailable element) {
-        return new WebGetIsInFocusOperationType(element);
+    public static WebGetIsInFocusOperationType of(@NotNull WebIsInFocusAvailable element, @NotNull String componentName) {
+        return new WebGetIsInFocusOperationType(element, componentName);
     }
 
     @Override
@@ -35,7 +39,7 @@ public class WebGetIsInFocusOperationType implements WebElementOperationType<Boo
 
     @Override
     public @NotNull EndpointHandler<Boolean> getEndpointHandler() {
-        Class<? extends EndpointHandler<Boolean>> endpointHandlerClass = element.getEndpointHandler(IS_IN_FOCUS_METHOD, Boolean.class);
+        Class<? extends EndpointHandler<Boolean>> endpointHandlerClass = element.getEndpointHandler(ACTION_NAME, Boolean.class);
         Constructor<? extends EndpointHandler<Boolean>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor);
     }

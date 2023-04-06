@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ATTRIBUTE_VALUE_METHOD;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.getDeclaredConstructor;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
@@ -24,7 +24,7 @@ public class MobileGetPropertyValueOperationType implements MobileElementOperati
         this.element = element;
         this.propertyHolder = propertyHolder;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(GET_PROPERTY_VALUE_METHOD, elementName, propertyHolder.getName());
+        this.invocationInfo = getterInvocation(GET_ATTRIBUTE_VALUE_METHOD, elementName, propertyHolder.getName());
     }
 
     public static MobileGetPropertyValueOperationType of(@NotNull MobileChildElementBase element, @NotNull MobileElementPropertyHolder propertyHolder) {
@@ -38,7 +38,7 @@ public class MobileGetPropertyValueOperationType implements MobileElementOperati
 
     @Override
     public @NotNull EndpointHandler<String> getEndpointHandler() {
-        Class<? extends EndpointHandler<String>> endpointHandlerClass = element.getEndpointHandler(GET_PROPERTY_VALUE_METHOD, String.class);
+        Class<? extends EndpointHandler<String>> endpointHandlerClass = element.getEndpointHandler(GET_ATTRIBUTE_VALUE_METHOD, String.class);
         Constructor<? extends EndpointHandler<String>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor, element, propertyHolder);
     }

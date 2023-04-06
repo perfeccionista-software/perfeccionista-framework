@@ -12,17 +12,19 @@ import java.util.regex.Pattern;
 
 @CucumberResolverExpression("^display marks$")
 @CucumberResolverExpression("^признаки отображения$")
-public class WebListBlockElementDisplayedMarkToStringExtractorCucumberResolver extends AbstractWebListBlockValueExtractorCucumberResolver {
+public class WebListBlockElementDisplayedMarkToStringExtractorCucumberResolver
+//        extends AbstractWebListBlockValueExtractorCucumberResolver
+{
 
-    @Override
-    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
-        for (Pattern pattern : patterns) {
-            Matcher matcher = pattern.matcher(expression);
-            if (matcher.find()) {
-                return Optional.of(new WebListBlockElementDisplayedMarkToStringExtractorCreator());
-            }
-        }
-        return Optional.empty();
-    }
+//    @Override
+//    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
+//        for (Pattern pattern : patterns) {
+//            Matcher matcher = pattern.matcher(expression);
+//            if (matcher.find()) {
+//                return Optional.of(new WebListBlockElementDisplayedMarkToStringExtractorCreator());
+//            }
+//        }
+//        return Optional.empty();
+//    }
 
 }

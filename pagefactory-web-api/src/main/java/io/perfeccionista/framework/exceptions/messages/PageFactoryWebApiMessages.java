@@ -67,12 +67,11 @@ public enum PageFactoryWebApiMessages implements Messages {
     ELEMENT_IS_SELECTED("Element %s is selected"),
     ELEMENT_NOT_SELECTED("Element %s is not selected"),
 
-    ELEMENT_PROPERTY_VALUE_IS_NULL("Element property '%s' for element '%s' is null"),
-
-    ELEMENT_PROPERTY_DOES_NOT_CONTAIN_EXPECTED_VALUE("Element property '%s' doesn't contain expected value"),
-    ELEMENT_PROPERTY_DOES_NOT_CONTAIN_EXPECTED_TEXT("Element property '%s' doesn't contain expected text"),
-    ELEMENT_PROPERTY_CONTAINS_EXPECTED_VALUE("Element property '%s' contains expected value but should not"),
-    ELEMENT_PROPERTY_CONTAINS_EXPECTED_TEXT("Element property '%s' contains expected text but should not"),
+    ELEMENT_ATTRIBUTE_VALUE_IS_MISSING("Element attribute '%s' for element '%s' for component '%s' is missing"),
+    ELEMENT_ATTRIBUTE_DOES_NOT_CONTAIN_EXPECTED_VALUE("Element attribute '%s' for component '%s' doesn't contain expected value"),
+    ELEMENT_ATTRIBUTE_DOES_NOT_CONTAIN_EXPECTED_TEXT("Element attribute '%s' for component '%s' doesn't contain expected text"),
+    ELEMENT_ATTRIBUTE_CONTAINS_EXPECTED_VALUE("Element attribute '%s' for component '%s' contains expected value but should not"),
+    ELEMENT_ATTRIBUTE_CONTAINS_EXPECTED_TEXT("Element attribute '%s' for component '%s' contains expected text but should not"),
 
     ELEMENT_TEXT_DOES_NOT_CONTAIN_EXPECTED_VALUE("Element doesn't contain expected value"),
     ELEMENT_TEXT_CONTAINS_EXPECTED_VALUE("Element contains expected value but should not"),

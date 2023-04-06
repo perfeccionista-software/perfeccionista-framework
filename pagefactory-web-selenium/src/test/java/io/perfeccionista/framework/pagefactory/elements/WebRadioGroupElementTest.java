@@ -11,7 +11,7 @@ import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocat
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementSize.WebElementSizeAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
@@ -65,9 +65,9 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = radioGroup.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(radioGroup.getEnvironment()),
-                () -> assertNotNull(radioGroup.getLocatorChain()),
+                () -> assertNotNull(radioGroup.getSelectorChain()),
                 () -> assertNotNull(radioGroup.getWebBrowserDispatcher()),
-                () -> assertNotNull(radioGroup.getOptionalLocator(ROOT)),
+                () -> assertNotNull(radioGroup.getOptionalSelector(ROOT)),
                 // WebChildElement
                 () -> assertNotNull(radioGroup.getEndpointHandler(GET_COLOR_METHOD, Color.class)),
                 () -> assertNotNull(radioGroup.getEndpointHandler(GET_ELEMENT_BOUNDS_METHOD, ElementBounds.class)),
@@ -144,7 +144,7 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> radioGroup.should(notBePresent())),
@@ -172,7 +172,7 @@ class WebRadioGroupElementTest extends AbstractWebSeleniumParallelTest {
                             () -> radioGroup.should(notHaveColor("border-color", elementColor)));
                 },
                 () -> assertThrows(SingleResultConversionException.class,
-                        () -> radioGroup.should(notHavePropertyValue("unknown property", stringEquals("Some value")))),
+                        () -> radioGroup.should(notHaveAttributeValue("unknown property", stringEquals("Some value")))),
                 () -> assertThrows(WebElementSizeAssertionError.class,
                         () -> radioGroup.should(haveSize(intEquals(4))))
         );

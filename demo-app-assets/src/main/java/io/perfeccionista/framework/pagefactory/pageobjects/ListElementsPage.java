@@ -2,8 +2,8 @@ package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebItemLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebItemSelector;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelector;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.list.CountryBlock;
 
 @Name("Page with list of countries")
@@ -20,8 +20,8 @@ public interface ListElementsPage extends AbstractWebPage {
 
     @Name("List of countries")
     @Name("Список стран")
-    @WebLocator(id = "countries-list")
-    @WebItemLocator(xpath = ".//div[@itemid = 'countries-list-item']")
+    @WebSelector(id = "countries-list")
+    @WebItemSelector(xpath = ".//div[@itemid = 'countries-list-item']")
     WebList<CountryBlock> webList();
 
 }

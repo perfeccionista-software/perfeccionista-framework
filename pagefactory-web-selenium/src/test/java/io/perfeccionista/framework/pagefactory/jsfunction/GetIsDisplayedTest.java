@@ -2,17 +2,18 @@ package io.perfeccionista.framework.pagefactory.jsfunction;
 
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper;
 import io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserDispatcher;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorChain;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsGetIsDisplayed;
 import io.perfeccionista.framework.pagefactory.operation.handler.SeleniumClick;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.junit.jupiter.api.Test;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.ID;
-import static io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorStrategy.TEXT;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
+import static io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorStrategy.ID;
+import static io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorStrategy.EQUALS_TEXT;
 
 class GetIsDisplayedTest extends AbstractWebSeleniumParallelTest {
 
@@ -20,16 +21,16 @@ class GetIsDisplayedTest extends AbstractWebSeleniumParallelTest {
     void singleElementTest(Environment environment) {
         WebBrowserDispatcher browser = openDefaultBrowser();
 
-        runCheck(() -> {
-            WebLocatorChain linkLocatorChain = WebLocatorChain.empty()
-                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Elements"));
+        repeatInvocation(() -> {
+            WebSelectorChain linkLocatorChain = WebSelectorChain.empty()
+                    .addLastSelector(WebSelectorHolder.of("ROOT", EQUALS_TEXT, "Elements"));
             WebElementOperation<Void> clickOperation = WebElementOperation.of(linkLocatorChain, new SeleniumClick());
             browser.executor()
                     .executeWebElementOperation(clickOperation);
         });
-        boolean visibleLinkIsDisplayed = runCheck(() -> {
-            WebLocatorChain linkElementLocatorChain = WebLocatorChain.empty()
-                    .addLastLocator(WebLocatorHolder.of("ROOT", ID, "simple-link"));
+        boolean visibleLinkIsDisplayed = MultipleAttemptInvocationWrapper.repeatInvocation(() -> {
+            WebSelectorChain linkElementLocatorChain = WebSelectorChain.empty()
+                    .addLastSelector(WebSelectorHolder.of("ROOT", ID, "simple-link"));
             WebElementOperation<Boolean> getIsDisplayedOperation = WebElementOperation.of(linkElementLocatorChain, new JsGetIsDisplayed());
             return browser.executor()
                     .executeWebElementOperation(getIsDisplayedOperation)
@@ -39,9 +40,9 @@ class GetIsDisplayedTest extends AbstractWebSeleniumParallelTest {
                     .getResult();
         });
         System.out.println(visibleLinkIsDisplayed);
-        boolean invisibleLinkIsDisplayed = runCheck(() -> {
-            WebLocatorChain textElementLocatorChain = WebLocatorChain.empty()
-                    .addLastLocator(WebLocatorHolder.of("ROOT", TEXT, "Simple Link clicked"));
+        boolean invisibleLinkIsDisplayed = MultipleAttemptInvocationWrapper.repeatInvocation(() -> {
+            WebSelectorChain textElementLocatorChain = WebSelectorChain.empty()
+                    .addLastSelector(WebSelectorHolder.of("ROOT", EQUALS_TEXT, "Simple Link clicked"));
             WebElementOperation<Boolean> getIsDisplayed2Operation = WebElementOperation.of(textElementLocatorChain, new JsGetIsDisplayed());
             return browser.executor()
                     .executeWebElementOperation(getIsDisplayed2Operation)

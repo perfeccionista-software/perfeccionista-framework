@@ -4,6 +4,7 @@ import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
+import io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -12,7 +13,7 @@ import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.actionInvocation;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_ADD_COOKIE_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_CLEAN_COOKIES_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_DELETE_COOKIE_BY_NAME_METHOD;
@@ -37,7 +38,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
     @Override
     public @Nullable
     Cookie getCookieByName(@NotNull String name) {
-        return runCheck(getterInvocation(BROWSER_GET_COOKIE_BY_NAME_METHOD, name), () ->
+        return MultipleAttemptInvocationWrapper.repeatInvocation(getterInvocation(BROWSER_GET_COOKIE_BY_NAME_METHOD, name), () ->
                 exceptionMapper.map(() -> createPerfeccionistaCookie(instance.manage().getCookieNamed(name)))
                         .ifException(exception -> {
                             throw exception;
@@ -47,7 +48,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public @NotNull Stream<Cookie> getCookies() {
-        return runCheck(getterInvocation(BROWSER_GET_COOKIES_METHOD), () ->
+        return MultipleAttemptInvocationWrapper.repeatInvocation(getterInvocation(BROWSER_GET_COOKIES_METHOD), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .getCookies().stream()
                         .map(SeleniumCookieConverter::createPerfeccionistaCookie))
@@ -61,7 +62,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
     public SeleniumWebBrowserCookiesDispatcher addCookie(@NotNull Cookie cookie) {
         InvocationInfo invocationInfo = actionInvocation(BROWSER_ADD_COOKIE_METHOD)
                 .addAttachmentEntry(TextAttachmentEntry.of("Cookie", cookie.toFormattedString()));
-        runCheck(invocationInfo, () ->
+        MultipleAttemptInvocationWrapper.repeatInvocation(invocationInfo, () ->
                 exceptionMapper.map(() -> instance.manage()
                         .addCookie(createSeleniumCookie(cookie)))
                         .ifException(exception -> {
@@ -72,7 +73,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher cleanCookies() {
-        runCheck(actionInvocation(BROWSER_CLEAN_COOKIES_METHOD), () ->
+        MultipleAttemptInvocationWrapper.repeatInvocation(actionInvocation(BROWSER_CLEAN_COOKIES_METHOD), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .deleteAllCookies())
                         .ifException(exception -> {
@@ -85,7 +86,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
     public SeleniumWebBrowserCookiesDispatcher deleteCookie(@NotNull Cookie cookie) {
         InvocationInfo invocationInfo = actionInvocation(BROWSER_DELETE_COOKIE_METHOD)
                 .addAttachmentEntry(TextAttachmentEntry.of("Cookie", cookie.toFormattedString()));
-        runCheck(invocationInfo, () ->
+        MultipleAttemptInvocationWrapper.repeatInvocation(invocationInfo, () ->
                 exceptionMapper.map(() -> instance.manage()
                         .deleteCookie(createSeleniumCookie(cookie)))
                         .ifException(exception -> {
@@ -96,7 +97,7 @@ public class SeleniumWebBrowserCookiesDispatcher implements WebBrowserCookiesDis
 
     @Override
     public SeleniumWebBrowserCookiesDispatcher deleteCookieByName(@NotNull String name) {
-        runCheck(actionInvocation(BROWSER_DELETE_COOKIE_BY_NAME_METHOD, name), () ->
+        MultipleAttemptInvocationWrapper.repeatInvocation(actionInvocation(BROWSER_DELETE_COOKIE_BY_NAME_METHOD, name), () ->
                 exceptionMapper.map(() -> instance.manage()
                         .deleteCookieNamed(name))
                         .ifException(exception -> {

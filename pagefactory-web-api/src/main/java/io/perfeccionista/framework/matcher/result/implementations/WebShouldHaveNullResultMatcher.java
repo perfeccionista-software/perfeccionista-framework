@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.FILTERED_ELEMENT_CONTAINS_NON_NULL_RESULT;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_NULL_RESULT_METHOD;
 import static java.util.Objects.nonNull;
 
@@ -23,7 +23,7 @@ public class WebShouldHaveNullResultMatcher<T> implements WebMultipleIndexedResu
 
         InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_NULL_RESULT_METHOD, elementName);
 
-        runCheck(invocationName, () -> {
+        repeatInvocation(invocationName, () -> {
             result.getResults().forEach((index, value) -> {
                 if (nonNull(value)) {
                     throw ResultVerification.assertionError(FILTERED_ELEMENT_CONTAINS_NON_NULL_RESULT.getMessage(index))

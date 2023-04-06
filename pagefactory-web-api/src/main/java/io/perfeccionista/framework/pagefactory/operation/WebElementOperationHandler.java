@@ -3,7 +3,7 @@ package io.perfeccionista.framework.pagefactory.operation;
 import io.perfeccionista.framework.exceptions.attachments.WebElementAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.WebElementOperationAttachmentEntry;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorChain;
 import io.perfeccionista.framework.pagefactory.operation.type.WebElementOperationType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,11 +22,6 @@ public class WebElementOperationHandler<T> {
     }
 
     public static <T> WebElementOperationHandler<T> of(@NotNull WebChildElementBase element,
-                                                       @NotNull WebElementOperationType<T> operationType) {
-        return new WebElementOperationHandler<>(element, operationType);
-    }
-
-    public static <T> WebElementOperationHandler<T> of(@NotNull WebChildElementBase element,
                                                        @NotNull WebElementOperationType<T> operationType,
                                                        @Nullable String component) {
         WebElementOperationHandler<T> operationBuilder = new WebElementOperationHandler<>(element, operationType);
@@ -40,9 +35,9 @@ public class WebElementOperationHandler<T> {
     }
 
     public WebElementOperation<T> getOperation() {
-        WebLocatorChain webLocatorChain = Objects.nonNull(component)
-                ? element.getLocatorChainTo(component)
-                : element.getLocatorChain();
+        WebSelectorChain webLocatorChain = Objects.nonNull(component)
+                ? element.getSelectorChainTo(component)
+                : element.getSelectorChain();
         return WebElementOperation.of(webLocatorChain, operationType);
     }
 

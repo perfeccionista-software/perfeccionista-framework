@@ -1,11 +1,13 @@
 package io.perfeccionista.framework.pagefactory.extractor.list.creator;
 
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockElementComponentDisplayedMarkToStringExtractor;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockValueExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.list.WebItemElementComponentDisplayedMarkToStringExtractor;
+import io.perfeccionista.framework.pagefactory.extractor.WebItemValueExtractor;
 import org.jetbrains.annotations.NotNull;
 
-public class WebListBlockElementComponentDisplayedMarkToStringExtractorCreator implements WebListBlockElementValueExtractorCreator {
+public class WebListBlockElementComponentDisplayedMarkToStringExtractorCreator
+//        implements WebListBlockElementValueExtractorCreator
+{
 
     private final String componentName;
 
@@ -13,9 +15,9 @@ public class WebListBlockElementComponentDisplayedMarkToStringExtractorCreator i
         this.componentName = componentName;
     }
 
-    @Override
-    public @NotNull WebBlockValueExtractor<String, WebBlock> createForElement(@NotNull String blockElementName) {
-        return new WebBlockElementComponentDisplayedMarkToStringExtractor(blockElementName, componentName);
-    }
+//    @Override
+//    public @NotNull WebItemValueExtractor<String, WebBlock> createForElement(@NotNull String blockElementName) {
+//        return new WebItemElementComponentDisplayedMarkToStringExtractor(blockElementName, componentName);
+//    }
 
 }

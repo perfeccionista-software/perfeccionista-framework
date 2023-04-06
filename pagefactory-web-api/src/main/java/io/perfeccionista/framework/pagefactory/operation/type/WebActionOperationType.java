@@ -17,6 +17,8 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebActionOperationType implements WebElementOperationType<Void> {
 
+    private static final String ACTION_NAME = EXECUTE_ACTION;
+
     private final String endpointHandlerName;
     private final WebChildElementBase element;
     private final Object[] args;
@@ -29,7 +31,7 @@ public class WebActionOperationType implements WebElementOperationType<Void> {
         this.args = args;
         String elementName = element.getElementIdentifier().getLastUsedName();
         String argsAsString = Arrays.stream(args).map(Object::toString).collect(Collectors.joining("; "));
-        this.invocationInfo = actionInvocation(EXECUTE_ACTION, elementName, endpointHandlerName, argsAsString);
+        this.invocationInfo = actionInvocation(ACTION_NAME, elementName, endpointHandlerName, argsAsString);
     }
 
     public static WebActionOperationType of(@NotNull WebChildElementBase element,

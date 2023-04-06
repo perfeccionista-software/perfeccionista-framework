@@ -13,7 +13,7 @@ import java.util.List;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_CONTAINS_TAB_WITH_EXPECTED_TITLE;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.WEB_BROWSER_DOES_NOT_CONTAIN_TAB_WITH_EXPECTED_TITLE;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SHOULD_HAVE_TAB_WITH_TITLE_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.WebBrowserActionNames.BROWSER_SHOULD_NOT_HAVE_TAB_WITH_TITLE_METHOD;
 
@@ -33,7 +33,7 @@ public class WebBrowserShouldHaveTabWithTitleStringMatcher implements WebBrowser
                 ? assertInvocation(BROWSER_SHOULD_HAVE_TAB_WITH_TITLE_METHOD, expectedText)
                 : assertInvocation(BROWSER_SHOULD_NOT_HAVE_TAB_WITH_TITLE_METHOD, expectedText);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     List<String> actualTabTitles = tabsDispatcher.getAllTabTitles();
                     if (positive) {

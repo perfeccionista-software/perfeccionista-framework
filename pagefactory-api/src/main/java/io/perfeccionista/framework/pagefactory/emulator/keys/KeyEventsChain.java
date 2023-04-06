@@ -13,6 +13,7 @@ import java.util.Deque;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 // TODO: Добавить возможность добавлять куски текста
+// TODO: Добавить статические методы начала комбинации
 public class KeyEventsChain implements JsonSerializable {
 
     private final Deque<KeyEvent> keyEvents;

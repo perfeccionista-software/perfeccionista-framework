@@ -9,6 +9,7 @@ import io.perfeccionista.framework.exceptions.ElementNotOnTheScreen;
 import io.perfeccionista.framework.exceptions.ResponseFormatIsNotValid;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
+import io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper;
 import io.perfeccionista.framework.measurements.Direction;
 import io.perfeccionista.framework.measurements.HorizontalDirection;
 import io.perfeccionista.framework.measurements.Point2D;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_ON_THE_SCREEN;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.RESPONSE_FORMAT_NOT_VALID;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.measurements.HorizontalDirection.LEFT;
 import static io.perfeccionista.framework.measurements.HorizontalDirection.RIGHT;
 import static io.perfeccionista.framework.measurements.VerticalDirection.DOWN;
@@ -193,7 +194,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
         // Нужно ли скроллить вверх
         if (isScrollNeeded(Direction.UP, androidElement, screenBounds)) {
             String elementName = element.getElementIdentifier().getLastUsedName();
-            runCheck(InvocationInfo.actionInvocation(SCROLL_UP_METHOD, elementName), () -> {
+            MultipleAttemptInvocationWrapper.repeatInvocation(InvocationInfo.actionInvocation(SCROLL_UP_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.UP, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.UP, androidElement, screenBounds);
                     int length = getScrollLength(Direction.UP, androidElement, screenBounds);
@@ -210,7 +211,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
         // Нужно ли скроллить вниз
         if (isScrollNeeded(Direction.DOWN, androidElement, screenBounds)) {
             String elementName = element.getElementIdentifier().getLastUsedName();
-            runCheck(InvocationInfo.actionInvocation(SCROLL_DOWN_METHOD, elementName), () -> {
+            MultipleAttemptInvocationWrapper.repeatInvocation(InvocationInfo.actionInvocation(SCROLL_DOWN_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.DOWN, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.DOWN, androidElement, screenBounds);
                     int length = getScrollLength(Direction.DOWN, androidElement, screenBounds);
@@ -227,7 +228,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
         // Нужно ли скроллить влево
         if (isScrollNeeded(Direction.LEFT, androidElement, screenBounds)) {
             String elementName = element.getElementIdentifier().getLastUsedName();
-            runCheck(InvocationInfo.actionInvocation(SCROLL_LEFT_METHOD, elementName), () -> {
+            MultipleAttemptInvocationWrapper.repeatInvocation(InvocationInfo.actionInvocation(SCROLL_LEFT_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.LEFT, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.LEFT, androidElement, screenBounds);
                     int length = getScrollLength(Direction.LEFT, androidElement, screenBounds);
@@ -244,7 +245,7 @@ public class AppiumScrollToHandler implements EndpointHandler<Void> {
         // Нужно ли скроллить вправо
         if (isScrollNeeded(Direction.RIGHT, androidElement, screenBounds)) {
             String elementName = element.getElementIdentifier().getLastUsedName();
-            runCheck(InvocationInfo.actionInvocation(SCROLL_RIGHT_METHOD, elementName), () -> {
+            MultipleAttemptInvocationWrapper.repeatInvocation(InvocationInfo.actionInvocation(SCROLL_RIGHT_METHOD, elementName), () -> {
                 if (isScrollNeeded(Direction.RIGHT, androidElement, screenBounds)) {
                     Point2D startPoint = getStartScrollPoint(Direction.RIGHT, androidElement, screenBounds);
                     int length = getScrollLength(Direction.RIGHT, androidElement, screenBounds);

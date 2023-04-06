@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.states.base;
 
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.states.IsPresentWebElementStateExtractor;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelector;
+import io.perfeccionista.framework.pagefactory.elements.states.IsPresentStateExtractor;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -20,11 +20,9 @@ public @interface WebElementState {
 
     String name();
 
-    WebLocator locator() default @WebLocator; // локатор по умолчанию указывает на родительский элемент
+    WebSelector selector() default @WebSelector; // локатор по умолчанию указывает на родительский элемент
 
-    Class<? extends WebElementStateExtractor> extractor() default IsPresentWebElementStateExtractor.class;
-
-    String[] params() default {};
+    Class<? extends WebElementStateExtractor> extractor() default IsPresentStateExtractor.class;
 
 }
 

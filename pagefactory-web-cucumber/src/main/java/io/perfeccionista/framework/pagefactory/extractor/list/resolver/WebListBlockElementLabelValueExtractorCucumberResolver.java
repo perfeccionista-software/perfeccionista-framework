@@ -12,17 +12,19 @@ import java.util.regex.Pattern;
 
 @CucumberResolverExpression("^label values$")
 @CucumberResolverExpression("^значения лейблов")
-public class WebListBlockElementLabelValueExtractorCucumberResolver extends AbstractWebListBlockValueExtractorCucumberResolver {
+public class WebListBlockElementLabelValueExtractorCucumberResolver
+//        extends AbstractWebListBlockValueExtractorCucumberResolver
+{
 
-    @Override
-    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
-        for (Pattern pattern : patterns) {
-            Matcher matcher = pattern.matcher(expression);
-            if (matcher.find()) {
-                return Optional.of(new WebListBlockElementLabelValueExtractorCreator());
-            }
-        }
-        return Optional.empty();
-    }
+//    @Override
+//    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
+//        for (Pattern pattern : patterns) {
+//            Matcher matcher = pattern.matcher(expression);
+//            if (matcher.find()) {
+//                return Optional.of(new WebListBlockElementLabelValueExtractorCreator());
+//            }
+//        }
+//        return Optional.empty();
+//    }
 
 }

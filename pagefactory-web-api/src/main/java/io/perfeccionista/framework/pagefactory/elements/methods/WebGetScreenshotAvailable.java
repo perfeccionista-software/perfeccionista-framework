@@ -1,9 +1,8 @@
 package io.perfeccionista.framework.pagefactory.elements.methods;
 
-import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
-import io.perfeccionista.framework.plugin.AssertMethodType;
 import io.perfeccionista.framework.pagefactory.elements.actions.WebMappedElementAction;
+import io.perfeccionista.framework.pagefactory.elements.options.GetScreenshotOptions;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,9 +14,6 @@ public interface WebGetScreenshotAvailable extends WebChildElementBase {
     @NotNull Screenshot getScreenshot();
 
     @WebMappedElementAction(GET_SCREENSHOT_METHOD)
-    @NotNull Screenshot getScreenshot(@NotNull String componentName);
-
-    @AssertMethodType
-    WebGetScreenshotAvailable should(@NotNull WebGetScreenshotAvailableMatcher matcher);
+    @NotNull Screenshot getScreenshot(@NotNull GetScreenshotOptions options);
 
 }
