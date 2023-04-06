@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.FILTERED_ELEMENT_IS_NOT_SORTED;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_SORTED_METHOD;
 
 public class MobileShouldHaveSortedResultMatcher<T> implements MobileMultipleIndexedResultMatcher<T> {
@@ -33,7 +33,7 @@ public class MobileShouldHaveSortedResultMatcher<T> implements MobileMultipleInd
 
         MobileChildElement element = result.getElement();
 
-        runCheck(invocationName, () -> {
+        repeatInvocation(invocationName, () -> {
             AtomicBoolean comparisonResult = new AtomicBoolean(true);
             Map<String, Integer> detailComparisonResult = new HashMap<>();
             result.getResults().entrySet().stream()

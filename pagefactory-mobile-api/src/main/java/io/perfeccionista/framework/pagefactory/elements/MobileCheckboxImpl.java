@@ -25,7 +25,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.MobileTapOperation
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ENABLED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.LABEL;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.SELECTED;
@@ -138,7 +138,7 @@ public class MobileCheckboxImpl extends AbstractMobileChildElement implements Mo
     @Override
     public @Nullable String getLabel() {
         MobileGetLabelOperationType operationType = MobileGetLabelOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, LABEL).executeGetter());
     }
 
@@ -147,7 +147,7 @@ public class MobileCheckboxImpl extends AbstractMobileChildElement implements Mo
     @Override
     public boolean isEnabled() {
         MobileGetIsEnabledOperationType operationType = MobileGetIsEnabledOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, ENABLED).executeGetter());
     }
 
@@ -156,7 +156,7 @@ public class MobileCheckboxImpl extends AbstractMobileChildElement implements Mo
     @Override
     public boolean isSelected() {
         MobileGetIsSelectedOperationType operationType = MobileGetIsSelectedOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, SELECTED).executeGetter());
     }
 
@@ -173,7 +173,7 @@ public class MobileCheckboxImpl extends AbstractMobileChildElement implements Mo
     @Override
     public MobileCheckbox tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -181,7 +181,7 @@ public class MobileCheckboxImpl extends AbstractMobileChildElement implements Mo
     @Override
     public MobileCheckbox longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -189,7 +189,7 @@ public class MobileCheckboxImpl extends AbstractMobileChildElement implements Mo
     @Override
     public MobileCheckbox doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

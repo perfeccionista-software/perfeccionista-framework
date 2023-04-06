@@ -26,6 +26,8 @@ public interface WebElementIdentifier extends JsonSerializable {
 
     Stream<String> namesStream();
 
+    WebElementIdentifier addName(@NotNull String name);
+
     WebElementIdentifier forEachName(@NotNull Consumer<String> consumer);
 
     WebElementIdentifier setLastUsedName(@NotNull String lastUsedName);

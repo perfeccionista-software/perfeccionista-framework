@@ -13,7 +13,6 @@ import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementPropertyParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementComponentParameter;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.methods.WebGetLabelAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsEnabledAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsSelectedAvailable;
@@ -291,61 +290,61 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                         .should(notBeInFocus()));
     }
 
-    /**
-     *
-     * @param elementFinder -
-     * @param expectedText -
-     */
-    @Дано("лейбл элемента {webElement} содержит {stringValue}")
-    @Given("label of the element {webElement} contains {stringValue}")
-    public void labelOfTheElementContainText(WebElementParameter<WebGetLabelAvailable> elementFinder,
-                                             ValueStringParameter expectedText) {
-        getWebPageContext().execute(context ->
-                elementFinder.getElement(context, WebGetLabelAvailable.class)
-                        .should(haveLabel(expectedText.getValue())));
-    }
-
-    /**
-     *
-     * @param elementFinder -
-     * @param expectedText -
-     */
-    @Дано("лейбл элемента {webElement} не содержит {stringValue}")
-    @Given("label of the element {webElement} does not contain {stringValue}")
-    public void labelOfTheElementDoesNotContainText(WebElementParameter<WebGetLabelAvailable> elementFinder,
-                                                    ValueStringParameter expectedText) {
-        getWebPageContext().execute(context ->
-                elementFinder.getElement(context, WebGetLabelAvailable.class)
-                        .should(notHaveLabel(expectedText.getValue())));
-    }
-
-    /**
-     *
-     * @param elementFinder -
-     * @param expectedNumber -
-     */
-    @Дано("лейбл элемента {webElement} содержит число {numberValue}")
-    @Given("label of the element {webElement} contains number {numberValue}")
-    public void labelOfTheElementContainNumber(WebElementParameter<WebGetLabelAvailable> elementFinder,
-                                              ValueNumberParameter expectedNumber) {
-        getWebPageContext().execute(context ->
-                elementFinder.getElement(context, WebGetLabelAvailable.class)
-                        .should(haveLabel(expectedNumber.getValue())));
-    }
-
-    /**
-     *
-     * @param elementFinder -
-     * @param expectedNumber -
-     */
-    @Дано("лейбл элемента {webElement} не содержит число {numberValue}")
-    @Given("label of the element {webElement} does not contain number {numberValue}")
-    public void labelOfTheElementDoesNotContainNumber(WebElementParameter<WebGetLabelAvailable> elementFinder,
-                                                      ValueNumberParameter expectedNumber) {
-        getWebPageContext().execute(context ->
-                elementFinder.getElement(context, WebGetLabelAvailable.class)
-                        .should(notHaveLabel(expectedNumber.getValue())));
-    }
+//    /**
+//     *
+//     * @param elementFinder -
+//     * @param expectedText -
+//     */
+//    @Дано("лейбл элемента {webElement} содержит {stringValue}")
+//    @Given("label of the element {webElement} contains {stringValue}")
+//    public void labelOfTheElementContainText(WebElementParameter<WebGetLabelAvailable> elementFinder,
+//                                             ValueStringParameter expectedText) {
+//        getWebPageContext().execute(context ->
+//                elementFinder.getElement(context, WebGetLabelAvailable.class)
+//                        .should(haveLabel(expectedText.getValue())));
+//    }
+//
+//    /**
+//     *
+//     * @param elementFinder -
+//     * @param expectedText -
+//     */
+//    @Дано("лейбл элемента {webElement} не содержит {stringValue}")
+//    @Given("label of the element {webElement} does not contain {stringValue}")
+//    public void labelOfTheElementDoesNotContainText(WebElementParameter<WebGetLabelAvailable> elementFinder,
+//                                                    ValueStringParameter expectedText) {
+//        getWebPageContext().execute(context ->
+//                elementFinder.getElement(context, WebGetLabelAvailable.class)
+//                        .should(notHaveLabel(expectedText.getValue())));
+//    }
+//
+//    /**
+//     *
+//     * @param elementFinder -
+//     * @param expectedNumber -
+//     */
+//    @Дано("лейбл элемента {webElement} содержит число {numberValue}")
+//    @Given("label of the element {webElement} contains number {numberValue}")
+//    public void labelOfTheElementContainNumber(WebElementParameter<WebGetLabelAvailable> elementFinder,
+//                                              ValueNumberParameter expectedNumber) {
+//        getWebPageContext().execute(context ->
+//                elementFinder.getElement(context, WebGetLabelAvailable.class)
+//                        .should(haveLabel(expectedNumber.getValue())));
+//    }
+//
+//    /**
+//     *
+//     * @param elementFinder -
+//     * @param expectedNumber -
+//     */
+//    @Дано("лейбл элемента {webElement} не содержит число {numberValue}")
+//    @Given("label of the element {webElement} does not contain number {numberValue}")
+//    public void labelOfTheElementDoesNotContainNumber(WebElementParameter<WebGetLabelAvailable> elementFinder,
+//                                                      ValueNumberParameter expectedNumber) {
+//        getWebPageContext().execute(context ->
+//                elementFinder.getElement(context, WebGetLabelAvailable.class)
+//                        .should(notHaveLabel(expectedNumber.getValue())));
+//    }
 
     /**
      *
@@ -360,7 +359,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                                 ValueStringParameter expectedText) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(havePropertyValue(elementProperty.getRaw(), expectedText.getValue())));
+                        .should(haveAttributeValue(elementProperty.getRaw(), expectedText.getValue())));
     }
 
     /**
@@ -376,7 +375,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                                        ValueStringParameter expectedText) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(notHavePropertyValue(elementProperty.getRaw(), expectedText.getValue())));
+                        .should(notHaveAttributeValue(elementProperty.getRaw(), expectedText.getValue())));
     }
 
     /**
@@ -392,7 +391,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                                   ValueNumberParameter expectedNumber) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(havePropertyValue(elementProperty.getRaw(), expectedNumber.getValue())));
+                        .should(haveAttributeValue(elementProperty.getRaw(), expectedNumber.getValue())));
     }
 
     /**
@@ -408,7 +407,7 @@ public class WebElementCheckStepDefinitions implements WebStepDefinitions {
                                                          ValueNumberParameter expectedNumber) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebChildElement.class)
-                        .should(notHavePropertyValue(elementProperty.getRaw(), expectedNumber.getValue())));
+                        .should(notHaveAttributeValue(elementProperty.getRaw(), expectedNumber.getValue())));
     }
 
 

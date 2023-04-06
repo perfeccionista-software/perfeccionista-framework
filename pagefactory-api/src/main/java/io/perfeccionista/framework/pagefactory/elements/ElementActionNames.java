@@ -55,13 +55,18 @@ public class ElementActionNames {
     public static final String COMPONENT_SHOULD_BE_DISPLAYED_METHOD = "ComponentShouldBeDisplayedMethod";           // elementName, componentName
     public static final String COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD = "ComponentShouldNotBeDisplayedMethod";    // elementName, componentName
 
-    public static final String GET_PROPERTY_VALUE_METHOD = "GetPropertyValue";                          // elementName, propertyHolder.getName()
-    public static final String SHOULD_HAVE_PROPERTY_TEXT_METHOD = "ShouldHavePropertyText";             // elementName, propertyName, expectedText
-    public static final String SHOULD_HAVE_PROPERTY_VALUE_METHOD = "ShouldHavePropertyValue";           // elementName, propertyName, expectedStringValue.getShortDescription()
-    public static final String SHOULD_HAVE_PROPERTY_NUMBER_METHOD = "ShouldHavePropertyNumber";         // elementName, propertyName, expectedNumberValue.getShortDescription()
-    public static final String SHOULD_NOT_HAVE_PROPERTY_TEXT_METHOD = "ShouldNotHavePropertyText";      // elementName, propertyName, expectedText
-    public static final String SHOULD_NOT_HAVE_PROPERTY_VALUE_METHOD = "ShouldNotHavePropertyValue";    // elementName, propertyName, expectedStringValue.getShortDescription()
-    public static final String SHOULD_NOT_HAVE_PROPERTY_NUMBER_METHOD = "ShouldNotHavePropertyNumber";  // elementName, propertyName, expectedNumberValue.getShortDescription()
+    // TODO: Добавить параметр компонента в текстовках
+    public static final String GET_ATTRIBUTE_VALUE_METHOD = "GetAttributeValue";                          // elementName, componentName, attributeName
+    public static final String SHOULD_HAVE_ATTRIBUTE_TEXT_METHOD = "ShouldHaveAttributeText";             // elementName, componentName, attributeName, expectedText
+    public static final String SHOULD_HAVE_ATTRIBUTE_VALUE_METHOD = "ShouldHaveAttributeValue";           // elementName, componentName, attributeName, expectedStringValue.getShortDescription()
+    public static final String SHOULD_HAVE_ATTRIBUTE_NUMBER_METHOD = "ShouldHaveAttributeNumber";         // elementName, componentName, attributeName, expectedNumberValue.getShortDescription()
+    public static final String SHOULD_NOT_HAVE_ATTRIBUTE_TEXT_METHOD = "ShouldNotHaveAttributeText";      // elementName, componentName, attributeName, expectedText
+    public static final String SHOULD_NOT_HAVE_ATTRIBUTE_VALUE_METHOD = "ShouldNotHaveAttributeValue";    // elementName, componentName, attributeName, expectedStringValue.getShortDescription()
+    public static final String SHOULD_NOT_HAVE_ATTRIBUTE_NUMBER_METHOD = "ShouldNotHaveAttributeNumber";  // elementName, componentName, attributeName, expectedNumberValue.getShortDescription()
+
+    public static final String HAS_ATTRIBUTE_METHOD = "HasAttribute";                                       // elementName, stateHolder.getName()
+    public static final String SHOULD_HAVE_ATTRIBUTE_METHOD = "ShouldHaveAttribute";                        // elementName, stateName
+    public static final String SHOULD_NOT_HAVE_ATTRIBUTE_METHOD = "ShouldNotHaveState";                 // elementName, stateName
 
     public static final String HAS_STATE_METHOD = "HasState";                                       // elementName, stateHolder.getName()
     public static final String SHOULD_HAVE_STATE_METHOD = "ShouldHaveState";                        // elementName, stateName
@@ -87,6 +92,9 @@ public class ElementActionNames {
     public static final String SHOULD_NOT_HAVE_VALUE_LABEL_METHOD = "ShouldNotHaveValueLabel";      // elementName, expectedStringValue.getShortDescription()
     public static final String SHOULD_NOT_HAVE_NUMBER_LABEL_METHOD = "ShouldNotHaveNumberLabel";    // elementName, expectedNumberValue.getShortDescription()
 
+    public static final String GET_INNER_HTML_METHOD = "GetInnerHtml";                              // elementName
+    public static final String GET_OUTER_HTML_METHOD = "GetOuterHtml";                              // elementName
+
     public static final String GET_SIZE_ELEMENTS_METHOD = "GetSize";                                // elementName
     public static final String GET_INDEX_METHOD = "GetIndex";                                       // elementName
     public static final String GET_EXTRACTED_VALUE_METHOD = "GetValue";                             // elementName
@@ -106,17 +114,23 @@ public class ElementActionNames {
     public static final String CLEAR_METHOD = "Clear";                                              // elementName
 
     public static final String CLICK_METHOD = "Click";                                              // elementName
+    public static final String DOUBLE_CLICK_METHOD = "DoubleClick";                                              // elementName
+    public static final String CONTEXT_CLICK_METHOD = "ContextClick";                                              // elementName
     public static final String SINGLE_TAP_METHOD = "SingleTap";                                     // elementName
     public static final String LONG_TAP_METHOD = "LongTap";                                         // elementName
     public static final String DOUBLE_TAP_METHOD = "DoubleTap";                                     // elementName
+
+    public static final String DOWNLOAD_FILE_METHOD = "DownloadFile";                                        // elementName
+    public static final String UPLOAD_FILE_METHOD = "UploadFile";                                        // elementName
 
     public static final String IS_IMAGE_METHOD = "IsImage";                                         // elementName
     public static final String SAVE_IMAGE_TO_FILE_METHOD = "SaveImageToFile";                       // elementName, filePath
 
     public static final String HOVER_TO_METHOD = "HoverTo";                                         // elementName
 
+    public static final String PRESS_KEY_METHOD = "PressKey";                                       // elementName, text
     public static final String TYPE_TEXT_METHOD = "TypeText";                                       // elementName, text
-    public static final String REPLACE_TEXT_METHOD = "ReplaceText";                                 // elementName, text
+    public static final String SET_VALUE_METHOD = "SetValue";                                 // elementName, text
     public static final String SEND_KEY_EVENTS_METHOD = "SendKeyEvents";                            // elementName, keyEvents.toString()
 
     public static final String SET_FILENAME_METHOD = "SetFileName";
@@ -161,6 +175,7 @@ public class ElementActionNames {
     public static final String DRAG_AND_DROP_METHOD = "DragAndDrop";                                // elementName, target.toString()
 
     public static final String GET_STRING_ATTRIBUTE_VALUE_METHOD = "GetStringAttributeValueMethod"; // elementName, attributeName
+    public static final String CHECK_ATTRIBUTE_METHOD = "CheckAttribute";                           // elementName, attributeName
     public static final String CHECK_BOOLEAN_ATTRIBUTE_VALUE_METHOD = "CheckBooleanAttributeValue"; // elementName, attributeName
     public static final String CHECK_STRING_ATTRIBUTE_VALUE_METHOD = "CheckStringAttributeValue";   // elementName, attributeName, expectedValue.getShortDescription()
 

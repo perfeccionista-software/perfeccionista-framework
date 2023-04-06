@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_EXTRACTED_VALUES_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_SIZE_ELEMENTS_METHOD;
 
@@ -55,7 +55,7 @@ public class MobileTextListMultipleIndexedResult<T> implements MobileMultipleInd
         InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
-        return runCheck(invocationInfo, () -> extractor.extractValues(filterBuilder.build(element)));
+        return repeatInvocation(invocationInfo, () -> extractor.extractValues(filterBuilder.build(element)));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MobileTextListMultipleIndexedResult<T> implements MobileMultipleInd
         String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
-        return runCheck(invocationInfo, () -> webTextListFilter.getFilterResult().getIndexes().size());
+        return repeatInvocation(invocationInfo, () -> webTextListFilter.getFilterResult().getIndexes().size());
     }
 
     @Override

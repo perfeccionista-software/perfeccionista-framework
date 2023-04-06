@@ -18,7 +18,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.MobileLongTapOpera
 import io.perfeccionista.framework.pagefactory.operation.type.MobileTapOperationType;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TAP;
 
 public class MobileImageImpl extends AbstractMobileChildElement implements MobileImage {
@@ -118,7 +118,7 @@ public class MobileImageImpl extends AbstractMobileChildElement implements Mobil
     @Override
     public MobileImage tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -127,7 +127,7 @@ public class MobileImageImpl extends AbstractMobileChildElement implements Mobil
     @Override
     public MobileImage longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -135,7 +135,7 @@ public class MobileImageImpl extends AbstractMobileChildElement implements Mobil
     @Override
     public MobileImage doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

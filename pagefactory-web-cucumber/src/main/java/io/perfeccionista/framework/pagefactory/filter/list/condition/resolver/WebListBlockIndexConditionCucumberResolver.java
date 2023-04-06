@@ -2,7 +2,7 @@ package io.perfeccionista.framework.pagefactory.filter.list.condition.resolver;
 
 import io.perfeccionista.framework.Web;
 import io.perfeccionista.framework.cucumber.resolver.CucumberResolverExpression;
-import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
+import io.perfeccionista.framework.pagefactory.filter.conditions.WebItemCondition;
 import io.perfeccionista.framework.value.number.IntegerValueResolver;
 import io.perfeccionista.framework.value.number.NumberValue;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
 public class WebListBlockIndexConditionCucumberResolver extends AbstractWebListBlockConditionCucumberResolver {
 
     @Override
-    public Optional<WebBlockCondition> tryResolve(@NotNull String expression, @Nullable Object[] args) {
+    public Optional<WebItemCondition> tryResolve(@NotNull String expression, @Nullable Object[] args) {
         for (Pattern pattern : patterns) {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.find()) {

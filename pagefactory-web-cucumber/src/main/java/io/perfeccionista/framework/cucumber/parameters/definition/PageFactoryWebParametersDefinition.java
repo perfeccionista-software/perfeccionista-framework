@@ -136,7 +136,8 @@ public class PageFactoryWebParametersDefinition implements EnvironmentAvailable 
      */
     @ParameterType(DOUBLE_QUOTE_STRING_PATTERN)
     public WebListBlockValueExtractorParameter webListValueExtractor(String value) {
-        return new WebListBlockValueExtractorParameterImpl(getEnvironment(), value);
+//        return new WebListBlockValueExtractorParameterImpl(getEnvironment(), value);
+        return null;
     }
 
     /**

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.MOBILE_DEVICE_LOCKED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.MOBILE_DEVICE_UNLOCKED;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.MOBILE_DEVICE_SHOULD_BE_LOCKED_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.MOBILE_DEVICE_SHOULD_BE_UNLOCKED_METHOD;
 
@@ -28,7 +28,7 @@ public class MobileDeviceDispatcherShouldBeLocked implements MobileDeviceDispatc
                 ? assertInvocation(MOBILE_DEVICE_SHOULD_BE_LOCKED_METHOD)
                 : assertInvocation(MOBILE_DEVICE_SHOULD_BE_UNLOCKED_METHOD);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     boolean actualLockedState = mobileDevice.isLocked();
                     if (positive) {

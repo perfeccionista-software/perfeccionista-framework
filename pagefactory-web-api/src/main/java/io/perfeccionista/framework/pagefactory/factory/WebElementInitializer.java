@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
 import io.perfeccionista.framework.exceptions.ElementImplementationNotFound;
-import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
+import io.perfeccionista.framework.pagefactory.elements.impl.WebPageImpl;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
-import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
+import io.perfeccionista.framework.pagefactory.elements.impl.WebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;

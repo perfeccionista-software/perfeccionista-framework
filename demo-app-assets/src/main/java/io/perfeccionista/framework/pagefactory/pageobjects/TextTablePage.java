@@ -1,11 +1,11 @@
 package io.perfeccionista.framework.pagefactory.pageobjects;
 
 import io.perfeccionista.framework.name.Name;
-import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebItemLocator;
+import io.perfeccionista.framework.pagefactory.elements.WebText;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelector;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebItemSelector;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_HEADER;
@@ -16,40 +16,40 @@ public interface TextTablePage extends AbstractWebPage {
 
     @Name("Simple table of countries")
     @Name("Простая таблица стран")
-    @WebLocator(tagName = "table", invokeOnCall = JsCheckIsDisplayed.class)
-    @WebLocator(component = TABLE_HEADER, xpath = ".//thead/tr")
-    @WebItemLocator(xpath = ".//tbody/tr")
+    @WebSelector(tagName = "table", invokeOnCall = JsCheckIsDisplayed.class)
+    @WebSelector(component = TABLE_HEADER, xpath = ".//thead/tr")
+    @WebItemSelector(xpath = ".//tbody/tr")
     WebTable<TextTableHeader, TextTableRow> textTable();
 
-    interface TextTableHeader extends WebBlock {
+    interface TextTableHeader extends WebBlock<TextTableHeader> {
 
-        @WebLocator(xpath = ".//th[1]")
-        DefaultWebTextBlock number();
+        @WebSelector(xpath = ".//th[1]")
+        WebText number();
 
-        @WebLocator(xpath = ".//th[2]")
-        DefaultWebTextBlock shortName();
+        @WebSelector(xpath = ".//th[2]")
+        WebText shortName();
 
-        @WebLocator(xpath = ".//th[3]")
-        DefaultWebTextBlock fullName();
+        @WebSelector(xpath = ".//th[3]")
+        WebText fullName();
 
-        @WebLocator(xpath = ".//th[4]")
-        DefaultWebTextBlock population();
+        @WebSelector(xpath = ".//th[4]")
+        WebText population();
 
     }
 
-    interface TextTableRow extends WebBlock {
+    interface TextTableRow extends WebBlock<TextTableRow> {
 
-        @WebLocator(xpath = ".//td[1]")
-        DefaultWebTextBlock number();
+        @WebSelector(xpath = ".//td[1]")
+        WebText number();
 
-        @WebLocator(xpath = ".//td[2]")
-        DefaultWebTextBlock shortName();
+        @WebSelector(xpath = ".//td[2]")
+        WebText shortName();
 
-        @WebLocator(xpath = ".//td[3]")
-        DefaultWebTextBlock fullName();
+        @WebSelector(xpath = ".//td[3]")
+        WebText fullName();
 
-        @WebLocator(xpath = ".//td[4]")
-        DefaultWebTextBlock population();
+        @WebSelector(xpath = ".//td[4]")
+        WebText population();
 
     }
 

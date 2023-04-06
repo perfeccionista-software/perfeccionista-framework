@@ -168,41 +168,41 @@ class WebTableFiltersTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
 
         // By Element
-        table.filter(row -> containsProperty(row.fullNameColumn().fullName(), "prompt", "Финляндская Республика"))
+        table.filter(row -> containsAttribute(row.fullNameColumn().fullName(), "prompt", "Финляндская Республика"))
                 .should(haveSize(1));
-        table.filter(row -> containsProperty(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М")))
+        table.filter(row -> containsAttribute(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М")))
                 .should(haveSize(5));
-        table.filter(row -> notContainProperty(row.fullNameColumn().fullName(), "prompt", stringEquals("Финляндская Республика")))
+        table.filter(row -> notContainAttribute(row.fullNameColumn().fullName(), "prompt", stringEquals("Финляндская Республика")))
                 .should(haveSize(194));
-        table.filter(row -> notContainProperty(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М")))
+        table.filter(row -> notContainAttribute(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М")))
                 .should(haveSize(190));
 
-        table.filterBuilder(row -> without(containsProperty(row.fullNameColumn().fullName(), "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(row -> without(containsAttribute(row.fullNameColumn().fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filterBuilder(row -> without(containsProperty(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М"))))
+        table.filterBuilder(row -> without(containsAttribute(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        table.filterBuilder(row -> without(notContainProperty(row.fullNameColumn().fullName(), "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(row -> without(notContainAttribute(row.fullNameColumn().fullName(), "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filterBuilder(row -> without(notContainProperty(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М"))))
+        table.filterBuilder(row -> without(notContainAttribute(row.fullNameColumn().fullName(), "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
 
         // By Element name
-        table.filter(row -> containsProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика")))
+        table.filter(row -> containsAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика")))
                 .should(haveSize(1));
-        table.filter(row -> containsProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М")))
+        table.filter(row -> containsAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М")))
                 .should(haveSize(5));
-        table.filter(row -> notContainProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика")))
+        table.filter(row -> notContainAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика")))
                 .should(haveSize(194));
-        table.filter(row -> notContainProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М")))
+        table.filter(row -> notContainAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М")))
                 .should(haveSize(190));
 
-        table.filterBuilder(row -> without(containsProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(row -> without(containsAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(194));
-        table.filterBuilder(row -> without(containsProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М"))))
+        table.filterBuilder(row -> without(containsAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(190));
-        table.filterBuilder(row -> without(notContainProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика"))))
+        table.filterBuilder(row -> without(notContainAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringEquals("Финляндская Республика"))))
                 .should(haveSize(1));
-        table.filterBuilder(row -> without(notContainProperty(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М"))))
+        table.filterBuilder(row -> without(notContainAttribute(FULL_COUNTRY_NAME + " -> Full country name", "prompt", stringStartsWith("М"))))
                 .should(haveSize(5));
     }
 

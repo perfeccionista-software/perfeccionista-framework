@@ -3,8 +3,8 @@ package io.perfeccionista.framework.pagefactory.pageobjects;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebItemLocator;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocator;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebItemSelector;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelector;
 import io.perfeccionista.framework.pagefactory.operation.handler.JsCheckIsDisplayed;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.ContinentNameWebBlock;
 import io.perfeccionista.framework.pagefactory.pageobjects.blocks.table.CountriesTableWebBlock;
@@ -22,34 +22,34 @@ public interface ContextTableElementsPage extends AbstractWebPage {
     //  и все будет ломаться
     @Name("Table of continents")
     @Name("Таблица континентов")
-    @WebLocator(id = "continents-table", invokeOnCall = JsCheckIsDisplayed.class)
-    @WebLocator(component = TABLE_HEADER, xpath = "./thead/tr")
-    @WebItemLocator(xpath = "./tbody/tr")
+    @WebSelector(id = "continents-table", invokeOnCall = JsCheckIsDisplayed.class)
+    @WebSelector(component = TABLE_HEADER, xpath = "./thead/tr")
+    @WebItemSelector(xpath = "./tbody/tr")
     WebTable<ContinentTableHeader, ContinentTableRow> continentsTable();
 
-    interface ContinentTableHeader extends WebBlock {
+    interface ContinentTableHeader extends WebBlock<ContinentTableHeader> {
 
-        @WebLocator(xpath = "./th[1]")
+        @WebSelector(xpath = "./th[1]")
         HeaderWebBlock continentColumnHeader();
 
-        @WebLocator(xpath = "./th[2]")
+        @WebSelector(xpath = "./th[2]")
         HeaderWebBlock totalColumnHeader();
 
-        @WebLocator(xpath = "./th[3]")
+        @WebSelector(xpath = "./th[3]")
         HeaderWebBlock countriesColumnHeader();
 
     }
 
-    interface ContinentTableRow extends WebBlock {
+    interface ContinentTableRow extends WebBlock<ContinentTableRow> {
 
-        @WebLocator(xpath = "./td[1]")
+        @WebSelector(xpath = "./td[1]")
         ContinentNameWebBlock continentColumn();
 
-        @WebLocator(xpath = "./td[2]")
+        @WebSelector(xpath = "./td[2]")
         TotalCountriesWebBlock totalColumn();
 
         @Name("column Countries")
-        @WebLocator(xpath = "./td[3]")
+        @WebSelector(xpath = "./td[3]")
         CountriesTableWebBlock countriesColumn();
 
     }

@@ -54,103 +54,103 @@
      * @param operation
      */
     async function executeOperation(operation) {
-        let locators = operation.locatorChain.locators;
+        let selectors = operation.selectorChain.selectors;
         let endpointFunction = operation.endpointFunction;
-        let locatorProcessingResult = {
+        let selectorProcessingResult = {
             elementEntries : [
                 {element : document.documentElement}
             ],
             invokeOnCallFunctions : []
         };
-        for (let locator of locators) {
-            locatorProcessingResult = await processLocator(locatorProcessingResult, locator);
-            if (locatorProcessingResult.elementEntries.length === 0) {
-                addLogEntry('WARN', 'No results found for locator: ' + JSON.stringify(locator));
+        for (let selector of selectors) {
+            selectorProcessingResult = await processSelector(selectorProcessingResult, selector);
+            if (selectorProcessingResult.elementEntries.length === 0) {
+                addLogEntry('WARN', 'No results found for selector: ' + JSON.stringify(selector));
                 return;
             }
         }
-        await executeEndpointFunction(locatorProcessingResult, endpointFunction);
+        await executeEndpointFunction(selectorProcessingResult, endpointFunction);
     }
 
     /**
      * Обрабатываем поочередно переданную цепочку локаторов.
-     * @param previousLocatorProcessingResult
-     * @param locator
+     * @param previousSelectorProcessingResult
+     * @param selector
      */
-    async function processLocator(previousLocatorProcessingResult, locator) {
-        addLogEntry('DEBUG', 'Process locator: ' + JSON.stringify(locator));
-        checkLocator(locator);
-        let singleParent = previousLocatorProcessingResult.elementEntries.length === 1;
-        let singleChild = locator.single;
-        let locatorProcessingResult = {
-            invokeOnCallFunctions: locator.invokeOnCallFunctions
+    async function processSelector(previousSelectorProcessingResult, selector) {
+        addLogEntry('DEBUG', 'Process selector: ' + JSON.stringify(selector));
+        checkSelector(selector);
+        let singleParent = previousSelectorProcessingResult.elementEntries.length === 1;
+        let singleChild = selector.single;
+        let selectorProcessingResult = {
+            invokeOnCallFunctions: selector.invokeOnCallFunctions
         }
         let foundElementEntries;
 
         if (singleParent && singleChild) {
-            foundElementEntries = await findSingleFromSingle(previousLocatorProcessingResult, locator);
+            foundElementEntries = await findSingleFromSingle(previousSelectorProcessingResult, selector);
         } else if (singleParent && !singleChild) {
-            foundElementEntries = await findMultipleFromSingle(previousLocatorProcessingResult, locator);
+            foundElementEntries = await findMultipleFromSingle(previousSelectorProcessingResult, selector);
         } else if (!singleParent && singleChild) {
-            foundElementEntries = await findSingleFromMultiple(previousLocatorProcessingResult, locator);
+            foundElementEntries = await findSingleFromMultiple(previousSelectorProcessingResult, selector);
         } else {
-            throw new IncorrectSearchQueryError('Locator chain can contain only one multiple locator');
+            throw new IncorrectSearchQueryError('Selector chain can contain only one multiple selector');
         }
 
-        locatorProcessingResult.elementEntries = foundElementEntries;
-        return locatorProcessingResult;
+        selectorProcessingResult.elementEntries = foundElementEntries;
+        return selectorProcessingResult;
     }
 
     /**
      * Ищем один дочерний элемент от одного родительского элемента
-     * @param previousLocatorProcessingResult
-     * @param locator
+     * @param previousSelectorProcessingResult
+     * @param selector
      * @return {{element: *}[]|*[]}
      */
-    async function findSingleFromSingle(previousLocatorProcessingResult, locator) {
-        let parentElementEntry = previousLocatorProcessingResult.elementEntries[0];
+    async function findSingleFromSingle(previousSelectorProcessingResult, selector) {
+        let parentElementEntry = previousSelectorProcessingResult.elementEntries[0];
         let parentElement = parentElementEntry.element;
         let enclosingElement = parentElementEntry.element;
-        let parentFunctionInvocations = previousLocatorProcessingResult.invokeOnCallFunctions;
+        let parentFunctionInvocations = previousSelectorProcessingResult.invokeOnCallFunctions;
         if (parentFunctionInvocations !== undefined && parentFunctionInvocations.length > 0) {
             await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
         }
-        if (locator.fromParent === false) {
+        if (selector.fromParent === false) {
             parentElement = document.documentElement;
         }
-        let foundElements = findElements(parentElement, locator, enclosingElement);
+        let foundElements = findElements(parentElement, selector, enclosingElement);
         let foundElementEntries = [];
         let size = foundElements.length;
         if (size === 0) {
-            if (locator.strictSearch) {
-                addLocatorErrorAttachment(locator);
+            if (selector.strictSearch) {
+                addSelectorErrorAttachment(selector);
                 addParentElementErrorAttachment(parentElement);
                 throw new ElementSearchError('No elements found');
             } else {
-                addSearchHistoryEntry(locator, foundElementEntries);
+                addSearchHistoryEntry(selector, foundElementEntries);
                 return foundElementEntries;
             }
         } else if (size === 1) {
-            foundElementEntries.push(createElementEntry(foundElements[0], locator));
-            addSearchHistoryEntry(locator, foundElementEntries);
+            foundElementEntries.push(createElementEntry(foundElements[0], selector));
+            addSearchHistoryEntry(selector, foundElementEntries);
         } else {
-            let elementIndex = locator.index;
+            let elementIndex = selector.index;
             if (elementIndex === undefined || elementIndex === null) {
-                addLocatorErrorAttachment(locator);
+                addSelectorErrorAttachment(selector);
                 addParentElementErrorAttachment(parentElement);
                 addChildElementErrorAttachments(foundElements);
                 throw new ElementSearchError('More than one element found');
             }
             if (elementIndex >= size) {
-                addLocatorErrorAttachment(locator);
+                addSelectorErrorAttachment(selector);
                 addParentElementErrorAttachment(parentElement);
                 addChildElementErrorAttachments(foundElements);
                 throw new ElementSearchError('No element with index ' + elementIndex + ' found');
             }
-            let elementEntry = createElementEntry(foundElements[elementIndex], locator);
+            let elementEntry = createElementEntry(foundElements[elementIndex], selector);
             elementEntry.index = elementIndex;
             foundElementEntries.push(elementEntry);
-            addSearchHistoryEntry(locator, foundElementEntries);
+            addSearchHistoryEntry(selector, foundElementEntries);
             return foundElementEntries;
         }
         return foundElementEntries;
@@ -158,116 +158,116 @@
 
     /**
      * Ищем несколько дочерних элементов от одного родительского
-     * @param previousLocatorProcessingResult
-     * @param locator
+     * @param previousSelectorProcessingResult
+     * @param selector
      * @return {[]|*[]}
      */
-    async function findMultipleFromSingle(previousLocatorProcessingResult, locator) {
-        let parentElementEntry = previousLocatorProcessingResult.elementEntries[0];
+    async function findMultipleFromSingle(previousSelectorProcessingResult, selector) {
+        let parentElementEntry = previousSelectorProcessingResult.elementEntries[0];
         let parentElement = parentElementEntry.element;
         let enclosingElement = parentElementEntry.element;
-        let parentFunctionInvocations = previousLocatorProcessingResult.invokeOnCallFunctions;
+        let parentFunctionInvocations = previousSelectorProcessingResult.invokeOnCallFunctions;
         if (undefined !== parentFunctionInvocations && parentFunctionInvocations.length > 0) {
             await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
         }
-        if (locator.fromParent === false) {
+        if (selector.fromParent === false) {
             parentElement = document.documentElement;
         }
-        let foundElements = findElements(parentElement, locator, enclosingElement);
+        let foundElements = findElements(parentElement, selector, enclosingElement);
         let foundElementEntries = [];
         let size = foundElements.length;
         if (size === 0) {
-            if (locator.strictSearch) {
-                addLocatorErrorAttachment(locator);
+            if (selector.strictSearch) {
+                addSelectorErrorAttachment(selector);
                 addParentElementErrorAttachment(parentElement);
                 throw new ElementSearchError('No elements found');
             } else {
-                addSearchHistoryEntry(locator, foundElementEntries);
+                addSearchHistoryEntry(selector, foundElementEntries);
                 return foundElementEntries;
             }
         }
-        if (locator.indexes == undefined) {
+        if (selector.indexes == undefined) {
             for (let i = 0; i < foundElements.length; i++) {
-                let elementEntry = createElementEntry(foundElements[i], locator);
+                let elementEntry = createElementEntry(foundElements[i], selector);
                 elementEntry.index = i;
                 foundElementEntries.push(elementEntry);
             }
         } else {
-            for (let elementIndex of locator.indexes) {
+            for (let elementIndex of selector.indexes) {
                 if (elementIndex >= size) {
-                    addLocatorErrorAttachment(locator);
+                    addSelectorErrorAttachment(selector);
                     addParentElementErrorAttachment(parentElement);
                     addChildElementErrorAttachments(foundElements);
                     throw new ElementSearchError('No element with index ' + elementIndex + ' found');
                 }
-                let elementEntry = createElementEntry(foundElements[elementIndex], locator);
+                let elementEntry = createElementEntry(foundElements[elementIndex], selector);
                 elementEntry.index = elementIndex;
                 foundElementEntries.push(elementEntry);
             }
         }
-        addSearchHistoryEntry(locator, foundElementEntries);
+        addSearchHistoryEntry(selector, foundElementEntries);
         return foundElementEntries;
     }
 
     /**
      * Ищем по одному дочернему элементу от каждого родительского
-     * @param previousLocatorProcessingResult
-     * @param locator
+     * @param previousSelectorProcessingResult
+     * @param selector
      * @return {[]}
      */
-    async function findSingleFromMultiple(previousLocatorProcessingResult, locator) {
-        let parentElementEntries = previousLocatorProcessingResult.elementEntries;
+    async function findSingleFromMultiple(previousSelectorProcessingResult, selector) {
+        let parentElementEntries = previousSelectorProcessingResult.elementEntries;
         let foundElementEntries = [];
         // TODO: Возможно, стоит сделать принудительный признак поиска элементов внутри предка
-        // locator.onlyWithinParent = true;
+        // selector.onlyWithinParent = true;
         for (let parentElementEntry of parentElementEntries) {
             let parentElement = parentElementEntry.element;
             let enclosingElement = parentElementEntry.element;
-            let parentFunctionInvocations = previousLocatorProcessingResult.invokeOnCallFunctions;
+            let parentFunctionInvocations = previousSelectorProcessingResult.invokeOnCallFunctions;
             if (undefined !== parentFunctionInvocations && parentFunctionInvocations.length > 0) {
                 await executeInvokeOnCallFunctions(parentElement, parentFunctionInvocations);
             }
             let parentIndex = parentElementEntry.index;
-            let foundElements = findElements(parentElement, locator, enclosingElement);
+            let foundElements = findElements(parentElement, selector, enclosingElement);
             let size = foundElements.length;
             if (size === 0) {
-                if (locator.strictSearch) {
-                    addLocatorErrorAttachment(locator);
+                if (selector.strictSearch) {
+                    addSelectorErrorAttachment(selector);
                     addParentElementErrorAttachment(parentElement);
                     throw new ElementSearchError('No elements found');
                 } else {
                     // Индексы для null-элементов возвращать нужно.
                     // Например, нужно отфильттровать строки списка в которых не содержится значение Х в элементе Y
                     // не важно, другое значение в элементе Y или элемента нет - индекс должен быть возвращен.
-                    let elementEntry = createElementEntry(null, locator);
+                    let elementEntry = createElementEntry(null, selector);
                     elementEntry.index = parentIndex;
                     foundElementEntries.push(elementEntry);
                 }
             } else if (size === 1) {
-                let elementEntry = createElementEntry(foundElements[0], locator);
+                let elementEntry = createElementEntry(foundElements[0], selector);
                 elementEntry.index = parentIndex;
                 foundElementEntries.push(elementEntry);
             } else {
-                let elementIndex = locator.index;
+                let elementIndex = selector.index;
                 if (elementIndex === undefined || elementIndex === null) {
-                    addLocatorErrorAttachment(locator);
+                    addSelectorErrorAttachment(selector);
                     addParentElementErrorAttachment(parentElement);
                     addChildElementErrorAttachments(foundElements);
                     throw new ElementSearchError('More than one element found');
                 }
                 if (elementIndex >= size) {
-                    addLocatorErrorAttachment(locator);
+                    addSelectorErrorAttachment(selector);
                     addParentElementErrorAttachment(parentElement);
                     addChildElementErrorAttachments(foundElements);
                     throw new ElementSearchError('No element with index ' + elementIndex + ' found');
                 }
-                let elementEntry = createElementEntry(foundElements[elementIndex], locator);
+                let elementEntry = createElementEntry(foundElements[elementIndex], selector);
                 elementEntry.index = elementIndex;
                 foundElementEntries.push(elementEntry);
-                addSearchHistoryEntry(locator, foundElementEntries);
+                addSearchHistoryEntry(selector, foundElementEntries);
             }
         }
-        addSearchHistoryEntry(locator, foundElementEntries);
+        addSearchHistoryEntry(selector, foundElementEntries);
         return foundElementEntries;
     }
 
@@ -276,54 +276,54 @@
      * Если в локаторе установлен признак поиска только дочерних элементов,
      * то фильтруем все элементы, которые не принадлежат родительскому элементу
      * @param parentElement
-     * @param locator
+     * @param selector
      * @param enclosingElement
      * @return {HTMLElement[]|[]}
      */
-    function findElements(parentElement, locator, enclosingElement) {
+    function findElements(parentElement, selector, enclosingElement) {
         let foundElements = [];
         if (parentElement === null) {
             return foundElements;
         }
-        switch (locator.locatorStrategy) {
+        switch (selector.selectorStrategy) {
             case 'selfNode':
                 foundElements = new Array(parentElement);
                 break;
             case 'id':
-                let foundElement = document.getElementById(locator.locatorValue);
+                let foundElement = document.getElementById(selector.selectorValue);
                 if (foundElement !== null) {
                     foundElements = [foundElement];
                 }
                 break;
             case 'css':
-                foundElements = collectionToArray(parentElement.querySelectorAll(locator.locatorValue));
+                foundElements = collectionToArray(parentElement.querySelectorAll(selector.selectorValue));
                 break;
             case 'xpath':
-                foundElements = findElementsByXpath(parentElement, locator.locatorValue);
+                foundElements = findElementsByXpath(parentElement, selector.selectorValue);
                 break;
             case 'className':
-                foundElements = collectionToArray(parentElement.getElementsByClassName(locator.locatorValue));
+                foundElements = collectionToArray(parentElement.getElementsByClassName(selector.selectorValue));
                 break;
             case 'tagName':
-                foundElements = collectionToArray(parentElement.getElementsByTagName(locator.locatorValue));
+                foundElements = collectionToArray(parentElement.getElementsByTagName(selector.selectorValue));
                 break;
             case 'dti' :
-                let dtiXpathValue = './/*[@data-test-id="' + locator.locatorValue + '"]';
+                let dtiXpathValue = './/*[@data-test-id="' + selector.selectorValue + '"]';
                 foundElements = findElementsByXpath(parentElement, dtiXpathValue);
                 break;
             case 'name' :
-                foundElements = collectionToArray(parentElement.getElementsByName(locator.locatorValue));
+                foundElements = collectionToArray(parentElement.getElementsByName(selector.selectorValue));
                 break;
             case 'text':
-                let textXpathValue = './/*[text()="' + locator.locatorValue + '"]';
+                let textXpathValue = './/*[text()="' + selector.selectorValue + '"]';
                 foundElements = findElementsByXpath(parentElement, textXpathValue);
                 break;
             case 'containsText':
-                let partialTextXpathValue = './/*[text()[contains(.,"' + locator.locatorValue + '")]]';
+                let partialTextXpathValue = './/*[text()[contains(.,"' + selector.selectorValue + '")]]';
                 foundElements = findElementsByXpath(parentElement, partialTextXpathValue);
                 break;
             default:
-                throw new IncorrectSearchQueryError('Locator strategy ' + locator.locatorStrategy + ' not found');
+                throw new IncorrectSearchQueryError('Selector strategy ' + selector.selectorStrategy + ' not found');
         }
         if (foundElements.length === 0) {
             return foundElements;
@@ -331,7 +331,7 @@
         // Убираем те элементы, которые не принадлежат родительскому узлу
         let foundElementsWithinParent = [];
 
-        if (locator.onlyWithinParent) {
+        if (selector.onlyWithinParent) {
             for (let foundElement of foundElements) {
                 if (enclosingElement.contains(foundElement)) {
                     foundElementsWithinParent.push(foundElement);
@@ -483,19 +483,19 @@
      * Создаем запись с данными найденного элемента.
      * Проверяем хэш, если нужно, считаем хэш, если нужно
      * @param element
-     * @param locator
+     * @param selector
      * @return {{element: *}}
      */
-    function createElementEntry(element, locator) {
+    function createElementEntry(element, selector) {
         let elementEntry = {
             element: element
         }
-        let expectedHash = locator.expectedHash;
+        let expectedHash = selector.expectedHash;
         if (expectedHash !== undefined && expectedHash !== null) {
             checkExpectedHash(element, expectedHash);
             elementEntry.hashCorrect = true;
         }
-        if (locator.calculateHash) {
+        if (selector.calculateHash) {
             elementEntry.hash = calculateHash(element);
         }
         return elementEntry;
@@ -549,20 +549,20 @@
 
     /**
      * Проверяем локатор на корректность его заполнения
-     * @param locator
+     * @param selector
      */
-    function checkLocator(locator) {
-        if (locator.locatorId === undefined || locator.locatorId === null) {
-            throw new IncorrectSearchQueryError('LocatorId is not declared');
+    function checkSelector(selector) {
+        if (selector.selectorId === undefined || selector.selectorId === null) {
+            throw new IncorrectSearchQueryError('SelectorId is not declared');
         }
-        if (locator.locatorComponent === undefined || locator.locatorComponent === null) {
-            throw new IncorrectSearchQueryError('LocatorComponent is not declared');
+        if (selector.selectorComponent === undefined || selector.selectorComponent === null) {
+            throw new IncorrectSearchQueryError('SelectorComponent is not declared');
         }
-        if (locator.locatorStrategy === undefined || locator.locatorStrategy === null) {
-            throw new IncorrectSearchQueryError('LocatorStrategy is not declared');
+        if (selector.selectorStrategy === undefined || selector.selectorStrategy === null) {
+            throw new IncorrectSearchQueryError('SelectorStrategy is not declared');
         }
-        if (locator.locatorValue === undefined || locator.locatorValue === null) {
-            throw new IncorrectSearchQueryError('LocatorValue is not declared');
+        if (selector.selectorValue === undefined || selector.selectorValue === null) {
+            throw new IncorrectSearchQueryError('SelectorValue is not declared');
         }
         // TODO: тут будут дополнительные проверки
     }
@@ -641,12 +641,12 @@
 
     /**
      * Добавляем запись в историю поиска
-     * @param locator
+     * @param selector
      * @param foundElementEntries
      */
-    function addSearchHistoryEntry(locator, foundElementEntries) {
+    function addSearchHistoryEntry(selector, foundElementEntries) {
         let searchHistoryEntry = {
-            locator : locator,
+            selector : selector,
             result: []
         };
         foundElementEntries.forEach(function(entry) {
@@ -672,20 +672,20 @@
 
     /**
      * Добавляем в ошибку информацию о локаторе на котором произошла ошибка поиска
-     * @param locator
+     * @param selector
      */
-    function addLocatorErrorAttachment(locator) {
+    function addSelectorErrorAttachment(selector) {
         errorAttachments.push({
-            name: 'Processed locator',
+            name: 'Processed selector',
             type: 'json',
-            content: locator
+            content: selector
         })
     }
 
     /**
      * Добавляем в ошибку информацию о родительском элементе
      * @param parentElement
-     * @param locator
+     * @param selector
      */
     function addParentElementErrorAttachment(parentElement) {
         errorAttachments.push({

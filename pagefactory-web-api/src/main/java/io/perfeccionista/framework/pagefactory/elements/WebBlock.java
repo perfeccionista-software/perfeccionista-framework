@@ -1,73 +1,54 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
-import io.perfeccionista.framework.matcher.element.WebBlockMatcher;
-import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.measurements.HorizontalDirection;
-import io.perfeccionista.framework.measurements.VerticalDirection;
+import io.perfeccionista.framework.conditions.WebElementCondition;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
+import io.perfeccionista.framework.pagefactory.elements.options.HoverOptions;
+import io.perfeccionista.framework.pagefactory.elements.options.ScrollOptions;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
+import io.perfeccionista.framework.pagefactory.emulator.keys.Key;
 import io.perfeccionista.framework.pagefactory.factory.WebElementFrameFactory;
 import org.jetbrains.annotations.NotNull;
 
-public interface WebBlock extends WebChildElement, WebParentElement {
+public interface WebBlock<T extends WebBlock> extends WebChildElement, WebParentElement {
 
     static <T extends WebBlock> T frame(Class<T> blockClass) {
         return WebElementFrameFactory.createWebBlockFrame(blockClass);
     }
 
-    // Search
     @NotNull WebChildElement getElement(@NotNull String elementPath);
-    <T extends WebChildElement> @NotNull T getElement(@NotNull String elementPath, @NotNull Class<T> elementClass);
+    @NotNull <T extends WebChildElement> T getElement(@NotNull String elementPath, @NotNull Class<T> elementClass);
 
     // Actions
     @Override
-    WebBlock executeAction(@NotNull String name, Object... args);
+    T executeAction(@NotNull String name, Object... args);
+
+    // Add
+    @Override
+    T addComponent(@NotNull String componentName, @NotNull WebSelectorHolder selector);
+    @Override
+    T addName(@NotNull String elementName);
 
     // Asserts
-    WebBlock should(@NotNull WebBlockMatcher matcher);
     @Override
-    WebBlock should(@NotNull WebChildElementMatcher matcher);
+    T should(@NotNull WebElementCondition... conditions);
     @Override
-    WebBlock should(@NotNull WebGetColorAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebGetScreenshotAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebIsDisplayedAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebIsInFocusAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebIsPresentAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebComponentAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebElementPropertyAvailableMatcher matcher);
-    @Override
-    WebBlock should(@NotNull WebElementStateAvailableMatcher matcher);
+    T shouldNot(@NotNull WebElementCondition... conditions);
 
     // HoverTo
     @Override
-    WebBlock hoverTo(boolean withOutOfBounds);
+    T hoverTo();
+    @Override
+    T hoverTo(@NotNull HoverOptions options);
+
+    // PressKey
+    @Override
+    T press(@NotNull Key key);
 
     // ScrollTo
     @Override
-    WebBlock scrollTo();
-//    @Override
-//    WebBlock scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebChildElement childElement);
-//    @Override
-//    WebBlock scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebChildElement childElement);
+    T scrollTo();
+    @Override
+    T scrollTo(@NotNull ScrollOptions options);
 
 }

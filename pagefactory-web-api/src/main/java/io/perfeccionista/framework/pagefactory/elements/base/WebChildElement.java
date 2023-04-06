@@ -1,16 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements.base;
 
-import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
+import io.perfeccionista.framework.conditions.WebElementCondition;
+import io.perfeccionista.framework.pagefactory.elements.methods.WebElementAttributeAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebElementStateAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetElementBoundsAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsOnTheScreenAvailable;
@@ -21,46 +12,55 @@ import io.perfeccionista.framework.pagefactory.elements.methods.WebIsDisplayedAv
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsInFocusAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebIsPresentAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebScrollToAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.WebComponentAvailable;
-import io.perfeccionista.framework.pagefactory.elements.methods.WebElementPropertyAvailable;
+import io.perfeccionista.framework.pagefactory.elements.options.HoverOptions;
+import io.perfeccionista.framework.pagefactory.elements.options.ScrollOptions;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
+import io.perfeccionista.framework.pagefactory.emulator.keys.Key;
 import org.jetbrains.annotations.NotNull;
 
-public interface WebChildElement extends WebChildElementBase, WebComponentAvailable,
-        WebElementPropertyAvailable, WebElementStateAvailable,
+public interface WebChildElement extends WebChildElementBase,
+        WebElementAttributeAvailable, WebElementStateAvailable,
         WebIsPresentAvailable, WebIsDisplayedAvailable, WebIsOnTheScreenAvailable, WebIsInFocusAvailable,
         WebHoverToAvailable, WebScrollToAvailable,
         WebGetElementBoundsAvailable, WebGetScreenshotAvailable, WebGetColorAvailable {
 
-    WebChildElement should(@NotNull WebChildElementMatcher matcher);
+    boolean check(@NotNull WebElementCondition... conditions);
+    boolean checkNot(@NotNull WebElementCondition... conditions);
 
-    @Override
-    WebChildElement should(@NotNull WebGetColorAvailableMatcher matcher);
+    WebChildElement should(@NotNull WebElementCondition... conditions);
+    WebChildElement shouldNot(@NotNull WebElementCondition... conditions);
 
+    // Actions
     @Override
-    WebChildElement should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
+    WebChildElement executeAction(@NotNull String name, Object... args);
 
+    // Add
     @Override
-    WebChildElement should(@NotNull WebGetScreenshotAvailableMatcher matcher);
+    WebChildElement addName(@NotNull String elementName);
+    @Override
+    WebChildElement addComponent(@NotNull String componentName, @NotNull WebSelectorHolder selector);
 
+    // Hover
     @Override
-    WebChildElement should(@NotNull WebIsDisplayedAvailableMatcher matcher);
+    WebChildElement hoverTo();
+    @Override
+    WebChildElement hoverTo(@NotNull HoverOptions options);
 
+    // Press key
     @Override
-    WebChildElement should(@NotNull WebIsInFocusAvailableMatcher matcher);
+    WebChildElement press(@NotNull Key key);
 
+    // Scroll
     @Override
-    WebChildElement should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
+    WebChildElement scrollTo();
+    @Override
+    WebChildElement scrollTo(@NotNull ScrollOptions options);
 
-    @Override
-    WebChildElement should(@NotNull WebIsPresentAvailableMatcher matcher);
-
-    @Override
-    WebChildElement should(@NotNull WebComponentAvailableMatcher matcher);
-
-    @Override
-    WebChildElement should(@NotNull WebElementPropertyAvailableMatcher matcher);
-
-    @Override
-    WebChildElement should(@NotNull WebElementStateAvailableMatcher matcher);
+//    TODO: Точно нужны эти методы? Насколько они здесь логичны. Если мы ограничиваем функционал,
+//     а потом даем возможность его расширитьSearch
+//    @NotNull WebNode asNode();
+//    @NotNull WebNode parentNode();
+//    @NotNull WebNode childNode(@NotNull WebSelectorHolder rootSelector);
+//    @NotNull WebList<WebNode> childNodes(@NotNull WebSelectorHolder rootSelector, @NotNull WebSelectorHolder itemSelector);
 
 }

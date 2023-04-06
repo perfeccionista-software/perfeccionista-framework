@@ -14,18 +14,22 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebGetIsDisplayedOperationType implements WebElementOperationType<Boolean> {
 
+    private static final String ACTION_NAME = IS_DISPLAYED_METHOD;
+
     private final WebIsDisplayedAvailable element;
+    private final String componentName;
 
     private final InvocationInfo invocationInfo;
 
-    private WebGetIsDisplayedOperationType(WebIsDisplayedAvailable element) {
+    private WebGetIsDisplayedOperationType(WebIsDisplayedAvailable element, String componentName) {
         this.element = element;
+        this.componentName = componentName;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(IS_DISPLAYED_METHOD, elementName);
+        this.invocationInfo = getterInvocation(ACTION_NAME, elementName, componentName);
     }
 
-    public static WebGetIsDisplayedOperationType of(@NotNull WebIsDisplayedAvailable element) {
-        return new WebGetIsDisplayedOperationType(element);
+    public static WebGetIsDisplayedOperationType of(@NotNull WebIsDisplayedAvailable element, @NotNull String componentName) {
+        return new WebGetIsDisplayedOperationType(element, componentName);
     }
 
     @Override
@@ -35,7 +39,7 @@ public class WebGetIsDisplayedOperationType implements WebElementOperationType<B
 
     @Override
     public @NotNull EndpointHandler<Boolean> getEndpointHandler() {
-        Class<? extends EndpointHandler<Boolean>> endpointHandlerClass = element.getEndpointHandler(IS_DISPLAYED_METHOD, Boolean.class);
+        Class<? extends EndpointHandler<Boolean>> endpointHandlerClass = element.getEndpointHandler(ACTION_NAME, Boolean.class);
         Constructor<? extends EndpointHandler<Boolean>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor);
     }

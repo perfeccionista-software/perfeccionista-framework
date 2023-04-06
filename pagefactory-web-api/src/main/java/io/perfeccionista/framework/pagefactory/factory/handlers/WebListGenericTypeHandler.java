@@ -2,8 +2,9 @@ package io.perfeccionista.framework.pagefactory.factory.handlers;
 
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
+import io.perfeccionista.framework.pagefactory.elements.WebNode;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.factory.WebPageFactory;
 import org.jetbrains.annotations.NotNull;
@@ -21,34 +22,34 @@ public class WebListGenericTypeHandler {
     private WebListGenericTypeHandler() {
     }
 
-    public static <T extends WebBlock> @NotNull WebBlockFrame<WebBlock> createWebListFrame(@NotNull WebList<T> webList,
-                                                                                           @NotNull Method elementMethod,
-                                                                                           @NotNull WebPageFactory webPageFactory,
-                                                                                           @NotNull WebPageFactoryPreferences configuration) {
+    public static <T extends WebBlock<?>> @NotNull WebListFrame<WebBlock<?>> createWebListFrame(@NotNull WebList<T> webList,
+                                                                                                @NotNull Method elementMethod,
+                                                                                                @NotNull WebPageFactory webPageFactory,
+                                                                                                @NotNull WebPageFactoryPreferences configuration) {
 
         Class<? extends WebChildElement> webChildElementType = webList.getElementIdentifier().getElementType();
-        Class<? extends WebBlock> webMappedBlockClass = configuration.getWebMappedBlock(webChildElementType);
+        Class<? extends WebBlock<?>> webMappedBlockClass = configuration.getWebMappedBlock(webChildElementType);
 
         if (elementMethod.getReturnType().equals(WebList.class)) {
             Type genericReturnType = elementMethod.getGenericReturnType();
             if (genericReturnType instanceof ParameterizedType) {
-                webMappedBlockClass = (Class<? extends WebBlock>) ((ParameterizedType) genericReturnType).getActualTypeArguments()[0];
+                webMappedBlockClass = (Class<? extends WebBlock<?>>) ((ParameterizedType) genericReturnType).getActualTypeArguments()[0];
             } else {
-                webMappedBlockClass = WebBlock.class;
+                webMappedBlockClass = WebNode.class;
             }
         } else {
             Optional<Type> optionalGenericListInterface = findGenericInterface(elementMethod.getReturnType(), WebList.class);
             if (optionalGenericListInterface.isPresent()) {
                 Type genericListInterface = optionalGenericListInterface.get();
                 if (genericListInterface instanceof ParameterizedType) {
-                    webMappedBlockClass = (Class<? extends WebBlock>) ((ParameterizedType) genericListInterface).getActualTypeArguments()[0];
+                    webMappedBlockClass = (Class<? extends WebBlock<?>>) ((ParameterizedType) genericListInterface).getActualTypeArguments()[0];
                 } else {
-                    webMappedBlockClass = WebBlock.class;
+                    webMappedBlockClass = WebNode.class;
                 }
             }
         }
 
-        WebBlock webListBlock;
+        WebBlock<?> webListBlock;
 
         if (Objects.nonNull(webMappedBlockClass)) {
             webListBlock = webPageFactory.createMappedWebBlock(webList, webMappedBlockClass);
@@ -56,7 +57,7 @@ public class WebListGenericTypeHandler {
             webListBlock = webPageFactory.createMappedWebBlock(webList, WebBlock.class);
         }
 
-        return new WebBlockFrame<>(webListBlock);
+        return new WebListFrame<>(webListBlock);
     }
 
 }

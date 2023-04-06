@@ -24,7 +24,7 @@ public class ExceptionInnerInvocationInfoCheckVisitor implements Consumer<Invoca
 
     @Override
     public void accept(InvocationInfo invocationInfo) {
-        boolean primaryExceptionProcessed = Optional.ofNullable(WebAllureCheckInvocationRunner.primaryExceptionProcessed.get())
+        boolean primaryExceptionProcessed = Optional.ofNullable(WebAllureMultipleAttemptInvocationRunner.primaryExceptionProcessed.get())
                 .orElse(false);
         Throwable throwable = invocationInfo.getCurrent()
                 .orElseThrow(() -> PreconditionViolation.exception("On stage 'exception' current result can't be null"))

@@ -3,6 +3,7 @@ package io.perfeccionista.framework.pagefactory.extractor.list;
 import io.perfeccionista.framework.exceptions.attachments.MobileExtractorDescriptionAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.MobileFilterBuilderDescriptionAttachmentEntry;
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
+import io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper;
 import io.perfeccionista.framework.matcher.result.MobileMultipleIndexedResultMatcher;
 import io.perfeccionista.framework.pagefactory.elements.MobileList;
 import io.perfeccionista.framework.pagefactory.filter.MobileFilters;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_EXTRACTED_VALUES_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_SIZE_ELEMENTS_METHOD;
 
@@ -55,7 +56,7 @@ public class MobileListMultipleIndexedResult<T> implements MobileMultipleIndexed
         InvocationInfo invocationInfo = getterInvocation(GET_EXTRACTED_VALUES_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder))
                 .addAttachmentEntry(MobileExtractorDescriptionAttachmentEntry.of(extractor));
-        return runCheck(invocationInfo, () -> extractor.extractValues(filterBuilder.build(element)));
+        return MultipleAttemptInvocationWrapper.repeatInvocation(invocationInfo, () -> extractor.extractValues(filterBuilder.build(element)));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class MobileListMultipleIndexedResult<T> implements MobileMultipleIndexed
         String elementName = element.getElementIdentifier().getLastUsedName();
         InvocationInfo invocationInfo = getterInvocation(GET_SIZE_ELEMENTS_METHOD, elementName)
                 .addAttachmentEntry(MobileFilterBuilderDescriptionAttachmentEntry.of(filterBuilder));
-        return runCheck(invocationInfo, () -> webListFilter.getFilterResult().getIndexes().size());
+        return MultipleAttemptInvocationWrapper.repeatInvocation(invocationInfo, () -> webListFilter.getFilterResult().getIndexes().size());
     }
 
     @Override

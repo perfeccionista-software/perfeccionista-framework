@@ -19,7 +19,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.MobileLongTapOpera
 import io.perfeccionista.framework.pagefactory.operation.type.MobileTapOperationType;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TAP;
 
 public class MobileButtonImpl extends MobileTextImpl implements MobileButton {
@@ -125,7 +125,7 @@ public class MobileButtonImpl extends MobileTextImpl implements MobileButton {
     @Override
     public MobileButton tap() {
         MobileTapOperationType operationType = MobileTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -133,7 +133,7 @@ public class MobileButtonImpl extends MobileTextImpl implements MobileButton {
     @Override
     public MobileButton longTap() {
         MobileLongTapOperationType operationType = MobileLongTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }
@@ -141,7 +141,7 @@ public class MobileButtonImpl extends MobileTextImpl implements MobileButton {
     @Override
     public MobileButton doubleTap() {
         MobileDoubleTapOperationType operationType = MobileDoubleTapOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, TAP).executeAction());
         return this;
     }

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
 import io.perfeccionista.framework.measurements.Dimensions2D;
-import io.perfeccionista.framework.measurements.Offsets2D;
+import io.perfeccionista.framework.measurements.Margins2D;
 import io.perfeccionista.framework.measurements.Point2D;
 
 public class ElementBounds {
@@ -61,11 +61,11 @@ public class ElementBounds {
         return this;
     }
 
-    public Offsets2D getAbsoluteOffsets(double absoluteWidth, double absoluteHeight) {
+    public Margins2D getAbsoluteMargins(double absoluteWidth, double absoluteHeight) {
         return null;
     }
 
-    public Offsets2D getScreenOffsets(double screenWidth, double screenHeight) {
+    public Margins2D getScreenMargins(double screenWidth, double screenHeight) {
         return null;
     }
 

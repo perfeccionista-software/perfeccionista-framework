@@ -13,7 +13,7 @@ import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNot
 import io.perfeccionista.framework.exceptions.ElementNotPresent.ElementNotPresentAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementTextValue.WebElementTextValueAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
@@ -72,9 +72,9 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = simpleButton.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(simpleButton.getEnvironment()),
-                () -> assertNotNull(simpleButton.getLocatorChain()),
+                () -> assertNotNull(simpleButton.getSelectorChain()),
                 () -> assertNotNull(simpleButton.getWebBrowserDispatcher()),
-                () -> assertNotNull(simpleButton.getRequiredLocator(ROOT)),
+                () -> assertNotNull(simpleButton.getRequiredSelector(ROOT)),
                 // WebButton
                 () -> assertNotNull(simpleButton.getEndpointHandler(CLICK_METHOD, Void.class)),
                 () -> assertNotNull(simpleButton.getEndpointHandler(GET_TEXT_METHOD, String.class)),
@@ -186,7 +186,7 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
         simpleButton.should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> simpleButton.should(notBePresent())),

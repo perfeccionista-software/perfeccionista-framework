@@ -6,7 +6,6 @@ import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.pagefactory.limiter.WebListBlockContextLimiter;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
 
 import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
@@ -15,19 +14,19 @@ import static io.perfeccionista.framework.value.Values.intGreaterThanOrEqual;
 // TODO: Add step categories
 public class WebSearchContextStepDefinitions implements WebStepDefinitions {
 
-    /**
-     *
-     * @param elementFinder -
-     * @param itemFilter -
-     */
-    @Given("user chooses in the list {webElement} blocks with")
-    @Дано("пользователь выбирает в списке {webElement} блоки, где")
-    public void userRestrictsBlocksInTheWebList(WebElementParameter<WebList> elementFinder,
-                                                WebBlockFilterBuilder<WebBlock> itemFilter) {
-        WebListBlockContextLimiter<WebBlock> limiter = selectWebListBlocks(elementFinder.getRaw(), itemFilter, intGreaterThanOrEqual(1));
-        getWebPageContext()
-                .addContextLimiter(limiter);
-    }
+//    /**
+//     *
+//     * @param elementFinder -
+//     * @param itemFilter -
+//     */
+//    @Given("user chooses in the list {webElement} blocks with")
+//    @Дано("пользователь выбирает в списке {webElement} блоки, где")
+//    public void userRestrictsBlocksInTheWebList(WebElementParameter<WebList> elementFinder,
+//                                                WebBlockFilterBuilder<WebBlock> itemFilter) {
+//        WebListBlockContextLimiter<WebBlock> limiter = selectWebListBlocks(elementFinder.getRaw(), itemFilter, intGreaterThanOrEqual(1));
+//        getWebPageContext()
+//                .addContextLimiter(limiter);
+//    }
 
     /**
      *

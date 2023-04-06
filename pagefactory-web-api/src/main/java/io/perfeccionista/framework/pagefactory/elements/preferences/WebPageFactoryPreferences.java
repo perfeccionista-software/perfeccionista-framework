@@ -1,9 +1,9 @@
 package io.perfeccionista.framework.pagefactory.elements.preferences;
 
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebBlockImpl;
+import io.perfeccionista.framework.pagefactory.elements.impl.WebBlockImpl;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
-import io.perfeccionista.framework.pagefactory.elements.WebPageImpl;
+import io.perfeccionista.framework.pagefactory.elements.impl.WebPageImpl;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +31,8 @@ public interface WebPageFactoryPreferences {
     WebPageFactoryPreferences setWebElementImplementations(@NotNull Map<Class<? extends WebChildElement>, Class<? extends WebChildElement>> webElementImplementations);
 
     // GetMappedBlocks
-    @Nullable Class<? extends WebBlock> getWebMappedBlock(@NotNull Class<? extends WebChildElement> webElementType);
-    WebPageFactoryPreferences setWebMappedBlocks(@NotNull Map<Class<? extends WebChildElement>, Class<? extends WebBlock>> webMappedBlocks);
+    @Nullable Class<? extends WebBlock<?>> getWebMappedBlock(@NotNull Class<? extends WebChildElement> webElementType);
+    WebPageFactoryPreferences setWebMappedBlocks(@NotNull Map<Class<? extends WebChildElement>, Class<? extends WebBlock<?>>> webMappedBlocks);
 
     // GetActions
     @NotNull WebEndpointHandlerConfiguration getWebPageActionConfiguration(@NotNull Class<? extends WebPage> webPageImplementation);
@@ -40,10 +40,6 @@ public interface WebPageFactoryPreferences {
 
     @NotNull WebEndpointHandlerConfiguration getWebElementActionConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation);
     WebPageFactoryPreferences setWebElementActionConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebEndpointHandlerConfiguration> webElementActionConfigurations);
-
-    // GetWebProperties
-    @NotNull WebElementPropertyConfiguration getWebElementPropertyConfiguration(@NotNull Class<? extends WebChildElementBase> webElementClass);
-    WebPageFactoryPreferences setWebElementPropertyConfigurations(@NotNull Map<Class<? extends WebChildElementBase>, WebElementPropertyConfiguration> webElementPropertyConfigurations);
 
     // GetWebStates
     @NotNull WebElementStateConfiguration getWebElementStateConfiguration(@NotNull Class<? extends WebChildElementBase> webElementImplementation);

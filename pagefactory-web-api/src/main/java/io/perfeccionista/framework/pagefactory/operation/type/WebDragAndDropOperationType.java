@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.pagefactory.operation.type;
 
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
-import io.perfeccionista.framework.measurements.Point2D;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.WebNode;
+import io.perfeccionista.framework.pagefactory.elements.options.DragAndDropOptions;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,20 +15,25 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebDragAndDropOperationType implements WebElementOperationType<Void> {
 
-    private final WebChildElement element;
-    private final Point2D target;
+    private static final String ACTION_NAME = DRAG_AND_DROP_METHOD;
+
+    private final WebNode element;
+    private final WebNode target;
+    private final DragAndDropOptions options;
 
     private final InvocationInfo invocationInfo;
 
-    private WebDragAndDropOperationType(WebChildElement element, Point2D target) {
+    private WebDragAndDropOperationType(WebNode element, WebNode target, DragAndDropOptions options) {
         this.element = element;
         this.target = target;
+        this.options = options;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = actionInvocation(DRAG_AND_DROP_METHOD, elementName, target.toString());
+        String targetName = target.getElementIdentifier().getLastUsedName();
+        this.invocationInfo = actionInvocation(ACTION_NAME, elementName, targetName, options.toString());
     }
 
-    public static WebDragAndDropOperationType of(@NotNull WebChildElement element, @NotNull Point2D target) {
-        return new WebDragAndDropOperationType(element, target);
+    public static WebDragAndDropOperationType of(@NotNull WebNode element, @NotNull WebNode target, @NotNull DragAndDropOptions options) {
+        return new WebDragAndDropOperationType(element, target, options);
     }
 
     @Override
@@ -38,9 +43,11 @@ public class WebDragAndDropOperationType implements WebElementOperationType<Void
 
     @Override
     public @NotNull EndpointHandler<Void> getEndpointHandler() {
-        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(DRAG_AND_DROP_METHOD, Void.class);
+        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(ACTION_NAME, Void.class);
         Constructor<? extends EndpointHandler<Void>> constructor = getDeclaredConstructor(endpointHandlerClass);
-        return newInstance(constructor, target);
+
+        // TODO: Поправить хэндлер
+        return newInstance(constructor, target, options);
     }
 
 }

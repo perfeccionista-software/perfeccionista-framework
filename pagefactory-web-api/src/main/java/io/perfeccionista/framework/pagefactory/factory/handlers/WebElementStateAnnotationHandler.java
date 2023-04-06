@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.pagefactory.factory.handlers;
 
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.elements.states.base.WebElementState;
 import io.perfeccionista.framework.pagefactory.elements.states.base.WebElementStateExtractor;
@@ -11,9 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -55,11 +52,11 @@ public class WebElementStateAnnotationHandler {
     }
 
     protected static @NotNull WebElementStateHolder createWebElementStateHolder(@NotNull WebElementState webElementState) {
-        Optional<WebLocatorHolder> optionalWebLocatorHolder = createOptionalWebLocatorHolder(webElementState.locator());
-        List<String> args = new ArrayList<>();
-        args.addAll(Arrays.asList(webElementState.params()));
+        Optional<WebSelectorHolder> optionalWebLocatorHolder = createOptionalWebLocatorHolder(webElementState.selector());
+//        List<String> args = new ArrayList<>();
+//        args.addAll(Arrays.asList(webElementState.params()));
         Constructor<? extends WebElementStateExtractor> constructor = getDeclaredConstructor(webElementState.extractor());
-        WebElementStateExtractor extractorInstance = newInstance(constructor, args);
+        WebElementStateExtractor extractorInstance = newInstance(constructor);
         return WebElementStateHolder.of(webElementState.name(), optionalWebLocatorHolder.orElse(null), extractorInstance);
     }
 

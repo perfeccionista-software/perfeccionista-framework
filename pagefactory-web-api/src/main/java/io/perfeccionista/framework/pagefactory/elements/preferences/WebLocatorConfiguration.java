@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.exceptions.LocatorNotFound;
 import io.perfeccionista.framework.json.JsonSerializable;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 
 public class WebLocatorConfiguration implements JsonSerializable {
 
-    private final HashMap<String, WebLocatorHolder> webLocatorHolders = new HashMap<>();
+    private final HashMap<String, WebSelectorHolder> webLocatorHolders = new HashMap<>();
 
     private WebLocatorConfiguration() {}
 
@@ -32,12 +32,12 @@ public class WebLocatorConfiguration implements JsonSerializable {
         return configuration;
     }
 
-    public WebLocatorConfiguration set(@NotNull String locatorName, @NotNull WebLocatorHolder locatorHolder) {
+    public WebLocatorConfiguration set(@NotNull String locatorName, @NotNull WebSelectorHolder locatorHolder) {
         webLocatorHolders.put(locatorName, locatorHolder);
         return this;
     }
 
-    public WebLocatorConfiguration setIfNotPresent(@NotNull String locatorName, @NotNull WebLocatorHolder locatorHolder) {
+    public WebLocatorConfiguration setIfNotPresent(@NotNull String locatorName, @NotNull WebSelectorHolder locatorHolder) {
         if (!webLocatorHolders.containsKey(locatorName)) {
             webLocatorHolders.put(locatorName, locatorHolder);
         }
@@ -54,16 +54,16 @@ public class WebLocatorConfiguration implements JsonSerializable {
         return this;
     }
 
-    public WebLocatorHolder getLocatorHolder(@NotNull String locatorName) {
+    public WebSelectorHolder getLocatorHolder(@NotNull String locatorName) {
         return Optional.ofNullable(webLocatorHolders.get(locatorName))
                 .orElseThrow(() -> LocatorNotFound.exception(ELEMENT_LOCATOR_NOT_FOUND.getMessage(locatorName)));
     }
 
-    public Map<String, WebLocatorHolder> asMap() {
+    public Map<String, WebSelectorHolder> asMap() {
         return new HashMap<>(webLocatorHolders);
     }
 
-    public Stream<Entry<String, WebLocatorHolder>> stream() {
+    public Stream<Entry<String, WebSelectorHolder>> stream() {
         return webLocatorHolders.entrySet().stream();
     }
 

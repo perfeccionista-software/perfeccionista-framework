@@ -5,10 +5,8 @@ import io.cucumber.java.ru.Дано;
 import io.perfeccionista.framework.cucumber.parameters.DataStorageParameter;
 import io.perfeccionista.framework.cucumber.parameters.ValueStringParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementActionParameter;
-import io.perfeccionista.framework.cucumber.parameters.WebElementInteractionParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementParameter;
 import io.perfeccionista.framework.cucumber.parameters.WebElementPropertyParameter;
-import io.perfeccionista.framework.pagefactory.elements.WebFileInput;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
@@ -92,22 +90,22 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
                                              ValueStringParameter textToEnter) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebInputTextAvailable.class)
-                        .typeText(textToEnter.getNotNullProcessedValue()));
+                        .setText(textToEnter.getNotNullProcessedValue()));
     }
 
-    /**
-     *
-     * @param elementFinder -
-     * @param fileName -
-     */
-    @Given("user sets in the {webElement} filename {stringValue}")
-    @Дано("пользователь устанавливает в {webElement} имя файла {stringValue}")
-    public void userSetsFilenameInTheElement(WebElementParameter<WebFileInput> elementFinder,
-                                             ValueStringParameter fileName) {
-        getWebPageContext().execute(context ->
-                elementFinder.getElement(context, WebFileInput.class)
-                        .replaceText(fileName.getNotNullProcessedValue()));
-    }
+//    /**
+//     *
+//     * @param elementFinder -
+//     * @param fileName -
+//     */
+//    @Given("user sets in the {webElement} filename {stringValue}")
+//    @Дано("пользователь устанавливает в {webElement} имя файла {stringValue}")
+//    public void userSetsFilenameInTheElement(WebElementParameter<WebFileInput> elementFinder,
+//                                             ValueStringParameter fileName) {
+//        getWebPageContext().execute(context ->
+//                elementFinder.getElement(context, WebFileInput.class)
+//                        .replaceText(fileName.getNotNullProcessedValue()));
+//    }
 
     /**
      *
@@ -121,39 +119,39 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
                         .scrollTo());
     }
 
-    /**
-     *
-     * @param elementFinder -
-     */
-    @Given("user hovers the cursor over the {webElement}")
-    @Дано("пользователь наводит курсор на {webElement}")
-    public void userHoversTheCursorOverTheElement(WebElementParameter<WebHoverToAvailable> elementFinder) {
-        getWebPageContext().execute(context ->
-                elementFinder.getElement(context, WebHoverToAvailable.class)
-                        .hoverTo(true));
-    }
+//    /**
+//     *
+//     * @param elementFinder -
+//     */
+//    @Given("user hovers the cursor over the {webElement}")
+//    @Дано("пользователь наводит курсор на {webElement}")
+//    public void userHoversTheCursorOverTheElement(WebElementParameter<WebHoverToAvailable> elementFinder) {
+//        getWebPageContext().execute(context ->
+//                elementFinder.getElement(context, WebHoverToAvailable.class)
+//                        .hoverTo(true));
+//    }
 
-    /**
-     *
-     * @param elementFinders -
-     */
-    @Given("user hovers the cursor sequentially to")
-    @Дано("пользователь поочередно наводит курсор на")
-    public void userHoversTheCursorOverTheElement(List<WebElementParameter<WebHoverToAvailable>> elementFinders) {
-        AtomicBoolean firstElementOfChain = new AtomicBoolean(true);
-        getWebPageContext().execute(context -> {
-            elementFinders.forEach(elementFinder -> {
-                WebHoverToAvailable element = elementFinder.getElement(context, WebHoverToAvailable.class);
-                if (firstElementOfChain.get()) {
-                    element.hoverTo(true);
-                    firstElementOfChain.set(false);
-                } else {
-                    element.hoverTo(false);
-                }
-            });
-            firstElementOfChain.set(true);
-        });
-    }
+//    /**
+//     *
+//     * @param elementFinders -
+//     */
+//    @Given("user hovers the cursor sequentially to")
+//    @Дано("пользователь поочередно наводит курсор на")
+//    public void userHoversTheCursorOverTheElement(List<WebElementParameter<WebHoverToAvailable>> elementFinders) {
+//        AtomicBoolean firstElementOfChain = new AtomicBoolean(true);
+//        getWebPageContext().execute(context -> {
+//            elementFinders.forEach(elementFinder -> {
+//                WebHoverToAvailable element = elementFinder.getElement(context, WebHoverToAvailable.class);
+//                if (firstElementOfChain.get()) {
+//                    element.hoverTo(true);
+//                    firstElementOfChain.set(false);
+//                } else {
+//                    element.hoverTo(false);
+//                }
+//            });
+//            firstElementOfChain.set(true);
+//        });
+//    }
 
     /**
      * Warning: для использования с множественным контекстом необходимо генерировать уникальное имя ключа,
@@ -174,26 +172,26 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
         });
     }
 
-    /**
-     * Warning: для использования с множественным контекстом необходимо генерировать уникальное имя ключа,
-     * иначе значения из последующих элементов будут перетирать предыдущие
-     * @param elementProperty -
-     * @param elementFinder -
-     * @param dataStorage -
-     * @param key -
-     */
-    @Given("user saves text from property {webElementProperty} of the {webElement} to {dataStorage} by key {stringValue}")
-    @Дано("пользователь сохраняет текст из свойства {webElementProperty} элемента {webElement} в {dataStorage} по ключу {stringValue}")
-    public void userSavesTextFromPropertyOfTheElementToDataStorage(WebElementPropertyParameter elementProperty,
-                                                                   WebElementParameter<WebChildElement> elementFinder,
-                                                                   DataStorageParameter<String, String> dataStorage,
-                                                                   ValueStringParameter key) {
-        getWebPageContext().execute(context -> {
-            WebChildElement element = elementFinder.getElement(context, WebChildElement.class);
-            String textToSave = element.getPropertyValue(elementProperty.getRaw());
-            dataStorage.get().put(key.getNotNullProcessedValue(), textToSave);
-        });
-    }
+//    /**
+//     * Warning: для использования с множественным контекстом необходимо генерировать уникальное имя ключа,
+//     * иначе значения из последующих элементов будут перетирать предыдущие
+//     * @param elementProperty -
+//     * @param elementFinder -
+//     * @param dataStorage -
+//     * @param key -
+//     */
+//    @Given("user saves text from property {webElementProperty} of the {webElement} to {dataStorage} by key {stringValue}")
+//    @Дано("пользователь сохраняет текст из свойства {webElementProperty} элемента {webElement} в {dataStorage} по ключу {stringValue}")
+//    public void userSavesTextFromPropertyOfTheElementToDataStorage(WebElementPropertyParameter elementProperty,
+//                                                                   WebElementParameter<WebChildElement> elementFinder,
+//                                                                   DataStorageParameter<String, String> dataStorage,
+//                                                                   ValueStringParameter key) {
+//        getWebPageContext().execute(context -> {
+//            WebChildElement element = elementFinder.getElement(context, WebChildElement.class);
+//            String textToSave = element.getProperty(elementProperty.getRaw());
+//            dataStorage.get().put(key.getNotNullProcessedValue(), textToSave);
+//        });
+//    }
 
     /**
      *
@@ -209,21 +207,21 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
         });
     }
 
-    /**
-     *
-     * @param elementProperty -
-     * @param elementFinder -
-     */
-    @Given("user saves text from property {webElementProperty} of the {webElement} to the clipboard")
-    @Дано("пользователь сохраняет текст из свойства {webElementProperty} элемента {webElement} в буфер обмена")
-    public void userSavesTextFromTheElementToTheClipboard(WebElementPropertyParameter elementProperty,
-                                                          WebElementParameter<WebChildElement> elementFinder) {
-        getWebPageContext().execute(context -> {
-            WebChildElement element = elementFinder.getElement(context, WebChildElement.class);
-            String textToCopy = element.getPropertyValue(elementProperty.getRaw());
-            copyToClipboard(textToCopy);
-        });
-    }
+//    /**
+//     *
+//     * @param elementProperty -
+//     * @param elementFinder -
+//     */
+//    @Given("user saves text from property {webElementProperty} of the {webElement} to the clipboard")
+//    @Дано("пользователь сохраняет текст из свойства {webElementProperty} элемента {webElement} в буфер обмена")
+//    public void userSavesTextFromTheElementToTheClipboard(WebElementPropertyParameter elementProperty,
+//                                                          WebElementParameter<WebChildElement> elementFinder) {
+//        getWebPageContext().execute(context -> {
+//            WebChildElement element = elementFinder.getElement(context, WebChildElement.class);
+//            String textToCopy = element.getProperty(elementProperty.getRaw());
+//            copyToClipboard(textToCopy);
+//        });
+//    }
 
     /**
      *
@@ -234,7 +232,7 @@ public class WebElementActionStepDefinitions implements WebStepDefinitions {
     public void userPasteTextFromTheClipboardToTheElement(WebElementParameter<WebInputTextAvailable> elementFinder) {
         getWebPageContext().execute(context ->
                 elementFinder.getElement(context, WebInputTextAvailable.class)
-                        .typeText(getFromClipboard()));
+                        .setText(getFromClipboard()));
     }
 
 }

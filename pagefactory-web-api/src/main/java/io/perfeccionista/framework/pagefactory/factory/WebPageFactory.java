@@ -1,9 +1,5 @@
 package io.perfeccionista.framework.pagefactory.factory;
 
-import io.perfeccionista.framework.exceptions.ElementNotFound;
-import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlock;
-import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolderForChildElement;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolderForIsolatedStructuralElement;
@@ -11,13 +7,11 @@ import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolderForS
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
-import io.perfeccionista.framework.pagefactory.elements.WebRadioButton;
-import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolder;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentElement;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 import io.perfeccionista.framework.pagefactory.filter.FilterResult;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_FOUND;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.ITEM;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.TABLE_HEADER;
 import static io.perfeccionista.framework.utils.WebElementUtils.getWebChildElementMethods;
@@ -39,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 // TODO: Сделать все элементы Clonable и при создании блоков/строк таблицы просто их клонировать и инжектить локаторы
 public class WebPageFactory {
 
-    public static final String RADIO_BUTTON_METHOD_NAME = "radioButton";
+//    public static final String RADIO_BUTTON_METHOD_NAME = "radioButton";
 
     protected final WebPageFactoryPreferences configuration;
     protected final WebElementInitializer initializer;
@@ -85,47 +78,47 @@ public class WebPageFactory {
         return decorator.decorateMappedWebBlockInstance(webMappedBlockInstance, webMappedBlockClass, elementRegistry, parentInfo);
     }
 
-    public Map<Integer, WebRadioButton> createWebRadioButtons(@NotNull WebRadioGroup webRadioGroup,
-                                                              @NotNull FilterResult filterResult) {
-        Map<Integer, WebRadioButton> webRadioButtons = new HashMap<>();
-
-        String hash = filterResult.getHash();
-        Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder radioButtonLocatorHolder = webRadioGroup.getRequiredLocator(ITEM);
-
-        Class<? extends DefaultWebRadioButtonBlock> mappedBlockClass = (Class<? extends DefaultWebRadioButtonBlock>) webRadioGroup.getBlockFrame()
-                .getMappedBlockFrame()
-                .getElementIdentifier()
-                // TODO: Либо добавить проверку, либо отдельный тип идентифаера
-                .getElementType();
-
-        List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
-        Method webRadioButtonMethod = childElementMethods.stream()
-                .filter(method -> RADIO_BUTTON_METHOD_NAME.equals(method.getName()))
-                .filter(method -> method.getParameterCount() == 0)
-                .filter(method -> WebRadioButton.class.isAssignableFrom(method.getReturnType()))
-                .findFirst()
-                .orElseThrow(() -> ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(RADIO_BUTTON_METHOD_NAME)));
-
-        for (int index : indexes) {
-            DefaultWebRadioButtonBlock webMappedBlockInstance = initializer.initMappedWebBlock(mappedBlockClass);
-            // ElementRegistry
-            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
-            // ParentLocators
-            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            WebLocatorHolder radioButtonBlockRootLocator = radioButtonLocatorHolder.clone().setSingle(true).setIndex(index);
-            parentLocators.add(radioButtonBlockRootLocator);
-            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webRadioGroup, hash, parentLocators);
-            // Decorate MappedBlock
-            WebBlock decoratedWebMappedBlockInstance = decorator
-                    .decorateMappedWebBlockInstance(webMappedBlockInstance, mappedBlockClass, elementRegistry, parentInfo);
-            WebRadioButton webRadioButton = decoratedWebMappedBlockInstance.getElementRegistry()
-                    .getRequiredElementByMethod(webRadioButtonMethod, WebRadioButton.class);
-            webRadioButtons.put(index, webRadioButton);
-        }
-
-        return webRadioButtons;
-    }
+//    public Map<Integer, WebRadioButton> createWebRadioButtons(@NotNull WebRadioGroup webRadioGroup,
+//                                                              @NotNull FilterResult filterResult) {
+//        Map<Integer, WebRadioButton> webRadioButtons = new HashMap<>();
+//
+//        String hash = filterResult.getHash();
+//        Set<Integer> indexes = filterResult.getIndexes();
+//        WebSelectorHolder radioButtonLocatorHolder = webRadioGroup.getRequiredLocator(ITEM);
+//
+//        Class<? extends DefaultWebRadioButtonBlock> mappedBlockClass = (Class<? extends DefaultWebRadioButtonBlock>) webRadioGroup.getBlockFrame()
+//                .getMappedBlockFrame()
+//                .getElementIdentifier()
+//                // TODO: Либо добавить проверку, либо отдельный тип идентифаера
+//                .getElementType();
+//
+//        List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
+//        Method webRadioButtonMethod = childElementMethods.stream()
+//                .filter(method -> RADIO_BUTTON_METHOD_NAME.equals(method.getName()))
+//                .filter(method -> method.getParameterCount() == 0)
+//                .filter(method -> WebRadioButton.class.isAssignableFrom(method.getReturnType()))
+//                .findFirst()
+//                .orElseThrow(() -> ElementNotFound.exception(ELEMENT_NOT_FOUND.getMessage(RADIO_BUTTON_METHOD_NAME)));
+//
+//        for (int index : indexes) {
+//            DefaultWebRadioButtonBlock webMappedBlockInstance = initializer.initMappedWebBlock(mappedBlockClass);
+//            // ElementRegistry
+//            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
+//            // ParentLocators
+//            Deque<WebSelectorHolder> parentLocators = new ArrayDeque<>();
+//            WebSelectorHolder radioButtonBlockRootLocator = radioButtonLocatorHolder.clone().setSingle(true).setIndex(index);
+//            parentLocators.add(radioButtonBlockRootLocator);
+//            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webRadioGroup, hash, parentLocators);
+//            // Decorate MappedBlock
+//            WebBlock decoratedWebMappedBlockInstance = decorator
+//                    .decorateMappedWebBlockInstance(webMappedBlockInstance, mappedBlockClass, elementRegistry, parentInfo);
+//            WebRadioButton webRadioButton = decoratedWebMappedBlockInstance.getElementRegistry()
+//                    .getRequiredElementByMethod(webRadioButtonMethod, WebRadioButton.class);
+//            webRadioButtons.put(index, webRadioButton);
+//        }
+//
+//        return webRadioButtons;
+//    }
 
     public Map<Integer, WebBlock> createWebListBlocks(@NotNull WebList<?> webList,
                                                       @NotNull FilterResult filterResult) {
@@ -133,11 +126,11 @@ public class WebPageFactory {
 
         String hash = filterResult.getHash();
         Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder blockLocatorHolder = webList.getRequiredLocator(ITEM);
+        WebSelectorHolder blockLocatorHolder = webList.getRequiredSelector(ITEM);
 
         //noinspection unchecked
-        Class<? extends WebBlock> mappedBlockClass = (Class<? extends WebBlock>) webList.getBlockFrame()
-                .getMappedBlockFrame()
+        Class<? extends WebBlock> mappedBlockClass = (Class<? extends WebBlock>) webList.getItemFrame()
+                .getMappedItemFrame()
                 .getElementIdentifier()
                 .getElementType();
 
@@ -148,8 +141,8 @@ public class WebPageFactory {
             // ElementRegistry
             WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
             // ParentLocators
-            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            WebLocatorHolder blockRootLocator = blockLocatorHolder.clone().setSingle(true).setIndex(index);
+            Deque<WebSelectorHolder> parentLocators = new ArrayDeque<>();
+            WebSelectorHolder blockRootLocator = blockLocatorHolder.clone().setSingle(true).setIndex(index);
             parentLocators.add(blockRootLocator);
             WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webList, hash, parentLocators);
             // Decorate MappedBlock
@@ -161,49 +154,49 @@ public class WebPageFactory {
         return webMappedBlocks;
     }
 
-    public Map<Integer, DefaultWebTextBlock> createWebTextListBlocks(@NotNull WebTextList webList,
-                                                                     @NotNull FilterResult filterResult) {
-        Map<Integer, DefaultWebTextBlock> webMappedBlocks = new HashMap<>();
-
-        String hash = filterResult.getHash();
-        Set<Integer> indexes = filterResult.getIndexes();
-        WebLocatorHolder liLocatorHolder = webList.getRequiredLocator(ITEM);
-
-        //noinspection unchecked
-        Class<? extends DefaultWebTextBlock> mappedBlockClass = (Class<? extends DefaultWebTextBlock>) webList.getBlockFrame()
-                .getMappedBlockFrame()
-                .getElementIdentifier()
-                .getElementType();
-
-        List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
-
-        for (int index : indexes) {
-            DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(mappedBlockClass);
-            // ElementRegistry
-            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
-            // ParentLocators
-            Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
-            WebLocatorHolder textBlockRootLocator = liLocatorHolder.clone().setSingle(true).setIndex(index);
-            parentLocators.add(textBlockRootLocator);
-            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webList, hash, parentLocators);
-            // Decorate MappedBlock
-            DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
-                    .decorateMappedWebBlockInstance(webMappedBlockInstance, mappedBlockClass, elementRegistry, parentInfo);
-            webMappedBlocks.put(index, decoratedWebMappedBlockInstance);
-        }
-
-        return webMappedBlocks;
-    }
+//    public Map<Integer, DefaultWebTextBlock> createWebTextListBlocks(@NotNull WebTextList webList,
+//                                                                     @NotNull FilterResult filterResult) {
+//        Map<Integer, DefaultWebTextBlock> webMappedBlocks = new HashMap<>();
+//
+//        String hash = filterResult.getHash();
+//        Set<Integer> indexes = filterResult.getIndexes();
+//        WebSelectorHolder liLocatorHolder = webList.getRequiredLocator(ITEM);
+//
+//        //noinspection unchecked
+//        Class<? extends DefaultWebTextBlock> mappedBlockClass = (Class<? extends DefaultWebTextBlock>) webList.getBlockFrame()
+//                .getMappedBlockFrame()
+//                .getElementIdentifier()
+//                .getElementType();
+//
+//        List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
+//
+//        for (int index : indexes) {
+//            DefaultWebTextBlock webMappedBlockInstance = initializer.initMappedWebBlock(mappedBlockClass);
+//            // ElementRegistry
+//            WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
+//            // ParentLocators
+//            Deque<WebSelectorHolder> parentLocators = new ArrayDeque<>();
+//            WebSelectorHolder textBlockRootLocator = liLocatorHolder.clone().setSingle(true).setIndex(index);
+//            parentLocators.add(textBlockRootLocator);
+//            WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webList, hash, parentLocators);
+//            // Decorate MappedBlock
+//            DefaultWebTextBlock decoratedWebMappedBlockInstance = decorator
+//                    .decorateMappedWebBlockInstance(webMappedBlockInstance, mappedBlockClass, elementRegistry, parentInfo);
+//            webMappedBlocks.put(index, decoratedWebMappedBlockInstance);
+//        }
+//
+//        return webMappedBlocks;
+//    }
 
     public <T extends WebBlock> T createWebTableHeader(@NotNull WebTable<?, ?> webTable,
                                                        @NotNull Class<T> mappedBlockClass) {
-        WebLocatorHolder blockRootLocator = webTable.getRequiredLocator(TABLE_HEADER);
+        WebSelectorHolder blockRootLocator = webTable.getRequiredSelector(TABLE_HEADER);
         List<Method> childElementMethods = getWebChildElementMethods(mappedBlockClass);
         WebBlock webMappedBlockInstance = initializer.initMappedWebBlock(mappedBlockClass);
         // ElementRegistry
         WebElementRegistry elementRegistry = createWebChildElementRegistry(webMappedBlockInstance, childElementMethods);
         // ParentLocators
-        Deque<WebLocatorHolder> parentLocators = new ArrayDeque<>();
+        Deque<WebSelectorHolder> parentLocators = new ArrayDeque<>();
         parentLocators.add(blockRootLocator);
         WebParentHolder parentInfo = WebParentHolderForStructuralElement.of(webTable, parentLocators);
         // Decorate MappedBlock

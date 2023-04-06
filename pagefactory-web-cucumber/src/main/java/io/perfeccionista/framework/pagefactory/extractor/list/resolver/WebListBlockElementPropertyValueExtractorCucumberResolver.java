@@ -14,22 +14,24 @@ import static java.util.Objects.isNull;
 
 @CucumberResolverExpression("^property values {propertyName}$")
 @CucumberResolverExpression("^значения свойств {propertyName}$")
-public class WebListBlockElementPropertyValueExtractorCucumberResolver extends AbstractWebListBlockValueExtractorCucumberResolver {
+public class WebListBlockElementPropertyValueExtractorCucumberResolver
+//        extends AbstractWebListBlockValueExtractorCucumberResolver
+{
 
-    @Override
-    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
-        for (Pattern pattern : patterns) {
-            Matcher matcher = pattern.matcher(expression);
-            if (matcher.find()) {
-                String propertyName = matcher.group("propertyName");
-                if (isNull(propertyName)) {
-                    return Optional.empty();
-                }
-                return Optional.of(new WebListBlockElementPropertyValueExtractorCreator(propertyName));
-            }
-        }
-        return Optional.empty();
-    }
+//    @Override
+//    public Optional<WebListBlockElementValueExtractorCreator> tryResolve(@NotNull String expression, @Nullable Object... args) {
+//        for (Pattern pattern : patterns) {
+//            Matcher matcher = pattern.matcher(expression);
+//            if (matcher.find()) {
+//                String propertyName = matcher.group("propertyName");
+//                if (isNull(propertyName)) {
+//                    return Optional.empty();
+//                }
+//                return Optional.of(new WebListBlockElementPropertyValueExtractorCreator(propertyName));
+//            }
+//        }
+//        return Optional.empty();
+//    }
 
 }
 

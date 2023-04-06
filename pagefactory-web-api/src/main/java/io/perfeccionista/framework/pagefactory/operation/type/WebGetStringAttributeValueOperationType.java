@@ -14,20 +14,24 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebGetStringAttributeValueOperationType implements WebElementOperationType<String> {
 
+    private static final String ACTION_NAME = GET_STRING_ATTRIBUTE_VALUE_METHOD;
+
     private final WebChildElementBase element;
     private final String attributeName;
 
     private final InvocationInfo invocationInfo;
 
-    private WebGetStringAttributeValueOperationType(WebChildElementBase element, String attributeName) {
+    private WebGetStringAttributeValueOperationType(WebChildElementBase element, String componentName, String attributeName) {
         this.element = element;
         this.attributeName = attributeName;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(GET_STRING_ATTRIBUTE_VALUE_METHOD, elementName, attributeName);
+        this.invocationInfo = getterInvocation(ACTION_NAME, elementName, componentName, attributeName);
     }
 
-    public static WebGetStringAttributeValueOperationType of(@NotNull WebChildElementBase element, @NotNull String attributeName) {
-        return new WebGetStringAttributeValueOperationType(element, attributeName);
+    public static WebGetStringAttributeValueOperationType of(@NotNull WebChildElementBase element,
+                                                             @NotNull String componentName,
+                                                             @NotNull String attributeName) {
+        return new WebGetStringAttributeValueOperationType(element, componentName, attributeName);
     }
 
     @Override
@@ -37,7 +41,7 @@ public class WebGetStringAttributeValueOperationType implements WebElementOperat
 
     @Override
     public @NotNull EndpointHandler<String> getEndpointHandler() {
-        Class<? extends EndpointHandler<String>> endpointHandlerClass = element.getEndpointHandler(GET_STRING_ATTRIBUTE_VALUE_METHOD, String.class);
+        Class<? extends EndpointHandler<String>> endpointHandlerClass = element.getEndpointHandler(ACTION_NAME, String.class);
         Constructor<? extends EndpointHandler<String>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor, attributeName);
     }

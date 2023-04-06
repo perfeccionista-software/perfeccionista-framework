@@ -41,8 +41,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_STATE_NOT_FOUND;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_PROPERTY_VALUE_METHOD;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ATTRIBUTE_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.HAS_STATE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.DISPLAYED;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.FOCUS;
@@ -134,14 +134,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public @NotNull Color getColor(@NotNull String property) {
         MobileGetColorOperationType operationType = MobileGetColorOperationType.of(this, ROOT, property);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull Color getColor(@NotNull String componentName, @NotNull String property) {
         MobileGetColorOperationType operationType = MobileGetColorOperationType.of(this, componentName, property);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -150,14 +150,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public @NotNull ElementBounds getElementBounds() {
         MobileGetElementBoundsOperationType operationType = MobileGetElementBoundsOperationType.of(this, ROOT);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull ElementBounds getElementBounds(@NotNull String componentName) {
         MobileGetElementBoundsOperationType operationType = MobileGetElementBoundsOperationType.of(this, componentName);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -166,14 +166,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public @NotNull Screenshot getScreenshot() {
         MobileGetScreenshotOperationType operationType = MobileGetScreenshotOperationType.of(this, ROOT);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeGetter());
     }
 
     @Override
     public @NotNull Screenshot getScreenshot(@NotNull String componentName) {
         MobileGetScreenshotOperationType operationType = MobileGetScreenshotOperationType.of(this, componentName);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -182,7 +182,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isDisplayed() {
         MobileGetIsDisplayedOperationType operationType = MobileGetIsDisplayedOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, DISPLAYED).executeGetter());
     }
 
@@ -191,7 +191,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isInFocus() {
         MobileGetIsInFocusOperationType operationType = MobileGetIsInFocusOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, FOCUS).executeGetter());
     }
 
@@ -200,7 +200,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isOnTheScreen() {
         MobileGetIsOnTheScreenOperationType operationType = MobileGetIsOnTheScreenOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, DISPLAYED).executeGetter());
     }
 
@@ -209,7 +209,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isPresent() {
         MobileGetIsPresentOperationType operationType = MobileGetIsPresentOperationType.of(this);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, PRESENTED).executeGetter());
     }
 
@@ -218,14 +218,14 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public boolean isComponentDisplayed(@NotNull String componentName) {
         MobileGetIsComponentDisplayedOperationType operationType = MobileGetIsComponentDisplayedOperationType.of(this, componentName);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
     @Override
     public boolean isComponentPresent(@NotNull String componentName) {
         MobileGetIsComponentPresentOperationType operationType = MobileGetIsComponentPresentOperationType.of(this, componentName);
-        return runCheck(operationType.getInvocationName(),
+        return repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, componentName).executeGetter());
     }
 
@@ -242,7 +242,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
         if (optionalPropertyHolder.isPresent()) {
             MobileElementPropertyHolder propertyHolder = optionalPropertyHolder.get();
             String elementName = this.elementIdentifier.getLastUsedName();
-            return runCheck(InvocationInfo.getterInvocation(GET_PROPERTY_VALUE_METHOD, elementName, propertyHolder.getName()), () -> {
+            return repeatInvocation(InvocationInfo.getterInvocation(GET_ATTRIBUTE_VALUE_METHOD, elementName, propertyHolder.getName()), () -> {
                 MobileElementOperation<String> operation = propertyHolder.getOperation(this);
                 return getMobileDeviceDispatcher()
                         .executor()
@@ -255,7 +255,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
         } else {
             // TODO: Если нет атрибута - выбрасывать эксепшн о том, что атрибут не найден
             MobileGetStringAttributeValueOperationType operationType = MobileGetStringAttributeValueOperationType.of(this, propertyName);
-            return runCheck(operationType.getInvocationName(),
+            return repeatInvocation(operationType.getInvocationName(),
                     () -> MobileElementOperationHandler.of(this, operationType, propertyName).executeGetter());
         }
     }
@@ -272,7 +272,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
         MobileElementStateHolder stateHolder = getState(stateName)
                 .orElseThrow(() -> ElementStateNotFound.exception(ELEMENT_STATE_NOT_FOUND.getMessage(stateName)));
         String elementName = this.elementIdentifier.getLastUsedName();
-        return runCheck(InvocationInfo.getterInvocation(HAS_STATE_METHOD, elementName, stateHolder.getName()), () -> {
+        return repeatInvocation(InvocationInfo.getterInvocation(HAS_STATE_METHOD, elementName, stateHolder.getName()), () -> {
             MobileElementOperation<Boolean> operation = stateHolder.getOperation(this);
             return getMobileDeviceDispatcher()
                     .executor()
@@ -289,7 +289,7 @@ public class AbstractMobileChildElement extends AbstractMobileChildElementBase i
     @Override
     public MobileChildElement scrollTo() {
         MobileScrollToOperationType operationType = MobileScrollToOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }

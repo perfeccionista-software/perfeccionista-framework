@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.MOBILE_APPLICATION_INSTALLED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryMobileApiMessages.MOBILE_APPLICATION_NOT_INSTALLED;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.MOBILE_APPLICATION_SHOULD_BE_INSTALLED_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.MOBILE_APPLICATION_SHOULD_NOT_BE_INSTALLED_METHOD;
 
@@ -30,7 +30,7 @@ public class MobileApplicationShouldBeInstalled implements MobileDeviceSystemDis
                 ? assertInvocation(MOBILE_APPLICATION_SHOULD_BE_INSTALLED_METHOD)
                 : assertInvocation(MOBILE_APPLICATION_SHOULD_NOT_BE_INSTALLED_METHOD);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     boolean actualState = mobileDeviceSystemDispatcher.isApplicationInstalled(bundleId);
                     if (positive) {

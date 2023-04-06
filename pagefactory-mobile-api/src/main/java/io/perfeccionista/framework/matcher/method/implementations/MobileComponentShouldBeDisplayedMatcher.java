@@ -21,7 +21,7 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMess
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.COMPONENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_DISPLAYED;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COMPONENT_SHOULD_BE_DISPLAYED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD;
 
@@ -42,7 +42,7 @@ public class MobileComponentShouldBeDisplayedMatcher implements MobileComponentA
                 ? assertInvocation(COMPONENT_SHOULD_BE_DISPLAYED_METHOD, elementName, componentName)
                 : assertInvocation(COMPONENT_SHOULD_NOT_BE_DISPLAYED_METHOD, elementName, componentName);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> {
                     if (positive) {
                         shouldBeDisplayed(element, componentName);

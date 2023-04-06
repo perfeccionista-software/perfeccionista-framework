@@ -8,9 +8,9 @@ import io.perfeccionista.framework.exceptions.ElementIsDisplayed.ElementIsDispla
 import io.perfeccionista.framework.exceptions.ElementIsPresent.ElementIsPresentAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocationAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
-import io.perfeccionista.framework.exceptions.WebElementPropertyValue.WebElementPropertyValueAssertionError;
+import io.perfeccionista.framework.exceptions.WebElementAttributeValue.WebElementAttributeValueAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
@@ -66,9 +66,9 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = worldMap.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(worldMap.getEnvironment()),
-                () -> assertNotNull(worldMap.getLocatorChain()),
+                () -> assertNotNull(worldMap.getSelectorChain()),
                 () -> assertNotNull(worldMap.getWebBrowserDispatcher()),
-                () -> assertNotNull(worldMap.getOptionalLocator(ROOT)),
+                () -> assertNotNull(worldMap.getOptionalSelector(ROOT)),
                 // WebImage
                 () -> assertNotNull(worldMap.getEndpointHandler(CLICK_METHOD, Void.class)),
                 // WebChildElement
@@ -125,11 +125,11 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
                 .should(haveDimensions(Dimensions2D.of(176.3d, 125.4d).setInaccuracy(0.2d)))
                 .should(haveScreenLocation(Point2D.of(345d, 173d).setInaccuracy(0.2d)))
                 .should(haveColor("border-color", Color.of(222, 226, 230, 1.0d)))
-                .should(havePropertyValue("prompt", "World map picture"))
-                .should(havePropertyValue("source", stringContains("src/static/world_map.jpeg")))
-                .should(havePropertyValue("source", stringContainsAll("src", "static", "world", "jpeg")))
-                .should(notHavePropertyValue("prompt", stringContains("image")))
-                .should(notHavePropertyValue("source", stringEmpty()));
+                .should(haveAttributeValue("prompt", "World map picture"))
+                .should(haveAttributeValue("source", stringContains("src/static/world_map.jpeg")))
+                .should(haveAttributeValue("source", stringContainsAll("src", "static", "world", "jpeg")))
+                .should(notHaveAttributeValue("prompt", stringContains("image")))
+                .should(notHaveAttributeValue("source", stringEmpty()));
         assertAll(
                 () -> assertTrue(worldMap.isPresent()),
                 () -> assertTrue(worldMap.isDisplayed()),
@@ -146,7 +146,7 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
                             () -> assertTrue(intGreaterThan(10000).check(screenshot.getRaw().length))
                     );
                 },
-                () -> assertEquals("World map picture", worldMap.getPropertyValue("prompt")),
+                () -> assertEquals("World map picture", worldMap.getProperty("prompt")),
                 () -> assertEquals(Point2D.of(448.0d, 235.7d).setInaccuracy(0.2d), worldMap.getElementBounds().getCenter())
         );
     }
@@ -163,7 +163,7 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
         worldMap.should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> worldMap.should(notBePresent())),
@@ -194,10 +194,10 @@ class WebImageElementTest extends AbstractWebSeleniumParallelTest {
                     assertThrows(WebElementColorAssertionError.class,
                             () -> worldMap.should(notHaveColor("border-color", elementColor)));
                 },
-                () -> assertThrows(WebElementPropertyValueAssertionError.class,
-                        () -> worldMap.should(notHavePropertyValue("prompt", "World map picture"))),
-                () -> assertThrows(WebElementPropertyValueAssertionError.class,
-                        () -> worldMap.should(havePropertyValue("prompt", "image")))
+                () -> assertThrows(WebElementAttributeValueAssertionError.class,
+                        () -> worldMap.should(notHaveAttributeValue("prompt", "World map picture"))),
+                () -> assertThrows(WebElementAttributeValueAssertionError.class,
+                        () -> worldMap.should(haveAttributeValue("prompt", "image")))
         );
     }
 

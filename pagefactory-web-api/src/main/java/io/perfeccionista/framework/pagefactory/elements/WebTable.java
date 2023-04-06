@@ -1,44 +1,21 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.element.WebListMatcher;
-import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
-import io.perfeccionista.framework.matcher.element.WebTableMatcher;
-import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
-import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
-import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilter;
-import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
+import io.perfeccionista.framework.conditions.WebElementCondition;
+import io.perfeccionista.framework.conditions.WebListElementCondition;
+import io.perfeccionista.framework.pagefactory.elements.options.HoverOptions;
+import io.perfeccionista.framework.pagefactory.elements.options.ScrollOptions;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
+import io.perfeccionista.framework.pagefactory.emulator.keys.Key;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-public interface WebTable<H extends WebBlock, T extends WebBlock> extends WebList<T> {
+public interface WebTable<H extends WebBlock<?>, T extends WebBlock<?>> extends WebList<T> {
 
     @API(status = Status.MAINTAINED)
     @NotNull H header();
-
-    // Filter
-    @Override
-    @NotNull WebBlockFilter<T> filterBuilder(@NotNull WebBlockFilterBuilder<T> filterBuilder);
-    @Override
-    @NotNull WebBlockFilter<T> filterBuilder(@NotNull Function<T, ? extends WebBlockFilterBuilder<T>> filterBuilderFunction);
-    @Override
-    @NotNull WebBlockFilter<T> filter(@NotNull WebBlockCondition<T> filterCondition);
-    @Override
-    @NotNull WebBlockFilter<T> filter(@NotNull Function<T, ? extends WebBlockCondition<T>> filterConditionFunction);
 
     // Checks
     @Override
@@ -52,45 +29,36 @@ public interface WebTable<H extends WebBlock, T extends WebBlock> extends WebLis
     @Override
     WebTable<H, T> executeAction(@NotNull String name, Object... args);
 
+    // Add
+    @Override
+    WebTable<H, T> addComponent(@NotNull String componentName, @NotNull WebSelectorHolder selector);
+    @Override
+    WebTable<H, T> addName(@NotNull String elementName);
+
     // Asserts
-    WebTable<H, T> should(@NotNull WebTableMatcher matcher);
     @Override
-    WebTable<H, T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
+    WebTable<H, T> should(@NotNull WebElementCondition... conditions);
     @Override
-    WebTable<H, T> should(@NotNull WebListMatcher matcher);
+    WebTable<H, T> should(@NotNull WebListElementCondition... conditions);
     @Override
-    WebTable<H, T> should(@NotNull WebIndexesMatcher matcher);
+    WebTable<H, T> shouldNot(@NotNull WebElementCondition... conditions);
     @Override
-    WebTable<H, T> should(@NotNull WebChildElementMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebGetColorAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebGetScreenshotAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebIsDisplayedAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebIsInFocusAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebIsPresentAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebComponentAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebElementPropertyAvailableMatcher matcher);
-    @Override
-    WebTable<H, T> should(@NotNull WebElementStateAvailableMatcher matcher);
+    WebTable<H, T> shouldNot(@NotNull WebListElementCondition... conditions);
 
     // HoverTo
     @Override
-    WebTable<H, T> hoverTo(boolean withOutOfBounds);
+    WebTable<H, T> hoverTo();
+    @Override
+    WebTable<H, T> hoverTo(@NotNull HoverOptions options);
+
+    // PressKey
+    @Override
+    WebTable<H, T> press(@NotNull Key key);
 
     // ScrollTo
     @Override
     WebTable<H, T> scrollTo();
-//    WebTable scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebTableFilterBuilder filterBuilder);
-//    WebTable scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebTableFilterBuilder filterBuilder);
+    @Override
+    WebTable<H, T> scrollTo(@NotNull ScrollOptions options);
 
 }

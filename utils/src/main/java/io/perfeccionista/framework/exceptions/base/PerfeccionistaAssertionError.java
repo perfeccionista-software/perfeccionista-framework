@@ -7,6 +7,7 @@ import io.perfeccionista.framework.exceptions.attachments.DefaultAttachmentProce
 import io.perfeccionista.framework.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.opentest4j.AssertionFailedError;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -15,7 +16,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 
-public class PerfeccionistaAssertionError extends AssertionError implements PerfeccionistaException {
+
+
+// TODO: Разобраться с Expected/Actual (добавить методы и отрефакторить места создания), с Service (переименовать в Infrastracture?) + разобраться с ExceptionCollector
+public class PerfeccionistaAssertionError extends AssertionFailedError implements PerfeccionistaException {
 
     private static final long serialVersionUID = 1L;
 

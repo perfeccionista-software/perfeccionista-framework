@@ -29,7 +29,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.MobileListScrollTo
 import io.perfeccionista.framework.result.MobileMultipleIndexedResult;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.filter.MobileFilterConditions.allBlocks;
 import static io.perfeccionista.framework.pagefactory.filter.MobileFilters.with;
 
@@ -174,7 +174,7 @@ public class MobileListImpl extends AbstractMobileChildElement implements Mobile
     @Override
     public MobileList scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull MobileListFilterBuilder filterBuilder) {
         MobileListScrollToVerticallyOperationType operationType = MobileListScrollToVerticallyOperationType.of(this, scrollDirection, filterBuilder);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType).executeAction());
         return this;
     }

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -16,11 +16,11 @@ class CheckActionWrapperTest extends AbstractWebParallelTest {
 
     @Test
     void test() {
-        runCheck(InvocationInfo.assertInvocation("Simple check"), () -> {
+        repeatInvocation(InvocationInfo.assertInvocation("Simple check"), () -> {
 
         });
-        Boolean result = runCheck(InvocationInfo.assertInvocation("Simple check with return statement"), () -> true);
-        runCheck(InvocationInfo.assertInvocation("Single check with custom timeout"), () -> {
+        Boolean result = repeatInvocation(InvocationInfo.assertInvocation("Simple check with return statement"), () -> true);
+        repeatInvocation(InvocationInfo.assertInvocation("Single check with custom timeout"), () -> {
 
         }, Duration.ofSeconds(30));
         assertTrue(result);

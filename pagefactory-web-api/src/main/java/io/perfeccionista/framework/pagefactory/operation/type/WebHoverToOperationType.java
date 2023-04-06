@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.operation.type;
 
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebHoverToAvailable;
+import io.perfeccionista.framework.pagefactory.elements.options.HoverOptions;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,20 +15,22 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebHoverToOperationType implements WebElementOperationType<Void> {
 
+    private static final String ACTION_NAME = HOVER_TO_METHOD;
+
     private final WebHoverToAvailable element;
-    private final boolean withOutOfBounds;
+    private final HoverOptions options;
 
     private final InvocationInfo invocationInfo;
 
-    private WebHoverToOperationType(WebHoverToAvailable element, boolean withOutOfBounds) {
+    private WebHoverToOperationType(WebHoverToAvailable element, HoverOptions options) {
         this.element = element;
-        this.withOutOfBounds = withOutOfBounds;
+        this.options = options;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = actionInvocation(HOVER_TO_METHOD, elementName);
+        this.invocationInfo = actionInvocation(ACTION_NAME, elementName, options.toString());
     }
 
-    public static WebHoverToOperationType of(@NotNull WebHoverToAvailable element, boolean withOutOfBounds) {
-        return new WebHoverToOperationType(element, withOutOfBounds);
+    public static WebHoverToOperationType of(@NotNull WebHoverToAvailable element, @NotNull HoverOptions options) {
+        return new WebHoverToOperationType(element, options);
     }
 
     @Override
@@ -37,9 +40,9 @@ public class WebHoverToOperationType implements WebElementOperationType<Void> {
 
     @Override
     public @NotNull EndpointHandler<Void> getEndpointHandler() {
-        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(HOVER_TO_METHOD, Void.class);
+        Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(ACTION_NAME, Void.class);
         Constructor<? extends EndpointHandler<Void>> constructor = getDeclaredConstructor(endpointHandlerClass);
-        return newInstance(constructor, element, withOutOfBounds);
+        return newInstance(constructor, element, options);
     }
 
 }

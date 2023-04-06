@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_DOES_NOT_CONTAIN_EXPECTED_RESULT;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_EXPECTED_RESULT_METHOD;
 
 public class WebShouldHaveExpectedResultMatcher<T> implements WebMultipleIndexedResultMatcher<T> {
@@ -30,7 +30,7 @@ public class WebShouldHaveExpectedResultMatcher<T> implements WebMultipleIndexed
 
         InvocationInfo invocationName = assertInvocation(SHOULD_HAVE_EXPECTED_RESULT_METHOD, elementName, String.valueOf(expectedResult));
 
-        runCheck(invocationName, () -> {
+        repeatInvocation(invocationName, () -> {
             AtomicBoolean match = new AtomicBoolean(false);
             result.getResults().forEach((index, value) -> {
                 if (expectedResult.equals(value)) {

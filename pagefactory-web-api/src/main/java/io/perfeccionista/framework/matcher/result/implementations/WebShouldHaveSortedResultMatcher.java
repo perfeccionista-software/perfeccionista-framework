@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_IS_NOT_SORTED;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_SORTED_METHOD;
 
 public class WebShouldHaveSortedResultMatcher<T> implements WebMultipleIndexedResultMatcher<T> {
@@ -35,7 +35,7 @@ public class WebShouldHaveSortedResultMatcher<T> implements WebMultipleIndexedRe
 
         InvocationInfo invocationName = assertInvocation(SHOULD_BE_SORTED_METHOD, elementName, comparator.getClass().getCanonicalName());
 
-        runCheck(invocationName, () -> {
+        repeatInvocation(invocationName, () -> {
             AtomicBoolean comparisonResult = new AtomicBoolean(true);
             Map<String, Integer> detailComparisonResult = new HashMap<>();
             result.getResults().entrySet().stream()

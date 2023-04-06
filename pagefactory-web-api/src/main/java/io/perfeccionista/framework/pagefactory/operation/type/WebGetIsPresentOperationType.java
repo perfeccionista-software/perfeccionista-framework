@@ -14,18 +14,20 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 
 public class WebGetIsPresentOperationType implements WebElementOperationType<Boolean> {
 
+    private static final String ACTION_NAME = IS_PRESENT_METHOD;
+
     private final WebIsPresentAvailable element;
 
     private final InvocationInfo invocationInfo;
 
-    private WebGetIsPresentOperationType(WebIsPresentAvailable element) {
+    private WebGetIsPresentOperationType(WebIsPresentAvailable element, String componentName) {
         this.element = element;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(IS_PRESENT_METHOD, elementName);
+        this.invocationInfo = getterInvocation(ACTION_NAME, elementName, componentName);
     }
 
-    public static WebGetIsPresentOperationType of(@NotNull WebIsPresentAvailable element) {
-        return new WebGetIsPresentOperationType(element);
+    public static WebGetIsPresentOperationType of(@NotNull WebIsPresentAvailable element, @NotNull String componentName) {
+        return new WebGetIsPresentOperationType(element, componentName);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class WebGetIsPresentOperationType implements WebElementOperationType<Boo
 
     @Override
     public @NotNull EndpointHandler<Boolean> getEndpointHandler() {
-        Class<? extends EndpointHandler<Boolean>> endpointHandlerClass = element.getEndpointHandler(IS_PRESENT_METHOD, Boolean.class);
+        Class<? extends EndpointHandler<Boolean>> endpointHandlerClass = element.getEndpointHandler(ACTION_NAME, Boolean.class);
         Constructor<? extends EndpointHandler<Boolean>> constructor = getDeclaredConstructor(endpointHandlerClass);
         return newInstance(constructor);
     }

@@ -14,7 +14,7 @@ import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocat
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementTextValue.WebElementTextValueAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
@@ -77,9 +77,9 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = simpleInput.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(simpleInput.getEnvironment()),
-                () -> assertNotNull(simpleInput.getLocatorChain()),
+                () -> assertNotNull(simpleInput.getSelectorChain()),
                 () -> assertNotNull(simpleInput.getWebBrowserDispatcher()),
-                () -> assertNotNull(simpleInput.getOptionalLocator(ROOT)),
+                () -> assertNotNull(simpleInput.getOptionalSelector(ROOT)),
                 // WebTextInput
                 () -> assertNotNull(simpleInput.getEndpointHandler(CLICK_METHOD, Void.class)),
                 () -> assertNotNull(simpleInput.getEndpointHandler(CLEAR_METHOD, Void.class)),
@@ -153,9 +153,9 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(haveColor("border-color", Color.of(128, 189, 255, 1.0d)))
                 .should(haveText(stringEmpty()))
                 .should(notHaveText(stringContains("input")))
-                .should(havePropertyValue("placeholder", "Enter text"))
-                .should(notHavePropertyValue("placeholder", stringContains("Name")))
-                .typeText("Let's test text input")
+                .should(haveAttributeValue("placeholder", "Enter text"))
+                .should(notHaveAttributeValue("placeholder", stringContains("Name")))
+                .setText("Let's test text input")
                 .should(haveText("Let's test text input"));
         simpleInputText
                 .should(beDisplayed())
@@ -205,7 +205,7 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> simpleInput.should(notBePresent())),
@@ -243,7 +243,7 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                 () -> assertThrows(WebElementIsDisabledAssertionError.class,
                         () -> simpleInput.should(beEnabled())),
                 () -> assertThrows(WebElementIsDisabledException.class,
-                        () -> simpleInput.typeText("Let's test disabled input"))
+                        () -> simpleInput.setText("Let's test disabled input"))
         );
         elementsPage.simpleInputButton()
                 .click();
@@ -285,8 +285,8 @@ class WebTextInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(haveColor("border-color", Color.of(128, 189, 255, 1.0d)))
                 .should(haveText(stringEmpty()))
                 .should(notHaveText(stringContains("input")))
-                .should(havePropertyValue("placeholder", "Enter text"))
-                .should(notHavePropertyValue("placeholder", stringContains("Name")))
+                .should(haveAttributeValue("placeholder", "Enter text"))
+                .should(notHaveAttributeValue("placeholder", stringContains("Name")))
                 .sendKeyEvents(KeyEventsChain.builder()
                         .addText("Let's test").setDelay(Duration.ofMillis(500))
                         .keyPress(ENTER)

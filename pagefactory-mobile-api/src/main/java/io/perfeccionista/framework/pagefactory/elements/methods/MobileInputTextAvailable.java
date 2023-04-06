@@ -7,7 +7,7 @@ import io.perfeccionista.framework.plugin.ActionMethodType;
 import org.jetbrains.annotations.NotNull;
 
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLEAR_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.REPLACE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SET_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SEND_KEY_EVENTS_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.TYPE_TEXT_METHOD;
 
@@ -22,7 +22,7 @@ public interface MobileInputTextAvailable extends MobileChildElement {
     MobileInputTextAvailable typeText(@NotNull String keys);
 
     @ActionMethodType
-    @MobileMappedElementAction(REPLACE_TEXT_METHOD)
+    @MobileMappedElementAction(SET_VALUE_METHOD)
     MobileInputTextAvailable replaceText(@NotNull String keys);
 
     @ActionMethodType

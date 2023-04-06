@@ -1,25 +1,17 @@
 package io.perfeccionista.framework.pagefactory.elements;
 
-import io.perfeccionista.framework.matcher.methods.WebElementStateAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetColorAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetElementBoundsAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebGetScreenshotAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsDisplayedAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsInFocusAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsOnTheScreenAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebIsPresentAvailableMatcher;
-import io.perfeccionista.framework.matcher.element.WebChildElementMatcher;
-import io.perfeccionista.framework.matcher.methods.WebComponentAvailableMatcher;
-import io.perfeccionista.framework.matcher.methods.WebElementPropertyAvailableMatcher;
-import io.perfeccionista.framework.matcher.element.WebListMatcher;
-import io.perfeccionista.framework.matcher.result.WebIndexesMatcher;
-import io.perfeccionista.framework.matcher.result.WebMultipleIndexedResultMatcher;
+import io.perfeccionista.framework.conditions.WebElementCondition;
+import io.perfeccionista.framework.conditions.WebListElementCondition;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
-import io.perfeccionista.framework.pagefactory.extractor.list.WebBlockValueExtractor;
-import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilter;
-import io.perfeccionista.framework.pagefactory.filter.block.WebBlockFilterBuilder;
-import io.perfeccionista.framework.pagefactory.filter.block.condition.WebBlockCondition;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
+import io.perfeccionista.framework.pagefactory.elements.options.HoverOptions;
+import io.perfeccionista.framework.pagefactory.elements.options.ScrollOptions;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
+import io.perfeccionista.framework.pagefactory.emulator.keys.Key;
+import io.perfeccionista.framework.pagefactory.extractor.WebItemValueExtractor;
+import io.perfeccionista.framework.pagefactory.filter.WebListFilter;
+import io.perfeccionista.framework.pagefactory.filter.WebListFilterBuilder;
+import io.perfeccionista.framework.pagefactory.filter.conditions.WebItemCondition;
 import io.perfeccionista.framework.result.WebMultipleIndexedResult;
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
@@ -28,20 +20,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public interface WebList<T extends WebBlock> extends WebChildElement {
+public interface WebList<T extends WebBlock<?>> extends WebChildElement {
 
     @API(status = Status.MAINTAINED)
-    @NotNull WebBlockFrame<T> getBlockFrame();
+    @NotNull WebListFrame<T> getItemFrame();
 
     // Extractor
-    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebBlockValueExtractor<R, T> extractor);
-    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebBlockValueExtractor<R, T>> extractorFunction);
+    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull WebItemValueExtractor<R, T> extractor);
+    @NotNull <R> WebMultipleIndexedResult<R, WebList<T>> extractAll(@NotNull Function<T, ? extends WebItemValueExtractor<R, T>> extractorFunction);
 
     // Filter
-    @NotNull WebBlockFilter<T> filterBuilder(@NotNull WebBlockFilterBuilder<T> filterBuilder);
-    @NotNull WebBlockFilter<T> filterBuilder(@NotNull Function<T, ? extends WebBlockFilterBuilder<T>> filterBuilderFunction);
-    @NotNull WebBlockFilter<T> filter(@NotNull WebBlockCondition<T> filterCondition);
-    @NotNull WebBlockFilter<T> filter(@NotNull Function<T, ? extends WebBlockCondition<T>> filterConditionFunction);
+    @NotNull WebListFilter<T> filterBuilder(@NotNull WebListFilterBuilder<T> filterBuilder);
+    @NotNull WebListFilter<T> filterBuilder(@NotNull Function<T, ? extends WebListFilterBuilder<T>> filterBuilderFunction);
+    @NotNull WebListFilter<T> filter(@NotNull WebItemCondition<T> filterCondition);
+    @NotNull WebListFilter<T> filter(@NotNull Function<T, ? extends WebItemCondition<T>> filterConditionFunction);
 
     // Checks
     WebList<T> forEach(@NotNull Consumer<T> blockConsumer);
@@ -52,44 +44,45 @@ public interface WebList<T extends WebBlock> extends WebChildElement {
     @Override
     WebList<T> executeAction(@NotNull String name, Object... args);
 
+    // Add
+    @Override
+    WebList<T> addComponent(@NotNull String componentName, @NotNull WebSelectorHolder selector);
+    @Override
+    WebList<T> addName(@NotNull String elementName);
+
     // Asserts
-    WebList<T> should(@NotNull WebMultipleIndexedResultMatcher<Integer> matcher);
-    WebList<T> should(@NotNull WebListMatcher matcher);
-    WebList<T> should(@NotNull WebIndexesMatcher matcher);
     @Override
-    WebList<T> should(@NotNull WebChildElementMatcher matcher);
+    WebList<T> should(@NotNull WebElementCondition... conditions);
+    WebList<T> should(@NotNull WebListElementCondition... conditions);
     @Override
-    WebList<T> should(@NotNull WebGetColorAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebGetElementBoundsAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebGetScreenshotAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebIsDisplayedAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebIsInFocusAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebIsOnTheScreenAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebIsPresentAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebComponentAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebElementPropertyAvailableMatcher matcher);
-    @Override
-    WebList<T> should(@NotNull WebElementStateAvailableMatcher matcher);
+    WebList<T> shouldNot(@NotNull WebElementCondition... conditions);
+    WebList<T> shouldNot(@NotNull WebListElementCondition... conditions);
+
+    // Checks
+    boolean check(@NotNull WebListElementCondition... conditions);
+    boolean checkNot(@NotNull WebListElementCondition... conditions);
 
     // HoverTo
     @Override
-    WebList<T> hoverTo(boolean withOutOfBounds);
+    WebList<T> hoverTo();
+    @Override
+    WebList<T> hoverTo(@NotNull HoverOptions options);
+
+    // PressKey
+    @Override
+    WebList<T> press(@NotNull Key key);
 
     // ScrollTo
     @Override
     WebList<T> scrollTo();
-//    WebList scrollToHorizontally(@NotNull HorizontalDirection scrollDirection, @NotNull WebListFilterBuilder filterBuilder);
-//    WebList scrollToVertically(@NotNull VerticalDirection scrollDirection, @NotNull WebListFilterBuilder filterBuilder);
+    @Override
+    WebList<T> scrollTo(@NotNull ScrollOptions options);
 
     // Size
     int size();
+
+//    static WebList<WebNode> list(@NotNull WebSelectorHolder rootSelector, @NotNull WebSelectorHolder itemSelector) {
+//        return WebPageService.getInstance().createWebList(rootSelector, itemSelector);
+//    }
 
 }

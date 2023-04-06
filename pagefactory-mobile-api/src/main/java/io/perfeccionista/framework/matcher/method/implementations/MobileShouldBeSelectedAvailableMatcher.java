@@ -23,7 +23,7 @@ import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMess
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_IS_SELECTED;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryApiMessages.ELEMENT_NOT_SELECTED;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_BE_SELECTED_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.DISPLAYED;
@@ -44,7 +44,7 @@ public class MobileShouldBeSelectedAvailableMatcher implements MobileIsSelectedA
                 ? assertInvocation(SHOULD_BE_SELECTED_METHOD, elementName)
                 : assertInvocation(SHOULD_NOT_BE_SELECTED_METHOD, elementName);
 
-        runCheck(invocationName,
+        repeatInvocation(invocationName,
                 () -> check(element, positive));
     }
 

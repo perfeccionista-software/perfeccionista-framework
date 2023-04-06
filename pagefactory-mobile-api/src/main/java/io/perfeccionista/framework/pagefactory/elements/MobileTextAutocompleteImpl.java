@@ -27,7 +27,7 @@ import io.perfeccionista.framework.pagefactory.operation.type.MobileTypeTextOper
 import io.perfeccionista.framework.pagefactory.emulator.keys.KeyEventsChain;
 import org.jetbrains.annotations.NotNull;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.CLEAR;
 import static io.perfeccionista.framework.pagefactory.elements.ElementComponents.INPUT;
 
@@ -176,7 +176,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete clear() {
         MobileClearOperationType operationType = MobileClearOperationType.of(this);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, CLEAR).executeAction());
         return this;
     }
@@ -184,7 +184,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete typeText(@NotNull String keys) {
         MobileTypeTextOperationType operationType = MobileTypeTextOperationType.of(this, keys);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -192,7 +192,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete replaceText(@NotNull String keys) {
         MobileReplaceTextOperationType operationType = MobileReplaceTextOperationType.of(this, keys);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }
@@ -200,7 +200,7 @@ public class MobileTextAutocompleteImpl extends MobileTextDropDownListImpl imple
     @Override
     public MobileTextAutocomplete sendKeyEvents(@NotNull KeyEventsChain keyEvents) {
         MobileSendKeyEventsOperationType operationType = MobileSendKeyEventsOperationType.of(this, keyEvents);
-        runCheck(operationType.getInvocationName(),
+        repeatInvocation(operationType.getInvocationName(),
                 () -> MobileElementOperationHandler.of(this, operationType, INPUT).executeAction());
         return this;
     }

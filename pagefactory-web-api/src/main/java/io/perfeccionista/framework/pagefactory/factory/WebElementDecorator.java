@@ -4,34 +4,25 @@ import io.perfeccionista.framework.name.MappedWebBlockIdentifier;
 import io.perfeccionista.framework.name.WebChildElementIdentifier;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.name.WebPageIdentifier;
-import io.perfeccionista.framework.pagefactory.elements.DefaultWebRadioButtonBlock;
-import io.perfeccionista.framework.pagefactory.elements.DefaultWebTextBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebRadioGroup;
 import io.perfeccionista.framework.pagefactory.elements.actions.base.EndpointHandlerRegistry;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebBlockFrame;
-import io.perfeccionista.framework.pagefactory.elements.mapping.WebRadioGroupFrame;
+import io.perfeccionista.framework.pagefactory.elements.mapping.WebListFrame;
 import io.perfeccionista.framework.pagefactory.elements.mapping.WebTableFrame;
 import io.perfeccionista.framework.pagefactory.elements.preferences.WebPageFactoryPreferences;
 import io.perfeccionista.framework.pagefactory.elements.WebBlock;
-import io.perfeccionista.framework.pagefactory.elements.WebTextList;
 import io.perfeccionista.framework.pagefactory.elements.base.WebParentHolder;
 import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
 import io.perfeccionista.framework.pagefactory.elements.WebList;
 import io.perfeccionista.framework.pagefactory.elements.WebPage;
 import io.perfeccionista.framework.pagefactory.elements.WebTable;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorRegistry;
-import io.perfeccionista.framework.pagefactory.elements.properties.base.WebElementPropertyRegistry;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorRegistry;
 import io.perfeccionista.framework.pagefactory.elements.registry.WebElementRegistry;
 import io.perfeccionista.framework.pagefactory.elements.states.base.WebElementStateRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 
-import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebRadioButtonBlockAnnotationHandler.createWebRadioGroupFrame;
-import static io.perfeccionista.framework.pagefactory.factory.handlers.UseMappedWebTextBlockAnnotationHandler.createWebTextListFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementActionAnnotationHandler.createWebElementActionRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementNameHandler.extractNames;
-import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementPropertyAnnotationHandler.createWebElementPropertyRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebElementStateAnnotationHandler.createWebElementStateRegistryFor;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebListGenericTypeHandler.createWebListFrame;
 import static io.perfeccionista.framework.pagefactory.factory.handlers.WebLocatorAnnotationHandler.createWebLocatorRegistryFor;
@@ -50,10 +41,10 @@ public class WebElementDecorator {
     public static final String ELEMENT_REGISTRY_FIELD = "elementRegistry";
     public static final String LOCATOR_REGISTRY_FIELD = "locatorRegistry";
     public static final String STATE_REGISTRY_FIELD = "stateRegistry";
-    public static final String PROPERTY_REGISTRY_FIELD = "propertyRegistry";
-    public static final String WEB_RADIO_GROUP_FRAME_FIELD = "webRadioGroupFrame";
+//    public static final String PROPERTY_REGISTRY_FIELD = "propertyRegistry";
+//    public static final String WEB_RADIO_GROUP_FRAME_FIELD = "webRadioGroupFrame";
     public static final String WEB_LIST_FRAME_FIELD = "webListFrame";
-    public static final String WEB_TEXT_LIST_FRAME_FIELD = "webTextListFrame";
+//    public static final String WEB_TEXT_LIST_FRAME_FIELD = "webTextListFrame";
     public static final String WEB_TABLE_FRAME = "webTableFrame";
 
     protected final WebPageFactoryPreferences configuration;
@@ -64,18 +55,18 @@ public class WebElementDecorator {
         this.webPageFactory = webPageFactory;
     }
 
-    public @NotNull <T extends WebBlock> T decorateMappedWebBlockInstance(@NotNull T webMappedBlockInstance,
-                                                                          @NotNull Class<? extends T> webMappedBlockClass,
-                                                                          @NotNull WebElementRegistry webElementRegistry,
-                                                                          @NotNull WebParentHolder webParentHolder) {
+    public @NotNull <T extends WebBlock<?>> T decorateMappedWebBlockInstance(@NotNull T webMappedBlockInstance,
+                                                                             @NotNull Class<? extends T> webMappedBlockClass,
+                                                                             @NotNull WebElementRegistry webElementRegistry,
+                                                                             @NotNull WebParentHolder webParentHolder) {
         writeField(PARENT_HOLDER_FIELD, webMappedBlockInstance, webParentHolder);
         writeField(ELEMENT_REGISTRY_FIELD, webMappedBlockInstance, webElementRegistry);
         EndpointHandlerRegistry actionRegistry = createWebElementActionRegistryFor(webMappedBlockInstance, configuration);
         writeField(ACTION_REGISTRY_FIELD, webMappedBlockInstance, actionRegistry);
-        WebLocatorRegistry locatorRegistry = createWebLocatorRegistryFor(webMappedBlockInstance, configuration);
+        WebSelectorRegistry locatorRegistry = createWebLocatorRegistryFor(webMappedBlockInstance, configuration);
         writeField(LOCATOR_REGISTRY_FIELD, webMappedBlockInstance, locatorRegistry);
-        WebElementPropertyRegistry propertyRegistry = createWebElementPropertyRegistryFor(webMappedBlockInstance, configuration);
-        writeField(PROPERTY_REGISTRY_FIELD, webMappedBlockInstance, propertyRegistry);
+//        WebElementPropertyRegistry propertyRegistry = createWebElementPropertyRegistryFor(webMappedBlockInstance, configuration);
+//        writeField(PROPERTY_REGISTRY_FIELD, webMappedBlockInstance, propertyRegistry);
         WebElementStateRegistry stateRegistry = createWebElementStateRegistryFor(webMappedBlockInstance, configuration);
         writeField(STATE_REGISTRY_FIELD, webMappedBlockInstance, stateRegistry);
         WebElementIdentifier elementIdentifier = MappedWebBlockIdentifier.of(webMappedBlockClass, extractNames(webMappedBlockClass));
@@ -88,7 +79,7 @@ public class WebElementDecorator {
         writeField(ELEMENT_REGISTRY_FIELD, webPageInstance, webElementRegistry);
         WebPageIdentifier pageIdentifier = WebPageIdentifier.of(webPageInstance.getClass());
         writeField(PAGE_IDENTIFIER_FIELD, webPageInstance, pageIdentifier);
-        WebLocatorRegistry locatorRegistry = createWebLocatorRegistryFor(webPageInstance.getClass());
+        WebSelectorRegistry locatorRegistry = createWebLocatorRegistryFor(webPageInstance.getClass());
         writeField(LOCATOR_REGISTRY_FIELD, webPageInstance, locatorRegistry);
         return webPageInstance;
     }
@@ -108,10 +99,10 @@ public class WebElementDecorator {
         writeField(PARENT_HOLDER_FIELD, webChildElementInstance, webParentHolder);
         EndpointHandlerRegistry actionRegistry = createWebElementActionRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
         writeField(ACTION_REGISTRY_FIELD, webChildElementInstance, actionRegistry);
-        WebLocatorRegistry locatorRegistry = createWebLocatorRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
+        WebSelectorRegistry locatorRegistry = createWebLocatorRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
         writeField(LOCATOR_REGISTRY_FIELD, webChildElementInstance, locatorRegistry);
-        WebElementPropertyRegistry propertyRegistry = createWebElementPropertyRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
-        writeField(PROPERTY_REGISTRY_FIELD, webChildElementInstance, propertyRegistry);
+//        WebElementPropertyRegistry propertyRegistry = createWebElementPropertyRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
+//        writeField(PROPERTY_REGISTRY_FIELD, webChildElementInstance, propertyRegistry);
         WebElementStateRegistry stateRegistry = createWebElementStateRegistryFor(webChildElementInstance, webChildElementMethod, configuration);
         writeField(STATE_REGISTRY_FIELD, webChildElementInstance, stateRegistry);
         WebElementIdentifier elementIdentifier = WebChildElementIdentifier.of(extractNames(webChildElementInstance, webChildElementMethod), webChildElementMethod);
@@ -120,34 +111,35 @@ public class WebElementDecorator {
             decorateWebTableInstance((WebTable<?, ?>) webChildElementInstance, webChildElementMethod);
         } else if (webChildElementInstance instanceof WebList) {
             decorateWebListInstance((WebList<?>) webChildElementInstance, webChildElementMethod);
-        } else if (webChildElementInstance instanceof WebTextList) {
-            decorateWebTextListInstance((WebTextList) webChildElementInstance, webChildElementMethod);
-        } else if (webChildElementInstance instanceof WebRadioGroup) {
-            decorateWebRadioGroupInstance((WebRadioGroup) webChildElementInstance, webChildElementMethod);
         }
+//        else if (webChildElementInstance instanceof WebTextList) {
+//            decorateWebTextListInstance((WebTextList) webChildElementInstance, webChildElementMethod);
+//        } else if (webChildElementInstance instanceof WebRadioGroup) {
+//            decorateWebRadioGroupInstance((WebRadioGroup) webChildElementInstance, webChildElementMethod);
+//        }
         return webChildElementInstance;
     }
 
     public void decorateWebListInstance(@NotNull WebList<?> webListInstance, @NotNull Method webChildElementMethod) {
-        WebBlockFrame<WebBlock> webListFrame =
+        WebListFrame<WebBlock<?>> webListFrame =
                 createWebListFrame(webListInstance, webChildElementMethod, webPageFactory, configuration);
         writeField(WEB_LIST_FRAME_FIELD, webListInstance, webListFrame);
     }
 
-    public void decorateWebTextListInstance(@NotNull WebTextList webTextListInstance, @NotNull Method webChildElementMethod) {
-        WebBlockFrame<DefaultWebTextBlock> webTextListFrame =
-                createWebTextListFrame(webTextListInstance, webChildElementMethod, webPageFactory, configuration);
-        writeField(WEB_TEXT_LIST_FRAME_FIELD, webTextListInstance, webTextListFrame);
-    }
-
-    public void decorateWebRadioGroupInstance(@NotNull WebRadioGroup webRadioGroupInstance, @NotNull Method webChildElementMethod) {
-        WebRadioGroupFrame<DefaultWebRadioButtonBlock> webRadioGroupFrame =
-                createWebRadioGroupFrame(webRadioGroupInstance, webChildElementMethod, webPageFactory, configuration);
-        writeField(WEB_RADIO_GROUP_FRAME_FIELD, webRadioGroupInstance, webRadioGroupFrame);
-    }
+//    public void decorateWebTextListInstance(@NotNull WebTextList webTextListInstance, @NotNull Method webChildElementMethod) {
+//        WebItemFrame<DefaultWebTextBlock> webTextListFrame =
+//                createWebTextListFrame(webTextListInstance, webChildElementMethod, webPageFactory, configuration);
+//        writeField(WEB_TEXT_LIST_FRAME_FIELD, webTextListInstance, webTextListFrame);
+//    }
+//
+//    public void decorateWebRadioGroupInstance(@NotNull WebRadioGroup webRadioGroupInstance, @NotNull Method webChildElementMethod) {
+//        WebRadioGroupFrame<DefaultWebRadioButtonBlock> webRadioGroupFrame =
+//                createWebRadioGroupFrame(webRadioGroupInstance, webChildElementMethod, webPageFactory, configuration);
+//        writeField(WEB_RADIO_GROUP_FRAME_FIELD, webRadioGroupInstance, webRadioGroupFrame);
+//    }
 
     public void decorateWebTableInstance(@NotNull WebTable<?, ?> webTableInstance, @NotNull Method webChildElementMethod) {
-        WebTableFrame<WebBlock, WebBlock> webTableFrame =
+        WebTableFrame<WebBlock<?>, WebBlock<?>> webTableFrame =
                 createWebTableFrame(webTableInstance, webChildElementMethod, webPageFactory, configuration);
         writeField(WEB_TABLE_FRAME, webTableInstance, webTableFrame);
     }

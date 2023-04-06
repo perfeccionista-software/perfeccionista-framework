@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.operation.type;
 
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebGetTextAvailable;
+import io.perfeccionista.framework.pagefactory.elements.options.GetTextOptions;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,17 +16,19 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class WebGetTextOperationType implements WebElementOperationType<String> {
 
     private final WebGetTextAvailable element;
+    private final GetTextOptions options;
 
     private final InvocationInfo invocationInfo;
 
-    private WebGetTextOperationType(WebGetTextAvailable element) {
+    private WebGetTextOperationType(WebGetTextAvailable element, GetTextOptions options) {
         this.element = element;
+        this.options = options;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = getterInvocation(GET_TEXT_METHOD, elementName);
+        this.invocationInfo = getterInvocation(GET_TEXT_METHOD, elementName, options.toString());
     }
 
-    public static WebGetTextOperationType of(@NotNull WebGetTextAvailable element) {
-        return new WebGetTextOperationType(element);
+    public static WebGetTextOperationType of(@NotNull WebGetTextAvailable element, @NotNull GetTextOptions options) {
+        return new WebGetTextOperationType(element, options);
     }
 
     @Override
@@ -37,7 +40,7 @@ public class WebGetTextOperationType implements WebElementOperationType<String> 
     public @NotNull EndpointHandler<String> getEndpointHandler() {
         Class<? extends EndpointHandler<String>> endpointHandlerClass = element.getEndpointHandler(GET_TEXT_METHOD, String.class);
         Constructor<? extends EndpointHandler<String>> constructor = getDeclaredConstructor(endpointHandlerClass);
-        return newInstance(constructor);
+        return newInstance(constructor, options);
     }
 
 }

@@ -1,9 +1,8 @@
 package io.perfeccionista.framework.invocation.timeouts;
 
-import io.perfeccionista.framework.invocation.timeouts.type.CheckDelayTimeout;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
-import io.perfeccionista.framework.invocation.timeouts.type.LogicDelayTimeout;
-import io.perfeccionista.framework.invocation.timeouts.type.LogicTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationDelayTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RunInvocationTimeout;
 import io.perfeccionista.framework.invocation.timeouts.type.TimeoutsType;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,10 +19,9 @@ public class DefaultTimeoutsServiceConfiguration implements TimeoutsServiceConfi
     @Override
     public @NotNull Map<Class<? extends TimeoutsType>, Duration> getTimeouts() {
         return Stream.of(
-                new SimpleEntry<>(CheckTimeout.class, Duration.ofSeconds(7L)),
-                new SimpleEntry<>(CheckDelayTimeout.class, Duration.ofMillis(10L)),
-                new SimpleEntry<>(LogicTimeout.class, Duration.ofSeconds(30L)),
-                new SimpleEntry<>(LogicDelayTimeout.class, Duration.ofMillis(10L))
+                new SimpleEntry<>(RepeatInvocationTimeout.class, Duration.ofSeconds(7L)),
+                new SimpleEntry<>(RepeatInvocationDelayTimeout.class, Duration.ofMillis(10L)),
+                new SimpleEntry<>(RunInvocationTimeout.class, Duration.ofSeconds(30L))
         ).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 

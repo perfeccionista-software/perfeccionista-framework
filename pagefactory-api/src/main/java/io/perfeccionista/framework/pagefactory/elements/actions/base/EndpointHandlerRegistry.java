@@ -49,6 +49,7 @@ public class EndpointHandlerRegistry {
 
     public <R, T extends EndpointHandler<R>> Class<T> getEndpointHandler(String actionName,
                                                                          Class<R> returnType) {
+        // TODO: Check generic type of EndpointHandler
         return (Class<T>) Optional.ofNullable(handlers.get(actionName))
                 .orElseThrow(() -> EndpointHandlerNotFound.exception(ENDPOINT_HANDLER_NOT_FOUND.getMessage(actionName)));
     }

@@ -18,8 +18,6 @@ public class AndroidReflectionUtilsForClasses {
     private static final Map<String, List<Class<?>>> classesByPackage = new ConcurrentHashMap<>(64);
     private static final Map<String, Class<?>> classesByName = new ConcurrentHashMap<>(64);
 
-
-
     public static <T> Set<Class<? extends T>> findAllClasses(@NotNull Set<String> packageNames, @NotNull Class<T> type) {
         //noinspection unchecked
         return new HashSet<>(packageNames.stream()

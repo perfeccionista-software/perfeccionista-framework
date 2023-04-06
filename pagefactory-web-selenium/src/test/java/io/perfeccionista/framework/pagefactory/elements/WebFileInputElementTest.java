@@ -12,7 +12,8 @@ import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNot
 import io.perfeccionista.framework.exceptions.WebElementTextValue.WebElementTextValueAssertionError;
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
+import io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper;
 import io.perfeccionista.framework.matcher.element.WebTextMatcher;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
@@ -32,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
 import java.time.Duration;
 
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.Web.*;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.CLICK_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.GET_ELEMENT_BOUNDS_METHOD;
@@ -81,9 +82,9 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = fileInput.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(fileInput.getEnvironment()),
-                () -> assertNotNull(fileInput.getLocatorChain()),
+                () -> assertNotNull(fileInput.getSelectorChain()),
                 () -> assertNotNull(fileInput.getWebBrowserDispatcher()),
-                () -> assertNotNull(fileInput.getOptionalLocator(ROOT)),
+                () -> assertNotNull(fileInput.getOptionalSelector(ROOT)),
                 // WebTextInput
                 () -> assertNotNull(fileInput.getEndpointHandler(CLEAR_METHOD, Void.class)),
                 () -> assertNotNull(fileInput.getEndpointHandler(CLICK_METHOD, Void.class)),
@@ -226,7 +227,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> fileInput.should(notBePresent())),
@@ -279,7 +280,7 @@ class WebFileInputElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed())
                 .click()
                 .should((WebTextMatcher) element -> {
-                    runCheck(InvocationInfo.assertInvocation(SHOULD_FILE_EXIST_METHOD, element.getElementIdentifier().getLastUsedName()),
+                    MultipleAttemptInvocationWrapper.repeatInvocation(InvocationInfo.assertInvocation(SHOULD_FILE_EXIST_METHOD, element.getElementIdentifier().getLastUsedName()),
                             () -> FileUtils.fileShouldExist(Paths.get(downloadFile)));
                 });
     }

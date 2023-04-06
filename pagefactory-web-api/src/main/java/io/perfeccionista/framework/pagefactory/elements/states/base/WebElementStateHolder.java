@@ -3,8 +3,8 @@ package io.perfeccionista.framework.pagefactory.elements.states.base;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.perfeccionista.framework.json.JsonSerializable;
-import io.perfeccionista.framework.pagefactory.elements.base.WebChildElementBase;
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorHolder;
+import io.perfeccionista.framework.pagefactory.elements.base.WebChildElement;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorHolder;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,44 +17,44 @@ import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 public class WebElementStateHolder implements JsonSerializable {
 
     private final String name;
-    private final WebLocatorHolder locatorHolder;
+    private final WebSelectorHolder selectorHolder;
     private final WebElementStateExtractor stateExtractor;
 
     private WebElementStateHolder(String name,
-                                  WebLocatorHolder locatorHolder,
+                                  WebSelectorHolder selectorHolder,
                                   WebElementStateExtractor stateExtractor) {
         this.name = name;
-        this.locatorHolder = locatorHolder;
+        this.selectorHolder = selectorHolder;
         this.stateExtractor = stateExtractor;
     }
 
     public static WebElementStateHolder of(@NotNull String name,
-                                           @Nullable WebLocatorHolder locatorHolder,
+                                           @Nullable WebSelectorHolder selectorHolder,
                                            @NotNull WebElementStateExtractor stateExtractor) {
-        return new WebElementStateHolder(name, locatorHolder, stateExtractor);
+        return new WebElementStateHolder(name, selectorHolder, stateExtractor);
     }
 
     public String getName() {
         return name;
     }
 
-    public Optional<WebLocatorHolder> getLocatorHolder() {
-        return Optional.ofNullable(locatorHolder);
+    public Optional<WebSelectorHolder> getSelectorHolder() {
+        return Optional.ofNullable(selectorHolder);
     }
 
     public WebElementStateExtractor getStateExtractor() {
         return stateExtractor;
     }
 
-    public WebElementOperation<Boolean> getOperation(WebChildElementBase element) {
-        return stateExtractor.getOperation(element, getLocatorHolder());
+    public WebElementOperation<Boolean> getOperation(WebChildElement element) {
+        return stateExtractor.getOperation(element, getSelectorHolder());
     }
 
     @Override
     public @NotNull JsonNode toJson() {
         ObjectNode rootNode = createObjectNode()
                 .put("name", name);
-        rootNode.set("locator", locatorHolder == null ? null : locatorHolder.setLocatorComponent(STATE).toJson());
+        rootNode.set("selector", selectorHolder == null ? null : selectorHolder.setSelectorComponent(STATE).toJson());
         rootNode.put("extractor", stateExtractor.getClass().getCanonicalName());
         return rootNode;
     }

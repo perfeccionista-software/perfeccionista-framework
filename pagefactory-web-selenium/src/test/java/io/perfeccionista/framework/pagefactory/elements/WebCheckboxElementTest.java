@@ -15,7 +15,7 @@ import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocat
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementNotSelected.WebElementNotSelectedAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
@@ -77,9 +77,9 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = checkboxOne.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(checkboxOne.getEnvironment()),
-                () -> assertNotNull(checkboxOne.getLocatorChain()),
+                () -> assertNotNull(checkboxOne.getSelectorChain()),
                 () -> assertNotNull(checkboxOne.getWebBrowserDispatcher()),
-                () -> assertNotNull(checkboxOne.getRequiredLocator(ROOT)),
+                () -> assertNotNull(checkboxOne.getRequiredSelector(ROOT)),
                 // WebCheckbox
                 () -> assertNotNull(checkboxOne.getEndpointHandler(CLICK_METHOD, Void.class)),
                 () -> assertNotNull(checkboxOne.getEndpointHandler(GET_LABEL_METHOD, String.class)),
@@ -139,7 +139,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 .hoverTo(true) // 280 ms
                 .should(haveLabel("Label 1"))
                 .should(notHaveLabel(stringContains("Label 2")))
-                .should(havePropertyValue("name", "Checkbox 1"))
+                .should(haveAttributeValue("name", "Checkbox 1"))
                 .click()
                 .should(beInFocus())
                 .should(beSelected());
@@ -195,7 +195,7 @@ class WebCheckboxElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> checkboxOne.should(notBePresent())),

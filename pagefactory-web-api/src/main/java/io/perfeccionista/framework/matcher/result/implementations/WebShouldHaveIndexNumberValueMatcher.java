@@ -15,7 +15,7 @@ import java.util.Collection;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_CONTAINS_INDEX;
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_DOES_NOT_CONTAIN_INDEX;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_INDEX_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_NOT_HAVE_INDEX_VALUE_METHOD;
 import static java.util.stream.Collectors.joining;
@@ -39,7 +39,7 @@ public class WebShouldHaveIndexNumberValueMatcher implements WebIndexesMatcher {
                 ? assertInvocation(SHOULD_HAVE_INDEX_VALUE_METHOD, elementName, expectedValue.getShortDescription())
                 : assertInvocation(SHOULD_NOT_HAVE_INDEX_VALUE_METHOD, elementName, expectedValue.getShortDescription());
 
-        runCheck(invocationName, () -> {
+        repeatInvocation(invocationName, () -> {
             Collection<Integer> indexes = result.getResults().values();
             boolean actualValue = indexes.stream()
                     .anyMatch(expectedValue::check);

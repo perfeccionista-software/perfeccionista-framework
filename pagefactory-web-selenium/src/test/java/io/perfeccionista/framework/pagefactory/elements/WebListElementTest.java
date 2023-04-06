@@ -10,7 +10,7 @@ import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocat
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementSize.WebElementSizeAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
@@ -62,9 +62,9 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = list.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(list.getEnvironment()),
-                () -> assertNotNull(list.getLocatorChain()),
+                () -> assertNotNull(list.getSelectorChain()),
                 () -> assertNotNull(list.getWebBrowserDispatcher()),
-                () -> assertNotNull(list.getOptionalLocator(ROOT)),
+                () -> assertNotNull(list.getOptionalSelector(ROOT)),
                 // WebChildElement
                 () -> assertNotNull(list.getEndpointHandler(GET_COLOR_METHOD, Color.class)),
                 () -> assertNotNull(list.getEndpointHandler(GET_ELEMENT_BOUNDS_METHOD, ElementBounds.class)),
@@ -133,11 +133,17 @@ class WebListElementTest extends AbstractWebSeleniumParallelTest {
 
         ListElementsPage listElementsPage = context.getPage(ListElementsPage.class);
         WebList<CountryBlock> list = listElementsPage.webList();
+
+        list.forFirst(countryBlock -> {
+            countryBlock.hoverTo().
+        })
+
+
         // Выполнение этого метода показывает завершение загрузки страницы
         list.should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> list.should(notBePresent())),

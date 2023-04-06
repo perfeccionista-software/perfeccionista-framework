@@ -53,6 +53,7 @@ val notToPublish = listOf(
     "demo-app-assets",
     "demo-app-mobile-assets",
     "environment-cucumber-api",
+    "pagefactory-api",
     "pagefactory-mobile-allure",
     "pagefactory-mobile-android",
     "pagefactory-mobile-api",
@@ -61,7 +62,12 @@ val notToPublish = listOf(
     "pagefactory-mobile-appium-xcuitest",
     "pagefactory-mobile-cucumber",
     "pagefactory-mobile-espresso",
-    "pagefactory-web-cucumber"
+    "pagefactory-web-allure",
+    "pagefactory-web-api",
+    "pagefactory-web-cucumber",
+    "pagefactory-web-elements",
+    "pagefactory-web-selenium",
+    "utils-android"
 )
 
 configure(listOf(rootProject)) {
@@ -122,6 +128,7 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         dependencies {
             dependency("org.jetbrains:annotations:21.0.1")
             dependency("org.apiguardian:apiguardian-api:1.1.2")
+            dependency("org.opentest4j:opentest4j:1.2.0")
 
             dependency("com.fasterxml.jackson.core:jackson-core:$fasterxmlVersion")
             dependency("com.fasterxml.jackson.core:jackson-annotations:$fasterxmlVersion")
@@ -159,6 +166,7 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     dependencies {
         implementation(group = "org.jetbrains", name = "annotations")
         implementation(group = "org.apiguardian", name = "apiguardian-api")
+        implementation(group = "org.opentest4j", name = "opentest4j")
 
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-core")
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations")

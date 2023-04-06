@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.perfeccionista.framework.exceptions.messages.PageFactoryWebApiMessages.FILTERED_ELEMENT_DOES_NOT_CONTAIN_EXPECTED_RESULT;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.assertInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SHOULD_HAVE_EXPECTED_RESULT_METHOD;
 
 public class WebShouldHaveStringValueResultMatcher implements WebMultipleIndexedResultMatcher<String> {
@@ -33,7 +33,7 @@ public class WebShouldHaveStringValueResultMatcher implements WebMultipleIndexed
 
         WebChildElement element = result.getElement();
 
-        runCheck(invocationName, () -> {
+        repeatInvocation(invocationName, () -> {
             AtomicBoolean match = new AtomicBoolean(true);
             Map<Integer, String> results = result.getResults();
             results.forEach((index, value) -> {

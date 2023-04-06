@@ -2,16 +2,16 @@ package io.perfeccionista.framework.measurements;
 
 public class Offsets2D {
 
-    private final double screenTop;
-    private final double screenRight;
-    private final double screenBottom;
-    private final double screenLeft;
+    private final double x;
+    private final double y;
 
-    public Offsets2D(double screenTop, double screenRight, double screenBottom, double screenLeft) {
-        this.screenTop = screenTop;
-        this.screenRight = screenRight;
-        this.screenBottom = screenBottom;
-        this.screenLeft = screenLeft;
+    private Offsets2D(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public static Offsets2D of(double x, double y) {
+        return new Offsets2D(x, y);
     }
 
 }

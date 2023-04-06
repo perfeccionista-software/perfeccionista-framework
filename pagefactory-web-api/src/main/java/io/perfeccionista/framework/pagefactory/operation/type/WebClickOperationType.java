@@ -2,6 +2,7 @@ package io.perfeccionista.framework.pagefactory.operation.type;
 
 import io.perfeccionista.framework.invocation.runner.InvocationInfo;
 import io.perfeccionista.framework.pagefactory.elements.methods.WebClickAvailable;
+import io.perfeccionista.framework.pagefactory.elements.options.ClickOptions;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,17 +16,19 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class WebClickOperationType implements WebElementOperationType<Void> {
 
     private final WebClickAvailable element;
+    private final ClickOptions options;
 
     private final InvocationInfo invocationInfo;
 
-    private WebClickOperationType(WebClickAvailable element) {
+    private WebClickOperationType(WebClickAvailable element, ClickOptions options) {
         this.element = element;
+        this.options = options;
         String elementName = element.getElementIdentifier().getLastUsedName();
-        this.invocationInfo = actionInvocation(CLICK_METHOD, elementName);
+        this.invocationInfo = actionInvocation(CLICK_METHOD, elementName, options.toString());
     }
 
-    public static WebClickOperationType of(@NotNull WebClickAvailable element) {
-        return new WebClickOperationType(element);
+    public static WebClickOperationType of(@NotNull WebClickAvailable element, @NotNull ClickOptions options) {
+        return new WebClickOperationType(element, options);
     }
 
     @Override
@@ -37,7 +40,7 @@ public class WebClickOperationType implements WebElementOperationType<Void> {
     public @NotNull EndpointHandler<Void> getEndpointHandler() {
         Class<? extends EndpointHandler<Void>> endpointHandlerClass = element.getEndpointHandler(CLICK_METHOD, Void.class);
         Constructor<? extends EndpointHandler<Void>> constructor = getDeclaredConstructor(endpointHandlerClass);
-        return newInstance(constructor);
+        return newInstance(constructor, options);
     }
 
 }

@@ -105,7 +105,7 @@ import static io.perfeccionista.framework.pagefactory.elements.ElementActionName
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.LIST_SCROLL_TO_VERTICALLY_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.LONG_TAP_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.OPEN_METHOD;
-import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.REPLACE_TEXT_METHOD;
+import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SET_VALUE_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SCROLL_TO_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.SINGLE_TAP_METHOD;
 import static io.perfeccionista.framework.pagefactory.elements.ElementActionNames.TYPE_TEXT_METHOD;
@@ -186,7 +186,7 @@ public class DefaultAppiumAndroidPageFactoryPreferences extends DefaultMobilePag
         actionConfigurations.put(MobileInputTextAvailable.class, MobileEndpointHandlerConfiguration.builder()
                 .set(CLEAR_METHOD, AppiumClearHandler.class)
                 .set(TYPE_TEXT_METHOD, AppiumTypeTextHandler.class)
-                .set(REPLACE_TEXT_METHOD, AppiumReplaceTextHandler.class));
+                .set(SET_VALUE_METHOD, AppiumReplaceTextHandler.class));
 //                .set(SEND_KEY_EVENTS_METHOD, new SeleniumSendKeyEvents()));
         actionConfigurations.put(MobileDropDownAvailable.class, MobileEndpointHandlerConfiguration.builder()
                 .set(IS_OPEN_METHOD, AppiumGetIsDisplayedHandler.class)

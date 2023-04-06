@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.pagefactory.elements.base;
 
-import io.perfeccionista.framework.pagefactory.elements.locators.WebLocatorChain;
+import io.perfeccionista.framework.pagefactory.elements.selectors.WebSelectorChain;
 import org.jetbrains.annotations.NotNull;
 
 public class WebParentHolderForChildElement implements WebParentHolder {
@@ -21,8 +21,8 @@ public class WebParentHolderForChildElement implements WebParentHolder {
     }
 
     @Override
-    public @NotNull WebLocatorChain getLocatorChain() {
-        return parentBlock.getLocatorChain();
+    public @NotNull WebSelectorChain getSelectorChain() {
+        return parentBlock.getSelectorChain();
     }
 
 }

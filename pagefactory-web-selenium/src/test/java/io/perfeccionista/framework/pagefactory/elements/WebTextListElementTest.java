@@ -10,7 +10,7 @@ import io.perfeccionista.framework.exceptions.WebElementLocation.WebElementLocat
 import io.perfeccionista.framework.exceptions.WebElementNotInFocus.WebElementNotInFocusAssertionError;
 import io.perfeccionista.framework.exceptions.WebElementSize.WebElementSizeAssertionError;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.invocation.timeouts.type.CheckTimeout;
+import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationTimeout;
 import io.perfeccionista.framework.name.WebElementIdentifier;
 import io.perfeccionista.framework.AbstractWebSeleniumParallelTest;
 import io.perfeccionista.framework.pagefactory.elements.preferences.DefaultSeleniumWebPageFactoryPreferences;
@@ -62,9 +62,9 @@ class WebTextListElementTest extends AbstractWebSeleniumParallelTest {
         WebElementIdentifier elementIdentifier = textList.getElementIdentifier();
         assertAll(
                 () -> assertNotNull(textList.getEnvironment()),
-                () -> assertNotNull(textList.getLocatorChain()),
+                () -> assertNotNull(textList.getSelectorChain()),
                 () -> assertNotNull(textList.getWebBrowserDispatcher()),
-                () -> assertNotNull(textList.getOptionalLocator(ROOT)),
+                () -> assertNotNull(textList.getOptionalSelector(ROOT)),
                 // WebChildElement
                 () -> assertNotNull(textList.getEndpointHandler(GET_COLOR_METHOD, Color.class)),
                 () -> assertNotNull(textList.getEndpointHandler(GET_ELEMENT_BOUNDS_METHOD, ElementBounds.class)),
@@ -138,7 +138,7 @@ class WebTextListElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed());
         // Для негативных сценариев меняем время ожидания, чтобы не ждать по 5 секунд проброса ошибки вне враппера
         environment.getService(TimeoutsService.class)
-                .setTimeout(CheckTimeout.class, Duration.ofMillis(100L));
+                .setTimeout(RepeatInvocationTimeout.class, Duration.ofMillis(100L));
         assertAll(
                 () -> assertThrows(ElementIsPresentAssertionError.class,
                         () -> textList.should(notBePresent())),

@@ -35,7 +35,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.DeviceType.IOS;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_CALL_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_IS_LOCKED_METHOD;
@@ -111,7 +111,7 @@ public abstract class AbstractAppiumIosDeviceDispatcher implements MobileDeviceD
 
     @Override
     public boolean isLocked() {
-        return runCheck(getterInvocation(DEVICE_IS_LOCKED_METHOD), () ->
+        return repeatInvocation(getterInvocation(DEVICE_IS_LOCKED_METHOD), () ->
                 exceptionMapper.map((instance::isDeviceLocked))
                         .ifException(exception -> {
                             throw exception;
@@ -121,7 +121,7 @@ public abstract class AbstractAppiumIosDeviceDispatcher implements MobileDeviceD
 
     @Override
     public AbstractAppiumIosDeviceDispatcher lock() {
-        runCheck(getterInvocation(DEVICE_LOCK_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_LOCK_METHOD), () ->
                 exceptionMapper.map((@NotNull Runnable) instance::lockDevice))
                 .ifException(exception -> {
                     throw exception;
@@ -131,7 +131,7 @@ public abstract class AbstractAppiumIosDeviceDispatcher implements MobileDeviceD
 
     @Override
     public AbstractAppiumIosDeviceDispatcher unlock() {
-        runCheck(getterInvocation(DEVICE_UNLOCK_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_UNLOCK_METHOD), () ->
                 exceptionMapper.map(instance::unlockDevice))
                 .ifException(exception -> {
                     throw exception;
@@ -141,7 +141,7 @@ public abstract class AbstractAppiumIosDeviceDispatcher implements MobileDeviceD
 
     @Override
     public AbstractAppiumIosDeviceDispatcher performTouchId(boolean success) {
-        runCheck(getterInvocation(DEVICE_PERFORM_TOUCH_ID_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_PERFORM_TOUCH_ID_METHOD), () ->
                 exceptionMapper.map(() -> instance.performTouchID(success)))
                 .ifException(exception -> {
                     throw exception;
@@ -151,7 +151,7 @@ public abstract class AbstractAppiumIosDeviceDispatcher implements MobileDeviceD
 
     @Override
     public AbstractAppiumIosDeviceDispatcher shake() {
-        runCheck(getterInvocation(DEVICE_SHAKE_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_SHAKE_METHOD), () ->
                 exceptionMapper.map(instance::shake))
                 .ifException(exception -> {
                     throw exception;
@@ -161,7 +161,7 @@ public abstract class AbstractAppiumIosDeviceDispatcher implements MobileDeviceD
 
     @Override
     public AbstractAppiumIosDeviceDispatcher sendSms(@NotNull String phoneNumber, @NotNull String message) {
-        runCheck(getterInvocation(DEVICE_SEND_SMS_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_SEND_SMS_METHOD), () ->
                 exceptionMapper.map(() -> {
                     throw new UnsupportedOperationException("Not implemented yet");
                 }))
@@ -173,7 +173,7 @@ public abstract class AbstractAppiumIosDeviceDispatcher implements MobileDeviceD
 
     @Override
     public AbstractAppiumIosDeviceDispatcher call(@NotNull String phoneNumber, @NotNull GsmCallAction callAction) {
-        runCheck(getterInvocation(DEVICE_CALL_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_CALL_METHOD), () ->
                 exceptionMapper.map(() -> {
                     throw new UnsupportedOperationException("Not implemented yet");
                 }))

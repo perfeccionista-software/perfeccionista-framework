@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.getterInvocation;
-import static io.perfeccionista.framework.invocation.wrapper.CheckInvocationWrapper.runCheck;
+import static io.perfeccionista.framework.invocation.wrapper.MultipleAttemptInvocationWrapper.repeatInvocation;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_ON_METHOD;
 import static io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceActionNames.DEVICE_ROTATE_TO_METHOD;
 
@@ -39,7 +39,7 @@ public class DefaultAppiumIosScreenDispatcher implements MobileDeviceScreenDispa
 
     @Override
     public DefaultAppiumIosScreenDispatcher rotateOn(@NotNull Rotation3D rotation) {
-        runCheck(getterInvocation(DEVICE_ROTATE_ON_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_ROTATE_ON_METHOD), () ->
                 exceptionMapper.map(() -> instance.rotate(AppiumRotationConverter.createDeviceRotation(rotation))))
                 .ifException(exception -> {
                     throw exception;
@@ -49,7 +49,7 @@ public class DefaultAppiumIosScreenDispatcher implements MobileDeviceScreenDispa
 
     @Override
     public DefaultAppiumIosScreenDispatcher rotateTo(@NotNull ScreenOrientation screenOrientation) {
-        runCheck(getterInvocation(DEVICE_ROTATE_TO_METHOD), () ->
+        repeatInvocation(getterInvocation(DEVICE_ROTATE_TO_METHOD), () ->
                 exceptionMapper.map(() -> instance.rotate(AppiumRotationConverter.createAppiumScreenOrientation(screenOrientation))))
                 .ifException(exception -> {
                     throw exception;

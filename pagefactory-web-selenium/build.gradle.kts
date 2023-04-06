@@ -1,6 +1,6 @@
 dependencies {
 
-    api(project(":pagefactory-web-api"))
+    api(project(":pagefactory-web-elements"))
 
     api(group = "org.seleniumhq.selenium", name = "selenium-java")
     api(group = "io.github.bonigarcia", name = "webdrivermanager")

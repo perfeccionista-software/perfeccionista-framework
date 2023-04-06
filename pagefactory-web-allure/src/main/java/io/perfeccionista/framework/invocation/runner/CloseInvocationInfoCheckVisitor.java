@@ -26,7 +26,7 @@ public class CloseInvocationInfoCheckVisitor implements Consumer<InvocationInfo>
     @Override
     public void accept(InvocationInfo invocationInfo) {
         if (EXCEPTION == invocationInfo.getLastStatus()) {
-            boolean primaryExceptionProcessed = Optional.ofNullable(WebAllureCheckInvocationRunner.primaryExceptionProcessed.get())
+            boolean primaryExceptionProcessed = Optional.ofNullable(WebAllureMultipleAttemptInvocationRunner.primaryExceptionProcessed.get())
                     .orElse(false);
             Throwable throwable = invocationInfo.getResults().getLast()
                     .getThrowable()
