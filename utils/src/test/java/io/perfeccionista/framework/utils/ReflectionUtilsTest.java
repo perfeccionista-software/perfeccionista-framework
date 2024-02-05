@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.utils;
 
+import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import io.perfeccionista.framework.measurements.Order;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.SimpleParallelTest;
@@ -13,10 +14,10 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedClassesNotNullArgumentsTest() {
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(null, Object.class, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(Object.class, null, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(null, Object.class, Order.DESC));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(Object.class, null, Order.DESC));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(null, Object.class, null));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(Object.class, null, null));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(null, Object.class, Order.DESC));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedClasses(Object.class, null, Order.DESC));
     }
 
     @Test
@@ -65,10 +66,10 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
 
     @Test
     void getInheritedInterfacesNotNullArgumentsTest() {
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(null, Object.class, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(Object.class, null, null));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(null, Object.class, Order.DESC));
-        assertThrows(IllegalArgumentException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(Object.class, null, Order.DESC));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(null, Object.class, null));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(Object.class, null, null));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(null, Object.class, Order.DESC));
+        assertThrows(PreconditionViolationException.class, () -> ReflectionUtilsForClasses.findInheritedInterfaces(Object.class, null, Order.DESC));
     }
 
     @Test

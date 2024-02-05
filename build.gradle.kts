@@ -114,10 +114,11 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         options.encoding = "UTF-8"
     }
 
-    javaToolchains {
-        version = JavaVersion.VERSION_17
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
-
 
 
 

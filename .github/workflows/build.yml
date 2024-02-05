@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java-version: [ '11.0.x' ]
+        java-version: [ '17.0.x' ]
     steps:
       - uses: actions/checkout@v2.3.4
 
@@ -29,6 +29,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build -x test
 
-#      - name: Run tests
-#        if: always()
-#        run: ./gradlew --no-build-cache cleanTest test
+      - name: Run tests
+        if: always()
+        run: ./gradlew --no-build-cache cleanTest test
