@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.value.processor;
 
 import io.perfeccionista.framework.AbstractParallelTestWithEnvironment;
-import io.perfeccionista.framework.UseEnvironment;
+import io.perfeccionista.framework.SetEnvironmentConfiguration;
 import io.perfeccionista.framework.datasource.entities.User;
 import io.perfeccionista.framework.exceptions.DataConverterNotFound.DataConverterNotFoundException;
 import io.perfeccionista.framework.exceptions.DataSourceNotFound.DataSourceNotFoundException;
@@ -258,14 +258,14 @@ class ValueExpressionProcessorProcessTokenizedExpressionTest extends AbstractPar
     }
 
     @Test
-    @UseEnvironment(TestValueEnvironmentConfigurationWithoutDataSourceService.class)
+    @SetEnvironmentConfiguration(TestValueEnvironmentConfigurationWithoutDataSourceService.class)
     void processDataSourceExpressionWithoutDataSourceService(Environment environment) {
         ValueExpressionProcessor expressionProcessor = new ValueExpressionProcessor(environment);
         assertThrows(ServiceNotFoundException.class, () -> expressionProcessor.processExpression("${[user] John}"));
     }
 
     @Test
-    @UseEnvironment(TestValueEnvironmentConfigurationWithoutDataConverterService.class)
+    @SetEnvironmentConfiguration(TestValueEnvironmentConfigurationWithoutDataConverterService.class)
     void processDataConverterExpressionWithoutDataConverterService(Environment environment) {
         ValueExpressionProcessor expressionProcessor = new ValueExpressionProcessor(environment);
         assertThrows(ServiceNotFoundException.class, () -> expressionProcessor.processExpression("@{[user to userName] John}"));

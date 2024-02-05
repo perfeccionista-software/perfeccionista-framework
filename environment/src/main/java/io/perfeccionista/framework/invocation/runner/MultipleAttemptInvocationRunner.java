@@ -5,13 +5,13 @@ import io.perfeccionista.framework.exceptions.attachments.BigTextAttachmentEntry
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationDelayTimeout;
 import io.perfeccionista.framework.exceptions.base.ExceptionCollector;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -118,7 +118,7 @@ public class MultipleAttemptInvocationRunner implements InvocationRunner {
         while (!invocations.isEmpty()) {
             String indent = getIndent(invocations.size());
             InvocationInfo processedInvocation = invocations.removeLast();
-            logger.info(() -> indent + processedInvocation.toString());
+            logger.info(indent + processedInvocation.toString());
         }
         runCheckInvocationStack.remove();
     }

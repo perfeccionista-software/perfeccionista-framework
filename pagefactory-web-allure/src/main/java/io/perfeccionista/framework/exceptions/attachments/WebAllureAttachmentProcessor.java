@@ -2,11 +2,11 @@ package io.perfeccionista.framework.exceptions.attachments;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.EmptyAttachment;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import io.qameta.allure.Allure;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 

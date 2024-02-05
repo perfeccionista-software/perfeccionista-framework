@@ -22,21 +22,21 @@ public final class MultipleAttemptInvocationWrapper implements InvocationWrapper
     public static <T> T repeatInvocation(@NotNull final InvocationInfo name,
                                          @NotNull final Supplier<T> supplier,
                                          @NotNull final Duration timeout) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), name, supplier, timeout);
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        return actionRunner.run(Environment.getForCurrentThread(), name, supplier, timeout);
     }
 
     public static <T> T repeatInvocation(@NotNull final InvocationInfo name,
                                          @NotNull final Supplier<T> supplier) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), name, supplier, getCheckTimeout(Environment.getCurrent()));
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        return actionRunner.run(Environment.getForCurrentThread(), name, supplier, getCheckTimeout(Environment.getForCurrentThread()));
     }
 
     public static void repeatInvocation(@NotNull final InvocationInfo name,
                                         @NotNull final Runnable runnable,
                                         @NotNull final Duration timeout) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), name, (Supplier<Void>) () -> {
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        actionRunner.run(Environment.getForCurrentThread(), name, (Supplier<Void>) () -> {
             runnable.run();
             return null;
         }, timeout);
@@ -44,39 +44,39 @@ public final class MultipleAttemptInvocationWrapper implements InvocationWrapper
 
     public static void repeatInvocation(@NotNull final InvocationInfo name,
                                         @NotNull final Runnable runnable) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), name, (Supplier<Void>) () -> {
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        actionRunner.run(Environment.getForCurrentThread(), name, (Supplier<Void>) () -> {
             runnable.run();
             return null;
-        }, getCheckTimeout(Environment.getCurrent()));
+        }, getCheckTimeout(Environment.getForCurrentThread()));
     }
 
     public static <T> T repeatInvocation(@NotNull final Supplier<T> supplier,
                                          @NotNull final Duration timeout) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), supplier, timeout);
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        return actionRunner.run(Environment.getForCurrentThread(), InvocationInfo.empty(), supplier, timeout);
     }
 
     public static <T> T repeatInvocation(@NotNull final Supplier<T> supplier) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        return actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), supplier, getCheckTimeout(Environment.getCurrent()));
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        return actionRunner.run(Environment.getForCurrentThread(), InvocationInfo.empty(), supplier, getCheckTimeout(Environment.getForCurrentThread()));
     }
 
     public static void repeatInvocation(@NotNull final Runnable runnable,
                                         @NotNull final Duration timeout) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), (Supplier<Void>) () -> {
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        actionRunner.run(Environment.getForCurrentThread(), InvocationInfo.empty(), (Supplier<Void>) () -> {
             runnable.run();
             return null;
         }, timeout);
     }
 
     public static void repeatInvocation(@NotNull final Runnable runnable) {
-        InvocationRunner actionRunner = getCheckActionRunner(Environment.getCurrent());
-        actionRunner.run(Environment.getCurrent(), InvocationInfo.empty(), (Supplier<Void>) () -> {
+        InvocationRunner actionRunner = getCheckActionRunner(Environment.getForCurrentThread());
+        actionRunner.run(Environment.getForCurrentThread(), InvocationInfo.empty(), (Supplier<Void>) () -> {
             runnable.run();
             return null;
-        }, getCheckTimeout(Environment.getCurrent()));
+        }, getCheckTimeout(Environment.getForCurrentThread()));
     }
 
     // TODO: Не создавать каждый раз заново

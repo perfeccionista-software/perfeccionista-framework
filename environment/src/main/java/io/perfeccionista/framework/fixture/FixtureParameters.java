@@ -29,6 +29,11 @@ public class FixtureParameters {
         return new FixtureParameters();
     }
 
+    public static FixtureParameters createWithParameter(@NotNull String parameterName, @Nullable Object parameter) {
+        return new FixtureParameters()
+                .addParameter(parameterName, parameter);
+    }
+
     public FixtureParameters addParameter(@NotNull String parameterName, @Nullable Object parameter) {
         parameters.put(parameterName, parameter);
         return this;

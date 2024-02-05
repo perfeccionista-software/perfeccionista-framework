@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface DataConverterServiceConfiguration extends ServiceConfiguration {
 
-    Map<String, DataConverter<?, ?>> getDataConverters();
+    Map<String, DataConverter<?, ?>> getNamedDataConverters();
 
 }

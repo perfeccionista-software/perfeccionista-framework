@@ -3,6 +3,7 @@ package io.perfeccionista.framework.fixture;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.FixtureNotFound;
 import io.perfeccionista.framework.exceptions.FixtureNotParametrized;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
@@ -25,30 +26,39 @@ public class FixtureService implements Service {
 
     protected Environment environment;
     protected FixtureServiceConfiguration configuration;
-    protected Map<String, Class<? extends Fixture<?, ?>>> fixtureClasses;
+    protected Map<String, Class<? extends Fixture<?, ?>>> namedFixtureClasses;
 
     protected Deque<Fixture<?, ?>> executedFixtures = new ArrayDeque<>();
 
     @Override
+    public void init(@NotNull Environment environment) {
+        Preconditions.notNull(environment, "Environment must not be null");
+        this.environment = environment;
+        this.configuration = new DefaultFixtureServiceConfiguration();
+        this.namedFixtureClasses = this.configuration.getNamedFixtureClasses();
+    }
+
+    @Override
     public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
+        Preconditions.notNull(environment, "Environment must not be null");
+        Preconditions.notNull(configuration, "Service configuration must not be null");
         this.environment = environment;
         this.configuration = validate(configuration);
-        this.fixtureClasses = this.configuration.getFixtureClasses();
+        this.namedFixtureClasses = this.configuration.getNamedFixtureClasses();
     }
 
     public <S, T> @NotNull Fixture<S, T> getFixture(@NotNull String fixtureName) {
-        Class<? extends Fixture<?, ?>> fixtureClass = fixtureClasses.get(fixtureName);
+        Class<? extends Fixture<?, ?>> fixtureClass = namedFixtureClasses.get(fixtureName);
         if (Objects.isNull(fixtureClass)) {
             throw FixtureNotFound.exception(FIXTURE_NOT_FOUND.getMessage(fixtureName));
         }
-
         Fixture<?, ?> fixtureInstance = newInstance(fixtureClass);
         // TODO: Check fixture parametrized types
         return (Fixture<S, T>) fixtureInstance;
     }
 
     public <S, T, P extends FixtureParameters> @NotNull ParametrizedFixture<S, T, P> getParametrizedFixture(@NotNull String fixtureName,
-                                                                            @NotNull P fixtureParameters) {
+                                                                                                            @NotNull P fixtureParameters) {
         Fixture<S, T> fixtureInstance = getFixture(fixtureName);
         if (fixtureInstance instanceof ParametrizedFixture) {
             return ((ParametrizedFixture<S, T, P>) fixtureInstance).withParameters(fixtureParameters);
@@ -58,9 +68,10 @@ public class FixtureService implements Service {
 
     public <S, T> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Fixture<S, T> fixture) {
         executedFixtures.push(fixture);
-        return fixture
-                .setUp()
-                .process();
+        FixtureSetUpResult<S> fixtureSetUpResult = fixture.setUp();
+        configuration.getFixtureResultProcessor()
+                .processFixtureSetUpResult(fixtureSetUpResult);
+        return fixtureSetUpResult.process();
     }
 
     public <S> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull String fixtureName) {
@@ -78,7 +89,7 @@ public class FixtureService implements Service {
     }
 
     public <S, T, P extends FixtureParameters> @NotNull FixtureSetUpResult<S> executeFixture(@NotNull Class<? extends ParametrizedFixture<S, T, P>> fixtureClass,
-                                                                @NotNull P fixtureParameters) {
+                                                                                             @NotNull P fixtureParameters) {
         // TODO Validate required parameters
         ParametrizedFixture<S, T, P> fixtureInstance = newInstance(fixtureClass)
                 .withParameters(fixtureParameters);
@@ -86,11 +97,11 @@ public class FixtureService implements Service {
     }
 
     public boolean containsName(@NotNull String fixtureName) {
-        return fixtureClasses.containsKey(fixtureName);
+        return namedFixtureClasses.containsKey(fixtureName);
     }
 
     public Stream<Class<? extends Fixture<?, ?>>> stream() {
-        return fixtureClasses.values().stream().distinct();
+        return namedFixtureClasses.values().stream().distinct();
     }
 
     @Override
@@ -101,9 +112,12 @@ public class FixtureService implements Service {
                 //  Например соединение, которое открывается по требованию любой фикстурой,
                 //  не должно закрываться до отката первой фикстуры которая, соответственно, откатывается в последнюю очередь
                 //  FixtureTearDownLockedResult.of(lockObject)
-                executedFixtures.pop()
-                        .tearDown()
-                        .process();
+
+                FixtureTearDownResult<?> fixtureTearDownResult = executedFixtures.pop()
+                        .tearDown();
+                configuration.getFixtureResultProcessor()
+                        .processFixtureTearDownResult(fixtureTearDownResult);
+                fixtureTearDownResult.process();
             }
         }
     }

@@ -1,28 +1,32 @@
 package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.name.Name;
+import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-// TODO: Здесь нужно учитывать не только проперти, но и переменные окружения
+import static io.perfeccionista.framework.Environment.PERFECCIONISTA_PROPERTIES_FILE;
+
 @Name("config")
 public class ConfigDataSource implements DataSource<String, String> {
 
-    private final Map<String, String> propertiesMap;
+    private static volatile boolean cacheReady = false;
+    private static final Map<String, String> fileProperties = new HashMap<>();
+    private final Map<String, String> properties = new HashMap<>();
 
     public ConfigDataSource() {
-        propertiesMap = readPropertiesToMap();
+        readFilePropertiesToMap();
+        readSystemPropertiesToMap();
     }
 
     @Override
     public @NotNull String get(@NotNull String key) {
-        return Optional.ofNullable(propertiesMap.get(key))
+        return Optional.ofNullable(properties.get(key))
                 .orElse("");
     }
 
@@ -36,16 +40,21 @@ public class ConfigDataSource implements DataSource<String, String> {
         return get(key);
     }
 
-    private Map<String, String> readPropertiesToMap() {
-        Map<String, String> props = new HashMap<>();
-        Properties properties = new Properties();
-        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("perfeccionista.properties")) {
-            properties.load(inputStream);
-            properties.stringPropertyNames().forEach(key -> props.put(key, properties.getProperty(key)));
-        } catch (Exception e) {
-            // Do nothing: file not found
+    private synchronized void readFilePropertiesToMap() {
+        if (!cacheReady) {
+            Properties perfeccionistaProperties = FileUtils.readOptionalPropertyFileFromClasspath(PERFECCIONISTA_PROPERTIES_FILE)
+                    .orElse(new Properties());
+            perfeccionistaProperties.stringPropertyNames()
+                    .forEach(key -> fileProperties.put(key, perfeccionistaProperties.getProperty(key)));
+            cacheReady = true;
         }
-        return props;
+        properties.putAll(fileProperties);
+    }
+
+    private void readSystemPropertiesToMap() {
+        Properties systemProperties = System.getProperties();
+        systemProperties.stringPropertyNames()
+                .forEach(key -> properties.put(key, systemProperties.getProperty(key)));
     }
 
 }

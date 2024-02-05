@@ -10,16 +10,17 @@ import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.ScreenshotAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.pagefactory.dispatcher.MobileDeviceService;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import io.qameta.allure.Allure;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,8 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
                 .map(entry -> {
                     FileAttachmentEntry<?> fileAttachmentEntry = (FileAttachmentEntry<?>) entry;
                     String fileName = entry.getName() + "_" + createId() + "." + fileAttachmentEntry.getFileExtension();
-                    Path filePath = Path.of(ATTACHMENT_DIR + File.separator + fileName);
+                    // Возможно, правка Path.of() -> Paths.get() может работать не корректно
+                    Path filePath = Paths.get(ATTACHMENT_DIR + File.separator + fileName);
                     if (fileAttachmentEntry instanceof HtmlAttachmentEntry) {
                         String content = ((HtmlAttachmentEntry) fileAttachmentEntry).getContent().orElse("");
                         deleteFileIgnoreExceptions(filePath);
@@ -67,7 +69,8 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
                         Screenshot screenshot = ((ScreenshotAttachmentEntry) entry).getContent()
                                 .orElseThrow(() -> EmptyAttachment.exception(EMPTY_ATTACHMENT_ENTRY.getMessage()));
                         deleteFileIgnoreExceptions(filePath);
-                        writeBinaryFile(Path.of(fileName), screenshot.getRaw());
+                        // Возможно, правка Path.of() -> Paths.get() может работать не корректно
+                        writeBinaryFile(Paths.get(fileName), screenshot.getRaw());
                     } else if (fileAttachmentEntry instanceof BigTextAttachmentEntry) {
                         String content = ((BigTextAttachmentEntry) fileAttachmentEntry).getContent().orElse("");
                         deleteFileIgnoreExceptions(filePath);
@@ -81,7 +84,8 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
                 .filter(entry -> entry instanceof TextAttachmentEntry)
                 .map(entry -> {
                     String fileName = entry.getName() + "_" + createId() + ".txt";
-                    Path filePath = Path.of(ATTACHMENT_DIR + File.separator + fileName);
+                    // Возможно, правка Path.of() -> Paths.get() может работать не корректно
+                    Path filePath = Paths.get(ATTACHMENT_DIR + File.separator + fileName);
                     String content = ((TextAttachmentEntry) entry).getContent().orElse("");
                     deleteFileIgnoreExceptions(filePath);
                     writeTextFile(filePath, content);
@@ -97,7 +101,8 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
         String screenshotAttachmentDescription = takeScreenshot(environment)
                 .map(screenshot -> {
                     String fileName = "Screenshot_" + createId() + ".png";
-                    Path filePath = Path.of(ATTACHMENT_DIR + File.separator + fileName);
+                    // Возможно, правка Path.of() -> Paths.get() может работать не корректно
+                    Path filePath = Paths.get(ATTACHMENT_DIR + File.separator + fileName);
                     deleteFileIgnoreExceptions(filePath);
                     writeBinaryFile(filePath, screenshot.getRaw());
                     Allure.addAttachment("Mobile Device Screenshot",
@@ -114,7 +119,7 @@ public class MobileAllureAttachmentProcessor extends DefaultAttachmentProcessor 
             return "";
         }
 
-        logger.info(() -> "Attachments:\n"
+        logger.info("Attachments:\n"
                 + getDelimiter()
                 + (isBlank(fileAttachmentsDescription) ? "" : fileAttachmentsDescription + "\n")
                 + (isBlank(stringAttachmentsDescription) ? "" : stringAttachmentsDescription + "\n")

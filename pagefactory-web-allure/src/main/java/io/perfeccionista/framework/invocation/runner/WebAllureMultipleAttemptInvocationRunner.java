@@ -9,9 +9,9 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationDelayTimeout;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -124,7 +124,7 @@ public class WebAllureMultipleAttemptInvocationRunner implements InvocationRunne
             } else {
                 processedInvocation.close(closeInnerInvocationVisitor);
             }
-            logger.info(() -> indent + processedInvocation);
+            logger.info(indent + processedInvocation);
         }
         runCheckInvocationStack.remove();
     }

@@ -1,18 +1,23 @@
 package io.perfeccionista.framework.fixture;
 
+import io.perfeccionista.framework.preconditions.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class FixtureTearDownResult<T> {
 
     private final T result;
     private final RuntimeException exception;
-    private Consumer<T> resultProcessor = null;
-    private Consumer<RuntimeException> exceptionProcessor = null;
+    private BiConsumer<T, RuntimeException> resultProcessor = (result, runtimeException) -> {
+        if (Objects.nonNull(runtimeException)) {
+            throw runtimeException;
+        }
+    };
 
     private FixtureTearDownResult(T result, RuntimeException exception) {
         this.result = result;
@@ -53,23 +58,14 @@ public class FixtureTearDownResult<T> {
         return Optional.ofNullable(exception);
     }
 
-    public FixtureTearDownResult<T> setResultProcessor(@NotNull Consumer<T> resultProcessor) {
+    public FixtureTearDownResult<T> setResultProcessor(@NotNull BiConsumer<T, RuntimeException> resultProcessor) {
+        Preconditions.notNull(resultProcessor, "Exception processor must not be null");
         this.resultProcessor = resultProcessor;
         return this;
     }
 
-    public FixtureTearDownResult<T> setExceptionProcessor(@NotNull Consumer<RuntimeException> exceptionProcessor) {
-        this.exceptionProcessor = exceptionProcessor;
-        return this;
-    }
-
     public void process() {
-        if (null != result && null != resultProcessor) {
-            resultProcessor.accept(result);
-        }
-        if (null != exception && null != exceptionProcessor) {
-            exceptionProcessor.accept(exception);
-        }
+        resultProcessor.accept(result, exception);
     }
 
 }

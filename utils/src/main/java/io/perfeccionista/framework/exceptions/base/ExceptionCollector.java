@@ -51,21 +51,18 @@ public class ExceptionCollector {
         if (lastException instanceof PerfeccionistaAssertionError) {
             PerfeccionistaAssertionError assertionError = (PerfeccionistaAssertionError) lastException;
             if (uniqueExceptionKeys.size() == 1) {
-                throw assertionError.prepareAttachmentDescription();
+                throw assertionError;
             }
             throw assertionError
-                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
-                    .prepareAttachmentDescription();
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()));
         }
         if (lastException instanceof PerfeccionistaRuntimeException) {
             PerfeccionistaRuntimeException runtimeException = (PerfeccionistaRuntimeException) lastException;
             if (uniqueExceptionKeys.size() == 1) {
-                throw runtimeException
-                        .prepareAttachmentDescription();
+                throw runtimeException;
             }
             throw runtimeException
-                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
-                    .prepareAttachmentDescription();
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()));
         }
     }
 
@@ -75,25 +72,21 @@ public class ExceptionCollector {
             PerfeccionistaAssertionError assertionError = (PerfeccionistaAssertionError) lastException;
             if (uniqueExceptionKeys.size() == 1) {
                 throw assertionError
-                        .setAttachmentProcessor(processor)
-                        .prepareAttachmentDescription();
+                        .setAttachmentProcessor(processor);
             }
             throw assertionError
                     .setAttachmentProcessor(processor)
-                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
-                    .prepareAttachmentDescription();
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()));
         }
         if (lastException instanceof PerfeccionistaRuntimeException) {
             PerfeccionistaRuntimeException runtimeException = (PerfeccionistaRuntimeException) lastException;
             if (uniqueExceptionKeys.size() == 1) {
                 throw runtimeException
-                        .setAttachmentProcessor(processor)
-                        .prepareAttachmentDescription();
+                        .setAttachmentProcessor(processor);
             }
             throw runtimeException
                     .setAttachmentProcessor(processor)
-                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()))
-                    .prepareAttachmentDescription();
+                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()));
         }
     }
 

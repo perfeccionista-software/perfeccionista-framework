@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.utils.models;
 
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -35,14 +35,14 @@ public class ClassFileVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException e) {
-        logger.warn(() -> String.format("I/O error visiting file '%s'", file), e);
+        logger.warn(String.format("I/O error visiting file '%s'", file), e);
         return CONTINUE;
     }
 
     @Override
     public FileVisitResult postVisitDirectory(Path dir, IOException e) {
         if (e != null) {
-            logger.warn(() -> String.format("I/O error visiting directory '%s'", dir), e);
+            logger.warn(String.format("I/O error visiting directory '%s'", dir), e);
         }
         return CONTINUE;
     }

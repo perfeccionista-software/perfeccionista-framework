@@ -13,4 +13,6 @@ public @interface DefaultServiceConfiguration {
 
     Class<? extends ServiceConfiguration> value();
 
+    int order() default 0;
+
 }

@@ -4,13 +4,14 @@ import io.perfeccionista.framework.exceptions.ClassCanNotBeCast;
 import io.perfeccionista.framework.exceptions.ClassCanNotBeInstantiated;
 import io.perfeccionista.framework.exceptions.ClassNotFound;
 import io.perfeccionista.framework.exceptions.PreconditionViolation;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.measurements.Order;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.utils.models.ClassFilter;
 import io.perfeccionista.framework.utils.models.ClasspathScanner;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.ConstructorNotFound;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -158,6 +159,7 @@ public final class ReflectionUtilsForClasses {
     // new Instance
 
     public static <T> T newInstance(@NotNull Class<T> clazz, @NotNull Object... args) {
+        Preconditions.notNull(clazz, "Class for initialization must not be null");
         try {
             Class<?>[] parameterTypes = Arrays.stream(args).map(Object::getClass).toArray(Class[]::new);
             return newInstance(clazz.getDeclaredConstructor(parameterTypes), args);

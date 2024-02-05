@@ -3,6 +3,8 @@ package io.perfeccionista.framework.value.checker.object;
 import io.perfeccionista.framework.Environment;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class ObjectEqualsChecker extends AbstractObjectChecker {
 
     private final Object expectedValue;
@@ -24,7 +26,7 @@ public class ObjectEqualsChecker extends AbstractObjectChecker {
 
     @Override
     public boolean check() {
-        return getProcessedActual().equals(getProcessedExpected());
+        return Objects.equals(getProcessedActual(), getProcessedExpected());
     }
 
     @Override

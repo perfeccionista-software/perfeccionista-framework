@@ -27,7 +27,6 @@ public class PerfeccionistaAssertionError extends AssertionFailedError implement
 
     private AttachmentProcessor processor = new DefaultAttachmentProcessor();
     private Attachment attachment = null;
-    private String attachmentsDescription = "";
     private boolean processed = false;
     private boolean service = false;
 
@@ -116,19 +115,12 @@ public class PerfeccionistaAssertionError extends AssertionFailedError implement
         return this;
     }
 
-    public PerfeccionistaAssertionError prepareAttachmentDescription() {
-        if (Objects.nonNull(attachment)) {
-            this.attachmentsDescription = processor.processAttachment(attachment);
-        }
-        return this;
-    }
-
     public LocalDateTime getExceptionTimestamp() {
         return exceptionTimestamp;
     }
 
     public String getAttachmentDescription() {
-        return attachmentsDescription;
+        return processor.processAttachment(attachment);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.DataSourceNotFound;
@@ -21,13 +22,23 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 @DefaultServiceConfiguration(DefaultDataSourceServiceConfiguration.class)
 public class DataSourceService implements Service {
 
-    protected DataSourceServiceConfiguration validatedConfiguration;
+    protected Environment environment = null;
+    protected DataSourceServiceConfiguration validatedConfiguration = null;
     protected Map<String, DataSource<?, ?>> dataSourcesByName = new HashMap<>();
 
     @Override
+    public void init(@NotNull Environment environment) {
+        Preconditions.notNull(environment, "Environment must not be null");
+        this.environment = environment;
+    }
+
+    @Override
     public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
-        validatedConfiguration = validate(configuration);
-        dataSourcesByName = validatedConfiguration.getDataSources();
+        Preconditions.notNull(environment, "Environment must not be null");
+        Preconditions.notNull(configuration, "Service configuration must not be null");
+        this.environment = environment;
+        this.validatedConfiguration = validate(configuration);
+        this.dataSourcesByName = validatedConfiguration.getNamedDataSources();
     }
 
     public Stream<DataSource<?, ?>> stream() {

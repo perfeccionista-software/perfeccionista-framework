@@ -1,9 +1,11 @@
 package io.perfeccionista.framework.fixture;
 
 import io.perfeccionista.framework.exceptions.RequiredFixtureResultIsNull;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -14,7 +16,9 @@ public class FixtureSetUpResult<T> {
 
     private final T result;
     private final RuntimeException exception;
-    private Consumer<RuntimeException> exceptionProcessor = null;
+    private Consumer<RuntimeException> exceptionProcessor = (runtimeException) -> {
+        throw runtimeException;
+    };
 
     private FixtureSetUpResult(T result, RuntimeException exception) {
         this.result = result;
@@ -49,7 +53,7 @@ public class FixtureSetUpResult<T> {
 
     public @NotNull T getNotNullResult() {
         return Optional.ofNullable(result)
-                .orElseThrow(() -> RequiredFixtureResultIsNull.exception(REQUIRED_FIXTURE_RESULT_IS_NULL.getMessage()));
+                .orElseThrow(() -> RequiredFixtureResultIsNull.exception(REQUIRED_FIXTURE_RESULT_IS_NULL.getMessage(), exception));
     }
 
     public Optional<Exception> getException() {
@@ -57,12 +61,13 @@ public class FixtureSetUpResult<T> {
     }
 
     public FixtureSetUpResult<T> setExceptionProcessor(@NotNull Consumer<RuntimeException> exceptionProcessor) {
+        Preconditions.notNull(exceptionProcessor, "Exception processor must not be null");
         this.exceptionProcessor = exceptionProcessor;
         return this;
     }
 
     public FixtureSetUpResult<T> process() {
-        if (null != exception && null != exceptionProcessor) {
+        if (Objects.nonNull(exception)) {
             exceptionProcessor.accept(exception);
         }
         return this;

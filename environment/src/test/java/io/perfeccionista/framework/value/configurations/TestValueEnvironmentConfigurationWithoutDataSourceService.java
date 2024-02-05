@@ -3,18 +3,20 @@ package io.perfeccionista.framework.value.configurations;
 import io.perfeccionista.framework.DefaultEnvironmentConfiguration;
 import io.perfeccionista.framework.datasource.DataSourceService;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
-import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 public class TestValueEnvironmentConfigurationWithoutDataSourceService extends DefaultEnvironmentConfiguration {
 
     @Override
-    public @NotNull Map<Class<? extends Service>, ConfiguredServiceHolder> getServices() {
-        Map<Class<? extends Service>, ConfiguredServiceHolder> services = super.getServices();
-        services.remove(DataSourceService.class);
-        return services;
+    public @NotNull Set<ConfiguredServiceHolder> getServiceConfigurations() {
+        return super.getServiceConfigurations().stream()
+                .filter(configuredServiceHolder -> !Objects.equals(configuredServiceHolder.getServiceClass(), DataSourceService.class))
+                .collect(toSet());
     }
 
 }

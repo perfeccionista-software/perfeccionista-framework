@@ -3,14 +3,14 @@ package io.perfeccionista.framework.pagefactory.dispatcher.executor;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.ClassCanNotBeCast;
 import io.perfeccionista.framework.exceptions.mapper.WebExceptionMapper;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperation;
 import io.perfeccionista.framework.pagefactory.operation.WebElementOperationResult;
 import io.perfeccionista.framework.pagefactory.operation.handler.EndpointHandler;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.JavascriptException;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -63,7 +63,7 @@ public class SeleniumWebBrowserOperationExecutor implements WebBrowserOperationE
             EndpointHandler<T> endpointHandler = operation.getOperationType().getEndpointHandler();
             SeleniumOperationExecutionResult<T> result = SeleniumOperationExecutionResult.of(scriptResult, endpointHandler);
             if (withLogs && result.withLogs()) {
-                log.info(result::getLogs);
+                log.info(result.getLogs());
             }
             if (result.withException()) {
                 return result.getUnsuccessfulOperationResult(exceptionMapper);

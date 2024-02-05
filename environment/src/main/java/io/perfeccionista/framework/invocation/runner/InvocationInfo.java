@@ -37,7 +37,7 @@ public final class InvocationInfo {
     protected InvocationInfo(@NotNull InvocationInfo.InvocationType type, @NotNull String invocationName, String... args) {
         this.uuid = UUID.randomUUID().toString();
         this.type = type;
-        InvocationService invocationService = Environment.getCurrent().getService(InvocationService.class);
+        InvocationService invocationService = Environment.getForCurrentThread().getService(InvocationService.class);
         InvocationInfoNameFormatter nameFormatter = invocationService.getInvocationInfoNameFormatter();
         this.statisticsFormatter = invocationService.getInvocationInfoStatisticsFormatter();
         this.invocationResults = new ArrayDeque<>();

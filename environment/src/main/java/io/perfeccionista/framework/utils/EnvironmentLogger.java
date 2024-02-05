@@ -2,12 +2,15 @@ package io.perfeccionista.framework.utils;
 
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.Math.max;
 import static java.lang.String.format;
@@ -41,6 +44,8 @@ public class EnvironmentLogger {
     private final EnvironmentConfiguration environmentConfiguration;
     private final List<ConfiguredServiceHolderRecord> services = new ArrayList<>();
 
+    private final String testName;
+
     private long startTime = 0;
     private long finishTime = 0;
 
@@ -50,13 +55,21 @@ public class EnvironmentLogger {
     private int column4 = 5;
     private int column5 = 10;
 
-    private EnvironmentLogger(EnvironmentConfiguration environmentConfiguration) {
+    private EnvironmentLogger(EnvironmentConfiguration environmentConfiguration, String testName) {
         this.environmentConfiguration = environmentConfiguration;
+        this.testName = testName;
         column2 = getMaxLength(environmentConfiguration.getEnvironmentClass().getCanonicalName(), column2);
     }
 
+    public static EnvironmentLogger of(@NotNull EnvironmentConfiguration environmentConfiguration,
+                                       @Nullable String testName) {
+        Preconditions.notNull(environmentConfiguration, "EnvironmentConfiguration must not be null");
+        return new EnvironmentLogger(environmentConfiguration, testName);
+    }
+
     public static EnvironmentLogger of(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        return new EnvironmentLogger(environmentConfiguration);
+        Preconditions.notNull(environmentConfiguration, "EnvironmentConfiguration must not be null");
+        return new EnvironmentLogger(environmentConfiguration, null);
     }
 
     public EnvironmentLogger start() {
@@ -70,6 +83,7 @@ public class EnvironmentLogger {
     }
 
     public void addServiceRecord(@NotNull ConfiguredServiceHolder serviceHolder, long startTime, long finishTime) {
+        Preconditions.notNull(serviceHolder, "ConfiguredServiceHolder must not be null");
         services.add(ConfiguredServiceHolderRecord.of(serviceHolder, startTime, finishTime));
         column1 = getMaxLength(serviceHolder.getServiceName(), column1);
         column2 = getMaxLength(serviceHolder.getServiceConfigurationName(), column2);
@@ -87,7 +101,7 @@ public class EnvironmentLogger {
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
         sb.append(splitter).append("\n");
-        sb.append("Environment").append("\n");
+        sb.append(Objects.nonNull(testName) ? "Environment for test [" + this.testName + "]" : "Environment").append("\n");
         sb.append(splitter).append("\n");
         sb.append(tab)
                 .append(formatToColumn(column1, "Environment class"))

@@ -18,19 +18,19 @@ public class FileAssertions {
     private FileAssertions() {
     }
 
-    public static void fileExists(@NotNull String filePath) {
+    public static void assertFileExists(@NotNull String filePath) {
         MultipleAttemptInvocationWrapper.repeatInvocation(assertInvocation(FILE_EXISTS), () -> fileShouldExist(Paths.get(filePath)));
     }
 
-    public static void fileExistsWithTimeout(@NotNull String filePath, @NotNull Duration duration) {
+    public static void assertFileExistsWithTimeout(@NotNull String filePath, @NotNull Duration duration) {
         MultipleAttemptInvocationWrapper.repeatInvocation(assertInvocation(FILE_EXISTS), () -> fileShouldExist(Paths.get(filePath)), duration);
     }
 
-    public static void fileMissing(@NotNull String filePath) {
+    public static void assertFileMissing(@NotNull String filePath) {
         MultipleAttemptInvocationWrapper.repeatInvocation(assertInvocation(FILE_MISSING), () -> fileShouldBeMissing(Paths.get(filePath)));
     }
 
-    public static void fileMissingWithTimeout(@NotNull String filePath, @NotNull Duration duration) {
+    public static void assertFileMissingWithTimeout(@NotNull String filePath, @NotNull Duration duration) {
         MultipleAttemptInvocationWrapper.repeatInvocation(assertInvocation(FILE_MISSING), () -> fileShouldBeMissing(Paths.get(filePath)), duration);
     }
 

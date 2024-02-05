@@ -9,16 +9,15 @@ import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.invocation.timeouts.TimeoutsService;
 import io.perfeccionista.framework.invocation.timeouts.type.RepeatInvocationDelayTimeout;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.function.Supplier;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.INCORRECT_INVOCATION_RUNNER_LOGIC;
 import static io.perfeccionista.framework.utils.ThreadUtils.sleep;
-import static java.lang.String.format;
 
 public class MobileAllureCheckInvocationRunner implements InvocationRunner {
     private static final Logger logger = LoggerFactory.getLogger(MobileAllureCheckInvocationRunner.class);
@@ -60,7 +59,7 @@ public class MobileAllureCheckInvocationRunner implements InvocationRunner {
     }
 
     protected void logInvocationExecution(InvocationInfo name, long invocationStartTime, String status) {
-        logger.info(() -> name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> " + status);
+        logger.info(name.toString() + ": " + ((System.nanoTime() - invocationStartTime)/1_000_000) + " ms -> " + status);
     }
 
     protected void processException(PerfeccionistaException exception) {

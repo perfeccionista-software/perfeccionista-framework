@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface DataSourceServiceConfiguration extends ServiceConfiguration {
 
-    Map<String, DataSource<?, ?>> getDataSources();
-
     Optional<DataSource<?, ?>> getDefaultDataSource(Map<String, DataSource<?, ?>> dataSources);
+
+    Map<String, DataSource<?, ?>> getNamedDataSources();
 
 }

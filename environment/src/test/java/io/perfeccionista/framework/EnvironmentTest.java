@@ -1,5 +1,6 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import io.perfeccionista.framework.exceptions.RegisterDuplicate.RegisterDuplicateException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,14 +29,13 @@ class EnvironmentTest extends AbstractParallelTest {
     void notNullArgumentsTest() {
         Environment environment = new Environment(new DefaultEnvironmentConfiguration());
         assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> environment.register(null, mock(TestAdditionProvider2.class))),
-                () -> assertThrows(IllegalArgumentException.class, () -> environment.register(TestAdditionProvider2.class, null)),
-                () -> assertThrows(IllegalArgumentException.class, () -> environment.getService(null)),
-                () -> assertThrows(IllegalArgumentException.class, () -> environment.checkEnvironmentConfiguration(null)),
-                () -> assertThrows(IllegalArgumentException.class, () -> environment.initEnvironment(null)),
-                () -> assertThrows(IllegalArgumentException.class, () ->
+                () -> assertThrows(PreconditionViolationException.class, () -> environment.register(null, mock(TestAdditionProvider2.class))),
+                () -> assertThrows(PreconditionViolationException.class, () -> environment.register(TestAdditionProvider2.class, null)),
+                () -> assertThrows(PreconditionViolationException.class, () -> environment.getService(null)),
+                () -> assertThrows(PreconditionViolationException.class, () -> environment.initEnvironment(null)),
+                () -> assertThrows(PreconditionViolationException.class, () ->
                         environment.initService(null, mock(ServiceConfiguration.class))),
-                () -> assertThrows(IllegalArgumentException.class, () ->
+                () -> assertThrows(PreconditionViolationException.class, () ->
                         environment.initService(TestAdditionProvider1.class, null))
         );
     }
@@ -67,10 +67,10 @@ class EnvironmentTest extends AbstractParallelTest {
         Environment environment = new Environment(new DefaultEnvironmentConfiguration());
         assertAll(
                 // нельзя регистрировать провайдер по ключу null
-                () -> assertThrows(IllegalArgumentException.class, () ->
+                () -> assertThrows(PreconditionViolationException.class, () ->
                         environment.register(null, mock(TestAdditionProvider1.class))),
                 // нельзя регистрировать null вместо экземпляра провайдера
-                () -> assertThrows(IllegalArgumentException.class, () ->
+                () -> assertThrows(PreconditionViolationException.class, () ->
                         environment.register(TestAdditionProvider1.class, null)),
                 // экземпляр провайдера должен быть совместим с классом ключа по которому он регистрируется
                 () -> assertThrows(ClassCastException.class, () ->
@@ -87,9 +87,9 @@ class EnvironmentTest extends AbstractParallelTest {
     @Test
     void threadLocalEnvironmentTest() {
         Environment environment = new Environment(new DefaultEnvironmentConfiguration());
-        environment.setEnvironmentForCurrentThread();
+        Environment.setForCurrentThread(environment);
         Assertions.assertEquals(environment, Environment.INSTANCES.get());
-        Assertions.assertEquals(Optional.of(environment), Environment.get());
+        Assertions.assertTrue(Environment.existForCurrentThread());
     }
 
     static abstract class TestAdditionProvider1 implements Service {}
