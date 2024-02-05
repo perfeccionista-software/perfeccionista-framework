@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.exceptions.attachments;
 
+import io.perfeccionista.framework.preconditions.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,7 @@ public abstract class AttachmentEntry<T> {
     private final T content;
 
     protected AttachmentEntry(@NotNull String name, @Nullable T content) {
+        Preconditions.notNull(name, "Attachment entry name must not be null");
         this.created = LocalDateTime.now();
         this.name = name;
         this.content = content;

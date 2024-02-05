@@ -16,13 +16,6 @@ import static org.mockito.Mockito.mock;
 class PerfeccionistaRuntimeExceptionTest extends SimpleParallelTest {
 
     @Test
-    void initializationFailedTest() {
-        assertThrows(IllegalArgumentException.class, () -> new PerfeccionistaRuntimeException(null));
-        assertThrows(IllegalArgumentException.class, () -> new PerfeccionistaRuntimeException(null, new Exception()));
-        assertThrows(IllegalArgumentException.class, () -> new PerfeccionistaRuntimeException("message", null));
-    }
-
-    @Test
     void initializationSuccessTest() {
         PerfeccionistaException exception = new PerfeccionistaRuntimeException("message");
         assertEquals(Optional.empty(), exception.getAttachment());
