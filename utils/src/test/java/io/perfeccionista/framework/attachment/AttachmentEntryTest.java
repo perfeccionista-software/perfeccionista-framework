@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.attachment;
 
+import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +16,7 @@ final class AttachmentEntryTest extends SimpleParallelTest {
 
     @Test
     void initializationFailedTest() {
-        assertThrows(IllegalArgumentException.class, () -> new TestAttachmentEntry(null, null));
+        assertThrows(PreconditionViolationException.class, () -> new TestAttachmentEntry(null, null));
     }
 
         @Test
@@ -33,7 +34,7 @@ final class AttachmentEntryTest extends SimpleParallelTest {
 
     @Test
     void typifiedAttachmentEntryInitializationFailedTest() {
-        assertThrows(IllegalArgumentException.class, () -> new TypifiedAttachmentEntry(null, null));
+        assertThrows(PreconditionViolationException.class, () -> new TypifiedAttachmentEntry(null, null));
     }
 
         @Test
@@ -46,23 +47,29 @@ final class AttachmentEntryTest extends SimpleParallelTest {
         }
 
     private static class TestAttachmentEntry extends AttachmentEntry<Object> {
+
         public TestAttachmentEntry(@NotNull String entryName, @Nullable Object entryObject) {
             super(entryName, entryObject);
         }
+
         @Override
         public String getDescription() {
             return "Test attachment entry";
         }
+
     }
 
     private static class TypifiedAttachmentEntry extends AttachmentEntry<String> {
+
         public TypifiedAttachmentEntry(@NotNull String entryName, @Nullable String entryObject) {
             super(entryName, entryObject);
         }
+
         @Override
         public String getDescription() {
             return "Typified attachment entry";
         }
+
     }
 
 }

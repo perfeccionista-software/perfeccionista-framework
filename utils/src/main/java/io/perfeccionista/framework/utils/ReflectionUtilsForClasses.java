@@ -298,6 +298,9 @@ public final class ReflectionUtilsForClasses {
     public static <T> Deque<Class<? extends T>> findInheritedClasses(@NotNull Class<T> ancestorClass,
                                                                      @NotNull Class<? extends T> inheritorClass,
                                                                      @NotNull Order order) {
+        Preconditions.notNull(ancestorClass, "Ancestor class must not be null");
+        Preconditions.notNull(inheritorClass, "Inheritor class must not be null");
+        Preconditions.notNull(order, "Order must not be null");
         Deque<Class<? extends T>> classChain = new ArrayDeque<>();
         Class<?> processedClass = inheritorClass;
         while (ancestorClass.isAssignableFrom(processedClass)) {
@@ -344,6 +347,9 @@ public final class ReflectionUtilsForClasses {
                                                                               @NotNull Class<T> ancestorClass,
                                                                               @NotNull Class<? extends T> inheritorClass,
                                                                               @NotNull Order order) {
+        Preconditions.notNull(ancestorClass, "Ancestor class must not be null");
+        Preconditions.notNull(inheritorClass, "Inheritor class must not be null");
+        Preconditions.notNull(order, "Order must not be null");
         Class<?>[] inheritedInterfaces = inheritorClass.getInterfaces();
         for (Class<?> inheritedInterface : inheritedInterfaces) {
             if (ancestorClass.isAssignableFrom(inheritedInterface) && !inheritedInterfacesCollector.contains(inheritedInterface)) {
@@ -399,7 +405,5 @@ public final class ReflectionUtilsForClasses {
             classesByPackage.put(packageName, classesForUris);
         }
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.attachment;
 
+import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
 import org.junit.jupiter.api.Test;
@@ -24,11 +25,11 @@ final class AttachmentTest extends SimpleParallelTest {
     @Test
     void notNullArgumentsTest() {
         Attachment attachment = Attachment.empty();
-        assertThrows(IllegalArgumentException.class, () -> attachment.addLastAttachmentEntry(null));
-        assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntriesByType(null));
-        assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntry(null, "name"));
-        assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntry(AttachmentEntry.class, null));
-        assertThrows(IllegalArgumentException.class, () -> attachment.getAttachmentEntry(null, null));
+        assertThrows(PreconditionViolationException.class, () -> attachment.addLastAttachmentEntry(null));
+        assertThrows(PreconditionViolationException.class, () -> attachment.getAttachmentEntriesByType(null));
+        assertThrows(PreconditionViolationException.class, () -> attachment.getAttachmentEntry(null, "name"));
+        assertThrows(PreconditionViolationException.class, () -> attachment.getAttachmentEntry(AttachmentEntry.class, null));
+        assertThrows(PreconditionViolationException.class, () -> attachment.getAttachmentEntry(null, null));
     }
 
 }

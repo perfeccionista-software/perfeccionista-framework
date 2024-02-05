@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.exceptions.attachments;
 
+import io.perfeccionista.framework.preconditions.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
@@ -38,6 +39,7 @@ public class Attachment {
     }
 
     public Attachment setMainAttachmentEntry(@NotNull TextAttachmentEntry entry) {
+        Preconditions.notNull(entry, "Attachment entry must not be null");
         this.mainAttachmentEntry = entry;
         return this;
     }
@@ -47,11 +49,13 @@ public class Attachment {
     }
 
     public Attachment addFirstAttachmentEntry(@NotNull AttachmentEntry<?> entry) {
+        Preconditions.notNull(entry, "Attachment entry must not be null");
         entries.addFirst(entry);
         return this;
     }
 
     public Attachment addLastAttachmentEntry(@NotNull AttachmentEntry<?> entry) {
+        Preconditions.notNull(entry, "Attachment entry must not be null");
         entries.addLast(entry);
         return this;
     }
@@ -62,11 +66,14 @@ public class Attachment {
 
     @SuppressWarnings("unchecked")
     public <T extends AttachmentEntry<?>> Stream<T> getAttachmentEntriesByType(@NotNull Class<T> entryType) {
+        Preconditions.notNull(entryType, "Attachment entry type must not be null");
         return entries.stream().filter(entry -> entry.getClass().equals(entryType)).map(entry -> (T) entry);
     }
 
     @SuppressWarnings("unchecked")
     public <T extends AttachmentEntry<?>> Optional<T> getAttachmentEntry(@NotNull Class<T> entryType, @NotNull String entryName) {
+        Preconditions.notNull(entryType, "Attachment entry type must not be null");
+        Preconditions.notNull(entryName, "Attachment entry name must not be null");
         return entries.stream()
                 .filter(entry -> entry.getClass().equals(entryType))
                 .filter(entry -> entry.getName().equals(entryName))

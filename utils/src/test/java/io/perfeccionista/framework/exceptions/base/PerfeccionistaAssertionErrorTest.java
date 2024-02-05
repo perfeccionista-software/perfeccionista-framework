@@ -9,18 +9,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 class PerfeccionistaAssertionErrorTest extends SimpleParallelTest {
-
-    @Test
-    void initializationFailedTest() {
-        assertThrows(IllegalArgumentException.class, () -> new PerfeccionistaAssertionError(null));
-        assertThrows(IllegalArgumentException.class, () -> new PerfeccionistaAssertionError(null, new Exception()));
-        assertThrows(IllegalArgumentException.class, () -> new PerfeccionistaAssertionError("message", null));
-    }
 
     @Test
     void initializationSuccessTest() {

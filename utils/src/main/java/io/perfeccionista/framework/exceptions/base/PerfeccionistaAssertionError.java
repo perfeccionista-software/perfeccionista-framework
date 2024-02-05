@@ -4,6 +4,7 @@ import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentProcessor;
 import io.perfeccionista.framework.exceptions.attachments.DefaultAttachmentProcessor;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
