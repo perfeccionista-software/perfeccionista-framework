@@ -26,7 +26,7 @@ public final class StashDataSource implements DataStorage<String, Object> {
     @Override
     public @Nullable String getString(@NotNull String key) {
         Object result = get(key);
-        return result == null ? "null" : result.toString();
+        return result == null ? "" : result.toString();
     }
 
     @Override

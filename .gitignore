@@ -7,5 +7,6 @@
 **/build
 **/node_modules
 **/allure-results
+**/.idea
 # Files
 !/.idea/icon.png

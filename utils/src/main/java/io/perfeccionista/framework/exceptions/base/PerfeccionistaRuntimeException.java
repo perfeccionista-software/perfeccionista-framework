@@ -23,7 +23,6 @@ public class PerfeccionistaRuntimeException extends RuntimeException implements 
 
     private AttachmentProcessor processor = new DefaultAttachmentProcessor();
     private Attachment attachment = null;
-    private String attachmentsDescription = "";
     private boolean processed = false;
     private boolean service = false;
 
@@ -112,19 +111,14 @@ public class PerfeccionistaRuntimeException extends RuntimeException implements 
         return this;
     }
 
-    public PerfeccionistaRuntimeException prepareAttachmentDescription() {
-        if (Objects.nonNull(attachment)) {
-            this.attachmentsDescription = processor.processAttachment(attachment);
-        }
-        return this;
-    }
-
     public LocalDateTime getExceptionTimestamp() {
         return exceptionTimestamp;
     }
 
     public String getAttachmentDescription() {
-        return attachmentsDescription;
+        return Objects.nonNull(attachment)
+                ? processor.processAttachment(attachment)
+                : "";
     }
 
     @Override

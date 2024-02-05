@@ -6,6 +6,7 @@ import io.perfeccionista.framework.invocation.runner.EmptyInvocationRunner;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoNameFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoStatisticsFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationRunner;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
@@ -20,7 +21,15 @@ public class InvocationService implements Service {
     protected InvocationServiceConfiguration configuration = null;
 
     @Override
+    public void init(@NotNull Environment environment) {
+        Preconditions.notNull(environment, "Environment must not be null");
+        this.environment = environment;
+    }
+
+    @Override
     public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
+        Preconditions.notNull(environment, "Environment must not be null");
+        Preconditions.notNull(configuration, "Service configuration must not be null");
         this.environment = environment;
         this.configuration = validate(configuration);
     }

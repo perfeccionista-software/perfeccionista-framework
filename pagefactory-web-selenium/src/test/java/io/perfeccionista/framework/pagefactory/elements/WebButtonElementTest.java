@@ -249,12 +249,12 @@ class WebButtonElementTest extends AbstractWebSeleniumParallelTest {
                 .should(beDisplayed())
                 .should(haveText(stringEmpty()));
         elementsPage.buttonForHover()
-                .hoverTo(true);
+                .hoverTo();
         elementsPage.visibleLink()
                 .should(bePresent())
                 .should(beDisplayed())
                 .should(haveText("Visible Link"))
-                .hoverTo(false)
+                .hoverTo()
                 .click();
         elementsPage.visibleLinkText()
                 .should(beDisplayed())

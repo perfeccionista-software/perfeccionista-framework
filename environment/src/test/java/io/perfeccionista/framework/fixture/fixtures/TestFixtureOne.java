@@ -16,12 +16,7 @@ public class TestFixtureOne implements Fixture<Integer, Boolean> {
 
     @Override
     public @NotNull FixtureTearDownResult<Boolean> tearDown() {
-        return FixtureTearDownResult.of(true)
-                .setResultProcessor(result -> {
-                    if (!result) {
-                        throw new RuntimeException("Fixture tearDown result is not true");
-                    }
-                });
+        return FixtureTearDownResult.of(true);
     }
 
 }

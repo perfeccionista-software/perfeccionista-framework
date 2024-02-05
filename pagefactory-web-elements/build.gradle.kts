@@ -1,5 +1,5 @@
-dependencies {
-
-    api(project(":pagefactory-web-api"))
-
-}
+//dependencies {
+//
+//    api(project(":pagefactory-web-api"))
+//
+//}

@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.value.processor;
 
+import io.perfeccionista.framework.preconditions.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,10 +19,13 @@ public final class Token {
     }
 
     public static Token of(@NotNull TokenType type, int position) {
+        Preconditions.notNull(type, "Token type must not be null");
         return new Token(type, "", position);
     }
 
     public static Token of(@NotNull TokenType type, @NotNull String content, int position) {
+        Preconditions.notNull(type, "Token type must not be null");
+        Preconditions.notNull(content, "Token content must not be null");
         return new Token(type, content, position);
     }
 

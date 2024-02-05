@@ -1,5 +1,6 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import io.perfeccionista.framework.utils.EnvironmentLogger;
 import org.junit.jupiter.api.Test;
 
@@ -21,14 +22,28 @@ class EnvironmentLoggerTest extends AbstractParallelTest {
      }
 
     @Test
+    void initializationWithTestNameSuccessTest() {
+        EnvironmentLogger environmentLogger = EnvironmentLogger.of(
+                new DefaultEnvironmentConfiguration(),
+                this.getClass().getCanonicalName() + "#initializationWithTestNameSuccessTest"
+        );
+        String environmentDescription = environmentLogger.toString();
+        assertAll(
+                () -> assertNotNull(environmentDescription),
+                () -> assertTrue(environmentDescription.contains("io.perfeccionista.framework.Environment")),
+                () -> assertTrue(environmentDescription.contains("Environment for test [io.perfeccionista.framework.EnvironmentLoggerTest#initializationWithTestNameSuccessTest]"))
+        );
+    }
+
+    @Test
     void initializationFailedTest() {
-        assertThrows(IllegalArgumentException.class, () -> EnvironmentLogger.of(null));
+        assertThrows(PreconditionViolationException.class, () -> EnvironmentLogger.of(null));
     }
 
     @Test
     void notNullArgumentsTest() {
         EnvironmentLogger environmentLogger = EnvironmentLogger.of(new DefaultEnvironmentConfiguration());
-        assertThrows(IllegalArgumentException.class, () -> environmentLogger.addServiceRecord(null, 0, 0));
+        assertThrows(PreconditionViolationException.class, () -> environmentLogger.addServiceRecord(null, 0, 0));
     }
 
 }

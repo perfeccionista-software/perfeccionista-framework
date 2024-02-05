@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class FixtureServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
-    void fixtureServiceInitializationTest(Environment environment) {
-        FixtureService fixtureService = environment.getService(FixtureService.class);
+    void fixtureServiceInitializationTest(FixtureService fixtureService) {
         assertAll(
                 () -> assertNotNull(fixtureService),
                 () -> assertEquals(3, fixtureService.stream().count())

@@ -30,6 +30,10 @@ public class Values {
         return getValueService().objectEquals(expected);
     }
 
+    public static ObjectValue objectSame(@NotNull Object expected) {
+        return getValueService().objectSame(expected);
+    }
+
     public static Object objectProcess(@NotNull String expression) {
         return getValueService().objectProcess(expression);
     }
@@ -177,7 +181,7 @@ public class Values {
     // Get service
 
     private static ValueService getValueService() {
-        return Environment.getCurrent().getService(ValueService.class);
+        return Environment.getForCurrentThread().getService(ValueService.class);
     }
 
 }

@@ -3,120 +3,99 @@ package io.perfeccionista.framework;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
-import io.perfeccionista.framework.service.ServiceConfiguration;
 import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Modifier;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.perfeccionista.framework.Environment.PERFECCIONISTA_PROPERTIES_FILE;
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
-import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.loadClass;
 
 public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
 
-    protected static final String PERFECCIONISTA_PROPERTIES_FILE = "perfeccionista.properties";
-    protected static final String SERVICE_PROPERTY_PREFIX = "perfeccionista.service.";
+    protected static final String SERVICE_SCAN_PACKAGES_PROPERTY = "perfeccionista.services.scanPackages";
 
-    protected static final String SCAN_PACKAGE_PROPERTY = "perfeccionista.scanPackages";
-    protected static final String DEFAULT_PACKAGE_TO_SCAN = "io.perfeccionista.framework";
+    protected Map<Class<? extends Service>, ConfiguredServiceHolder> serviceConfigurationsToAddOrOverride = new HashMap<>();
 
-    protected Properties perfeccionistaProperties;
-    protected Properties systemProperties;
+    protected static volatile boolean cacheReady = false;
+    protected static Map<Class<? extends Service>, ConfiguredServiceHolder> cachedServiceConfigurations = new HashMap<>();
+    protected static Properties perfeccionistaProperties;
+    protected static Properties systemProperties;
 
-    public DefaultEnvironmentConfiguration() {
-        readProperties();
+    @Override
+    public void addOrOverrideServiceConfiguration(@NotNull ConfiguredServiceHolder configuredServiceHolder) {
+        this.serviceConfigurationsToAddOrOverride.put(configuredServiceHolder.getServiceClass(), configuredServiceHolder);
     }
 
     @Override
-    public @NotNull Map<Class<? extends Service>, ConfiguredServiceHolder> getServices() {
-        // Сканируем все заданные пакеты (дефолтный и дополнительные) и находим сервисы
-        Map<Class<? extends Service>, ConfiguredServiceHolder> services = findAllServices()
-                .entrySet().stream()
-                .map(entry -> new SimpleEntry<>(entry.getKey(), ConfiguredServiceHolder.of(entry.getKey(), entry.getValue())))
-                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-        processProperties(perfeccionistaProperties).forEach(services::put);
-        processProperties(systemProperties).forEach(services::put);
-        return services;
+    public @NotNull Set<ConfiguredServiceHolder> getServiceConfigurations() {
+        Map<Class<? extends Service>, ConfiguredServiceHolder> services = new HashMap<>();
+        synchronized (DefaultEnvironmentConfiguration.class) {
+            if (!cacheReady) {
+                readProperties();
+                findAllServices().forEach(serviceConfiguration ->
+                        cachedServiceConfigurations.put(serviceConfiguration.getServiceClass(), serviceConfiguration));
+                cacheReady = true;
+            }
+        }
+        services.putAll(cachedServiceConfigurations);
+        services.putAll(serviceConfigurationsToAddOrOverride);
+        return new HashSet<>(services.values());
     }
 
-    @Override
-    public @NotNull Set<String> getScanPackages() {
-        if (systemProperties.containsKey(SCAN_PACKAGE_PROPERTY)) {
-            List<String> packages = Arrays.asList(systemProperties.getProperty(SCAN_PACKAGE_PROPERTY).split(","));
-            packages.add(DEFAULT_PACKAGE_TO_SCAN);
-            return validatePackageSet(new HashSet<>(packages));
-        }
-        if (perfeccionistaProperties.containsKey(SCAN_PACKAGE_PROPERTY)) {
-            List<String> packages = Arrays.asList(perfeccionistaProperties.getProperty(SCAN_PACKAGE_PROPERTY).split(","));
-            packages.add(DEFAULT_PACKAGE_TO_SCAN);
-            return validatePackageSet(new HashSet<>(packages));
-        }
-
-        return new HashSet<>(Arrays.asList(DEFAULT_PACKAGE_TO_SCAN));
+    protected void readProperties() {
+        perfeccionistaProperties = FileUtils.readOptionalPropertyFileFromClasspath(PERFECCIONISTA_PROPERTIES_FILE)
+                .orElse(new Properties());
+        systemProperties = System.getProperties();
     }
 
-    protected Map<Class<? extends Service>, Class<? extends ServiceConfiguration>> findAllServices() {
-        Set<Class<? extends Service>> serviceClasses = findAllClasses(getScanPackages(), Service.class).stream()
+    protected @NotNull Set<ConfiguredServiceHolder> findAllServices() {
+        Set<Class<? extends Service>> serviceClasses = findAllClasses(getServiceScanPackages(), Service.class).stream()
                 .filter(serviceClass -> !Modifier.isAbstract(serviceClass.getModifiers())
                         && !serviceClass.isInterface()
                         && !serviceClass.isEnum())
                 .collect(Collectors.toSet());
-
-        Map<Class<? extends Service>, Class<? extends ServiceConfiguration>> servicesWithDefaultConfiguration = new HashMap<>();
+        Map<Class<? extends Service>, ConfiguredServiceHolder> servicesWithDefaultConfiguration = new HashMap<>();
         for (Class<? extends Service> serviceClass : serviceClasses) {
-            getDefaultConfiguration(serviceClass).ifPresent(configurationClass ->
-                    servicesWithDefaultConfiguration.put(serviceClass, configurationClass));
+            ConfiguredServiceHolder serviceHolder = resolveDefaultServiceConfiguration(serviceClass);
+            servicesWithDefaultConfiguration.put(serviceClass, serviceHolder);
         }
-
-        return servicesWithDefaultConfiguration;
+        return new HashSet<>(servicesWithDefaultConfiguration.values());
     }
 
-    protected DefaultEnvironmentConfiguration readProperties() {
-        perfeccionistaProperties = FileUtils.readOptionalPropertyFileFromClasspath(PERFECCIONISTA_PROPERTIES_FILE)
-                .orElse(new Properties());
-        systemProperties = System.getProperties();
-        return this;
-    }
-
-    protected Map<Class<? extends Service>, ConfiguredServiceHolder> processProperties(@Nullable Properties properties) {
-        if (Objects.isNull(properties)) {
-            return new HashMap<>();
+    protected @NotNull Set<String> getServiceScanPackages() {
+        // Переменная окружения имеет самый высокий приоритет
+        if (systemProperties.containsKey(SERVICE_SCAN_PACKAGES_PROPERTY)) {
+            List<String> packages = Arrays.asList(systemProperties.getProperty(SERVICE_SCAN_PACKAGES_PROPERTY).split(","));
+            return validatePackageSet(new HashSet<>(packages));
         }
-        return properties.entrySet().stream()
-                .map(entry -> new SimpleEntry<>(entry.getKey().toString(), entry.getValue().toString()))
-                .filter(entry -> entry.getKey().startsWith(SERVICE_PROPERTY_PREFIX))
-                .map(entry -> {
-                    String key = entry.getKey().replaceAll(SERVICE_PROPERTY_PREFIX, "");
-                    Class<? extends Service> serviceClass = loadClass(key, Service.class);
-                    String value = entry.getValue();
-                    if ("disabled".equalsIgnoreCase(value)) {
-                        return new SimpleEntry<>(serviceClass, ConfiguredServiceHolder.disabled(serviceClass));
-                    }
-                    Class<? extends ServiceConfiguration> serviceConfigurationClass = loadClass(value, ServiceConfiguration.class);
-                    return new SimpleEntry<>(serviceClass, ConfiguredServiceHolder.of(serviceClass, serviceConfigurationClass));
-                }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        // Если переменная окружения не задана, то ищем переменную заданную в свойствах проекта
+        if (perfeccionistaProperties.containsKey(SERVICE_SCAN_PACKAGES_PROPERTY)) {
+            List<String> packages = Arrays.asList(perfeccionistaProperties.getProperty(SERVICE_SCAN_PACKAGES_PROPERTY).split(","));
+            return validatePackageSet(new HashSet<>(packages));
+        }
+        // Если она не задана, то используется базовый набор пакетов для сканирования
+        return new HashSet<>(Arrays.asList("io.perfeccionista.framework.value", "io.perfeccionista.framework.datasource", "io.perfeccionista.framework.fixture"));
     }
 
-    protected Optional<Class<? extends ServiceConfiguration>> getDefaultConfiguration(Class<? extends Service> serviceClass) {
+    protected ConfiguredServiceHolder resolveDefaultServiceConfiguration(Class<? extends Service> serviceClass) {
         DefaultServiceConfiguration defaultConfiguration = serviceClass.getAnnotation(DefaultServiceConfiguration.class);
         if (Objects.nonNull(defaultConfiguration)) {
-            return Optional.of(defaultConfiguration.value());
+            return ConfiguredServiceHolder.of(serviceClass, defaultConfiguration.value())
+                    .setOrder(defaultConfiguration.order());
+        } else {
+            return ConfiguredServiceHolder.of(serviceClass);
         }
-        return Optional.empty();
     }
 
 }

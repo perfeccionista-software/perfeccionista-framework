@@ -1,10 +1,10 @@
 package io.perfeccionista.framework.utils.models;
 
 import io.perfeccionista.framework.exceptions.PreconditionViolation;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import io.perfeccionista.framework.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -81,7 +81,7 @@ public class ClasspathScanner {
             Path baseDir = closeablePath.getPath();
             return findClassesForPath(baseDir, basePackageName, classFilter);
         } catch (IOException | URISyntaxException e) {
-            logger.warn(() -> String.format("Error scanning files for URI '%s'", baseUri), e);
+            logger.warn(String.format("Error scanning files for URI '%s'", baseUri), e);
             return emptyList();
         }
     }
@@ -96,7 +96,7 @@ public class ClasspathScanner {
                     classFile -> processClassFileSafely(baseDir, basePackageName, classFilter, classFile, classes::add)));
         }
         catch (IOException e) {
-            logger.warn(() -> String.format("I/O error scanning files in '%s'", baseDir), e);
+            logger.warn(String.format("I/O error scanning files in '%s'", baseDir), e);
         }
         return classes;
     }
@@ -112,7 +112,7 @@ public class ClasspathScanner {
             return uris;
         }
         catch (Exception e) {
-            logger.warn(() -> String.format("Error reading URIs from class loader for base package '%s'", basePackageName), e);
+            logger.warn(String.format("Error reading URIs from class loader for base package '%s'", basePackageName), e);
             return emptyList();
         }
     }
@@ -128,14 +128,14 @@ public class ClasspathScanner {
                             .ifPresent(classConsumer);
                 } catch (InternalError internalError) {
                     if (MALFORMED_CLASS_NAME_ERROR_MESSAGE.equals(internalError.getMessage())) {
-                        logger.debug(() -> String.format("The class loaded from path '%s' has a malformed class name '%s'", classFile, fullyQualifiedClassName));
+                        logger.debug(String.format("The class loaded from path '%s' has a malformed class name '%s'", classFile, fullyQualifiedClassName));
                     }
-                    logger.debug(() -> String.format("Failed to load class by path '%s'", classFile));
+                    logger.debug(String.format("Failed to load class by path '%s'", classFile));
                 }
             }
         } catch (Throwable t) {
             throwIfUnhandled(t);
-            logger.debug(() -> String.format("Failed to load class by path '%s'", classFile));
+            logger.debug(String.format("Failed to load class by path '%s'", classFile));
         }
     }
 

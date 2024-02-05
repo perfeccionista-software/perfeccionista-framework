@@ -1,16 +1,21 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.exceptions.EnvironmentAlreadyInitialized;
 import io.perfeccionista.framework.exceptions.EnvironmentNotInitialized;
 import io.perfeccionista.framework.exceptions.ServiceNotFound;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.utils.EnvironmentLogger;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_ALREADY_INITIALIZED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_INITIALIZED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_SERVICE_INITIALIZING_FAILED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_NOT_FOUND;
@@ -34,12 +40,12 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
  * {@link Environment} может содержать только один экземпляр {@link Service},
  * зарегистрированный по конкретному классу.
  *
- * Аннотация {@link UseEnvironment} указывает конфигурацию,
+ * Аннотация {@link SetEnvironmentConfiguration} указывает конфигурацию,
  * которую использует экземпляр {@link Environment}.
  * Конфигурация {@link EnvironmentConfiguration} должна иметь конструктор по умолчанию.
  *
  * Можно привязать текущий экземпляр {@link Environment} к потоку выполнения
- * теста через метод {@link Environment#setEnvironmentForCurrentThread()}
+ * теста через метод {@link Environment#setForCurrentThread(Environment)}}
  * Чтобы получить этот экзепляр в этом же потоке, необходимо использовать статический
  * метод {@link Environment#get()}
  *
@@ -53,44 +59,83 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 public class Environment {
     private static final Logger logger = LoggerFactory.getLogger(Environment.class);
 
+    public static final String PERFECCIONISTA_PROPERTIES_FILE = "perfeccionista.properties";
+
     protected static final ThreadLocal<Environment> INSTANCES = new ThreadLocal<>();
 
+    protected final String testName;
     protected final EnvironmentConfiguration configuration;
+    protected final Map<String, Object> relatedObjects = new HashMap<>();
     protected final Map<Class<? extends Service>, Service> services = new HashMap<>();
+
+    public Environment(@NotNull Class<? extends EnvironmentConfiguration> configurationClass,
+                       @Nullable String testName) {
+        this(newInstance(configurationClass), testName);
+    }
 
     /**
      * Экземпляр {@link Environment} создается во время инициализации
      * Наследники этого класса должны иметь такой же конструктор
      */
     public Environment(@NotNull Class<? extends EnvironmentConfiguration> configurationClass) {
-        this(newInstance(configurationClass));
+        this(newInstance(configurationClass), null);
     }
 
     /**
      * Экземпляр {@link Environment} создается во время инициализации
      * Наследники этого класса должны иметь такой же конструктор
      */
-    public Environment(@NotNull EnvironmentConfiguration configuration) {
+    public Environment(@NotNull EnvironmentConfiguration configuration,
+                       @Nullable String testName) {
+        Preconditions.notNull(configuration, "configuration must not be null");
+        this.testName = testName;
         this.configuration = configuration;
-        this.configuration.getLoggerClass()
-                .ifPresent(LoggerFactory::setLogger);
-        logger.config(() -> "Environment configuration check");
-        checkEnvironmentConfiguration(this.configuration);
-        logger.config(() -> "Environment configuration check success");
+//        logger.debug("Environment configuration check");
+//        checkEnvironmentConfiguration(this.configuration);
+//        logger.debug("Environment configuration check success");
+    }
+
+    public Environment(@NotNull EnvironmentConfiguration configuration) {
+        this(configuration, null);
     }
 
     public Environment init() {
-        logger.debug(() -> "Environment configuration initialization");
-        initEnvironment(configuration);
+        if (!this.services.isEmpty()) {
+            throw EnvironmentAlreadyInitialized.exception(ENVIRONMENT_ALREADY_INITIALIZED.getMessage());
+        }
+        logger.debug("Environment configuration initialization");
+        initEnvironment(configuration, testName);
         this.getServices().forEach(Service::beforeTest);
-        logger.debug(() -> "Environment configuration initialization success");
+        logger.debug("Environment configuration initialization success");
         return this;
     }
 
-    public void shutdown() {
-        logger.debug(() -> "Environment shutdown");
+    public Environment shutdown() {
+        logger.debug("Environment shutdown");
         this.getServices().forEach(Service::afterTest);
-        logger.debug(() -> "Environment shutdown success");
+        this.services.clear();
+        logger.debug("Environment shutdown success");
+        return this;
+    }
+
+    /**
+     * Используется для передачи в окружение теста информации о внешних объектах
+     * по отношению к тесту. Например, это может быть TestContext или ExtensionContext,
+     * если экземпляр Environment создается через Extension или другую сущность,
+     * внешнюю, по отношению к тесту.
+     * Эта информация может быть использована при инициализации сервисов.
+     * Добавление объектов для их использования при инициализации сервисов должно происходить
+     * ДО вызова метода Environment.init().
+     * @param relatedObject
+     * @return
+     */
+    public Environment addRelatedObject(@NotNull String name, @Nullable Object relatedObject) {
+        this.relatedObjects.put(name, relatedObject);
+        return this;
+    }
+
+    public Map<String, Object> getRelatedObjects() {
+        return Collections.unmodifiableMap(relatedObjects);
     }
 
     /**
@@ -102,6 +147,8 @@ public class Environment {
      * @return текущий экземпляр {@link Environment}
      */
     public Environment register(@NotNull Class<? extends Service> serviceClass, @NotNull Service service) {
+        Preconditions.notNull(serviceClass, "serviceClass must not be null");
+        Preconditions.notNull(service, "service must not be null");
         if (!serviceClass.isInstance(service)) {
             throw new ClassCastException(
                     SERVICE_REGISTER_CLASS_CAST.getMessage(service, serviceClass));
@@ -124,6 +171,7 @@ public class Environment {
      * не зарегистрировано экземпляров {@link Service}.
      */
     public @NotNull <T extends Service> T getService(@NotNull Class<T> serviceClass) {
+        Preconditions.notNull(serviceClass, "serviceClass must not be null");
         if (services.containsKey(serviceClass)) {
             return serviceClass.cast(services.get(serviceClass));
         }
@@ -131,6 +179,7 @@ public class Environment {
     }
 
     public @NotNull <T extends Service> Optional<T> getOptionalService(@NotNull Class<T> serviceClass) {
+        Preconditions.notNull(serviceClass, "serviceClass must not be null");
         if (services.containsKey(serviceClass)) {
             return Optional.of(serviceClass.cast(services.get(serviceClass)));
         }
@@ -159,96 +208,150 @@ public class Environment {
         return configuration;
     }
 
-    // ThreadLocal access point
+    // ThreadLocal
+
+    public static Environment createForCurrentThread(@NotNull Class<? extends EnvironmentConfiguration> configurationClass,
+                                                     @Nullable String testName) {
+        Preconditions.notNull(configurationClass, "Environment configuration class must not be null");
+        Environment environment = new Environment(configurationClass, testName);
+        INSTANCES.set(environment);
+        return environment;
+    }
 
     /**
-     * @return {@link Optional} который содержит экземпляр
-     * {@link Environment} для текущего {@link Thread}, если экземпляр был
-     * привязан к нему ранее.
-     * В противном случае, возвращает {@link Optional#empty()}
+     *
+     * @param configurationClass
+     * @return
      */
-    public static Optional<Environment> get() {
-        return Optional.ofNullable(INSTANCES.get());
+    public static Environment createForCurrentThread(@NotNull Class<? extends EnvironmentConfiguration> configurationClass) {
+        Preconditions.notNull(configurationClass, "Environment configuration class must not be null");
+        Environment environment = new Environment(configurationClass);
+        INSTANCES.set(environment);
+        return environment;
+    }
+
+    public static Environment createForCurrentThread(@NotNull EnvironmentConfiguration configuration,
+                                                     @Nullable String testName) {
+        Preconditions.notNull(configuration, "Environment configuration instance must not be null");
+        Environment environment = new Environment(configuration, testName);
+        INSTANCES.set(environment);
+        return environment;
+    }
+
+    /**
+     *
+     * @param configuration
+     * @return
+     */
+    public static Environment createForCurrentThread(@NotNull EnvironmentConfiguration configuration) {
+        Preconditions.notNull(configuration, "Environment configuration instance must not be null");
+        Environment environment = new Environment(configuration);
+        INSTANCES.set(environment);
+        return environment;
+    }
+
+    /**
+     */
+    public static boolean existForCurrentThread() {
+        return Objects.nonNull(INSTANCES.get());
     }
 
     /**
      * {@link Environment} для текущего {@link Thread}.
      * В противном случае, выбрасывает исключение {@link io.perfeccionista.framework.exceptions.EnvironmentNotInitialized.EnvironmentNotInitializedException}
      */
-    public static Environment getCurrent() {
-        return get().orElseThrow(() -> EnvironmentNotInitialized.exception(ENVIRONMENT_NOT_INITIALIZED.getMessage()));
+    public static Environment getForCurrentThread() {
+        return Optional.ofNullable(INSTANCES.get())
+                .orElseThrow(() -> EnvironmentNotInitialized.exception(ENVIRONMENT_NOT_INITIALIZED.getMessage()));
     }
 
     /**
      * Привязывает этот экземпляр {@link Environment} к потоку,
      * в котором он создан {@link Thread}
      */
-    public Environment setEnvironmentForCurrentThread() {
-        INSTANCES.set(this);
-        return this;
+    public static Environment setForCurrentThread(@NotNull Environment environment) {
+        Preconditions.notNull(environment, "Environment instance must not be null");
+        INSTANCES.set(environment);
+        return environment;
+    }
+
+    public static void finalizeForCurrentThread() {
+        getForCurrentThread()
+                .shutdown()
+                .removeForCurrentThread();
     }
 
     /**
      * Отвязывает этот экземпляр {@link Environment} от потока,
      * в котором он создан {@link Thread}
      */
-    public Environment removeEnvironmentForCurrentThread() {
+    public Environment removeForCurrentThread() {
         INSTANCES.remove();
         return this;
     }
 
     // Check and Initialization
 
-    /**
-     * TODO: На этот метод нужны тесты
-     * Этот метод выполняет проверки валидности конфигурации для инициализации {@link Environment}
-     */
-    protected void checkEnvironmentConfiguration(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        // TODO: Добавить необходимые проверки валидности
-    }
+//    /**
+//     * TODO: На этот метод нужны тесты
+//     * Этот метод выполняет проверки валидности конфигурации для инициализации {@link Environment}
+//     */
+//    protected void checkEnvironmentConfiguration(@NotNull EnvironmentConfiguration environmentConfiguration) {
+//        Preconditions.notNull(environmentConfiguration, "environmentConfiguration must not be null");
+//        // TODO: Добавить необходимые проверки валидности
+//    }
 
     /**
      * Этот метод отвечает за инициализацию всех провайдеров, описанных в конфигурации
      * @param environmentConfiguration конфигурация
      */
-    protected void initEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
-        EnvironmentLogger environmentLogger = EnvironmentLogger.of(environmentConfiguration);
+    protected void initEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration,
+                                   @Nullable String testName) {
+        Preconditions.notNull(environmentConfiguration, "environmentConfiguration must not be null");
+        EnvironmentLogger environmentLogger = EnvironmentLogger.of(environmentConfiguration, testName);
         environmentLogger.start();
 
-        environmentConfiguration.getServices()
-                .entrySet().stream()
-                .sorted(Comparator.comparingInt(entry -> entry.getValue().getOrder()))
-                .forEachOrdered(entry -> {
+        environmentConfiguration.getServiceConfigurations()
+                .stream()
+                .sorted(Comparator.comparingInt(ConfiguredServiceHolder::getOrder))
+                .forEachOrdered(serviceHolder -> {
                     long startTime = System.nanoTime();
-                    Class<? extends Service> serviceClass = entry.getKey();
-                    ConfiguredServiceHolder serviceHolder = entry.getValue();
+                    Class<? extends Service> serviceClass = serviceHolder.getServiceClass();
                     if (serviceHolder.isEnabled()) {
-                        Class<? extends ServiceConfiguration> serviceConfigurationClass = serviceHolder.getServiceConfigurationClass();
-                        if (Objects.isNull(serviceConfigurationClass)) {
-                            initService(serviceClass);
-                        } else {
+                        if (serviceHolder.isConfigured()) {
+                            Class<? extends ServiceConfiguration> serviceConfigurationClass = serviceHolder.getServiceConfigurationClass();
+                            // serviceConfigurationClass не может быть null
                             ServiceConfiguration serviceConfiguration = newInstance(serviceConfigurationClass);
                             initService(serviceClass, serviceConfiguration);
+                        } else {
+                            initService(serviceClass);
                         }
                     }
-                    environmentLogger.addServiceRecord(entry.getValue(), startTime, System.nanoTime());
+                    environmentLogger.addServiceRecord(serviceHolder, startTime, System.nanoTime());
                 });
 
         environmentLogger.finish();
-        logger.info(environmentLogger::toString);
+        environmentConfiguration.getEnvironmentAttachmentProcessor()
+                .process(TextAttachmentEntry.of("Environment configuration", environmentLogger.toString()));
+    }
+
+    protected void initEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
+        initEnvironment(environmentConfiguration, null);
     }
 
     protected void initService(@NotNull Class<? extends Service> serviceClass) {
+        Preconditions.notNull(serviceClass, "serviceClass must not be null");
         Service serviceInstance = newInstance(serviceClass);
-        serviceInstance.init(this, null);
+        serviceInstance.init(this);
         register(serviceClass, serviceInstance);
     }
 
     protected void initService(@NotNull Class<? extends Service> serviceClass,
                                @NotNull ServiceConfiguration serviceConfiguration) {
+        Preconditions.notNull(serviceClass, "serviceClass must not be null");
+        Preconditions.notNull(serviceConfiguration, "serviceConfiguration must not be null");
         try {
             Optional<Class<? extends Service>> customImplementation = serviceConfiguration.getImplementation();
-            // TODO: Проверить соответствие провайдера и конфигурации и привести их к <T>
             Class<? extends Service> serviceImplementation = customImplementation.orElse(serviceClass);
             Service serviceInstance = newInstance(serviceImplementation);
             serviceInstance.init(this, serviceConfiguration);

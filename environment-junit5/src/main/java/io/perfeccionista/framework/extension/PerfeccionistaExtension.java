@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.extension;
 
 import io.perfeccionista.framework.repeater.RepeatPolicyService;
-import io.perfeccionista.framework.value.ValueService;
+import io.perfeccionista.framework.service.ConfiguredServiceHolder;
+import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -13,13 +14,10 @@ import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 import org.junit.jupiter.api.extension.TestWatcher;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.TestExecutionResult;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.UseEnvironment;
 import io.perfeccionista.framework.exceptions.EnvironmentNotConfigured;
 import io.perfeccionista.framework.exceptions.RepeatPolicyInitialization;
 import io.perfeccionista.framework.exceptions.TestClassNotFound;
@@ -31,6 +29,8 @@ import io.perfeccionista.framework.repeater.iterators.NoRepeatTestTemplateIterat
 import io.perfeccionista.framework.repeater.iterators.RepeatIfTestTemplateIterator;
 import io.perfeccionista.framework.repeater.iterators.RepeatWhileTestTemplateIterator;
 import io.perfeccionista.framework.utils.ReflectionUtilsForClasses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -40,10 +40,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Spliterator;
 import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveEnvironmentConfiguration;
+import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveExternalServiceConfigurations;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
@@ -54,8 +56,6 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_CLASS_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_METHOD_NOT_FOUND;
 
-// TODO: Сделать возможным использование аннотаций @UseService() над тестовым классом или тестом
-// TODO: Сделать возможным пробрасывать любой зарегистрированный в Enviroment сервис отдельным аргументом
 public class PerfeccionistaExtension implements ParameterResolver, TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback,
         TestTemplateInvocationContextProvider, TestExecutionExceptionHandler, TestWatcher {
     private static final Logger logger = LoggerFactory.getLogger(PerfeccionistaExtension.class);
@@ -78,24 +78,11 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
                 .orElseThrow(() -> TestClassNotFound.exception(UNEXPECTED_TEST_CLASS_NOT_FOUND.getMessage()));
         Method testMethod = context.getTestMethod()
                 .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getMessage()));
-        // Ищем конфигурацию для Environment для тестового метода
-        Optional<Class<? extends EnvironmentConfiguration>> optionalTestMethodConfiguration = findEnvironmentConfiguration(testMethod);
-        if (optionalTestMethodConfiguration.isPresent()) {
-            Class<? extends EnvironmentConfiguration> testMethodConfiguration = optionalTestMethodConfiguration.get();
-            // Находим или создаем и устанавливаем Environment для конфигурации установленной над тестовым методом
-            resolveActiveEnvironmentForTestMethod(testMethodConfiguration);
-            return;
-        }
-        // Смотрим была ли для класса
-        Optional<Class<? extends EnvironmentConfiguration>> optionalTestClassConfiguration = findEnvironmentConfiguration(testClass);
-        if (optionalTestClassConfiguration.isPresent()) {
-            Class<? extends EnvironmentConfiguration> testClassConfiguration = optionalTestClassConfiguration.get();
-            // Находим или создаем и устанавливаем Environment для конфигурации установленной над тестовым классом
-            resolveActiveEnvironmentForTestMethod(testClassConfiguration);
-            return;
-        }
-        // Используем дефолтную
-        resolveActiveEnvironmentForTestMethod();
+        String testName = testClass.getCanonicalName() + "#" + testMethod.getName();
+
+        EnvironmentConfiguration environmentConfiguration = resolveEnvironmentConfiguration(testMethod, testClass);
+        Set<ConfiguredServiceHolder> externalServiceConfigurations = resolveExternalServiceConfigurations(testMethod, testClass);
+        resolveActiveEnvironment(environmentConfiguration, externalServiceConfigurations, context, testName);
     }
 
     @Override
@@ -103,7 +90,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
         environmentInstanceForCurrentThread.ifPresent(environment -> {
             environment.shutdown();
-            environment.removeEnvironmentForCurrentThread();
+            environment.removeForCurrentThread();
         });
         activeEnvironment.remove();
     }
@@ -112,8 +99,15 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        return Environment.class.isAssignableFrom(parameterContext.getParameter().getType())
-                || ValueService.class.isAssignableFrom(parameterContext.getParameter().getType());
+        if (Environment.class.isAssignableFrom(parameterContext.getParameter().getType())) {
+            return true;
+        }
+        Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
+        Environment environment = environmentInstanceForCurrentThread
+                .orElseThrow(() -> EnvironmentNotConfigured.exception(ENVIRONMENT_NOT_DECLARED.getErrorMessage()));
+        Class<?> parameterType = parameterContext.getParameter().getType();
+        return environment.getServiceClasses().stream()
+                .anyMatch(serviceClass -> serviceClass.getCanonicalName().equals(parameterType.getCanonicalName()));
     }
 
     /**
@@ -121,13 +115,17 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      */
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
+        // TODO: Возможны проблемы, если попробуют передать имплементацию Environment отличную по типу от типа параметра
         Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
         Environment environment = environmentInstanceForCurrentThread
                 .orElseThrow(() -> EnvironmentNotConfigured.exception(ENVIRONMENT_NOT_DECLARED.getErrorMessage()));
-        if (ValueService.class.isAssignableFrom(parameterContext.getParameter().getType())) {
-            return environment.getService(ValueService.class);
+        if (Environment.class.isAssignableFrom(parameterContext.getParameter().getType())) {
+            return environment;
         }
-        return environment;
+        Class<?> parameterType = parameterContext.getParameter().getType();
+        logger.debug("Test method parameter with type '" + parameterType.getCanonicalName() + "' resolved");
+        // Здесь не может быть параметра с отличным от Service типом, так как он проверяется в supportsParameter
+        return environment.getService((Class<? extends Service>) parameterType);
     }
 
     // Repeater methods
@@ -236,32 +234,9 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     // Методы необходимые для конфигурирования Environment
 
-    /**
-     * Метод возвращает конфигурацию, указанную над тестовым классом или над его предком,
-     * если она там есть
-     * @param testClass тестовый класс
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected Optional<Class<? extends EnvironmentConfiguration>> findEnvironmentConfiguration(Class<?> testClass) {
-        Class<?> processedClass = testClass;
-        while (!Object.class.equals(processedClass)) {
-            Optional<UseEnvironment> optionalAnnotation = findAnnotation(processedClass, UseEnvironment.class);
-            if (optionalAnnotation.isPresent()) {
-                return Optional.of(optionalAnnotation.get().value());
-            }
-            processedClass = processedClass.getSuperclass();
-        }
-        return Optional.empty();
-    }
 
-    /**
-     * Метод возвращает конфигурацию, указанную над тестовым методом, если она там есть
-     * @param testMethod тестовый метод
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected Optional<Class<? extends EnvironmentConfiguration>> findEnvironmentConfiguration(Method testMethod) {
-        return findAnnotation(testMethod, UseEnvironment.class).map(UseEnvironment::value);
-    }
+
+
 
     /**
      * Создаем экземпляр {@link Environment} используя полученную конфигурацию и тестовый класс
@@ -270,11 +245,12 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      * @return экземпляр {@link Environment}
      */
     @SuppressWarnings("WeakerAccess")
-    protected <T extends Environment> T createEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
+    protected <T extends Environment> T createEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration,
+                                                          @NotNull String testName) {
         Constructor<? extends Environment> constructor = ReflectionUtilsForClasses
-                .getConstructor(environmentConfiguration.getEnvironmentClass(), EnvironmentConfiguration.class);
+                .getConstructor(environmentConfiguration.getEnvironmentClass(), EnvironmentConfiguration.class, String.class);
         // noinspection unchecked
-        return (T) newInstance(constructor, environmentConfiguration);
+        return (T) newInstance(constructor, environmentConfiguration, testName);
     }
 
     /**
@@ -283,20 +259,15 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      * то он устанавливается в качестве активного, иначе создается новый экземпляр.
      * Выполняем beforeEach() для заданного теста
      */
-    protected void resolveActiveEnvironmentForTestMethod(Class<? extends EnvironmentConfiguration> configurationClass) {
-        Environment environmentInstance = createEnvironment(newInstance(configurationClass))
-                .setEnvironmentForCurrentThread()
+    protected void resolveActiveEnvironment(EnvironmentConfiguration environmentConfiguration,
+                                            Set<ConfiguredServiceHolder> externalServiceConfigurations,
+                                            ExtensionContext context,
+                                            String testName) {
+        externalServiceConfigurations.forEach(environmentConfiguration::addOrOverrideServiceConfiguration);
+        Environment environmentInstance = createEnvironment(environmentConfiguration, testName)
+                .addRelatedObject("Context", context)
                 .init();
-        activeEnvironment.set(environmentInstance);
-    }
-
-    /**
-     * Устанавливает для теста сконфигурированный экземпляр Environment, если он не зада явно над тестовым классом или методом
-     */
-    protected void resolveActiveEnvironmentForTestMethod() {
-        Environment environmentInstance = createEnvironment(resolveEnvironmentConfiguration())
-                .setEnvironmentForCurrentThread()
-                .init();
+        Environment.setForCurrentThread(environmentInstance);
         activeEnvironment.set(environmentInstance);
     }
 

@@ -1,7 +1,10 @@
 package io.perfeccionista.framework.service;
 
+import io.perfeccionista.framework.preconditions.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
 
 public final class ConfiguredServiceHolder {
 
@@ -16,12 +19,19 @@ public final class ConfiguredServiceHolder {
         this.serviceConfigurationClass = configuration;
     }
 
+    public static ConfiguredServiceHolder of(@NotNull Class<? extends Service> serviceClass) {
+        Preconditions.notNull(serviceClass, "Service class must not be null");
+        return new ConfiguredServiceHolder(serviceClass, null);
+    }
+
     public static ConfiguredServiceHolder of(@NotNull Class<? extends Service> serviceClass,
-                                             @NotNull Class<? extends ServiceConfiguration> configuration) {
+                                             @Nullable Class<? extends ServiceConfiguration> configuration) {
+        Preconditions.notNull(serviceClass, "Service class must not be null");
         return new ConfiguredServiceHolder(serviceClass, configuration);
     }
 
     public static ConfiguredServiceHolder disabled(@NotNull Class<? extends Service> serviceClass) {
+        Preconditions.notNull(serviceClass, "Service class must not be null");
         return new ConfiguredServiceHolder(serviceClass, null)
                 .disable();
     }
@@ -34,6 +44,10 @@ public final class ConfiguredServiceHolder {
     public ConfiguredServiceHolder setOrder(int order) {
         this.order = order;
         return this;
+    }
+
+    public boolean isConfigured() {
+        return Objects.nonNull(serviceConfigurationClass);
     }
 
     public @NotNull Class<? extends Service> getServiceClass() {
@@ -58,6 +72,23 @@ public final class ConfiguredServiceHolder {
 
     public @NotNull String getServiceConfigurationName() {
         return serviceConfigurationClass == null ? "null" : serviceConfigurationClass.getCanonicalName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ConfiguredServiceHolder that = (ConfiguredServiceHolder) o;
+        return serviceClass.equals(that.serviceClass);
+    }
+
+    @Override
+    public int hashCode() {
+        return serviceClass.hashCode();
     }
 
 }

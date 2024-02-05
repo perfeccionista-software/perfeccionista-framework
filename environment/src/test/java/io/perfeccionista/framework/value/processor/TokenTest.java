@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.value.processor;
 
 import io.perfeccionista.framework.AbstractParallelTest;
+import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -38,10 +39,10 @@ class TokenTest extends AbstractParallelTest {
     @Test
     void notNullArgumentsTest() {
         assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> Token.of(null, 0)),
-                () -> assertThrows(IllegalArgumentException.class, () -> Token.of(null, "DataSource", 0)),
-                () -> assertThrows(IllegalArgumentException.class, () -> Token.of(TokenType.VALUE, null, 0)),
-                () -> assertThrows(IllegalArgumentException.class, () -> Token.of(null, null, 0))
+                () -> assertThrows(PreconditionViolationException.class, () -> Token.of(null, 0)),
+                () -> assertThrows(PreconditionViolationException.class, () -> Token.of(null, "DataSource", 0)),
+                () -> assertThrows(PreconditionViolationException.class, () -> Token.of(TokenType.VALUE, null, 0)),
+                () -> assertThrows(PreconditionViolationException.class, () -> Token.of(null, null, 0))
         );
     }
 

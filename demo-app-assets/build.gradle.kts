@@ -1,5 +1,5 @@
-dependencies {
-
-    api(project(":pagefactory-web-selenium"))
-
-}
+//dependencies {
+//
+//    api(project(":pagefactory-web-selenium"))
+//
+//}

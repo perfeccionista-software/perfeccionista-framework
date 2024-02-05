@@ -25,6 +25,7 @@ public enum EnvironmentMessages implements Messages {
     INCORRECT_INVOCATION_RUNNER_LOGIC("Incorrect invocation runner logic"),
 
     DEFAULT_DATA_SOURCE_NOT_DECLARED("Default DataSource is not configured for DataSourceService"),
+    ENVIRONMENT_ALREADY_INITIALIZED("Environment instance has already been initialized for the current thread"),
     ENVIRONMENT_NOT_DECLARED("Environment is not configured for test class and test method"),
     ENVIRONMENT_NOT_INITIALIZED("Environment instance is not initialized for current thread"),
     ENVIRONMENT_SERVICE_INITIALIZING_FAILED("Environment service %s failed to initialize"),

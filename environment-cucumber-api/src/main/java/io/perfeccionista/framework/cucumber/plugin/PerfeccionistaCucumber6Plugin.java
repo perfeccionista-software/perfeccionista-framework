@@ -15,10 +15,9 @@ import io.cucumber.plugin.event.WriteEvent;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
-import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.utils.ReflectionUtilsForClasses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -165,7 +164,7 @@ public class PerfeccionistaCucumber6Plugin implements ConcurrentEventListener {
         Throwable throwable = event.getResult().getError();
         if (Objects.nonNull(throwable)) {
             if (throwable instanceof PerfeccionistaException) {
-                log.error(((PerfeccionistaException) throwable)::getAttachmentDescription);
+                log.error(((PerfeccionistaException) throwable).getAttachmentDescription());
             }
         }
 

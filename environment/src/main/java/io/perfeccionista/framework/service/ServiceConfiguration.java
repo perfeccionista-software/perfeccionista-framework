@@ -19,12 +19,4 @@ public interface ServiceConfiguration {
         return Optional.empty();
     }
 
-    /**
-     * TODO: JavaDoc
-     * @return
-     */
-    default int getPriority() {
-        return 0;
-    }
-
 }

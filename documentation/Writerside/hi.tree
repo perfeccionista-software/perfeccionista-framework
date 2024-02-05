@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="hi"
+                 name="Help Instance"
+                 start-page="PerfeccionistaEnvironment.md">
+
+    <toc-element topic="PerfeccionistaEnvironment.md">
+        <toc-element topic="Environment.md"/>
+        <toc-element topic="Exceptions.md">
+            <toc-element topic="Attachments.md"/>
+        </toc-element>
+        <toc-element topic="Service.md">
+        </toc-element>
+        <toc-element topic="Service-implementations.md">
+            <toc-element topic="DataSourceService.md"/>
+            <toc-element topic="DataConverterService.md"/>
+            <toc-element topic="FixtureService.md"/>
+            <toc-element topic="InvocationService.md"/>
+            <toc-element topic="TimeoutService.md"/>
+            <toc-element topic="ValueService.md"/>
+        </toc-element>
+        <toc-element topic="Environment-JUnit5.md">
+            <toc-element topic="RepeatPolicyService.md"/>
+        </toc-element>
+    </toc-element>
+</instance-profile>

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.value;
 
 import io.perfeccionista.framework.Environment;
-import io.perfeccionista.framework.service.DefaultServiceConfiguration;
+import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import io.perfeccionista.framework.value.checker.number.BigDecimalEqualsNumberChecker;
@@ -23,6 +23,7 @@ import io.perfeccionista.framework.value.checker.number.IntegerLessNumberChecker
 import io.perfeccionista.framework.value.checker.number.IntegerLessOrEqualsNumberChecker;
 import io.perfeccionista.framework.value.checker.number.IntegerNotEqualsNumberChecker;
 import io.perfeccionista.framework.value.checker.object.ObjectEqualsChecker;
+import io.perfeccionista.framework.value.checker.object.ObjectSameChecker;
 import io.perfeccionista.framework.value.checker.string.StringContainsAllChecker;
 import io.perfeccionista.framework.value.checker.string.StringContainsAnyChecker;
 import io.perfeccionista.framework.value.checker.string.StringContainsChecker;
@@ -50,32 +51,34 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
 
-@DefaultServiceConfiguration(DefaultValueServiceConfiguration.class)
 public class ValueService implements Service {
 
     protected Environment environment;
-    protected ServiceConfiguration configuration = null;
+    protected ServiceConfiguration configuration;
+
+    @Override
+    public void init(@NotNull Environment environment) {
+        Preconditions.notNull(environment, "Environment must not be null");
+        this.environment = environment;
+        this.configuration = null;
+    }
 
     @Override
     public void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration) {
+        Preconditions.notNull(environment, "Environment must not be null");
+        Preconditions.notNull(configuration, "Service configuration must not be null");
         this.environment = environment;
         this.configuration = configuration;
-    }
-
-    // Inverse
-
-    public ObjectValue not(@NotNull ObjectValue objectValue) {
-        return objectValue.inverse();
-    }
-
-    public StringValue not(@NotNull StringValue stringValue) {
-        return stringValue.inverse();
     }
 
     // Object
 
     public ObjectValue objectEquals(@NotNull Object expected) {
         return new DefaultObjectValue(new ObjectEqualsChecker(environment, expected));
+    }
+
+    public ObjectValue objectSame(@NotNull Object expected) {
+        return new DefaultObjectValue(new ObjectSameChecker(environment, expected));
     }
 
     public Object objectProcess(@NotNull String expression) {

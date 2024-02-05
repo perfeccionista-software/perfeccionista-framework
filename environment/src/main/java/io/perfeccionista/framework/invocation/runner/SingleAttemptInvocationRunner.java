@@ -7,9 +7,9 @@ import io.perfeccionista.framework.exceptions.base.ExceptionCollector;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaAssertionError;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -94,7 +94,7 @@ public class SingleAttemptInvocationRunner implements InvocationRunner {
         while (!invocations.isEmpty()) {
             String indent = getIndent(invocations.size());
             InvocationInfo processedInvocation = invocations.removeLast();
-            logger.info(() -> indent + processedInvocation.toString());
+            logger.info(indent + processedInvocation.toString());
         }
         runSingleInvocationStack.remove();
     }

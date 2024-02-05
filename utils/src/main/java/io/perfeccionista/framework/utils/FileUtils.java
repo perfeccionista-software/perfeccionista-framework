@@ -5,12 +5,11 @@ import io.perfeccionista.framework.exceptions.FileNotExist;
 import io.perfeccionista.framework.exceptions.FileReadingFailed;
 import io.perfeccionista.framework.exceptions.FileWritingFailed;
 import io.perfeccionista.framework.exceptions.IncorrectFileName;
-import io.perfeccionista.framework.exceptions.IncorrectUrl;
 import io.perfeccionista.framework.exceptions.UrlReadingFailed;
-import io.perfeccionista.framework.logging.Logger;
-import io.perfeccionista.framework.logging.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,12 +42,9 @@ import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.CANT
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_EXISTS;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.FILE_NOT_EXIST;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.INCORRECT_FILE_NAME;
-import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.INCORRECT_URL;
-import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.RESOURCE_NOT_EXIST;
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.TARGET_IS_NOT_A_FILE;
 import static java.lang.Thread.currentThread;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.gradle.internal.impldep.org.apache.commons.io.FileUtils.copyURLToFile;
 
 // TODO: Привести аргументы к одному виду Path вместо Path и URL.
 public class FileUtils {
@@ -127,7 +123,7 @@ public class FileUtils {
         try {
             deleteFile(path);
         } catch (IOException e) {
-            logger.error(() -> String.format("Exception occurred when deleting file '%s'", path), e);
+            logger.error(String.format("Exception occurred when deleting file '%s'", path), e);
         }
     }
 
@@ -231,22 +227,22 @@ public class FileUtils {
                 }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
-    public static @NotNull Path getRequiredFileFromClasspath(@NotNull String resource) {
-        URL resourceUrl = currentThread().getContextClassLoader().getResource(resource);
-        if (Objects.isNull(resourceUrl)) {
-            throw FileNotExist.exception(RESOURCE_NOT_EXIST.getMessage(resource));
-        }
-        try {
-            URI resourceUri = resourceUrl.toURI();
-            Path fileFromResource = resourceUri.isOpaque()
-                    ? copyUrlToTemporaryFile(resourceUrl)
-                    : Paths.get(resourceUri);
-            fileShouldExist(fileFromResource);
-            return fileFromResource;
-        } catch (URISyntaxException e) {
-            throw IncorrectUrl.exception(INCORRECT_URL.getMessage(resourceUrl), e);
-        }
-    }
+//    public static @NotNull Path getRequiredFileFromClasspath(@NotNull String resource) {
+//        URL resourceUrl = currentThread().getContextClassLoader().getResource(resource);
+//        if (Objects.isNull(resourceUrl)) {
+//            throw FileNotExist.exception(RESOURCE_NOT_EXIST.getMessage(resource));
+//        }
+//        try {
+//            URI resourceUri = resourceUrl.toURI();
+//            Path fileFromResource = resourceUri.isOpaque()
+//                    ? copyUrlToTemporaryFile(resourceUrl)
+//                    : Paths.get(resourceUri);
+//            fileShouldExist(fileFromResource);
+//            return fileFromResource;
+//        } catch (URISyntaxException e) {
+//            throw IncorrectUrl.exception(INCORRECT_URL.getMessage(resourceUrl), e);
+//        }
+//    }
 
     public static void copyUrlToFile(@NotNull URL url, @NotNull Path path) {
         try (final InputStream inputStream = url.openStream()) {
@@ -264,16 +260,16 @@ public class FileUtils {
         }
     }
 
-    public static Path copyUrlToTemporaryFile(@NotNull URL url) {
-        try {
-            Path tempDirectory = Files.createTempDirectory("perfeccionista-upload-tmp");
-            File tempFile = File.createTempFile(getFileName(url.getFile()), ".tmp", tempDirectory.toFile());
-            copyURLToFile(url, tempFile);
-            return tempFile.toPath();
-        } catch (IOException e) {
-            throw FileWritingFailed.exception(CANT_WRITE_FILE.getMessage(getFileName(url.getFile()) + ".tmp"), e);
-        }
-    }
+//    public static Path copyUrlToTemporaryFile(@NotNull URL url) {
+//        try {
+//            Path tempDirectory = Files.createTempDirectory("perfeccionista-upload-tmp");
+//            File tempFile = File.createTempFile(getFileName(url.getFile()), ".tmp", tempDirectory.toFile());
+//            copyURLToFile(url, tempFile);
+//            return tempFile.toPath();
+//        } catch (IOException e) {
+//            throw FileWritingFailed.exception(CANT_WRITE_FILE.getMessage(getFileName(url.getFile()) + ".tmp"), e);
+//        }
+//    }
 
     private static synchronized void cachePropertyFile(@NotNull String propertyFileName, @Nullable Properties propertyFile) {
         propertiesCache.put(propertyFileName, propertyFile);

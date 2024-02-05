@@ -1,5 +1,5 @@
-dependencies {
-
-    api(project(":environment"))
-
-}
+//dependencies {
+//
+//    api(project(":environment"))
+//
+//}
