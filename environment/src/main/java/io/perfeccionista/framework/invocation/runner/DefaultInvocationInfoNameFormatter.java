@@ -18,7 +18,7 @@ public class DefaultInvocationInfoNameFormatter implements InvocationInfoNameFor
         String formattedName= name;
         String format = invocationNamesMap.get(name);
         if (Objects.nonNull(format)) {
-            formattedName = String.format(format, args);
+            formattedName = String.format(format, (Object[]) args);
         }
         return formattedName;
     }

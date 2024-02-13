@@ -7,10 +7,10 @@ import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.utils.EnvironmentLogger;
-import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.RegisterDuplicate;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
  * Можно привязать текущий экземпляр {@link Environment} к потоку выполнения
  * теста через метод {@link Environment#setForCurrentThread(Environment)}}
  * Чтобы получить этот экзепляр в этом же потоке, необходимо использовать статический
- * метод {@link Environment#get()}
+ * метод {@link Environment#getForCurrentThread()} }
  *
  * Этот класс представляет собой базовый функционал, который используется в
  * {@link Environment}. Пользователи могут самостоятельно расширять этот класс
@@ -60,6 +60,7 @@ public class Environment {
     private static final Logger logger = LoggerFactory.getLogger(Environment.class);
 
     public static final String PERFECCIONISTA_PROPERTIES_FILE = "perfeccionista.properties";
+    public static final String ENVIRONMENT_ATTACHMENT_NAME = "Environment configuration";
 
     protected static final ThreadLocal<Environment> INSTANCES = new ThreadLocal<>();
 
@@ -67,6 +68,8 @@ public class Environment {
     protected final EnvironmentConfiguration configuration;
     protected final Map<String, Object> relatedObjects = new HashMap<>();
     protected final Map<Class<? extends Service>, Service> services = new HashMap<>();
+
+    protected TextAttachmentEntry environmentAttachment = TextAttachmentEntry.of(ENVIRONMENT_ATTACHMENT_NAME, "Environment is not initialized");
 
     public Environment(@NotNull Class<? extends EnvironmentConfiguration> configurationClass,
                        @Nullable String testName) {
@@ -208,6 +211,14 @@ public class Environment {
         return configuration;
     }
 
+    /**
+     * @return Возвращает текстовое представление текущей инициализированной конфигурации.
+     * Или пустой аттачмент, если на момент запроса Environment еще не был инициализирован
+     */
+    public @NotNull TextAttachmentEntry getEnvironmentAttachment() {
+        return this.environmentAttachment;
+    }
+
     // ThreadLocal
 
     public static Environment createForCurrentThread(@NotNull Class<? extends EnvironmentConfiguration> configurationClass,
@@ -331,8 +342,9 @@ public class Environment {
                 });
 
         environmentLogger.finish();
+        this.environmentAttachment = TextAttachmentEntry.of(ENVIRONMENT_ATTACHMENT_NAME, environmentLogger.toString());
         environmentConfiguration.getEnvironmentAttachmentProcessor()
-                .process(TextAttachmentEntry.of("Environment configuration", environmentLogger.toString()));
+                .process(this.environmentAttachment);
     }
 
     protected void initEnvironment(@NotNull EnvironmentConfiguration environmentConfiguration) {
