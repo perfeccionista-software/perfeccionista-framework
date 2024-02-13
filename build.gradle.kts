@@ -190,21 +190,17 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     }
 
     dependencies {
-        api(group = "org.apiguardian", name = "apiguardian-api")
         api(group = "org.opentest4j", name = "opentest4j")
-        api(group = "org.slf4j", name = "slf4j-api")
 
-        api(group = "com.fasterxml.jackson.core", name = "jackson-core")
-        api(group = "com.fasterxml.jackson.core", name = "jackson-annotations")
-        api(group = "com.fasterxml.jackson.core", name = "jackson-databind")
+        implementation(group = "org.slf4j", name = "slf4j-api")
+        implementation(group = "org.apiguardian", name = "apiguardian-api")
+        implementation(group = "org.jetbrains", name = "annotations")
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-core")
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations")
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind")
 
-        compileOnly(group = "org.jetbrains", name = "annotations")
-        testCompileOnly(group = "org.jetbrains", name = "annotations")
         testRuntimeOnly(group = "org.slf4j", name = "slf4j-simple")
 
-//        testImplementation(group = "org.junit.platform", name = "junit-platform-runner") {
-//            exclude(group = "junit")
-//        }
         testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
         testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-engine")
         testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params")

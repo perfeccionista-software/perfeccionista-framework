@@ -89,6 +89,11 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     public void afterEach(ExtensionContext context) {
         Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
         environmentInstanceForCurrentThread.ifPresent(environment -> {
+            // TODO: Возможно, здесь нужен более изящный механизм вывода, который можно настраивать
+            context.getExecutionException()
+                    .flatMap(throwable -> environment.getEnvironmentAttachment()
+                    .getContent())
+                    .ifPresent(logger::info);
             environment.shutdown();
             environment.removeForCurrentThread();
         });
