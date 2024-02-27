@@ -117,9 +117,9 @@ public class EnvironmentConfigurationResolver {
 
     private static ConfiguredServiceHolder createConfiguredServiceHolder(SetServiceConfiguration configuration) {
         if (configuration.disabled()) {
-            return ConfiguredServiceHolder.disabled(configuration.serviceClass());
+            return ConfiguredServiceHolder.disabled(configuration.service());
         } else {
-            return ConfiguredServiceHolder.of(configuration.serviceClass(), configuration.serviceConfigurationClass())
+            return ConfiguredServiceHolder.of(configuration.service(), configuration.configuration())
                     .setOrder(configuration.order());
         }
     }

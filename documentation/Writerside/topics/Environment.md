@@ -386,7 +386,7 @@ public class EnvironmentTest {
 
 Как инициализировать Service с учетом этих признаков, смотри в документации по Service.
 
-> Если вы используете не проекте JUnit5, смотрите раздел JUnit5 Extension
+> Если вы используете на проекте JUnit5, смотрите раздел JUnit5 Extension
 {style="note"}
 
 Addition

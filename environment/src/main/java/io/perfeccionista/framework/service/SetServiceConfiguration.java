@@ -16,9 +16,9 @@ import java.lang.annotation.Target;
 @Repeatable(SetServiceConfigurations.class)
 public @interface SetServiceConfiguration {
 
-    Class<? extends Service> serviceClass();
+    Class<? extends Service> service();
 
-    Class<? extends ServiceConfiguration> serviceConfigurationClass();
+    Class<? extends ServiceConfiguration> configuration();
 
     int order() default 0;
 
