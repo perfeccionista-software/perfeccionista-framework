@@ -59,17 +59,17 @@ How to start
 ------------
 <tabs>
     <tab title="Gradle (kts)">
-        <code-block lang="kotlin">testImplementation("io.perfeccionista.framework:environment:0.5.0-Beta")</code-block>
+        <code-block lang="kotlin">testImplementation("io.perfeccionista.framework:environment:0.4.4-Beta")</code-block>
     </tab>
     <tab title="Gradle">
-        <code-block lang="groovy">testImplementation 'io.perfeccionista.framework:environment:0.5.0-Beta'</code-block>
+        <code-block lang="groovy">testImplementation 'io.perfeccionista.framework:environment:0.4.4-Beta'</code-block>
     </tab>
     <tab title="Maven">
         <code-block lang="xml"><![CDATA[
             <dependency>
                 <group>io.perfeccionista.framework</group>
                 <artifactId>environment</artifactId>
-                <version>0.4.0-Beta</version>
+                <version>0.4.4-Beta</version>
                 <scope>test</scope>
             </dependency>]]>
         </code-block>

@@ -190,11 +190,11 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     }
 
     dependencies {
+        api(group = "org.jetbrains", name = "annotations")
         api(group = "org.opentest4j", name = "opentest4j")
 
         implementation(group = "org.slf4j", name = "slf4j-api")
         implementation(group = "org.apiguardian", name = "apiguardian-api")
-        implementation(group = "org.jetbrains", name = "annotations")
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-core")
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations")
         implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind")
