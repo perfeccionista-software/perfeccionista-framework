@@ -77,13 +77,8 @@ public class StringUtils {
         return stringArguments;
     }
 
-
-
-
-
-
-
-
-
+    public static String collectionToString(Collection<String> collection) {
+        return "[" + String.join(", ", collection) + "]";
+    }
 
 }

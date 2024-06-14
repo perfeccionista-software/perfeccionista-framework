@@ -15,8 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -63,6 +65,7 @@ public class Environment {
     public static final String ENVIRONMENT_ATTACHMENT_NAME = "Environment configuration";
 
     protected static final ThreadLocal<Environment> INSTANCES = new ThreadLocal<>();
+    protected static Deque<Runnable> afterAllHooks = new ArrayDeque<>();
 
     protected final String testName;
     protected final EnvironmentConfiguration configuration;
@@ -93,9 +96,6 @@ public class Environment {
         Preconditions.notNull(configuration, "configuration must not be null");
         this.testName = testName;
         this.configuration = configuration;
-//        logger.debug("Environment configuration check");
-//        checkEnvironmentConfiguration(this.configuration);
-//        logger.debug("Environment configuration check success");
     }
 
     public Environment(@NotNull EnvironmentConfiguration configuration) {
@@ -269,7 +269,7 @@ public class Environment {
 
     /**
      * {@link Environment} для текущего {@link Thread}.
-     * В противном случае, выбрасывает исключение {@link io.perfeccionista.framework.exceptions.EnvironmentNotInitialized.EnvironmentNotInitializedException}
+     * В противном случае, выбрасывает исключение {@link io.perfeccionista.framework.exceptions.EnvironmentNotInitialized}
      */
     public static Environment getForCurrentThread() {
         return Optional.ofNullable(INSTANCES.get())
@@ -299,6 +299,16 @@ public class Environment {
     public Environment removeForCurrentThread() {
         INSTANCES.remove();
         return this;
+    }
+
+    // After all actions
+
+    public static void addAfterAllHook(@NotNull Runnable afterAllHook) {
+        afterAllHooks.add(afterAllHook);
+    }
+
+    public static void executeAfterAllHooks() {
+        afterAllHooks.forEach(Runnable::run);
     }
 
     // Check and Initialization

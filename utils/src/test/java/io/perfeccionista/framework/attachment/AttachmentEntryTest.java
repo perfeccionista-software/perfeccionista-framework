@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.attachment;
 
-import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;

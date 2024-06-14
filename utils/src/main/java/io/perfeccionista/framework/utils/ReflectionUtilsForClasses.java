@@ -164,7 +164,16 @@ public final class ReflectionUtilsForClasses {
             Class<?>[] parameterTypes = Arrays.stream(args).map(Object::getClass).toArray(Class[]::new);
             return newInstance(clazz.getDeclaredConstructor(parameterTypes), args);
         } catch (Throwable t) {
-            throw ClassCanNotBeInstantiated.exception(CANT_CREATE_OBJECT.getMessage(clazz.getCanonicalName(), objectTypesToString(args)));
+            throw ClassCanNotBeInstantiated.exception(CANT_CREATE_OBJECT.getMessage(clazz.getCanonicalName(), objectTypesToString(args)), t);
+        }
+    }
+
+    public static <T> T newInstance(@NotNull Class<T> clazz, @NotNull Class<?>[] parameterTypes, @NotNull Object... args) {
+        Preconditions.notNull(clazz, "Class for initialization must not be null");
+        try {
+            return newInstance(clazz.getDeclaredConstructor(parameterTypes), args);
+        } catch (Throwable t) {
+            throw ClassCanNotBeInstantiated.exception(CANT_CREATE_OBJECT.getMessage(clazz.getCanonicalName(), objectTypesToString(args)), t);
         }
     }
 
@@ -172,7 +181,7 @@ public final class ReflectionUtilsForClasses {
         try {
             return makeAccessible(constructor).newInstance(args);
         } catch (Throwable t) {
-            throw ClassCanNotBeInstantiated.exception(CANT_CREATE_OBJECT_WITH_CONSTRUCTOR.getMessage(constructor.toString(), objectTypesToString(args)));
+            throw ClassCanNotBeInstantiated.exception(CANT_CREATE_OBJECT_WITH_CONSTRUCTOR.getMessage(constructor.toString(), objectTypesToString(args)), t);
         }
     }
 

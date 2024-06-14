@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.value.processor;
 
 import io.perfeccionista.framework.AbstractParallelTestWithEnvironment;
-import io.perfeccionista.framework.exceptions.StringValueParse.StringValueParseException;
+import io.perfeccionista.framework.exceptions.impl.StringValueParseException;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.Environment;
 

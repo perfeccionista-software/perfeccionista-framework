@@ -1,5 +1,6 @@
 package io.perfeccionista.framework.datasource.implementations;
 
+import io.perfeccionista.framework.datasource.ObjectDataStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import io.perfeccionista.framework.datasource.DataStorage;
@@ -7,8 +8,9 @@ import io.perfeccionista.framework.datasource.entities.User;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-public class SimpleDataStorage implements DataStorage<String, User> {
+public class SimpleDataStorage implements ObjectDataStorage<String, User> {
 
     private Map<String, User> users;
 
@@ -43,18 +45,18 @@ public class SimpleDataStorage implements DataStorage<String, User> {
     }
 
     @Override
-    public @Nullable User get(@NotNull String key) {
-        return users.get(key);
+    public @Nullable Optional<User> get(@NotNull String key) {
+        return Optional.of(users.get(key));
     }
 
     @Override
-    public <T extends User> @Nullable T get(@NotNull String key, @NotNull Class<T> clazz) {
-        return (T) get(key);
+    public <T extends User> Optional<T> get(@NotNull String key, @NotNull Class<T> clazz) {
+        return get(key).map(user -> (T) user);
     }
 
     @Override
-    public @Nullable String getString(@NotNull String key) {
-        return users.get(key).toString();
+    public @Nullable Optional<String> getString(@NotNull String key) {
+        return get(key).map(user -> user.toString());
     }
 
 }

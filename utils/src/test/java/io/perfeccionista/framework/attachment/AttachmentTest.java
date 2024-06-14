@@ -1,8 +1,8 @@
 package io.perfeccionista.framework.attachment;
 
-import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.SimpleParallelTest;
 

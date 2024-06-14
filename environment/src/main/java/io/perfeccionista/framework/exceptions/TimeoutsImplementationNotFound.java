@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.exceptions;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.base.Reason;
+import io.perfeccionista.framework.exceptions.impl.TimeoutsImplementationNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,18 +15,6 @@ public interface TimeoutsImplementationNotFound extends Reason {
 
     static TimeoutsImplementationNotFoundException exception(@NotNull String message, @NotNull Throwable cause) {
         return new TimeoutsImplementationNotFoundException(message, cause);
-    }
-
-    class TimeoutsImplementationNotFoundException extends PerfeccionistaRuntimeException implements TimeoutsImplementationNotFound {
-
-        TimeoutsImplementationNotFoundException(String message) {
-            super(message);
-        }
-
-        TimeoutsImplementationNotFoundException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
     }
 
 }

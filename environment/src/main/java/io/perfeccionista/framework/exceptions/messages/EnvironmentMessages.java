@@ -20,7 +20,7 @@ public enum EnvironmentMessages implements Messages {
 
     CHECK_ARGUMENT_MUST_NOT_BE_NULL("%s must not be null"),
     CHECK_ARRAY_MUST_NOT_BE_EMPTY("Array '%s' must not be empty"),
-    SERVICE_CONFIGURATION_NOT_VALID("Configuration '%s' is not valid for '%s'"),
+    SERVICE_CONFIGURATION_NOT_VALID("Configuration class '%s' is not valid for service '%s'. Expected configuration class is '%s'"),
 
     INCORRECT_INVOCATION_RUNNER_LOGIC("Incorrect invocation runner logic"),
 

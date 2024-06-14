@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.exceptions;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.base.Reason;
+import io.perfeccionista.framework.exceptions.impl.TestMethodNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,18 +15,6 @@ public interface TestMethodNotFound extends Reason {
 
     static TestMethodNotFoundException exception(@NotNull String message, @NotNull Throwable cause) {
         return new TestMethodNotFoundException(message, cause);
-    }
-
-    class TestMethodNotFoundException extends PerfeccionistaRuntimeException implements TestMethodNotFound {
-
-        TestMethodNotFoundException(String message) {
-            super(message);
-        }
-
-        TestMethodNotFoundException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
     }
 
 }

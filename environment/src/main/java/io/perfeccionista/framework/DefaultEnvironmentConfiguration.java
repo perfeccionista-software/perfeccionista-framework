@@ -2,6 +2,7 @@ package io.perfeccionista.framework;
 
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
+import io.perfeccionista.framework.service.DefaultServiceOrder;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
@@ -89,13 +90,16 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
     }
 
     protected ConfiguredServiceHolder resolveDefaultServiceConfiguration(Class<? extends Service> serviceClass) {
+        ConfiguredServiceHolder configuredServiceHolder = ConfiguredServiceHolder.of(serviceClass);
         DefaultServiceConfiguration defaultConfiguration = serviceClass.getAnnotation(DefaultServiceConfiguration.class);
         if (Objects.nonNull(defaultConfiguration)) {
-            return ConfiguredServiceHolder.of(serviceClass, defaultConfiguration.value())
-                    .setOrder(defaultConfiguration.order());
-        } else {
-            return ConfiguredServiceHolder.of(serviceClass);
+            configuredServiceHolder = ConfiguredServiceHolder.of(serviceClass, defaultConfiguration.value());
         }
+        DefaultServiceOrder defaultOrder = serviceClass.getAnnotation(DefaultServiceOrder.class);
+        if (Objects.nonNull(defaultOrder)) {
+            configuredServiceHolder.setOrder(defaultOrder.order());
+        }
+        return configuredServiceHolder;
     }
 
 }

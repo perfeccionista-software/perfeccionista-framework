@@ -6,7 +6,6 @@ import io.perfeccionista.framework.exceptions.FixtureNotParametrized;
 import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
-import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.FIXTURE_NOT_PARAMETRIZED;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
@@ -43,7 +41,7 @@ public class FixtureService implements Service {
         Preconditions.notNull(environment, "Environment must not be null");
         Preconditions.notNull(configuration, "Service configuration must not be null");
         this.environment = environment;
-        this.configuration = validate(configuration);
+        this.configuration = validate(configuration, FixtureServiceConfiguration.class);
         this.namedFixtureClasses = this.configuration.getNamedFixtureClasses();
     }
 
@@ -120,14 +118,6 @@ public class FixtureService implements Service {
                 fixtureTearDownResult.process();
             }
         }
-    }
-
-    protected FixtureServiceConfiguration validate(ServiceConfiguration configuration) {
-        if (configuration instanceof FixtureServiceConfiguration) {
-            return (FixtureServiceConfiguration) configuration;
-        }
-        throw IncorrectServiceConfiguration.exception(
-                SERVICE_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
 }

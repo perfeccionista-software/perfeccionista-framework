@@ -1,31 +1,33 @@
 package io.perfeccionista.framework.value.implementations;
 
+import io.perfeccionista.framework.datasource.ObjectDataSource;
 import io.perfeccionista.framework.datasource.entities.User;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import io.perfeccionista.framework.datasource.DataSource;
 import io.perfeccionista.framework.name.Name;
 
+import java.util.Optional;
+
 @Name("user")
-public class UserDataSource implements DataSource<String, User> {
+public class UserDataSource implements ObjectDataSource<String, User> {
 
     @Override
-    public @Nullable User get(@NotNull String key) {
-        return new User(key, "Smith");
+    public Optional<User> get(@NotNull String key) {
+        return Optional.of(new User(key, "Smith"));
     }
 
     @Override
-    public <T extends User> @Nullable T get(@NotNull String key, @NotNull Class<T> clazz) {
-        return (T) get(key);
+    public <T extends User> Optional<T> get(@NotNull String key, @NotNull Class<T> clazz) {
+        return get(key).map(user -> (T) user);
     }
 
     @Override
-    public @Nullable String getString(@NotNull String key) {
-        User result = get(key);
-        if (null != result) {
-            return result.toString();
-        }
-        return null;
+    public Optional<String> getString(@NotNull String key) {
+        return get(key).map(user -> user.toString());
+    }
+
+    @Override
+    public boolean contains(@NotNull String key) {
+        return false;
     }
 
 }

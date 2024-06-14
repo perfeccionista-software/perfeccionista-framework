@@ -37,13 +37,4 @@ public interface DataStorage<K, V> extends DataSource<K, V> {
      */
     boolean putIfAbsent(@NotNull K key, @Nullable V value);
 
-    /**
-     * Метод проверяет наличие ключа {@param key} в хранилище
-     *
-     * @param key проверяемый ключ
-     * @return {@link Boolean#TRUE}, если ключ присутствует,
-     * {@link Boolean#FALSE} если ключ отсутствует
-     */
-    boolean contains(@NotNull K key);
-
 }

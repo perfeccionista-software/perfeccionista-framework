@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.value.processor;
 
 import io.perfeccionista.framework.AbstractParallelTest;
-import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;

@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  */
 public class Attachment {
 
-    private TextAttachmentEntry mainAttachmentEntry;
     private final Deque<AttachmentEntry<?>> entries;
 
     private Attachment(Deque<AttachmentEntry<?>> entries) {
@@ -32,20 +31,6 @@ public class Attachment {
 
     public static Attachment with(@NotNull AttachmentEntry<?>... entries) {
         return new Attachment(new ArrayDeque<>(Arrays.asList(entries)));
-    }
-
-    public static Attachment withMainAttachmentEntry(@NotNull TextAttachmentEntry entry) {
-        return new Attachment(new ArrayDeque<>()).setMainAttachmentEntry(entry);
-    }
-
-    public Attachment setMainAttachmentEntry(@NotNull TextAttachmentEntry entry) {
-        Preconditions.notNull(entry, "Attachment entry must not be null");
-        this.mainAttachmentEntry = entry;
-        return this;
-    }
-
-    public Optional<TextAttachmentEntry> getMainAttachmentEntry() {
-        return Optional.ofNullable(mainAttachmentEntry);
     }
 
     public Attachment addFirstAttachmentEntry(@NotNull AttachmentEntry<?> entry) {

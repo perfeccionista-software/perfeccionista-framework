@@ -1,13 +1,25 @@
-package io.perfeccionista.framework.exceptions.attachments;
+package io.perfeccionista.framework.exceptions.attachments.processor;
 
 import io.perfeccionista.framework.exceptions.EmptyAttachment;
+import io.perfeccionista.framework.exceptions.attachments.Attachment;
+import io.perfeccionista.framework.exceptions.attachments.BigTextAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.FileAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.HtmlAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.ScreenshotAttachmentEntry;
+import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.screenshots.Screenshot;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.ThreadLocalRandom;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.SignStyle;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.EMPTY_ATTACHMENT_ENTRY;
@@ -16,9 +28,26 @@ import static io.perfeccionista.framework.utils.FileUtils.writeBinaryFile;
 import static io.perfeccionista.framework.utils.FileUtils.writeTextFile;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 import static io.perfeccionista.framework.utils.StringUtils.isBlank;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
+import static java.time.temporal.ChronoField.DAY_OF_MONTH;
+import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import static java.time.temporal.ChronoField.YEAR;
 
 public class DefaultAttachmentProcessor implements AttachmentProcessor {
-    protected static final String ATTACHMENT_DIR = "build" + File.separator + "attachments";
+    public static final Logger log = LoggerFactory.getLogger(DefaultAttachmentProcessor.class);
+    public static final DateTimeFormatter ID_FORMAT;
+    static {
+        ID_FORMAT = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive()
+                .appendValue(YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
+                .appendValue(MONTH_OF_YEAR, 2)
+                .appendValue(DAY_OF_MONTH, 2)
+                .appendLiteral('-')
+                .append(ISO_LOCAL_TIME)
+                .toFormatter();
+    }
+
+    protected String attachmentDir = "attachments";
 
     @Override
     public String processAttachment(@NotNull Attachment attachment) {
@@ -27,8 +56,8 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                 .filter(entry -> entry instanceof FileAttachmentEntry<?>)
                 .map(entry -> {
                     FileAttachmentEntry<?> fileAttachmentEntry = (FileAttachmentEntry<?>) entry;
-                    String fileName = entry.getName() + "_" + createId() + "." + fileAttachmentEntry.getFileExtension();
-                    Path filePath = Paths.get(ATTACHMENT_DIR + File.separator + fileName);
+                    String fileName = createId() + "_" + entry.getName() + "." + fileAttachmentEntry.getFileExtension();
+                    Path filePath = Paths.get(attachmentDir + File.separator + fileName);
                     if (fileAttachmentEntry instanceof HtmlAttachmentEntry) {
                         String content = ((HtmlAttachmentEntry) fileAttachmentEntry).getContent().orElse("");
                         deleteFileIgnoreExceptions(filePath);
@@ -48,31 +77,30 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                         deleteFileIgnoreExceptions(filePath);
                         writeTextFile(filePath, content);
                     }
-                    return entry.getName() + " " + filePath.toAbsolutePath().toString();
+                    return getDelimiter() + entry.getName() + " " + filePath.toAbsolutePath();
                 }).collect(Collectors.joining("\n"));
 
         String stringAttachmentsDescription = attachment.getAttachmentEntries()
                 .filter(entry -> entry instanceof TextAttachmentEntry)
-                .map(entry -> getDelimiter() + entry.getName() + "\n" + getDelimiter() + entry.getDescription())
+                .map(entry -> getDelimiter() + "[" + entry.getName() + "]" + "\n" + entry.getDescription())
                 .collect(Collectors.joining("\n"));
 
-        String mainAttachmentDescription = attachment.getMainAttachmentEntry()
-                .map(entry -> getDelimiter() + entry.getName() + "\n" + getDelimiter() + entry.getDescription())
-                .orElse("");
-
-        if (isBlank(fileAttachmentsDescription) && isBlank(stringAttachmentsDescription) && isBlank(mainAttachmentDescription)) {
+        if (isBlank(fileAttachmentsDescription) && isBlank(stringAttachmentsDescription)) {
             return "";
         }
 
-        return "Attachments:\n"
-                + getDelimiter()
+        String attachmentDescription = "Attachments:\n"
                 + (isBlank(fileAttachmentsDescription) ? "" : fileAttachmentsDescription + "\n")
                 + (isBlank(stringAttachmentsDescription) ? "" : stringAttachmentsDescription + "\n")
-                + (isBlank(mainAttachmentDescription) ? "" : mainAttachmentDescription + "\n");
+                + getDelimiter();
+
+        log.error(attachmentDescription);
+
+        return attachmentDescription;
     }
 
     protected String createId() {
-        return String.valueOf(ThreadLocalRandom.current().nextInt(1, 999_999_999));
+        return LocalDateTime.now().format(ID_FORMAT);
     }
 
 }

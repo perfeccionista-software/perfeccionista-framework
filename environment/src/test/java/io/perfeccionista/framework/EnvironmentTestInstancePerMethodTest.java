@@ -1,6 +1,6 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.exceptions.EnvironmentAlreadyInitialized.EnvironmentAlreadyInitializedException;
+import io.perfeccionista.framework.exceptions.impl.EnvironmentAlreadyInitializedException;
 import io.perfeccionista.framework.services.TestService1;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
