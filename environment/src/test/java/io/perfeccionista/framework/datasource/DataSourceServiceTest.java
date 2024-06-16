@@ -48,13 +48,13 @@ class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
                     assertAll(
                             () -> assertNotNull(simpleDataSource),
                             () -> {
-                                User user = simpleDataSource.get("Jack");
+                                User user = simpleDataSource.get("Jack").get();
                                 assertEquals(new User("Jack", "Black"), user);
                             },
                             () -> {
-                                Professional professionalUser = simpleDataSource.get("Professional John", Professional.class);
+                                Professional professionalUser = simpleDataSource.get("Professional John", Professional.class).get();
                                 assertEquals(new Professional("Professional John", "White"), professionalUser);
-                                assertEquals("Jack Black", simpleDataSource.getString("Jack"));
+                                assertEquals("Jack Black", simpleDataSource.getString("Jack").get());
                             }
                     );
                 }

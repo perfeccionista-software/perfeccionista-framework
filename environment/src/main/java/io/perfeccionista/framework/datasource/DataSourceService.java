@@ -5,7 +5,6 @@ import io.perfeccionista.framework.preconditions.Preconditions;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 import io.perfeccionista.framework.exceptions.DataSourceNotFound;
-import io.perfeccionista.framework.exceptions.IncorrectServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.SERVICE_CONFIGURATION_NOT_VALID;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_SOURCE_NOT_FOUND_BY_CLASS;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_SOURCE_NOT_FOUND_BY_NAME;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DEFAULT_DATA_SOURCE_NOT_DECLARED;
@@ -37,7 +35,7 @@ public class DataSourceService implements Service {
         Preconditions.notNull(environment, "Environment must not be null");
         Preconditions.notNull(configuration, "Service configuration must not be null");
         this.environment = environment;
-        this.validatedConfiguration = validate(configuration);
+        this.validatedConfiguration = validate(configuration, DataSourceServiceConfiguration.class);
         this.dataSourcesByName = validatedConfiguration.getNamedDataSources();
     }
 
@@ -80,14 +78,6 @@ public class DataSourceService implements Service {
             return (T) optionalDataSource.get();
         }
         throw DataSourceNotFound.exception(DEFAULT_DATA_SOURCE_NOT_DECLARED.getMessage());
-    }
-
-    protected DataSourceServiceConfiguration validate(ServiceConfiguration configuration) {
-        if (configuration instanceof DataSourceServiceConfiguration) {
-            return (DataSourceServiceConfiguration) configuration;
-        }
-        throw IncorrectServiceConfiguration.exception(
-                SERVICE_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
 }

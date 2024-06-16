@@ -1,7 +1,8 @@
 package io.perfeccionista.framework.datasource;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * Объект, который реализует интерфейс {@link DataSource} является параметризованным
@@ -23,23 +24,21 @@ import org.jetbrains.annotations.Nullable;
 public interface DataSource<K, V> {
 
     /**
+     * Метод проверяет наличие ключа {@param key} в хранилище
+     *
+     * @param key проверяемый ключ
+     * @return {@link Boolean#TRUE}, если ключ присутствует,
+     * {@link Boolean#FALSE} если ключ отсутствует
+     */
+    boolean contains(@NotNull K key);
+
+    /**
      * Возвращает значение по переданному ключу {@param key}
      *
      * @param key передаваемый пользователем ключ
      * @return значение по ключу {@param key}
      */
-    @Nullable V get(@NotNull K key);
-
-    /**
-     * Возвращает приведенное к {@param clazz} значение по переданному
-     * ключу {@param key}
-     *
-     * @param key передаваемый пользователем ключ
-     * @param clazz класс к которому приводится возвращаемое значение
-     * @param <T> тип к которому приводится возвращаемое значение
-     * @return приведенное значение по ключу {@param key}
-     */
-    @Nullable <T extends V> T get(@NotNull K key, @NotNull Class<T> clazz);
+    Optional<V> get(@NotNull K key);
 
     /**
      * Возвращает строковое представление значения, получаемого
@@ -48,6 +47,6 @@ public interface DataSource<K, V> {
      * @param key передаваемый пользователем ключ
      * @return строковое представление значения по ключу {@param key}
      */
-    @Nullable String getString(@NotNull K key);
+    Optional<String> getString(@NotNull K key);
 
 }

@@ -1,6 +1,5 @@
 package io.perfeccionista.framework.exceptions.base;
 
-import io.perfeccionista.framework.exceptions.attachments.AttachmentProcessor;
 import io.perfeccionista.framework.exceptions.attachments.BigTextAttachmentEntry;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,30 +61,6 @@ public class ExceptionCollector {
                 throw runtimeException;
             }
             throw runtimeException
-                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()));
-        }
-    }
-
-    public void throwLastException(@NotNull AttachmentProcessor processor) {
-        PerfeccionistaException lastException = exceptions.get(exceptions.size() - 1);
-        if (lastException instanceof PerfeccionistaAssertionError) {
-            PerfeccionistaAssertionError assertionError = (PerfeccionistaAssertionError) lastException;
-            if (uniqueExceptionKeys.size() == 1) {
-                throw assertionError
-                        .setAttachmentProcessor(processor);
-            }
-            throw assertionError
-                    .setAttachmentProcessor(processor)
-                    .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()));
-        }
-        if (lastException instanceof PerfeccionistaRuntimeException) {
-            PerfeccionistaRuntimeException runtimeException = (PerfeccionistaRuntimeException) lastException;
-            if (uniqueExceptionKeys.size() == 1) {
-                throw runtimeException
-                        .setAttachmentProcessor(processor);
-            }
-            throw runtimeException
-                    .setAttachmentProcessor(processor)
                     .addLastAttachmentEntry(BigTextAttachmentEntry.of("All Exception Messages", generateExceptionSequenceMessage()));
         }
     }

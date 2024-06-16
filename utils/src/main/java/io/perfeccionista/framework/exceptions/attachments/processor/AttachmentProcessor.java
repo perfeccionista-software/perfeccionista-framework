@@ -1,5 +1,6 @@
-package io.perfeccionista.framework.exceptions.attachments;
+package io.perfeccionista.framework.exceptions.attachments.processor;
 
+import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import org.jetbrains.annotations.NotNull;
 
 public interface AttachmentProcessor {
@@ -13,7 +14,7 @@ public interface AttachmentProcessor {
     String processAttachment(@NotNull Attachment attachment);
 
     default String getDelimiter() {
-        return "------------------------------------------------------------------------------------------------------------------------\n";
+        return "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
     }
 
 }

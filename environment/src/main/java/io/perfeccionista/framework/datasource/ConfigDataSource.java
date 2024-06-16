@@ -3,7 +3,6 @@ package io.perfeccionista.framework.datasource;
 import io.perfeccionista.framework.name.Name;
 import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,19 +24,18 @@ public class ConfigDataSource implements DataSource<String, String> {
     }
 
     @Override
-    public @NotNull String get(@NotNull String key) {
-        return Optional.ofNullable(properties.get(key))
-                .orElse("");
+    public Optional<String> get(@NotNull String key) {
+        return Optional.ofNullable(properties.get(key));
     }
 
     @Override
-    public <T extends String> @Nullable T get(@NotNull String key, @NotNull Class<T> clazz) {
-        return (T) get(key);
-    }
-
-    @Override
-    public @Nullable String getString(@NotNull String key) {
+    public Optional<String> getString(@NotNull String key) {
         return get(key);
+    }
+
+    @Override
+    public boolean contains(@NotNull String key) {
+        return properties.containsKey(key);
     }
 
     private synchronized void readFilePropertiesToMap() {

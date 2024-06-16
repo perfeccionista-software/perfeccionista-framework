@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.exceptions;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.base.Reason;
+import io.perfeccionista.framework.exceptions.impl.RegisterDuplicateException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,18 +15,6 @@ public interface RegisterDuplicate extends Reason {
 
     static RegisterDuplicateException exception(@NotNull String message, @NotNull Throwable cause) {
         return new RegisterDuplicateException(message, cause);
-    }
-
-    class RegisterDuplicateException extends PerfeccionistaRuntimeException implements RegisterDuplicate {
-
-        RegisterDuplicateException(String message) {
-            super(message);
-        }
-
-        RegisterDuplicateException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
     }
 
 }

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.exceptions;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.base.Reason;
+import io.perfeccionista.framework.exceptions.impl.ClassCanNotBeCastException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,18 +15,6 @@ public interface ClassCanNotBeCast extends Reason {
 
     static ClassCanNotBeCastException exception(@NotNull String message, @NotNull Throwable cause) {
         return new ClassCanNotBeCastException(message, cause);
-    }
-
-    class ClassCanNotBeCastException extends PerfeccionistaRuntimeException implements ClassCanNotBeCast {
-
-        ClassCanNotBeCastException(String message) {
-            super(message);
-        }
-
-        ClassCanNotBeCastException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
     }
 
 }

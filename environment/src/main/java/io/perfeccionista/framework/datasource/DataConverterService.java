@@ -35,7 +35,7 @@ public class DataConverterService implements Service {
         Preconditions.notNull(environment, "Environment must not be null");
         Preconditions.notNull(configuration, "Service configuration must not be null");
         this.environment = environment;
-        this.validatedConfiguration = validate(configuration);
+        this.validatedConfiguration = validate(configuration, DataConverterServiceConfiguration.class);
         this.dataConvertersByName = validatedConfiguration.getNamedDataConverters();
     }
 
@@ -70,14 +70,6 @@ public class DataConverterService implements Service {
             throw DataConverterNotFound.exception(DATA_CONVERTER_NOT_FOUND_BY_NAME.getMessage(dataConverterName));
         }
         return (T) dataConvertersByName.get(dataConverterName);
-    }
-
-    protected DataConverterServiceConfiguration validate(ServiceConfiguration configuration) {
-        if (configuration instanceof DataConverterServiceConfiguration) {
-            return (DataConverterServiceConfiguration) configuration;
-        }
-        throw IncorrectServiceConfiguration.exception(
-                SERVICE_CONFIGURATION_NOT_VALID.getMessage(configuration.getClass().getCanonicalName(), this.getClass().getCanonicalName()));
     }
 
 }

@@ -280,11 +280,8 @@ public class ValueExpressionProcessor {
                 && method.getParameterTypes()[0].isAssignableFrom(key.getClass())
         ).stream().findFirst();
         if (optionalMethod.isPresent()) {
-            Object result = invokeMethod(optionalMethod.get(), dataSource, key);
-            if (null == result) {
-                throw StringValueParse.exception(DATA_SOURCE_VALUE_NOT_FOUND.getMessage(dataSource.getClass().getCanonicalName(), key.toString()));
-            }
-            return result;
+            return ((Optional<Object>) invokeMethod(optionalMethod.get(), dataSource, key))
+                    .orElseThrow(() -> StringValueParse.exception(DATA_SOURCE_VALUE_NOT_FOUND.getMessage(dataSource.getClass().getCanonicalName(), key.toString())));
         }
         throw StringValueParse.exception(STRING_VALUE_DATA_SOURCE_INCORRECT_KEY_TYPE.getMessage(expression))
                 .addLastAttachmentEntry(TextAttachmentEntry.of("DataSource class", dataSource.getClass().getCanonicalName()))

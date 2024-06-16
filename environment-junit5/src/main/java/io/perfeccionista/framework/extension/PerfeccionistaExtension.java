@@ -1,10 +1,14 @@
 package io.perfeccionista.framework.extension;
 
+import io.perfeccionista.framework.exceptions.attachments.SetAttachmentProcessor;
+import io.perfeccionista.framework.exceptions.attachments.processor.AttachmentProcessor;
+import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
 import io.perfeccionista.framework.repeater.RepeatPolicyService;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -35,8 +39,10 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
@@ -46,22 +52,28 @@ import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveEnvironmentConfiguration;
 import static io.perfeccionista.framework.utils.EnvironmentConfigurationResolver.resolveExternalServiceConfigurations;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 import static java.util.Spliterators.spliteratorUnknownSize;
 import static java.util.stream.StreamSupport.stream;
+import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 import static org.junit.platform.commons.util.AnnotationUtils.isAnnotated;
-import static org.junit.platform.commons.util.ReflectionUtils.newInstance;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_CLASS_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_METHOD_NOT_FOUND;
 
-public class PerfeccionistaExtension implements ParameterResolver, TestInstancePostProcessor, BeforeEachCallback, AfterEachCallback,
-        TestTemplateInvocationContextProvider, TestExecutionExceptionHandler, TestWatcher {
+public class PerfeccionistaExtension implements ParameterResolver, TestInstancePostProcessor,
+        BeforeAllCallback, BeforeEachCallback, AfterEachCallback,
+        TestTemplateInvocationContextProvider, TestExecutionExceptionHandler, TestWatcher, ExtensionContext.Store.CloseableResource {
     private static final Logger logger = LoggerFactory.getLogger(PerfeccionistaExtension.class);
+
+    private static boolean started = false;
 
     protected ThreadLocal<Environment> activeEnvironment = new ThreadLocal<>();
     protected ThreadLocal<Map<Method, Deque<TestExecutionResult>>> threadLocalTestResults = new ThreadLocal<>();
+
+    protected Set<AttachmentProcessor> attachmentProcessors = new HashSet<>();
 
     PerfeccionistaExtension() {}
 
@@ -83,6 +95,8 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         EnvironmentConfiguration environmentConfiguration = resolveEnvironmentConfiguration(testMethod, testClass);
         Set<ConfiguredServiceHolder> externalServiceConfigurations = resolveExternalServiceConfigurations(testMethod, testClass);
         resolveActiveEnvironment(environmentConfiguration, externalServiceConfigurations, context, testName);
+
+        attachmentProcessors.addAll(resolveAttachmentProcessors(testMethod, testClass));
     }
 
     @Override
@@ -231,17 +245,15 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-//        if (throwable instanceof PerfeccionistaException) {
-//            log.error(((PerfeccionistaException) throwable)::getAttachmentDescription);
-//        }
+        if (throwable instanceof PerfeccionistaException) {
+            ((PerfeccionistaException) throwable).getAttachment()
+                    .ifPresent(attachment ->
+                            attachmentProcessors.forEach(attachmentProcessor -> attachmentProcessor.processAttachment(attachment)));
+        }
         throw throwable;
     }
 
     // Методы необходимые для конфигурирования Environment
-
-
-
-
 
     /**
      * Создаем экземпляр {@link Environment} используя полученную конфигурацию и тестовый класс
@@ -283,6 +295,26 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         return Optional.ofNullable(activeEnvironment.get());
     }
 
+    public static Set<AttachmentProcessor> resolveAttachmentProcessors(Method testMethod, Class<?> testClass) {
+        Set<Class<? extends AttachmentProcessor>> attachmentProcessors = new HashSet<>();
+
+        findAnnotation(testMethod, SetAttachmentProcessor.class)
+                .ifPresent(attachmentProcessorAnnotation ->
+                        attachmentProcessors.addAll(Arrays.asList(attachmentProcessorAnnotation.value())));
+
+        Class<?> processedClass = testClass;
+        while (!Object.class.equals(processedClass)) {
+            findAnnotation(processedClass, SetAttachmentProcessor.class)
+                    .ifPresent(attachmentProcessorAnnotation ->
+                            attachmentProcessors.addAll(Arrays.asList(attachmentProcessorAnnotation.value())));
+            processedClass = processedClass.getSuperclass();
+        }
+
+        Set<AttachmentProcessor> result = new HashSet<>();
+        attachmentProcessors.forEach(attachmentProcessorClass -> result.add(newInstance(attachmentProcessorClass)));
+        return result;
+    }
+
     /**
      * TODO: Test and JavaDoc
      */
@@ -302,6 +334,19 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
             return newTestResults;
         }
         return new ArrayDeque<>(testResults);
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        if (!started) {
+            started = true;
+            context.getRoot().getStore(GLOBAL).put("PerfeccionistaExtensionInstance", this);
+        }
+    }
+
+    @Override
+    public void close() {
+        Environment.executeAfterAllHooks();
     }
 
 }

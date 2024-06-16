@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.exceptions;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.base.Reason;
+import io.perfeccionista.framework.exceptions.impl.IncorrectUrlException;
 import org.jetbrains.annotations.NotNull;
 
 public interface IncorrectUrl extends Reason {
@@ -12,18 +12,6 @@ public interface IncorrectUrl extends Reason {
 
     static IncorrectUrlException exception(@NotNull String message, @NotNull Throwable cause) {
         return new IncorrectUrlException(message, cause);
-    }
-
-    class IncorrectUrlException extends PerfeccionistaRuntimeException implements IncorrectUrl {
-
-        IncorrectUrlException(String message) {
-            super(message);
-        }
-
-        IncorrectUrlException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
     }
 
 }

@@ -1,6 +1,6 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
 import io.perfeccionista.framework.utils.EnvironmentLogger;
 import org.junit.jupiter.api.Test;
 

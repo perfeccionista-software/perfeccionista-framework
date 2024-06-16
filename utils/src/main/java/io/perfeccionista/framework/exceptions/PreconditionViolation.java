@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.exceptions;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.base.Reason;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
 import org.jetbrains.annotations.NotNull;
 
 public interface PreconditionViolation extends Reason {
@@ -12,18 +12,6 @@ public interface PreconditionViolation extends Reason {
 
     static PreconditionViolationException exception(@NotNull String message, @NotNull Throwable cause) {
         return new PreconditionViolationException(message, cause);
-    }
-
-    class PreconditionViolationException extends PerfeccionistaRuntimeException implements PreconditionViolation {
-
-        PreconditionViolationException(String message) {
-            super(message);
-        }
-
-        PreconditionViolationException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
     }
 
 }

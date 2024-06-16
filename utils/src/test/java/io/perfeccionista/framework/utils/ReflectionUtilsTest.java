@@ -1,6 +1,6 @@
 package io.perfeccionista.framework.utils;
 
-import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
 import io.perfeccionista.framework.measurements.Order;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.SimpleParallelTest;
@@ -95,4 +95,5 @@ final class ReflectionUtilsTest extends SimpleParallelTest {
         assertEquals(A.class, interfacesFromHToA.getFirst());
         assertEquals(H.class, interfacesFromHToA.getLast());
     }
+
 }

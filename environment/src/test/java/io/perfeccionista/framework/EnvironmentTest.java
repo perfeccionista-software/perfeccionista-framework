@@ -1,13 +1,11 @@
 package io.perfeccionista.framework;
 
-import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
-import io.perfeccionista.framework.exceptions.RegisterDuplicate.RegisterDuplicateException;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
+import io.perfeccionista.framework.exceptions.impl.RegisterDuplicateException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.preconditions;
 
 import io.perfeccionista.framework.exceptions.PreconditionViolation;
-import io.perfeccionista.framework.exceptions.PreconditionViolation.PreconditionViolationException;
+import io.perfeccionista.framework.exceptions.impl.PreconditionViolationException;
 
 public class Preconditions {
 

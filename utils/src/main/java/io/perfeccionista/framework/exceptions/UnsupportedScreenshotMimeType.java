@@ -1,7 +1,7 @@
 package io.perfeccionista.framework.exceptions;
 
-import io.perfeccionista.framework.exceptions.base.PerfeccionistaRuntimeException;
 import io.perfeccionista.framework.exceptions.base.Reason;
+import io.perfeccionista.framework.exceptions.impl.UnsupportedScreenshotMimeTypeException;
 import org.jetbrains.annotations.NotNull;
 
 public interface UnsupportedScreenshotMimeType extends Reason {
@@ -12,18 +12,6 @@ public interface UnsupportedScreenshotMimeType extends Reason {
 
     static UnsupportedScreenshotMimeTypeException exception(@NotNull String message, @NotNull Throwable cause) {
         return new UnsupportedScreenshotMimeTypeException(message, cause);
-    }
-
-    class UnsupportedScreenshotMimeTypeException extends PerfeccionistaRuntimeException implements UnsupportedScreenshotMimeType {
-
-        UnsupportedScreenshotMimeTypeException(String message) {
-            super(message);
-        }
-
-        UnsupportedScreenshotMimeTypeException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
     }
 
 }

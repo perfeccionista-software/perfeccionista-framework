@@ -3,7 +3,6 @@ package io.perfeccionista.framework.invocation.runner;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.exceptions.attachments.Attachment;
 import io.perfeccionista.framework.exceptions.attachments.AttachmentEntry;
-import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.invocation.InvocationService;
 import io.perfeccionista.framework.invocation.runner.InvocationResult.InvocationStatus;
 import org.jetbrains.annotations.NotNull;
@@ -106,11 +105,6 @@ public final class InvocationInfo {
 
     public InvocationInfo addAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
         this.attachment.addLastAttachmentEntry(attachmentEntry);
-        return this;
-    }
-
-    public InvocationInfo setMainAttachmentEntry(@NotNull TextAttachmentEntry attachmentEntry) {
-        this.attachment.setMainAttachmentEntry(attachmentEntry);
         return this;
     }
 
