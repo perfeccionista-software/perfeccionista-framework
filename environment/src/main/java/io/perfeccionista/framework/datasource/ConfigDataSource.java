@@ -29,11 +29,6 @@ public class ConfigDataSource implements DataSource<String, String> {
     }
 
     @Override
-    public Optional<String> getString(@NotNull String key) {
-        return get(key);
-    }
-
-    @Override
     public boolean contains(@NotNull String key) {
         return properties.containsKey(key);
     }

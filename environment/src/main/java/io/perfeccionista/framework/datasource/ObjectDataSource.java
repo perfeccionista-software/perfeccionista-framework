@@ -17,4 +17,13 @@ public interface ObjectDataSource<K, V> extends DataSource <K, V> {
      */
     <T extends V> Optional<T> get(@NotNull K key, @NotNull Class<T> clazz);
 
+    /**
+     * Возвращает строковое представление значения, получаемого
+     * по ключу {@param key}
+     *
+     * @param key передаваемый пользователем ключ
+     * @return строковое представление значения по ключу {@param key}
+     */
+    Optional<String> getString(@NotNull K key);
+
 }

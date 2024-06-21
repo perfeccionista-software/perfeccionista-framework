@@ -10,18 +10,13 @@ import java.util.Optional;
 public class StringDataSource implements DataSource<String, String> {
 
     @Override
-    public Optional<String> get(@NotNull String key) {
-        return Optional.of(key + " Smith");
-    }
-
-    @Override
-    public Optional<String> getString(@NotNull String key) {
-        return get(key);
-    }
-
-    @Override
     public boolean contains(@NotNull String key) {
         return false;
+    }
+
+    @Override
+    public Optional<String> get(@NotNull String key) {
+        return Optional.of(key + " Smith");
     }
 
 }
