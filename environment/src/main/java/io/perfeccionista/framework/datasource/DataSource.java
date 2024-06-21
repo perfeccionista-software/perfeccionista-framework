@@ -40,13 +40,4 @@ public interface DataSource<K, V> {
      */
     Optional<V> get(@NotNull K key);
 
-    /**
-     * Возвращает строковое представление значения, получаемого
-     * по ключу {@param key}
-     *
-     * @param key передаваемый пользователем ключ
-     * @return строковое представление значения по ключу {@param key}
-     */
-    Optional<String> getString(@NotNull K key);
-
 }
