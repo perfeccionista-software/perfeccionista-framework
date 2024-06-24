@@ -244,13 +244,15 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
         if (throwable instanceof PerfeccionistaException) {
             ((PerfeccionistaException) throwable).getAttachment().ifPresent(attachment -> {
-                getActiveEnvironment().ifPresent(environment -> {
-                    environment.getOptionalService(InvocationService.class).ifPresent(invocationService -> {
-                        invocationService.getAttachmentProcessors()
-                                .forEach(attachmentProcessor -> attachmentProcessor.processAttachment(attachment));
+                if (!attachment.isProcessed()) {
+                    getActiveEnvironment().ifPresent(environment -> {
+                        environment.getOptionalService(InvocationService.class).ifPresent(invocationService -> {
+                            invocationService.getAttachmentProcessors()
+                                    .forEach(attachmentProcessor -> attachmentProcessor.processAttachment(attachment));
+                        });
                     });
-                });
-
+                }
+                attachment.setProcessed(true);
             });
         }
         throw throwable;

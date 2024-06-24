@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 public class Attachment {
 
     private final Deque<AttachmentEntry<?>> entries;
+    private boolean processed = false;
 
     private Attachment(Deque<AttachmentEntry<?>> entries) {
         this.entries = entries;
@@ -35,6 +36,15 @@ public class Attachment {
 
     public boolean isEmpty() {
         return entries.isEmpty();
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public Attachment setProcessed(boolean processed) {
+        this.processed = processed;
+        return this;
     }
 
     public Attachment addFirstAttachmentEntry(@NotNull AttachmentEntry<?> entry) {
