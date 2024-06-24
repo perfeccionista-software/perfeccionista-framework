@@ -97,7 +97,7 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
         }
         DefaultServiceOrder defaultOrder = serviceClass.getAnnotation(DefaultServiceOrder.class);
         if (Objects.nonNull(defaultOrder)) {
-            configuredServiceHolder.setOrder(defaultOrder.order());
+            configuredServiceHolder.setOrder(defaultOrder.value());
         }
         return configuredServiceHolder;
     }

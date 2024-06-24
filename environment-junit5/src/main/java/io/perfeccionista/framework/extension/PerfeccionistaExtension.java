@@ -3,6 +3,7 @@ package io.perfeccionista.framework.extension;
 import io.perfeccionista.framework.exceptions.attachments.SetAttachmentProcessor;
 import io.perfeccionista.framework.exceptions.attachments.processor.AttachmentProcessor;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
+import io.perfeccionista.framework.invocation.InvocationService;
 import io.perfeccionista.framework.repeater.RepeatPolicyService;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
@@ -73,8 +74,6 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     protected ThreadLocal<Environment> activeEnvironment = new ThreadLocal<>();
     protected ThreadLocal<Map<Method, Deque<TestExecutionResult>>> threadLocalTestResults = new ThreadLocal<>();
 
-    protected Set<AttachmentProcessor> attachmentProcessors = new HashSet<>();
-
     PerfeccionistaExtension() {}
 
     // Lifecycle methods
@@ -95,8 +94,6 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         EnvironmentConfiguration environmentConfiguration = resolveEnvironmentConfiguration(testMethod, testClass);
         Set<ConfiguredServiceHolder> externalServiceConfigurations = resolveExternalServiceConfigurations(testMethod, testClass);
         resolveActiveEnvironment(environmentConfiguration, externalServiceConfigurations, context, testName);
-
-        attachmentProcessors.addAll(resolveAttachmentProcessors(testMethod, testClass));
     }
 
     @Override
@@ -246,9 +243,15 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
         if (throwable instanceof PerfeccionistaException) {
-            ((PerfeccionistaException) throwable).getAttachment()
-                    .ifPresent(attachment ->
-                            attachmentProcessors.forEach(attachmentProcessor -> attachmentProcessor.processAttachment(attachment)));
+            ((PerfeccionistaException) throwable).getAttachment().ifPresent(attachment -> {
+                getActiveEnvironment().ifPresent(environment -> {
+                    environment.getOptionalService(InvocationService.class).ifPresent(invocationService -> {
+                        invocationService.getAttachmentProcessors()
+                                .forEach(attachmentProcessor -> attachmentProcessor.processAttachment(attachment));
+                    });
+                });
+
+            });
         }
         throw throwable;
     }

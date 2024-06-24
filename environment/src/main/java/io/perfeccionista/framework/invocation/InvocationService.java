@@ -1,6 +1,7 @@
 package io.perfeccionista.framework.invocation;
 
 import io.perfeccionista.framework.Environment;
+import io.perfeccionista.framework.exceptions.attachments.processor.AttachmentProcessor;
 import io.perfeccionista.framework.invocation.runner.EmptyInvocationRunner;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoNameFormatter;
 import io.perfeccionista.framework.invocation.runner.InvocationInfoStatisticsFormatter;
@@ -10,6 +11,8 @@ import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.Service;
 import io.perfeccionista.framework.service.ServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 @DefaultServiceConfiguration(DefaultInvocationServiceConfiguration.class)
 public class InvocationService implements Service {
@@ -37,12 +40,15 @@ public class InvocationService implements Service {
                 : configuration.getInvocationRunnerImplementation(invocationWrapper);
     }
 
-    public InvocationInfoNameFormatter getInvocationInfoNameFormatter() {
+    public @NotNull InvocationInfoNameFormatter getInvocationInfoNameFormatter() {
         return configuration.getInvocationInfoNameFormatter();
     }
 
-    public InvocationInfoStatisticsFormatter getInvocationInfoStatisticsFormatter() {
+    public @NotNull InvocationInfoStatisticsFormatter getInvocationInfoStatisticsFormatter() {
         return configuration.getInvocationInfoStatisticsFormatter();
     }
 
+    public @NotNull Set<AttachmentProcessor> getAttachmentProcessors() {
+        return configuration.getAttachmentProcessors();
+    }
 }

@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DefaultServiceOrder {
 
-    int order() default 0;
+    int value() default 0;
 
 }

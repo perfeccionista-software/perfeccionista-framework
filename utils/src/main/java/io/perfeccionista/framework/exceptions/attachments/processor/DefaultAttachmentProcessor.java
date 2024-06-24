@@ -34,8 +34,10 @@ import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
 import static java.time.temporal.ChronoField.YEAR;
 
 public class DefaultAttachmentProcessor implements AttachmentProcessor {
+
     public static final Logger log = LoggerFactory.getLogger(DefaultAttachmentProcessor.class);
     public static final DateTimeFormatter ID_FORMAT;
+
     static {
         ID_FORMAT = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
@@ -51,7 +53,6 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
 
     @Override
     public String processAttachment(@NotNull Attachment attachment) {
-
         String fileAttachmentsDescription = attachment.getAttachmentEntries()
                 .filter(entry -> entry instanceof FileAttachmentEntry<?>)
                 .map(entry -> {
