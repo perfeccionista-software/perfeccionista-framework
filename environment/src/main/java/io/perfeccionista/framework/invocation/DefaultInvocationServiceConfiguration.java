@@ -1,5 +1,7 @@
 package io.perfeccionista.framework.invocation;
 
+import io.perfeccionista.framework.exceptions.attachments.processor.AttachmentProcessor;
+import io.perfeccionista.framework.exceptions.attachments.processor.DefaultAttachmentProcessor;
 import io.perfeccionista.framework.invocation.runner.MultipleAttemptInvocationRunner;
 import io.perfeccionista.framework.invocation.runner.DefaultInvocationInfoNameFormatter;
 import io.perfeccionista.framework.invocation.runner.DefaultInvocationInfoStatisticsFormatter;
@@ -13,6 +15,7 @@ import io.perfeccionista.framework.invocation.wrapper.SingleAttemptInvocationWra
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Set;
 
 // TODO: Добавить возможность переопределять значения из проперти или переменных окружения
 public class DefaultInvocationServiceConfiguration implements InvocationServiceConfiguration {
@@ -40,4 +43,8 @@ public class DefaultInvocationServiceConfiguration implements InvocationServiceC
         return DEFAULT_STATISTICS_FORMATTER;
     }
 
+    @Override
+    public @NotNull Set<AttachmentProcessor> getAttachmentProcessors() {
+        return Set.of(new DefaultAttachmentProcessor());
+    }
 }
