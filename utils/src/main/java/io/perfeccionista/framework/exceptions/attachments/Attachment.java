@@ -33,6 +33,10 @@ public class Attachment {
         return new Attachment(new ArrayDeque<>(Arrays.asList(entries)));
     }
 
+    public boolean isEmpty() {
+        return entries.isEmpty();
+    }
+
     public Attachment addFirstAttachmentEntry(@NotNull AttachmentEntry<?> entry) {
         Preconditions.notNull(entry, "Attachment entry must not be null");
         entries.addFirst(entry);
