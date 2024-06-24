@@ -337,15 +337,14 @@ public class Environment {
                 .sorted(Comparator.comparingInt(ConfiguredServiceHolder::getOrder))
                 .forEachOrdered(serviceHolder -> {
                     long startTime = System.nanoTime();
-                    Class<? extends Service> serviceClass = serviceHolder.getServiceClass();
                     if (serviceHolder.isEnabled()) {
                         if (serviceHolder.isConfigured()) {
-                            Class<? extends ServiceConfiguration> serviceConfigurationClass = serviceHolder.getServiceConfigurationClass();
-                            // serviceConfigurationClass не может быть null
-                            ServiceConfiguration serviceConfiguration = newInstance(serviceConfigurationClass);
-                            initService(serviceClass, serviceConfiguration);
+                            initService(serviceHolder.getServiceClass(),
+                                    serviceHolder.getServiceImplementation(),
+                                    serviceHolder.getServiceConfiguration());
                         } else {
-                            initService(serviceClass);
+                            initService(serviceHolder.getServiceClass(),
+                                    serviceHolder.getServiceImplementation());
                         }
                     }
                     environmentLogger.addServiceRecord(serviceHolder, startTime, System.nanoTime());
@@ -361,28 +360,27 @@ public class Environment {
         initEnvironment(environmentConfiguration, null);
     }
 
-    protected void initService(@NotNull Class<? extends Service> serviceClass) {
+    protected void initService(@NotNull Class<? extends Service> serviceClass,
+                               @NotNull Class<? extends Service> serviceImplementation) {
         Preconditions.notNull(serviceClass, "serviceClass must not be null");
-        Service serviceInstance = newInstance(serviceClass);
+        Preconditions.notNull(serviceImplementation, "serviceImplementation must not be null");
+        Service serviceInstance = newInstance(serviceImplementation);
         serviceInstance.init(this);
         register(serviceClass, serviceInstance);
     }
 
     protected void initService(@NotNull Class<? extends Service> serviceClass,
+                               @NotNull Class<? extends Service> serviceImplementation,
                                @NotNull ServiceConfiguration serviceConfiguration) {
         Preconditions.notNull(serviceClass, "serviceClass must not be null");
+        Preconditions.notNull(serviceImplementation, "serviceImplementation must not be null");
         Preconditions.notNull(serviceConfiguration, "serviceConfiguration must not be null");
         try {
-            Optional<Class<? extends Service>> customImplementation = serviceConfiguration.getImplementation();
-            Class<? extends Service> serviceImplementation = customImplementation.orElse(serviceClass);
             Service serviceInstance = newInstance(serviceImplementation);
             serviceInstance.init(this, serviceConfiguration);
             register(serviceClass, serviceInstance);
         } catch (Exception ex) {
-           throw EnvironmentNotInitialized.exception(
-                   ENVIRONMENT_SERVICE_INITIALIZING_FAILED.getMessage(serviceClass.getCanonicalName()),
-                   ex
-           );
+           throw EnvironmentNotInitialized.exception(ENVIRONMENT_SERVICE_INITIALIZING_FAILED.getMessage(serviceImplementation.getCanonicalName()), ex);
         }
     }
 

@@ -1,11 +1,10 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.service.ServiceConfigurationManager;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.utils.DefaultEnvironmentAttachmentProcessor;
 import io.perfeccionista.framework.utils.EnvironmentAttachmentProcessor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Set;
 
 /**
  * Базовый интерфейс для конфигурирования {@link Environment}.
@@ -33,7 +32,7 @@ public interface EnvironmentConfiguration {
      * Набор сервисов и конфигураций для замены дефолных сервисов
      * @return
      */
-    @NotNull Set<ConfiguredServiceHolder> getServiceConfigurations();
+    @NotNull ServiceConfigurationManager getServiceConfigurations();
 
     /**
      * @return Реализация обработчика аттачмента конфигурации Environment.

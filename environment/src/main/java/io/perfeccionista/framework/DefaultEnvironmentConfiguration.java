@@ -1,9 +1,11 @@
 package io.perfeccionista.framework;
 
+import io.perfeccionista.framework.service.ServiceConfigurationManager;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.DefaultServiceConfiguration;
 import io.perfeccionista.framework.service.DefaultServiceOrder;
 import io.perfeccionista.framework.service.Service;
+import io.perfeccionista.framework.service.ServiceConfiguration;
 import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 import static io.perfeccionista.framework.Environment.PERFECCIONISTA_PROPERTIES_FILE;
 import static io.perfeccionista.framework.utils.PackageUtils.validatePackageSet;
 import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.findAllClasses;
+import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newInstance;
 
 public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration {
 
@@ -39,7 +42,7 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
     }
 
     @Override
-    public @NotNull Set<ConfiguredServiceHolder> getServiceConfigurations() {
+    public @NotNull ServiceConfigurationManager getServiceConfigurations() {
         Map<Class<? extends Service>, ConfiguredServiceHolder> services = new HashMap<>();
         synchronized (DefaultEnvironmentConfiguration.class) {
             if (!cacheReady) {
@@ -51,7 +54,7 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
         }
         services.putAll(cachedServiceConfigurations);
         services.putAll(serviceConfigurationsToAddOrOverride);
-        return new HashSet<>(services.values());
+        return ServiceConfigurationManager.of(services);
     }
 
     protected void readProperties() {
@@ -90,10 +93,11 @@ public class DefaultEnvironmentConfiguration implements EnvironmentConfiguration
     }
 
     protected ConfiguredServiceHolder resolveDefaultServiceConfiguration(Class<? extends Service> serviceClass) {
-        ConfiguredServiceHolder configuredServiceHolder = ConfiguredServiceHolder.of(serviceClass);
+        ConfiguredServiceHolder configuredServiceHolder = ConfiguredServiceHolder.of(serviceClass, serviceClass);
         DefaultServiceConfiguration defaultConfiguration = serviceClass.getAnnotation(DefaultServiceConfiguration.class);
         if (Objects.nonNull(defaultConfiguration)) {
-            configuredServiceHolder = ConfiguredServiceHolder.of(serviceClass, defaultConfiguration.value());
+            Class<? extends ServiceConfiguration> serviceConfigurationClass = defaultConfiguration.value();
+            configuredServiceHolder = ConfiguredServiceHolder.of(serviceClass, serviceClass, newInstance(serviceConfigurationClass));
         }
         DefaultServiceOrder defaultOrder = serviceClass.getAnnotation(DefaultServiceOrder.class);
         if (Objects.nonNull(defaultOrder)) {

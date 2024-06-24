@@ -1,7 +1,5 @@
 package io.perfeccionista.framework.service;
 
-import java.util.Optional;
-
 /**
  * TODO: JavaDoc
  *
@@ -10,13 +8,4 @@ import java.util.Optional;
  * документации как это правильно делать, например, через аннотацию @Default).
  */
 public interface ServiceConfiguration {
-
-    /**
-     * TODO: JavaDoc
-     * @return
-     */
-    default Optional<Class<? extends Service>> getImplementation() {
-        return Optional.empty();
-    }
-
 }

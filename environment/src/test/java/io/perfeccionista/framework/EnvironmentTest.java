@@ -32,9 +32,11 @@ class EnvironmentTest extends AbstractParallelTest {
                 () -> assertThrows(PreconditionViolationException.class, () -> environment.getService(null)),
                 () -> assertThrows(PreconditionViolationException.class, () -> environment.initEnvironment(null)),
                 () -> assertThrows(PreconditionViolationException.class, () ->
-                        environment.initService(null, mock(ServiceConfiguration.class))),
+                        environment.initService(null, TestAdditionProvider2.class, mock(ServiceConfiguration.class))),
                 () -> assertThrows(PreconditionViolationException.class, () ->
-                        environment.initService(TestAdditionProvider1.class, null))
+                        environment.initService(TestAdditionProvider2.class, null, mock(ServiceConfiguration.class))),
+                () -> assertThrows(PreconditionViolationException.class, () ->
+                        environment.initService(TestAdditionProvider1.class, TestAdditionProvider1.class, null))
         );
     }
 

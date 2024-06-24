@@ -5,6 +5,7 @@ import io.perfeccionista.framework.EnvironmentConfiguration;
 import io.perfeccionista.framework.SetEnvironmentConfiguration;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
+import io.perfeccionista.framework.service.ServiceConfiguration;
 import io.perfeccionista.framework.service.SetServiceConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -109,18 +110,29 @@ public class EnvironmentConfigurationResolver {
 
         while (!serviceConfigurations.isEmpty()) {
             ConfiguredServiceHolder serviceHolder = serviceConfigurations.removeLast();
-            result.put(serviceHolder.getServiceClass(), serviceHolder);
+            result.put(serviceHolder.getServiceImplementation(), serviceHolder);
         }
 
         return new HashSet<>(result.values());
     }
 
     private static ConfiguredServiceHolder createConfiguredServiceHolder(SetServiceConfiguration configuration) {
-        if (configuration.disabled()) {
-            return ConfiguredServiceHolder.disabled(configuration.service());
+        if (Service.class.equals(configuration.serviceImplementation())) {
+            if (configuration.disabled()) {
+                return ConfiguredServiceHolder.disabled(configuration.serviceClass(), configuration.serviceClass());
+            } else {
+                Class<? extends ServiceConfiguration> serviceConfigurationClass = configuration.configuration();
+                return ConfiguredServiceHolder.of(configuration.serviceClass(), configuration.serviceClass(), newInstance(serviceConfigurationClass))
+                        .setOrder(configuration.order());
+            }
         } else {
-            return ConfiguredServiceHolder.of(configuration.service(), configuration.configuration())
-                    .setOrder(configuration.order());
+            if (configuration.disabled()) {
+                return ConfiguredServiceHolder.disabled(configuration.serviceClass(), configuration.serviceImplementation());
+            } else {
+                Class<? extends ServiceConfiguration> serviceConfigurationClass = configuration.configuration();
+                return ConfiguredServiceHolder.of(configuration.serviceClass(), configuration.serviceImplementation(), newInstance(serviceConfigurationClass))
+                        .setOrder(configuration.order());
+            }
         }
     }
 
