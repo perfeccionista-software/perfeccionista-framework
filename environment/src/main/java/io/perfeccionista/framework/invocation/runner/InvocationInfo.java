@@ -29,7 +29,7 @@ public final class InvocationInfo {
 
     protected Deque<InvocationResult> invocationResults;
     protected InvocationResult current = null;
-    protected Attachment attachment = Attachment.empty();
+    protected Attachment attachment = null;
 
     protected InvocationInfoStatisticsFormatter statisticsFormatter;
 
@@ -94,8 +94,8 @@ public final class InvocationInfo {
         return invocationResults.getLast().getStatus();
     }
 
-    public Attachment getAttachment() {
-        return this.attachment;
+    public Optional<Attachment> getAttachment() {
+        return Optional.ofNullable(this.attachment);
     }
 
     public InvocationInfo setAttachment(@NotNull Attachment attachment) {
@@ -104,7 +104,11 @@ public final class InvocationInfo {
     }
 
     public InvocationInfo addAttachmentEntry(@NotNull AttachmentEntry<?> attachmentEntry) {
-        this.attachment.addLastAttachmentEntry(attachmentEntry);
+        if (Objects.isNull(this.attachment)) {
+            this.attachment = Attachment.with(attachmentEntry);
+        } else {
+            this.attachment.addLastAttachmentEntry(attachmentEntry);
+        }
         return this;
     }
 
