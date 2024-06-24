@@ -9,6 +9,7 @@ import io.perfeccionista.framework.extension.services.configurations.TestService
 import io.perfeccionista.framework.extension.services.configurations.TestServiceConfiguration2;
 import io.perfeccionista.framework.extension.services.configurations.TestServiceConfiguration3;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
+import io.perfeccionista.framework.service.ServiceConfigurationManager;
 import io.perfeccionista.framework.value.ValueService;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,17 +18,16 @@ import java.util.Set;
 public class TestEnvironmentParameterResolverConfiguration extends DefaultEnvironmentConfiguration {
 
     @Override
-    public @NotNull Set<ConfiguredServiceHolder> getServiceConfigurations() {
-        return Set.of(
-                ConfiguredServiceHolder.of(ValueService.class),
-                ConfiguredServiceHolder.of(TestService1.class, TestServiceConfiguration1.class)
-                        .setOrder(-100),
-                ConfiguredServiceHolder.of(TestService2.class, TestServiceConfiguration2.class),
-                ConfiguredServiceHolder.of(TestService3.class, TestServiceConfiguration3.class)
-                        .setOrder(2),
-                ConfiguredServiceHolder.of(TestService4.class, TestServiceConfiguration2.class)
-                        .setOrder(400)
-        );
+    public @NotNull ServiceConfigurationManager getServiceConfigurations() {
+        return ServiceConfigurationManager.of()
+                .put(ConfiguredServiceHolder.of(ValueService.class))
+                .put(ConfiguredServiceHolder.of(TestService1.class, new TestServiceConfiguration1())
+                        .setOrder(-100))
+                .put(ConfiguredServiceHolder.of(TestService2.class, new TestServiceConfiguration2()))
+                .put(ConfiguredServiceHolder.of(TestService3.class, new TestServiceConfiguration3())
+                        .setOrder(2))
+                .put(ConfiguredServiceHolder.of(TestService4.class, new TestServiceConfiguration2())
+                        .setOrder(400));
     }
 
 }

@@ -16,7 +16,12 @@ import java.lang.annotation.Target;
 @Repeatable(SetServiceConfigurations.class)
 public @interface SetServiceConfiguration {
 
-    Class<? extends Service> service();
+    Class<? extends Service> serviceClass();
+
+    /**
+     * Если serviceImplementation не выбрана, то экземпляр создается из serviceClass()
+     */
+    Class<? extends Service> serviceImplementation() default Service.class;
 
     Class<? extends ServiceConfiguration> configuration();
 

@@ -9,30 +9,56 @@ import java.util.Objects;
 public final class ConfiguredServiceHolder {
 
     private final Class<? extends Service> serviceClass;
-    private final Class<? extends ServiceConfiguration> serviceConfigurationClass;
+    private final Class<? extends Service> serviceImplementation;
+    private final ServiceConfiguration serviceConfiguration;
     private boolean enabled = true;
     private int order = 0;
 
     private ConfiguredServiceHolder(Class<? extends Service> serviceClass,
-                                    Class<? extends ServiceConfiguration> configuration) {
+                                    Class<? extends Service> serviceImplementation,
+                                    ServiceConfiguration configuration) {
         this.serviceClass = serviceClass;
-        this.serviceConfigurationClass = configuration;
+        this.serviceImplementation = serviceImplementation;
+        this.serviceConfiguration = configuration;
     }
 
     public static ConfiguredServiceHolder of(@NotNull Class<? extends Service> serviceClass) {
         Preconditions.notNull(serviceClass, "Service class must not be null");
-        return new ConfiguredServiceHolder(serviceClass, null);
+        return new ConfiguredServiceHolder(serviceClass, serviceClass, null);
     }
 
     public static ConfiguredServiceHolder of(@NotNull Class<? extends Service> serviceClass,
-                                             @Nullable Class<? extends ServiceConfiguration> configuration) {
+                                             @NotNull Class<? extends Service> serviceImplementation) {
         Preconditions.notNull(serviceClass, "Service class must not be null");
-        return new ConfiguredServiceHolder(serviceClass, configuration);
+        Preconditions.notNull(serviceImplementation, "Service implementation must not be null");
+        return new ConfiguredServiceHolder(serviceClass, serviceImplementation, null);
+    }
+
+    public static ConfiguredServiceHolder of(@NotNull Class<? extends Service> serviceClass,
+                                             @Nullable ServiceConfiguration configuration) {
+        Preconditions.notNull(serviceClass, "Service class must not be null");
+        return new ConfiguredServiceHolder(serviceClass, serviceClass, configuration);
+    }
+
+    public static ConfiguredServiceHolder of(@NotNull Class<? extends Service> serviceClass,
+                                             @NotNull Class<? extends Service> serviceImplementation,
+                                             @Nullable ServiceConfiguration configuration) {
+        Preconditions.notNull(serviceClass, "Service class must not be null");
+        Preconditions.notNull(serviceImplementation, "Service implementation must not be null");
+        return new ConfiguredServiceHolder(serviceClass, serviceImplementation, configuration);
     }
 
     public static ConfiguredServiceHolder disabled(@NotNull Class<? extends Service> serviceClass) {
         Preconditions.notNull(serviceClass, "Service class must not be null");
-        return new ConfiguredServiceHolder(serviceClass, null)
+        return new ConfiguredServiceHolder(serviceClass, serviceClass, null)
+                .disable();
+    }
+
+    public static ConfiguredServiceHolder disabled(@NotNull Class<? extends Service> serviceClass,
+                                                   @NotNull Class<? extends Service> serviceImplementation) {
+        Preconditions.notNull(serviceClass, "Service class must not be null");
+        Preconditions.notNull(serviceClass, "Service implementation must not be null");
+        return new ConfiguredServiceHolder(serviceClass, serviceImplementation, null)
                 .disable();
     }
 
@@ -47,15 +73,19 @@ public final class ConfiguredServiceHolder {
     }
 
     public boolean isConfigured() {
-        return Objects.nonNull(serviceConfigurationClass);
+        return Objects.nonNull(serviceConfiguration);
     }
 
     public @NotNull Class<? extends Service> getServiceClass() {
         return serviceClass;
     }
 
-    public @Nullable Class<? extends ServiceConfiguration> getServiceConfigurationClass() {
-        return serviceConfigurationClass;
+    public @NotNull Class<? extends Service> getServiceImplementation() {
+        return serviceImplementation;
+    }
+
+    public @Nullable ServiceConfiguration getServiceConfiguration() {
+        return serviceConfiguration;
     }
 
     public boolean isEnabled() {
@@ -67,11 +97,11 @@ public final class ConfiguredServiceHolder {
     }
 
     public @NotNull String getServiceName() {
-        return serviceClass.getCanonicalName();
+        return serviceImplementation.getCanonicalName();
     }
 
     public @NotNull String getServiceConfigurationName() {
-        return serviceConfigurationClass == null ? "null" : serviceConfigurationClass.getCanonicalName();
+        return serviceConfiguration == null ? "null" : serviceConfiguration.getClass().getCanonicalName();
     }
 
     @Override
