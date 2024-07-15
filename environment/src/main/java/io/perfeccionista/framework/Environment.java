@@ -37,7 +37,7 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
 /**
  * Экземпляры {@link Environment} инкапсулируют в себе среду выполнения
  * теста. Среда выполнения теста содержит тестовый класс, который запускается
- * в текущем потоке а так же набор {@link Service}.
+ * в текущем потоке. А так же набор {@link Service}.
  * {@link Service} регистрируются внутри {@link Environment} по классу.
  * {@link Environment} может содержать только один экземпляр {@link Service},
  * зарегистрированный по конкретному классу.
@@ -64,7 +64,7 @@ public class Environment {
     public static final String PERFECCIONISTA_PROPERTIES_FILE = "perfeccionista.properties";
     public static final String ENVIRONMENT_ATTACHMENT_NAME = "Environment configuration";
 
-    protected static final ThreadLocal<Environment> INSTANCES = new ThreadLocal<>();
+    protected static final InheritableThreadLocal<Environment> INSTANCES = new InheritableThreadLocal<>();
     protected static Deque<Runnable> afterAllHooks = new ArrayDeque<>();
 
     protected final String testName;
