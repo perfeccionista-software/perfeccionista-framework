@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.InvocationType.ACTION;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.InvocationType.ASSERT;
-import static io.perfeccionista.framework.invocation.runner.InvocationInfo.InvocationType.CUSTOM;
+import static io.perfeccionista.framework.invocation.runner.InvocationInfo.InvocationType.STEP;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.InvocationType.EMPTY;
 import static io.perfeccionista.framework.invocation.runner.InvocationInfo.InvocationType.GETTER;
 
@@ -55,8 +55,8 @@ public final class InvocationInfo {
         return new InvocationInfo(GETTER, invocationName, args);
     }
 
-    public static InvocationInfo customOperationInvocation(String invocationName, String... args) {
-        return new InvocationInfo(CUSTOM, invocationName, args);
+    public static InvocationInfo stepInvocation(String invocationName, String... args) {
+        return new InvocationInfo(STEP, invocationName, args);
     }
 
     public static InvocationInfo empty() {
@@ -162,6 +162,10 @@ public final class InvocationInfo {
         return this.statisticsFormatter.format(this);
     }
 
+    public String getStatistics(@NotNull InvocationInfoStatisticsFormatter statisticsFormatter) {
+        return statisticsFormatter.format(this);
+    }
+
     @Override
     public String toString() {
         return this.invocationName + " " + getStatistics();
@@ -195,7 +199,7 @@ public final class InvocationInfo {
         ASSERT,
         ACTION,
         GETTER,
-        CUSTOM
+        STEP
 
     }
 
