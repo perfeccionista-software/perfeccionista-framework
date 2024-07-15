@@ -36,8 +36,16 @@ public interface DataSource<K, V> {
      * Возвращает значение по переданному ключу {@param key}
      *
      * @param key передаваемый пользователем ключ
-     * @return значение по ключу {@param key}
+     * @return Значение по ключу {@param key} или Exception
      */
-    Optional<V> get(@NotNull K key);
+    V get(@NotNull K key);
+
+    /**
+     * Возвращает значение по переданному ключу {@param key}
+     *
+     * @param key передаваемый пользователем ключ
+     * @return Опциональное значение по ключу {@param key}
+     */
+    Optional<V> getOptional(@NotNull K key);
 
 }

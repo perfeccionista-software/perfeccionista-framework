@@ -21,7 +21,7 @@ class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
         DataSourceService dataSourceService = environment.getService(DataSourceService.class);
         assertAll(
                 () -> assertNotNull(dataSourceService),
-                () -> assertEquals(6, dataSourceService.stream().count())
+                () -> assertEquals(5, dataSourceService.stream().count())
         );
     }
 
@@ -30,7 +30,7 @@ class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
         DataSourceService dataSourceService = environment.getService(DataSourceService.class);
         assertAll(
                 () -> assertNotNull(dataSourceService),
-                () -> assertNotNull(dataSourceService.get(StashDataSource.class)),
+                () -> assertNotNull(dataSourceService.get(Stash.class)),
                 () -> assertNotNull(dataSourceService.get(SimpleDataSource.class)),
                 () -> assertNotNull(dataSourceService.get(SimpleDataStorage.class)),
                 () -> assertNotNull(dataSourceService.get(StringDataSource.class)),
@@ -48,13 +48,13 @@ class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
                     assertAll(
                             () -> assertNotNull(simpleDataSource),
                             () -> {
-                                User user = simpleDataSource.get("Jack").get();
+                                User user = simpleDataSource.get("Jack");
                                 assertEquals(new User("Jack", "Black"), user);
                             },
                             () -> {
-                                Professional professionalUser = simpleDataSource.get("Professional John", Professional.class).get();
+                                Professional professionalUser = simpleDataSource.get("Professional John", Professional.class);
                                 assertEquals(new Professional("Professional John", "White"), professionalUser);
-                                assertEquals("Jack Black", simpleDataSource.getString("Jack").get());
+                                assertEquals("Jack Black", simpleDataSource.getString("Jack"));
                             }
                     );
                 }

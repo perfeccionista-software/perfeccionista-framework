@@ -78,12 +78,12 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                         deleteFileIgnoreExceptions(filePath);
                         writeTextFile(filePath, content);
                     }
-                    return getDelimiter() + entry.getName() + " " + filePath.toAbsolutePath();
+                    return getDelimiter(true) + entry.getName() + " " + filePath.toAbsolutePath();
                 }).collect(Collectors.joining("\n"));
 
         String stringAttachmentsDescription = attachment.getAttachmentEntries()
                 .filter(entry -> entry instanceof TextAttachmentEntry)
-                .map(entry -> getDelimiter() + "[" + entry.getName() + "]" + "\n" + entry.getDescription())
+                .map(entry -> getDelimiter(true) + "[" + entry.getName() + "]" + "\n" + entry.getDescription())
                 .collect(Collectors.joining("\n"));
 
         if (isBlank(fileAttachmentsDescription) && isBlank(stringAttachmentsDescription)) {
@@ -93,9 +93,9 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
         String attachmentDescription = "Attachments:\n"
                 + (isBlank(fileAttachmentsDescription) ? "" : fileAttachmentsDescription + "\n")
                 + (isBlank(stringAttachmentsDescription) ? "" : stringAttachmentsDescription + "\n")
-                + getDelimiter();
+                + getDelimiter(false);
 
-        log.error(attachmentDescription);
+        log.info(attachmentDescription);
 
         return attachmentDescription;
     }

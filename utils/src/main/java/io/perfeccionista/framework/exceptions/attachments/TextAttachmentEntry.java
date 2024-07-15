@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class TextAttachmentEntry extends AttachmentEntry<String> {
         return new TextAttachmentEntry(name, content);
     }
 
-    public static TextAttachmentEntry of(@NotNull String name, @NotNull Set<String> content) {
+    public static TextAttachmentEntry of(@NotNull String name, @NotNull Collection<String> content) {
         return new TextAttachmentEntry(name, String.join("\n", content));
     }
 
