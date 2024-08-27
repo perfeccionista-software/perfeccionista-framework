@@ -227,9 +227,9 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 //        testRuntimeOnly(group = "ch.qos.logback", name = "logback-classic", version = "1.2.3")
     }
 
-//    allure {
-//        version = allureVersion
-//    }
+    allure {
+        version = allureVersion
+    }
 
 //    tasks.register("cleanAllure", org.gradle.api.tasks.Delete::class) {
 //        group = "build"
