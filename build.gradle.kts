@@ -138,76 +138,87 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 
 
 //    val cucumberVersion = "7.15.0"
-    val junitPlatformVersion = "1.10.1"
-    val junitVersion = "5.10.1"
-    val fasterxmlVersion = "2.16.1"
-    val allureVersion = "2.25.0"
 
-    dependencyManagement {
-        imports {
-            mavenBom("com.fasterxml.jackson:jackson-bom:$fasterxmlVersion")
-            mavenBom("org.junit:junit-bom:$junitVersion")
-        }
-        dependencies {
-            dependency("org.jetbrains:annotations:24.1.0")
-            dependency("org.apiguardian:apiguardian-api:1.1.2")
-            dependency("org.opentest4j:opentest4j:1.3.0")
 
-            dependency("org.slf4j:slf4j-api:2.0.9")
-            dependency("org.slf4j:slf4j-simple:2.0.9")
+//    dependencyManagement {
+//        imports {
+//            mavenBom("com.fasterxml.jackson:jackson-bom:$fasterxmlVersion")
+//            mavenBom("org.junit:junit-bom:$junitVersion")
+//        }
+//        dependencies {
+//            dependency("org.jetbrains:annotations:24.1.0")
+//            dependency("org.apiguardian:apiguardian-api:1.1.2")
+//            dependency("org.opentest4j:opentest4j:1.3.0")
+//
+//            dependency("org.slf4j:slf4j-api:2.0.9")
+//            dependency("org.slf4j:slf4j-simple:2.0.9")
+//
+//            dependency("com.fasterxml.jackson.core:jackson-core:$fasterxmlVersion")
+//            dependency("com.fasterxml.jackson.core:jackson-annotations:$fasterxmlVersion")
+//            dependency("com.fasterxml.jackson.core:jackson-databind:$fasterxmlVersion")
+//
+//            dependency("org.junit.platform:junit-platform-engine:$junitPlatformVersion")
+//            dependency("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+//            dependency("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+//            dependency("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+//
+//            dependency("io.qameta.allure:allure-java-commons:$allureVersion")
+//            dependency("io.qameta.allure:allure-junit5:$allureVersion")
+////            dependency("io.qameta.allure:allure-cucumber6-jvm:$allureVersion")
+//
+//            dependency("org.mockito:mockito-core:3.9.0")
+//
+////            dependency("cglib:cglib:3.3.0")
+//
+////            dependency("org.seleniumhq.selenium:selenium-java:3.141.59")
+////            dependency("io.github.bonigarcia:webdrivermanager:5.6.2")
+//
+////            dependency("io.cucumber:cucumber-java:$cucumberVersion")
+////            dependency("io.cucumber:cucumber-junit-platform-engine:$cucumberVersion")
+//
+////            dependency("io.appium:java-client:7.5.0")
+//
+////            dependency("androidx.test:core:1.3.0")
+////            dependency("androidx.test.espresso:espresso-core:3.3.0")
+//        }
+//        generatedPomCustomization {
+//            enabled(false)
+//        }
+//    }
 
-            dependency("com.fasterxml.jackson.core:jackson-core:$fasterxmlVersion")
-            dependency("com.fasterxml.jackson.core:jackson-annotations:$fasterxmlVersion")
-            dependency("com.fasterxml.jackson.core:jackson-databind:$fasterxmlVersion")
-
-            dependency("org.junit.platform:junit-platform-engine:$junitPlatformVersion")
-            dependency("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-            dependency("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-            dependency("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-
-            dependency("io.qameta.allure:allure-java-commons:$allureVersion")
-            dependency("io.qameta.allure:allure-junit5:$allureVersion")
-//            dependency("io.qameta.allure:allure-cucumber6-jvm:$allureVersion")
-
-            dependency("org.mockito:mockito-core:3.9.0")
-
-//            dependency("cglib:cglib:3.3.0")
-
-//            dependency("org.seleniumhq.selenium:selenium-java:3.141.59")
-//            dependency("io.github.bonigarcia:webdrivermanager:5.6.2")
-
-//            dependency("io.cucumber:cucumber-java:$cucumberVersion")
-//            dependency("io.cucumber:cucumber-junit-platform-engine:$cucumberVersion")
-
-//            dependency("io.appium:java-client:7.5.0")
-
-//            dependency("androidx.test:core:1.3.0")
-//            dependency("androidx.test.espresso:espresso-core:3.3.0")
-        }
-        generatedPomCustomization {
-            enabled(false)
-        }
-    }
+    // Api
+    val jetbrainsAnnotationsVersion = project.properties["jetbrainsAnnotationsVersion"] as String?
+    // Implementation
+    val slf4jVersion = project.properties["slf4jVersion"] as String?
+    val opentest4jVersion = project.properties["opentest4jVersion"] as String?
+    val apiguardianVersion = project.properties["apiguardianVersion"] as String?
+    val fasterxmlVersion = project.properties["fasterxmlVersion"] as String?
+    // Test Implementation
+    val junitVersion = project.properties["junitVersion"] as String?
+    val junitPlatformVersion = project.properties["junitPlatformVersion"] as String?
+    val allureVersion = project.properties["allureVersion"] as String?
+    val mockitoVersion = project.properties["mockitoVersion"] as String?
 
     dependencies {
-        api(group = "org.jetbrains", name = "annotations")
-        api(group = "org.opentest4j", name = "opentest4j")
+        api(group = "org.jetbrains", name = "annotations", version = "$jetbrainsAnnotationsVersion")
 
-        implementation(group = "org.slf4j", name = "slf4j-api")
-        implementation(group = "org.apiguardian", name = "apiguardian-api")
-        implementation(group = "com.fasterxml.jackson.core", name = "jackson-core")
-        implementation(group = "com.fasterxml.jackson.core", name = "jackson-annotations")
-        implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind")
+        implementation(group = "org.slf4j", name = "slf4j-api", version = "$slf4jVersion")
+        implementation(group = "org.opentest4j", name = "opentest4j", version = "$opentest4jVersion")
+        implementation(group = "org.apiguardian", name = "apiguardian-api", version = "$apiguardianVersion")
 
-        testRuntimeOnly(group = "org.slf4j", name = "slf4j-simple")
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-core", version = "$fasterxmlVersion")
+        implementation(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "$fasterxmlVersion")
 
-        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api")
-        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-engine")
-        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params")
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = "$junitVersion")
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-params", version = "$junitVersion")
+        testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = "$junitVersion")
 
-        testImplementation(group = "io.qameta.allure", name = "allure-java-commons")
-        testImplementation(group = "io.qameta.allure", name = "allure-junit5")
-        testImplementation(group = "org.mockito", name = "mockito-core")
+        testImplementation(group = "io.qameta.allure", name = "allure-java-commons", version = "$allureVersion")
+        testImplementation(group = "io.qameta.allure", name = "allure-junit5", version = "$allureVersion")
+
+        testImplementation(group = "org.mockito", name = "mockito-core", version = "$mockitoVersion")
+
+        testRuntimeOnly(group = "org.slf4j", name = "slf4j-simple", version = "$slf4jVersion")
 
 //        testRuntimeOnly(group = "org.apache.logging.log4j", name = "log4j-api", version = "2.20.0")
 //        testRuntimeOnly(group = "org.apache.logging.log4j", name = "log4j-core", version = "2.20.0")
@@ -217,8 +228,7 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     }
 
 //    allure {
-//        autoconfigure = true
-////        version = allureVersion
+//        version = allureVersion
 //    }
 
 //    tasks.register("cleanAllure", org.gradle.api.tasks.Delete::class) {
@@ -261,7 +271,9 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 
     tasks.test {
 //        finalizedBy("jacocoTestReport")
-        useJUnitPlatform()
+        useJUnitPlatform {
+            excludeTags = setOf("local-test")
+        }
         testLogging {
             showStandardStreams = true
             info
@@ -351,13 +363,6 @@ configure(subprojects.filter { it.name != "demo-app" }) {
 //var allTestsCoverageReport = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
 //val jacocoSubprojects = project.subprojects.filter { it.name != "demo-app" }
 
-tasks.test {
-//    jacocoSubprojects.forEach { dependsOn("${it.name}:jacocoTestReport") }
-//    finalizedBy("jacocoRootReport")
-    useJUnitPlatform {
-        excludeTags = setOf("local-test")
-    }
-}
 
 //tasks.register<JacocoMerge>("jacocoMergeTest") {
 //    destinationFile = file(allTestsCoverageFile)
