@@ -105,8 +105,9 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
                     .flatMap(throwable -> environment.getEnvironmentAttachment()
                     .getContent())
                     .ifPresent(logger::info);
-            environment.shutdown();
+            environment.afterTest();
             environment.removeForCurrentThread();
+            environment.shutdown();
         });
         activeEnvironment.remove();
     }
@@ -291,6 +292,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
                 .init();
         Environment.setForCurrentThread(environmentInstance);
         activeEnvironment.set(environmentInstance);
+        environmentInstance.beforeTest();
     }
 
     /**

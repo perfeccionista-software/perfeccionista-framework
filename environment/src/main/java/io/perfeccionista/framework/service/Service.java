@@ -12,13 +12,22 @@ import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessage
  */
 public interface Service {
 
+    /**
+     * TODO: JavaDoc
+     * Environment instance недоступен из метода Environment.getForCurrentThread().
+     */
     void init(@NotNull Environment environment);
 
+    /**
+     * TODO: JavaDoc
+     * Environment instance недоступен из метода Environment.getForCurrentThread().
+     */
     void init(@NotNull Environment environment, @NotNull ServiceConfiguration configuration);
 
     /**
      * TODO: JavaDoc
      * Возможно, сделать вызов этого метода прямо перед тестов (после метода beforeEach() в тестовом классе
+     * Environment instance доступен из метода Environment.getForCurrentThread().
      */
     default void beforeTest() {
         // do nothing
@@ -27,6 +36,7 @@ public interface Service {
     /**
      * TODO: JavaDoc
      * Тут работает линтер, например
+     * Environment instance доступен из метода Environment.getForCurrentThread().
      */
     default void afterTest() {
         // do nothing
