@@ -108,14 +108,26 @@ public class Environment {
         }
         logger.debug("Environment configuration initialization");
         initEnvironment(configuration, testName);
-        this.getServices().forEach(Service::beforeTest);
         logger.debug("Environment configuration initialization success");
+        return this;
+    }
+
+    public Environment beforeTest() {
+        logger.debug("Environment configuration before test task");
+        this.getServices().forEach(Service::beforeTest);
+        logger.debug("Environment configuration before test task success");
+        return this;
+    }
+
+    public Environment afterTest() {
+        logger.debug("Environment configuration after test task");
+        this.getServices().forEach(Service::afterTest);
+        logger.debug("Environment configuration after test task success");
         return this;
     }
 
     public Environment shutdown() {
         logger.debug("Environment shutdown");
-        this.getServices().forEach(Service::afterTest);
         this.services.clear();
         logger.debug("Environment shutdown success");
         return this;
