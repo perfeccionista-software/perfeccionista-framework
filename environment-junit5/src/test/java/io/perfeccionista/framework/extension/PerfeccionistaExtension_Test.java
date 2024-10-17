@@ -2,6 +2,7 @@ package io.perfeccionista.framework.extension;
 
 import io.perfeccionista.framework.AbstractParallelTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
@@ -21,21 +22,26 @@ import static org.mockito.Mockito.when;
 class PerfeccionistaExtension_Test extends AbstractParallelTest {
 
     @Test
-    void beforeEach_OnlyMethodConfiguration_Test() {
+    void beforeEach_OnlyMethodConfiguration_Test(TestInfo testInfo) {
         ExtensionContext context = mock(ExtensionContext.class);
         when(context.getTestClass())
                 .then(invocationOnMock -> Optional.of(TestWithoutConfiguration.class));
         when(context.getTestMethod())
                 .then(invocationOnMock -> Optional.of(this.getClass().getDeclaredMethod("testMethodWithConfiguration")));
+        when(context.getUniqueId())
+                .then(invocationOnMock -> "007");
 
         PerfeccionistaExtension extension = new PerfeccionistaExtension();
         extension.beforeEach(context);
-        Environment activeEnvironment = extension.activeEnvironment.get();
+        Environment activeEnvironment = extension.testCaseEnvironment.get(context.getUniqueId());
 
         assertAll(
                 () -> assertNotNull(activeEnvironment),
                 () -> {
-                    Class<?> environmentConfigurationClass = extension.activeEnvironment.get().getEnvironmentConfiguration().getClass();
+                    Class<?> environmentConfigurationClass = extension.testCaseEnvironment
+                            .get("007")
+                            .getEnvironmentConfiguration()
+                            .getClass();
                     assertEquals(TestMethodLocalFirstEnvironmentConfiguration.class, environmentConfigurationClass);
                 }
         );
@@ -48,15 +54,20 @@ class PerfeccionistaExtension_Test extends AbstractParallelTest {
                 .then(invocationOnMock -> Optional.of(TestWithConfiguration.class));
         when(context.getTestMethod())
                 .then(invocationOnMock -> Optional.of(this.getClass().getDeclaredMethod("testMethodWithoutConfiguration")));
+        when(context.getUniqueId())
+                .then(invocationOnMock -> "007");
 
         PerfeccionistaExtension extension = new PerfeccionistaExtension();
         extension.beforeEach(context);
-        Environment activeEnvironment = extension.activeEnvironment.get();
+        Environment activeEnvironment = extension.testCaseEnvironment.get(context.getUniqueId());
 
         assertAll(
                 () -> assertNotNull(activeEnvironment),
                 () -> {
-                    Class<?> environmentConfigurationClass = extension.activeEnvironment.get().getEnvironmentConfiguration().getClass();
+                    Class<?> environmentConfigurationClass = extension.testCaseEnvironment
+                            .get("007")
+                            .getEnvironmentConfiguration()
+                            .getClass();
                     assertEquals(TestClassLocalEnvironmentConfiguration.class, environmentConfigurationClass);
                 }
         );
@@ -69,15 +80,20 @@ class PerfeccionistaExtension_Test extends AbstractParallelTest {
                 .then(invocationOnMock -> Optional.of(TestWithConfiguration.class));
         when(context.getTestMethod())
                 .then(invocationOnMock -> Optional.of(this.getClass().getDeclaredMethod("testMethodWithConfiguration")));
+        when(context.getUniqueId())
+                .then(invocationOnMock -> "007");
 
         PerfeccionistaExtension extension = new PerfeccionistaExtension();
         extension.beforeEach(context);
-        Environment activeEnvironment = extension.activeEnvironment.get();
+        Environment activeEnvironment = extension.testCaseEnvironment.get(context.getUniqueId());
 
         assertAll(
                 () -> assertNotNull(activeEnvironment),
                 () -> {
-                    Class<?> environmentConfigurationClass = extension.activeEnvironment.get().getEnvironmentConfiguration().getClass();
+                    Class<?> environmentConfigurationClass = extension.testCaseEnvironment
+                            .get("007")
+                            .getEnvironmentConfiguration()
+                            .getClass();
                     assertEquals(TestMethodLocalFirstEnvironmentConfiguration.class, environmentConfigurationClass);
                 }
         );

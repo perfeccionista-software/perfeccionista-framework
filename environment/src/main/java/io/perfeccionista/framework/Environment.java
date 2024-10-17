@@ -48,14 +48,14 @@ import static io.perfeccionista.framework.utils.ReflectionUtilsForClasses.newIns
  *
  * Можно привязать текущий экземпляр {@link Environment} к потоку выполнения
  * теста через метод {@link Environment#setForCurrentThread(Environment)}}
- * Чтобы получить этот экзепляр в этом же потоке, необходимо использовать статический
+ * Чтобы получить этот экземпляр в этом же потоке, необходимо использовать статический
  * метод {@link Environment#getForCurrentThread()} }
  *
  * Этот класс представляет собой базовый функционал, который используется в
  * {@link Environment}. Пользователи могут самостоятельно расширять этот класс
  * и использовать его в своем проекте.
  * Пользовательская реализация класса указывается в конфигурации {@link EnvironmentConfiguration}
- * Наследники этого класса долджны иметь доступный конструктор с аргументами:
+ * Наследники этого класса должны иметь доступный конструктор с аргументами:
  * {@code (Class<?> testClass, EnvironmentConfiguration configuration}
  */
 public class Environment {
@@ -106,30 +106,30 @@ public class Environment {
         if (!this.services.isEmpty()) {
             throw EnvironmentAlreadyInitialized.exception(ENVIRONMENT_ALREADY_INITIALIZED.getMessage());
         }
-        logger.debug("Environment configuration initialization");
+        logger.debug("Environment configuration initialization [" + this + "]");
         initEnvironment(configuration, testName);
-        logger.debug("Environment configuration initialization success");
+        logger.debug("Environment configuration initialization success [" + this + "]");
         return this;
     }
 
     public Environment beforeTest() {
-        logger.debug("Environment configuration before test task");
+        logger.debug("Environment configuration before test task [" + this + "]");
         this.getServices().forEach(Service::beforeTest);
-        logger.debug("Environment configuration before test task success");
+        logger.debug("Environment configuration before test task success [" + this + "]");
         return this;
     }
 
     public Environment afterTest() {
-        logger.debug("Environment configuration after test task");
+        logger.debug("Environment configuration after test task [" + this + "]");
         this.getServices().forEach(Service::afterTest);
-        logger.debug("Environment configuration after test task success");
+        logger.debug("Environment configuration after test task success [" + this + "]");
         return this;
     }
 
     public Environment shutdown() {
-        logger.debug("Environment shutdown");
+        logger.debug("Environment shutdown [" + this + "]");
         this.services.clear();
-        logger.debug("Environment shutdown success");
+        logger.debug("Environment shutdown success [" + this + "]");
         return this;
     }
 

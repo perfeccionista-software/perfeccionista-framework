@@ -1,6 +1,8 @@
 package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.AbstractParallelTestWithEnvironment;
+import io.perfeccionista.framework.datasource.configuration.TestDataSourceServiceConfiguration;
+import io.perfeccionista.framework.service.SetServiceConfiguration;
 import io.perfeccionista.framework.value.implementations.StringDataSource;
 import io.perfeccionista.framework.value.implementations.UserDataSource;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+
+@SetServiceConfiguration(serviceClass = DataSourceService.class, configuration = TestDataSourceServiceConfiguration.class)
 class DataSourceServiceTest extends AbstractParallelTestWithEnvironment {
 
     @Test
