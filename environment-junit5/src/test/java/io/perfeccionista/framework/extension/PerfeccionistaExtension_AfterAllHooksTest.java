@@ -9,7 +9,7 @@ public class PerfeccionistaExtension_AfterAllHooksTest extends AbstractParallelT
 
     @Test
     void afterAllHooksTest() {
-        Environment.addAfterAllHook(() -> System.out.println("After all hook output"));
+        Environment.addAfterAllHook(() -> System.out.println("After All Hook output"));
     }
 
     @AfterAll

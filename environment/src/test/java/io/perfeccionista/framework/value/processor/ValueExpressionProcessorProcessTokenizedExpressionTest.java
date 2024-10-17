@@ -2,11 +2,16 @@ package io.perfeccionista.framework.value.processor;
 
 import io.perfeccionista.framework.AbstractParallelTestWithEnvironment;
 import io.perfeccionista.framework.SetEnvironmentConfiguration;
+import io.perfeccionista.framework.datasource.DataConverterService;
+import io.perfeccionista.framework.datasource.DataSourceService;
+import io.perfeccionista.framework.value.configurations.ValueDataConverterServiceConfiguration;
+import io.perfeccionista.framework.value.configurations.ValueDataSourceServiceConfiguration;
 import io.perfeccionista.framework.datasource.entities.User;
 import io.perfeccionista.framework.exceptions.impl.DataConverterNotFoundException;
 import io.perfeccionista.framework.exceptions.impl.DataSourceNotFoundException;
 import io.perfeccionista.framework.exceptions.impl.ServiceNotFoundException;
 import io.perfeccionista.framework.exceptions.impl.StringValueParseException;
+import io.perfeccionista.framework.service.SetServiceConfiguration;
 import io.perfeccionista.framework.value.configurations.TestValueEnvironmentConfigurationWithoutDataConverterService;
 import io.perfeccionista.framework.value.configurations.TestValueEnvironmentConfigurationWithoutDataSourceService;
 import org.junit.jupiter.api.Test;
@@ -17,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SetServiceConfiguration(serviceClass = DataSourceService.class, configuration = ValueDataSourceServiceConfiguration.class)
+@SetServiceConfiguration(serviceClass = DataConverterService.class, configuration = ValueDataConverterServiceConfiguration.class)
 class ValueExpressionProcessorProcessTokenizedExpressionTest extends AbstractParallelTestWithEnvironment {
 
     @Test

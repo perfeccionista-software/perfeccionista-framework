@@ -2,10 +2,10 @@ package io.perfeccionista.framework.datasource;
 
 import io.perfeccionista.framework.service.ServiceConfiguration;
 
-import java.util.Map;
+import java.util.stream.Stream;
 
 public interface DataConverterServiceConfiguration extends ServiceConfiguration {
 
-    Map<String, DataConverter<?, ?>> getNamedDataConverters();
+    Stream<DataConverterHolder<?>> dataConverterHolders();
 
 }

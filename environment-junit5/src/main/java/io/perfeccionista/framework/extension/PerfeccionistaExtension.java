@@ -8,6 +8,7 @@ import io.perfeccionista.framework.repeater.RepeatPolicyService;
 import io.perfeccionista.framework.service.ConfiguredServiceHolder;
 import io.perfeccionista.framework.service.Service;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -23,7 +24,6 @@ import org.junit.platform.commons.util.Preconditions;
 import org.junit.platform.engine.TestExecutionResult;
 import io.perfeccionista.framework.Environment;
 import io.perfeccionista.framework.EnvironmentConfiguration;
-import io.perfeccionista.framework.exceptions.EnvironmentNotConfigured;
 import io.perfeccionista.framework.exceptions.RepeatPolicyInitialization;
 import io.perfeccionista.framework.exceptions.TestClassNotFound;
 import io.perfeccionista.framework.exceptions.TestMethodNotFound;
@@ -60,19 +60,19 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 import static org.junit.platform.commons.util.AnnotationUtils.isAnnotated;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION;
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_DECLARED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_CLASS_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_METHOD_NOT_FOUND;
 
 public class PerfeccionistaExtension implements ParameterResolver, TestInstancePostProcessor,
-        BeforeAllCallback, BeforeEachCallback, AfterEachCallback,
+        BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback,
         TestTemplateInvocationContextProvider, TestExecutionExceptionHandler, TestWatcher, ExtensionContext.Store.CloseableResource {
     private static final Logger logger = LoggerFactory.getLogger(PerfeccionistaExtension.class);
 
     private static boolean started = false;
 
-    protected ThreadLocal<Environment> activeEnvironment = new ThreadLocal<>();
-    protected ThreadLocal<Map<Method, Deque<TestExecutionResult>>> threadLocalTestResults = new ThreadLocal<>();
+    // Test Case by UniqueId
+    protected Map<String, Environment> testCaseEnvironment = new HashMap<>();
+    protected Map<String, Deque<TestExecutionResult>> testCaseResults = new HashMap<>();
 
     PerfeccionistaExtension() {}
 
@@ -83,6 +83,41 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         // do nothing
     }
 
+
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        if (!started) {
+            started = true;
+            context.getRoot().getStore(GLOBAL).put("PerfeccionistaExtensionInstance", this);
+        }
+        // TODO: Тут нужна 2-х фазная подготовка.
+        //  первым шагом находим конфигурацию для класса в котором выполняется BeforeAll, но не создаем Environment
+        //  вторым шагом в параметр-резолвере проверяем, что в метод BeforeAll передается параметр Environment или сервис или стеш
+        //  и тогда инициализируем Environment, если он есть и прокидываем в метод
+//        Class<?> testClass = context.getTestClass()
+//                .orElseThrow(() -> TestClassNotFound.exception(UNEXPECTED_TEST_CLASS_NOT_FOUND.getMessage()));
+//        EnvironmentConfiguration environmentConfiguration = resolveEnvironmentConfiguration(testClass);
+
+        // TODO: Сделать возможность использования Environment в BeforeAll/AfterAll методах
+        //  с конфигурацией уровня тестового класса
+
+
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) {
+
+        // TODO: Сделать возможность использования Environment в BeforeAll/AfterAll методах
+        //  с конфигурацией уровня тестового класса
+
+    }
+
+    /**
+     * Устанавливает для теста сконфигурированный для него экземпляр Environment
+     * Если требуемый экземпляр Environment был создан ранее и сконфигурирован как shared(),
+     * то он устанавливается в качестве активного, иначе создается новый экземпляр.
+     * Выполняем beforeEach() для заданного теста
+     */
     @Override
     public void beforeEach(ExtensionContext context) {
         Class<?> testClass = context.getTestClass()
@@ -93,35 +128,38 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
         EnvironmentConfiguration environmentConfiguration = resolveEnvironmentConfiguration(testMethod, testClass);
         Set<ConfiguredServiceHolder> externalServiceConfigurations = resolveExternalServiceConfigurations(testMethod, testClass);
-        resolveActiveEnvironment(environmentConfiguration, externalServiceConfigurations, context, testName);
+        Environment environment = resolveActiveEnvironment(environmentConfiguration, externalServiceConfigurations, testName)
+                .addRelatedObject("Context", context)
+                .init();
+        Environment.setForCurrentThread(environment);
+        testCaseEnvironment.put(context.getUniqueId(), environment);
+        environment.beforeTest();
     }
 
     @Override
     public void afterEach(ExtensionContext context) {
-        Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
-        environmentInstanceForCurrentThread.ifPresent(environment -> {
-            // TODO: Возможно, здесь нужен более изящный механизм вывода, который можно настраивать
-            context.getExecutionException()
-                    .flatMap(throwable -> environment.getEnvironmentAttachment()
-                    .getContent())
-                    .ifPresent(logger::info);
-            environment.afterTest();
-            environment.removeForCurrentThread();
-            environment.shutdown();
-        });
-        activeEnvironment.remove();
+        Environment environment = testCaseEnvironment.get(context.getUniqueId());
+        // TODO: Возможно, здесь нужен более изящный механизм вывода, который можно настраивать
+        context.getExecutionException()
+                .flatMap(throwable -> environment.getEnvironmentAttachment()
+                        .getContent())
+                .ifPresent(logger::info);
+        environment.afterTest();
+        // TODO: Работа в многопоточке может быть некорректной
+        environment.removeForCurrentThread();
+        environment.shutdown();
+        testCaseEnvironment.remove(context.getUniqueId());
     }
 
     // Методы для передачи в тестовый метод экземпляра Environment
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
+        // TODO: Сделать более изящную проверку по типам: Environment, Service, DataSource, DataConverter
         if (Environment.class.isAssignableFrom(parameterContext.getParameter().getType())) {
             return true;
         }
-        Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
-        Environment environment = environmentInstanceForCurrentThread
-                .orElseThrow(() -> EnvironmentNotConfigured.exception(ENVIRONMENT_NOT_DECLARED.getErrorMessage()));
+        Environment environment = testCaseEnvironment.get(extensionContext.getUniqueId());
         Class<?> parameterType = parameterContext.getParameter().getType();
         return environment.getServiceClasses().stream()
                 .anyMatch(serviceClass -> serviceClass.getCanonicalName().equals(parameterType.getCanonicalName()));
@@ -129,13 +167,17 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     /**
      * @return Экземпляр {@link Environment} для текущего потока. Никогда не может быть {@code null}
+     *
+     *
+     * TODO: Добавить возможность пробрасывать датасорсы
+     *
      */
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
+        // TODO: Сделать более изящную проверку по типам: Environment, Service, DataSource, DataConverter
         // TODO: Возможны проблемы, если попробуют передать имплементацию Environment отличную по типу от типа параметра
-        Optional<Environment> environmentInstanceForCurrentThread = getActiveEnvironment();
-        Environment environment = environmentInstanceForCurrentThread
-                .orElseThrow(() -> EnvironmentNotConfigured.exception(ENVIRONMENT_NOT_DECLARED.getErrorMessage()));
+        //  Нужно написать на это тесты
+        Environment environment = testCaseEnvironment.get(extensionContext.getUniqueId());
         if (Environment.class.isAssignableFrom(parameterContext.getParameter().getType())) {
             return environment;
         }
@@ -165,20 +207,12 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
      */
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-        Method testMethod = context.getTestMethod()
-                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
-
         RepeatPolicy repeatPolicy = new NoRepeatPolicy();
-
-        Optional<Environment> optionalEnvironment = getActiveEnvironment();
-        if (optionalEnvironment.isPresent()) {
-            Environment environment = optionalEnvironment.get();
-            Optional<RepeatPolicyService> optionalRepeatPolicyService = environment.getOptionalService(RepeatPolicyService.class);
-            if (optionalRepeatPolicyService.isPresent()) {
-                repeatPolicy = optionalRepeatPolicyService.get().getRepeatPolicy();
-            }
+        Environment environment = testCaseEnvironment.get(context.getUniqueId());
+        Optional<RepeatPolicyService> optionalRepeatPolicyService = environment.getOptionalService(RepeatPolicyService.class);
+        if (optionalRepeatPolicyService.isPresent()) {
+            repeatPolicy = optionalRepeatPolicyService.get().getRepeatPolicy();
         }
-
         Optional<TestRepeatedOnCondition> optionalAnnotation = context.getTestMethod()
                 .flatMap(testMethods -> findAnnotation(testMethods, TestRepeatedOnCondition.class));
         if (optionalAnnotation.isPresent()) {
@@ -198,11 +232,11 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
         switch (repeatPolicy.getRepeatMode()) {
             case REPEAT_IF: {
-                iterator = new RepeatIfTestTemplateIterator(this, repeatPolicy, context.getDisplayName(), testMethod);
+                iterator = new RepeatIfTestTemplateIterator(this, repeatPolicy, context);
                 break;
             }
             case REPEAT_BEFORE: {
-                iterator = new RepeatWhileTestTemplateIterator(this, repeatPolicy, context.getDisplayName(), testMethod);
+                iterator = new RepeatWhileTestTemplateIterator(this, repeatPolicy, context);
                 break;
             }
             default: {
@@ -222,23 +256,17 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     @Override
     public void testSuccessful(ExtensionContext context) {
-        Method testMethod = context.getTestMethod()
-                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
-        getThreadLocalTestResults(testMethod).addLast(TestExecutionResult.successful());
+        getTestResults(context).addLast(TestExecutionResult.successful());
     }
 
     @Override
     public void testAborted(ExtensionContext context, Throwable cause) {
-        Method testMethod = context.getTestMethod()
-                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
-        getThreadLocalTestResults(testMethod).addLast(TestExecutionResult.aborted(cause));
+        getTestResults(context).addLast(TestExecutionResult.aborted(cause));
     }
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-        Method testMethod = context.getTestMethod()
-                .orElseThrow(() -> TestMethodNotFound.exception(UNEXPECTED_TEST_METHOD_NOT_FOUND.getErrorMessage()));
-        getThreadLocalTestResults(testMethod).addLast(TestExecutionResult.failed(cause));
+        getTestResults(context).addLast(TestExecutionResult.failed(cause));
     }
 
     @Override
@@ -246,11 +274,10 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         if (throwable instanceof PerfeccionistaException) {
             ((PerfeccionistaException) throwable).getAttachment().ifPresent(attachment -> {
                 if (!attachment.isProcessed()) {
-                    getActiveEnvironment().ifPresent(environment -> {
-                        environment.getOptionalService(InvocationService.class).ifPresent(invocationService -> {
-                            invocationService.getAttachmentProcessors()
-                                    .forEach(attachmentProcessor -> attachmentProcessor.processAttachment(attachment));
-                        });
+                    Environment environment = testCaseEnvironment.get(context.getUniqueId());
+                    environment.getOptionalService(InvocationService.class).ifPresent(invocationService -> {
+                        invocationService.getAttachmentProcessors()
+                                .forEach(attachmentProcessor -> attachmentProcessor.processAttachment(attachment));
                     });
                 }
                 attachment.setProcessed(true);
@@ -277,29 +304,12 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     }
 
     /**
-     * Устанавливает для теста сконфигурированный для него экземпляр Environment
-     * Если требуемый экземпляр Environment был создан ранее и сконфигурирован как shared(),
-     * то он устанавливается в качестве активного, иначе создается новый экземпляр.
-     * Выполняем beforeEach() для заданного теста
      */
-    protected void resolveActiveEnvironment(EnvironmentConfiguration environmentConfiguration,
+    protected Environment resolveActiveEnvironment(EnvironmentConfiguration environmentConfiguration,
                                             Set<ConfiguredServiceHolder> externalServiceConfigurations,
-                                            ExtensionContext context,
                                             String testName) {
         externalServiceConfigurations.forEach(environmentConfiguration::addOrOverrideServiceConfiguration);
-        Environment environmentInstance = createEnvironment(environmentConfiguration, testName)
-                .addRelatedObject("Context", context)
-                .init();
-        Environment.setForCurrentThread(environmentInstance);
-        activeEnvironment.set(environmentInstance);
-        environmentInstance.beforeTest();
-    }
-
-    /**
-     * ActiveEnvironment может быть null в тех случаях, когда для тестового класса и для его предков не установлена конфигурация для Environment
-     */
-    protected Optional<Environment> getActiveEnvironment() {
-        return Optional.ofNullable(activeEnvironment.get());
+        return createEnvironment(environmentConfiguration, testName);
     }
 
     public static Set<AttachmentProcessor> resolveAttachmentProcessors(Method testMethod, Class<?> testClass) {
@@ -325,30 +335,14 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     /**
      * TODO: Test and JavaDoc
      */
-    public @NotNull Deque<TestExecutionResult> getThreadLocalTestResults(Method method) {
-        Map<Method, Deque<TestExecutionResult>> threadLocalTestResultMap = threadLocalTestResults.get();
-        if (null == threadLocalTestResultMap) {
-            Map<Method, Deque<TestExecutionResult>> newThreadLocalTestResultMap = new HashMap<>();
-            Deque<TestExecutionResult> newTestResults = new ArrayDeque<>();
-            newThreadLocalTestResultMap.put(method, newTestResults);
-            threadLocalTestResults.set(newThreadLocalTestResultMap);
-            return newTestResults;
-        }
-        Deque<TestExecutionResult> testResults = threadLocalTestResultMap.get(method);
+    public @NotNull Deque<TestExecutionResult> getTestResults(ExtensionContext context) {
+        Deque<TestExecutionResult> testResults = testCaseResults.get(context.getUniqueId());
         if (null == testResults) {
             Deque<TestExecutionResult> newTestResults = new ArrayDeque<>();
-            threadLocalTestResultMap.put(method, newTestResults);
+            testCaseResults.put(context.getUniqueId(), newTestResults);
             return newTestResults;
         }
-        return new ArrayDeque<>(testResults);
-    }
-
-    @Override
-    public void beforeAll(ExtensionContext context) {
-        if (!started) {
-            started = true;
-            context.getRoot().getStore(GLOBAL).put("PerfeccionistaExtensionInstance", this);
-        }
+        return testResults;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package io.perfeccionista.framework.repeater.iterators;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import io.perfeccionista.framework.extension.PerfeccionistaExtension;
 import io.perfeccionista.framework.repeater.policy.RepeatPolicy;
 import io.perfeccionista.framework.repeater.RepeaterInvocationContext;
 
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -16,16 +16,14 @@ public class RepeatIfTestTemplateIterator implements Iterator<TestTemplateInvoca
 
     private final PerfeccionistaExtension extension;
     private final RepeatPolicy repeatPolicy;
-    private final String displayName;
-    private final Method method;
+    private final ExtensionContext context;
 
     private int currentIndex = 0;
 
-    public RepeatIfTestTemplateIterator(PerfeccionistaExtension extension, RepeatPolicy repeatPolicy, String displayName, Method method) {
+    public RepeatIfTestTemplateIterator(PerfeccionistaExtension extension, RepeatPolicy repeatPolicy, ExtensionContext context) {
         this.extension = extension;
         this.repeatPolicy = repeatPolicy;
-        this.displayName = displayName;
-        this.method = method;
+        this.context = context;
     }
 
     @Override
@@ -34,13 +32,13 @@ public class RepeatIfTestTemplateIterator implements Iterator<TestTemplateInvoca
             return true;
         }
         return currentIndex < repeatPolicy.maxAttempt()
-                && repeatPolicy.getRepeatCondition().testCondition(extension.getThreadLocalTestResults(method));
+                && repeatPolicy.getRepeatCondition().testCondition(extension.getTestResults(context));
     }
 
     @Override
     public TestTemplateInvocationContext next() {
         if (hasNext()) {
-            return new RepeaterInvocationContext(displayName, ++currentIndex);
+            return new RepeaterInvocationContext(context.getDisplayName(), ++currentIndex);
         }
         throw new NoSuchElementException();
     }

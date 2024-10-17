@@ -12,8 +12,10 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.datasource.StashAction.getAction;
 import static io.perfeccionista.framework.datasource.StashAction.putAction;
@@ -21,7 +23,7 @@ import static io.perfeccionista.framework.datasource.StashAction.replaceAction;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_SOURCE_VALUE_NOT_FOUND;
 
 @Name("stash")
-public final class Stash implements ObjectDataStorage<String, Object> {
+public class Stash implements ObjectDataStorage<String, Object> {
 
     private final Map<String, Object> storage = new HashMap<>();
     private final Deque<StashAction> actions = new ArrayDeque<>();
@@ -90,6 +92,10 @@ public final class Stash implements ObjectDataStorage<String, Object> {
         logPutAction(key, value);
         Object updatedValue = storage.putIfAbsent(key, value);
         return Objects.isNull(updatedValue);
+    }
+
+    public Stream<Entry<String, Object>> stream() {
+        return storage.entrySet().stream();
     }
 
     protected void logGetAction(@NotNull String key) {
