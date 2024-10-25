@@ -19,11 +19,11 @@ public class DataSourceHolder<T extends DataSource<?, ?>> {
     private static final Map<Class<? extends DataSource<?, ?>>, Set<String>> annotationNameCache = new HashMap<>();
 
     private final Class<T> dataSourceClass;
-    private final Class<T> dataSourceImplementation;
+    private final Class<? extends T> dataSourceImplementation;
     private final Set<String> names;
 
     private DataSourceHolder(Class<T> dataSourceClass,
-                             Class<T> dataSourceImplementation,
+                             Class<? extends T> dataSourceImplementation,
                              Set<String> names) {
         this.dataSourceClass = dataSourceClass;
         this.dataSourceImplementation = dataSourceImplementation;
@@ -36,7 +36,7 @@ public class DataSourceHolder<T extends DataSource<?, ?>> {
     }
 
     public static <T extends DataSource<?, ?>> DataSourceHolder<T> of(@NotNull Class<T> dataSourceClass,
-                                                                      @NotNull Class<T> dataSourceImplementation,
+                                                                      @NotNull Class<? extends T> dataSourceImplementation,
                                                                       String... additionalNames) {
         if (!annotationNameCache.containsKey(dataSourceClass)) {
             extractNames(dataSourceClass);
@@ -51,7 +51,7 @@ public class DataSourceHolder<T extends DataSource<?, ?>> {
         return dataSourceClass;
     }
 
-    public Class<T> getDataSourceImplementation() {
+    public Class<? extends T> getDataSourceImplementation() {
         return dataSourceImplementation;
     }
 

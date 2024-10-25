@@ -19,11 +19,11 @@ public class DataConverterHolder<T extends DataConverter<?, ?>> {
     private static final Map<Class<? extends DataConverter<?, ?>>, Set<String>> annotationNameCache = new HashMap<>();
 
     private final Class<T> dataConverterClass;
-    private final Class<T> dataConverterImplementation;
+    private final Class<? extends T> dataConverterImplementation;
     private final Set<String> names;
 
     private DataConverterHolder(Class<T> dataConverterClass,
-                                Class<T> dataConverterImplementation,
+                                Class<? extends T> dataConverterImplementation,
                                 Set<String> names) {
         this.dataConverterClass = dataConverterClass;
         this.dataConverterImplementation = dataConverterImplementation;
@@ -36,7 +36,7 @@ public class DataConverterHolder<T extends DataConverter<?, ?>> {
     }
 
     public static <T extends DataConverter<?, ?>> DataConverterHolder<T> of(@NotNull Class<T> dataConverterClass,
-                                                                            @NotNull Class<T> dataConverterImplementation,
+                                                                            @NotNull Class<? extends T> dataConverterImplementation,
                                                                             String... additionalNames) {
         if (!annotationNameCache.containsKey(dataConverterClass)) {
             extractNames(dataConverterClass);
@@ -51,7 +51,7 @@ public class DataConverterHolder<T extends DataConverter<?, ?>> {
         return dataConverterClass;
     }
 
-    public Class<T> getDataConverterImplementation() {
+    public Class<? extends T> getDataConverterImplementation() {
         return dataConverterImplementation;
     }
 
