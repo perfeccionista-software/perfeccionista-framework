@@ -126,9 +126,10 @@ public class FileUtils {
 
     public static void writeBinaryFile(@NotNull Path path, byte[] raw) {
         try {
-            // TODO: Проверить корректность выполнения
-            Files.createDirectories(path.getParent());
-            Files.createFile(path);
+            Path parent = path.getParent();
+            if (parent != null){
+                Files.createDirectories(path.getParent());
+            }
             Files.write(path, raw);
         } catch (IOException e) {
             throw FileWritingFailed.exception(CANT_WRITE_FILE.getMessage(path), e);
@@ -149,8 +150,10 @@ public class FileUtils {
 
     public static void writeTextFile(@NotNull Path path, String content, @NotNull Charset charset) {
         try {
-            Files.createDirectories(path.getParent());
-            Files.createFile(path);
+            Path parent = path.getParent();
+            if (parent != null){
+                Files.createDirectories(path.getParent());
+            }
             Files.write(path, content.getBytes(charset));
         } catch (IOException e) {
             throw FileWritingFailed.exception(CANT_WRITE_FILE.getMessage(path), e);
@@ -271,5 +274,4 @@ public class FileUtils {
     private static synchronized void cachePropertyFile(@NotNull String propertyFileName, @Nullable Properties propertyFile) {
         propertiesCache.put(propertyFileName, propertyFile);
     }
-
 }
