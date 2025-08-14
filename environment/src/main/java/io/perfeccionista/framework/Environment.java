@@ -20,10 +20,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_ALREADY_INITIALIZED;
@@ -70,7 +73,7 @@ public class Environment {
     protected final String testName;
     protected final EnvironmentConfiguration configuration;
     protected final Map<String, Object> relatedObjects = new HashMap<>();
-    protected final Map<Class<? extends Service>, Service> services = new HashMap<>();
+    protected final Map<Class<? extends Service>, Service> services = new LinkedHashMap<>();
 
     protected TextAttachmentEntry environmentAttachment = TextAttachmentEntry.of(ENVIRONMENT_ATTACHMENT_NAME, "Environment is not initialized");
 
@@ -121,8 +124,9 @@ public class Environment {
 
     public Environment afterTest() {
         logger.debug("Environment configuration after test task [" + this + "]");
-        this.getServices().forEach(Service::afterTest);
-        logger.debug("Environment configuration after test task success [" + this + "]");
+        List<Service> services = this.getServices().collect(Collectors.toList());
+        Collections.reverse(services);
+        services.forEach(Service::afterTest);
         return this;
     }
 

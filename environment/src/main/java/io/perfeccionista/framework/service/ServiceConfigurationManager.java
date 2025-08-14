@@ -3,10 +3,7 @@ package io.perfeccionista.framework.service;
 import io.perfeccionista.framework.preconditions.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,7 +13,7 @@ public class ServiceConfigurationManager {
     private final Map<Class<? extends Service>, ConfiguredServiceHolder> serviceConfigurations;
 
     private ServiceConfigurationManager() {
-        this(new HashMap<>());
+        this(new LinkedHashMap<>());
     }
 
     private ServiceConfigurationManager(Map<Class<? extends Service>, ConfiguredServiceHolder> serviceConfigurations) {
