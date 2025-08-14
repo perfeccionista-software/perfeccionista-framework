@@ -63,7 +63,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                 .appendValue(MONTH_OF_YEAR, 2)
                 .appendValue(DAY_OF_MONTH, 2)
                 .appendLiteral('-')
-                .append(ISO_LOCAL_TIME)
+                .append(ALL_OS_ISO_LOCAL_TIME)
                 .toFormatter();
     }
 
