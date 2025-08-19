@@ -30,6 +30,9 @@ public interface InvocationRunner {
      * @param <T>         возвращаемый Supplier'ом тип
      * @return значение, возвращаемой Supplier'ом.
      */
-    <T> T run(@NotNull Environment environment, @NotNull InvocationInfo invocation, @NotNull final Supplier<T> supplier, @NotNull Duration timeout);
+    <T> T run(@NotNull Environment environment,
+              @NotNull InvocationInfo invocation,
+              @NotNull final Supplier<T> supplier,
+              @NotNull Duration timeout);
 
 }

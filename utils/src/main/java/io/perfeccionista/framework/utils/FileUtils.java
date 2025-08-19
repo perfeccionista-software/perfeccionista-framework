@@ -127,7 +127,7 @@ public class FileUtils {
     public static void writeBinaryFile(@NotNull Path path, byte[] raw) {
         try {
             Path parent = path.getParent();
-            if (parent != null){
+            if (Objects.nonNull(parent)) {
                 Files.createDirectories(path.getParent());
             }
             Files.write(path, raw);
@@ -151,7 +151,7 @@ public class FileUtils {
     public static void writeTextFile(@NotNull Path path, String content, @NotNull Charset charset) {
         try {
             Path parent = path.getParent();
-            if (parent != null){
+            if (Objects.nonNull(parent)) {
                 Files.createDirectories(path.getParent());
             }
             Files.write(path, content.getBytes(charset));
