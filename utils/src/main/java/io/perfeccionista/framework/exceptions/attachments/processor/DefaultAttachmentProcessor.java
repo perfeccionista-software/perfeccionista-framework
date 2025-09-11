@@ -137,7 +137,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
         if (perfeccionistaProperties.containsKey(BUILD_SYSTEM)) {
             return perfeccionistaProperties.getProperty(BUILD_SYSTEM);
         }
-        
+
         return "attachments";
     }
 }
