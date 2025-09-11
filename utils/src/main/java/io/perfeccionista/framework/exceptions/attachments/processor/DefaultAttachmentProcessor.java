@@ -41,14 +41,14 @@ import static java.time.temporal.ChronoField.YEAR;
 
 public class DefaultAttachmentProcessor implements AttachmentProcessor {
 
-    protected static final String BUILD_SYSTEM = "perfeccionista.build.attachment.dir";
+    protected static final String BUILD_ATTACHMENT_DIR = "perfeccionista.build.attachment.dir";
     protected static Properties perfeccionistaProperties;
     protected static Properties systemProperties;
 
     public static final Logger log = LoggerFactory.getLogger(DefaultAttachmentProcessor.class);
     public static final DateTimeFormatter ID_FORMAT;
     public static final DateTimeFormatter ALL_OS_ISO_LOCAL_TIME;
-    
+
     static {
         ALL_OS_ISO_LOCAL_TIME = new DateTimeFormatterBuilder()
                 .appendValue(HOUR_OF_DAY, 2)
@@ -130,12 +130,12 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                 .orElse(new Properties());
         systemProperties = System.getProperties();
 
-        if (systemProperties.containsKey(BUILD_SYSTEM)) {
-            return systemProperties.getProperty(BUILD_SYSTEM);
+        if (systemProperties.containsKey(BUILD_ATTACHMENT_DIR)) {
+            return systemProperties.getProperty(BUILD_ATTACHMENT_DIR);
         }
 
-        if (perfeccionistaProperties.containsKey(BUILD_SYSTEM)) {
-            return perfeccionistaProperties.getProperty(BUILD_SYSTEM);
+        if (perfeccionistaProperties.containsKey(BUILD_ATTACHMENT_DIR)) {
+            return perfeccionistaProperties.getProperty(BUILD_ATTACHMENT_DIR);
         }
 
         return "attachments";
