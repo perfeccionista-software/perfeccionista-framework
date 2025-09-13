@@ -41,7 +41,7 @@ import static java.time.temporal.ChronoField.YEAR;
 
 public class DefaultAttachmentProcessor implements AttachmentProcessor {
 
-    protected static final String BUILD_ATTACHMENT_DIR = "perfeccionista.build.attachment.dir";
+    protected static final String ATTACHMENT_DIR = "perfeccionista.attachment.dir";
     protected static Properties perfeccionistaProperties;
     protected static Properties systemProperties;
 
@@ -71,7 +71,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                 .append(ALL_OS_ISO_LOCAL_TIME)
                 .toFormatter();
     }
-    
+
     @Override
     public String processAttachment(@NotNull Attachment attachment) {
         String fileAttachmentsDescription = attachment.getAttachmentEntries()
@@ -125,19 +125,19 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
         return LocalDateTime.now().format(ID_FORMAT);
     }
 
-    protected String getAttachmentDir(){
-        perfeccionistaProperties = FileUtils.readOptionalPropertyFileFromClasspath("perfeccionista.properties")
-                .orElse(new Properties());
+    protected String getAttachmentDir() {
         systemProperties = System.getProperties();
-
-        if (systemProperties.containsKey(BUILD_ATTACHMENT_DIR)) {
-            return systemProperties.getProperty(BUILD_ATTACHMENT_DIR);
+        if (systemProperties.containsKey(ATTACHMENT_DIR)) {
+            return systemProperties.getProperty(ATTACHMENT_DIR);
         }
 
-        if (perfeccionistaProperties.containsKey(BUILD_ATTACHMENT_DIR)) {
-            return perfeccionistaProperties.getProperty(BUILD_ATTACHMENT_DIR);
+        perfeccionistaProperties = FileUtils.readOptionalPropertyFileFromClasspath("perfeccionista.properties")
+                .orElse(new Properties());
+        if (perfeccionistaProperties.containsKey(ATTACHMENT_DIR)) {
+            return perfeccionistaProperties.getProperty(ATTACHMENT_DIR);
         }
 
         return "attachments";
     }
+
 }

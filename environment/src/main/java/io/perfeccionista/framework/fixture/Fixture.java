@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
  * }
  *
  * </pre>
- * @return
  */
 
 public interface Fixture<S, T> {

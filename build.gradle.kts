@@ -1,3 +1,5 @@
+import org.jreleaser.model.Signing
+
 buildscript {
     repositories {
         maven("https://plugins.gradle.org/m2/")
@@ -14,7 +16,8 @@ plugins {
     `maven-publish`
     id("io.qameta.allure") version "2.11.2"
     id("io.spring.dependency-management") version "1.1.4"
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id("org.jreleaser") version "1.19.0"
+
 //    jacoco
 //    checkstyle
 //    `java-gradle-plugin`
@@ -28,21 +31,6 @@ plugins {
 //if (!project.plugins.hasPlugin("com.github.ben-manes.versions")) {
 //    apply(plugin = "com.github.ben-manes.versions")
 //}
-
-val ossrhUsername = System.getProperty("ossrhUsername", null)
-val ossrhPassword = System.getProperty("ossrhPassword", null)
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            stagingProfileId.set("2a04cf3a01d7b7")
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-            username.set(ossrhUsername)
-            password.set(ossrhPassword)
-        }
-    }
-}
 
 val notToPublish = listOf(
     "perfeccionista-framework",
@@ -72,11 +60,6 @@ configure(listOf(rootProject)) {
     description = "Perfeccionista framework"
     group = "io.perfeccionista.framework"
     version = rootProject.property("frameworkVersion") ?: "local"
-//    project.plugins.withId("java-gradle-plugin") {
-//        project.configure<GradlePluginDevelopmentExtension> {
-//            isAutomatedPublishing = false
-//        }
-//    }
 }
 
 configure(subprojects.filter { it.name != "demo-app" }) {
@@ -99,14 +82,10 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     apply(plugin = "signing")
     apply(plugin = "io.qameta.allure")
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "maven-publish")
+
 //    apply(plugin = "java-gradle-plugin")
 //    apply(plugin = "jacoco")
-
-//    project.plugins.withId("java-gradle-plugin") { // only do it if it's actually applied
-//        project.configure<GradlePluginDevelopmentExtension> {
-//            isAutomatedPublishing = false
-//        }
-//    }
 
     tasks.withType<JavaCompile> {
         sourceCompatibility = "17"
@@ -120,72 +99,6 @@ configure(subprojects.filter { it.name != "demo-app" }) {
         }
     }
 
-
-
-
-//    tasks.withType(JavaCompile) {
-//        options.encoding = encoding
-//        options.debug = true
-//        options.release = 8
-//        sourceCompatibility = 17
-//    }
-//    compileJava.options.debugOptions.debugLevel = "source,lines,vars"
-//
-//    sourceCompatibility = '1.8'
-//
-
-
-
-
-//    val cucumberVersion = "7.15.0"
-
-
-//    dependencyManagement {
-//        imports {
-//            mavenBom("com.fasterxml.jackson:jackson-bom:$fasterxmlVersion")
-//            mavenBom("org.junit:junit-bom:$junitVersion")
-//        }
-//        dependencies {
-//            dependency("org.jetbrains:annotations:24.1.0")
-//            dependency("org.apiguardian:apiguardian-api:1.1.2")
-//            dependency("org.opentest4j:opentest4j:1.3.0")
-//
-//            dependency("org.slf4j:slf4j-api:2.0.9")
-//            dependency("org.slf4j:slf4j-simple:2.0.9")
-//
-//            dependency("com.fasterxml.jackson.core:jackson-core:$fasterxmlVersion")
-//            dependency("com.fasterxml.jackson.core:jackson-annotations:$fasterxmlVersion")
-//            dependency("com.fasterxml.jackson.core:jackson-databind:$fasterxmlVersion")
-//
-//            dependency("org.junit.platform:junit-platform-engine:$junitPlatformVersion")
-//            dependency("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-//            dependency("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-//            dependency("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-//
-//            dependency("io.qameta.allure:allure-java-commons:$allureVersion")
-//            dependency("io.qameta.allure:allure-junit5:$allureVersion")
-////            dependency("io.qameta.allure:allure-cucumber6-jvm:$allureVersion")
-//
-//            dependency("org.mockito:mockito-core:3.9.0")
-//
-////            dependency("cglib:cglib:3.3.0")
-//
-////            dependency("org.seleniumhq.selenium:selenium-java:3.141.59")
-////            dependency("io.github.bonigarcia:webdrivermanager:5.6.2")
-//
-////            dependency("io.cucumber:cucumber-java:$cucumberVersion")
-////            dependency("io.cucumber:cucumber-junit-platform-engine:$cucumberVersion")
-//
-////            dependency("io.appium:java-client:7.5.0")
-//
-////            dependency("androidx.test:core:1.3.0")
-////            dependency("androidx.test.espresso:espresso-core:3.3.0")
-//        }
-//        generatedPomCustomization {
-//            enabled(false)
-//        }
-//    }
-
     // Api
     val jetbrainsAnnotationsVersion = project.properties["jetbrainsAnnotationsVersion"] as String?
     // Implementation
@@ -195,7 +108,7 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     val fasterxmlVersion = project.properties["fasterxmlVersion"] as String?
     // Test Implementation
     val junitVersion = project.properties["junitVersion"] as String?
-    val junitPlatformVersion = project.properties["junitPlatformVersion"] as String?
+//    val junitPlatformVersion = project.properties["junitPlatformVersion"] as String?
     val allureVersion = project.properties["allureVersion"] as String?
     val mockitoVersion = project.properties["mockitoVersion"] as String?
 
@@ -292,6 +205,8 @@ configure(subprojects.filter { it.name != "demo-app" }) {
     if (project.name !in notToPublish) {
 
         apply(plugin = "org.gradle.maven-publish")
+        apply(plugin = "org.jreleaser")
+
 
         val javadocJar = task<Jar>("javadocJar") {
             from("javadoc")
@@ -351,9 +266,36 @@ configure(subprojects.filter { it.name != "demo-app" }) {
                     }
                 }
             }
+            repositories {
+                maven {
+                    url = layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
+                }
+            }
         }
+
         signing {
             sign(publishing.publications["mavenCentral"])
+        }
+
+        jreleaser {
+            signing {
+                active.set(org.jreleaser.model.Active.ALWAYS)
+                armored.set(true)
+                mode.set(Signing.Mode.FILE)
+                publicKey.set("/Users/irsv/.gpg/public.pgp")
+                secretKey.set("/Users/irsv/.gpg/private.pgp")
+            }
+            deploy {
+                maven {
+                    mavenCentral {
+                        create("sonatype") {
+                            active.set(org.jreleaser.model.Active.ALWAYS)
+                            url.set("https://central.sonatype.com/api/v1/publisher")
+                            stagingRepository("build/staging-deploy")
+                        }
+                    }
+                }
+            }
         }
     }
 
