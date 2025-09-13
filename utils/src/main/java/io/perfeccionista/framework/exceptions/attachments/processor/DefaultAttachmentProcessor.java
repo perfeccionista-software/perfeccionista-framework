@@ -9,6 +9,7 @@ import io.perfeccionista.framework.exceptions.attachments.JsonAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.ScreenshotAttachmentEntry;
 import io.perfeccionista.framework.exceptions.attachments.TextAttachmentEntry;
 import io.perfeccionista.framework.screenshots.Screenshot;
+import io.perfeccionista.framework.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.ResolverStyle;
 import java.time.format.SignStyle;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static io.perfeccionista.framework.exceptions.messages.UtilsMessages.EMPTY_ATTACHMENT_ENTRY;
@@ -29,7 +31,6 @@ import static io.perfeccionista.framework.utils.FileUtils.writeBinaryFile;
 import static io.perfeccionista.framework.utils.FileUtils.writeTextFile;
 import static io.perfeccionista.framework.utils.JsonUtils.createObjectNode;
 import static io.perfeccionista.framework.utils.StringUtils.isBlank;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
 import static java.time.temporal.ChronoField.DAY_OF_MONTH;
 import static java.time.temporal.ChronoField.HOUR_OF_DAY;
 import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
@@ -39,6 +40,10 @@ import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
 import static java.time.temporal.ChronoField.YEAR;
 
 public class DefaultAttachmentProcessor implements AttachmentProcessor {
+
+    protected static final String ATTACHMENT_DIR = "perfeccionista.attachment.dir";
+    protected static Properties perfeccionistaProperties;
+    protected static Properties systemProperties;
 
     public static final Logger log = LoggerFactory.getLogger(DefaultAttachmentProcessor.class);
     public static final DateTimeFormatter ID_FORMAT;
@@ -67,8 +72,6 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                 .toFormatter();
     }
 
-    protected String attachmentDir = "attachments";
-
     @Override
     public String processAttachment(@NotNull Attachment attachment) {
         String fileAttachmentsDescription = attachment.getAttachmentEntries()
@@ -76,7 +79,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                 .map(entry -> {
                     FileAttachmentEntry<?> fileAttachmentEntry = (FileAttachmentEntry<?>) entry;
                     String fileName = createId() + "_" + entry.getName() + "." + fileAttachmentEntry.getFileExtension();
-                    Path filePath = Paths.get(attachmentDir + File.separator + fileName);
+                    Path filePath = Paths.get(getAttachmentDir() + File.separator + fileName);
                     if (fileAttachmentEntry instanceof HtmlAttachmentEntry) {
                         String content = ((HtmlAttachmentEntry) fileAttachmentEntry).getContent().orElse("");
                         deleteFileIgnoreExceptions(filePath);
@@ -90,7 +93,7 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
                         Screenshot screenshot = ((ScreenshotAttachmentEntry) entry).getContent()
                                 .orElseThrow(() -> EmptyAttachment.exception(EMPTY_ATTACHMENT_ENTRY.getMessage()));
                         deleteFileIgnoreExceptions(filePath);
-                        writeBinaryFile(Paths.get(fileName), screenshot.getRaw());
+                        writeBinaryFile(filePath, screenshot.getRaw());
                     } else if (fileAttachmentEntry instanceof BigTextAttachmentEntry) {
                         String content = ((BigTextAttachmentEntry) fileAttachmentEntry).getContent().orElse("");
                         deleteFileIgnoreExceptions(filePath);
@@ -121,4 +124,20 @@ public class DefaultAttachmentProcessor implements AttachmentProcessor {
     protected String createId() {
         return LocalDateTime.now().format(ID_FORMAT);
     }
+
+    protected String getAttachmentDir() {
+        systemProperties = System.getProperties();
+        if (systemProperties.containsKey(ATTACHMENT_DIR)) {
+            return systemProperties.getProperty(ATTACHMENT_DIR);
+        }
+
+        perfeccionistaProperties = FileUtils.readOptionalPropertyFileFromClasspath("perfeccionista.properties")
+                .orElse(new Properties());
+        if (perfeccionistaProperties.containsKey(ATTACHMENT_DIR)) {
+            return perfeccionistaProperties.getProperty(ATTACHMENT_DIR);
+        }
+
+        return "attachments";
+    }
+
 }
