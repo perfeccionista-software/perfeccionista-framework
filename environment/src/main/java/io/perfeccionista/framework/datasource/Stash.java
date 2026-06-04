@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 import static io.perfeccionista.framework.datasource.StashAction.getAction;
 import static io.perfeccionista.framework.datasource.StashAction.putAction;
+import static io.perfeccionista.framework.datasource.StashAction.removeAction;
 import static io.perfeccionista.framework.datasource.StashAction.replaceAction;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_SOURCE_VALUE_NOT_FOUND;
 
@@ -94,6 +95,28 @@ public class Stash implements ObjectDataStorage<String, Object> {
         return Objects.isNull(updatedValue);
     }
 
+    @Override
+    public boolean remove(@NotNull String key) {
+        if (!storage.containsKey(key)) {
+            return false;
+        }
+        Object oldValue = storage.get(key);
+        logRemoveAction(key, oldValue);
+        storage.remove(key);
+        return true;
+    }
+
+    @Override
+    public boolean removeIf(@NotNull String key, @Nullable Object expectedValue) {
+        Object currentValue = storage.get(key);
+        if (storage.containsKey(key) && Objects.equals(currentValue, expectedValue)) {
+            logRemoveAction(key, currentValue);
+            storage.remove(key);
+            return true;
+        }
+        return false;
+    }
+
     public Stream<Entry<String, Object>> stream() {
         return storage.entrySet().stream();
     }
@@ -103,11 +126,15 @@ public class Stash implements ObjectDataStorage<String, Object> {
     }
 
     protected void logPutAction(@NotNull String key, @Nullable Object newValue) {
-        if (storage.containsKey(newValue)) {
+        if (storage.containsKey(key)) {
             actions.addLast(replaceAction(key, storage.get(key), newValue));
         } else {
             actions.addLast(putAction(key, newValue));
         }
+    }
+
+    protected void logRemoveAction(@NotNull String key, @Nullable Object oldValue) {
+        actions.addLast(removeAction(key, oldValue));
     }
 
     public List<StashAction> getStashLog() {

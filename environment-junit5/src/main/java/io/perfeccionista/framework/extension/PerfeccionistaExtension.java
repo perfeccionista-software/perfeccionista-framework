@@ -1,5 +1,8 @@
 package io.perfeccionista.framework.extension;
 
+import io.perfeccionista.framework.datasource.DataConverter;
+import io.perfeccionista.framework.datasource.DataSource;
+import io.perfeccionista.framework.exceptions.EnvironmentNotInitialized;
 import io.perfeccionista.framework.exceptions.attachments.SetAttachmentProcessor;
 import io.perfeccionista.framework.exceptions.attachments.processor.AttachmentProcessor;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
@@ -60,6 +63,7 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 import static org.junit.platform.commons.util.AnnotationUtils.isAnnotated;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION;
+import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_INITIALIZED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_CLASS_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_METHOD_NOT_FOUND;
 
@@ -139,6 +143,9 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     @Override
     public void afterEach(ExtensionContext context) {
         Environment environment = testCaseEnvironment.get(context.getUniqueId());
+        if (environment == null) {
+            throw EnvironmentNotInitialized.exception(ENVIRONMENT_NOT_INITIALIZED.getMessage());
+        }
         // TODO: Возможно, здесь нужен более изящный механизм вывода, который можно настраивать
         context.getExecutionException()
                 .flatMap(throwable -> environment.getEnvironmentAttachment()
@@ -155,12 +162,26 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        // TODO: Сделать более изящную проверку по типам: Environment, Service, DataSource, DataConverter
-        if (Environment.class.isAssignableFrom(parameterContext.getParameter().getType())) {
+        Class<?> parameterType = parameterContext.getParameter().getType();
+
+        boolean isSupportedType = Environment.class.isAssignableFrom(parameterType)
+                || Service.class.isAssignableFrom(parameterType)
+                || DataSource.class.isAssignableFrom(parameterType)
+                || DataConverter.class.isAssignableFrom(parameterType);
+
+        if (!isSupportedType) {
+            return false;
+        }
+
+        if (Environment.class.isAssignableFrom(parameterType)) {
             return true;
         }
+
         Environment environment = testCaseEnvironment.get(extensionContext.getUniqueId());
-        Class<?> parameterType = parameterContext.getParameter().getType();
+        if (environment == null) {
+            return false;
+        }
+
         return environment.getServiceClasses().stream()
                 .anyMatch(serviceClass -> serviceClass.getCanonicalName().equals(parameterType.getCanonicalName()));
     }

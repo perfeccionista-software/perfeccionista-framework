@@ -37,4 +37,24 @@ public interface DataStorage<K, V> extends DataSource<K, V> {
      */
     boolean putIfAbsent(@NotNull K key, @Nullable V value);
 
+    /**
+     * Метод удаляет значение по ключу {@param key}. Если значение отсутствовало,
+     * метод должен вернуть {@link Boolean#FALSE}.
+     *
+     * @param key ключ, по которому удаляется значение
+     * @return {@link Boolean#TRUE}, если удаление произошло,
+     *         {@link Boolean#FALSE} если по ключу {@param key} значение отсутствовало
+     */
+    boolean remove(@NotNull K key);
+
+    /**
+     * Метод удаляет значение по ключу {@param key}, только если текущее значение
+     * совпадает с {@param expectedValue}. Это атомарная операция.
+     *
+     * @param key ключ, по которому удаляется значение
+     * @param expectedValue ожидаемое значение
+     * @return {@link Boolean#TRUE}, если удаление произошло,
+     *         {@link Boolean#FALSE} если значение не совпадает или ключ отсутствует
+     */
+    boolean removeIf(@NotNull K key, @Nullable V expectedValue);
 }
