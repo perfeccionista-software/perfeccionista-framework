@@ -9,7 +9,6 @@ import io.perfeccionista.framework.datasource.entities.User;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.DATA_SOURCE_VALUE_NOT_FOUND;
@@ -82,27 +81,4 @@ public class SimpleDataStorage implements ObjectDataStorage<String, User> {
                 .map(User::toString);
     }
 
-    @Override
-    public boolean remove(@NotNull String key) {
-        if (!users.containsKey(key)) {
-            return false;
-        }
-        users.remove(key);
-        return true;
-    }
-
-    @Override
-    public boolean removeIf(@NotNull String key, @Nullable User expectedValue) {
-        if (!users.containsKey(key)) {
-            return false;
-        }
-
-        User currentValue = users.get(key);
-        if (Objects.equals(currentValue, expectedValue)) {
-            users.remove(key);
-            return true;
-        }
-
-        return false;
-    }
 }

@@ -33,10 +33,6 @@ public class StashAction {
         return new StashAction(LocalDateTime.now(), StashActionType.PUT, key, oldValue, newValue);
     }
 
-    public static StashAction removeAction(@NotNull String key, @Nullable Object oldValue) {
-        return new StashAction(LocalDateTime.now(), StashActionType.REMOVE, key, oldValue, null);
-    }
-
     public LocalDateTime getActionTime() {
         return actionTime;
     }
@@ -70,8 +66,7 @@ public class StashAction {
     enum StashActionType {
         GET,
         PUT,
-        REPLACE,
-        REMOVE
+        REPLACE
     }
 
 }

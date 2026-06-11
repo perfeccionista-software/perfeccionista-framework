@@ -2,7 +2,6 @@ package io.perfeccionista.framework.extension;
 
 import io.perfeccionista.framework.datasource.DataConverter;
 import io.perfeccionista.framework.datasource.DataSource;
-import io.perfeccionista.framework.exceptions.EnvironmentNotInitialized;
 import io.perfeccionista.framework.exceptions.attachments.SetAttachmentProcessor;
 import io.perfeccionista.framework.exceptions.attachments.processor.AttachmentProcessor;
 import io.perfeccionista.framework.exceptions.base.PerfeccionistaException;
@@ -63,7 +62,6 @@ import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 import static org.junit.platform.commons.util.AnnotationUtils.isAnnotated;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.CREATE_REPEAT_POLICY_INSTANCE_EXCEPTION;
-import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.ENVIRONMENT_NOT_INITIALIZED;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_CLASS_NOT_FOUND;
 import static io.perfeccionista.framework.exceptions.messages.EnvironmentMessages.UNEXPECTED_TEST_METHOD_NOT_FOUND;
 
@@ -143,19 +141,18 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     @Override
     public void afterEach(ExtensionContext context) {
         Environment environment = testCaseEnvironment.get(context.getUniqueId());
-        if (environment == null) {
-            throw EnvironmentNotInitialized.exception(ENVIRONMENT_NOT_INITIALIZED.getMessage());
+        if (environment != null) {
+            // TODO: Возможно, здесь нужен более изящный механизм вывода, который можно настраивать
+            context.getExecutionException()
+                    .flatMap(throwable -> environment.getEnvironmentAttachment()
+                            .getContent())
+                    .ifPresent(logger::info);
+            environment.afterTest();
+            // TODO: Работа в многопоточке может быть некорректной
+            environment.removeForCurrentThread();
+            environment.shutdown();
+            testCaseEnvironment.remove(context.getUniqueId());
         }
-        // TODO: Возможно, здесь нужен более изящный механизм вывода, который можно настраивать
-        context.getExecutionException()
-                .flatMap(throwable -> environment.getEnvironmentAttachment()
-                        .getContent())
-                .ifPresent(logger::info);
-        environment.afterTest();
-        // TODO: Работа в многопоточке может быть некорректной
-        environment.removeForCurrentThread();
-        environment.shutdown();
-        testCaseEnvironment.remove(context.getUniqueId());
     }
 
     // Методы для передачи в тестовый метод экземпляра Environment
@@ -178,9 +175,6 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
         }
 
         Environment environment = testCaseEnvironment.get(extensionContext.getUniqueId());
-        if (environment == null) {
-            return false;
-        }
 
         return environment.getServiceClasses().stream()
                 .anyMatch(serviceClass -> serviceClass.getCanonicalName().equals(parameterType.getCanonicalName()));
@@ -188,10 +182,9 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     /**
      * @return Экземпляр {@link Environment} для текущего потока. Никогда не может быть {@code null}
-     *
-     *
+     * <p>
+     * <p>
      * TODO: Добавить возможность пробрасывать датасорсы
-     *
      */
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
@@ -212,6 +205,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     /**
      * Check that test method contain {@link TestRepeatedOnCondition} annotation
+     *
      * @param extensionContext - encapsulates the context in which the current test or container is being executed
      * @return true/false
      */
@@ -222,6 +216,7 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     /**
      * Context call TestTemplateInvocationContext
+     *
      * @param context - Test Class Context
      * @return Stream of TestTemplateInvocationContext
      * TODO: Test this
@@ -311,8 +306,9 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
 
     /**
      * Создаем экземпляр {@link Environment} используя полученную конфигурацию и тестовый класс
+     *
      * @param environmentConfiguration экземпляр конфигурации {@link Environment}
-     * @param <T> тип {@link Environment}
+     * @param <T>                      тип {@link Environment}
      * @return экземпляр {@link Environment}
      */
     @SuppressWarnings("WeakerAccess")
@@ -325,10 +321,11 @@ public class PerfeccionistaExtension implements ParameterResolver, TestInstanceP
     }
 
     /**
+     *
      */
     protected Environment resolveActiveEnvironment(EnvironmentConfiguration environmentConfiguration,
-                                            Set<ConfiguredServiceHolder> externalServiceConfigurations,
-                                            String testName) {
+                                                   Set<ConfiguredServiceHolder> externalServiceConfigurations,
+                                                   String testName) {
         externalServiceConfigurations.forEach(environmentConfiguration::addOrOverrideServiceConfiguration);
         return createEnvironment(environmentConfiguration, testName);
     }

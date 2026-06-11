@@ -235,13 +235,6 @@ public class Environment {
         return this.environmentAttachment;
     }
 
-    /**
-     * Возвращает имя теста
-     */
-    public @Nullable String getTestName() {
-        return testName;
-    }
-
     // ThreadLocal
 
     public static Environment createForCurrentThread(@NotNull Class<? extends EnvironmentConfiguration> configurationClass,
