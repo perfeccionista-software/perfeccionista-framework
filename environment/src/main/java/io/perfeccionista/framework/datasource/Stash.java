@@ -103,7 +103,7 @@ public class Stash implements ObjectDataStorage<String, Object> {
     }
 
     protected void logPutAction(@NotNull String key, @Nullable Object newValue) {
-        if (storage.containsKey(newValue)) {
+        if (storage.containsKey(key)) {
             actions.addLast(replaceAction(key, storage.get(key), newValue));
         } else {
             actions.addLast(putAction(key, newValue));
