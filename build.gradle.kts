@@ -273,10 +273,6 @@ configure(subprojects.filter { it.name != "demo-app" }) {
             }
         }
 
-        signing {
-            sign(publishing.publications["mavenCentral"])
-        }
-
         jreleaser {
             signing {
                 active.set(org.jreleaser.model.Active.ALWAYS)
@@ -297,6 +293,7 @@ configure(subprojects.filter { it.name != "demo-app" }) {
                 }
             }
         }
+
     }
 
 }
